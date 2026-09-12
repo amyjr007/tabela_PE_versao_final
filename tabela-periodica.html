@@ -636,6 +636,8 @@ body.montagem .capa .digitado{pointer-events:auto}
 
 /* durante o quiz o play sai de cena: quem faz a aula andar é a escolha */
 #stage.em-quiz #som, #stage.em-quiz #som-dica{display:none!important}
+/* e com a tela escura também: ali o que faz a aula seguir é o toque na tela */
+#stage.tela-escura #som, #stage.tela-escura #som-dica{display:none!important}
 
 /* ---- o cartão da nota, no fim do quiz ---- */
 .nota-card{
@@ -1207,7 +1209,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v1.1';
+const VERSAO = 'v1.2';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2288,8 +2290,8 @@ const SAIDA_FRASES = 0.4;
 
 /* e as da tela escura do slide 1, que ficam até o aluno tocar */
 const FRASES_VEU = [
-  { de:13.6, ate:15.6, txt:'A tabela é um instrumento de consulta' },
-  { de:16.6, ate:18.0, txt:'Não foi feita pra ser memorizada' }
+  { de:13.6, ate:15.6, txt:'A tabela é um instrumento de consulta.' },
+  { de:16.6, ate:18.0, txt:'Não foi feita pra ser memorizada!' }
 ];
 
 let DIG_CAPA = null, DIG_VEU = null, veu = null, toqueHint = null, escolhaHint = null;
@@ -2651,6 +2653,10 @@ function montaCenaDoSlide1(){
 /* ---- o que o tempo da narração desenha, a cada tique ---- */
 function efeitosDoTempo(){
   const t = som.currentTime || 0;
+  /* TELA ESCURA, BOTÃO FORA. Decide-se antes de qualquer outra coisa, e
+     para todos os slides: saindo do slide 1 com a tela escura, o botão
+     tem de voltar — e o resto desta função nem corre fora do slide 1. */
+  stage.classList.toggle('tela-escura', atual === 1 && trilhaAtual === '1' && t >= 13.6);
   if (trilhaAtual === 'capa' && DIG_CAPA) DIG_CAPA.escreve(t);
   if (atual !== 1 || !veu) return;
 
@@ -2864,14 +2870,16 @@ function efeitos13(t){
    no lugar do nome — que está escrito nas seis faces e daria a
    resposta —, e as três respostas à direita, uma em cima da outra.
 
-     acerto               confetes, fanfarra e aplausos, e "exato!"
-     acerto na última     confetes, fanfarra e aplausos, e "perfeito"
+     acerto               confetes, fanfarra e aplausos, e depois a voz
+                          daquela pergunta: 1.ª "exato!", 2.ª "muitobem",
+                          3.ª "eesseaqui", 4.ª "próximo", 5.ª "sómaisesse",
+                          6.ª "perfeito"
      erro em qualquer uma a tela treme em vermelho e toca "error", e
                           depois "Calmanaproximaacerta"
 
-   Depois de cada resposta o cubo volta para casa, rápido e a girar; e
-   antes de cada pergunta nova toca "eesseaqui" — antes da última,
-   "sómaisesse". Errar não prende o aluno: a aula avança.
+   Depois de cada resposta o cubo volta para casa, rápido e a girar, e a
+   pergunta seguinte vem sem som de ligação — nada se repete depois da
+   comemoração. Errar não prende o aluno: a aula avança.
 
    ENQUANTO O QUIZ DURA, O PLAY SAI DE CENA: quem faz a aula andar é a
    escolha do aluno. No fim, o cartão da nota (de 1 a 10, pelos acertos)
@@ -2950,6 +2958,16 @@ function tremeVermelho(){
 const QUIZ_LUGAR = { x:380, y:372, escala:3.3 };
 /* quantas perguntas o quiz faz */
 const QUIZ_TOTAL = 6;
+/* A VOZ DEPOIS DE CADA COMEMORAÇÃO — uma por pergunta, sem repetir.
+   A frase escrita no cartão acompanha a voz. */
+const VOZES_DO_ACERTO = [
+  { som:'exato!',     frase:'Exato!'     },   /* 1.ª */
+  { som:'muitobem',   frase:'Muito bem!' },   /* 2.ª */
+  { som:'eesseaqui',  frase:'Isso!'      },   /* 3.ª */
+  { som:'próximo',    frase:'Certo!'     },   /* 4.ª */
+  { som:'sómaisesse', frase:'Boa!'       }    /* 5.ª */
+];
+const VOZ_DA_ULTIMA = { som:'perfeito', frase:'Perfeito!' };   /* 6.ª */
 
 const QUIZ = {
   aberto:false, passo:0, itens:[], cubo:null, travado:false,
@@ -3026,16 +3044,18 @@ const QUIZ = {
 
     if (acertou){
       this.acertos++;
-      msg.textContent = (ultima ? 'Perfeito! ' : 'Exato! ') + 'É o ' + certa + '.';
+      const voz = ultima ? VOZ_DA_ULTIMA : VOZES_DO_ACERTO[this.passo];
+      msg.textContent = voz.frase + ' É o ' + certa + '.';
       msg.className = 'quiz-msg ok';
       confete();
-      /* todo acerto tem a festa inteira: fanfarra e aplausos juntos, e a
-         voz quando a fanfarra acaba — "perfeito" na última, "exato" nas outras */
+      /* todo acerto tem a festa inteira: fanfarra e aplausos juntos, e,
+         quando a fanfarra acaba, a voz daquela pergunta — uma diferente
+         em cada uma, para nada se repetir */
       const fanfarra = tocaEfeito('funfare');
       tocaEfeito('applause');                /* os aplausos continuam por baixo */
       await fanfarra;
       if (g !== this.geracao) return;
-      await tocaEfeito(ultima ? 'perfeito' : 'exato!');
+      await tocaEfeito(voz.som);
     } else {
       b.classList.add('errada');
       msg.textContent = 'Era o ' + certa + '.';
@@ -3051,8 +3071,8 @@ const QUIZ = {
     if (g !== this.geracao) return;
     this.passo++;
     if (this.passo >= this.itens.length){ this.resultado(g); return; }
-    /* a ligação para a pergunta seguinte: "sómaisesse" antes da última */
-    await tocaEfeito(this.passo === this.itens.length - 1 ? 'sómaisesse' : 'eesseaqui');
+    /* sem som de ligação: a voz do acerto já fez esse papel, e tocá-lo
+       outra vez era repetir depois da comemoração */
     this.apresenta(g);
   },
 

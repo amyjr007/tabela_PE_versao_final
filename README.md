@@ -166,9 +166,9 @@ frase que a está a explicar.
 | fim da abertura | o play vira **Iniciar →**; o toque leva ao slide da tabela |
 | play | toca a `1`, e a vida solta da tabela cala-se até o fim da história |
 | `1` · 2,6 → 4,8 s | a onda: cada família sobe e desce, da esquerda para a direita |
-| `1` · 13,6 s | a tela escurece; digita **A tabela é um instrumento de consulta** até 15,6 s |
-| `1` · 16,6 → 18 s | embaixo, **Não foi feita pra ser memorizada** |
-| fim da `1` | a tela fica escura e pede **Toque na tela para continuar** |
+| `1` · 13,6 s | a tela escurece; digita **A tabela é um instrumento de consulta.** até 15,6 s |
+| `1` · 16,6 → 18 s | embaixo, **Não foi feita pra ser memorizada!** |
+| fim da `1` | a tela fica escura e pede **Toque na tela para continuar**; com a tela escura, o botão do canto sai de cena |
 | toque | a tela clareia (esmaece) e toca a `1.1` |
 | `1.1` · 5,1 → 7 s | os 118 crescem e piscam numa onda, da esquerda para a direita |
 | `1.1` · 8 s → fim | um de cada vez cresce e acende de verde; o anterior volta ao normal |
@@ -207,13 +207,12 @@ escolha do aluno (nem a barra de espaço toca nada).
 
 | resposta | o que acontece |
 |---|---|
-| acerto | confetes, `funfare` e `applause`, e `exato!` |
-| acerto na última | confetes, `funfare` e `applause`, e `perfeito` |
+| acerto | confetes, `funfare` e `applause`, e a voz daquela pergunta: 1.ª `exato!`, 2.ª `muitobem`, 3.ª `eesseaqui`, 4.ª `próximo`, 5.ª `sómaisesse`, 6.ª `perfeito` |
 | erro em qualquer uma | a tela treme em vermelho com `error`, e depois `Calmanaproximaacerta` |
 
 Depois de cada resposta o cubo mostra o nome certo e volta para casa,
-rápido e a girar; antes de cada pergunta nova toca `eesseaqui` — antes
-da última, `sómaisesse`. Errar não prende o aluno: a aula avança. Cada
+rápido e a girar, e a pergunta seguinte vem **sem som de ligação** — nada
+se repete depois da comemoração. Errar não prende o aluno: a aula avança. Cada
 efeito sonoro espera o anterior acabar.
 
 **No fim, o cartão da nota**: de 1 a 10, pela fração de acertos
