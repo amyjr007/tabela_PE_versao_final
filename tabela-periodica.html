@@ -1234,7 +1234,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v1.3';
+const VERSAO = 'v1.4';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2865,8 +2865,8 @@ const VOLTA13 = { '1.3A':11.7, '1.3B':10.5, dura:1.4 };
    OS EVENTOS DA "1.3A" — os símbolos de uma letra e os de duas
      1,2 s        o símbolo dentro do card do escolhido pulsa duas vezes
      8,7 → 13 s   os elementos de DUAS letras crescem, um a um (luz âmbar)
-     16 → 23 s    o mesmo com os elementos cujo nome em português
-                  COMEÇA PELO SÍMBOLO — Fe, Ferro; Ca, Cálcio (luz marrom)
+     16 → 23 s    oito elementos cujo nome em português COMEÇA PELO
+                  SÍMBOLO crescem, um a um (luz marrom)
      24,9 s       o F gira e cresce no lugar; 26 s o nome dele pulsa 2×;
                   27 s volta, com a animação ao contrário
      29,2 s       o mesmo com o Ca; 31 s pulsa o nome; 33 s volta
@@ -2876,7 +2876,11 @@ const VOLTA13 = { '1.3A':11.7, '1.3B':10.5, dura:1.4 };
 const EV13A = {
   pulsoSimbolo:{ de:1.2, dura:0.9, mais:0.32 },
   duasLetras:  { de:8.7,  ate:13.0, largura:0.5, cresce:0.55, classe:'luz-onda',   suja:false },
-  iniciais:    { de:16.0, ate:23.0, largura:0.6, cresce:0.6,  classe:'luz-marrom', suja:false },
+  iniciais:    { de:16.0, ate:23.0, largura:1.0, cresce:0.6,  classe:'luz-marrom', suja:false },
+  /* os oito da onda marrom: nome a começar pelo símbolo, de uma e de duas
+     letras (esta é a trilha dos de uma letra), espalhados da linha 1 à 6.
+     F, Ca e O ficam de fora — são eles que aparecem logo a seguir. */
+  oito:['H','C','N','Al','Cl','Fe','I','Ba'],
   zooms: [
     { sym:'F',  cresce:24.9, pulsa:26.0, volta:27.0, suja:false },
     { sym:'Ca', cresce:29.2, pulsa:31.0, volta:33.0, suja:false },
@@ -2889,12 +2893,10 @@ const EV13A = {
 let LISTA_DUAS = null, LISTA_INICIAIS = null;
 function listasDas13A(){
   if (LISTA_DUAS) return;
-  const semAcento = x => x.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   const todos = TP.todos().slice().sort((a, b) => +a.dataset.z - +b.dataset.z);
   LISTA_DUAS     = todos.filter(c => c.dataset.sym.length === 2);
-  /* o nome começa pelas letras do símbolo: Ferro/Fe sim, Magnésio/Mg não */
-  LISTA_INICIAIS = todos.filter(c =>
-    semAcento(NOMES[+c.dataset.z - 1]).startsWith(semAcento(c.dataset.sym)));
+  /* só oito, um de cada vez — todos os 53 eram demais para sete segundos */
+  LISTA_INICIAIS = EV13A.oito.map(s => TP.cubo(s)).filter(Boolean);
 }
 
 /* duas pulsadas num intervalo: o módulo de um seno de volta inteira */
