@@ -181,7 +181,20 @@ frase que a está a explicar.
 | `1.2` · 9 → 14 s | o número cresce outra vez, e o nome dele volta a brilhar |
 | `1.2` · 15,7 s → | e outra vez, até o fim |
 | fim da `1.2` | o play fica pronto na **`1.3A`** se o símbolo do escolhido tem uma letra, ou na **`1.3B`** se tem duas |
-| `1.3A` · 11,7 s / `1.3B` · 12 s | o elemento volta para a casa dele — a ida vista ao contrário |
+| `1.3A` · 11,7 s / `1.3B` · 10,5 s | o elemento volta para a casa dele — a ida vista ao contrário |
+| `1.3A` · 1,2 s | o símbolo dentro do card do escolhido pulsa duas vezes |
+| `1.3A` · 8,7 → 13 s | os elementos de **duas letras** crescem, um a um, com luz âmbar |
+| `1.3A` · 16 → 23 s | o mesmo com os elementos cujo **nome em português começa pelo símbolo** (Ferro/Fe, Cálcio/Ca), com luz marrom |
+| `1.3A` · 24,9 s | o **F** gira e cresce no lugar; 26 s o nome pulsa 2×; 27 s volta, com a animação ao contrário |
+| `1.3A` · 29,2 s | o mesmo com o **Ca**; 31 s o nome pulsa; 33 s volta |
+| `1.3A` · 33,8 s | o mesmo com o **O**; 35,7 s o nome pulsa; 38 s volta |
+| `1.3B` · 1 s | o símbolo dentro do card do escolhido pulsa duas vezes |
+| `1.3B` · 5,4 s | só a **segunda letra** do símbolo pulsa duas vezes |
+| `1.3B` · 9 s | o símbolo todo pulsa uma vez |
+| `1.3B` · 13 → 20 s | oito elementos cujo nome começa pelo símbolo — He, Li, Ne, Al, Cl, Fe, Ni, Ba — crescem um a um, com luz marrom |
+| `1.3B` · 21,7 s | o **F** gira e cresce no lugar; 22,8 s o nome pulsa 2×; 24 s volta |
+| `1.3B` · 25,6 s | o **Ca** gira e cresce; 27 s o nome pulsa 2×; 28 s volta |
+| `1.3B` · 28 s | e o **O** gira e cresce; 29 s o nome pulsa 2×; 32 s volta |
 | fim da `1.3A`/`1.3B` | **o quiz**: três exemplos seguidos — "Qual o nome desse elemento?" |
 
 Tudo o que anima é **função do tempo da narração** (`efeitosDoTempo`):

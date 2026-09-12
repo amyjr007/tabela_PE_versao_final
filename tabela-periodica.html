@@ -568,6 +568,31 @@ body.montagem .capa .digitado{pointer-events:auto}
 .pc.foco-massa .face b {transform:translateY(-3px) scale(.88)}
 .pc.foco-massa .face em{transform:translateY(2.5px) scale(.92)}
 .pc.pulsa .face{box-shadow:0 0 0 3px var(--ouro-luz), 0 0 60px 14px rgba(226,162,43,.7)}
+/* ---- os eventos da "1.3A" ----
+   As pulsadas de uma peça da face (o símbolo, o nome) vão numa escala
+   escrita a cada tique; a transição é curta para seguir o tique. */
+.pc.pulsa-sym .face b {transform:scale(var(--psym,1));transition:transform 80ms linear}
+/* o símbolo partido em duas letras (só no card do escolhido, na "1.3B"):
+   lado a lado, e a segunda pulsa sozinha */
+.face b .sym{display:inline-flex;align-items:baseline}
+.face b .l1,.face b .l2{display:inline-block}
+/* a segunda letra cresce a partir da esquerda dela, para a direita: a
+   partir do meio avançava sobre a primeira e as duas colavam */
+.pc.pulsa-l2 .face b .l2{transform:scale(var(--pl2,1));transform-origin:left 78%;
+  transition:transform 80ms linear}
+.pc.pulsa-nome .face em{transform:scale(var(--pnome,1));transition:transform 80ms linear}
+/* o nome a pulsar cresce para cima, por cima da massa: ela dá licença,
+   sobe um fio e encolhe enquanto ele pulsa */
+.pc.pulsa-nome .face u{transform:translateY(-3px) scale(.82);transition:transform 120ms ease-out}
+/* as ondas de um em um: âmbar a dos de duas letras, marrom a dos que
+   têm o nome a começar pelo símbolo */
+.pc.luz-onda .face  {box-shadow:0 0 0 2px var(--ouro-luz), 0 0 18px 4px rgba(226,162,43,.6)}
+.pc.luz-marrom .face{box-shadow:0 0 0 2px #8B5A2B, 0 0 24px 7px rgba(139,90,43,.8)}
+/* o F, o Ca e o O, a crescer no lugar: por cima de todos */
+.pc.zoom-el{z-index:46}
+.pc.zoom-el .face{box-shadow:0 0 0 2px var(--ouro-luz), 0 16px 36px rgba(12,10,32,.35),
+                              0 0 36px rgba(226,162,43,.55)}
+
 /* medir é fotografar em repouso, também por dentro do cubo */
 .pc.medindo *{transition:none!important}
 
@@ -1209,7 +1234,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v1.2';
+const VERSAO = 'v1.3';
 
 /* ============================================================
    OS ELEMENTOS
@@ -1994,8 +2019,13 @@ const TP = {
                .forEach(e => e.classList.remove('recuado'));
     this.todos().forEach(c => {
       const cubo = c.querySelector('.cubo');
-      c.classList.remove('sobe','verde','eleito','foco-num','foco-massa','pulsa','pergunta','sem-nome');
+      c.classList.remove('sobe','verde','eleito','foco-num','foco-massa','pulsa','pergunta','sem-nome',
+                         'pulsa-sym','pulsa-nome','luz-onda','luz-marrom','zoom-el','pulsa-l2');
+      c.style.removeProperty('--psym');
+      c.style.removeProperty('--pl2');
+      c.style.removeProperty('--pnome');
       delete c._marcas;
+      delete c._voltou;
       c.style.removeProperty('--sobe');
       c.style.removeProperty('--tsobe');
       c.style.removeProperty('--onda');
@@ -2675,6 +2705,8 @@ function efeitosDoTempo(){
   else if (VERDE.z > 0) verdeAoAcaso(-1);
   if (trilhaAtual === '1.2') efeitos12(t);
   if (trilhaAtual === '1.3A' || trilhaAtual === '1.3B') efeitos13(t);
+  if (trilhaAtual === '1.3A') efeitos13A(t);
+  if (trilhaAtual === '1.3B') efeitos13B(t);
 }
 
 /* A ONDA DAS FAMÍLIAS — de 2,6 a 4,8 s: cada coluna sobe e desce, uma
@@ -2827,7 +2859,186 @@ function efeitos12(t){
    feita é p³. Posição, tamanho e giro seguem a mesma curva, e tudo é
    função do tempo — pausar congela o voo, voltar o áudio atrás
    devolve o elemento ao alto. */
-const VOLTA13 = { '1.3A':11.7, '1.3B':12.0, dura:1.4 };
+const VOLTA13 = { '1.3A':11.7, '1.3B':10.5, dura:1.4 };
+
+/* ============================================================
+   OS EVENTOS DA "1.3A" — os símbolos de uma letra e os de duas
+     1,2 s        o símbolo dentro do card do escolhido pulsa duas vezes
+     8,7 → 13 s   os elementos de DUAS letras crescem, um a um (luz âmbar)
+     16 → 23 s    o mesmo com os elementos cujo nome em português
+                  COMEÇA PELO SÍMBOLO — Fe, Ferro; Ca, Cálcio (luz marrom)
+     24,9 s       o F gira e cresce no lugar; 26 s o nome dele pulsa 2×;
+                  27 s volta, com a animação ao contrário
+     29,2 s       o mesmo com o Ca; 31 s pulsa o nome; 33 s volta
+     33,8 s       o mesmo com o O;  35,7 s pulsa o nome; 38 s volta
+   Tudo é função do tempo da narração: pausar congela, voltar desfaz.
+   ============================================================ */
+const EV13A = {
+  pulsoSimbolo:{ de:1.2, dura:0.9, mais:0.32 },
+  duasLetras:  { de:8.7,  ate:13.0, largura:0.5, cresce:0.55, classe:'luz-onda',   suja:false },
+  iniciais:    { de:16.0, ate:23.0, largura:0.6, cresce:0.6,  classe:'luz-marrom', suja:false },
+  zooms: [
+    { sym:'F',  cresce:24.9, pulsa:26.0, volta:27.0, suja:false },
+    { sym:'Ca', cresce:29.2, pulsa:31.0, volta:33.0, suja:false },
+    { sym:'O',  cresce:33.8, pulsa:35.7, volta:38.0, suja:false }
+  ],
+  durZoom:1.0, escalaZoom:2.6, pulsoNome:{ dura:0.9, mais:0.38 }
+};
+
+/* as duas listas das ondas, feitas uma vez, na ordem do número atômico */
+let LISTA_DUAS = null, LISTA_INICIAIS = null;
+function listasDas13A(){
+  if (LISTA_DUAS) return;
+  const semAcento = x => x.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const todos = TP.todos().slice().sort((a, b) => +a.dataset.z - +b.dataset.z);
+  LISTA_DUAS     = todos.filter(c => c.dataset.sym.length === 2);
+  /* o nome começa pelas letras do símbolo: Ferro/Fe sim, Magnésio/Mg não */
+  LISTA_INICIAIS = todos.filter(c =>
+    semAcento(NOMES[+c.dataset.z - 1]).startsWith(semAcento(c.dataset.sym)));
+}
+
+/* duas pulsadas num intervalo: o módulo de um seno de volta inteira */
+const duasPulsadas = (t, de, dura) => {
+  const q = (t - de) / dura;
+  return (q > 0 && q < 1) ? Math.abs(Math.sin(2*Math.PI*q)) : 0;
+};
+
+/* UMA ONDA DE UM EM UM: cada elemento da lista cresce e volta, um logo
+   depois do outro, e o último acaba exatamente no fim da janela */
+function ondaDeUmEmUm(t, o, lista){
+  const dentro = t >= o.de - 0.05 && t <= o.ate + 0.1;
+  if (!dentro && !o.suja) return;
+  const passo = (o.ate - o.de - o.largura) / Math.max(1, lista.length - 1);
+  lista.forEach((c, i) => {
+    if (!dentro){
+      c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe');
+      c.classList.remove('sobe', o.classe);
+      return;
+    }
+    const p = (t - o.de - i*passo) / o.largura;
+    const k = (p > 0 && p < 1) ? Math.sin(Math.PI*p) : 0;
+    c.style.setProperty('--tsobe', '90ms');
+    c.style.setProperty('--onda', (1 + o.cresce*k).toFixed(3));
+    c.classList.toggle('sobe', k > .05);
+    c.classList.toggle(o.classe, k > .2);
+  });
+  o.suja = dentro;
+}
+
+/* O ZOOM NO LUGAR: gira e cresce ao mesmo tempo; o nome pulsa duas vezes;
+   e volta com a animação ao contrário. A ida sai depressa e chega devagar
+   (1-(1-p)³); a volta é ela vista de trás para a frente (1-p³): sai
+   devagar e chega depressa, a desenrolar o giro. */
+function zoomNoLugar(t, o){
+  const c = TP.cubo(o.sym);
+  if (!c) return;
+  const D = EV13A.durZoom, E = EV13A.escalaZoom;
+  const ativo = t >= o.cresce && t < o.volta + D;
+  if (!ativo && !o.suja) return;
+  const cubo = c.querySelector('.cubo');
+  if (!ativo){
+    c.classList.remove('zoom-el', 'sobe', 'pulsa-nome');
+    ['--onda', '--tsobe', '--pnome'].forEach(v => c.style.removeProperty(v));
+    cubo.style.setProperty('--ry', '0deg');
+    c.dataset.ry = 0;
+    o.suja = false;
+    return;
+  }
+  let e;
+  if (t < o.cresce + D)  e = 1 - Math.pow(1 - (t - o.cresce)/D, 3);
+  else if (t < o.volta)  e = 1;
+  else                   e = 1 - Math.pow((t - o.volta)/D, 3);
+  c.classList.add('zoom-el', 'sobe');
+  c.style.setProperty('--tsobe', '90ms');
+  c.style.setProperty('--onda', (1 + (E - 1)*e).toFixed(3));
+  cubo.style.setProperty('--dur', '90ms');
+  cubo.style.setProperty('--rzc', '0deg');
+  cubo.style.setProperty('--ry', (360*e).toFixed(1) + 'deg');
+  c.dataset.ry = 360*e;
+  const k = duasPulsadas(t, o.pulsa, EV13A.pulsoNome.dura);
+  c.classList.toggle('pulsa-nome', k > .01);
+  c.style.setProperty('--pnome', (1 + EV13A.pulsoNome.mais*k).toFixed(3));
+  o.suja = true;
+}
+
+/* ============================================================
+   OS EVENTOS DA "1.3B" — o escolhido tem símbolo de duas letras
+     1 s          o símbolo do card do escolhido pulsa duas vezes
+     5,4 s        só a SEGUNDA letra dele pulsa duas vezes
+     9 s          o símbolo todo pulsa uma vez
+     10,5 s       o escolhido volta para casa (em efeitos13)
+     13 → 20 s    oito elementos cujo nome começa pelo símbolo crescem,
+                  um a um, com luz marrom
+     21,7 s       o F gira e cresce; 22,8 s o nome pulsa 2×; 24 s volta
+     25,6 s       o Ca gira e cresce; 27 s o nome pulsa 2×; 28 s volta
+     28 s         e o O gira e cresce; 29 s o nome pulsa 2×; 32 s volta
+   ============================================================ */
+const EV13B = {
+  pulsosSimbolo:[ { de:1.0, dura:0.9,  vezes:2, mais:0.32 },
+                  { de:9.0, dura:0.55, vezes:1, mais:0.34 } ],
+  pulsoSegunda:   { de:5.4, dura:0.9,  vezes:2, mais:0.6 },
+  /* os oito da onda marrom: todos de duas letras, porque esta é a trilha
+     dos símbolos de duas letras, e espalhados pela tabela. F, Ca e O ficam
+     de fora — são eles que aparecem logo a seguir, um de cada vez. */
+  oito:['He','Li','Ne','Al','Cl','Fe','Ni','Ba'],
+  iniciais:{ de:13.0, ate:20.0, largura:1.0, cresce:0.6, classe:'luz-marrom', suja:false },
+  zooms:[
+    { sym:'F',  cresce:21.7, pulsa:22.8, volta:24.0, suja:false },
+    { sym:'Ca', cresce:25.6, pulsa:27.0, volta:28.0, suja:false },
+    { sym:'O',  cresce:28.0, pulsa:29.0, volta:32.0, suja:false }
+  ]
+};
+
+/* uma, duas, n pulsadas num intervalo: o módulo de um seno de n meias voltas */
+const pulsadas = (t, de, dura, vezes) => {
+  const q = (t - de) / dura;
+  return (q > 0 && q < 1) ? Math.abs(Math.sin(vezes*Math.PI*q)) : 0;
+};
+
+/* A SEGUNDA LETRA À PARTE. O símbolo é um texto só, e um texto só não
+   pulsa uma letra: no card do escolhido ele é partido em duas peças, nas
+   seis faces — dentro de um invólucro, porque a face arruma o símbolo numa
+   grelha, e duas peças soltas ali ficariam uma por cima da outra. */
+function partilhaLetras(c){
+  if (c._letras) return;
+  const s = c.dataset.sym;
+  c.querySelectorAll('.face b').forEach(b => {
+    b.innerHTML = '<span class="sym"><span class="l1">' + s.charAt(0) + '</span>' +
+                  '<span class="l2">' + s.slice(1) + '</span></span>';
+  });
+  c._letras = true;
+}
+
+let LISTA_OITO = null;
+function efeitos13B(t){
+  const c = SEQ.eleito;
+  if (c){
+    partilhaLetras(c);
+    const k = Math.max(...EV13B.pulsosSimbolo.map(p => pulsadas(t, p.de, p.dura, p.vezes) * p.mais));
+    c.classList.toggle('pulsa-sym', k > .003);
+    c.style.setProperty('--psym', (1 + k).toFixed(3));
+    const s2 = EV13B.pulsoSegunda, k2 = pulsadas(t, s2.de, s2.dura, s2.vezes);
+    c.classList.toggle('pulsa-l2', k2 > .01);
+    c.style.setProperty('--pl2', (1 + s2.mais*k2).toFixed(3));
+  }
+  if (!LISTA_OITO) LISTA_OITO = EV13B.oito.map(s => TP.cubo(s)).filter(Boolean);
+  ondaDeUmEmUm(t, EV13B.iniciais, LISTA_OITO);
+  EV13B.zooms.forEach(z => zoomNoLugar(t, z));
+}
+
+function efeitos13A(t){
+  listasDas13A();
+  /* o símbolo do escolhido, lá em cima, pulsa duas vezes */
+  const c = SEQ.eleito;
+  if (c){
+    const ps = EV13A.pulsoSimbolo, k = duasPulsadas(t, ps.de, ps.dura);
+    c.classList.toggle('pulsa-sym', k > .01);
+    c.style.setProperty('--psym', (1 + ps.mais*k).toFixed(3));
+  }
+  ondaDeUmEmUm(t, EV13A.duasLetras, LISTA_DUAS);
+  ondaDeUmEmUm(t, EV13A.iniciais,   LISTA_INICIAIS);
+  EV13A.zooms.forEach(z => zoomNoLugar(t, z));
+}
 function efeitos13(t){
   const c = SEQ.eleito;
   if (!c) return;
@@ -2836,6 +3047,13 @@ function efeitos13(t){
   if (rotNum){ rotNum.classList.remove('brilha'); rotMassa.classList.remove('brilha'); }
 
   const de = VOLTA13[trilhaAtual];
+  /* ACABADA A VOLTA, A VOLTA LARGA O CUBO. Escreve o estado final uma vez
+     e depois não mexe mais: os eventos seguintes da trilha podem pegar
+     neste mesmo elemento (o escolhido pode ser o F ou o O), e duas mãos a
+     escrever o mesmo tamanho a cada tique não se entendem. Voltando o
+     áudio para trás, para dentro da volta, ela retoma. */
+  if (t > de + VOLTA13.dura + 0.3){ if (c._voltou) return; c._voltou = true; }
+  else c._voltou = false;
   const p = Math.max(0, Math.min(1, (t - de) / VOLTA13.dura));
   const feito = p*p*p;
   const alto = { x:(xDaColuna(8) + xDaColuna(9))/2, y:yDaLinha(2) };
