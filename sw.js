@@ -42,6 +42,8 @@ const CASCA = [
   './Audios/vfx/eesseaqui.mp3',
   './Audios/vfx/sómaisesse.mp3',
   './Audios/vfx/Calmanaproximaacerta.mp3',
+  './Audios/vfx/statistics.mp3',
+  './Audios/audio_tabela_1.4.mp3',
   './fontes/fontes.css',
   './fontes/space-grotesk-normal-latin.woff2',
   './fontes/space-grotesk-normal-latin-ext.woff2',

@@ -634,6 +634,28 @@ body.montagem .capa .digitado{pointer-events:auto}
 .quiz-msg.ok{color:#1F8A4C}
 .quiz-msg.erro{color:#B42E48}
 
+/* durante o quiz o play sai de cena: quem faz a aula andar é a escolha */
+#stage.em-quiz #som, #stage.em-quiz #som-dica{display:none!important}
+
+/* ---- o cartão da nota, no fim do quiz ---- */
+.nota-card{
+  position:absolute;left:640px;top:360px;width:580px;padding:32px 44px 30px;
+  border-radius:24px;text-align:center;
+  background:#FFFDF8;border:1px solid var(--ouro-dim);
+  box-shadow:0 30px 80px rgba(12,10,32,.45);
+  transform:translate(-50%,-50%) scale(.88);opacity:0;pointer-events:none;
+  transition:transform .6s var(--e-salto), opacity .35s ease;
+}
+.quiz.nota-on .nota-card{transform:translate(-50%,-50%);opacity:1;pointer-events:auto}
+.nota-rotulo{font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--ouro)}
+.nota-valor{margin:6px 0 4px;font-family:var(--display);font-weight:700;line-height:1;color:var(--indigo)}
+.nota-num{font-size:128px;letter-spacing:-.04em}
+.nota-de{font-size:36px;color:var(--tinta-faint);margin-left:4px}
+.nota-acertos{font-size:20px;color:var(--tinta-dim);margin-bottom:14px}
+.nota-msg{font-family:var(--display);font-weight:600;font-size:26px;line-height:1.25;color:var(--ouro)}
+.nota-seta{margin-top:20px;font-family:var(--mono);font-size:12px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--tinta-faint)}
+
 /* o cubo da pergunta: à frente do cartão, e com um "?" no lugar do nome */
 .pc.pergunta{z-index:45;pointer-events:none}
 .pc.pergunta .face{box-shadow:0 0 0 2px var(--ouro-luz), 0 18px 40px rgba(12,10,32,.4),
@@ -1185,7 +1207,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v1.0';
+const VERSAO = 'v1.1';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2190,7 +2212,8 @@ const TRILHAS = {
   '1.1':  'Audios/audio_tabela_1.1.mp3',   /* a onda dos 118 e o verde ao acaso */
   '1.2':  'Audios/audio_tabela_1.2.mp3',   /* o elemento escolhido */
   '1.3A': 'Audios/audio_tabela_1.3A.mp3',  /* se o símbolo dele tem uma letra */
-  '1.3B': 'Audios/audio_tabela_1.3B.mp3'   /* se tem duas */
+  '1.3B': 'Audios/audio_tabela_1.3B.mp3',  /* se tem duas */
+  '1.4':  'Audios/audio_tabela_1.4.mp3'    /* depois do quiz — ainda por gravar */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1'];
@@ -2240,7 +2263,8 @@ const ROTEIROS = {
   '1.1': [],
   '1.2': [],  /* os do elemento escolhido moram em efeitos12() */
   '1.3A': [], /* e a volta dele para casa, em efeitos13() */
-  '1.3B': []
+  '1.3B': [],
+  '1.4':  []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -2405,6 +2429,8 @@ function tocaOuPara(){
   if (somBtn.classList.contains('iniciar')){ go(1); return; }
   /* na tela escura à espera do toque, o botão também serve de toque */
   if (SEQ.aguardaToque){ SEQ.continua(); return; }
+  /* no meio do quiz nada toca — nem pela barra de espaço */
+  if (QUIZ.aberto && !QUIZ.mostrandoNota) return;
   if (!temTrilha){
     TP.diz('A narração deste slide ainda não foi gravada.');
     return;
@@ -2609,6 +2635,12 @@ function montaCenaDoSlide1(){
     '<div class="quiz" role="dialog" aria-modal="true" aria-label="Pergunta"><div class="quiz-card">' +
       '<div class="quiz-marca"></div><h3 class="quiz-q">Qual o nome desse elemento?</h3>' +
       '<div class="quiz-ops"></div><div class="quiz-msg" aria-live="polite"></div>' +
+    '</div>' +
+    '<div class="nota-card" role="status" aria-live="polite">' +
+      '<div class="nota-rotulo">Sua nota</div>' +
+      '<div class="nota-valor"><span class="nota-num"></span><span class="nota-de">/10</span></div>' +
+      '<div class="nota-acertos"></div><div class="nota-msg"></div>' +
+      '<div class="nota-seta">Toque no play para continuar →</div>' +
     '</div></div>');
   if (!document.getElementById('flash-erro'))
     stage.insertAdjacentHTML('beforeend', '<div id="flash-erro" aria-hidden="true"></div>');
@@ -2826,27 +2858,30 @@ function efeitos13(t){
 }
 
 /* ============================================================
-   O QUIZ — no fim da "1.3A" ou da "1.3B", três exemplos seguidos
+   O QUIZ — no fim da "1.3A" ou da "1.3B", seis perguntas seguidas
    Um elemento sai da casa dele e vem para a frente, a girar, junto com
    o cartão "Qual o nome desse elemento?": o cubo à esquerda, com um "?"
    no lugar do nome — que está escrito nas seis faces e daria a
    resposta —, e as três respostas à direita, uma em cima da outra.
 
-     acerto no 1.º        confetes, fanfarra e aplausos, e "exato!"
-     acerto no 2.º        confetes, fanfarra e aplausos, e "perfeito"
-     acerto no 3.º        confetes, fanfarra e aplausos, e "exato!"
-     erro em qualquer um  a tela treme em vermelho e toca "error", e
+     acerto               confetes, fanfarra e aplausos, e "exato!"
+     acerto na última     confetes, fanfarra e aplausos, e "perfeito"
+     erro em qualquer uma a tela treme em vermelho e toca "error", e
                           depois "Calmanaproximaacerta"
 
    Depois de cada resposta o cubo volta para casa, rápido e a girar; e
-   antes do 2.º exemplo toca "eesseaqui", antes do 3.º "sómaisesse".
-   Errar não prende o aluno: a aula avança para o exemplo seguinte.
+   antes de cada pergunta nova toca "eesseaqui" — antes da última,
+   "sómaisesse". Errar não prende o aluno: a aula avança.
+
+   ENQUANTO O QUIZ DURA, O PLAY SAI DE CENA: quem faz a aula andar é a
+   escolha do aluno. No fim, o cartão da nota (de 1 a 10, pelos acertos)
+   com uma mensagem boa, o som "statistics", e o play de volta.
 
    Os elementos saem de listas em que O SÍMBOLO SAI DO NOME EM
    PORTUGUÊS — Carbono dá C, Cobalto dá Co —, para o aluno poder chegar
    ao nome pelo símbolo. Ficaram de fora os que não batem: Sódio (Na),
    Potássio (K), Cobre (Cu), Prata (Ag), Ouro (Au)… Depois da "1.3A",
-   três de uma letra; depois da "1.3B", três de duas; nunca o elemento
+   seis de uma letra; depois da "1.3B", seis de duas; nunca o elemento
    que o aluno escolheu. Em cada item a primeira resposta é a certa; as
    outras são nomes de verdade, parecidos de propósito.
 
@@ -2865,7 +2900,13 @@ const QUIZ_UMA = [
   { z:1,  op:['Hidrogênio','Hélio','Háfnio'] },
   { z:9,  op:['Flúor','Ferro','Fósforo'] },
   { z:53, op:['Iodo','Irídio','Índio'] },
-  { z:5,  op:['Boro','Bário','Bromo'] }
+  { z:5,  op:['Boro','Bário','Bromo'] },
+  /* com seis perguntas, sete itens deixavam só seis depois de tirar o
+     elemento do aluno — sempre os mesmos. Urânio e Vanádio também têm o
+     símbolo tirado do nome; as opções erradas deles são armadilhas de
+     letra (Ouro é Au, Tungstênio é W, Ítrio é Y). */
+  { z:92, op:['Urânio','Ouro','Európio'] },
+  { z:23, op:['Vanádio','Tungstênio','Ítrio'] }
 ];
 const QUIZ_DUAS = [
   { z:12, op:['Magnésio','Mercúrio','Molibdênio'] },
@@ -2907,6 +2948,8 @@ function tremeVermelho(){
 
 /* onde o cubo da pergunta fica: no meio da coluna esquerda do cartão */
 const QUIZ_LUGAR = { x:380, y:372, escala:3.3 };
+/* quantas perguntas o quiz faz */
+const QUIZ_TOTAL = 6;
 
 const QUIZ = {
   aberto:false, passo:0, itens:[], cubo:null, travado:false,
@@ -2919,9 +2962,14 @@ const QUIZ = {
     const c = SEQ.eleito;
     const lista = (trilha === '1.3A' ? QUIZ_UMA : QUIZ_DUAS)
       .filter(p => !c || p.z !== +c.dataset.z);
-    this.itens = embaralha(lista.slice()).slice(0, 3);
+    this.itens = embaralha(lista.slice()).slice(0, QUIZ_TOTAL);
     this.passo = 0;
+    this.acertos = 0;
     this.aberto = true;
+    this.mostrandoNota = false;
+    this.caixa().classList.remove('nota-on');
+    /* o play sai de cena: daqui em diante quem faz a aula andar é a escolha */
+    stage.classList.add('em-quiz');
     const g = ++this.geracao;
     this.caixa().classList.add('on');
     this.apresenta(g);
@@ -2965,6 +3013,7 @@ const QUIZ = {
     this.travado = true;
     const cx = this.caixa(), msg = cx.querySelector('.quiz-msg');
     const certa = item.op[0], acertou = nome === certa;
+    const ultima = this.passo === this.itens.length - 1;
 
     /* a resposta certa aparece sempre — no botão e no cubo, que ganha o
        nome de volta —, tenha o aluno acertado ou não */
@@ -2976,16 +3025,17 @@ const QUIZ = {
     this.cubo.classList.remove('sem-nome');
 
     if (acertou){
-      msg.textContent = (this.passo === 1 ? 'Perfeito! ' : 'Exato! ') + 'É o ' + certa + '.';
+      this.acertos++;
+      msg.textContent = (ultima ? 'Perfeito! ' : 'Exato! ') + 'É o ' + certa + '.';
       msg.className = 'quiz-msg ok';
       confete();
       /* todo acerto tem a festa inteira: fanfarra e aplausos juntos, e a
-         voz quando a fanfarra acaba — "perfeito" no 2.º, "exato" nos outros */
+         voz quando a fanfarra acaba — "perfeito" na última, "exato" nas outras */
       const fanfarra = tocaEfeito('funfare');
       tocaEfeito('applause');                /* os aplausos continuam por baixo */
       await fanfarra;
       if (g !== this.geracao) return;
-      await tocaEfeito(this.passo === 1 ? 'perfeito' : 'exato!');
+      await tocaEfeito(ultima ? 'perfeito' : 'exato!');
     } else {
       b.classList.add('errada');
       msg.textContent = 'Era o ' + certa + '.';
@@ -3000,8 +3050,9 @@ const QUIZ = {
     await this.devolve();
     if (g !== this.geracao) return;
     this.passo++;
-    if (this.passo >= this.itens.length){ this.termina(); return; }
-    await tocaEfeito(this.passo === 1 ? 'eesseaqui' : 'sómaisesse');
+    if (this.passo >= this.itens.length){ this.resultado(g); return; }
+    /* a ligação para a pergunta seguinte: "sómaisesse" antes da última */
+    await tocaEfeito(this.passo === this.itens.length - 1 ? 'sómaisesse' : 'eesseaqui');
     this.apresenta(g);
   },
 
@@ -3025,9 +3076,30 @@ const QUIZ = {
     });
   },
 
-  termina(){
+  /* O FIM: o cartão da nota — de 1 a 10, pela fração de acertos, e nunca
+     abaixo de 1 —, com uma mensagem boa, o som "statistics", e o play de
+     volta, já carregado com a narração seguinte */
+  resultado(g){
+    if (g !== this.geracao) return;
+    const total = this.itens.length, a = this.acertos;
+    const nota = Math.max(1, Math.round(a / total * 10));
+    const cx = this.caixa();
+    cx.querySelector('.nota-num').textContent = nota;
+    cx.querySelector('.nota-acertos').textContent = 'Você acertou ' + a + ' de ' + total + ' perguntas.';
+    cx.querySelector('.nota-msg').textContent = mensagemDaNota(nota);
+    cx.classList.remove('card-on');
+    cx.classList.add('nota-on');
+    this.mostrandoNota = true;
+    this.nota = nota;
+    tocaEfeito('statistics');
+    stage.classList.remove('em-quiz');
+    carregaTrilha('1.4');
+  },
+  /* começada a narração seguinte, o cartão da nota sai de cena */
+  saiDaNota(){
+    this.mostrandoNota = false;
     this.aberto = false;
-    this.caixa().classList.remove('on', 'card-on');
+    this.caixa().classList.remove('on', 'nota-on');
   },
 
   /* saindo do slide: tudo pára e fica arrumado (o cubo volta à casa pelo
@@ -3037,10 +3109,20 @@ const QUIZ = {
     EFEITOS.forEach(a => a.pause());
     EFEITOS.clear();
     const cx = slides[1] && slides[1].querySelector('.quiz');
-    if (cx) cx.classList.remove('on', 'card-on');
-    this.aberto = false; this.travado = false; this.cubo = null;
+    if (cx) cx.classList.remove('on', 'card-on', 'nota-on');
+    stage.classList.remove('em-quiz');
+    this.aberto = false; this.travado = false; this.cubo = null; this.mostrandoNota = false;
   }
 };
+
+/* a mensagem do cartão da nota: sempre boa, e cada vez mais festiva */
+function mensagemDaNota(n){
+  if (n === 10) return 'Nota máxima! Você já lê a tabela como quem lê um mapa.';
+  if (n >= 8)   return 'Muito bem! Você está pegando o jeito dos símbolos.';
+  if (n >= 5)   return 'Bom trabalho! Mais um pouco de prática e a tabela fica toda sua.';
+  return 'Você está começando — e é assim que se aprende. Vamos em frente!';
+}
+som.addEventListener('play', () => { if (QUIZ.mostrandoNota) QUIZ.saiDaNota(); });
 
 /* OS CONFETES — dois canhões, um em cada canto de baixo, a atirar para o
    meio. Não é coreografia da narração (acontece com ela parada), e por

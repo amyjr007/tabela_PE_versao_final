@@ -196,28 +196,37 @@ trilha e a outra.
 
 ### O quiz
 
-No fim da `1.3A` ou da `1.3B`, três exemplos seguidos. Um elemento sai
-da casa dele e vem para a frente, a girar, junto com o cartão **Qual o
-nome desse elemento?** — o cubo à esquerda, com um **?** no lugar do nome
+No fim da `1.3A` ou da `1.3B`, **seis perguntas** seguidas. Um elemento
+sai da casa dele e vem para a frente, a girar, junto com o cartão **Qual
+o nome desse elemento?** — o cubo à esquerda, com um **?** no lugar do nome
 (que está escrito nas seis faces e daria a resposta), e as três respostas
 à direita, uma em cima da outra.
 
+**Enquanto o quiz dura, o play sai de cena**: quem faz a aula andar é a
+escolha do aluno (nem a barra de espaço toca nada).
+
 | resposta | o que acontece |
 |---|---|
-| acerto no 1.º | confetes, `funfare` e `applause`, e `exato!` |
-| acerto no 2.º | confetes, `funfare` e `applause`, e `perfeito` |
-| acerto no 3.º | confetes, `funfare` e `applause`, e `exato!` |
-| erro em qualquer um | a tela treme em vermelho com `error`, e depois `Calmanaproximaacerta` |
+| acerto | confetes, `funfare` e `applause`, e `exato!` |
+| acerto na última | confetes, `funfare` e `applause`, e `perfeito` |
+| erro em qualquer uma | a tela treme em vermelho com `error`, e depois `Calmanaproximaacerta` |
 
 Depois de cada resposta o cubo mostra o nome certo e volta para casa,
-rápido e a girar; antes do 2.º exemplo toca `eesseaqui`, antes do 3.º
-`sómaisesse`. Errar não prende o aluno: a aula avança para o exemplo
-seguinte. Cada efeito sonoro espera o anterior acabar.
+rápido e a girar; antes de cada pergunta nova toca `eesseaqui` — antes
+da última, `sómaisesse`. Errar não prende o aluno: a aula avança. Cada
+efeito sonoro espera o anterior acabar.
+
+**No fim, o cartão da nota**: de 1 a 10, pela fração de acertos
+(acertos ÷ 6 × 10, arredondado, nunca abaixo de 1 — 6 acertos dão 10, 5
+dão 8, 4 dão 7, 3 dão 5), com uma mensagem sempre positiva que muda com a
+nota, e o som `statistics`. O play volta, já carregado com a narração
+seguinte, `audio_tabela_1.4.mp3` — que ainda não existe: enquanto não for
+gravada, o botão aparece apagado e avisa.
 
 Os elementos saem de listas (`QUIZ_UMA`, `QUIZ_DUAS`) em que **o símbolo
 sai do nome em português** — Carbono dá C, Cobalto dá Co. Ficaram de fora
 os que não batem: Sódio (Na), Potássio (K), Cobre (Cu), Prata (Ag), Ouro
-(Au)… Depois da `1.3A`, três de uma letra; depois da `1.3B`, três de
+(Au)… Depois da `1.3A`, seis de uma letra; depois da `1.3B`, seis de
 duas; nunca o elemento que o aluno escolheu. A primeira resposta de cada
 item é a certa; as outras são nomes de verdade, com a mesma inicial
 (Cobalto, Cromo, Cálcio) — mas **nenhuma opção começa pelas mesmas duas
