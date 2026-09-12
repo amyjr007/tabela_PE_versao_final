@@ -1,0 +1,12 @@
+# rascunhos e cópias de segurança
+*.bak
+*.bak?
+~$*
+Thumbs.db
+desktop.ini
+
+# documentos de trabalho, que não são parte do app
+*.docx
+
+# páginas de teste geradas durante o desenvolvimento
+_teste*.html
