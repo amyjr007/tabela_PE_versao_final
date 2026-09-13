@@ -835,15 +835,15 @@ body.montagem .capa .digitado{pointer-events:auto}
    Cresce para a esquerda, a partir do canto onde estava: o lado direito
    dele fica no mesmo sítio, e a borda do palco não o corta. */
 #som .rotulo-iniciar{display:none}
-#som.iniciar{width:auto!important;padding:0 24px 0 28px;border-radius:30px}
+#som.iniciar{width:auto!important;padding:0 29px 0 34px;border-radius:36px}
 #som.iniciar .anel,#som.iniciar .icone{display:none}
 #som.iniciar .rotulo-iniciar{
   display:inline-flex;align-items:center;gap:9px;white-space:nowrap;
-  font-family:var(--display);font-weight:600;font-size:19px;letter-spacing:.01em;
+  font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:.01em;
 }
-#stage .solto#som.iniciar{transform:translate(calc(-100% + 29px),-50%) scale(var(--esc,1))}
+#stage .solto#som.iniciar{transform:translate(calc(-100% + 35px),-50%) scale(var(--esc,1))}
 #stage .solto#som.iniciar:hover{
-  transform:translate(calc(-100% + 29px),-50%) scale(var(--esc,1)) translateY(-3px)}
+  transform:translate(calc(-100% + 35px),-50%) scale(var(--esc,1)) translateY(-3px)}
 
 /* ============================================================
    O BOTÃO DA NARRAÇÃO — canto de baixo, à direita
@@ -852,7 +852,8 @@ body.montagem .capa .digitado{pointer-events:auto}
    ============================================================ */
 #som{
   position:absolute;right:26px;bottom:22px;z-index:12;
-  width:58px;height:58px;padding:0;cursor:pointer;
+  /* 70 px: 20 % maior do que os 58 de antes, a pedido do professor */
+  width:70px;height:70px;padding:0;cursor:pointer;
   display:grid;place-items:center;
   background:rgba(255,255,255,.92);border:1px solid var(--ouro-dim);
   border-radius:50%;backdrop-filter:blur(9px);
@@ -889,8 +890,9 @@ body.montagem .capa .digitado{pointer-events:auto}
   stroke-dasharray:var(--volta,163);stroke-dashoffset:var(--falta,163);
   transition:stroke-dashoffset .2s linear}
 #som .icone{position:relative;z-index:2;display:grid;place-items:center;
-  width:22px;height:22px}
-#som .icone svg{display:block}
+  width:26px;height:26px}
+#som .icone svg{display:block;width:26px;height:26px}
+#som .icone #ic-jogo{width:31px;height:31px}
 #som .icone svg[hidden]{display:none}
 /* slide sem narração: o botão sai de cena inteiro */
 #som[hidden],#som-dica[hidden]{display:none}
@@ -898,7 +900,7 @@ body.montagem .capa .digitado{pointer-events:auto}
    ESQUERDA do botão, e não por cima dele: em cima ele cairia na última
    linha da tabela, que chega até ali. */
 #som-dica{
-  position:absolute;right:96px;bottom:38px;z-index:12;
+  position:absolute;right:108px;bottom:44px;z-index:12;
   font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
   color:var(--tinta-faint);text-align:right;pointer-events:none;white-space:nowrap;
   transition:opacity .4s;
@@ -1396,7 +1398,7 @@ body.montagem .solto.pego{outline:1.5px solid var(--ouro);background:rgba(226,16
    atualização já chegou */
 #versao{
   position:absolute;left:14px;bottom:9px;z-index:13;pointer-events:none;
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  font-family:var(--mono);font-size:14.7px;letter-spacing:.08em;
   color:var(--tinta-faint);
 }
 
@@ -1541,7 +1543,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v2.2';
+const VERSAO = 'v2.3';
 
 /* ============================================================
    OS ELEMENTOS
@@ -5120,7 +5122,10 @@ function navNoSlide(){
 montaNav();
 
 /* ============================================================
-   O AJUSTE DA TABELA — temporário, para medir no celular
+   O AJUSTE DA TABELA — a ferramenta de medir a mesa no celular
+   GUARDADA E DESLIGADA (AJUSTE_LIGADO = false): a medida tirada com ela
+   está em MESA_NO_CELULAR, e é aplicada no celular. Para medir outra vez
+   — nesta mesa ou, mais adiante, noutra peça —, basta ligá-la.
    SÓ NO CELULAR (ehCelular): tablets, Chromebooks e computadores não
    veem nada disto, e a tabela deles não muda.
    Ligado (AJUSTE_LIGADO), a tabela do slide 1 fica travada: os cubos não
@@ -5136,8 +5141,16 @@ montaNav();
    A medida vive nas variáveis que a .mesa já tinha para isso: --px,
    --py e --zoom, com a origem no meio do palco.
    ============================================================ */
-var AJUSTE_LIGADO = true;
-var AJUSTE = { ligado:false, x:0, y:0, e:1, dedos:new Map(), ini:null };
+/* DESLIGADO: a medida já foi tirada. Para medir de novo, true — o painel
+   volta no celular, a começar da medida em uso. */
+var AJUSTE_LIGADO = false;
+/* A MESA NO CELULAR — a medida tirada no aparelho do professor (tela
+   832 × 384, palco 0,533, folga 140): a tabela um fio acima e 15,6 %
+   maior, a avançar pelas laterais que o celular tem a mais. Só no
+   celular: nas telas maiores a mesa não é tocada. */
+const MESA_NO_CELULAR = { x:2, y:-22, e:1.156 };
+var AJUSTE = { ligado:false, x:MESA_NO_CELULAR.x, y:MESA_NO_CELULAR.y, e:MESA_NO_CELULAR.e,
+               dedos:new Map(), ini:null };
 const limitaEscala = e => Math.max(0.4, Math.min(2.5, e));
 /* um ponto da tela, em pixels do palco */
 function noPalco(pt){
@@ -5190,7 +5203,14 @@ function ajusteNoSlide(){
   const p = document.getElementById('ajuste');
   if (p) p.hidden = !on;
   if (on) VIDA.desliga();
+  /* no celular a mesa fica na medida (a de MESA_NO_CELULAR, ou a que o
+     ajuste estiver a tirar); fora dele, volta ao desenho de sempre */
   if (celular) aplicaAjuste();
+  else tiraAjuste();
+}
+function tiraAjuste(){
+  const m = slides[1] && slides[1].querySelector('.mesa');
+  if (m) ['--px', '--py', '--zoom'].forEach(v => m.style.removeProperty(v));
 }
 function aplicaAjuste(){
   const m = slides[1] && slides[1].querySelector('.mesa');

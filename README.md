@@ -423,10 +423,18 @@ leva a aula para lá.
 O toque num cubo dá-lhe uma volta — é a única coisa que o aluno pode
 fazer com as mãos, por enquanto.
 
-## Ajuste da tabela (temporário, só no celular)
+## Ajuste da tabela (só no celular)
 
-Uma ferramenta de medida, ligada por enquanto (`AJUSTE_LIGADO = true`),
-que existe **só no celular** (lado menor da tela até 540 px): tablets,
+**No celular a tabela é um pouco maior e um fio mais alta**:
+`MESA_NO_CELULAR = { x: 2, y: -22, escala: 1.156 }`, a medida tirada no
+aparelho do professor (tela 832 × 384, palco 0,533, folga 140). Ela
+avança pelas laterais que o celular tem a mais. Tablets, Chromebooks e
+computadores ficam com a tabela de sempre.
+
+A medida foi tirada com uma ferramenta que **fica guardada, desligada**
+(`AJUSTE_LIGADO = false`), para ser usada de novo mais adiante — basta
+pôr `true`, e o painel volta no celular a começar da medida em uso.
+Ligada, ela existe **só no celular** (lado menor da tela até 540 px): tablets,
 Chromebooks e computadores não veem o painel, e a tabela deles não muda.
 No celular, no slide da tabela, **a tabela fica travada** — os cubos não
 respondem ao toque, os toques no slide não fazem nada e a mesa não se
