@@ -188,6 +188,13 @@ no relógio do áudio (`EV3`, `efeitos3`):
 | `3.1` · 1 s | o **Mn** gira em 3D, cresce e acende; o símbolo dele vai para o vazio da tabela (a cena do Na sai) |
 | `3.1` · 3,3 s | "4º período" e a faixa da **linha** |
 | `3.1` · 5 s / 6,3 s | "grupo"; depois o **7** completa-o, com a faixa da **coluna** |
+| fim da `3.1` | o **Entendi** de novo; tocado, acende, toca o `right` e passa à `3.2` |
+| `3.2` · 0,6 s | o **Pb** gira em 3D, cresce e acende; o símbolo dele vai para o vazio (a cena do Mn sai) |
+| `3.2` · 1,9 s | "6º período" e a faixa da **linha** |
+| `3.2` · 3,7 s / 5 s | digita "grupo"; depois digita o **14**, com a faixa da **coluna** |
+| fim da `3.2` | o **Entendi**; tocado, acende, toca o `right` e passa à `3.3` |
+| `3.3` · 2,2 → 5 s | no vazio da tabela, digita "Toque no elemento que tá no 4º período, grupo" |
+| `3.3` · 6 s | põe o **8**, e a resposta passa a ser um toque na tabela: no acerto (o Fe), o card cresce e fica verde, com confetes, `funfare`, `applause` e a voz; no erro, balança em vermelho, toca `error` e vem a dica (no segundo erro, a resposta pulsa em âmbar) |
 
 ## Desempenho
 
