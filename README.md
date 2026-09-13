@@ -75,7 +75,7 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 | `2.3` · 3,6 → 7 s | em duas linhas: "Os elementos quimicamente semelhantes / formarão colunas." |
 | fim da `2.3` | "Toque na tela para continuar"; o toque desfaz a tela escura, em fade, e toca a `2.4` |
 | `2.4` · 2,8 s | o que está montado (do 1 ao 36) **abre-se em colunas** — um pouco menores, para caberem — e fica à frente dos espalhados, sem brilho fixo; **aos 25 s as colunas juntam-se de novo** |
-| `2.4` · 8 → 11 s | no vazio da tabela, num quadro claro: "Nessas colunas todos são semelhantes"; junto com a digitação, um brilho verde varre **uma coluna de cada vez, de cima para baixo**, e não fica — quando uma acende, a anterior volta ao normal |
+| `2.4` · 7 → 12 s | no vazio da tabela, num quadro claro: "Nessas colunas todos são semelhantes" (digitada dos 7 aos 10 s, apaga-se aos 12 s); junto, um brilho verde varre **uma coluna de cada vez, de cima para baixo** — só as que têm mais de um card: a 1, a 2 e da 13 à 18 —, e não fica |
 | `2.4` · 15 s | o **H** cresce e destaca-se, com luz dourada, à frente de todos (um fio para dentro, para não sair do palco); **aos 25 s volta ao normal**, ao lugar dele, junto com as colunas |
 | `2.4` · 18,2 → 21 s | **só na coluna 1**: o Li, o Na e o K crescem e brilham em sequência, descendo e subindo de volta |
 | `2.4` · 24 s | o texto apaga-se |
@@ -145,15 +145,19 @@ tabela inteira gira as faces dos cubos, em onda diagonal (só na
 troca, não na primeira). O rótulo é "Questão N de 8" (e "Questão N de
 6" no quiz do slide 2).
 
-Os sons são os do quiz do slide 2: no **acerto**, o card fica verde, com
-confetes, `funfare` e `applause`, e depois a voz — `exato!` e `muitobem`
-alternados, `perfeito` na última; no **erro**, o card tocado fica
-vermelho, a resposta certa acende em verde, a tela treme, `error` e
-`Calmanaproximaacerta`. A pergunta seguinte entra junto com o som da
+No **acerto**, o card fica verde, com confetes, `funfare` e `applause`, e
+depois a voz — sorteada entre `exato!`, `muitobem`, `issomesmo!` e
+`excelente`, sem repetir (a mesma regra vale no quiz do slide 2); na
+última, `perfeito`. No **erro**, a questão não muda: o card tocado balança
+em vermelho, a tela treme, toca `error` (e, no primeiro erro da questão,
+`Calmanaproximaacerta`), e a **dica** aparece debaixo da pergunta — as
+cinco primeiras são as do professor. No segundo erro da mesma questão, a
+resposta pulsa em âmbar. A questão seguinte entra junto com o som da
 entrada (`eesseaqui` e `próximo` alternados, `sómaisesse` antes da
-última). No fim, o cartão do resultado (nota de 0 a 10, `statistics`),
-com **Refazer** (outro sorteio) e **Continuar**, que fecha o quiz e deixa
-o botão dele no canto. Enquanto o quiz dura, o play sai de cena.
+última). No fim, o cartão do resultado (`statistics`): **cada erro
+desconta o valor de uma questão** (nota = 10 × (8 − erros) / 8, nunca
+abaixo de 0), com **Refazer** (outro sorteio) e **Continuar**, que fecha
+o quiz e deixa o botão dele no canto. Enquanto o quiz dura, o play sai de cena.
 
 ## Desempenho
 

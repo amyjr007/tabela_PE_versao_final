@@ -971,6 +971,18 @@ body.montagem .capa .digitado{pointer-events:auto}
 .q3-msg{min-height:24px;margin-top:8px;font-family:var(--display);font-weight:600;font-size:18px;line-height:1.3}
 .q3-msg.ok{color:#1F9D55}
 .q3-msg.erro{color:#B42E48}
+/* a dica do erro: debaixo da pergunta, em âmbar escuro */
+.q3-msg.dica{color:#9A6410;font-weight:500;font-size:17px}
+.pc.errada3{animation:naoTreme .42s ease}
+/* a pista do segundo erro: a resposta pulsa em âmbar */
+.pc.pista3{z-index:19}
+/* o brilho fica mesmo sem a animação (movimento reduzido) */
+.pc.pista3 .face{box-shadow:0 0 0 3px var(--ouro-luz), 0 0 22px 6px rgba(226,162,43,.75);
+  animation:pista3 1s ease-in-out infinite}
+@keyframes pista3{
+  0%,100%{box-shadow:0 0 0 3px var(--ouro-luz), 0 0 16px 4px rgba(226,162,43,.55)}
+  50%    {box-shadow:0 0 0 3px var(--ouro-luz), 0 0 30px 10px rgba(226,162,43,.9)}
+}
 /* a resposta na tabela: verde a certa, vermelho a errada */
 .pc.certa3, .pc.errada3{z-index:20}
 .pc.certa3 .face{box-shadow:0 0 0 3px #1F9D55, 0 0 26px 8px rgba(46,204,113,.85)}
@@ -1750,7 +1762,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v3.9';
+const VERSAO = 'v4.0';
 
 /* ============================================================
    OS ELEMENTOS
@@ -3896,10 +3908,11 @@ const FRASES_CRITERIO2 = [
      2,8 s        o que está montado (do 1 ao 36) abre-se em colunas —
                   um pouco menores, para caberem — e fica à frente dos
                   espalhados, sem brilho fixo
-     8 → 11 s     "Nessas colunas todos são semelhantes", no vazio da
-                  tabela (apaga-se aos 24 s); junto com ela, um brilho
-                  verde varre uma coluna de cada vez, de cima para baixo,
-                  e não fica: quando uma acende, a anterior volta ao normal
+     7 → 12 s     "Nessas colunas todos são semelhantes", no vazio da
+                  tabela (digitada dos 7 aos 10 s, apaga-se aos 12 s);
+                  junto, um brilho verde varre uma coluna de cada vez —
+                  só as que têm mais de um card: a 1, a 2 e da 13 à 18 —,
+                  de cima para baixo, e não fica
      15 s         o H cresce e destaca-se, em dourado
      18,2 → 21 s  só na coluna 1: o Li, o Na e o K crescem e brilham em
                   sequência, descendo e subindo de volta
@@ -3908,8 +3921,10 @@ const FRASES_CRITERIO2 = [
 const COLUNAS_24 = {
   /* abrem-se aos 2,8 s e juntam-se de novo aos 25 s (com o H) */
   separa:2.8, volta:25.0, dura:1.0, vao:14, zoom:0.88,
-  /* com a digitação, a varredura das colunas, uma de cada vez */
-  varre:{ de:8.0, ate:11.0 },
+  /* com a digitação, a varredura das colunas, uma de cada vez — só as
+     que já têm mais de um card (a 1, a 2 e da 13 à 18: nas de transição,
+     com a tabela montada até à linha 4, só há um) */
+  varre:{ de:7.0, ate:12.0, colunas:[1, 2, 13, 14, 15, 16, 17, 18] },
   /* o H: cresce e destaca-se aos 15 s, um fio para dentro (maior, sairia
      pela borda), e volta ao normal aos 25 s, com as colunas */
   hidrogenio:{ de:15.0, dura:0.6, cresce:0.6, desvio:{ x:40, y:10 } },
@@ -3918,7 +3933,7 @@ const COLUNAS_24 = {
   suja:false
 };
 const FRASES_COLUNAS = [
-  { de:8.0, ate:11.0, some:24.0, txt:'Nessas colunas todos são semelhantes' }
+  { de:7.0, ate:10.0, some:12.0, txt:'Nessas colunas todos são semelhantes' }
 ];
 let veu2 = null, toque2 = null, foto2 = null, clarao2 = null, DIG2 = null, DIG3 = null, DIG_COL = null;
 
@@ -4008,7 +4023,7 @@ function colunas24(t){
   const cy = (yDaLinha(1) + yDaLinha(4)) / 2;
   const oh = o.hidrogenio;
   const eh = suave(entre01((t - oh.de) / oh.dura)) * (1 - suave(entre01((t - o.volta) / oh.dura)));
-  const w = o.onda, vr = o.varre, vez = (vr.ate - vr.de) / 18;
+  const w = o.onda, vr = o.varre, vez = (vr.ate - vr.de) / vr.colunas.length;
   TP.todos().filter(c => c._noLugar).forEach(c => {
     if (c._voo) return;                       /* ainda a pousar */
     const z = +c.dataset.z, col = +c.dataset.col, row = +c.dataset.linha;
@@ -4020,7 +4035,8 @@ function colunas24(t){
     let k = 0, cresce = 1;
     /* a varredura: na vez da coluna, um brilho desce das linhas de cima
        para as de baixo; fora da vez dela, nada fica aceso */
-    const q = (t - vr.de - (col - 1)*vez) / vez;
+    const vc = vr.colunas.indexOf(col);
+    const q = vc < 0 ? -1 : (t - vr.de - vc*vez) / vez;
     if (q >= 0 && q < 1) k = Math.exp(-Math.pow((row - (0.5 + 4*q)) / 0.7, 2));
     /* a onda da coluna 1 (sem o H): cresce e brilha, descendo e subindo */
     if (col === w.coluna && z !== 1 && t >= w.de && t <= w.ate){
@@ -4299,6 +4315,19 @@ function perguntasDoCriterio(){
   const x8 = sorteia3(m8.slice(0, -1)), a8 = m8[m8.length - 1];
   perg.push({ q:'Toque no último elemento da coluna do ' + doEl(x8) + '.', ok:z => z === a8,
               explica:'O último da coluna do ' + SIMBOLOS[x8-1] + ' é o ' + oEl(a8) + '.' });
+  /* a dica de cada questão, para o erro (as cinco primeiras são as do
+     professor; as três últimas, das questões novas) */
+  const dicas = [
+    'O número atômico é o número que fica em cima do símbolo.<br>Os elementos estão em ordem crescente, da esquerda para a direita.',
+    'O elemento ' + (adiante ? 'posterior' : 'anterior') + ' ao ' + z2 + ' é o ' + a2 + '.<br>Os números crescem da esquerda para a direita, linha a linha.',
+    'As linhas são horizontais, da esquerda para a direita.<br>Ache a linha ' + duas[0] + ' e toque no primeiro elemento dela.',
+    'As linhas são horizontais, da esquerda para a direita.<br>Ache a linha ' + duas[1] + ' e toque no último elemento dela.',
+    'Numa mesma coluna todos são quimicamente semelhantes.<br>Toque em qualquer elemento da coluna do ' + SIMBOLOS[r5-1] + ', menos ele.',
+    'As colunas são verticais.<br>Ache o ' + SIMBOLOS[x6-1] + ' e toque no elemento logo abaixo dele.',
+    'As linhas são horizontais.<br>O ' + SIMBOLOS[x7-1] + ' está na linha ' + posDe(x7).row + ': toque em qualquer outro elemento dela.',
+    'As colunas são verticais.<br>Ache a coluna do ' + SIMBOLOS[x8-1] + ' e desça até o último elemento dela.'
+  ];
+  perg.forEach((p, i) => { p.dica = dicas[i]; });
   return perg;
 }
 
@@ -4352,7 +4381,7 @@ const QUIZ3 = {
     if (atual !== 2) return;
     this.tiraCartao();
     this.itens = perguntasDoCriterio();
-    this.passo = 0; this.acertos = 0; this.aberto = true;
+    this.passo = 0; this.acertos = 0; this.erros = 0; this.tropecos = 0; this.aberto = true;
     const g = ++this.g;
     /* o play sai de cena: quem faz a aula andar é o toque na tabela */
     stage.classList.add('em-quiz');
@@ -4374,6 +4403,7 @@ const QUIZ3 = {
   apresenta(g){
     if (g !== this.g) return;
     const p = this.itens[this.passo];
+    this.tropecos = 0;
     /* a tabela gira só na TROCA: a primeira questão não substitui ninguém */
     if (this.despede()) this.giraTabela();
     const cx = document.createElement('div');
@@ -4390,35 +4420,42 @@ const QUIZ3 = {
   /* a resposta: o toque num card da tabela */
   async toca(c){
     if (!this.aberto || this.travado) return;
-    this.travado = true;
     const g = this.g, p = this.itens[this.passo], z = +c.dataset.z;
     const ultima = this.passo === this.itens.length - 1;
     const msg = this.caixa().querySelector('.q3-msg');
-    if (p.ok(z)){
-      this.acertos++;
-      c.classList.add('certa3');
-      const voz = ultima ? VOZ_DA_ULTIMA : VOZES_DO_ACERTO[this.passo % 2];
-      msg.textContent = voz.frase + ' ' + p.explica;
-      msg.className = 'q3-msg ok';
-      confete();
-      const fanfarra = tocaEfeito('funfare');
-      tocaEfeito('applause');
-      await fanfarra;
-      if (g !== this.g) return;
-      await tocaEfeito(voz.som);
-    } else {
-      /* o toque errado fica vermelho, e a resposta certa acende */
-      c.classList.add('errada3');
-      TP.todos().filter(x => p.ok(+x.dataset.z)).forEach(x => x.classList.add('certa3'));
-      msg.textContent = p.explica;
-      msg.className = 'q3-msg erro';
+    if (!p.ok(z)){
+      /* O ERRO NÃO TROCA A QUESTÃO: o card balança em vermelho, a dica
+         aparece debaixo da pergunta, e o erro conta na nota. No segundo
+         erro da mesma questão, a resposta acende em âmbar, para o aluno a
+         achar (e tocar nela). */
+      this.erros++; this.tropecos++;
+      c.classList.remove('errada3'); void c.offsetWidth; c.classList.add('errada3');
+      clearTimeout(c._erroT);
+      c._erroT = setTimeout(() => c.classList.remove('errada3'), 700);
+      msg.innerHTML = p.dica;
+      msg.className = 'q3-msg dica';
+      if (this.tropecos >= 2) TP.todos().filter(x => p.ok(+x.dataset.z)).forEach(x => x.classList.add('pista3'));
       tremeVermelho();
-      await tocaEfeito('error');
-      if (g !== this.g) return;
-      await tocaEfeito('Calmanaproximaacerta');
+      const erro = tocaEfeito('error');
+      /* a voz de ânimo, só no primeiro erro de cada questão */
+      if (this.tropecos === 1) erro.then(() => { if (g === this.g && this.aberto) tocaEfeito('Calmanaproximaacerta'); });
+      return;
     }
+    this.travado = true;
+    this.acertos++;
+    TP.todos().forEach(x => x.classList.remove('pista3', 'errada3'));
+    c.classList.add('certa3');
+    const voz = vozDoAcerto(ultima);
+    msg.textContent = voz.frase + ' ' + p.explica;
+    msg.className = 'q3-msg ok';
+    confete();
+    const fanfarra = tocaEfeito('funfare');
+    tocaEfeito('applause');
+    await fanfarra;
     if (g !== this.g) return;
-    TP.todos().forEach(x => x.classList.remove('certa3', 'errada3'));
+    await tocaEfeito(voz.som);
+    if (g !== this.g) return;
+    TP.todos().forEach(x => x.classList.remove('certa3', 'errada3', 'pista3'));
     this.passo++;
     if (this.passo >= this.itens.length){ this.resultado(); return; }
     /* o som da entrada e a pergunta nova, juntos */
@@ -4430,9 +4467,10 @@ const QUIZ3 = {
   resultado(){
     /* a última também sai pela direita: é o cartão que toma a cena */
     this.despede();
-    const n = this.itens.length, a = this.acertos;
-    cartaoDoResultado(Math.round(a / n * 100) / 10,
-      '<em class="acerto">' + a + '</em> certas · <em class="erro">' + (n - a) + '</em> erradas',
+    /* cada erro desconta o valor de uma questão (e a nota não desce de 0) */
+    const n = this.itens.length, e = this.erros;
+    cartaoDoResultado(Math.round(Math.max(0, n - e) / n * 100) / 10,
+      n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
       slides[2], () => this.abre(), () => this.fecha(), null);
   },
   tiraCartao(){ if (slides[2]) slides[2].querySelectorAll('.quiz-cartao').forEach(e => e.remove()); },
@@ -4447,7 +4485,7 @@ const QUIZ3 = {
       const m = slides[2].querySelector('.mesa');
       if (m) m.classList.remove('gira-troca');
     }
-    if (slides[2]) slides[2].querySelectorAll('.certa3, .errada3').forEach(x => x.classList.remove('certa3', 'errada3'));
+    if (slides[2]) slides[2].querySelectorAll('.certa3, .errada3, .pista3').forEach(x => x.classList.remove('certa3', 'errada3', 'pista3'));
     this.tiraCartao();
   }
 };
@@ -5095,16 +5133,26 @@ function tremeVermelho(){
 const QUIZ_LUGAR = { x:380, y:372, escala:3.3 };
 /* quantas perguntas o quiz faz */
 const QUIZ_TOTAL = 6;
-/* A VOZ DEPOIS DE CADA COMEMORAÇÃO — alterna "exato!" e "muitobem"; a
-   última é "perfeito". A frase escrita no cartão acompanha a voz. */
+/* A VOZ DEPOIS DE CADA COMEMORAÇÃO — sorteada entre as quatro, sem
+   repetir: um baralho que se embaralha de novo quando acaba, e cuja
+   primeira carta nunca é a mesma que acabou de sair. A última questão
+   de cada quiz tem sempre "perfeito". A frase escrita acompanha a voz. */
 const VOZES_DO_ACERTO = [
-  { som:'exato!',   frase:'Exato!'     },   /* 1.ª */
-  { som:'muitobem', frase:'Muito bem!' },   /* 2.ª */
-  { som:'exato!',   frase:'Exato!'     },   /* 3.ª */
-  { som:'muitobem', frase:'Muito bem!' },   /* 4.ª */
-  { som:'exato!',   frase:'Exato!'     }    /* 5.ª */
+  { som:'exato!',     frase:'Exato!'      },
+  { som:'muitobem',   frase:'Muito bem!'  },
+  { som:'issomesmo!', frase:'Isso mesmo!' },
+  { som:'excelente',  frase:'Excelente!'  }
 ];
-const VOZ_DA_ULTIMA = { som:'perfeito', frase:'Perfeito!' };   /* 6.ª */
+const VOZ_DA_ULTIMA = { som:'perfeito', frase:'Perfeito!' };
+let BARALHO_VOZES = [], VOZ_ANTERIOR = null;
+function vozDoAcerto(ultima){
+  if (ultima) return (VOZ_ANTERIOR = VOZ_DA_ULTIMA);
+  if (!BARALHO_VOZES.length){
+    BARALHO_VOZES = embaralha(VOZES_DO_ACERTO.slice());
+    if (BARALHO_VOZES[0] === VOZ_ANTERIOR) BARALHO_VOZES.push(BARALHO_VOZES.shift());
+  }
+  return (VOZ_ANTERIOR = BARALHO_VOZES.shift());
+}
 
 /* O SOM DA ENTRADA — toca ao mesmo tempo que o exemplo novo rola para a
    frente: "eesseaqui" e "próximo" alternados, e "sómaisesse" na entrada
@@ -5191,7 +5239,7 @@ const QUIZ = {
 
     if (acertou){
       this.acertos++;
-      const voz = ultima ? VOZ_DA_ULTIMA : VOZES_DO_ACERTO[this.passo];
+      const voz = vozDoAcerto(ultima);
       escreveResposta(msg, item, certa, voz.frase);
       msg.className = 'quiz-msg ok';
       confete();
