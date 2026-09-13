@@ -220,12 +220,15 @@ escolha do aluno (nem a barra de espaço toca nada).
 
 | resposta | o que acontece |
 |---|---|
-| acerto | confetes, `funfare` e `applause`, e a voz daquela pergunta: 1.ª `exato!`, 2.ª `muitobem`, 3.ª `eesseaqui`, 4.ª `próximo`, 5.ª `sómaisesse`, 6.ª `perfeito` |
+| acerto | confetes, `funfare` e `applause`, e a voz: `exato!` e `muitobem` alternados (1.ª, 3.ª e 5.ª `exato!`; 2.ª e 4.ª `muitobem`), `perfeito` na 6.ª |
 | erro em qualquer uma | a tela treme em vermelho com `error`, e depois `Calmanaproximaacerta` |
 
 Depois de cada resposta o cubo mostra o nome certo e volta para casa,
-rápido e a girar, e a pergunta seguinte vem **sem som de ligação** — nada
-se repete depois da comemoração. Errar não prende o aluno: a aula avança. Cada
+rápido e a girar, e o exemplo seguinte rola para a frente **ao mesmo tempo**
+que toca o som da entrada: `eesseaqui` e `próximo` alternados (entrada da
+2.ª e da 4.ª `eesseaqui`; da 3.ª e da 5.ª `próximo`), `sómaisesse` na entrada
+da última. O som da entrada toca também depois de um erro. Errar não prende
+o aluno: a aula avança. Cada
 efeito sonoro espera o anterior acabar.
 
 **No fim, o cartão da nota**: de 1 a 10, pela fração de acertos

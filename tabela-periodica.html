@@ -1234,7 +1234,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v1.4';
+const VERSAO = 'v1.5';
 
 /* ============================================================
    OS ELEMENTOS
@@ -3090,16 +3090,16 @@ function efeitos13(t){
    no lugar do nome — que está escrito nas seis faces e daria a
    resposta —, e as três respostas à direita, uma em cima da outra.
 
-     acerto               confetes, fanfarra e aplausos, e depois a voz
-                          daquela pergunta: 1.ª "exato!", 2.ª "muitobem",
-                          3.ª "eesseaqui", 4.ª "próximo", 5.ª "sómaisesse",
-                          6.ª "perfeito"
+     acerto               confetes, fanfarra e aplausos, e depois a voz:
+                          "exato!" e "muitobem" alternados, "perfeito"
+                          na última
      erro em qualquer uma a tela treme em vermelho e toca "error", e
                           depois "Calmanaproximaacerta"
 
-   Depois de cada resposta o cubo volta para casa, rápido e a girar, e a
-   pergunta seguinte vem sem som de ligação — nada se repete depois da
-   comemoração. Errar não prende o aluno: a aula avança.
+   Depois de cada resposta o cubo volta para casa, rápido e a girar, e o
+   exemplo seguinte rola para a frente AO MESMO TEMPO que toca o som da
+   entrada: "eesseaqui" e "próximo" alternados, "sómaisesse" antes da
+   última. Errar não prende o aluno: a aula avança.
 
    ENQUANTO O QUIZ DURA, O PLAY SAI DE CENA: quem faz a aula andar é a
    escolha do aluno. No fim, o cartão da nota (de 1 a 10, pelos acertos)
@@ -3178,16 +3178,25 @@ function tremeVermelho(){
 const QUIZ_LUGAR = { x:380, y:372, escala:3.3 };
 /* quantas perguntas o quiz faz */
 const QUIZ_TOTAL = 6;
-/* A VOZ DEPOIS DE CADA COMEMORAÇÃO — uma por pergunta, sem repetir.
-   A frase escrita no cartão acompanha a voz. */
+/* A VOZ DEPOIS DE CADA COMEMORAÇÃO — alterna "exato!" e "muitobem"; a
+   última é "perfeito". A frase escrita no cartão acompanha a voz. */
 const VOZES_DO_ACERTO = [
-  { som:'exato!',     frase:'Exato!'     },   /* 1.ª */
-  { som:'muitobem',   frase:'Muito bem!' },   /* 2.ª */
-  { som:'eesseaqui',  frase:'Isso!'      },   /* 3.ª */
-  { som:'próximo',    frase:'Certo!'     },   /* 4.ª */
-  { som:'sómaisesse', frase:'Boa!'       }    /* 5.ª */
+  { som:'exato!',   frase:'Exato!'     },   /* 1.ª */
+  { som:'muitobem', frase:'Muito bem!' },   /* 2.ª */
+  { som:'exato!',   frase:'Exato!'     },   /* 3.ª */
+  { som:'muitobem', frase:'Muito bem!' },   /* 4.ª */
+  { som:'exato!',   frase:'Exato!'     }    /* 5.ª */
 ];
 const VOZ_DA_ULTIMA = { som:'perfeito', frase:'Perfeito!' };   /* 6.ª */
+
+/* O SOM DA ENTRADA — toca ao mesmo tempo que o exemplo novo rola para a
+   frente: "eesseaqui" e "próximo" alternados, e "sómaisesse" na entrada
+   da última pergunta. Toca também depois de um erro: são sons neutros, e
+   o ritmo da aula não muda por o aluno ter errado. */
+function somDaEntrada(passo, total){
+  if (passo === total - 1) return 'sómaisesse';
+  return passo % 2 === 1 ? 'eesseaqui' : 'próximo';
+}
 
 const QUIZ = {
   aberto:false, passo:0, itens:[], cubo:null, travado:false,
@@ -3291,8 +3300,9 @@ const QUIZ = {
     if (g !== this.geracao) return;
     this.passo++;
     if (this.passo >= this.itens.length){ this.resultado(g); return; }
-    /* sem som de ligação: a voz do acerto já fez esse papel, e tocá-lo
-       outra vez era repetir depois da comemoração */
+    /* o som da entrada e o exemplo novo, juntos: o som não é esperado,
+       toca por cima do cubo a rolar para a frente */
+    tocaEfeito(somDaEntrada(this.passo, this.itens.length));
     this.apresenta(g);
   },
 
