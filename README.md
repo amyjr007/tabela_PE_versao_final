@@ -16,7 +16,7 @@ dá zoom nele, como no app do professor.
 2. **A Tabela Periódica** — os elementos prontos na mesa; por enquanto
    sem os lantanídeos e os actinídeos, que a narração revela mais tarde.
 3. **2 · Os critérios de Organização — A lei periódica** — a mesma tabela,
-   a desordem, o encaixe e os critérios de Moseley (narrações `2` a `2.4`).
+   a desordem, o encaixe e os critérios de Moseley (narrações `2` a `2.5`) e o quiz.
 
 A passagem entre as duas é o cubo girando, a mesma do app do professor.
 Os outros slides entram na lista `SLIDES`, no alto do script, e o resto
@@ -80,6 +80,9 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 | `2.4` · 18,2 → 21 s | **só na coluna 1**: o Li, o Na e o K crescem e brilham em sequência, descendo e subindo de volta |
 | `2.4` · 24 s | o texto apaga-se |
 | fim da `2.4` | o **37** brilha; tocado, a tabela inteira arruma-se — as colunas juntam-se, o H volta, e os que faltam voam para casa um de cada vez — e, montada, **brilha**, com `funfare`, confetes e `applause` |
+| depois da festa | toca a **`2.5`**; a tabela volta a ser de cubos (um toque num card fá-lo girar) |
+| fim da `2.5` | o botão do canto troca o play por um **ponto de interrogação**: o quiz |
+| o quiz | toca `quiz1` e abre a pergunta 1 de 8 — ver "O quiz do slide 3" |
 | — | todo salto é curvo: uma Bézier com o ponto de controlo ao lado do meio do caminho (`pontoDoArco`), na desordem, no encaixe e na montagem final |
 
 Na desordem, **só os 48 primeiros (do 1 ao 48) ficam na tela**, todos na
@@ -112,6 +115,33 @@ tamanho. Ao entrar nela, cada cubo é posto de frente sem se ver (as seis
 faces são iguais): a vida solta deixa alguns de lado, com meia volta ou
 um quarto, e esses ficariam invisíveis; na mesa plana os giros param. A foto de Moseley desliza com uma transição curta entre os
 tiques do relógio.
+
+### O quiz do slide 3
+
+Oito perguntas, **respondidas com um toque na tabela** (o quadro da
+pergunta, no vazio acima dos metais de transição, não pega o dedo). As
+cinco primeiras são as do slide 2 do app do professor (Os critérios de
+Organização); as três últimas são novas. Os números saem sorteados a
+cada vez:
+
+1. o elemento de número atômico Z;
+2. o imediatamente posterior (ou anterior) ao número atômico Z;
+3. o primeiro elemento de uma linha;
+4. o último elemento de outra linha;
+5. um elemento quimicamente semelhante a X (qualquer um da coluna dele);
+6. o que fica logo abaixo de X, na mesma coluna *(nova)*;
+7. outro elemento da mesma linha de X *(nova)*;
+8. o último elemento da coluna de X *(nova)*.
+
+Os sons são os do quiz do slide 2: no **acerto**, o card fica verde, com
+confetes, `funfare` e `applause`, e depois a voz — `exato!` e `muitobem`
+alternados, `perfeito` na última; no **erro**, o card tocado fica
+vermelho, a resposta certa acende em verde, a tela treme, `error` e
+`Calmanaproximaacerta`. A pergunta seguinte entra junto com o som da
+entrada (`eesseaqui` e `próximo` alternados, `sómaisesse` antes da
+última). No fim, o cartão do resultado (nota de 0 a 10, `statistics`),
+com **Refazer** (outro sorteio) e **Continuar**, que fecha o quiz e deixa
+o botão dele no canto. Enquanto o quiz dura, o play sai de cena.
 
 ## A narração
 
@@ -550,6 +580,7 @@ a numeração a começar do 1. No slide 3 (Os critérios de Organização):
 |---|---|
 | 1. Início | o começo do slide |
 | 2. O critério 1 de organização | aos **25 s da narração `2`**, com a tabela já desmontada — a mesa aparece desarrumada, sem os cards a correr para lá |
+| 4. Quiz | a tabela montada inteira, e o botão do quiz no canto |
 | 3. O critério 2 de organização | a narração **`2.3`** do começo, com a tabela **montada até à linha 4** (do 1 ao 36, em casa e coloridos), o 37 ao 48 espalhados embaixo e o resto fora da tela |
 
 Cada atalho começa do zero: nenhum card fica marcado como "em casa" de um

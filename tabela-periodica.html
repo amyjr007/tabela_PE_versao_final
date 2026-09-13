@@ -881,6 +881,22 @@ body.montagem .capa .digitado{pointer-events:auto}
 /* quem chega por um atalho vê a mesa já como ela está naquele ponto, e
    não os cards a correr para lá */
 .mesa.sem-transicao .pc, .mesa.sem-transicao .pc .cubo{transition:none!important}
+/* O QUIZ DO SLIDE 3: a pergunta num quadro claro, no vazio da tabela (a
+   resposta é um toque num card: o quadro não pega o dedo) */
+.quiz3{position:absolute;left:170px;top:178px;width:664px;z-index:26;pointer-events:none;
+  padding:16px 26px 18px;border-radius:18px;background:rgba(255,255,255,.96);
+  border:1px solid var(--indigo-dim);box-shadow:0 16px 40px rgba(32,28,66,.18);
+  opacity:0;transform:translateY(-8px);transition:opacity .35s ease, transform .35s ease}
+.quiz3.on{opacity:1;transform:none}
+.q3-marca{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
+.q3-q{margin-top:6px;font-family:var(--display);font-weight:600;font-size:26px;line-height:1.25;color:var(--indigo)}
+.q3-msg{min-height:24px;margin-top:8px;font-family:var(--display);font-weight:600;font-size:18px;line-height:1.3}
+.q3-msg.ok{color:#1F9D55}
+.q3-msg.erro{color:#B42E48}
+/* a resposta na tabela: verde a certa, vermelho a errada */
+.pc.certa3, .pc.errada3{z-index:20}
+.pc.certa3 .face{box-shadow:0 0 0 3px #1F9D55, 0 0 26px 8px rgba(46,204,113,.85)}
+.pc.errada3 .face{box-shadow:0 0 0 3px #FF2E4C, 0 0 26px 8px rgba(255,46,76,.85)}
 .mesa.plana .pc{perspective:none}
 .mesa.plana .pc .face:not(.f1){display:none}
 .mesa.plana .pc .face.f1{transform:scale(var(--plano,1.05))}
@@ -926,6 +942,11 @@ body.montagem .capa .digitado{pointer-events:auto}
 #som #ic-jogo{display:none}
 #som.jogo #ic-play,#som.jogo #ic-pause,#som.jogo .anel{display:none}
 #som.jogo #ic-jogo{display:block}
+/* e o do QUIZ, quando a narração "2.5" acaba (a classe não é 'quiz':
+   .quiz é a caixa do quiz do slide 1) */
+#som #ic-quiz{display:none}
+#som.botao-quiz #ic-play,#som.botao-quiz #ic-pause,#som.botao-quiz .anel{display:none}
+#som.botao-quiz #ic-quiz{display:block}
 
 /* ---- o botão vira "Iniciar" quando a abertura acaba ----
    Cresce para a esquerda, a partir do canto onde estava: o lado direito
@@ -1143,6 +1164,9 @@ body.montagem .capa .digitado{pointer-events:auto}
   opacity:0;transition:opacity .45s ease, transform .5s cubic-bezier(.2,1.3,.4,1);
 }
 .quiz-cartao.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+/* as cores da conta, as do jogo da memória, onde o cartão nasceu: fora
+   dele (no quiz do slide 3) o cartão traz as suas */
+.quiz-cartao{--neon:#FF2E4C;--natural:#1F9D55}
 .quiz-cartao .trofeu{font-size:44px;line-height:1}
 .quiz-cartao .chapeu{
   font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
@@ -1540,6 +1564,11 @@ body.montagem .solto.pego{outline:1.5px solid var(--ouro);background:rgba(226,16
           <circle cx="15.6" cy="12.4" r=".55" fill="currentColor"/>
           <circle cx="17.8" cy="10.4" r=".55" fill="currentColor"/>
         </svg>
+        <svg id="ic-quiz" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/>
+          <path d="M9.4 9.4a2.7 2.7 0 1 1 3.8 2.5c-.8.4-1.2 1-1.2 1.9v.3"/>
+          <circle cx="12" cy="17" r=".7" fill="currentColor" stroke="none"/>
+        </svg>
       </span>
     </button>
 
@@ -1643,7 +1672,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v3.3';
+const VERSAO = 'v3.4';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2098,6 +2127,8 @@ function montaTabela(i){
     /* à espera da escolha, o toque escolhe; fora dela, dá uma volta */
     c.addEventListener('click', () => {
       /* no slide 3, durante o encaixe, o toque encaixa */
+      /* no quiz do slide 3, responde-se tocando na tabela */
+      if (i === 2 && QUIZ3.aberto){ QUIZ3.toca(c); return; }
       if (i === 2 && ENCAIXE.ativo){ ENCAIXE.toca(c); return; }
       if (i === 2 && FINAL.esperando){ FINAL.toca(c); return; }
       if (SEQ.escolhendo) SEQ.escolhe(c); else TP.gira(z);
@@ -2724,7 +2755,8 @@ const TRILHAS = {
   '2.1':  'Audios/audio_tabela_2.1.mp3',   /* depois do toque; no fim, o encaixe ao toque */
   '2.2':  'Audios/audio_tabela_2.2.mp3',   /* o 1 encaixado */
   '2.3':  'Audios/audio_tabela_2.3.mp3',   /* a tabela arrumada até ao 36: o critério 2 */
-  '2.4':  'Audios/audio_tabela_2.4.mp3'    /* as colunas: os semelhantes */
+  '2.4':  'Audios/audio_tabela_2.4.mp3',   /* as colunas: os semelhantes */
+  '2.5':  'Audios/audio_tabela_2.5.mp3'    /* a tabela montada, e o convite ao quiz */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2'];
@@ -2782,7 +2814,8 @@ const ROTEIROS = {
   '2.1':  [],
   '2.2':  [],
   '2.3':  [],
-  '2.4':  []
+  '2.4':  [],
+  '2.5':  []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -2890,6 +2923,7 @@ function carregaTrilha(i){
   temTrilha = false;
   viraIniciar(false);      /* trilha nova, botão de play outra vez */
   viraJogo(false);
+  viraQuiz(false);
   som.pause();
   som.removeAttribute('src');
   const url = TRILHAS[i];
@@ -2951,9 +2985,11 @@ function tocaOuPara(){
   if (SEQ.aguardaToque2){ SEQ.continua2(); return; }
   /* o botão do jogo abre o jogo */
   if (somBtn.classList.contains('jogo')){ abreMemoria(); return; }
+  /* e o do quiz, o quiz do slide 3 */
+  if (somBtn.classList.contains('botao-quiz')){ QUIZ3.abre(); return; }
   /* no quiz — e no cartão da nota, que segue pelos botões dele — e no
      jogo, nada toca, nem pela barra de espaço */
-  if (QUIZ.aberto || memAberto) return;
+  if (QUIZ.aberto || memAberto || QUIZ3.aberto) return;
   if (!temTrilha){
     TP.diz('A narração deste slide ainda não foi gravada.');
     return;
@@ -3091,6 +3127,8 @@ const SEQ = {
     else if (id === '2.1') ENCAIXE.comeca();
     /* o fim da "2.4": o 37 brilha, e o toque nele arruma a tabela toda */
     else if (id === '2.4') FINAL.chama();
+    /* o fim da "2.5": o botão do canto vira o do quiz */
+    else if (id === '2.5') viraQuiz(true);
   },
   /* o quiz de cada trilha abre uma vez só */
   abreQuiz(id){
@@ -3119,6 +3157,7 @@ const SEQ = {
     this.dispensou = null;
     ENCAIXE.zera();
     FINAL.zera();
+    QUIZ3.fecha();
     COLUNAS_24.suja = true;
     if (DIG_COL) DIG_COL.limpa();
     /* nenhum card fica marcado como "em casa": o que o encaixe ou um
@@ -3150,7 +3189,7 @@ const SEQ = {
   /* sair do slide 3 com o pedido de toque em cena: o play volta */
   deixa2(){
     this.aguardaToque2 = false;
-    if (atual === 2){ ENCAIXE.zera(); FINAL.zera(); }
+    if (atual === 2){ ENCAIXE.zera(); FINAL.zera(); QUIZ3.fecha(); }
     stage.classList.remove('em-toque');
   },
   /* o toque na tela escura: ela desfaz-se, e a narração segue */
@@ -3217,6 +3256,17 @@ function viraIniciar(sim){
 
 /* O BOTÃO DO JOGO: acabada a narração do jogo da memória, o botão do
    canto troca o play por um controle, e um toque nele abre o jogo */
+/* O BOTÃO DO QUIZ: acabada a narração "2.5", o botão do canto troca o
+   play por um ponto de interrogação, e um toque nele abre o quiz */
+function viraQuiz(sim){
+  somBtn.classList.toggle('botao-quiz', sim);
+  if (sim){
+    somBtn.title = 'Abrir o quiz';
+    somBtn.setAttribute('aria-label', somBtn.title);
+  }
+  if (!somDica.dataset.orig) somDica.dataset.orig = somDica.textContent;
+  somDica.textContent = sim ? 'Quiz' : somDica.dataset.orig;
+}
 function viraJogo(sim){
   somBtn.classList.toggle('jogo', sim);
   if (sim){
@@ -3728,7 +3778,7 @@ const ONDA_VERDE = { de:14.0, meio:15.6, ate:17.2, cauda:3, suja:false };
    sem ele, que era da desordem de uma vez só). */
 const DESORDEM = { de:18.0, dura:0.8, fila:0.06, curva:0.35, giro:12, clarao:0, suja:false, pousou:false };
 /* as trilhas do slide 3 depois da "2": nelas a desordem já está feita */
-const DEPOIS_DA_2 = ['2.1', '2.2', '2.3', '2.4'];
+const DEPOIS_DA_2 = ['2.1', '2.2', '2.3', '2.4', '2.5'];
 const FRASES_CRITERIO1 = [
   { de:39.0, ate:39.8, txt:'Critério 1' },
   { de:40.2, ate:44.0, txt:'Os elementos serão organizados em linhas,\nem ordem crescente de número atômico.' }
@@ -3773,6 +3823,8 @@ function montaCenaDoSlide3(){
   if (!sl || sl.querySelector('.veu-moseley')) return;
   sl.insertAdjacentHTML('beforeend',
     '<div class="texto-colunas" aria-live="polite"></div>' +
+    '<div class="quiz3" aria-live="polite"><div class="q3-marca"></div>' +
+      '<div class="q3-q"></div><div class="q3-msg"></div></div>' +
     '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>' +
     '<div class="clarao2" aria-hidden="true"></div>' +
     '<div class="veu veu-moseley" aria-live="polite">' +
@@ -3805,7 +3857,9 @@ function deFrente(c){
 function efeitos2(t){
   /* a mesa plana, calada a vida solta (ver o CSS de .mesa.plana) */
   const m3 = slides[2].querySelector('.mesa');
-  const plana = DEPOIS_DA_2.includes(trilhaAtual) || (trilhaAtual === '2' && t >= VIDA_ATE_2);
+  /* montada a tabela inteira, ela volta a ser de cubos: um toque num card
+     fá-lo girar, e na mesa plana ele sumiria */
+  const plana = !FINAL.feito && (DEPOIS_DA_2.includes(trilhaAtual) || (trilhaAtual === '2' && t >= VIDA_ATE_2));
   if (m3 && plana !== m3.classList.contains('plana')){
     /* entrando nela, cada cubo é posto de frente — sem se ver, porque as
        seis faces são iguais. A plana só desenha a face da frente, e um
@@ -3892,6 +3946,171 @@ function colunas24(t){
   if (DIG_COL) DIG_COL.escreve(t);
 }
 
+/* ============================================================
+   O QUIZ DO SLIDE 3 — as cinco perguntas do slide 2 do app do professor
+   (Os critérios de Organização), e mais três, todas respondidas com um
+   toque na tabela. Os números saem sorteados a cada vez.
+     1  o elemento de número atômico Z
+     2  o imediatamente posterior (ou anterior) ao número atômico Z
+     3  o primeiro elemento de uma linha
+     4  o último elemento de outra linha
+     5  um elemento quimicamente semelhante a X (qualquer um da coluna)
+     6  o que fica logo abaixo de X, na mesma coluna          (nova)
+     7  outro elemento da mesma linha de X                    (nova)
+     8  o último elemento da coluna de X                      (nova)
+   Os sons são os do quiz do slide 2: no acerto, confetes, fanfarra e
+   aplausos e a voz (exato! e muitobem alternados, perfeito na última);
+   no erro, a tela treme em vermelho, error e Calmanaproximaacerta — e a
+   resposta certa acende. A pergunta seguinte entra com eesseaqui e
+   próximo alternados (sómaisesse antes da última).
+   ============================================================ */
+const ORDINAL_F = ['', 'primeira', 'segunda', 'terceira', 'quarta', 'quinta', 'sexta', 'sétima'];
+const naMesa = z => z >= 1 && z <= 118 && !ehDaSerie(z);
+function zNaCasa3(linha, col){
+  for (let z = 1; z <= 118; z++){
+    if (!naMesa(z)) continue;
+    const p = posDe(z);
+    if (p.row === linha && p.col === col) return z;
+  }
+  return null;
+}
+const daLinha3  = l => { const zs = []; for (let z = 1; z <= 118; z++) if (naMesa(z) && posDe(z).row === l) zs.push(z); return zs; };
+const daColuna3 = c => { const zs = []; for (let z = 1; z <= 118; z++) if (naMesa(z) && posDe(z).col === c) zs.push(z); return zs; };
+const sorteia3  = a => a[(Math.random() * a.length) | 0];
+const oEl       = z => NOMES[z-1] + ' (' + SIMBOLOS[z-1] + ')';
+const doEl      = z => SIMBOLOS[z-1] + ' (' + z + ')';
+function perguntasDoCriterio(){
+  const todos = [];
+  for (let z = 1; z <= 118; z++) if (naMesa(z)) todos.push(z);
+  const perg = [];
+  /* 1 · achar pelo número atômico */
+  const z1 = sorteia3(todos.filter(z => z > 2));
+  perg.push({ q:'Toque no elemento cujo número atômico é ' + z1 + '.', ok:z => z === z1,
+              explica:'O número atômico ' + z1 + ' é o ' + oEl(z1) + '.' });
+  /* 2 · o vizinho de numeração, para um lado ou para o outro */
+  const z2 = sorteia3(todos.filter(z => z > 3 && z < 118 && naMesa(z - 1) && naMesa(z + 1)));
+  const adiante = Math.random() < .5, a2 = adiante ? z2 + 1 : z2 - 1;
+  perg.push({ q:'Toque no elemento imediatamente ' + (adiante ? 'posterior' : 'anterior') + ' ao número atômico ' + z2 + '.',
+              ok:z => z === a2,
+              explica:'O ' + (adiante ? 'posterior' : 'anterior') + ' ao ' + z2 + ' é o ' + a2 + ', o ' + oEl(a2) + '.' });
+  /* 3 e 4 · as duas pontas de duas linhas diferentes */
+  const duas = embaralha([2, 3, 4, 5, 6, 7]).slice(0, 2);
+  const la = daLinha3(duas[0]), lb = daLinha3(duas[1]);
+  const a3 = la[0], a4 = lb[lb.length - 1];
+  perg.push({ q:'Toque no primeiro elemento da ' + ORDINAL_F[duas[0]] + ' linha.', ok:z => z === a3,
+              explica:'O primeiro da ' + ORDINAL_F[duas[0]] + ' linha é o ' + oEl(a3) + '.' });
+  perg.push({ q:'Toque no último elemento da ' + ORDINAL_F[duas[1]] + ' linha.', ok:z => z === a4,
+              explica:'O último da ' + ORDINAL_F[duas[1]] + ' linha é o ' + oEl(a4) + '.' });
+  /* 5 · a semelhança, que mora na coluna (o H senta em cima dos
+     alcalinos sem ser um deles) */
+  const col5 = sorteia3([1, 2, 13, 14, 15, 16, 17, 18]);
+  const m5 = daColuna3(col5).filter(z => !(col5 === 1 && z === 1));
+  const r5 = sorteia3(m5), outros5 = m5.filter(z => z !== r5);
+  perg.push({ q:'Qual elemento é quimicamente semelhante ao ' + doEl(r5) + '?', ok:z => outros5.includes(z),
+              explica:'Na coluna do ' + SIMBOLOS[r5-1] + ' todos são quimicamente semelhantes.' });
+  /* 6 · o de baixo, na mesma coluna (nova) */
+  const x6 = sorteia3(todos.filter(z => { const p = posDe(z), b = zNaCasa3(p.row + 1, p.col); return b && b !== z; }));
+  const a6 = zNaCasa3(posDe(x6).row + 1, posDe(x6).col);
+  perg.push({ q:'Toque no elemento que fica logo abaixo do ' + doEl(x6) + ', na mesma coluna.', ok:z => z === a6,
+              explica:'Logo abaixo do ' + SIMBOLOS[x6-1] + ' fica o ' + oEl(a6) + '.' });
+  /* 7 · outro da mesma linha (nova) */
+  const x7 = sorteia3(todos.filter(z => daLinha3(posDe(z).row).length > 2));
+  const l7 = daLinha3(posDe(x7).row).filter(z => z !== x7);
+  perg.push({ q:'Toque em outro elemento da mesma linha do ' + doEl(x7) + '.', ok:z => l7.includes(z),
+              explica:'O ' + SIMBOLOS[x7-1] + ' está na ' + ORDINAL_F[posDe(x7).row] + ' linha: qualquer outro dela serve.' });
+  /* 8 · o último da coluna (nova) */
+  const col8 = sorteia3([1, 2, 13, 14, 15, 16, 17, 18].filter(c => c !== col5));
+  const m8 = daColuna3(col8).filter(z => !(col8 === 1 && z === 1));
+  const x8 = sorteia3(m8.slice(0, -1)), a8 = m8[m8.length - 1];
+  perg.push({ q:'Toque no último elemento da coluna do ' + doEl(x8) + '.', ok:z => z === a8,
+              explica:'O último da coluna do ' + SIMBOLOS[x8-1] + ' é o ' + oEl(a8) + '.' });
+  return perg;
+}
+
+const QUIZ3 = {
+  aberto:false, passo:0, itens:[], acertos:0, travado:false, g:0,
+  caixa(){ return slides[2].querySelector('.quiz3'); },
+  /* abrir: o som do quiz e a pergunta 1, juntos */
+  abre(){
+    if (atual !== 2) return;
+    this.tiraCartao();
+    this.itens = perguntasDoCriterio();
+    this.passo = 0; this.acertos = 0; this.aberto = true;
+    const g = ++this.g;
+    /* o play sai de cena: quem faz a aula andar é o toque na tabela */
+    stage.classList.add('em-quiz');
+    this.caixa().classList.add('on');
+    tocaEfeito('Audios/quiz1.mp3');
+    this.apresenta(g);
+  },
+  apresenta(g){
+    if (g !== this.g) return;
+    const p = this.itens[this.passo], cx = this.caixa();
+    cx.querySelector('.q3-marca').textContent = 'Pergunta ' + (this.passo + 1) + ' de ' + this.itens.length;
+    cx.querySelector('.q3-q').textContent = p.q;
+    const msg = cx.querySelector('.q3-msg');
+    msg.textContent = ''; msg.className = 'q3-msg';
+    this.travado = false;
+  },
+  /* a resposta: o toque num card da tabela */
+  async toca(c){
+    if (!this.aberto || this.travado) return;
+    this.travado = true;
+    const g = this.g, p = this.itens[this.passo], z = +c.dataset.z;
+    const ultima = this.passo === this.itens.length - 1;
+    const msg = this.caixa().querySelector('.q3-msg');
+    if (p.ok(z)){
+      this.acertos++;
+      c.classList.add('certa3');
+      const voz = ultima ? VOZ_DA_ULTIMA : VOZES_DO_ACERTO[this.passo % 2];
+      msg.textContent = voz.frase + ' ' + p.explica;
+      msg.className = 'q3-msg ok';
+      confete();
+      const fanfarra = tocaEfeito('funfare');
+      tocaEfeito('applause');
+      await fanfarra;
+      if (g !== this.g) return;
+      await tocaEfeito(voz.som);
+    } else {
+      /* o toque errado fica vermelho, e a resposta certa acende */
+      c.classList.add('errada3');
+      TP.todos().filter(x => p.ok(+x.dataset.z)).forEach(x => x.classList.add('certa3'));
+      msg.textContent = p.explica;
+      msg.className = 'q3-msg erro';
+      tremeVermelho();
+      await tocaEfeito('error');
+      if (g !== this.g) return;
+      await tocaEfeito('Calmanaproximaacerta');
+    }
+    if (g !== this.g) return;
+    TP.todos().forEach(x => x.classList.remove('certa3', 'errada3'));
+    this.passo++;
+    if (this.passo >= this.itens.length){ this.resultado(); return; }
+    /* o som da entrada e a pergunta nova, juntos */
+    tocaEfeito(somDaEntrada(this.passo, this.itens.length));
+    this.apresenta(g);
+  },
+  /* o fim: o cartão do resultado, com Refazer (outro quiz, outro sorteio)
+     e Continuar (fecha o quiz; o botão do quiz fica no canto) */
+  resultado(){
+    this.caixa().classList.remove('on');
+    const n = this.itens.length, a = this.acertos;
+    cartaoDoResultado(Math.round(a / n * 100) / 10,
+      '<em class="acerto">' + a + '</em> certas · <em class="erro">' + (n - a) + '</em> erradas',
+      slides[2], () => this.abre(), () => this.fecha(), null);
+  },
+  tiraCartao(){ if (slides[2]) slides[2].querySelectorAll('.quiz-cartao').forEach(e => e.remove()); },
+  fecha(){
+    this.g++;
+    this.aberto = false; this.travado = false;
+    stage.classList.remove('em-quiz');
+    const cx = slides[2] && this.caixa();
+    if (cx) cx.classList.remove('on');
+    if (slides[2]) slides[2].querySelectorAll('.certa3, .errada3').forEach(x => x.classList.remove('certa3', 'errada3'));
+    this.tiraCartao();
+  }
+};
+
 /* O FIM DO SLIDE 3: acabada a "2.4", o 37 brilha; tocado, a tabela
    inteira arruma-se — as colunas juntam-se e o H volta, e os que faltam
    voam um de cada vez para casa —, e, montada, brilha, com a fanfarra,
@@ -3940,8 +4159,11 @@ const FINAL = {
     const m = slideDaMesa().querySelector('.mesa');
     m.classList.remove('brilho-final'); void m.offsetWidth; m.classList.add('brilho-final');
     confete();
-    tocaEfeito('funfare');
-    tocaEfeito('applause');
+    /* acabada a festa (a fanfarra e os aplausos), a narração "2.5" */
+    const g = this.g;
+    Promise.all([tocaEfeito('funfare'), tocaEfeito('applause')]).then(() => {
+      if (g === this.g && atual === 2) tocaTrilha('2.5');
+    });
   },
   zera(){
     this.esperando = false; this.ativo = false; this.feito = false; this.g++;
@@ -4448,7 +4670,8 @@ function quizNaHora(t){
 const EFEITOS = new Set();
 function tocaEfeito(nome){
   return new Promise(pronto => {
-    const a = new Audio(encodeURI('Audios/vfx/' + nome + '.mp3'));
+    /* um nome é um efeito da pasta vfx; com barra, é o caminho do arquivo */
+    const a = new Audio(encodeURI(nome.includes('/') ? nome : 'Audios/vfx/' + nome + '.mp3'));
     EFEITOS.add(a);
     let feito = false;
     const fim = () => { if (feito) return; feito = true; EFEITOS.delete(a); pronto(a); };
@@ -5761,6 +5984,15 @@ const NAV_TOPICOS = [
       TP.todos().filter(c => +c.dataset.z <= ENCAIXE.sozinhoAte).forEach(poeNoLugarJa);
       depoisDaMesa(g, () => tocaDesde('2.3', 0, g));
     } },
+  { titulo:'Quiz', sub:'a tabela montada, e o botão do quiz no canto', slide:2,
+    entra(v, g){
+      semTransicaoUmInstante();
+      trilhaAtual = -1;
+      carregaTrilha('2.5');
+      TP.todos().forEach(poeNoLugarJa);
+      FINAL.feito = true;
+      depoisDaMesa(g, () => viraQuiz(true));
+    } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1,
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
@@ -5881,6 +6113,7 @@ function topicoAtual(){
   if (atual === 2){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 2);
     const tr = trilhaAtual, t = som.currentTime || 0;
+    if (QUIZ3.aberto || tr === '2.5') return base + 3;
     if (tr === '2.3' || tr === '2.4' || FINAL.feito) return base + 2;
     if ((tr === '2' && t >= 25) || tr === '2.1' || tr === '2.2') return base + 1;
     return base;
