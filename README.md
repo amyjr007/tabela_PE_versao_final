@@ -16,7 +16,7 @@ dá zoom nele, como no app do professor.
 2. **A Tabela Periódica** — os elementos prontos na mesa; por enquanto
    sem os lantanídeos e os actinídeos, que a narração revela mais tarde.
 3. **2 · Os critérios de Organização — A lei periódica** — a mesma tabela,
-   a desordem, e o critério de Moseley (narrações `2` e `2.1`).
+   a desordem, o encaixe e os critérios de Moseley (narrações `2` a `2.3`).
 
 A passagem entre as duas é o cubo girando, a mesma do app do professor.
 Os outros slides entram na lista `SLIDES`, no alto do script, e o resto
@@ -59,13 +59,20 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 
 | quando | o que acontece |
 |---|---|
-| `2` · 14 → 17,2 s | um brilho verde cobre a tabela da esquerda para a direita (até 15,6 s) e volta, da direita para a esquerda |
-| `2` · 18 s | **os cards desorganizam-se** pela tela, todos de uma vez, cada um num arco até a sua vaga, com um clarão — a desordem do slide 2 do professor. Os números em `DESORDEM`: `dura` 0,56 s (a velocidade, a acertar de ouvido), `fila` 0 (o atraso de um card para o seguinte), `alto` 70 (o arco), `giro` 17° |
-| `2` · 29 s | a tela escurece e **Henry Moseley** entra pela borda direita e pousa à esquerda, com "Henry Moseley · 1913" embaixo |
+| `2` · 0 → 12 s | a mesa continua a respirar sozinha, como antes do play |
+| `2` · 14 → 17,2 s | uma **faixa** de brilho verde atravessa a tabela da esquerda para a direita (até 15,6 s) e volta, da direita para a esquerda — forte na frente e a apagar-se atrás dela (`ONDA_VERDE.cauda`, 3 colunas) |
+| `2` · 18 → ≈ 24 s | **os cards desorganizam-se um de cada vez**, em ordem sorteada, cada um num arco até a sua vaga, e ficam num **cinza neutro** — a cor da família só volta quando o card assenta na casa dele. Em `DESORDEM`: `dura` 0,8 s por card, `fila` 0,06 s entre um e o seguinte (≈ 6 s ao todo), `alto` 70 (o arco), `giro` 17° |
+| `2` · 29 s | a tela escurece e **Henry Moseley** entra pela borda **esquerda** e pousa, com "Henry Moseley · 1913" embaixo |
 | `2` · 39 → 39,8 s | "Critério 1" é digitado à direita |
-| `2` · 40,2 → 44 s | "Os elementos serão organizados em linhas, em ordem crescente de número atômico" |
+| `2` · 40,2 → 44 s | em duas linhas: "Os elementos serão organizados em linhas, / em ordem crescente de número atômico." |
 | fim da `2` | o play sai e aparece "Toque na tela para continuar" |
 | o toque | a tela escura esmaece com a foto e o texto, e toca a `2.1`; a desordem fica |
+| fim da `2.1` | as casas vazias voltam e **o 1 brilha**: tocando nele, ele voa para a casa dele (e ganha a cor ao assentar) e toca a `2.2`. Depois brilham o 2, o 3 e o 4 — só o que brilha responde; os outros tremem um fio |
+| depois do 4 | a tabela arruma-se sozinha, um card de cada vez, até ao **36**, e pára; toca a `2.3` (`ENCAIXE`: `toqueAte` 4, `sozinhoAte` 36, `passo` 0,14 s) |
+| — | o card que volta para casa voa por cima dos espalhados e fica acima deles: a tabela que se forma nunca fica tapada |
+| `2.3` · 2,5 s | a tela escurece de novo, com Moseley já no lugar e "Critério 2" já escrito |
+| `2.3` · 3,6 → 7 s | em duas linhas: "Os elementos quimicamente semelhantes / formarão colunas." |
+| fim da `2.3` | "Toque na tela para continuar"; o toque desfaz a tela escura, em fade |
 
 As vagas da desordem são uma grade de 11 × 8 abaixo do cabeçalho (longe
 do play e da borda de baixo), com um tremor; o sorteio é fixo, e voltar o
