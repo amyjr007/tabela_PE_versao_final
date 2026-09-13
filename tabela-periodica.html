@@ -821,12 +821,34 @@ body.montagem .capa .digitado{pointer-events:auto}
 .pc.luz-verde .face{box-shadow:inset 0 0 0 60px rgba(46,204,113,calc(.36 * var(--verde,1))),
   0 0 0 2px rgba(62,224,138,var(--verde,1)), 0 0 20px 5px rgba(46,204,113,calc(.6 * var(--verde,1)))}
 .pc.luz-verde .cubo{--sc:calc(1 + .06 * var(--verde,1))}
-/* o próximo card a tocar, no encaixe: brilha e pulsa */
+/* o próximo card a tocar: brilha em vermelho neon e pulsa (o brilho fica
+   mesmo sem a animação, para quem tem o movimento reduzido) */
 .pc.chama{z-index:20;cursor:pointer}
-.pc.chama .face{animation:chamaCard 1.1s ease-in-out infinite}
+.pc.chama .face{box-shadow:0 0 0 3px #FF2E4C, 0 0 22px 7px rgba(255,46,76,.8);
+  animation:chamaCard 1.1s ease-in-out infinite}
 @keyframes chamaCard{
-  0%,100%{box-shadow:0 0 0 2px var(--ouro-luz), 0 0 12px 3px rgba(226,162,43,.45)}
-  50%    {box-shadow:0 0 0 3px var(--ouro-luz), 0 0 34px 12px rgba(226,162,43,.95)}
+  0%,100%{box-shadow:0 0 0 3px #FF2E4C, 0 0 16px 4px rgba(255,46,76,.6)}
+  50%    {box-shadow:0 0 0 4px #FF2E4C, 0 0 40px 16px rgba(255,46,76,1)}
+}
+/* as colunas da "2.4": à frente dos espalhados */
+.pc.coluna-frente{z-index:12}
+/* a frase no vazio da tabela, num quadro claro por cima dos espalhados */
+.texto-colunas{position:absolute;left:170px;top:196px;width:660px;z-index:25;pointer-events:none;
+  padding:16px 26px 18px;border-radius:18px;background:rgba(255,255,255,.95);
+  border:1px solid var(--indigo-dim);box-shadow:0 16px 40px rgba(32,28,66,.18);
+  opacity:0;transition:opacity .4s ease}
+.texto-colunas:has(.frase.on:not(.saindo)){opacity:1}
+.texto-colunas .frase{display:none;margin:0;font-family:var(--display);font-weight:600;
+  font-size:34px;line-height:1.25;color:var(--indigo);text-align:center}
+.texto-colunas .frase.on{display:block}
+.texto-colunas .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;
+  vertical-align:-.1em;background:var(--ouro)}
+.texto-colunas .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+/* a tabela montada inteira: uma luz dourada que acende e se vai */
+.mesa.brilho-final .pc .face{animation:brilhoFinal 1.8s ease}
+@keyframes brilhoFinal{
+  0%,100%{box-shadow:none}
+  35%{box-shadow:0 0 0 2px var(--ouro-luz), 0 0 26px 8px rgba(226,162,43,.85)}
 }
 /* o card que volta para casa voa por cima dos espalhados, e depois de
    pousar continua acima deles: a tabela que se forma não fica tapada */
@@ -1595,7 +1617,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v2.6';
+const VERSAO = 'v2.7';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2048,6 +2070,7 @@ function montaTabela(i){
     c.addEventListener('click', () => {
       /* no slide 3, durante o encaixe, o toque encaixa */
       if (i === 2 && ENCAIXE.ativo){ ENCAIXE.toca(c); return; }
+      if (i === 2 && FINAL.esperando){ FINAL.toca(c); return; }
       if (SEQ.escolhendo) SEQ.escolhe(c); else TP.gira(z);
     });
     mesa.appendChild(c);
@@ -2678,7 +2701,8 @@ const TRILHAS = {
   '2':    'Audios/audio_tabela_2.mp3',     /* o slide 3: a desordem e Moseley */
   '2.1':  'Audios/audio_tabela_2.1.mp3',   /* depois do toque; no fim, o encaixe ao toque */
   '2.2':  'Audios/audio_tabela_2.2.mp3',   /* o 1 encaixado */
-  '2.3':  'Audios/audio_tabela_2.3.mp3'    /* a tabela arrumada até ao 36: o critério 2 */
+  '2.3':  'Audios/audio_tabela_2.3.mp3',   /* a tabela arrumada até ao 36: o critério 2 */
+  '2.4':  'Audios/audio_tabela_2.4.mp3'    /* as colunas: os semelhantes */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2'];
@@ -2735,7 +2759,8 @@ const ROTEIROS = {
   '2':    [],
   '2.1':  [],
   '2.2':  [],
-  '2.3':  []
+  '2.3':  [],
+  '2.4':  []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -3042,6 +3067,8 @@ const SEQ = {
     }
     /* o fim da "2.1": os cards encaixam-se ao toque, a começar pelo 1 */
     else if (id === '2.1') ENCAIXE.comeca();
+    /* o fim da "2.4": o 37 brilha, e o toque nele arruma a tabela toda */
+    else if (id === '2.4') FINAL.chama();
   },
   /* o quiz de cada trilha abre uma vez só */
   abreQuiz(id){
@@ -3058,9 +3085,9 @@ const SEQ = {
     veu2.classList.remove('pede-toque');
     toque2.classList.remove('on');
     stage.classList.remove('em-toque');
-    /* depois da "2" segue a "2.1"; depois da "2.3", a tela só volta ao
-       normal (a próxima narração ainda está por vir) */
+    /* depois da "2" segue a "2.1"; depois da "2.3", a "2.4" */
     if (de === '2') tocaTrilha('2.1');
+    else if (de === '2.3') tocaTrilha('2.4');
     else this.dispensou = de;
   },
   /* chegar ao slide 3: a tela clara, e a mesa volta a ser arrumada no
@@ -3069,6 +3096,9 @@ const SEQ = {
     this.aguardaToque2 = false;
     this.dispensou = null;
     ENCAIXE.zera();
+    FINAL.zera();
+    COLUNAS_24.suja = true;
+    if (DIG_COL) DIG_COL.limpa();
     stage.classList.remove('em-toque');
     if (veu2){
       veu2.classList.remove('on', 'pede-toque');
@@ -3086,7 +3116,7 @@ const SEQ = {
   /* sair do slide 3 com o pedido de toque em cena: o play volta */
   deixa2(){
     this.aguardaToque2 = false;
-    if (atual === 2) ENCAIXE.zera();
+    if (atual === 2){ ENCAIXE.zera(); FINAL.zera(); }
     stage.classList.remove('em-toque');
   },
   /* o toque na tela escura: ela desfaz-se, e a narração segue */
@@ -3648,12 +3678,12 @@ function vidaSegueNa2(){
 const ONDA_VERDE = { de:14.0, meio:15.6, ate:17.2, cauda:3, suja:false };
 /* A DESORDEM, um card de cada vez: 'dura' é quanto leva cada um a voar,
    'fila' o atraso de um para o seguinte — com 88 cards, 0,8 + 87 × 0,06
-   ≈ 6 s ao todo: os números a acertar de ouvido. 'alto' é a altura do
-   arco, 'giro' a inclinação máxima, 'clarao' o clarão do professor (0:
+   ≈ 6 s ao todo: os números a acertar de ouvido. 'curva' é o quanto o
+   salto se dobra (fração da distância), 'giro' a inclinação máxima, 'clarao' o clarão do professor (0:
    sem ele, que era da desordem de uma vez só). */
-const DESORDEM = { de:18.0, dura:0.8, fila:0.06, alto:70, giro:17, clarao:0, suja:false, pousou:false };
+const DESORDEM = { de:18.0, dura:0.8, fila:0.06, curva:0.35, giro:17, clarao:0, suja:false, pousou:false };
 /* as trilhas do slide 3 depois da "2": nelas a desordem já está feita */
-const DEPOIS_DA_2 = ['2.1', '2.2', '2.3'];
+const DEPOIS_DA_2 = ['2.1', '2.2', '2.3', '2.4'];
 const FRASES_CRITERIO1 = [
   { de:39.0, ate:39.8, txt:'Critério 1' },
   { de:40.2, ate:44.0, txt:'Os elementos serão organizados em linhas,\nem ordem crescente de número atômico.' }
@@ -3663,12 +3693,33 @@ const FRASES_CRITERIO2 = [
   { de:0,   ate:0.01, txt:'Critério 2' },
   { de:3.6, ate:7.0,  txt:'Os elementos quimicamente semelhantes\nformarão colunas.' }
 ];
-let veu2 = null, toque2 = null, foto2 = null, clarao2 = null, DIG2 = null, DIG3 = null;
+/* A "2.4" · AS COLUNAS, função do relógio dela:
+     2,8 s        o que está montado (do 1 ao 36) abre-se em colunas —
+                  um pouco menores, para caberem — e fica à frente dos
+                  espalhados, com brilho verde
+     8 → 11 s     "Nessas colunas todos são semelhantes", no vazio da
+                  tabela; apaga-se aos 24 s
+     15 s         o H sai de lado e escurece
+     18,2 → 21 s  os cards crescem em sequência, descendo a coluna e
+                  subindo de volta; na volta, o verde apaga-se
+   No fim, o 37 brilha; tocado, a tabela inteira arruma-se (FINAL). */
+const COLUNAS_24 = {
+  separa:2.8, dura:1.0, vao:14, zoom:0.88,
+  hidrogenio:{ de:15.0, dura:0.6, lado:48 },
+  onda:{ de:18.2, meio:19.6, ate:21.0, cresce:0.25 },
+  suja:false
+};
+const FRASES_COLUNAS = [
+  { de:8.0, ate:11.0, some:24.0, txt:'Nessas colunas todos são semelhantes' }
+];
+let veu2 = null, toque2 = null, foto2 = null, clarao2 = null, DIG2 = null, DIG3 = null, DIG_COL = null;
 
 function montaCenaDoSlide3(){
   const sl = slides[2];
   if (!sl || sl.querySelector('.veu-moseley')) return;
   sl.insertAdjacentHTML('beforeend',
+    '<div class="texto-colunas" aria-live="polite"></div>' +
+    '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>' +
     '<div class="clarao2" aria-hidden="true"></div>' +
     '<div class="veu veu-moseley" aria-live="polite">' +
       '<figure class="moseley"><img src="Imagens/henry_moseley.jpg" alt="Henry Moseley" draggable="false">' +
@@ -3682,6 +3733,7 @@ function montaCenaDoSlide3(){
   clarao2 = sl.querySelector('.clarao2');
   DIG2 = criaDigitacao(veu2.querySelector('.frases-c1'), FRASES_CRITERIO1);
   DIG3 = criaDigitacao(veu2.querySelector('.frases-c2'), FRASES_CRITERIO2);
+  DIG_COL = criaDigitacao(sl.querySelector('.texto-colunas'), FRASES_COLUNAS);
   veu2.addEventListener('click', () => SEQ.continua2());
 }
 
@@ -3691,8 +3743,128 @@ function efeitos2(t){
   if (VIDA.ligada && (DEPOIS_DA_2.includes(trilhaAtual) || (trilhaAtual === '2' && t >= VIDA_ATE_2))) VIDA.desliga();
   ondaVerde(t);
   desordem(t);
+  colunas24(t);
   cena2(t);
 }
+
+const suave = p => p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2)/2;
+const entre01 = p => Math.max(0, Math.min(1, p));
+/* um card sai do estado das colunas: tamanho, brilho, escuro e frente */
+function limpaColuna(c, fica){
+  ['--onda', '--verde', '--tsobe'].forEach(v => c.style.removeProperty(v));
+  c.style.removeProperty('filter');
+  c.classList.remove('luz-verde', 'coluna-frente');
+  if (!fica && c._noLugar){
+    const casa = alvoDe(+c.dataset.z);
+    c.style.left = casa.x.toFixed(1) + 'px';
+    c.style.top  = casa.y.toFixed(1) + 'px';
+  }
+}
+function colunas24(t){
+  const o = COLUNAS_24;
+  if (FINAL.ativo || FINAL.feito) return;
+  const na24 = trilhaAtual === '2.4';
+  if (!na24){
+    if (o.suja){ TP.todos().forEach(c => limpaColuna(c)); o.suja = false; }
+    return;
+  }
+  const es = suave(entre01((t - o.separa) / o.dura));
+  const Z = 1 - (1 - o.zoom)*es, vao = o.vao*es;
+  const cy = (yDaLinha(1) + yDaLinha(4)) / 2;
+  const eh = suave(entre01((t - o.hidrogenio.de) / o.hidrogenio.dura));
+  const w = o.onda;
+  TP.todos().filter(c => c._noLugar).forEach(c => {
+    if (c._voo) return;                       /* ainda a pousar */
+    const z = +c.dataset.z, col = +c.dataset.col, row = +c.dataset.linha;
+    const casa = alvoDe(z);
+    /* as colunas afastam-se umas das outras, e o bloco encolhe um fio
+       em volta do meio, para caber no palco */
+    let x = 640 + ((casa.x - 640) + (col - 9.5)*vao) * Z;
+    const y = cy + (casa.y - cy) * Z;
+    let k = es, cresce = 1;
+    if (t >= w.de && t <= w.ate){
+      /* a onda: desce as linhas até ao meio e sobe de volta; na volta,
+         quem ela já passou apaga-se */
+      const f = t < w.meio ? 1 + 3*(t - w.de)/(w.meio - w.de) : 4 - 3*(t - w.meio)/(w.ate - w.meio);
+      cresce += w.cresce * Math.exp(-Math.pow((row - f)/0.55, 2));
+      if (t >= w.meio && row >= f) k = 0;
+    } else if (t > w.ate) k = 0;
+    if (z === 1){
+      /* o H sai de lado, apaga-se e escurece */
+      x += o.hidrogenio.lado * eh;
+      k *= 1 - eh;
+      if (eh > 0) c.style.filter = 'brightness(' + (1 - .55*eh).toFixed(3) + ') saturate(' + (1 - .7*eh).toFixed(3) + ')';
+      else c.style.removeProperty('filter');
+    }
+    c.style.left = x.toFixed(1) + 'px';
+    c.style.top  = y.toFixed(1) + 'px';
+    c.style.setProperty('--tsobe', '90ms');
+    c.style.setProperty('--onda', (Z*cresce).toFixed(3));
+    c.classList.toggle('luz-verde', k > .02);
+    if (k > .02) c.style.setProperty('--verde', k.toFixed(3)); else c.style.removeProperty('--verde');
+    c.classList.toggle('coluna-frente', es > 0);
+  });
+  o.suja = true;
+  if (DIG_COL) DIG_COL.escreve(t);
+}
+
+/* O FIM DO SLIDE 3: acabada a "2.4", o 37 brilha; tocado, a tabela
+   inteira arruma-se — as colunas juntam-se e o H volta, e os que faltam
+   voam um de cada vez para casa —, e, montada, brilha, com a fanfarra,
+   os confetes e os aplausos */
+const FINAL = {
+  esperando:false, ativo:false, feito:false, g:0,
+  proximo:37, passo:0.0875,
+  chama(){
+    this.esperando = true;
+    const c = TP.cubo(this.proximo);
+    if (c) c.classList.add('chama');
+  },
+  toca(c){
+    if (!this.esperando) return;
+    if (+c.dataset.z !== this.proximo){
+      c.classList.remove('nao'); void c.offsetWidth; c.classList.add('nao');
+      return;
+    }
+    this.esperando = false;
+    this.monta();
+  },
+  monta(){
+    this.ativo = true;
+    const g = ++this.g;
+    const cubos = TP.todos();
+    cubos.forEach(c => c.classList.remove('chama'));
+    /* as colunas juntam-se e o H volta ao lugar */
+    cubos.filter(c => c._noLugar).forEach(c => {
+      limpaColuna(c, true);
+      voaEmArco(c, alvoDe(+c.dataset.z), 0.6, () => c.style.removeProperty('transition'), 0.15);
+    });
+    /* e os que faltam, um de cada vez, na ordem do número atômico */
+    const falta = cubos.filter(c => !c._noLugar).sort((a, b) => +a.dataset.z - +b.dataset.z);
+    let i = 0;
+    const vai = () => {
+      if (g !== this.g) return;
+      if (i >= falta.length){ setTimeout(() => { if (g === this.g) this.festa(); }, 900); return; }
+      encaixaCubo(falta[i++]);
+      setTimeout(vai, this.passo * 1000);
+    };
+    setTimeout(vai, 700);
+  },
+  festa(){
+    this.ativo = false;
+    this.feito = true;
+    const m = slideDaMesa().querySelector('.mesa');
+    m.classList.remove('brilho-final'); void m.offsetWidth; m.classList.add('brilho-final');
+    confete();
+    tocaEfeito('funfare');
+    tocaEfeito('applause');
+  },
+  zera(){
+    this.esperando = false; this.ativo = false; this.feito = false; this.g++;
+    const m = slides[2] && slides[2].querySelector('.mesa');
+    if (m) m.classList.remove('brilho-final');
+  }
+};
 
 /* A COR NEUTRA de quem está fora do lugar: um cinza morno que escurece
    devagar com o número atômico (o do professor). A cor da família volta
@@ -3714,7 +3886,8 @@ const ENCAIXE = {
   ativo:false, auto:false, casas:false, proximo:1, g:0,
   /* até que número o aluno toca, até onde a tabela vai sozinha, e o
      compasso dela (segundos de um card para o seguinte) */
-  toqueAte:4, sozinhoAte:36, passo:0.14,
+  /* 0,0875 s: 60 % mais rápido do que os 0,14 do começo */
+  toqueAte:4, sozinhoAte:36, passo:0.0875,
   comeca(){
     this.ativo = true; this.auto = false; this.casas = true; this.proximo = 1;
     this.acende();
@@ -3763,25 +3936,50 @@ const ENCAIXE = {
     TP.todos().forEach(c => c.classList.remove('chama', 'nao'));
   }
 };
-/* um card volta à casa dele: voa, endireita-se, e ganha a cor ao assentar */
+/* O PONTO DO ARCO: ao lado do meio do caminho, a uma fração da distância —
+   do lado de cima; se o caminho for vertical, de lado. Com ele, a Bézier
+   faz de todo o salto uma curva. */
+function pontoDoArco(a, b, curva){
+  const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1;
+  let nx = -dy/d, ny = dx/d;
+  if (ny > 0){ nx = -nx; ny = -ny; }
+  const k = (curva === undefined ? 0.35 : curva) * d + 24;
+  return { x:(a.x + b.x)/2 + nx*k, y:(a.y + b.y)/2 + ny*k };
+}
+/* UM VOO EM ARCO com relógio próprio (é o aluno quem o dispara, não a
+   narração): do lugar de agora até ao destino, devagar-depressa-devagar,
+   e a inclinação desfaz-se no caminho */
+function voaEmArco(c, para, dur, fim, curva){
+  const de = { x: parseFloat(c.style.left), y: parseFloat(c.style.top) };
+  const k = pontoDoArco(de, para, curva);
+  const cubo = c.querySelector('.cubo');
+  const rot0 = parseFloat(cubo.style.getPropertyValue('--rz')) || 0;
+  const t0 = performance.now();
+  c.style.transition = 'transform .3s ease, filter .3s ease';
+  cubo.style.setProperty('--dur', '60ms');
+  clearInterval(c._voo);
+  c._voo = setInterval(() => {
+    const p = Math.min(1, (performance.now() - t0) / (dur*1000));
+    const e = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2)/2, u = 1 - e;
+    c.style.left = (u*u*de.x + 2*u*e*k.x + e*e*para.x).toFixed(1) + 'px';
+    c.style.top  = (u*u*de.y + 2*u*e*k.y + e*e*para.y).toFixed(1) + 'px';
+    cubo.style.setProperty('--rz', (rot0 * (1 - Math.min(1, e/.6))).toFixed(1) + 'deg');
+    if (p >= 1){ clearInterval(c._voo); c._voo = 0; if (fim) fim(); }
+  }, 16);
+}
+/* um card volta à casa dele: voa em arco, endireita-se, e ganha a cor ao
+   assentar */
 function encaixaCubo(c){
   if (!c || c._noLugar) return;
   c._noLugar = true;
-  c.classList.remove('chama', 'nao');
+  c.classList.remove('chama', 'nao', 'desordem');
   c.classList.add('no-lugar', 'encaixando');
-  const casa = alvoDe(+c.dataset.z), cubo = c.querySelector('.cubo');
-  const curva = '.7s cubic-bezier(.3,.8,.25,1)';
-  c.style.transition = 'left ' + curva + ', top ' + curva + ', transform ' + curva;
-  c.style.left = casa.x.toFixed(1) + 'px';
-  c.style.top  = casa.y.toFixed(1) + 'px';
-  cubo.style.setProperty('--dur', '.7s');
-  cubo.style.setProperty('--rz', '0deg');
-  setTimeout(() => { if (c._noLugar) neutro(c, false); }, 580);
-  setTimeout(() => {
+  voaEmArco(c, alvoDe(+c.dataset.z), 0.7, () => {
     if (!c._noLugar) return;
-    c.classList.remove('desordem', 'encaixando');
+    c.classList.remove('encaixando');
     c.style.removeProperty('transition');
-  }, 760);
+  });
+  setTimeout(() => { if (c._noLugar) neutro(c, false); }, 580);
 }
 
 /* O BRILHO VERDE: uma faixa que atravessa a tabela — entra pela esquerda
@@ -3876,6 +4074,7 @@ function desordem(t){
       c.style.top  = casa.y.toFixed(1) + 'px';
       cubo.style.setProperty('--rz', '0deg');
       c._noLugar = false;
+      clearInterval(c._voo); c._voo = 0;
       c.classList.remove('no-lugar', 'encaixando');
       neutro(c, false);
       return;
@@ -3887,8 +4086,12 @@ function desordem(t){
     neutro(c, p > 0);
     const e = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2)/2;
     c.classList.add('desordem');
-    c.style.left = (casa.x + (v.x - casa.x)*e).toFixed(1) + 'px';
-    c.style.top  = (casa.y + (v.y - casa.y)*e - o.alto*4*e*(1 - e)).toFixed(1) + 'px';
+    /* o salto é uma curva: a Bézier do arco, com o ponto de controlo ao
+       lado do meio do caminho */
+    const k = v.ctrl || (v.ctrl = pontoDoArco(casa, v, o.curva));
+    const u = 1 - e;
+    c.style.left = (u*u*casa.x + 2*u*e*k.x + e*e*v.x).toFixed(1) + 'px';
+    c.style.top  = (u*u*casa.y + 2*u*e*k.y + e*e*v.y).toFixed(1) + 'px';
     cubo.style.setProperty('--dur', '90ms');
     cubo.style.setProperty('--rz', (v.rot * Math.min(1, e/.4)).toFixed(1) + 'deg');
   });
@@ -4623,7 +4826,8 @@ function cartaoDoResultado(nota, contaHTML, onde, refazer, seguir, fala){
    meio. Não é coreografia da narração (acontece com ela parada), e por
    isso pode andar ao ritmo dos quadros. */
 function confete(){
-  const cv = slides[1].querySelector('.confete');
+  /* no slide em que se está (o 1 e o 3 têm a folha deles) */
+  const cv = (slides[atual] && slides[atual].querySelector('.confete')) || slides[1].querySelector('.confete');
   if (!cv) return;
   const g = cv.getContext('2d');
   const cores = ['#E2A22B','#4C3FBF','#2E9450','#C13757','#2E7BAE','#8B3FBE','#D2591F','#3EE08A'];
