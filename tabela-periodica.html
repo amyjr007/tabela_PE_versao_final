@@ -767,6 +767,7 @@ body.montagem .capa .digitado{pointer-events:auto}
   text-decoration-thickness:2px;text-underline-offset:4px}
 
 /* durante o quiz o play sai de cena: quem faz a aula andar é a escolha */
+#stage.em-entendi #som, #stage.em-entendi #som-dica,
 #stage.em-quiz #som, #stage.em-quiz #som-dica,
 #stage.em-toque #som, #stage.em-toque #som-dica,
 #stage.em-jogo #som, #stage.em-jogo #som-dica{display:none!important}
@@ -895,6 +896,17 @@ body.montagem .capa .digitado{pointer-events:auto}
 .texto-colunas .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;
   vertical-align:-.1em;background:var(--ouro)}
 .texto-colunas .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+/* no slide 4 o quadro é mais estreito: com a tabela aberta em linhas
+   ou em colunas ele cabe entre a coluna 2 e a 13, sem tapar ninguém */
+.texto-colunas.texto3{left:232px;width:578px}
+/* o botão do fim da narração "3", embaixo da tabela */
+.entendi3{position:absolute;left:640px;top:668px;z-index:30;transform:translate(-50%,-50%) scale(.9);
+  padding:12px 36px;border:0;border-radius:14px;cursor:pointer;
+  font-family:var(--display);font-weight:700;font-size:20px;color:#fff;background:var(--indigo);
+  box-shadow:0 12px 28px rgba(32,28,66,.28);opacity:0;pointer-events:none;
+  transition:opacity .35s ease, transform .35s cubic-bezier(.2,.9,.3,1.2)}
+.entendi3.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+.entendi3:active{transform:translate(-50%,-50%) scale(.95)}
 /* a tabela montada inteira: uma luz dourada que acende e se vai */
 .mesa.brilho-final .pc .face{animation:brilhoFinal 1.8s ease}
 @keyframes brilhoFinal{
@@ -1776,7 +1788,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v4.3';
+const VERSAO = 'v4.4';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2083,7 +2095,7 @@ function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
    espera do play. No slide 1 a história dele também recomeça. */
 function recomecaMesa(i){
   if (i === 1) SEQ.reinicia();
-  else if (temMesa(i)){ SEQ.comecou = false; if (i === 2) SEQ.reinicia2(); }
+  else if (temMesa(i)){ SEQ.comecou = false; if (i === 2) SEQ.reinicia2(); if (i === 3) EV3.zera(); }
   else return;
   pousaTabela();
   setTimeout(() => VIDA.liga(), 1500);
@@ -2883,7 +2895,8 @@ const TRILHAS = {
   '2.4':  'Audios/audio_tabela_2.4.mp3',   /* as colunas: os semelhantes */
   '2.5':  'Audios/audio_tabela_2.5.mp3',   /* a tabela montada: as linhas e as colunas */
   '2.5A': 'Audios/audio_tabela_2.5A.mp3',  /* o convite a abrir a tabela com o toque */
-  '3':    'Audios/audio_tabela_3.mp3'      /* o slide 4: as coordenadas (ainda por gravar) */
+  '3':    'Audios/audio_tabela_3.mp3',     /* o slide 4: as coordenadas */
+  '3.1':  'Audios/audio_tabela_3.1.mp3'    /* depois do Entendi (ainda por gravar) */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3'];
@@ -2944,7 +2957,11 @@ const ROTEIROS = {
   '2.4':  [],
   '2.5':  [],
   '2.5A': [],
-  '3':    []
+  '3':    [
+    /* aos 15,6 s o áudio pára um segundo, e continua */
+    { t:15.6, faz(){ EV3.pausa(); } }
+  ],
+  '3.1':  []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -3261,6 +3278,8 @@ const SEQ = {
     else if (id === '2.5') LC25.fimDa25();
     /* o fim da "2.5A": o botão do canto vira o do quiz */
     else if (id === '2.5A') viraQuiz(true);
+    /* o fim da "3": o botão Entendi, que leva à "3.1" */
+    else if (id === '3') EV3.entendi(true);
   },
   /* o quiz de cada trilha abre uma vez só */
   abreQuiz(id){
@@ -3471,9 +3490,8 @@ function efeitosDoTempo(){
   if (trilhaAtual === 'capa' && DIG_CAPA) DIG_CAPA.escreve(t);
   /* o slide 3 tem os eventos dele */
   if (atual === 2){ efeitos2(t); return; }
-  /* no slide 4 a mesa respira à espera do play; com a narração a
-     correr, fica quieta */
-  if (atual === 3){ if (trilhaAtual === '3' && !som.paused && VIDA.ligada) VIDA.desliga(); return; }
+  /* o slide 4 tem os eventos dele (a narração "3") */
+  if (atual === 3){ efeitos3(t); return; }
   if (atual !== 1 || !veu) return;
 
   /* a tela escura é da trilha "1", dos 13,6 s em diante — e continua
@@ -3903,6 +3921,8 @@ function efeitos13A(t){
 /* a vida solta da mesa acompanha a narração "2" até aqui */
 const VIDA_ATE_2 = 12.0;
 function vidaSegueNa2(){
+  /* e no slide 4, até aos 5 s da narração "3" (efeitos3 cala-a lá) */
+  if (atual === 3) return trilhaAtual === '3' && (som.currentTime || 0) < EV3.vidaAte;
   return atual === 2 && trilhaAtual === '2' && (som.currentTime || 0) < VIDA_ATE_2;
 }
 /* 'cauda' é quantas colunas o brilho leva a apagar-se atrás da frente */
@@ -4105,7 +4125,8 @@ const LC25 = {
   cauda:12,          /* por quantos cards o brilho se apaga atrás da frente */
   cresce:.1,         /* o aumento sutil, na frente da onda */
   modo:'junta', livre:false, suja:false, ouve:false, _ordL:null, _ordC:null,
-  mesa(){ return slides[2] && slides[2].querySelector('.mesa'); },
+  /* a mesa do slide em cena: o 3 e o 4 abrem-se da mesma maneira */
+  mesa(){ const sl = slideDaMesa(); return sl && sl.querySelector('.mesa'); },
   pos(z, modo){
     const p = posDe(z);
     let x = xDaColuna(p.col), y = yDaLinha(p.row);
@@ -4247,7 +4268,7 @@ const LC25 = {
         e.style.left = xDaColuna(+e.dataset.grupo).toFixed(1) + 'px';
         e.style.top  = (TAB_TOPO - 15).toFixed(1) + 'px';
       });
-      if (this.modo !== 'junta') TP.todos().forEach(c => {
+      TP.todos().forEach(c => {
         const a = alvoDe(+c.dataset.z);
         c.style.left = a.x.toFixed(1) + 'px';
         c.style.top  = a.y.toFixed(1) + 'px';
@@ -4256,6 +4277,155 @@ const LC25 = {
     this.modo = 'junta';
   }
 };
+
+/* ============================================================
+   O SLIDE 4 · AS COORDENADAS PERIÓDICAS — a narração "3", no relógio dela
+     0 → 5 s       a mesa ainda respira (a vida solta), e aos 5 s cala-se
+     7 s           o Fe gira em 3D, cresce e acende de verde
+     9 s           a faixa da linha dele (o 4.º período) acende
+     9,8 s         e a da coluna (o grupo 8)
+     11 s          tudo volta ao normal
+     13 s          a tabela abre-se em linhas; 14 → 15 s "séries ou períodos"
+     15,6 s        o áudio pára um segundo, e continua
+     16 s          fecha, e o texto sai em fade
+     16,4 s        abre-se em colunas; 16,8 → 18 s "grupos ou famílias"
+     20,4 s        o texto sai e a tabela fecha
+     22,5 s        o Na acende, e o símbolo dele vai para o vazio da tabela
+     25,6 s        "3º período", ao lado do símbolo
+     26,8 s        "grupo 1", embaixo
+   No fim, o botão "Entendi": tocado, a narração "3.1". Tudo é função
+   do relógio do áudio: voltando atrás, a cena volta com ele. As linhas e
+   as colunas abrem-se como no slide 3 (LC25), e a cruz e a ficha são as
+   da mesa (as de TP.coordenadas).
+   ============================================================ */
+const FRASES_3 = [
+  { de:14.0, ate:15.0, some:16.0, txt:'séries ou períodos' },
+  { de:16.8, ate:18.0, some:20.4, txt:'grupos ou famílias' }
+];
+const EV3 = {
+  vidaAte:5.0,
+  fe:{ z:26, de:7.0, linha:9.0, coluna:9.8, ate:11.0 },
+  linhas:{ de:13.0, ate:16.0 },
+  colunas:{ de:16.4, ate:20.4 },
+  na:{ z:11, de:22.5, periodo:25.6, grupo:26.8 },
+  dig:null, botao:null, feOn:false, cruz:'', naK:0, suja:false, pausaT:0,
+  mesa(){ return slides[3] && slides[3].querySelector('.mesa'); },
+  cartas(m){ return [...m.querySelectorAll('.pc:not(.serie-oculta)')]; },
+  carta(m, z){ return m.querySelector('.pc[data-z="' + z + '"]'); },
+  /* o quadro dos textos e o botão, criados uma vez */
+  prepara(){
+    if (this.dig || !slides[3]) return;
+    const cx = document.createElement('div');
+    cx.className = 'texto-colunas texto3';
+    cx.setAttribute('aria-live', 'polite');
+    slides[3].appendChild(cx);
+    this.dig = criaDigitacao(cx, FRASES_3);
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'entendi3';
+    b.textContent = 'Entendi';
+    b.addEventListener('click', () => { this.entendi(false); tocaTrilha('3.1'); });
+    slides[3].appendChild(b);
+    this.botao = b;
+  },
+  tick(t){
+    const m = this.mesa();
+    if (!m) return;
+    this.prepara();
+    if (trilhaAtual !== '3'){ if (this.suja) this.zera(); return; }
+    /* a vida solta, só até aos 5 s da narração */
+    if (VIDA.ligada && t >= this.vidaAte && !som.paused) VIDA.desliga();
+    const f = this.fe, n = this.na, fe = this.carta(m, f.z), na = this.carta(m, n.z);
+    /* o Fe: gira uma vez, cresce e acende de verde */
+    const feOn = t >= f.de && t < f.ate;
+    if (feOn !== this.feOn){
+      this.feOn = feOn;
+      fe.classList.toggle('verde', feOn);
+      if (feOn) TP.gira(fe, { eixo:'y', graus:360, dur:900 });
+    }
+    /* a faixa da linha, depois a da coluna */
+    const linha = t >= f.linha && t < f.ate, coluna = t >= f.coluna && t < f.ate;
+    const cruz = (linha ? 'L' : '') + (coluna ? 'C' : '');
+    if (cruz !== this.cruz){ this.cruz = cruz; this.poeCruz(m, fe, linha, coluna); }
+    /* as linhas e as colunas */
+    LC25.poe(t >= this.colunas.de && t < this.colunas.ate ? 'colunas'
+           : t >= this.linhas.de && t < this.linhas.ate ? 'linhas' : 'junta');
+    this.dig.escreve(t);
+    /* o Na, a ficha dele e as duas coordenadas */
+    const k = (t >= n.de ? 1 : 0) | (t >= n.periodo ? 2 : 0) | (t >= n.grupo ? 4 : 0);
+    if (k !== this.naK){ this.naK = k; this.poeNa(m, na, k); }
+    this.suja = true;
+  },
+  poeCruz(m, c, linha, coluna){
+    const lin = +c.dataset.linha, col = +c.dataset.col;
+    m.classList.toggle('tem-cruz', linha || coluna);
+    this.cartas(m).forEach(p => p.classList.toggle('cruz',
+      (linha && +p.dataset.linha === lin) || (coluna && +p.dataset.col === col)));
+    const b1 = m.querySelector('.banda-linha'), b2 = m.querySelector('.banda-col');
+    if (linha){
+      const alt = LADO + 14;
+      b1.style.left = (TAB_ESQ - 32) + 'px';
+      b1.style.width = (TAB_LARG + 64) + 'px';
+      b1.style.height = alt + 'px';
+      b1.style.top = (yDaLinha(lin) - alt/2) + 'px';
+    }
+    b1.classList.toggle('on', linha);
+    if (coluna){
+      const larg = LADO + 14, acima = 30;
+      b2.style.left = (xDaColuna(col) - larg/2) + 'px';
+      b2.style.width = larg + 'px';
+      b2.style.top = (TAB_TOPO - acima) + 'px';
+      b2.style.height = (6*PASSO + LADO + acima + 8) + 'px';
+    }
+    b2.classList.toggle('on', coluna);
+    const ep = m.querySelector('.eixo[data-periodo="' + c.dataset.periodo + '"]'),
+          eg = m.querySelector('.eixo[data-grupo="' + col + '"]');
+    if (ep) ep.classList.toggle('acesa', linha);
+    if (eg) eg.classList.toggle('acesa', coluna);
+  },
+  poeNa(m, c, k){
+    const on = !!(k & 1);
+    c.classList.toggle('verde', on);
+    const f = m.querySelector('.ficha'), r = m.querySelector('.coords-el');
+    f.querySelector('span').textContent = c.dataset.z;
+    f.querySelector('b').textContent = c.dataset.sym;
+    f.classList.toggle('on', on);
+    const sp = r.querySelector('.per'), sg = r.querySelector('.grp');
+    sp.innerHTML = '<b>' + c.dataset.periodo + 'º</b> período';
+    sg.innerHTML = 'grupo <b>' + c.dataset.grupo + '</b>';
+    sp.classList.toggle('on', !!(k & 2));
+    sg.classList.toggle('on', !!(k & 4));
+  },
+  /* aos 15,6 s: um segundo de silêncio, e a narração continua */
+  pausa(){
+    clearTimeout(this.pausaT);
+    som.pause();
+    this.pausaT = setTimeout(() => {
+      if (atual === 3 && trilhaAtual === '3' && som.paused) som.play().catch(avisaSeNaoTocou);
+    }, 1000);
+  },
+  /* o botão Entendi (e, com ele, o play sai de cena) */
+  entendi(sim){
+    this.prepara();
+    if (!this.botao) return;
+    this.botao.classList.toggle('on', sim);
+    stage.classList.toggle('em-entendi', sim);
+  },
+  zera(){
+    this.entendi(false);
+    clearTimeout(this.pausaT);
+    const m = this.mesa();
+    if (!m) return;
+    if (this.dig) this.dig.limpa();
+    const fe = this.carta(m, this.fe.z), na = this.carta(m, this.na.z);
+    fe.classList.remove('verde');
+    this.poeCruz(m, fe, false, false);
+    this.poeNa(m, na, 0);
+    if (atual === 3) LC25.zera();
+    this.feOn = false; this.cruz = ''; this.naK = 0; this.suja = false;
+  }
+};
+function efeitos3(t){ EV3.tick(t); }
 
 /* ============================================================
    O QUIZ DO SLIDE 3 — as cinco perguntas do slide 2 do app do professor
@@ -5795,6 +5965,7 @@ function go(i, dir){
      deles escondia o play da capa */
   if (i !== 1){ QUIZ.fecha(); fechaMemoria(true); }
   if (i !== 2) SEQ.deixa2();
+  if (i !== 3) EV3.entendi(false);
 
   andando = true;
   sai.classList.add('is-leaving', 'fx-cube-out-' + dir);

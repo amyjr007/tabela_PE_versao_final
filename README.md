@@ -166,10 +166,25 @@ o quiz e deixa o botão dele no canto. Enquanto o quiz dura, o play sai de cena.
 A mesma tabela (sem as séries, o mesmo desenho e a mesma medida no
 celular), agora no **tabuleiro liso** do app do professor: todas as cartas
 no lilás claro (`#DCD7F3 → #C0B8E8`), com a letra escura (`.mesa.lisa`).
-Chega com o play à espera da narração `3` (`Audios/audio_tabela_3.mp3`,
-ainda por gravar); até ele ser tocado, a mesa respira com as animações
-sutis dos outros slides (a vida solta), que param quando a narração
-começa. Na navegação rápida: "1. Início".
+Chega com o play à espera da narração `3`; até ele ser tocado — e nos
+primeiros 5 s dela —, a mesa respira com as animações sutis dos outros
+slides (a vida solta). Na navegação rápida: "1. Início". Os eventos, todos
+no relógio do áudio (`EV3`, `efeitos3`):
+
+| Narração · tempo | O que acontece |
+|---|---|
+| `3` · 5 s | a vida solta cala-se |
+| `3` · 7 s | o **Fe** gira em 3D, cresce e acende de verde |
+| `3` · 9 s / 9,8 s | a faixa da **linha** dele (4.º período) e depois a da **coluna** (grupo 8); o resto recua |
+| `3` · 11 s | tudo volta ao normal |
+| `3` · 13 s | a tabela abre-se em **linhas**; 14 → 15 s digita "séries ou períodos" |
+| `3` · 15,6 s | o áudio **pára 1 s** e continua |
+| `3` · 16 s | a tabela fecha, e o texto sai em fade |
+| `3` · 16,4 s | abre-se em **colunas**; 16,8 → 18 s digita "grupos ou famílias" |
+| `3` · 20,4 s | o texto sai e a tabela fecha |
+| `3` · 22,5 s | o **Na** acende, e o símbolo dele (com o número atômico) vai para o vazio da tabela |
+| `3` · 25,6 s / 26,8 s | "3º período" ao lado do símbolo; "grupo 1" embaixo |
+| fim da `3` | o botão **Entendi** (o play sai de cena); tocado, a narração `3.1` (`Audios/audio_tabela_3.1.mp3`, ainda por gravar) |
 
 ## Desempenho
 
