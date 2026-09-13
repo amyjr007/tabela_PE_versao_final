@@ -182,9 +182,9 @@ no relógio do áudio (`EV3`, `efeitos3`):
 | `3` · 16 s | a tabela fecha, e o texto sai em fade |
 | `3` · 16,4 s | abre-se em **colunas**; 16,8 → 18 s digita "grupos ou famílias" |
 | `3` · 20,4 s | o texto sai e a tabela fecha |
-| `3` · 22,5 s | o **Na** acende, e o símbolo dele (com o número atômico) vai para o vazio da tabela |
-| `3` · 25,6 s / 26,8 s | "3º período" ao lado do símbolo; "grupo 1" embaixo |
-| fim da `3` | o botão **Entendi** (o play sai de cena); tocado, a narração `3.1` (`Audios/audio_tabela_3.1.mp3`, ainda por gravar) |
+| `3` · 22,5 s | o **Na** gira em 3D, cresce e acende (como o Fe), e o símbolo dele (com o número atômico) vai para o vazio da tabela |
+| `3` · 25,6 s / 26,8 s | "3º período" ao lado do símbolo, com a faixa da **linha**; "grupo 1" embaixo, com a faixa da **coluna** |
+| fim da `3` | o botão **Entendi**, no vazio da tabela à direita do símbolo (o play sai de cena); tocado, acende, toca o `right` e passa à narração `3.1` (`Audios/audio_tabela_3.1.mp3`, ainda por gravar) |
 
 ## Desempenho
 

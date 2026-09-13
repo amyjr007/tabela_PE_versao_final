@@ -439,6 +439,9 @@ body.montagem .capa .digitado{pointer-events:auto}
    .pc —: apagada ela, a tabela volta em fade, e não de uma vez) */
 .mesa.tem-cruz .pc:not(.cruz){opacity:.34}
 .pc.escolhido{z-index:12}
+/* o número aceso da cruz fica por cima dos cards: o elemento em destaque,
+   crescido, não o tapa (o Na, na coluna 1, ficava por cima do seu 3) */
+.mesa .eixo.acesa{z-index:15}
 .pc.escolhido .cubo{--sc:1.18}
 .pc.escolhido .face{box-shadow:0 0 0 2px rgba(226,162,43,.9), 0 10px 24px rgba(80,40,0,.34)}
 
@@ -899,14 +902,17 @@ body.montagem .capa .digitado{pointer-events:auto}
 /* no slide 4 o quadro é mais estreito: com a tabela aberta em linhas
    ou em colunas ele cabe entre a coluna 2 e a 13, sem tapar ninguém */
 .texto-colunas.texto3{left:232px;width:578px}
-/* o botão do fim da narração "3", embaixo da tabela */
-.entendi3{position:absolute;left:640px;top:668px;z-index:30;transform:translate(-50%,-50%) scale(.9);
+/* o botão do fim da narração "3", no vazio da tabela, à direita do símbolo */
+.entendi3{position:absolute;z-index:30;transform:translate(-50%,-50%) scale(.9);
   padding:12px 36px;border:0;border-radius:14px;cursor:pointer;
   font-family:var(--display);font-weight:700;font-size:20px;color:#fff;background:var(--indigo);
   box-shadow:0 12px 28px rgba(32,28,66,.28);opacity:0;pointer-events:none;
   transition:opacity .35s ease, transform .35s cubic-bezier(.2,.9,.3,1.2)}
 .entendi3.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
 .entendi3:active{transform:translate(-50%,-50%) scale(.95)}
+/* tocado, acende (e o "right" toca) */
+.entendi3.tocado{transform:translate(-50%,-50%) scale(1.1);background:#1F9D55;
+  box-shadow:0 0 0 4px rgba(62,224,138,.55), 0 0 30px 10px rgba(46,204,113,.6)}
 /* a tabela montada inteira: uma luz dourada que acende e se vai */
 .mesa.brilho-final .pc .face{animation:brilhoFinal 1.8s ease}
 @keyframes brilhoFinal{
@@ -1788,7 +1794,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v4.4';
+const VERSAO = 'v4.5';
 
 /* ============================================================
    OS ELEMENTOS
@@ -4290,10 +4296,12 @@ const LC25 = {
      16 s          fecha, e o texto sai em fade
      16,4 s        abre-se em colunas; 16,8 → 18 s "grupos ou famílias"
      20,4 s        o texto sai e a tabela fecha
-     22,5 s        o Na acende, e o símbolo dele vai para o vazio da tabela
-     25,6 s        "3º período", ao lado do símbolo
-     26,8 s        "grupo 1", embaixo
-   No fim, o botão "Entendi": tocado, a narração "3.1". Tudo é função
+     22,5 s        o Na gira em 3D, cresce e acende (como o Fe), e o
+                   símbolo dele vai para o vazio da tabela
+     25,6 s        "3º período", ao lado do símbolo, e a faixa da linha
+     26,8 s        "grupo 1", embaixo, e a faixa da coluna
+   No fim, o botão "Entendi", à direita do símbolo: tocado, acende, toca
+   o "right" e passa à narração "3.1". Tudo é função
    do relógio do áudio: voltando atrás, a cena volta com ele. As linhas e
    as colunas abrem-se como no slide 3 (LC25), e a cruz e a ficha são as
    da mesa (as de TP.coordenadas).
@@ -4324,8 +4332,20 @@ const EV3 = {
     b.type = 'button';
     b.className = 'entendi3';
     b.textContent = 'Entendi';
-    b.addEventListener('click', () => { this.entendi(false); tocaTrilha('3.1'); });
-    slides[3].appendChild(b);
+    /* tocado: acende, toca o "right", e só então a narração seguinte */
+    b.addEventListener('click', () => {
+      if (b.classList.contains('tocado')) return;
+      b.classList.add('tocado');
+      tocaEfeito('right').then(() => {
+        this.entendi(false);
+        if (atual === 3 && trilhaAtual === '3') tocaTrilha('3.1');
+      });
+    });
+    /* na mesa, no vazio da tabela, à direita do símbolo e das duas
+       coordenadas (e anda com a mesa, também no celular) */
+    b.style.left = xDaColuna(10.9) + 'px';
+    b.style.top  = yDaLinha(2) + 'px';
+    this.mesa().appendChild(b);
     this.botao = b;
   },
   tick(t){
@@ -4344,16 +4364,24 @@ const EV3 = {
       if (feOn) TP.gira(fe, { eixo:'y', graus:360, dur:900 });
     }
     /* a faixa da linha, depois a da coluna */
-    const linha = t >= f.linha && t < f.ate, coluna = t >= f.coluna && t < f.ate;
-    const cruz = (linha ? 'L' : '') + (coluna ? 'C' : '');
-    if (cruz !== this.cruz){ this.cruz = cruz; this.poeCruz(m, fe, linha, coluna); }
+    /* e depois a do Na: a linha com "3º período", a coluna com "grupo 1" */
+    const k = (t >= n.de ? 1 : 0) | (t >= n.periodo ? 2 : 0) | (t >= n.grupo ? 4 : 0);
+    const doFe = t < f.ate;
+    const linha  = doFe ? t >= f.linha  : !!(k & 2);
+    const coluna = doFe ? t >= f.coluna : !!(k & 4);
+    const cruz = (doFe ? 'fe' : 'na') + (linha ? 'L' : '') + (coluna ? 'C' : '');
+    if (cruz !== this.cruz){ this.cruz = cruz; this.poeCruz(m, doFe ? fe : na, linha, coluna); }
     /* as linhas e as colunas */
     LC25.poe(t >= this.colunas.de && t < this.colunas.ate ? 'colunas'
            : t >= this.linhas.de && t < this.linhas.ate ? 'linhas' : 'junta');
     this.dig.escreve(t);
     /* o Na, a ficha dele e as duas coordenadas */
-    const k = (t >= n.de ? 1 : 0) | (t >= n.periodo ? 2 : 0) | (t >= n.grupo ? 4 : 0);
-    if (k !== this.naK){ this.naK = k; this.poeNa(m, na, k); }
+    if (k !== this.naK){
+      /* ao acender, o Na gira como o Fe */
+      if ((k & 1) && !(this.naK & 1)) TP.gira(na, { eixo:'y', graus:360, dur:900 });
+      this.naK = k;
+      this.poeNa(m, na, k);
+    }
     this.suja = true;
   },
   poeCruz(m, c, linha, coluna){
@@ -4378,6 +4406,7 @@ const EV3 = {
       b2.style.height = (6*PASSO + LADO + acima + 8) + 'px';
     }
     b2.classList.toggle('on', coluna);
+    m.querySelectorAll('.eixo.acesa').forEach(e => e.classList.remove('acesa'));
     const ep = m.querySelector('.eixo[data-periodo="' + c.dataset.periodo + '"]'),
           eg = m.querySelector('.eixo[data-grupo="' + col + '"]');
     if (ep) ep.classList.toggle('acesa', linha);
@@ -4409,6 +4438,7 @@ const EV3 = {
     this.prepara();
     if (!this.botao) return;
     this.botao.classList.toggle('on', sim);
+    if (!sim) this.botao.classList.remove('tocado');
     stage.classList.toggle('em-entendi', sim);
   },
   zera(){
