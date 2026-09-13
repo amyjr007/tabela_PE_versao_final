@@ -195,7 +195,13 @@ frase que a está a explicar.
 | `1.3B` · 21,7 s | o **F** gira e cresce no lugar; 22,8 s o nome pulsa 2×; 24 s volta |
 | `1.3B` · 25,6 s | o **Ca** gira e cresce; 27 s o nome pulsa 2×; 28 s volta |
 | `1.3B` · 28 s | e o **O** gira e cresce; 29 s o nome pulsa 2×; 32 s volta |
-| fim da `1.3A`/`1.3B` | **o quiz**: três exemplos seguidos — "Qual o nome desse elemento?" |
+| fim da `1.3A`/`1.3B` | **o quiz**: seis perguntas seguidas — "Qual o nome desse elemento?" |
+| fim do quiz | o cartão da nota, e o play pronto na **`1.4`** |
+| `1.4` · 1 → 8 s | oito elementos de símbolo sem nada a ver com o nome em português — P, K, Ag, Sn, Sb, W, Au, Hg — crescem um a um, com luz vinho |
+| `1.4` · 10 s | o **Na** gira e cresce no lugar, e o nome dele some; 15 s "Sódio" aparece e pulsa 2×; 24 s volta |
+| `1.4` · 25 s | o **Pb**, do mesmo jeito; 29 s "Chumbo" aparece e pulsa 2×; 34 s volta |
+| `1.4` · 35,6 s | o **Cu**; 39,7 s "Cobre" aparece e pulsa 2×; 45 s volta |
+| `1.4` · 54 s | **o segundo quiz**, com os de nome diferente (arrastado o áudio para depois dos 54 s, abre quando ele acaba) |
 
 Tudo o que anima é **função do tempo da narração** (`efeitosDoTempo`):
 a altura de cada coluna na onda é um seno do segundo em que o áudio
@@ -209,7 +215,8 @@ trilha e a outra.
 
 ### O quiz
 
-No fim da `1.3A` ou da `1.3B`, **seis perguntas** seguidas. Um elemento
+No fim da `1.3A` ou da `1.3B`, e outra vez aos 54 s da `1.4`, **seis
+perguntas** seguidas. Um elemento
 sai da casa dele e vem para a frente, a girar, junto com o cartão **Qual
 o nome desse elemento?** — o cubo à esquerda, com um **?** no lugar do nome
 (que está escrito nas seis faces e daria a resposta), e as três respostas
@@ -234,9 +241,10 @@ efeito sonoro espera o anterior acabar.
 **No fim, o cartão da nota**: de 1 a 10, pela fração de acertos
 (acertos ÷ 6 × 10, arredondado, nunca abaixo de 1 — 6 acertos dão 10, 5
 dão 8, 4 dão 7, 3 dão 5), com uma mensagem sempre positiva que muda com a
-nota, e o som `statistics`. O play volta, já carregado com a narração
-seguinte, `audio_tabela_1.4.mp3` — que ainda não existe: enquanto não for
-gravada, o botão aparece apagado e avisa.
+nota, e o som `statistics`. Depois do quiz da `1.3A`/`1.3B` o play volta, já
+carregado com a `1.4`. Depois do quiz da `1.4` ainda não há narração
+seguinte: o cartão fica sem a seta "Toque no play para continuar", e o
+play não volta (`DEPOIS_DO_QUIZ` diz o que vem depois de cada quiz).
 
 Os elementos saem de listas (`QUIZ_UMA`, `QUIZ_DUAS`) em que **o símbolo
 sai do nome em português** — Carbono dá C, Cobalto dá Co. Ficaram de fora
@@ -248,6 +256,14 @@ item é a certa; as outras são nomes de verdade, com a mesma inicial
 letras de outra**, sem contar acentos: com Cobalto e Cobre lado a lado, o
 "Co" do cubo servia aos dois, e o aluno não tinha como decidir pelo
 símbolo.
+
+O quiz da `1.4` usa a lista contrária, `QUIZ_DIFERENTES`: só os de **nome
+bem diferente do português** — Na (Sódio), K (Potássio), Cu (Cobre), Ag
+(Prata), Au (Ouro), Hg (Mercúrio), Pb (Chumbo), Sn (Estanho), Sb
+(Antimônio), W (Tungstênio), P (Fósforo), S (Enxofre). As opções erradas
+são armadilhas de letra, nomes que parecem sair do símbolo (Nióbio para
+Na, Criptônio para K, Platina para Pb), e a regra das duas primeiras
+letras vale do mesmo jeito.
 
 A volta do elemento é a ida ao contrário: a ida sai depressa e chega
 devagar, então a volta sai devagar e chega depressa — a fração do

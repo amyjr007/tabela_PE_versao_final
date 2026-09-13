@@ -588,10 +588,16 @@ body.montagem .capa .digitado{pointer-events:auto}
    têm o nome a começar pelo símbolo */
 .pc.luz-onda .face  {box-shadow:0 0 0 2px var(--ouro-luz), 0 0 18px 4px rgba(226,162,43,.6)}
 .pc.luz-marrom .face{box-shadow:0 0 0 2px #8B5A2B, 0 0 24px 7px rgba(139,90,43,.8)}
+/* e vinho a da "1.4": os que têm o símbolo sem nada a ver com o nome */
+.pc.luz-vinho .face {box-shadow:0 0 0 2px #9C2F4A, 0 0 24px 7px rgba(156,47,74,.75)}
+/* o nome escondido enquanto o elemento está lá fora ("1.4"): some, e na
+   hora dele volta a aparecer, e pulsa */
+.pc.nome-oculto .face em{color:transparent;text-shadow:none}
 /* o F, o Ca e o O, a crescer no lugar: por cima de todos */
 .pc.zoom-el{z-index:46}
 .pc.zoom-el .face{box-shadow:0 0 0 2px var(--ouro-luz), 0 16px 36px rgba(12,10,32,.35),
                               0 0 36px rgba(226,162,43,.55)}
+.pc.zoom-el .face em{transition:color .35s ease, transform 80ms linear}
 
 /* medir é fotografar em repouso, também por dentro do cubo */
 .pc.medindo *{transition:none!important}
@@ -680,6 +686,7 @@ body.montagem .capa .digitado{pointer-events:auto}
 .nota-de{font-size:36px;color:var(--tinta-faint);margin-left:4px}
 .nota-acertos{font-size:20px;color:var(--tinta-dim);margin-bottom:14px}
 .nota-msg{font-family:var(--display);font-weight:600;font-size:26px;line-height:1.25;color:var(--ouro)}
+.quiz.sem-seta .nota-seta{display:none}
 .nota-seta{margin-top:20px;font-family:var(--mono);font-size:12px;letter-spacing:.2em;
   text-transform:uppercase;color:var(--tinta-faint)}
 
@@ -1234,7 +1241,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v1.5';
+const VERSAO = 'v1.6';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2020,7 +2027,8 @@ const TP = {
     this.todos().forEach(c => {
       const cubo = c.querySelector('.cubo');
       c.classList.remove('sobe','verde','eleito','foco-num','foco-massa','pulsa','pergunta','sem-nome',
-                         'pulsa-sym','pulsa-nome','luz-onda','luz-marrom','zoom-el','pulsa-l2');
+                         'pulsa-sym','pulsa-nome','luz-onda','luz-marrom','zoom-el','pulsa-l2',
+                         'luz-vinho','nome-oculto');
       c.style.removeProperty('--psym');
       c.style.removeProperty('--pl2');
       c.style.removeProperty('--pnome');
@@ -2245,7 +2253,7 @@ const TRILHAS = {
   '1.2':  'Audios/audio_tabela_1.2.mp3',   /* o elemento escolhido */
   '1.3A': 'Audios/audio_tabela_1.3A.mp3',  /* se o símbolo dele tem uma letra */
   '1.3B': 'Audios/audio_tabela_1.3B.mp3',  /* se tem duas */
-  '1.4':  'Audios/audio_tabela_1.4.mp3'    /* depois do quiz — ainda por gravar */
+  '1.4':  'Audios/audio_tabela_1.4.mp3'    /* o sódio, o chumbo e o cobre; e o quiz deles */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1'];
@@ -2555,6 +2563,7 @@ const SEQ = {
     QUIZ.fecha();
     if (DIG_VEU) DIG_VEU.limpa();
     ONDA_FAM.suja = ONDA_118.suja = false;
+    this.quiz14 = false;
     VERDE.z = -1;
   },
   /* cada trilha, ao acabar, diz o que vem a seguir */
@@ -2580,6 +2589,9 @@ const SEQ = {
       carregaTrilha(sym.length === 1 ? '1.3A' : '1.3B');
     }
     else if (id === '1.3A' || id === '1.3B') QUIZ.abre(id);
+    /* o quiz da "1.4" abre aos 54 s; se o áudio chegou ao fim sem
+       passar por lá (arrastado para a frente), abre agora */
+    else if (id === '1.4' && !this.quiz14 && !QUIZ.aberto){ this.quiz14 = true; QUIZ.abre('1.4'); }
   },
   /* o toque na tela escura: ela desfaz-se, e a narração segue */
   continua(){
@@ -2707,6 +2719,7 @@ function efeitosDoTempo(){
   if (trilhaAtual === '1.3A' || trilhaAtual === '1.3B') efeitos13(t);
   if (trilhaAtual === '1.3A') efeitos13A(t);
   if (trilhaAtual === '1.3B') efeitos13B(t);
+  if (trilhaAtual === '1.4')  efeitos14(t);
 }
 
 /* A ONDA DAS FAMÍLIAS — de 2,6 a 4,8 s: cada coluna sobe e desce, uma
@@ -2939,7 +2952,7 @@ function zoomNoLugar(t, o){
   if (!ativo && !o.suja) return;
   const cubo = c.querySelector('.cubo');
   if (!ativo){
-    c.classList.remove('zoom-el', 'sobe', 'pulsa-nome');
+    c.classList.remove('zoom-el', 'sobe', 'pulsa-nome', 'nome-oculto');
     ['--onda', '--tsobe', '--pnome'].forEach(v => c.style.removeProperty(v));
     cubo.style.setProperty('--ry', '0deg');
     c.dataset.ry = 0;
@@ -2951,6 +2964,9 @@ function zoomNoLugar(t, o){
   else if (t < o.volta)  e = 1;
   else                   e = 1 - Math.pow((t - o.volta)/D, 3);
   c.classList.add('zoom-el', 'sobe');
+  /* com 'esconde', o nome some quando o elemento sai, e volta na hora
+     em que pulsa */
+  c.classList.toggle('nome-oculto', !!o.esconde && t < o.pulsa);
   c.style.setProperty('--tsobe', '90ms');
   c.style.setProperty('--onda', (1 + (E - 1)*e).toFixed(3));
   cubo.style.setProperty('--dur', '90ms');
@@ -3040,6 +3056,38 @@ function efeitos13A(t){
   ondaDeUmEmUm(t, EV13A.duasLetras, LISTA_DUAS);
   ondaDeUmEmUm(t, EV13A.iniciais,   LISTA_INICIAIS);
   EV13A.zooms.forEach(z => zoomNoLugar(t, z));
+}
+/* ============================================================
+   OS EVENTOS DA "1.4" — os símbolos que não saem do nome em português
+     1 → 8 s      oito deles crescem, um a um, com luz vinho
+     10 s         o Na gira e cresce no lugar, e o nome some;
+                  15 s "Sódio" aparece e pulsa 2×; 24 s volta
+     25 s         o Pb; 29 s "Chumbo" aparece e pulsa 2×; 34 s volta
+     35,6 s       o Cu; 39,7 s "Cobre" aparece e pulsa 2×; 45 s volta
+     54 s         o quiz, agora com os de nome diferente
+   O zoom é o mesmo da "1.3A" (zoomNoLugar). Tudo é função do tempo da
+   narração, menos o quiz: aberto, fica aberto.
+   ============================================================ */
+const EV14 = {
+  /* Na, Pb e Cu ficam de fora: são eles que aparecem logo a seguir */
+  oito:['P','K','Ag','Sn','Sb','W','Au','Hg'],
+  onda:{ de:1.0, ate:8.0, largura:1.0, cresce:0.6, classe:'luz-vinho', suja:false },
+  zooms:[
+    { sym:'Na', cresce:10.0, pulsa:15.0, volta:24.0, esconde:true, suja:false },
+    { sym:'Pb', cresce:25.0, pulsa:29.0, volta:34.0, esconde:true, suja:false },
+    { sym:'Cu', cresce:35.6, pulsa:39.7, volta:45.0, esconde:true, suja:false }
+  ],
+  quiz:54.0
+};
+let LISTA_14 = null;
+function efeitos14(t){
+  if (!LISTA_14) LISTA_14 = EV14.oito.map(s => TP.cubo(s)).filter(Boolean);
+  ondaDeUmEmUm(t, EV14.onda, LISTA_14);
+  EV14.zooms.forEach(z => zoomNoLugar(t, z));
+  if (t >= EV14.quiz && !SEQ.quiz14 && !QUIZ.aberto){
+    SEQ.quiz14 = true;
+    QUIZ.abre('1.4');
+  }
 }
 function efeitos13(t){
   const c = SEQ.eleito;
@@ -3149,6 +3197,28 @@ const QUIZ_DUAS = [
   { z:24, op:['Cromo','Cobre','Cério'] }
 ];
 
+/* DEPOIS DA "1.4": só os de NOME BEM DIFERENTE do português — o símbolo
+   vem do latim (Natrium, Plumbum, Cuprum…) ou de outra língua. As
+   opções erradas são armadilhas de letra: nomes que parecem sair do
+   símbolo (Nióbio para Na, Criptônio para K, Platina para Pb). A mesma
+   regra das duas primeiras letras vale aqui. */
+const QUIZ_DIFERENTES = [
+  { z:11, op:['Sódio','Nióbio','Neônio'] },
+  { z:19, op:['Potássio','Criptônio','Cálcio'] },
+  { z:29, op:['Cobre','Cúrio','Césio'] },
+  { z:47, op:['Prata','Argônio','Alumínio'] },
+  { z:79, op:['Ouro','Alumínio','Ósmio'] },
+  { z:80, op:['Mercúrio','Háfnio','Hélio'] },
+  { z:82, op:['Chumbo','Platina','Paládio'] },
+  { z:50, op:['Estanho','Selênio','Silício'] },
+  { z:51, op:['Antimônio','Samário','Silício'] },
+  { z:74, op:['Tungstênio','Titânio','Vanádio'] },
+  { z:15, op:['Fósforo','Potássio','Paládio'] },
+  { z:16, op:['Enxofre','Silício','Sódio'] }
+];
+/* a narração que o play carrega depois de cada quiz (null: ainda não há) */
+const DEPOIS_DO_QUIZ = { '1.3A':'1.4', '1.3B':'1.4', '1.4':null };
+
 /* os efeitos sonoros tocam e avisam quando acabam — é assim que a cena
    espera cada um antes de dar o passo seguinte. Um arquivo que não
    carregue não prende a aula: conta como acabado. */
@@ -3207,7 +3277,8 @@ const QUIZ = {
 
   abre(trilha){
     const c = SEQ.eleito;
-    const lista = (trilha === '1.3A' ? QUIZ_UMA : QUIZ_DUAS)
+    this.origem = trilha;
+    const lista = (trilha === '1.3A' ? QUIZ_UMA : trilha === '1.3B' ? QUIZ_DUAS : QUIZ_DIFERENTES)
       .filter(p => !c || p.z !== +c.dataset.z);
     this.itens = embaralha(lista.slice()).slice(0, QUIZ_TOTAL);
     this.passo = 0;
@@ -3342,8 +3413,11 @@ const QUIZ = {
     this.mostrandoNota = true;
     this.nota = nota;
     tocaEfeito('statistics');
-    stage.classList.remove('em-quiz');
-    carregaTrilha('1.4');
+    /* o play volta só se houver narração a seguir; depois do quiz da
+       "1.4" ainda não há, e o cartão fica sem a seta */
+    const proxima = DEPOIS_DO_QUIZ[this.origem];
+    cx.classList.toggle('sem-seta', !proxima);
+    if (proxima){ stage.classList.remove('em-quiz'); carregaTrilha(proxima); }
   },
   /* começada a narração seguinte, o cartão da nota sai de cena */
   saiDaNota(){
