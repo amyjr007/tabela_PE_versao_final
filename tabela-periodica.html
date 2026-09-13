@@ -886,8 +886,25 @@ body.montagem .capa .digitado{pointer-events:auto}
 .quiz3{position:absolute;left:170px;top:178px;width:664px;z-index:26;pointer-events:none;
   padding:16px 26px 18px;border-radius:18px;background:rgba(255,255,255,.96);
   border:1px solid var(--indigo-dim);box-shadow:0 16px 40px rgba(32,28,66,.18);
-  opacity:0;transform:translateY(-8px);transition:opacity .35s ease, transform .35s ease}
-.quiz3.on{opacity:1;transform:none}
+  /* a esteira do quiz do professor: a questão respondida sai pela
+     direita no mesmo instante em que a seguinte entra pela esquerda */
+  opacity:0;translate:-1240px 0;
+  transition:opacity .3s ease, translate .52s cubic-bezier(.24,.84,.3,1)}
+.quiz3.on{opacity:1;translate:0 0}
+.quiz3.sai{opacity:0;translate:1240px 0;
+  transition:opacity .46s ease .14s, translate .5s cubic-bezier(.45,.02,.62,1)}
+/* O GIRO DA TROCA, também o do professor: trocada a questão, a tabela
+   inteira gira, uma carta pouco depois da vizinha, na diagonal,
+   encolhendo um pouco no meio da volta. Aqui o giro é o das FACES: o
+   cubo dá uma volta em pé (eixo y) e mostra os lados. Vai nas
+   propriedades 'rotate' e 'scale', e não no transform, que é o giro
+   do cubo e continua valendo. */
+@keyframes giraCarta3{
+  0%  {rotate:y 0deg;   scale:1}
+  50% {rotate:y 180deg; scale:.82}
+  100%{rotate:y 360deg; scale:1}
+}
+.mesa.gira-troca .pc .cubo{animation:giraCarta3 .72s var(--giro-atraso,0ms) cubic-bezier(.42,0,.36,1)}
 .q3-marca{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
 .q3-q{margin-top:6px;font-family:var(--display);font-weight:600;font-size:26px;line-height:1.25;color:var(--indigo)}
 .q3-msg{min-height:24px;margin-top:8px;font-family:var(--display);font-weight:600;font-size:18px;line-height:1.3}
@@ -1672,7 +1689,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v3.4';
+const VERSAO = 'v3.5';
 
 /* ============================================================
    OS ELEMENTOS
@@ -3823,8 +3840,6 @@ function montaCenaDoSlide3(){
   if (!sl || sl.querySelector('.veu-moseley')) return;
   sl.insertAdjacentHTML('beforeend',
     '<div class="texto-colunas" aria-live="polite"></div>' +
-    '<div class="quiz3" aria-live="polite"><div class="q3-marca"></div>' +
-      '<div class="q3-q"></div><div class="q3-msg"></div></div>' +
     '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>' +
     '<div class="clarao2" aria-hidden="true"></div>' +
     '<div class="veu veu-moseley" aria-live="polite">' +
@@ -4029,7 +4044,34 @@ function perguntasDoCriterio(){
 
 const QUIZ3 = {
   aberto:false, passo:0, itens:[], acertos:0, travado:false, g:0,
-  caixa(){ return slides[2].querySelector('.quiz3'); },
+  /* a caixa em cena: a que ainda não está a sair */
+  caixa(){ return slides[2].querySelector('.quiz3:not(.sai)'); },
+  /* a caixa de saída vai embora pela direita, e só depois da viagem
+     sai do DOM */
+  despede(){
+    let houve = false;
+    slides[2].querySelectorAll('.quiz3:not(.sai)').forEach(e => {
+      e.classList.add('sai');
+      setTimeout(() => e.remove(), 700);
+      houve = true;
+    });
+    return houve;
+  },
+  giroT:null,
+  /* a volta da tabela, na onda diagonal (a mesma do professor) */
+  giraTabela(){
+    const m = slides[2].querySelector('.mesa');
+    if (!m) return;
+    TP.todos().forEach(c => {
+      const p = posDe(+c.dataset.z);
+      c.style.setProperty('--giro-atraso', ((p.col + p.row) * 22) + 'ms');
+    });
+    m.classList.remove('gira-troca');
+    void m.offsetWidth;
+    m.classList.add('gira-troca');
+    clearTimeout(this.giroT);
+    this.giroT = setTimeout(() => m.classList.remove('gira-troca'), 1500);
+  },
   /* abrir: o som do quiz e a pergunta 1, juntos */
   abre(){
     if (atual !== 2) return;
@@ -4039,17 +4081,24 @@ const QUIZ3 = {
     const g = ++this.g;
     /* o play sai de cena: quem faz a aula andar é o toque na tabela */
     stage.classList.add('em-quiz');
-    this.caixa().classList.add('on');
+    slides[2].querySelectorAll('.quiz3').forEach(e => e.remove());
     tocaEfeito('Audios/quiz1.mp3');
     this.apresenta(g);
   },
   apresenta(g){
     if (g !== this.g) return;
-    const p = this.itens[this.passo], cx = this.caixa();
-    cx.querySelector('.q3-marca').textContent = 'Pergunta ' + (this.passo + 1) + ' de ' + this.itens.length;
+    const p = this.itens[this.passo];
+    /* a tabela gira só na TROCA: a primeira questão não substitui ninguém */
+    if (this.despede()) this.giraTabela();
+    const cx = document.createElement('div');
+    cx.className = 'quiz3';
+    cx.setAttribute('aria-live', 'polite');
+    cx.innerHTML = '<div class="q3-marca"></div><div class="q3-q"></div><div class="q3-msg"></div>';
+    cx.querySelector('.q3-marca').textContent = 'Questão ' + (this.passo + 1) + ' de ' + this.itens.length;
     cx.querySelector('.q3-q').textContent = p.q;
-    const msg = cx.querySelector('.q3-msg');
-    msg.textContent = ''; msg.className = 'q3-msg';
+    slides[2].appendChild(cx);
+    cx.getBoundingClientRect();        /* nasce fora da tela, à esquerda */
+    cx.classList.add('on');
     this.travado = false;
   },
   /* a resposta: o toque num card da tabela */
@@ -4093,7 +4142,8 @@ const QUIZ3 = {
   /* o fim: o cartão do resultado, com Refazer (outro quiz, outro sorteio)
      e Continuar (fecha o quiz; o botão do quiz fica no canto) */
   resultado(){
-    this.caixa().classList.remove('on');
+    /* a última também sai pela direita: é o cartão que toma a cena */
+    this.despede();
     const n = this.itens.length, a = this.acertos;
     cartaoDoResultado(Math.round(a / n * 100) / 10,
       '<em class="acerto">' + a + '</em> certas · <em class="erro">' + (n - a) + '</em> erradas',
@@ -4104,8 +4154,12 @@ const QUIZ3 = {
     this.g++;
     this.aberto = false; this.travado = false;
     stage.classList.remove('em-quiz');
-    const cx = slides[2] && this.caixa();
-    if (cx) cx.classList.remove('on');
+    clearTimeout(this.giroT);
+    if (slides[2]){
+      slides[2].querySelectorAll('.quiz3').forEach(e => e.remove());
+      const m = slides[2].querySelector('.mesa');
+      if (m) m.classList.remove('gira-troca');
+    }
     if (slides[2]) slides[2].querySelectorAll('.certa3, .errada3').forEach(x => x.classList.remove('certa3', 'errada3'));
     this.tiraCartao();
   }
@@ -4778,7 +4832,7 @@ const QUIZ = {
     const item = this.itens[this.passo];
     const cx = this.caixa();
     cx.querySelector('.quiz-marca').textContent =
-      'Pergunta ' + (this.passo + 1) + ' de ' + this.itens.length;
+      'Questão ' + (this.passo + 1) + ' de ' + this.itens.length;
     const msg = cx.querySelector('.quiz-msg');
     msg.textContent = ''; msg.className = 'quiz-msg';
     const ops = cx.querySelector('.quiz-ops');

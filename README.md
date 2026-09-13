@@ -82,7 +82,7 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 | fim da `2.4` | o **37** brilha; tocado, a tabela inteira arruma-se — as colunas juntam-se, o H volta, e os que faltam voam para casa um de cada vez — e, montada, **brilha**, com `funfare`, confetes e `applause` |
 | depois da festa | toca a **`2.5`**; a tabela volta a ser de cubos (um toque num card fá-lo girar) |
 | fim da `2.5` | o botão do canto troca o play por um **ponto de interrogação**: o quiz |
-| o quiz | toca `quiz1` e abre a pergunta 1 de 8 — ver "O quiz do slide 3" |
+| o quiz | toca `quiz1` e abre a questão 1 de 8 — ver "O quiz do slide 3" |
 | — | todo salto é curvo: uma Bézier com o ponto de controlo ao lado do meio do caminho (`pontoDoArco`), na desordem, no encaixe e na montagem final |
 
 Na desordem, **só os 48 primeiros (do 1 ao 48) ficam na tela**, todos na
@@ -132,6 +132,12 @@ cada vez:
 6. o que fica logo abaixo de X, na mesma coluna *(nova)*;
 7. outro elemento da mesma linha de X *(nova)*;
 8. o último elemento da coluna de X *(nova)*.
+
+A troca de uma questão para a outra é a do quiz do professor: a caixa
+respondida sai pela direita enquanto a nova entra pela esquerda, e a
+tabela inteira gira as faces dos cubos, em onda diagonal (só na
+troca, não na primeira). O rótulo é "Questão N de 8" (e "Questão N de
+6" no quiz do slide 2).
 
 Os sons são os do quiz do slide 2: no **acerto**, o card fica verde, com
 confetes, `funfare` e `applause`, e depois a voz — `exato!` e `muitobem`
