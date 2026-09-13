@@ -81,8 +81,13 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 | `2.4` · 24 s | o texto apaga-se |
 | fim da `2.4` | o **37** brilha; tocado, a tabela inteira arruma-se — as colunas juntam-se, o H volta, e os que faltam voam para casa um de cada vez — e, montada, **brilha**, com `funfare`, confetes e `applause` |
 | depois da festa | toca a **`2.5`**; a tabela volta a ser de cubos (um toque num card fá-lo girar) |
-| fim da `2.5` | o botão do canto troca o play por um **ponto de interrogação**: o quiz |
-| o quiz | toca `quiz1` e abre a questão 1 de 8 — ver "O quiz do slide 3" |
+| `2.5` · 4,8 s | a tabela abre-se em **7 linhas**, com os números delas (o modelo do professor) |
+| `2.5` · 6–8 s | brilho verde e aumento sutil do 1 ao 118, forte na frente e a apagar atrás |
+| `2.5` · 9,1 s | a tabela passa às **18 colunas**, com os números delas |
+| `2.5` · 12–16 s | o mesmo brilho, coluna a coluna (de cima para baixo) |
+| fim da `2.5` | a tabela junta-se e toca a **`2.5A`**; daí em diante, um toque em qualquer lugar da tabela a abre em linhas, o seguinte em colunas, o terceiro fecha |
+| fim da `2.5A` | o botão do canto troca o play por um **ponto de interrogação**: o quiz |
+| o quiz | junta a tabela e abre a questão 1 de 8 — ver "O quiz do slide 3" |
 | — | todo salto é curvo: uma Bézier com o ponto de controlo ao lado do meio do caminho (`pontoDoArco`), na desordem, no encaixe e na montagem final |
 
 Na desordem, **só os 48 primeiros (do 1 ao 48) ficam na tela**, todos na

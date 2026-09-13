@@ -376,7 +376,32 @@ body.montagem .capa .digitado{pointer-events:auto}
    pôr por cima o cubo que está girando ou aceso. */
 .mesa{
   position:absolute;inset:0;
-  transform:translate(var(--px,0px),var(--py,0px)) scale(var(--zoom,1));
+  /* --abre: o encolher da tabela aberta em linhas ou em colunas (LC25) */
+  transform:translate(var(--px,0px),var(--py,0px)) scale(calc(var(--zoom,1) * var(--abre,1)));
+}
+/* A TABELA ABERTA (LC25): as cartas andam para as linhas ou para as
+   colunas, os números vão junto, e a mesa encolhe um fio para caber */
+.mesa.lc25{transition:transform .55s cubic-bezier(.3,.85,.3,1)}
+.mesa.lc25 .pc{transition:left .55s cubic-bezier(.3,.85,.3,1), top .55s cubic-bezier(.3,.85,.3,1),
+  transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease, opacity .45s ease}
+.mesa.lc25 .casa{transition:left .55s cubic-bezier(.3,.85,.3,1), top .55s cubic-bezier(.3,.85,.3,1), opacity .3s ease}
+.mesa.aberta25 .casa:not(.serie){opacity:0}
+.mesa.lc25 .eixo{transition:left .55s cubic-bezier(.3,.85,.3,1), top .55s cubic-bezier(.3,.85,.3,1),
+  opacity .3s, color .25s, background .25s, border-color .25s, transform .25s}
+/* o número no modelo do professor: a bolinha índigo, com o aro; entra
+   em cascata — as linhas pela esquerda, as colunas caindo de cima */
+.eixo.prof{width:30px;height:30px;font-family:var(--display);font-weight:600;font-size:16px;
+  letter-spacing:0;color:var(--indigo);background:rgba(76,63,191,.12);border:1.5px solid var(--indigo);
+  animation:numLinha25 .26s cubic-bezier(.2,1.5,.4,1) var(--atraso,0ms) backwards}
+.eixo.prof[data-grupo]{width:27px;height:27px;font-size:14px;animation-name:numColuna25}
+.eixo.some25{opacity:0}
+@keyframes numLinha25{
+  from{opacity:0;transform:translate(calc(-50% - 24px),-50%) scale(.5)}
+  to  {opacity:1;transform:translate(-50%,-50%) scale(1)}
+}
+@keyframes numColuna25{
+  from{opacity:0;transform:translate(-50%,calc(-50% - 24px)) scale(.5)}
+  to  {opacity:1;transform:translate(-50%,-50%) scale(1)}
 }
 
 /* as coordenadas da tabela: o grupo em cima, o período à esquerda.
@@ -1689,7 +1714,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v3.5';
+const VERSAO = 'v3.6';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2146,6 +2171,8 @@ function montaTabela(i){
       /* no slide 3, durante o encaixe, o toque encaixa */
       /* no quiz do slide 3, responde-se tocando na tabela */
       if (i === 2 && QUIZ3.aberto){ QUIZ3.toca(c); return; }
+      /* depois da "2.5", o toque abre e fecha a tabela (ver LC25) */
+      if (i === 2 && LC25.livre) return;
       if (i === 2 && ENCAIXE.ativo){ ENCAIXE.toca(c); return; }
       if (i === 2 && FINAL.esperando){ FINAL.toca(c); return; }
       if (SEQ.escolhendo) SEQ.escolhe(c); else TP.gira(z);
@@ -2773,7 +2800,8 @@ const TRILHAS = {
   '2.2':  'Audios/audio_tabela_2.2.mp3',   /* o 1 encaixado */
   '2.3':  'Audios/audio_tabela_2.3.mp3',   /* a tabela arrumada até ao 36: o critério 2 */
   '2.4':  'Audios/audio_tabela_2.4.mp3',   /* as colunas: os semelhantes */
-  '2.5':  'Audios/audio_tabela_2.5.mp3'    /* a tabela montada, e o convite ao quiz */
+  '2.5':  'Audios/audio_tabela_2.5.mp3',   /* a tabela montada: as linhas e as colunas */
+  '2.5A': 'Audios/audio_tabela_2.5A.mp3'   /* o convite a abrir a tabela com o toque */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2'];
@@ -2832,7 +2860,8 @@ const ROTEIROS = {
   '2.2':  [],
   '2.3':  [],
   '2.4':  [],
-  '2.5':  []
+  '2.5':  [],
+  '2.5A': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -3144,8 +3173,11 @@ const SEQ = {
     else if (id === '2.1') ENCAIXE.comeca();
     /* o fim da "2.4": o 37 brilha, e o toque nele arruma a tabela toda */
     else if (id === '2.4') FINAL.chama();
-    /* o fim da "2.5": o botão do canto vira o do quiz */
-    else if (id === '2.5') viraQuiz(true);
+    /* o fim da "2.5": a tabela junta-se, toca a "2.5A" e o toque na
+       tabela passa a abri-la (em linhas, em colunas, e fecha) */
+    else if (id === '2.5') LC25.fimDa25();
+    /* o fim da "2.5A": o botão do canto vira o do quiz */
+    else if (id === '2.5A') viraQuiz(true);
   },
   /* o quiz de cada trilha abre uma vez só */
   abreQuiz(id){
@@ -3175,6 +3207,7 @@ const SEQ = {
     ENCAIXE.zera();
     FINAL.zera();
     QUIZ3.fecha();
+    LC25.zera();
     COLUNAS_24.suja = true;
     if (DIG_COL) DIG_COL.limpa();
     /* nenhum card fica marcado como "em casa": o que o encaixe ou um
@@ -3206,7 +3239,7 @@ const SEQ = {
   /* sair do slide 3 com o pedido de toque em cena: o play volta */
   deixa2(){
     this.aguardaToque2 = false;
-    if (atual === 2){ ENCAIXE.zera(); FINAL.zera(); QUIZ3.fecha(); }
+    if (atual === 2){ ENCAIXE.zera(); FINAL.zera(); QUIZ3.fecha(); LC25.zera(); }
     stage.classList.remove('em-toque');
   },
   /* o toque na tela escura: ela desfaz-se, e a narração segue */
@@ -3795,7 +3828,7 @@ const ONDA_VERDE = { de:14.0, meio:15.6, ate:17.2, cauda:3, suja:false };
    sem ele, que era da desordem de uma vez só). */
 const DESORDEM = { de:18.0, dura:0.8, fila:0.06, curva:0.35, giro:12, clarao:0, suja:false, pousou:false };
 /* as trilhas do slide 3 depois da "2": nelas a desordem já está feita */
-const DEPOIS_DA_2 = ['2.1', '2.2', '2.3', '2.4', '2.5'];
+const DEPOIS_DA_2 = ['2.1', '2.2', '2.3', '2.4', '2.5', '2.5A'];
 const FRASES_CRITERIO1 = [
   { de:39.0, ate:39.8, txt:'Critério 1' },
   { de:40.2, ate:44.0, txt:'Os elementos serão organizados em linhas,\nem ordem crescente de número atômico.' }
@@ -3889,6 +3922,7 @@ function efeitos2(t){
   ondaVerde(t);
   desordem(t);
   colunas24(t);
+  LC25.tick(t);
   cena2(t);
 }
 
@@ -3960,6 +3994,176 @@ function colunas24(t){
   o.suja = true;
   if (DIG_COL) DIG_COL.escreve(t);
 }
+
+/* ============================================================
+   A TABELA ABERTA — a narração "2.5" e o toque depois dela
+   Aos 4,8 s a tabela abre-se em 7 linhas, com os números delas no
+   modelo do professor; dos 6 aos 8 s um brilho verde com um aumento
+   sutil corre do 1 ao 118, forte na frente e a apagar atrás. Aos 9,1 s
+   ela troca para as 18 colunas, com os números delas, e dos 12 aos 16 s
+   o mesmo brilho corre coluna a coluna (de cima para baixo). No fim da
+   narração ela junta-se, toca a "2.5A", e daí em diante um toque em
+   qualquer lugar da tabela a abre em linhas, o seguinte em colunas, e o
+   terceiro fecha. A leitura (linhas, colunas, junta) é a do professor:
+   o mesmo vão de 14 px, e a mesa encolhe para caber.
+   ============================================================ */
+const LC25 = {
+  linhas:  { de:4.8, onda:{ de:6.0,  ate:8.0  } },
+  colunas: { de:9.1, onda:{ de:12.0, ate:16.0 } },
+  vao:14, zoom:{ linhas:.9, colunas:.88 },
+  cauda:12,          /* por quantos cards o brilho se apaga atrás da frente */
+  cresce:.1,         /* o aumento sutil, na frente da onda */
+  modo:'junta', livre:false, suja:false, ouve:false, _ordL:null, _ordC:null,
+  mesa(){ return slides[2] && slides[2].querySelector('.mesa'); },
+  pos(z, modo){
+    const p = posDe(z);
+    let x = xDaColuna(p.col), y = yDaLinha(p.row);
+    if (modo === 'linhas')  y += (p.row - 4) * this.vao;
+    if (modo === 'colunas') x += (p.col - 9.5) * this.vao;
+    return { x, y };
+  },
+  /* a tabela numa das três leituras: as cartas, os números e o zoom */
+  poe(modo){
+    const m = this.mesa();
+    if (!m || this.modo === modo) return;
+    this.modo = modo;
+    m.classList.add('lc25');
+    m.style.setProperty('--abre', modo === 'junta' ? 1 : this.zoom[modo]);
+    /* aberta, as sombras das casas saem (ficariam soltas nos vãos), e os
+       bilhetes das séries (57–71, 89–103) andam com a coluna 3 */
+    m.classList.toggle('aberta25', modo !== 'junta');
+    this.series(m, modo);
+    TP.todos().forEach(c => {
+      const a = this.pos(+c.dataset.z, modo);
+      c.style.left = a.x.toFixed(1) + 'px';
+      c.style.top  = a.y.toFixed(1) + 'px';
+    });
+    const vL = modo === 'linhas' ? this.vao : 0, vC = modo === 'colunas' ? this.vao : 0;
+    /* os números das linhas, à esquerda da coluna 1 (nas colunas saem:
+       a tabela alarga-se e não sobra lugar para eles) */
+    m.querySelectorAll('.eixo[data-periodo]').forEach(e => {
+      const p = +e.dataset.periodo, prof = modo === 'linhas';
+      e.classList.toggle('prof', prof);
+      e.classList.toggle('some25', modo === 'colunas');
+      e.style.setProperty('--atraso', (p - 1) * 40 + 'ms');
+      e.style.left = (xDaColuna(1) - LADO/2 - (prof ? 26 : 19)).toFixed(1) + 'px';
+      e.style.top  = (yDaLinha(p) + (p - 4) * vL).toFixed(1) + 'px';
+    });
+    /* e os das colunas, em cima da primeira linha */
+    m.querySelectorAll('.eixo[data-grupo]').forEach(e => {
+      const g = +e.dataset.grupo, prof = modo === 'colunas';
+      e.classList.toggle('prof', prof);
+      e.style.setProperty('--atraso', (g - 1) * 26 + 'ms');
+      e.style.left = (xDaColuna(g) + (g - 9.5) * vC).toFixed(1) + 'px';
+      e.style.top  = (yDaLinha(1) - 3 * vL - LADO/2 - (prof ? 22 : 15)).toFixed(1) + 'px';
+    });
+  },
+  series(m, modo){
+    m.querySelectorAll('.casa.serie').forEach(d => {
+      const row = d.classList.contains('act') ? 7 : 6;
+      d.style.left = (xDaColuna(3) + (modo === 'colunas' ? (3 - 9.5) * this.vao : 0)).toFixed(1) + 'px';
+      d.style.top  = (yDaLinha(row) + (modo === 'linhas' ? (row - 4) * this.vao : 0)).toFixed(1) + 'px';
+    });
+  },
+  ordemLinhas(){
+    return this._ordL || (this._ordL = TP.todos().slice().sort((a, b) => a.dataset.z - b.dataset.z));
+  },
+  ordemColunas(){
+    return this._ordC || (this._ordC = TP.todos().slice().sort((a, b) =>
+      (a.dataset.col - b.dataset.col) || (a.dataset.linha - b.dataset.linha)));
+  },
+  /* o relógio da "2.5": a leitura da vez, e a onda de brilho */
+  tick(t){
+    if (trilhaAtual !== '2.5' || !FINAL.feito){ if (this.suja) this.apaga(); return; }
+    /* acabada a narração (o toque já livre), quem manda na tabela é o aluno:
+     o relógio parado no fim da "2.5" não a volta a abrir */
+    if (this.livre) return;
+    this.poe(t >= this.colunas.de ? 'colunas' : t >= this.linhas.de ? 'linhas' : 'junta');
+    const nasLinhas = t < this.colunas.de;
+    const o = nasLinhas ? this.linhas.onda : this.colunas.onda;
+    const ordem = nasLinhas ? this.ordemLinhas() : this.ordemColunas();
+    const frente = (t - o.de) / (o.ate - o.de) * (ordem.length - 1);
+    ordem.forEach((c, k) => {
+      /* forte na frente, a apagar-se atrás ao longo de 'cauda' cards */
+      const d = frente - k;
+      let b = t < o.de || d < -1 ? 0 : d < 0 ? d + 1 : Math.max(0, 1 - d / this.cauda);
+      if (b < .02) b = 0;
+      if (Math.abs(b - (c._b25 || 0)) < .01) return;
+      this.brilha(c, b);
+    });
+    this.suja = true;
+  },
+  brilha(c, b){
+    c._b25 = b;
+    c.classList.toggle('luz-verde', b > 0);
+    if (b > 0){
+      c.style.setProperty('--verde', b.toFixed(3));
+      c.style.setProperty('--onda', (1 + this.cresce * b).toFixed(3));
+      c.style.setProperty('--tsobe', '90ms');
+    } else ['--verde', '--onda', '--tsobe'].forEach(v => c.style.removeProperty(v));
+  },
+  apaga(){
+    TP.todos().forEach(c => { if (c._b25) this.brilha(c, 0); });
+    this.suja = false;
+  },
+  /* acabada a "2.5": junta, a "2.5A" e o toque livre */
+  fimDa25(){
+    this.apaga();
+    this.poe('junta');
+    this.liga();
+    setTimeout(() => { if (atual === 2 && trilhaAtual === '2.5') tocaTrilha('2.5A'); }, 400);
+  },
+  /* o toque em qualquer lugar da tabela — num card ou no vão entre eles */
+  liga(){
+    this.livre = true;
+    if (this.ouve || !slides[2]) return;
+    this.ouve = true;
+    slides[2].addEventListener('click', ev => {
+      if (!this.livre || QUIZ3.aberto || atual !== 2) return;
+      if (ev.target.closest && ev.target.closest('.quiz-cartao, button, .quiz3')) return;
+      if (this.naTabela(ev)) this.alterna();
+    });
+  },
+  naTabela(ev){
+    if (ev.target.closest && ev.target.closest('.pc')) return true;
+    let l = 1e9, t = 1e9, r = -1e9, b = -1e9;
+    TP.todos().forEach(c => {
+      const q = c.getBoundingClientRect();
+      l = Math.min(l, q.left); t = Math.min(t, q.top); r = Math.max(r, q.right); b = Math.max(b, q.bottom);
+    });
+    return ev.clientX >= l && ev.clientX <= r && ev.clientY >= t && ev.clientY <= b;
+  },
+  /* junta → linhas → colunas → junta */
+  alterna(){ this.poe({ junta:'linhas', linhas:'colunas', colunas:'junta' }[this.modo]); },
+  zera(){
+    this.livre = false;
+    this.apaga();
+    const m = this.mesa();
+    if (m && m.classList.contains('lc25')){
+      m.classList.remove('lc25', 'aberta25');
+      this.series(m, 'junta');
+      m.style.removeProperty('--abre');
+      m.querySelectorAll('.eixo').forEach(e => {
+        e.classList.remove('prof', 'some25');
+        e.style.removeProperty('--atraso');
+      });
+      m.querySelectorAll('.eixo[data-periodo]').forEach(e => {
+        e.style.left = (TAB_ESQ - 19).toFixed(1) + 'px';
+        e.style.top  = yDaLinha(+e.dataset.periodo).toFixed(1) + 'px';
+      });
+      m.querySelectorAll('.eixo[data-grupo]').forEach(e => {
+        e.style.left = xDaColuna(+e.dataset.grupo).toFixed(1) + 'px';
+        e.style.top  = (TAB_TOPO - 15).toFixed(1) + 'px';
+      });
+      if (this.modo !== 'junta') TP.todos().forEach(c => {
+        const a = alvoDe(+c.dataset.z);
+        c.style.left = a.x.toFixed(1) + 'px';
+        c.style.top  = a.y.toFixed(1) + 'px';
+      });
+    }
+    this.modo = 'junta';
+  }
+};
 
 /* ============================================================
    O QUIZ DO SLIDE 3 — as cinco perguntas do slide 2 do app do professor
@@ -4082,7 +4286,9 @@ const QUIZ3 = {
     /* o play sai de cena: quem faz a aula andar é o toque na tabela */
     stage.classList.add('em-quiz');
     slides[2].querySelectorAll('.quiz3').forEach(e => e.remove());
-    tocaEfeito('Audios/quiz1.mp3');
+    /* se o aluno a deixou aberta, a tabela junta-se: as respostas são
+       na tabela de sempre */
+    LC25.poe('junta');
     this.apresenta(g);
   },
   apresenta(g){
@@ -6038,13 +6244,14 @@ const NAV_TOPICOS = [
       TP.todos().filter(c => +c.dataset.z <= ENCAIXE.sozinhoAte).forEach(poeNoLugarJa);
       depoisDaMesa(g, () => tocaDesde('2.3', 0, g));
     } },
-  { titulo:'Quiz', sub:'a tabela montada, e o botão do quiz no canto', slide:2,
+  { titulo:'Quiz', sub:'a tabela montada, o toque que a abre e o botão do quiz no canto', slide:2,
     entra(v, g){
       semTransicaoUmInstante();
       trilhaAtual = -1;
-      carregaTrilha('2.5');
+      carregaTrilha('2.5A');
       TP.todos().forEach(poeNoLugarJa);
       FINAL.feito = true;
+      LC25.liga();
       depoisDaMesa(g, () => viraQuiz(true));
     } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1,
@@ -6167,7 +6374,7 @@ function topicoAtual(){
   if (atual === 2){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 2);
     const tr = trilhaAtual, t = som.currentTime || 0;
-    if (QUIZ3.aberto || tr === '2.5') return base + 3;
+    if (QUIZ3.aberto || tr === '2.5' || tr === '2.5A') return base + 3;
     if (tr === '2.3' || tr === '2.4' || FINAL.feito) return base + 2;
     if ((tr === '2' && t >= 25) || tr === '2.1' || tr === '2.2') return base + 1;
     return base;
