@@ -831,9 +831,11 @@ body.montagem .capa .digitado{pointer-events:auto}
   50%    {box-shadow:0 0 0 4px #FF2E4C, 0 0 40px 16px rgba(255,46,76,1)}
 }
 /* as colunas da "2.4": à frente dos espalhados */
-.pc.coluna-frente{z-index:12}
+/* (com .mesa à frente: a regra dos que já estão em casa, .pc.no-lugar,
+   vem mais abaixo e ganhava destas, e o H ficava atrás dos vizinhos) */
+.mesa .pc.coluna-frente{z-index:12}
 /* o H em destaque, na "2.4": à frente de todos, com luz dourada */
-.pc.destaque-h{z-index:16}
+.mesa .pc.destaque-h{z-index:16}
 .pc.destaque-h .face{box-shadow:0 0 0 3px var(--ouro-luz), 0 0 30px 10px rgba(226,162,43,.85)}
 /* a frase no vazio da tabela, num quadro claro por cima dos espalhados */
 .texto-colunas{position:absolute;left:170px;top:196px;width:660px;z-index:25;pointer-events:none;
@@ -864,6 +866,15 @@ body.montagem .capa .digitado{pointer-events:auto}
    curta alisa o caminho entre um tique e o seguinte */
 /* e, desarrumada a mesa, as casas vazias e os números saem de cena */
 .mesa.sem-casas .casa, .mesa.sem-casas .eixo{opacity:0;transition:opacity .35s ease}
+/* A MESA PLANA — no slide 3, calada a vida solta, nenhum cubo gira de
+   lado: só a face da frente é desenhada (as outras cinco saem), e sem a
+   perspectiva de cada cubo o navegador tem 88 camadas a compor em vez
+   de 528 — a tela escura por cima e a montagem automática deixam de
+   pesar. A face da frente cresce na medida em que a perspectiva a
+   mostrava (--plano), e nada salta à vista na troca. */
+.mesa.plana .pc{perspective:none}
+.mesa.plana .pc .face:not(.f1){display:none}
+.mesa.plana .pc .face.f1{transform:scale(var(--plano,1.05))}
 .pc.desordem{transition:left 90ms linear, top 90ms linear,
   transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease}
 /* o clarão da desordem, o do professor */
@@ -871,7 +882,10 @@ body.montagem .capa .digitado{pointer-events:auto}
   background:radial-gradient(ellipse 70% 60% at 50% 55%,rgba(255,255,255,.9),rgba(255,255,255,0) 72%)}
 /* Henry Moseley na tela escura: a foto à esquerda, o critério à direita */
 .veu-moseley .moseley{position:absolute;left:150px;top:118px;width:268px;margin:0;
-  opacity:0;text-align:center;will-change:transform}
+  opacity:0;text-align:center;will-change:transform;
+  /* o relógio da narração escreve a posição de 60 em 60 ms: a transição
+     curta alisa o caminho entre um tique e o seguinte */
+  transition:transform 90ms linear, opacity .25s ease}
 .veu-moseley .moseley img{display:block;width:268px;height:auto;border-radius:14px;
   border:3px solid rgba(255,255,255,.9);box-shadow:0 24px 60px rgba(0,0,0,.5)}
 .veu-moseley figcaption{margin-top:14px;font-family:var(--display);color:#F4F2F8}
@@ -1620,7 +1634,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v2.8';
+const VERSAO = 'v2.9';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2022,6 +2036,9 @@ function montaTabela(i){
   mesa.style.setProperty('--L', LADO + 'px');
   mesa.style.setProperty('--H', (LADO/2) + 'px');
   mesa.style.setProperty('--k', (LADO/LADO_BASE).toFixed(3));
+  /* o quanto a perspectiva de cada cubo (620 px) aumenta a face da
+     frente, que está meio lado mais perto: é o tamanho dela na mesa plana */
+  mesa.style.setProperty('--plano', (620 / (620 - LADO/2)).toFixed(4));
   cena.appendChild(mesa);
 
   /* --- as coordenadas: o grupo em cima, o período à esquerda --- */
@@ -3699,21 +3716,24 @@ const FRASES_CRITERIO2 = [
 /* A "2.4" · AS COLUNAS, função do relógio dela:
      2,8 s        o que está montado (do 1 ao 36) abre-se em colunas —
                   um pouco menores, para caberem — e fica à frente dos
-                  espalhados, com brilho verde
+                  espalhados, sem brilho fixo
      8 → 11 s     "Nessas colunas todos são semelhantes", no vazio da
-                  tabela; apaga-se aos 24 s
-     15 s         o H cresce e destaca-se, em dourado; no fim da
-                  narração volta ao normal, ao lugar dele
-     18,2 → 21 s  só na coluna 1: o Li, o Na e o K crescem em sequência,
-                  descendo e subindo de volta; na volta, o verde dela
-                  apaga-se
+                  tabela (apaga-se aos 24 s); junto com ela, um brilho
+                  verde varre uma coluna de cada vez, de cima para baixo,
+                  e não fica: quando uma acende, a anterior volta ao normal
+     15 s         o H cresce e destaca-se, em dourado
+     18,2 → 21 s  só na coluna 1: o Li, o Na e o K crescem e brilham em
+                  sequência, descendo e subindo de volta
+     fim          as colunas juntam-se de novo, e o H volta ao normal
    No fim, o 37 brilha; tocado, a tabela inteira arruma-se (FINAL). */
 const COLUNAS_24 = {
-  separa:2.8, dura:1.0, vao:14, zoom:0.88,
+  /* 'fim' é a duração da narração, se o áudio ainda não a souber */
+  separa:2.8, dura:1.0, vao:14, zoom:0.88, fim:32.37,
+  /* com a digitação, a varredura das colunas, uma de cada vez */
+  varre:{ de:8.0, ate:11.0 },
   /* o H: cresce e destaca-se aos 15 s, um fio para dentro (maior, sairia
-     pela borda), e volta ao normal no fim da narração ('fim' é a duração
-     dela, se o áudio ainda não a souber) */
-  hidrogenio:{ de:15.0, dura:0.6, cresce:0.6, desvio:{ x:40, y:10 }, fim:32.37 },
+     pela borda), e volta ao normal no fim da narração */
+  hidrogenio:{ de:15.0, dura:0.6, cresce:0.6, desvio:{ x:40, y:10 } },
   /* a onda, só na coluna 1 (sem o H, que está em destaque) */
   onda:{ de:18.2, meio:19.6, ate:21.0, cresce:0.3, coluna:1 },
   suja:false
@@ -3747,6 +3767,9 @@ function montaCenaDoSlide3(){
 }
 
 function efeitos2(t){
+  /* a mesa plana, calada a vida solta (ver o CSS de .mesa.plana) */
+  const m3 = slides[2].querySelector('.mesa');
+  if (m3) m3.classList.toggle('plana', DEPOIS_DA_2.includes(trilhaAtual) || (trilhaAtual === '2' && t >= VIDA_ATE_2));
   /* a vida solta da mesa acompanha a narração "2" até aos 12 s, e nunca
      volta nas seguintes: no encaixe, a mesa é do aluno */
   if (VIDA.ligada && (DEPOIS_DA_2.includes(trilhaAtual) || (trilhaAtual === '2' && t >= VIDA_ATE_2))) VIDA.desliga();
@@ -3777,13 +3800,14 @@ function colunas24(t){
     if (o.suja){ TP.todos().forEach(c => limpaColuna(c)); o.suja = false; }
     return;
   }
-  const es = suave(entre01((t - o.separa) / o.dura));
+  const fim = isFinite(som.duration) && som.duration > 0 ? som.duration : o.fim;
+  /* as colunas abrem-se aos 2,8 s e fecham-se no fim da narração */
+  const es = suave(entre01((t - o.separa) / o.dura)) * (1 - suave(entre01((t - (fim - o.dura)) / o.dura)));
   const Z = 1 - (1 - o.zoom)*es, vao = o.vao*es;
   const cy = (yDaLinha(1) + yDaLinha(4)) / 2;
   const oh = o.hidrogenio;
-  const fimH = (isFinite(som.duration) && som.duration > 0 ? som.duration : oh.fim) - oh.dura;
-  const eh = suave(entre01((t - oh.de) / oh.dura)) * (1 - suave(entre01((t - fimH) / oh.dura)));
-  const w = o.onda;
+  const eh = suave(entre01((t - oh.de) / oh.dura)) * (1 - suave(entre01((t - (fim - oh.dura)) / oh.dura)));
+  const w = o.onda, vr = o.varre, vez = (vr.ate - vr.de) / 18;
   TP.todos().filter(c => c._noLugar).forEach(c => {
     if (c._voo) return;                       /* ainda a pousar */
     const z = +c.dataset.z, col = +c.dataset.col, row = +c.dataset.linha;
@@ -3792,15 +3816,17 @@ function colunas24(t){
        em volta do meio, para caber no palco */
     let x = 640 + ((casa.x - 640) + (col - 9.5)*vao) * Z;
     let y = cy + (casa.y - cy) * Z;
-    let k = es, cresce = 1;
-    if (col === w.coluna && z !== 1){
-      /* a onda, só na coluna 1: desce as linhas até ao meio e sobe de
-         volta; na volta, quem ela já passou apaga-se */
-      if (t >= w.de && t <= w.ate){
-        const f = t < w.meio ? 1 + 3*(t - w.de)/(w.meio - w.de) : 4 - 3*(t - w.meio)/(w.ate - w.meio);
-        cresce += w.cresce * Math.exp(-Math.pow((row - f)/0.55, 2));
-        if (t >= w.meio && row >= f) k = 0;
-      } else if (t > w.ate) k = 0;
+    let k = 0, cresce = 1;
+    /* a varredura: na vez da coluna, um brilho desce das linhas de cima
+       para as de baixo; fora da vez dela, nada fica aceso */
+    const q = (t - vr.de - (col - 1)*vez) / vez;
+    if (q >= 0 && q < 1) k = Math.exp(-Math.pow((row - (0.5 + 4*q)) / 0.7, 2));
+    /* a onda da coluna 1 (sem o H): cresce e brilha, descendo e subindo */
+    if (col === w.coluna && z !== 1 && t >= w.de && t <= w.ate){
+      const f = t < w.meio ? 1 + 3*(t - w.de)/(w.meio - w.de) : 4 - 3*(t - w.meio)/(w.ate - w.meio);
+      const b = Math.exp(-Math.pow((row - f)/0.55, 2));
+      cresce += w.cresce * b;
+      k = Math.max(k, b);
     }
     if (z === 1){
       /* o H cresce e destaca-se (em dourado, e não em verde), e no fim
@@ -3808,9 +3834,7 @@ function colunas24(t){
       x += oh.desvio.x * eh;
       y += oh.desvio.y * eh;
       cresce += oh.cresce * eh;
-      /* depois do destaque, o H não volta a ficar verde: a coluna dele já
-         se apagou, e ele volta ao normal */
-      if (t >= oh.de) k = 0;
+      if (eh > .02) k = 0;
       c.classList.toggle('destaque-h', eh > .02);
     }
     c.style.left = x.toFixed(1) + 'px';
@@ -3819,7 +3843,7 @@ function colunas24(t){
     c.style.setProperty('--onda', (Z*cresce).toFixed(3));
     c.classList.toggle('luz-verde', k > .02);
     if (k > .02) c.style.setProperty('--verde', k.toFixed(3)); else c.style.removeProperty('--verde');
-    c.classList.toggle('coluna-frente', es > 0);
+    c.classList.toggle('coluna-frente', es > .001);
   });
   o.suja = true;
   if (DIG_COL) DIG_COL.escreve(t);
@@ -3962,29 +3986,54 @@ function pontoDoArco(a, b, curva){
 }
 /* UM VOO EM ARCO com relógio próprio (é o aluno quem o dispara, não a
    narração): do lugar de agora até ao destino, devagar-depressa-devagar,
-   e a inclinação desfaz-se no caminho */
+   e a inclinação desfaz-se no caminho.
+   O VOO VAI NO COMPOSITOR: o card fica logo no destino (left/top), e o que
+   anda é o 'translate' — da diferença até zero, pela curva — e o 'rotate'
+   do cubo, da inclinação até zero. O navegador anima os dois sozinho, sem
+   refazer o desenho da página a cada quadro: vários voos ao mesmo tempo
+   (a montagem automática) não pesam. */
 function voaEmArco(c, para, dur, fim, curva){
   const de = { x: parseFloat(c.style.left), y: parseFloat(c.style.top) };
   const k = pontoDoArco(de, para, curva);
   const cubo = c.querySelector('.cubo');
   const rot0 = parseFloat(cubo.style.getPropertyValue('--rz')) || 0;
-  const t0 = performance.now();
-  c.style.transition = 'transform .3s ease, filter .3s ease';
-  cubo.style.setProperty('--dur', '60ms');
-  clearInterval(c._voo);
-  c._voo = setInterval(() => {
-    const p = Math.min(1, (performance.now() - t0) / (dur*1000));
-    const e = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2)/2, u = 1 - e;
-    c.style.left = (u*u*de.x + 2*u*e*k.x + e*e*para.x).toFixed(1) + 'px';
-    c.style.top  = (u*u*de.y + 2*u*e*k.y + e*e*para.y).toFixed(1) + 'px';
-    cubo.style.setProperty('--rz', (rot0 * (1 - Math.min(1, e/.6))).toFixed(1) + 'deg');
-    if (p >= 1){ clearInterval(c._voo); c._voo = 0; if (fim) fim(); }
-  }, 16);
+  c.style.left = para.x.toFixed(1) + 'px';
+  c.style.top  = para.y.toFixed(1) + 'px';
+  cubo.style.setProperty('--dur', '0s');
+  cubo.style.setProperty('--rz', '0deg');
+  const passos = [], giros = [], N = 12;
+  for (let i = 0; i <= N; i++){
+    const p = i/N, e = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2)/2, u = 1 - e;
+    const x = u*u*de.x + 2*u*e*k.x + e*e*para.x, y = u*u*de.y + 2*u*e*k.y + e*e*para.y;
+    passos.push({ translate: (x - para.x).toFixed(1) + 'px ' + (y - para.y).toFixed(1) + 'px', offset: p });
+    giros.push({ rotate: (rot0 * (1 - Math.min(1, e/.6))).toFixed(1) + 'deg', offset: p });
+  }
+  if (c._anim) c._anim.cancel();
+  if (c._animR) c._animR.cancel();
+  const ms = dur * 1000;
+  const a = c.animate(passos, { duration: ms, easing: 'linear' });
+  c._animR = cubo.animate(giros, { duration: ms, easing: 'linear' });
+  c._anim = a;
+  c._voo = 1;
+  /* o voo acaba no aviso do navegador ou, se ele tardar (a aba em
+     segundo plano, um aparelho ocupado), no relógio: o card nunca fica
+     preso como "a voar" */
+  let feito = false;
+  const acaba = () => {
+    if (feito) return;
+    feito = true;
+    if (c._anim !== a) return;             /* outro voo já o substituiu */
+    c._anim = null; c._voo = 0;
+    if (fim) fim();
+  };
+  a.onfinish = acaba;
+  a.oncancel = () => { feito = true; if (c._anim === a){ c._anim = null; c._voo = 0; } };
+  setTimeout(acaba, ms + 40);
 }
-/* quanto dura o salto de um card para casa: 0,39 s, 80 % mais rápido do
-   que os 0,7 s do começo — o mesmo no toque, no automático e na junção
-   das colunas */
-const SALTO = 0.39;
+/* quanto dura o salto de um card para casa: 0,26 s (0,7 s do começo,
+   80 % mais rápido e depois mais 50 %) — o mesmo no toque, no
+   automático e na junção das colunas */
+const SALTO = 0.26;
 /* um card volta à casa dele: voa em arco, endireita-se, e ganha a cor ao
    assentar */
 function encaixaCubo(c){
@@ -4101,7 +4150,9 @@ function desordem(t){
       c.style.top  = casa.y.toFixed(1) + 'px';
       cubo.style.setProperty('--rz', '0deg');
       c._noLugar = false;
-      clearInterval(c._voo); c._voo = 0;
+      if (c._anim) c._anim.cancel();
+      if (c._animR) c._animR.cancel();
+      c._voo = 0;
       c.classList.remove('no-lugar', 'encaixando');
       neutro(c, false);
       return;

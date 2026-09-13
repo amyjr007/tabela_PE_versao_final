@@ -70,14 +70,14 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 | fim da `2.1` | as casas vazias voltam e **o 1 brilha**, em vermelho neon: tocando nele, ele voa para a casa dele (e ganha a cor ao assentar) e toca a `2.2`. Depois brilham o 2, o 3 e o 4 — só o que brilha responde; os outros tremem um fio |
 | depois do 4 | a tabela arruma-se sozinha, um card de cada vez, até ao **36**, e pára; **a `2.3` dispara quando o 32 salta** para o lugar dele (`ENCAIXE`: `toqueAte` 4, `sozinhoAte` 36, `gatilho` 32, `passo` 0,0875 s — 60 % mais rápido que os 0,14 s do começo) |
 | — | o card que volta para casa voa por cima dos espalhados e fica acima deles: a tabela que se forma nunca fica tapada |
-| — | cada salto para casa leva **0,39 s** (`SALTO`) — 80 % mais rápido que os 0,7 s do começo —, igual no toque, no automático e na junção das colunas |
+| — | cada salto para casa leva **0,26 s** (`SALTO`) — os 0,7 s do começo, 80 % mais rápidos e depois mais 50 % —, igual no toque, no automático e na junção das colunas |
 | `2.3` · 2,5 s | a tela escurece de novo, com Moseley já no lugar e "Critério 2" já escrito |
 | `2.3` · 3,6 → 7 s | em duas linhas: "Os elementos quimicamente semelhantes / formarão colunas." |
 | fim da `2.3` | "Toque na tela para continuar"; o toque desfaz a tela escura, em fade, e toca a `2.4` |
-| `2.4` · 2,8 s | o que está montado (do 1 ao 36) **abre-se em colunas** — um pouco menores, para caberem — e fica à frente dos espalhados, com brilho verde |
-| `2.4` · 8 → 11 s | no vazio da tabela, num quadro claro: "Nessas colunas todos são semelhantes" |
+| `2.4` · 2,8 s | o que está montado (do 1 ao 36) **abre-se em colunas** — um pouco menores, para caberem — e fica à frente dos espalhados, sem brilho fixo; **no fim da narração as colunas juntam-se de novo** |
+| `2.4` · 8 → 11 s | no vazio da tabela, num quadro claro: "Nessas colunas todos são semelhantes"; junto com a digitação, um brilho verde varre **uma coluna de cada vez, de cima para baixo**, e não fica — quando uma acende, a anterior volta ao normal |
 | `2.4` · 15 s | o **H** cresce e destaca-se, com luz dourada, à frente de todos (um fio para dentro, para não sair do palco); **no fim da narração volta ao normal**, ao lugar dele |
-| `2.4` · 18,2 → 21 s | **só na coluna 1**: o Li, o Na e o K crescem em sequência, descendo e subindo de volta; na volta, o verde da coluna 1 apaga-se (as outras colunas ficam verdes até à arrumação final) |
+| `2.4` · 18,2 → 21 s | **só na coluna 1**: o Li, o Na e o K crescem e brilham em sequência, descendo e subindo de volta |
 | `2.4` · 24 s | o texto apaga-se |
 | fim da `2.4` | o **37** brilha; tocado, a tabela inteira arruma-se — as colunas juntam-se, o H volta, e os que faltam voam para casa um de cada vez — e, montada, **brilha**, com `funfare`, confetes e `applause` |
 | — | todo salto é curvo: uma Bézier com o ponto de controlo ao lado do meio do caminho (`pontoDoArco`), na desordem, no encaixe e na montagem final |
@@ -96,6 +96,15 @@ desses slides, e as funções dos cubos (`TP`), a vida solta (`VIDA`) e a
 medida do celular valem para a mesa do slide em que se está
 (`slideDaMesa()`). A tela escura, o quiz e o jogo continuam a ser só do
 slide 2.
+
+**Desempenho no slide 3.** Os voos para casa vão no compositor — o
+navegador anima o `translate` do card e o `rotate` do cubo sozinho, sem
+refazer o desenho da página a cada quadro —, e vários voos ao mesmo tempo
+não pesam. Calada a vida solta (depois dos 12 s da `2`), a mesa fica
+**plana**: só a face da frente de cada cubo é desenhada, sem a perspectiva
+de cada um — 88 camadas a compor em vez de 528 —, com a face do mesmo
+tamanho. A foto de Moseley desliza com uma transição curta entre os
+tiques do relógio.
 
 ## A narração
 
