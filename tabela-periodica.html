@@ -600,6 +600,19 @@ body.montagem .capa .digitado{pointer-events:auto}
 .pc.zoom-el .face{box-shadow:0 0 0 2px var(--ouro-luz), 0 16px 36px rgba(12,10,32,.35),
                               0 0 36px rgba(226,162,43,.55)}
 .pc.zoom-el .face em{transition:color .35s ease, transform 80ms linear}
+/* a palavra latina ao lado do elemento crescido ("1.4"): escrita letra a
+   letra, e sai a girar junto com a volta dele. A posição, o giro e o
+   tamanho são escritos a cada tique pela narração. */
+.latim{position:absolute;z-index:47;display:none;pointer-events:none;white-space:nowrap;
+  font-family:var(--display);font-weight:600;font-size:40px;line-height:1;letter-spacing:.01em;
+  color:var(--ouro);padding:10px 20px 12px;border-radius:14px;
+  background:rgba(255,252,242,.96);border:2px solid var(--ouro-luz);
+  box-shadow:0 0 0 4px rgba(226,162,43,.18), 0 12px 30px rgba(80,40,0,.22), 0 0 34px rgba(226,162,43,.45);
+  transition:transform 80ms linear, opacity 80ms linear}
+.latim.on{display:block}
+/* o cursor, só enquanto a palavra está a ser escrita */
+.latim.digitando::after{content:'';display:inline-block;width:3px;height:.8em;margin-left:4px;
+  background:currentColor;vertical-align:-.05em}
 
 /* medir é fotografar em repouso, também por dentro do cubo */
 .pc.medindo *{transition:none!important}
@@ -666,6 +679,9 @@ body.montagem .capa .digitado{pointer-events:auto}
 .quiz-msg{min-height:28px;margin-top:14px;font-family:var(--display);font-weight:600;font-size:21px}
 .quiz-msg.ok{color:#1F8A4C}
 .quiz-msg.erro{color:#B42E48}
+/* a palavra latina: as letras que viraram o símbolo, em ouro e sublinhadas */
+.quiz-latim b{color:var(--ouro);font-weight:700;text-decoration:underline;
+  text-decoration-thickness:2px;text-underline-offset:4px}
 
 /* durante o quiz o play sai de cena: quem faz a aula andar é a escolha */
 #stage.em-quiz #som, #stage.em-quiz #som-dica{display:none!important}
@@ -1243,7 +1259,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v1.7';
+const VERSAO = 'v1.8';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2579,6 +2595,7 @@ const SEQ = {
     if (DIG_VEU) DIG_VEU.limpa();
     ONDA_FAM.suja = ONDA_118.suja = false;
     this.quizDa = null;
+    document.querySelectorAll('.latim.on').forEach(b => b.classList.remove('on'));
     VERDE.z = -1;
   },
   /* cada trilha, ao acabar, diz o que vem a seguir */
@@ -2976,6 +2993,8 @@ function zoomNoLugar(t, o){
   if (!ativo){
     c.classList.remove('zoom-el', 'sobe', 'pulsa-nome', 'nome-oculto');
     c.style.left = alvoDe(+c.dataset.z).x.toFixed(1) + 'px';
+    if (o.pulsaSym){ c.classList.remove('pulsa-sym'); c.style.removeProperty('--psym'); }
+    if (o._latim) o._latim.classList.remove('on');
     ['--onda', '--tsobe', '--pnome'].forEach(v => c.style.removeProperty(v));
     cubo.style.setProperty('--ry', '0deg');
     c.dataset.ry = 0;
@@ -2994,17 +3013,58 @@ function zoomNoLugar(t, o){
   c.style.left = (casa.x + dx).toFixed(1) + 'px';
   /* com 'esconde', o nome some quando o elemento sai, e volta na hora
      em que pulsa */
-  c.classList.toggle('nome-oculto', !!o.esconde && t < o.pulsa);
+  c.classList.toggle('nome-oculto', !!o.esconde && t < [].concat(o.pulsa)[0]);
   c.style.setProperty('--tsobe', '90ms');
   c.style.setProperty('--onda', (1 + (E - 1)*e).toFixed(3));
   cubo.style.setProperty('--dur', '90ms');
   cubo.style.setProperty('--rzc', '0deg');
   cubo.style.setProperty('--ry', (360*e).toFixed(1) + 'deg');
   c.dataset.ry = 360*e;
-  const k = duasPulsadas(t, o.pulsa, EV13A.pulsoNome.dura);
+  /* o nome pulsa 2× em cada hora de 'pulsa' (uma ou várias) */
+  const k = Math.max(...[].concat(o.pulsa).map(p => duasPulsadas(t, p, EV13A.pulsoNome.dura)));
   c.classList.toggle('pulsa-nome', k > .01);
   c.style.setProperty('--pnome', (1 + EV13A.pulsoNome.mais*k).toFixed(3));
+  /* e o símbolo, 2× em cada hora de 'pulsaSym' */
+  if (o.pulsaSym){
+    const ps = EV13A.pulsoSimbolo;
+    const ks = Math.max(...o.pulsaSym.map(p => duasPulsadas(t, p, ps.dura)));
+    c.classList.toggle('pulsa-sym', ks > .01);
+    c.style.setProperty('--psym', (1 + ps.mais*ks).toFixed(3));
+  }
+  if (o.latim) caixaDoLatim(o, t, casa.x + dx, casa.y, meia - 14, e);
   o.suja = true;
+}
+
+/* A PALAVRA LATINA ao lado do elemento crescido: escrita letra a letra a
+   partir de 'de', encostada ao lado dele ('direita' ou 'esquerda'). Na
+   volta do elemento ela sai a girar e a encolher até sumir, na mesma
+   curva do giro de volta dele — e, encostada a ele, acompanha-o enquanto
+   ele encolhe. Tudo função do tempo: voltar o áudio atrás des-escreve. */
+function caixaDoLatim(o, t, x, y, meiaCubo, e){
+  const L = o.latim;
+  let b = o._latim;
+  if (!b){
+    b = document.createElement('div');
+    b.className = 'latim';
+    b.setAttribute('aria-hidden', 'true');
+    slides[1].querySelector('.mesa').appendChild(b);
+    o._latim = b;
+  }
+  const visivel = t >= L.de;
+  b.classList.toggle('on', visivel);
+  if (!visivel) return;
+  const n = Math.min(L.texto.length, Math.floor((t - L.de) / EV14.porLetra) + 1);
+  const txt = L.texto.slice(0, n);
+  if (b.textContent !== txt) b.textContent = txt;
+  b.classList.toggle('digitando', n < L.texto.length);
+  /* na volta, 'e' desce de 1 a 0: a caixa gira uma volta e encolhe */
+  const g = t >= o.volta ? e : 1;
+  const vao = 18, direita = L.lado === 'direita';
+  b.style.left = (direita ? x + meiaCubo + vao : x - meiaCubo - vao).toFixed(1) + 'px';
+  b.style.top  = y.toFixed(1) + 'px';
+  b.style.transform = (direita ? 'translate(0,-50%)' : 'translate(-100%,-50%)') +
+    ' rotate(' + (360*(1 - g)).toFixed(1) + 'deg) scale(' + g.toFixed(3) + ')';
+  b.style.opacity = g.toFixed(3);
 }
 
 /* ============================================================
@@ -3089,9 +3149,13 @@ function efeitos13A(t){
    OS EVENTOS DA "1.4" — os símbolos que não saem do nome em português
      1 → 8 s      oito deles crescem, um a um, com luz vinho
      10 s         o Na gira e cresce no lugar, e o nome some;
-                  15 s "Sódio" aparece e pulsa 2×; 24 s volta
-     25 s         o Pb; 29 s "Chumbo" aparece e pulsa 2×; 34 s volta
-     35,6 s       o Cu; 39,7 s "Cobre" aparece e pulsa 2×; 45 s volta
+                  15 s "Sódio" aparece e pulsa 2×; 16,8 s o símbolo
+                  pulsa; 17,7 s o nome pulsa outra vez; 21 s "Natrium"
+                  escrito à direita; 24 s volta, e a palavra sai a girar
+     25 s         o Pb; 29 s "Chumbo" aparece e pulsa 2×; 30 s
+                  "Plumbum" à esquerda; 34 s volta
+     35,6 s       o Cu; 39,7 s "Cobre" aparece e pulsa 2×; 41 s
+                  "Cuprum" à esquerda; 45 s volta
      54 s         o quiz, agora com os de nome diferente
    O zoom é o mesmo da "1.3A" (zoomNoLugar). Tudo é função do tempo da
    narração, menos o quiz (QUIZ_NA_HORA): aberto, fica aberto.
@@ -3101,10 +3165,16 @@ const EV14 = {
   oito:['P','K','Ag','Sn','Sb','W','Au','Hg'],
   onda:{ de:1.0, ate:8.0, largura:1.0, cresce:0.6, classe:'luz-vinho', suja:false },
   zooms:[
-    { sym:'Na', cresce:10.0, pulsa:15.0, volta:24.0, esconde:true, suja:false },
-    { sym:'Pb', cresce:25.0, pulsa:29.0, volta:34.0, esconde:true, suja:false },
-    { sym:'Cu', cresce:35.6, pulsa:39.7, volta:45.0, esconde:true, suja:false }
-  ]
+    /* o Na: o nome pulsa aos 15 e aos 17,7 s, o símbolo aos 16,8 s */
+    { sym:'Na', cresce:10.0, pulsa:[15.0, 17.7], pulsaSym:[16.8], volta:24.0, esconde:true,
+      latim:{ texto:'Natrium', de:21.0, lado:'direita'  }, suja:false },
+    { sym:'Pb', cresce:25.0, pulsa:29.0, volta:34.0, esconde:true,
+      latim:{ texto:'Plumbum', de:30.0, lado:'esquerda' }, suja:false },
+    { sym:'Cu', cresce:35.6, pulsa:39.7, volta:45.0, esconde:true,
+      latim:{ texto:'Cuprum',  de:41.0, lado:'esquerda' }, suja:false }
+  ],
+  /* a palavra latina: quanto tempo leva cada letra a ser escrita */
+  porLetra:0.09
 };
 let LISTA_14 = null;
 function efeitos14(t){
@@ -3224,20 +3294,23 @@ const QUIZ_DUAS = [
    vem do latim (Natrium, Plumbum, Cuprum…) ou de outra língua. As
    opções erradas são armadilhas de letra: nomes que parecem sair do
    símbolo (Nióbio para Na, Criptônio para K, Platina para Pb). A mesma
-   regra das duas primeiras letras vale aqui. */
+   regra das duas primeiras letras vale aqui.
+   'latim' é o nome de onde o símbolo saiu: depois da resposta, a
+   mensagem diz "Plumbum é o Chumbo", com as letras do símbolo em
+   destaque — é aí que o aluno entende o Pb. */
 const QUIZ_DIFERENTES = [
-  { z:11, op:['Sódio','Nióbio','Neônio'] },
-  { z:19, op:['Potássio','Criptônio','Cálcio'] },
-  { z:29, op:['Cobre','Cúrio','Césio'] },
-  { z:47, op:['Prata','Argônio','Alumínio'] },
-  { z:79, op:['Ouro','Alumínio','Ósmio'] },
-  { z:80, op:['Mercúrio','Háfnio','Hélio'] },
-  { z:82, op:['Chumbo','Platina','Paládio'] },
-  { z:50, op:['Estanho','Selênio','Silício'] },
-  { z:51, op:['Antimônio','Samário','Silício'] },
-  { z:74, op:['Tungstênio','Titânio','Vanádio'] },
-  { z:15, op:['Fósforo','Potássio','Paládio'] },
-  { z:16, op:['Enxofre','Silício','Sódio'] }
+  { z:11, latim:'Natrium', op:['Sódio','Nióbio','Neônio'] },
+  { z:19, latim:'Kalium', op:['Potássio','Criptônio','Cálcio'] },
+  { z:29, latim:'Cuprum', op:['Cobre','Cúrio','Césio'] },
+  { z:47, latim:'Argentum', op:['Prata','Argônio','Alumínio'] },
+  { z:79, latim:'Aurum', op:['Ouro','Alumínio','Ósmio'] },
+  { z:80, latim:'Hydrargyrum', op:['Mercúrio','Háfnio','Hélio'] },
+  { z:82, latim:'Plumbum', op:['Chumbo','Platina','Paládio'] },
+  { z:50, latim:'Stannum', op:['Estanho','Selênio','Silício'] },
+  { z:51, latim:'Stibium', op:['Antimônio','Samário','Silício'] },
+  { z:74, latim:'Wolframium', op:['Tungstênio','Titânio','Vanádio'] },
+  { z:15, latim:'Phosphorus', op:['Fósforo','Potássio','Paládio'] },
+  { z:16, latim:'Sulfur', op:['Enxofre','Silício','Sódio'] }
 ];
 /* a narração que o play carrega depois de cada quiz (null: ainda não há) */
 const DEPOIS_DO_QUIZ = { '1.3A':'1.4', '1.3B':'1.4', '1.4':null };
@@ -3266,6 +3339,39 @@ function tocaEfeito(nome){
   });
 }
 const espera = ms => new Promise(ok => setTimeout(ok, ms));
+
+/* A MENSAGEM DA RESPOSTA. Com o nome latino (quiz da "1.4"): "Exato!
+   Plumbum é o Chumbo.", e só "Plumbum é o Chumbo." no erro — as letras
+   que viraram o símbolo em destaque. Sem ele: "Exato! É o Carbono." e
+   "Era o Carbono.". 'inicio' é a frase do acerto; null no erro. */
+const NOMES_FEMININOS = new Set(['Prata', 'Platina']);
+function escreveResposta(msg, item, certa, inicio){
+  const art = NOMES_FEMININOS.has(certa) ? 'a' : 'o';
+  msg.textContent = '';
+  if (!item.latim){
+    msg.textContent = inicio ? inicio + ' É ' + art + ' ' + certa + '.' : 'Era ' + art + ' ' + certa + '.';
+    return;
+  }
+  if (inicio) msg.append(inicio + ' ');
+  msg.appendChild(palavraLatina(item.latim, SIMBOLOS[item.z-1]));
+  msg.append(' é ' + art + ' ' + certa + '.');
+}
+/* a palavra latina com as letras do símbolo em destaque: a primeira, e a
+   segunda letra do símbolo onde ela aparece depois (Hydrar-g-yrum) */
+function palavraLatina(palavra, sym){
+  const marca = new Set([0]);
+  if (sym.length > 1){
+    const j = palavra.toLowerCase().indexOf(sym[1].toLowerCase(), 1);
+    if (j > 0) marca.add(j);
+  }
+  const w = document.createElement('span');
+  w.className = 'quiz-latim';
+  [...palavra].forEach((letra, i) => {
+    if (marca.has(i)){ const b = document.createElement('b'); b.textContent = letra; w.appendChild(b); }
+    else w.append(letra);
+  });
+  return w;
+}
 
 /* a tela treme e pisca de vermelho */
 function tremeVermelho(){
@@ -3375,7 +3481,7 @@ const QUIZ = {
     if (acertou){
       this.acertos++;
       const voz = ultima ? VOZ_DA_ULTIMA : VOZES_DO_ACERTO[this.passo];
-      msg.textContent = voz.frase + ' É o ' + certa + '.';
+      escreveResposta(msg, item, certa, voz.frase);
       msg.className = 'quiz-msg ok';
       confete();
       /* todo acerto tem a festa inteira: fanfarra e aplausos juntos, e,
@@ -3388,7 +3494,7 @@ const QUIZ = {
       await tocaEfeito(voz.som);
     } else {
       b.classList.add('errada');
-      msg.textContent = 'Era o ' + certa + '.';
+      escreveResposta(msg, item, certa, null);
       msg.className = 'quiz-msg erro';
       tremeVermelho();
       await tocaEfeito('error');

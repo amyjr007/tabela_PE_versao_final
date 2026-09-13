@@ -215,9 +215,9 @@ frase que a está a explicar.
 | `1.3A` · 42 s / `1.3B` · 35,5 s | **o quiz**: seis perguntas seguidas — "Qual o nome desse elemento?" —, com o fim da narração ainda a tocar |
 | fim do quiz | o cartão da nota, e o play pronto na **`1.4`** |
 | `1.4` · 1 → 8 s | oito elementos de símbolo sem nada a ver com o nome em português — P, K, Ag, Sn, Sb, W, Au, Hg — crescem um a um, com luz vinho |
-| `1.4` · 10 s | o **Na** gira e cresce no lugar, e o nome dele some; 15 s "Sódio" aparece e pulsa 2×; 24 s volta |
-| `1.4` · 25 s | o **Pb**, do mesmo jeito; 29 s "Chumbo" aparece e pulsa 2×; 34 s volta |
-| `1.4` · 35,6 s | o **Cu**; 39,7 s "Cobre" aparece e pulsa 2×; 45 s volta |
+| `1.4` · 10 s | o **Na** gira e cresce no lugar, e o nome dele some; 15 s "Sódio" aparece e pulsa 2×; 16,8 s o símbolo pulsa; 17,7 s o nome pulsa outra vez; 21 s **"Natrium"** é escrito à direita, em destaque; 24 s o Na volta, e a palavra sai a girar até sumir junto com ele |
+| `1.4` · 25 s | o **Pb**, do mesmo jeito; 29 s "Chumbo" aparece e pulsa 2×; 30 s **"Plumbum"** à esquerda; 34 s volta, e a palavra some a girar |
+| `1.4` · 35,6 s | o **Cu**; 39,7 s "Cobre" aparece e pulsa 2×; 41 s **"Cuprum"** à esquerda; 45 s volta, e a palavra some a girar |
 | `1.4` · 54 s | **o segundo quiz**, com os de nome diferente (arrastado o áudio para depois dos 54 s, abre quando ele acaba) |
 
 Tudo o que anima é **função do tempo da narração** (`efeitosDoTempo`):
@@ -282,6 +282,13 @@ bem diferente do português** — Na (Sódio), K (Potássio), Cu (Cobre), Ag
 são armadilhas de letra, nomes que parecem sair do símbolo (Nióbio para
 Na, Criptônio para K, Platina para Pb), e a regra das duas primeiras
 letras vale do mesmo jeito.
+
+Cada item dessa lista traz **o nome latino** de onde o símbolo saiu, e é
+ele que a resposta mostra: **"Exato! Plumbum é o Chumbo."** no acerto e
+"Plumbum é o Chumbo." no erro, com as letras que viraram o símbolo em
+ouro e sublinhadas (**P**lum**b**um, **H**ydrar**g**yrum). Natrium, Kalium,
+Cuprum, Argentum, Aurum, Hydrargyrum, Plumbum, Stannum, Stibium,
+Wolframium, Phosphorus e Sulfur. A Prata leva "a": "Argentum é a Prata".
 
 A volta do elemento é a ida ao contrário: a ida sai depressa e chega
 devagar, então a volta sai devagar e chega depressa — a fração do
