@@ -1794,7 +1794,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v4.5';
+const VERSAO = 'v4.6';
 
 /* ============================================================
    OS ELEMENTOS
@@ -4301,7 +4301,13 @@ const LC25 = {
      25,6 s        "3º período", ao lado do símbolo, e a faixa da linha
      26,8 s        "grupo 1", embaixo, e a faixa da coluna
    No fim, o botão "Entendi", à direita do símbolo: tocado, acende, toca
-   o "right" e passa à narração "3.1". Tudo é função
+   o "right" e passa à narração "3.1":
+     1 s           o Mn gira em 3D, cresce e acende, e o símbolo dele vai
+                   para o vazio da tabela
+     3,3 s         "4º período", e a faixa da linha
+     5 s           "grupo"
+     6,3 s         o 7 completa-o, e a faixa da coluna
+   Mudada a narração, a cena da anterior sai toda. Tudo é função
    do relógio do áudio: voltando atrás, a cena volta com ele. As linhas e
    as colunas abrem-se como no slide 3 (LC25), e a cruz e a ficha são as
    da mesa (as de TP.coordenadas).
@@ -4316,7 +4322,9 @@ const EV3 = {
   linhas:{ de:13.0, ate:16.0 },
   colunas:{ de:16.4, ate:20.4 },
   na:{ z:11, de:22.5, periodo:25.6, grupo:26.8 },
-  dig:null, botao:null, feOn:false, cruz:'', naK:0, suja:false, pausaT:0,
+  /* a "3.1": o Mn e as coordenadas dele — a palavra "grupo" antes do número */
+  mn:{ z:25, de:1.0, periodo:3.3, grupo:5.0, numero:6.3 },
+  dig:null, botao:null, feOn:false, cruz:'', naK:0, k31:0, trilha:null, suja:false, pausaT:0,
   mesa(){ return slides[3] && slides[3].querySelector('.mesa'); },
   cartas(m){ return [...m.querySelectorAll('.pc:not(.serie-oculta)')]; },
   carta(m, z){ return m.querySelector('.pc[data-z="' + z + '"]'); },
@@ -4352,7 +4360,10 @@ const EV3 = {
     const m = this.mesa();
     if (!m) return;
     this.prepara();
-    if (trilhaAtual !== '3'){ if (this.suja) this.zera(); return; }
+    /* mudada a trilha, a cena da anterior sai toda */
+    if (trilhaAtual !== this.trilha){ if (this.suja) this.zera(); this.trilha = trilhaAtual; }
+    if (trilhaAtual === '3.1'){ this.tick31(m, t); return; }
+    if (trilhaAtual !== '3') return;
     /* a vida solta, só até aos 5 s da narração */
     if (VIDA.ligada && t >= this.vidaAte && !som.paused) VIDA.desliga();
     const f = this.fe, n = this.na, fe = this.carta(m, f.z), na = this.carta(m, n.z);
@@ -4384,6 +4395,20 @@ const EV3 = {
     }
     this.suja = true;
   },
+  /* a "3.1": o Mn acende a girar; "4º período" com a faixa da linha;
+     "grupo"; e o 7, com a faixa da coluna */
+  tick31(m, t){
+    const e = this.mn, c = this.carta(m, e.z);
+    const k = (t >= e.de ? 1 : 0) | (t >= e.periodo ? 2 : 0) | (t >= e.grupo ? 4 : 0) | (t >= e.numero ? 8 : 0);
+    if (k === this.k31) return;
+    if ((k & 1) && !(this.k31 & 1)) TP.gira(c, { eixo:'y', graus:360, dur:900 });
+    this.k31 = k;
+    this.poeNa(m, c, k & 7, !!(k & 8));
+    const linha = !!(k & 2), coluna = !!(k & 8);
+    const cruz = 'mn' + (linha ? 'L' : '') + (coluna ? 'C' : '');
+    if (cruz !== this.cruz){ this.cruz = cruz; this.poeCruz(m, c, linha, coluna); }
+    this.suja = true;
+  },
   poeCruz(m, c, linha, coluna){
     const lin = +c.dataset.linha, col = +c.dataset.col;
     m.classList.toggle('tem-cruz', linha || coluna);
@@ -4412,7 +4437,7 @@ const EV3 = {
     if (ep) ep.classList.toggle('acesa', linha);
     if (eg) eg.classList.toggle('acesa', coluna);
   },
-  poeNa(m, c, k){
+  poeNa(m, c, k, num){
     const on = !!(k & 1);
     c.classList.toggle('verde', on);
     const f = m.querySelector('.ficha'), r = m.querySelector('.coords-el');
@@ -4421,7 +4446,8 @@ const EV3 = {
     f.classList.toggle('on', on);
     const sp = r.querySelector('.per'), sg = r.querySelector('.grp');
     sp.innerHTML = '<b>' + c.dataset.periodo + 'º</b> período';
-    sg.innerHTML = 'grupo <b>' + c.dataset.grupo + '</b>';
+    /* o número do grupo pode chegar depois da palavra (na "3.1") */
+    sg.innerHTML = 'grupo' + (num === false ? '' : ' <b>' + c.dataset.grupo + '</b>');
     sp.classList.toggle('on', !!(k & 2));
     sg.classList.toggle('on', !!(k & 4));
   },
@@ -4448,11 +4474,11 @@ const EV3 = {
     if (!m) return;
     if (this.dig) this.dig.limpa();
     const fe = this.carta(m, this.fe.z), na = this.carta(m, this.na.z);
-    fe.classList.remove('verde');
+    m.querySelectorAll('.pc.verde').forEach(x => x.classList.remove('verde'));
     this.poeCruz(m, fe, false, false);
     this.poeNa(m, na, 0);
     if (atual === 3) LC25.zera();
-    this.feOn = false; this.cruz = ''; this.naK = 0; this.suja = false;
+    this.feOn = false; this.cruz = ''; this.naK = 0; this.k31 = 0; this.suja = false;
   }
 };
 function efeitos3(t){ EV3.tick(t); }
