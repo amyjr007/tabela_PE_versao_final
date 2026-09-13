@@ -13,7 +13,8 @@ dá zoom nele, como no app do professor.
    viva e três **blocos gigantes**: sódio, ítrio e lantânio, os mesmos
    cubos de seis faces do slide 1, em ponto grande. Quando a tabelinha
    acende um deles lá em baixo, o bloco dá uma volta aqui em cima.
-2. **A Tabela Periódica** — os 118 elementos, prontos na mesa.
+2. **A Tabela Periódica** — os elementos prontos na mesa; por enquanto
+   sem os lantanídeos e os actinídeos, que a narração revela mais tarde.
 
 A passagem entre as duas é o cubo girando, a mesma do app do professor.
 Os outros slides entram na lista `SLIDES`, no alto do script, e o resto
@@ -30,6 +31,22 @@ E cai sempre de pé: acabado o giro, o cubo leva uma correção no plano
 da tela que põe o texto direito outra vez (`correcaoDeLeitura`). Meia
 volta para cima, num cubo de verdade, mostraria a carta de cabeça para
 baixo; aqui não mostra.
+
+### As séries escondidas
+
+Os **lantanídeos e os actinídeos ficam fora da mesa** por enquanto — a
+narração vai revelá-los mais tarde (`SERIES_VISIVEIS = false`). Os cubos
+deles existem, mas nascem com a classe `serie-oculta` e não entram em
+`TP.todos()`: nenhuma onda, sorteio, salto ou cruz os acorda, e o verde ao
+acaso sorteia só entre os que estão na mesa. As casas "57–71" e
+"89–103" do grupo 3 continuam lá, sem a seta para baixo.
+
+Sem as duas linhas de baixo, a tabela aproveita o espaço: **cubos de 62
+px** em vez de 58 (quem limita é a largura, com 18 colunas) e o bloco
+centrado na altura (`TAB_TOPO` 164). A letra das faces cresce junto, por
+`--k = LADO / LADO_BASE`. Crescido no lugar, um cubo nunca passa das
+bordas do palco: o Na, na coluna 1, é empurrado para dentro enquanto
+cresce. O Urânio saiu do quiz por ser actinídeo.
 
 ## A narração
 
@@ -195,7 +212,7 @@ frase que a está a explicar.
 | `1.3B` · 21,7 s | o **F** gira e cresce no lugar; 22,8 s o nome pulsa 2×; 24 s volta |
 | `1.3B` · 25,6 s | o **Ca** gira e cresce; 27 s o nome pulsa 2×; 28 s volta |
 | `1.3B` · 28 s | e o **O** gira e cresce; 29 s o nome pulsa 2×; 32 s volta |
-| fim da `1.3A`/`1.3B` | **o quiz**: seis perguntas seguidas — "Qual o nome desse elemento?" |
+| `1.3A` · 42 s / `1.3B` · 35,5 s | **o quiz**: seis perguntas seguidas — "Qual o nome desse elemento?" —, com o fim da narração ainda a tocar |
 | fim do quiz | o cartão da nota, e o play pronto na **`1.4`** |
 | `1.4` · 1 → 8 s | oito elementos de símbolo sem nada a ver com o nome em português — P, K, Ag, Sn, Sb, W, Au, Hg — crescem um a um, com luz vinho |
 | `1.4` · 10 s | o **Na** gira e cresce no lugar, e o nome dele some; 15 s "Sódio" aparece e pulsa 2×; 24 s volta |
@@ -215,8 +232,9 @@ trilha e a outra.
 
 ### O quiz
 
-No fim da `1.3A` ou da `1.3B`, e outra vez aos 54 s da `1.4`, **seis
-perguntas** seguidas. Um elemento
+Aos 42 s da `1.3A` ou aos 35,5 s da `1.3B`, e outra vez aos 54 s da
+`1.4`, **seis perguntas** seguidas (`QUIZ_NA_HORA`; arrastado o áudio
+para depois dessa hora, o quiz abre quando ele acaba). Um elemento
 sai da casa dele e vem para a frente, a girar, junto com o cartão **Qual
 o nome desse elemento?** — o cubo à esquerda, com um **?** no lugar do nome
 (que está escrito nas seis faces e daria a resposta), e as três respostas
