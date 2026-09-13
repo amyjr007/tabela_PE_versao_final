@@ -565,6 +565,14 @@ body.montagem .capa .digitado{pointer-events:auto}
 .f2::after,.f4::after{background:rgba(0,0,0,.07)}
 .f3::after{background:rgba(0,0,0,.12)}
 .f5::after,.f6::after{background:rgba(255,255,255,.05)}
+/* O TABULEIRO LISO (slide 4, as coordenadas): todas as cartas na mesma
+   cor, o lilás claro do app do professor (FUNDO_FACE2) — a tabela deixa
+   de falar de famílias. Em cor clara a letra branca se perderia, então
+   ela escurece junto. */
+.mesa.lisa .face{background:linear-gradient(145deg,#DCD7F3,#C0B8E8);border-color:rgba(76,63,191,.42)}
+.mesa.lisa .face::before{opacity:0}
+.mesa.lisa .face i,.mesa.lisa .face u,.mesa.lisa .face em{color:rgba(32,28,66,.58);text-shadow:none}
+.mesa.lisa .face b{color:var(--tinta);text-shadow:none}
 
 .face i,.face b,.face u,.face em{
   position:relative;z-index:3;font-style:normal;text-decoration:none;color:#fff;
@@ -1754,7 +1762,11 @@ const SLIDES = [
 
   /* o slide 3: a mesma tabela, a desordem, e o critério de Moseley */
   { title:'Os critérios de Organização',
-    subtitle:'A lei periódica' }
+    subtitle:'A lei periódica' },
+
+  /* o slide 4: a mesma tabela, no tabuleiro liso do professor */
+  { title:'As coordenadas periódicas',
+    subtitle:'Os grupos e os períodos' }
 ];
 
 /* A VERSÃO DO APP — sobe a cada mudança publicada. É daqui, e só daqui,
@@ -1762,7 +1774,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v4.0';
+const VERSAO = 'v4.1';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2062,7 +2074,7 @@ const slides = [...deck.children];
    funções dos cubos (TP), a vida solta (VIDA) e a medida do celular
    valem para a mesa do slide em que se está. O que é da história do
    slide 1 — a tela escura, o quiz, o jogo — continua a ser só dele. */
-const SLIDES_COM_MESA = [1, 2];
+const SLIDES_COM_MESA = [1, 2, 3];
 const temMesa = i => SLIDES_COM_MESA.includes(i);
 function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
 /* chegar a um slide com tabela: a mesa é posta de novo e respira à
@@ -2160,7 +2172,8 @@ function montaTabela(i){
   const cena = document.createElement('div');
   cena.className = 'cena';
   const mesa = document.createElement('div');
-  mesa.className = 'mesa';
+  /* no slide 4 (as coordenadas) o tabuleiro é liso, de uma cor só */
+  mesa.className = 'mesa' + (i === 3 ? ' lisa' : '');
   mesa.style.setProperty('--L', LADO + 'px');
   mesa.style.setProperty('--H', (LADO/2) + 'px');
   mesa.style.setProperty('--k', (LADO/LADO_BASE).toFixed(3));
@@ -2867,10 +2880,11 @@ const TRILHAS = {
   '2.3':  'Audios/audio_tabela_2.3.mp3',   /* a tabela arrumada até ao 36: o critério 2 */
   '2.4':  'Audios/audio_tabela_2.4.mp3',   /* as colunas: os semelhantes */
   '2.5':  'Audios/audio_tabela_2.5.mp3',   /* a tabela montada: as linhas e as colunas */
-  '2.5A': 'Audios/audio_tabela_2.5A.mp3'   /* o convite a abrir a tabela com o toque */
+  '2.5A': 'Audios/audio_tabela_2.5A.mp3',  /* o convite a abrir a tabela com o toque */
+  '3':    'Audios/audio_tabela_3.mp3'      /* o slide 4: as coordenadas (ainda por gravar) */
 };
 /* a trilha com que cada slide começa */
-const TRILHA_DO_SLIDE = ['capa', '1', '2'];
+const TRILHA_DO_SLIDE = ['capa', '1', '2', '3'];
 
 /* ---- A COREOGRAFIA ----
    Cada slide tem a sua lista: no segundo tal, faça isto. Voltando o
@@ -2927,7 +2941,8 @@ const ROTEIROS = {
   '2.3':  [],
   '2.4':  [],
   '2.5':  [],
-  '2.5A': []
+  '2.5A': [],
+  '3':    []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -3454,6 +3469,9 @@ function efeitosDoTempo(){
   if (trilhaAtual === 'capa' && DIG_CAPA) DIG_CAPA.escreve(t);
   /* o slide 3 tem os eventos dele */
   if (atual === 2){ efeitos2(t); return; }
+  /* no slide 4 a mesa respira à espera do play; com a narração a
+     correr, fica quieta */
+  if (atual === 3){ if (trilhaAtual === '3' && !som.paused && VIDA.ligada) VIDA.desliga(); return; }
   if (atual !== 1 || !veu) return;
 
   /* a tela escura é da trilha "1", dos 13,6 s em diante — e continua
@@ -4471,7 +4489,7 @@ const QUIZ3 = {
     const n = this.itens.length, e = this.erros;
     cartaoDoResultado(Math.round(Math.max(0, n - e) / n * 100) / 10,
       n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
-      slides[2], () => this.abre(), () => this.fecha(), null);
+      slides[2], () => this.abre(), () => { this.fecha(); go(3); }, 'Audios/audio_tabela_2.5B.mp3');
   },
   tiraCartao(){ if (slides[2]) slides[2].querySelectorAll('.quiz-cartao').forEach(e => e.remove()); },
   fecha(){
@@ -6410,6 +6428,9 @@ const NAV_TOPICOS = [
       LC25.liga();
       depoisDaMesa(g, () => viraQuiz(true));
     } },
+  /* ---- o slide 4 · As coordenadas periódicas ---- */
+  { titulo:'Início', sub:'o começo do slide', slide:3,
+    entra(){ /* o recomeço do slide já é o tópico */ } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1,
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
@@ -6527,6 +6548,7 @@ function tocaDesde(id, t, g){
 
 /* em que tópico a aula está agora — é o que a gaveta acende */
 function topicoAtual(){
+  if (atual === 3) return NAV_TOPICOS.findIndex(t => t.slide === 3);
   if (atual === 2){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 2);
     const tr = trilhaAtual, t = som.currentTime || 0;
@@ -6536,7 +6558,7 @@ function topicoAtual(){
     return base;
   }
   if (atual !== 1) return -1;
-  if (memAberto || trilhaAtual === '1.jogo') return 3;
+  if (memAberto || trilhaAtual === '1.jogo') return NAV_TOPICOS.findIndex(t => t.titulo === 'Jogo da memória');
   if (QUIZ.aberto && QUIZ.origem === '1.4') return 2;
   if (QUIZ.aberto || trilhaAtual === '1.4') return 1;
   return 0;

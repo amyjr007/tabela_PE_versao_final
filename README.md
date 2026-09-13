@@ -88,6 +88,7 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 | `2.5` · 12–16 s | o mesmo brilho, coluna a coluna (de cima para baixo) |
 | fim da `2.5` | a tabela junta-se e toca a **`2.5A`**; daí em diante, um toque em qualquer lugar da tabela a abre em linhas, o seguinte em colunas, o terceiro fecha |
 | fim da `2.5A` | o botão do canto troca o play por um **ponto de interrogação**: o quiz |
+| fim do quiz | depois de `statistics`, toca a **`2.5B`** (e cala se o aluno escolher antes); **Continuar** leva ao slide 4 |
 | o quiz | junta a tabela, apaga o fundo (preto, como no quiz do professor), toca `quiz1` e, acabado ele, a tabela gira as faces e entra a questão 1 de 8 — ver "O quiz do slide 3" |
 | — | todo salto é curvo: uma Bézier com o ponto de controlo ao lado do meio do caminho (`pontoDoArco`), na desordem, no encaixe e na montagem final |
 
@@ -158,6 +159,16 @@ entrada (`eesseaqui` e `próximo` alternados, `sómaisesse` antes da
 desconta o valor de uma questão** (nota = 10 × (8 − erros) / 8, nunca
 abaixo de 0), com **Refazer** (outro sorteio) e **Continuar**, que fecha
 o quiz e deixa o botão dele no canto. Enquanto o quiz dura, o play sai de cena.
+
+### Slide 4 · As coordenadas periódicas — Os grupos e os períodos
+
+A mesma tabela (sem as séries, o mesmo desenho e a mesma medida no
+celular), agora no **tabuleiro liso** do app do professor: todas as cartas
+no lilás claro (`#DCD7F3 → #C0B8E8`), com a letra escura (`.mesa.lisa`).
+Chega com o play à espera da narração `3` (`Audios/audio_tabela_3.mp3`,
+ainda por gravar); até ele ser tocado, a mesa respira com as animações
+sutis dos outros slides (a vida solta), que param quando a narração
+começa. Na navegação rápida: "1. Início".
 
 ## Desempenho
 
