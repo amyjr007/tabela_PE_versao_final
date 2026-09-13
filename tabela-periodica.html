@@ -410,6 +410,8 @@ body.montagem .capa .digitado{pointer-events:auto}
    dá o lugar dele, e é isso que a cena mostra sem dizer.
    ============================================================ */
 .mesa.tem-cruz .pc{transition:transform var(--tsobe,.42s) var(--e-salto),opacity .35s ease}
+/* (e o card guarda uma transição de opacidade também sem a cruz — ver
+   .pc —: apagada ela, a tabela volta em fade, e não de uma vez) */
 .mesa.tem-cruz .pc:not(.cruz){opacity:.34}
 .pc.escolhido{z-index:12}
 .pc.escolhido .cubo{--sc:1.18}
@@ -420,7 +422,7 @@ body.montagem .capa .digitado{pointer-events:auto}
   position:absolute;opacity:0;pointer-events:none;z-index:0;border-radius:10px;
   background:rgba(226,162,43,.18);border:1px solid rgba(226,162,43,.5);
   transition:top .3s cubic-bezier(.3,.85,.3,1),left .3s cubic-bezier(.3,.85,.3,1),
-             width .3s ease,height .3s ease,opacity .3s ease;
+             width .3s ease,height .3s ease,opacity .45s ease;
 }
 .banda.on{opacity:1}
 
@@ -484,7 +486,8 @@ body.montagem .capa .digitado{pointer-events:auto}
      filter escrito à mão, só enquanto a onda passa — um filter fixo nos
      118 obrigaria o navegador a manter 118 camadas acesas à toa */
   transform:translate(-50%,-50%) translateY(var(--sobe,0px)) scale(var(--onda,1));
-  transition:transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease;
+  transition:transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease,
+             opacity .45s ease;
   perspective:var(--persp,620px);
   pointer-events:auto;cursor:pointer;
 }
@@ -1634,7 +1637,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v2.9';
+const VERSAO = 'v3.0';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2303,6 +2306,8 @@ const TP = {
     /* de pé, salvo se quem chamou quiser mesmo a carta ao contrário */
     const legivel = o.legivel !== false;
     this.quem(alvo).forEach((c,i) => {
+      /* na mesa plana não se gira: só a face da frente é desenhada */
+      if (c.closest('.mesa.plana')) return;
       const cubo = c.querySelector('.cubo');
       const chave = 'r' + eixo;
       const de = +(c.dataset[chave] || 0);
@@ -2399,8 +2404,8 @@ const TP = {
      O sistema do slide 3 da aula do professor. O elemento salta e gira,
      e enquanto está no ar a linha e a coluna dele acendem inteiras: as
      duas faixas âmbar, os dois números virados medalha, o resto da
-     tabela recuado, e a ficha dele no vazio lá de cima, com o período e
-     o grupo escritos ao lado.
+     tabela recuado. O vazio da tabela fica vazio: nada escrito lá. Ao
+     acabar, tudo se apaga em fade.
      'ms' é quanto tempo a cruz fica; 0 deixa-a acesa até alguém a
      apagar com semCoordenadas(). */
   coordenadas(alvo, o){
@@ -2450,17 +2455,8 @@ const TP = {
     if (mg) mg.classList.add('acesa');
     if (mp) mp.classList.add('acesa');
 
-    const z = +c.dataset.z;
-    const f = mesa.querySelector('.ficha');
-    f.querySelector('span').textContent = z;
-    f.querySelector('b').textContent = SIMBOLOS[z-1];
-    f.classList.add('on');
-    const r = mesa.querySelector('.coords-el');
-    const per = r.querySelector('.per'), grp = r.querySelector('.grp');
-    per.innerHTML = '<b>'+c.dataset.periodo+'</b>º período';
-    per.classList.add('on');
-    if (comColuna){ grp.innerHTML = 'Grupo <b>'+c.dataset.grupo+'</b>'; grp.classList.add('on'); }
-    else grp.classList.remove('on');
+    /* nada escrito no vazio da tabela (nem o símbolo, nem o período, nem
+       o grupo): só o card em destaque e a cruz */
 
     const fica = o.ms === undefined ? 1900 : o.ms;
     if (fica) setTimeout(() => this.semCoordenadas(), fica);
@@ -3766,10 +3762,29 @@ function montaCenaDoSlide3(){
   veu2.addEventListener('click', () => SEQ.continua2());
 }
 
+/* um cubo de frente, sem animação: as rotações a zero (a inclinação da
+   desordem fica, que é no plano da tela) */
+function deFrente(c){
+  const cubo = c.querySelector('.cubo');
+  clearTimeout(c._giro);
+  c.classList.remove('girando');
+  c.dataset.rx = 0; c.dataset.ry = 0; c.dataset.rz = 0;
+  cubo.style.setProperty('--dur', '0s');
+  ['--rx', '--ry', '--rzc'].forEach(v => cubo.style.setProperty(v, '0deg'));
+  if (!c.classList.contains('desordem')) cubo.style.setProperty('--rz', '0deg');
+}
 function efeitos2(t){
   /* a mesa plana, calada a vida solta (ver o CSS de .mesa.plana) */
   const m3 = slides[2].querySelector('.mesa');
-  if (m3) m3.classList.toggle('plana', DEPOIS_DA_2.includes(trilhaAtual) || (trilhaAtual === '2' && t >= VIDA_ATE_2));
+  const plana = DEPOIS_DA_2.includes(trilhaAtual) || (trilhaAtual === '2' && t >= VIDA_ATE_2);
+  if (m3 && plana !== m3.classList.contains('plana')){
+    /* entrando nela, cada cubo é posto de frente — sem se ver, porque as
+       seis faces são iguais. A plana só desenha a face da frente, e um
+       cubo que a vida solta deixou de lado (meia volta, um quarto)
+       ficava invisível: faltava na tabela, e depois na montagem. */
+    if (plana) TP.todos().forEach(c => deFrente(c));
+    m3.classList.toggle('plana', plana);
+  }
   /* a vida solta da mesa acompanha a narração "2" até aos 12 s, e nunca
      volta nas seguintes: no encaixe, a mesa é do aluno */
   if (VIDA.ligada && (DEPOIS_DA_2.includes(trilhaAtual) || (trilhaAtual === '2' && t >= VIDA_ATE_2))) VIDA.desliga();
@@ -3922,7 +3937,8 @@ function neutro(c, sim){
    ordem do número atômico. O próximo a tocar brilha, e só ele responde
    (os outros tremem um fio). O 1 dispara a "2.2"; depois do 4, a tabela
    arruma-se sozinha, um card de cada vez, até ao 36, e pára; a "2.3"
-   dispara quando o 32 salta para o lugar dele. As casas vazias voltam a aparecer, para guiar o encaixe. */
+   dispara quando o 32 salta para o lugar dele. As casas vazias ficam escondidas até a
+   tabela estar toda montada: ela forma-se do nada. */
 const ENCAIXE = {
   ativo:false, auto:false, casas:false, proximo:1, g:0,
   /* até que número o aluno toca, até onde a tabela vai sozinha, e o
@@ -4078,20 +4094,20 @@ function ondaVerde(t){
   o.suja = dentro;
 }
 
-/* AS VAGAS DA DESORDEM. Só os 40 primeiros (do 1 ao 40) ficam na tela: a
-   folha abaixo do cabeçalho partida em 8 por 5, e cada um no meio da sua
+/* AS VAGAS DA DESORDEM. Só os 48 primeiros (do 1 ao 48) ficam na tela: a
+   folha abaixo do cabeçalho partida em 8 por 6, e cada um no meio da sua
    parte com um tremor — a grade do professor, que com menos cards fica
    mais folgada e por igual. Os outros saem pela direita, para fora da
    tela, e só voltam quando são chamados (na arrumação final). O sorteio
    é fixo, e voltar o áudio refaz a mesma desordem. */
-const NA_TELA = 40;
+const NA_TELA = 48;
 let VAGAS = null;
 function vagasDaDesordem(){
   if (VAGAS) return VAGAS;
   let sem = 2024;
   const r = () => (sem = (sem*1664525 + 1013904223) % 4294967296) / 4294967296;
   /* longe do play, no canto de baixo à direita, e da borda de baixo */
-  const x0 = 60, x1 = 1140, y0 = 150, y1 = 664, cols = 8, linhas = 5;
+  const x0 = 60, x1 = 1140, y0 = 150, y1 = 664, cols = 8, linhas = 6;
   const dx = (x1 - x0)/cols, dy = (y1 - y0)/linhas, vagas = [];
   for (let l = 0; l < linhas; l++)
     for (let c = 0; c < cols; c++)
@@ -4132,8 +4148,8 @@ function desordem(t){
   /* a desordem não tem tabela por baixo: as casas vazias e os números
      dos grupos e dos períodos esmaecem com ela, e voltam com a ordem */
   const mesa = slideDaMesa().querySelector('.mesa');
-  /* (no encaixe elas voltam, para guiar os cards para casa) */
-  if (mesa) mesa.classList.toggle('sem-casas', q >= 0 && !ENCAIXE.casas);
+  /* (e só voltam com a tabela toda montada: ela forma-se do nada) */
+  if (mesa) mesa.classList.toggle('sem-casas', q >= 0 && !FINAL.feito);
   if (clarao2){
     const k = (q >= 0 && q < o.clarao) ? Math.pow(1 - q/o.clarao, 2) : 0;
     clarao2.style.opacity = k.toFixed(3);

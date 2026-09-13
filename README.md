@@ -67,7 +67,7 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 | `2` · 40,2 → 44 s | em duas linhas: "Os elementos serão organizados em linhas, / em ordem crescente de número atômico." |
 | fim da `2` | o play sai e aparece "Toque na tela para continuar" |
 | o toque | a tela escura esmaece com a foto e o texto, e toca a `2.1`; a desordem fica |
-| fim da `2.1` | as casas vazias voltam e **o 1 brilha**, em vermelho neon: tocando nele, ele voa para a casa dele (e ganha a cor ao assentar) e toca a `2.2`. Depois brilham o 2, o 3 e o 4 — só o que brilha responde; os outros tremem um fio |
+| fim da `2.1` | **o 1 brilha**, em vermelho neon (as casas vazias e os números dos grupos e dos períodos continuam escondidos: a tabela forma-se do nada, e eles só voltam com ela toda montada): tocando nele, ele voa para a casa dele (e ganha a cor ao assentar) e toca a `2.2`. Depois brilham o 2, o 3 e o 4 — só o que brilha responde; os outros tremem um fio |
 | depois do 4 | a tabela arruma-se sozinha, um card de cada vez, até ao **36**, e pára; **a `2.3` dispara quando o 32 salta** para o lugar dele (`ENCAIXE`: `toqueAte` 4, `sozinhoAte` 36, `gatilho` 32, `passo` 0,0875 s — 60 % mais rápido que os 0,14 s do começo) |
 | — | o card que volta para casa voa por cima dos espalhados e fica acima deles: a tabela que se forma nunca fica tapada |
 | — | cada salto para casa leva **0,26 s** (`SALTO`) — os 0,7 s do começo, 80 % mais rápidos e depois mais 50 % —, igual no toque, no automático e na junção das colunas |
@@ -82,8 +82,8 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 | fim da `2.4` | o **37** brilha; tocado, a tabela inteira arruma-se — as colunas juntam-se, o H volta, e os que faltam voam para casa um de cada vez — e, montada, **brilha**, com `funfare`, confetes e `applause` |
 | — | todo salto é curvo: uma Bézier com o ponto de controlo ao lado do meio do caminho (`pontoDoArco`), na desordem, no encaixe e na montagem final |
 
-Na desordem, **só os 40 primeiros (do 1 ao 40) ficam na tela**, numa grade
-de 8 × 5 abaixo do cabeçalho (longe do play e da borda de baixo), com um
+Na desordem, **só os 48 primeiros (do 1 ao 48) ficam na tela**, numa grade
+de 8 × 6 abaixo do cabeçalho (longe do play e da borda de baixo), com um
 tremor — com menos cards, a distribuição fica folgada e por igual. Os
 outros saem voando pela direita, para fora da tela, e só voltam quando
 são chamados, na arrumação final (`NA_TELA`); o sorteio é fixo, e voltar o
@@ -103,7 +103,9 @@ refazer o desenho da página a cada quadro —, e vários voos ao mesmo tempo
 não pesam. Calada a vida solta (depois dos 12 s da `2`), a mesa fica
 **plana**: só a face da frente de cada cubo é desenhada, sem a perspectiva
 de cada um — 88 camadas a compor em vez de 528 —, com a face do mesmo
-tamanho. A foto de Moseley desliza com uma transição curta entre os
+tamanho. Ao entrar nela, cada cubo é posto de frente sem se ver (as seis
+faces são iguais): a vida solta deixa alguns de lado, com meia volta ou
+um quarto, e esses ficariam invisíveis; na mesa plana os giros param. A foto de Moseley desliza com uma transição curta entre os
 tiques do relógio.
 
 ## A narração
@@ -151,6 +153,11 @@ Os nomes dos arquivos não podem ter espaços: publicado, um espaço vira
 `%20` e há servidor que não o devolve.
 
 ## A tabela viva
+
+A **cruz das coordenadas** acende a linha e a coluna do elemento que salta,
+com os dois números dos eixos, e põe o card em destaque; o resto da
+tabela recua. Não escreve nada no vazio da tabela, e ao acabar tudo se
+apaga em fade.
 
 Parada, a tabela seria um cartaz. Enquanto a narração não começa, ela
 respira sozinha, em compassos que correm ao mesmo tempo e não se
