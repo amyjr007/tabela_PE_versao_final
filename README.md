@@ -543,6 +543,19 @@ fora dela ou com a tecla N.
 | 3. Quiz 2 | aos 54 s da `1.4`: o quiz dos nomes diferentes |
 | 4. Jogo da memória | a narração `audio_tabela_1_jogo_memória` do começo, que acaba no botão do jogo; o atalho **abrir o jogo direto** pula a narração |
 
+A gaveta mostra **os tópicos do slide em que se está**, com o título dele e
+a numeração a começar do 1. No slide 3 (Os critérios de Organização):
+
+| tópico | aonde leva |
+|---|---|
+| 1. Início | o começo do slide |
+| 2. O critério 1 de organização | aos **25 s da narração `2`**, com a tabela já desmontada — a mesa aparece desarrumada, sem os cards a correr para lá |
+| 3. O critério 2 de organização | a narração **`2.3`** do começo, com a tabela **montada até à linha 4** (do 1 ao 36, em casa e coloridos), o 37 ao 48 espalhados embaixo e o resto fora da tela |
+
+Para a mesa aparecer já como está naquele ponto, os eventos usam o
+segundo pedido até o áudio saltar para ele (`TEMPO_FORCADO`), e por um
+instante os cards ficam sem transições (`.mesa.sem-transicao`).
+
 **Um tópico abre com a mesa montada como se os anteriores tivessem
 acontecido.** O slide recomeça sempre do zero; cada tópico anterior
 deixa na mesa o que construiu (`deixa()`), e só então o escolhido entra

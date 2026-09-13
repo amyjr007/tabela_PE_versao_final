@@ -878,6 +878,9 @@ body.montagem .capa .digitado{pointer-events:auto}
    de 528 — a tela escura por cima e a montagem automática deixam de
    pesar. A face da frente cresce na medida em que a perspectiva a
    mostrava (--plano), e nada salta à vista na troca. */
+/* quem chega por um atalho vê a mesa já como ela está naquele ponto, e
+   não os cards a correr para lá */
+.mesa.sem-transicao .pc, .mesa.sem-transicao .pc .cubo{transition:none!important}
 .mesa.plana .pc{perspective:none}
 .mesa.plana .pc .face:not(.f1){display:none}
 .mesa.plana .pc .face.f1{transform:scale(var(--plano,1.05))}
@@ -1640,7 +1643,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v3.1';
+const VERSAO = 'v3.2';
 
 /* ============================================================
    OS ELEMENTOS
@@ -3253,8 +3256,19 @@ function montaCenaDoSlide1(){
 }
 
 /* ---- o que o tempo da narração desenha, a cada tique ---- */
+/* O RELÓGIO DOS EVENTOS — o segundo em que a narração está. Chegando por
+   um atalho da navegação rápida a meio de uma trilha, o áudio ainda não
+   carregou e diz 0: até ele saltar para o segundo pedido, vale esse
+   segundo (TEMPO_FORCADO), e a mesa já aparece como deve estar ali. */
+var TEMPO_FORCADO = null;
+function tempoDaNarracao(){
+  const t = som.currentTime || 0, f = TEMPO_FORCADO;
+  if (!f) return t;
+  if (f.id !== trilhaAtual || t >= f.t - 0.05){ TEMPO_FORCADO = null; return t; }
+  return f.t;
+}
 function efeitosDoTempo(){
-  const t = som.currentTime || 0;
+  const t = tempoDaNarracao();
   /* TELA ESCURA, BOTÃO FORA. Decide-se antes de qualquer outra coisa, e
      para todos os slides: saindo do slide 1 com a tela escura, o botão
      tem de voltar — e o resto desta função nem corre fora do slide 1. */
@@ -5715,6 +5729,26 @@ const NAV_TOPICOS = [
       eleitoDaNavegacao(0);
       depoisDaMesa(g, () => tocaDesde('1.4', QUIZ_NA_HORA['1.4'], g));
     } },
+  /* ---- o slide 3 · Os critérios de Organização ---- */
+  { titulo:'Início', sub:'o começo do slide', slide:2,
+    entra(){ /* o recomeço do slide já é o tópico */ } },
+  { titulo:'O critério 1 de organização', sub:'aos 25 s da narração 2, com a tabela já desmontada', slide:2,
+    entra(v, g){
+      semTransicaoUmInstante();
+      trilhaAtual = -1;
+      carregaTrilha('2');
+      TEMPO_FORCADO = { id:'2', t:25 };
+      depoisDaMesa(g, () => tocaDesde('2', 25, g));
+    } },
+  { titulo:'O critério 2 de organização', sub:'a narração 2.3, com a tabela montada até à linha 4', slide:2,
+    entra(v, g){
+      semTransicaoUmInstante();
+      trilhaAtual = -1;
+      carregaTrilha('2.3');
+      /* do 1 ao 36 em casa, coloridos; os outros, na desordem */
+      TP.todos().filter(c => +c.dataset.z <= ENCAIXE.sozinhoAte).forEach(poeNoLugarJa);
+      depoisDaMesa(g, () => tocaDesde('2.3', 0, g));
+    } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1,
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
@@ -5735,13 +5769,14 @@ function irPara(i, variante){
   const item = NAV_TOPICOS[i];
   if (!item || item.engatilhado) return;
   fechaNav();
+  TEMPO_FORCADO = null;
   const g = ++NAV.geracao;
   /* o elemento que o aluno tinha escolhido fica guardado: chegando a um
      quiz, é ele que volta a valer (se servir) */
   if (SEQ.eleito) NAV.eleitoAntes = +SEQ.eleito.dataset.z;
   const segue = () => {
     if (g !== NAV.geracao || atual !== item.slide) return;
-    NAV_TOPICOS.slice(0, i).forEach(t => { if (t.deixa) t.deixa(); });
+    NAV_TOPICOS.slice(0, i).forEach(t => { if (t.slide === item.slide && t.deixa) t.deixa(); });
     item.entra(variante, g);
   };
   /* de outro slide, o go() já recomeça este; no mesmo, recomeça-se à mão */
@@ -5778,6 +5813,30 @@ function eleitoDaNavegacao(letras){
   return c;
 }
 
+/* por um instante, sem transições nos cards do slide 3 (ver o CSS de
+   .mesa.sem-transicao) */
+function semTransicaoUmInstante(){
+  const m = slides[2] && slides[2].querySelector('.mesa');
+  if (!m) return;
+  m.classList.add('sem-transicao');
+  setTimeout(() => m.classList.remove('sem-transicao'), 250);
+}
+/* um card do slide 3 já em casa, colorido, sem voo — como se o encaixe o
+   tivesse posto lá */
+function poeNoLugarJa(c){
+  const casa = alvoDe(+c.dataset.z), cubo = c.querySelector('.cubo');
+  c._vooG = (c._vooG || 0) + 1;
+  c._voo = 0;
+  c._noLugar = true;
+  c.classList.remove('desordem', 'chama', 'nao', 'encaixando');
+  c.classList.add('no-lugar');
+  ['--vx', '--vy', '--tsobe'].forEach(v => c.style.removeProperty(v));
+  c.style.left = casa.x.toFixed(1) + 'px';
+  c.style.top  = casa.y.toFixed(1) + 'px';
+  cubo.style.setProperty('--rz', '0deg');
+  neutro(c, false);
+}
+
 /* a narração só volta depois de a mesa pousar; e a mesa não se põe a
    respirar à espera do play, porque a aula já vai adiantada */
 function depoisDaMesa(g, fn){
@@ -5807,6 +5866,13 @@ function tocaDesde(id, t, g){
 
 /* em que tópico a aula está agora — é o que a gaveta acende */
 function topicoAtual(){
+  if (atual === 2){
+    const base = NAV_TOPICOS.findIndex(t => t.slide === 2);
+    const tr = trilhaAtual, t = som.currentTime || 0;
+    if (tr === '2.3' || tr === '2.4' || FINAL.feito) return base + 2;
+    if ((tr === '2' && t >= 25) || tr === '2.1' || tr === '2.2') return base + 1;
+    return base;
+  }
   if (atual !== 1) return -1;
   if (memAberto || trilhaAtual === '1.jogo') return 3;
   if (QUIZ.aberto && QUIZ.origem === '1.4') return 2;
@@ -5846,10 +5912,13 @@ function montaNav(){
   const lista = navGaveta.querySelector('.nav-lista');
   NAV_TOPICOS.forEach((t, i) => {
     const li = document.createElement('li');
+    /* cada slide tem os tópicos dele, numerados a partir do 1 */
+    li.dataset.slide = t.slide;
+    const n = NAV_TOPICOS.slice(0, i).filter(x => x.slide === t.slide).length + 1;
     const b = document.createElement('button');
     b.type = 'button';
     b.className = 'nav-item';
-    b.innerHTML = '<span class="nav-n">' + (i + 1) + '</span><span class="nav-txt"><b></b>' +
+    b.innerHTML = '<span class="nav-n">' + n + '</span><span class="nav-txt"><b></b>' +
       (t.engatilhado ? '<span class="nav-breve">em breve</span>' : '<small></small>') + '</span>';
     b.querySelector('b').textContent = t.titulo;
     b.querySelector('b').insertAdjacentHTML('beforeend', '<span class="nav-aqui">aqui</span>');
@@ -5881,6 +5950,9 @@ function navAberta(){ return !!navGaveta && navGaveta.classList.contains('aberta
 function abreNav(){
   if (!navGaveta || atual < 1) return;
   const aqui = topicoAtual();
+  /* só os tópicos do slide em que se está, e o título dele */
+  navGaveta.querySelector('h2').textContent = SLIDES[atual].title;
+  navGaveta.querySelectorAll('.nav-lista li').forEach(li => { li.hidden = +li.dataset.slide !== atual; });
   navGaveta.querySelectorAll('.nav-item').forEach((b, i) => b.classList.toggle('atual', i === aqui));
   navGaveta.classList.add('aberta');
   navGaveta.setAttribute('aria-hidden', 'false');
