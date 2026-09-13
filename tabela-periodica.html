@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Audiobook interativo da Tabela Periódica Moderna</title>
 <meta name="theme-color" content="#EDEAF2">
+<!-- só clara: o modo escuro automático de alguns celulares escurecia
+     o fundo fora do palco, e as laterais ficavam pretas -->
+<meta name="color-scheme" content="only light">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -104,6 +107,40 @@ body{
   background:radial-gradient(115% 85% at 82% 6%,rgba(76,63,191,.09),transparent 58%),
              radial-gradient(85% 75% at 4% 100%,rgba(226,162,43,.14),transparent 62%);
 }
+
+/* ---- O CELULAR DEITADO: o palco até às bordas (ver ajustaPalco) ----
+   A tela é mais larga do que 16:9, e a cena, medida pela altura, deixava
+   duas faixas nos lados. Aqui o papel de fundo passa para a tela inteira
+   (a grade alinhada com a do palco), o palco deixa de cortar o que sai
+   dele, as camadas que cobrem a cena cobrem também as faixas — por uma
+   sombra sem desfoque, que não mexe no que está dentro delas —, e o play
+   e a versão vão para os cantos de verdade. Só no celular: tablets,
+   Chromebooks e computadores nunca entram aqui. */
+html.palco-largo #viewport{
+  background-color:var(--fundo);
+  background-image:
+    linear-gradient(rgba(76,63,191,.07) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(76,63,191,.07) 1px,transparent 1px),
+    radial-gradient(115% 85% at 82% 6%,rgba(76,63,191,.09),transparent 58%),
+    radial-gradient(85% 75% at 4% 100%,rgba(226,162,43,.14),transparent 62%),
+    linear-gradient(160deg,var(--fundo-alto),var(--fundo) 52%,var(--fundo-2));
+  background-size:calc(52px * var(--fit,1)) calc(58px * var(--fit,1)),
+                  calc(52px * var(--fit,1)) calc(58px * var(--fit,1)),
+                  100% 100%, 100% 100%, 100% 100%;
+  background-position:var(--gx,0) var(--gy,0), var(--gx,0) var(--gy,0), 0 0, 0 0, 0 0;
+  background-repeat:repeat, repeat, no-repeat, no-repeat, no-repeat;
+}
+html.palco-largo #stage{background:transparent;box-shadow:none;overflow:visible}
+html.palco-largo #stage::before, html.palco-largo #stage::after{display:none}
+html.palco-largo .veu     {box-shadow:0 0 0 var(--folga) rgba(12,10,32,.87)}
+html.palco-largo .quiz    {box-shadow:0 0 0 var(--folga) rgba(12,10,32,.55)}
+html.palco-largo .memoria {box-shadow:0 0 0 var(--folga) rgba(7,6,22,.995)}
+html.palco-largo #flash-erro{box-shadow:0 0 0 var(--folga) rgba(220,38,60,.55)}
+html.palco-largo #som, html.palco-largo #som-dica{translate:var(--folga) 0}
+html.palco-largo #versao{translate:calc(-1 * var(--folga)) 0}
+/* e a barrinha do progresso, de borda a borda: a fração vem em --prog */
+html.palco-largo #progress{left:calc(-1 * var(--folga));right:calc(-1 * var(--folga));width:auto!important;
+  transform-origin:left center;transform:scaleX(var(--prog,0));transition:transform .45s cubic-bezier(.4,0,.2,1)}
 
 /* barra de progresso da apresentação */
 #progress{position:absolute;top:0;left:0;height:3px;background:var(--ouro-luz);z-index:6;
@@ -1481,7 +1518,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v2.0';
+const VERSAO = 'v2.1';
 
 /* ============================================================
    OS ELEMENTOS
@@ -1527,8 +1564,29 @@ const deck  = document.getElementById('deck');
 let fitScale = 1;
 
 function ajustaPalco(){
-  fitScale = Math.min(innerWidth/1280, innerHeight/720);
+  const W = innerWidth, H = innerHeight;
+  fitScale = Math.min(W/1280, H/720);
   stage.style.setProperty('--fit', fitScale);
+  /* O CELULAR DEITADO é mais largo do que 16:9: medida pela altura, a
+     cena deixava duas faixas vazias nos lados. Nesse caso — e só nele —
+     o palco vai até às bordas (ver o CSS de .palco-largo). A cena
+     continua a mesma, de 1280 × 720, no meio; 'folga' é quanto sobra
+     de cada lado, em pixels do palco.
+     Celular é a tela com o lado menor até 540 px (os telefones andam
+     entre 360 e 430). Não basta a janela ser larga: num Chromebook ou
+     num computador, a barra do navegador come a altura e a janela fica
+     mais larga do que 16:9 — e esses ficam como sempre foram. */
+  const celular = Math.min(screen.width, screen.height) <= 540;
+  const folga = celular ? Math.max(0, (W/fitScale - 1280) / 2) : 0;
+  const largo = folga > 1;
+  document.documentElement.classList.toggle('palco-largo', largo);
+  stage.style.setProperty('--folga', (largo ? folga : 0).toFixed(1) + 'px');
+  /* o papel da tela inteira, com a grade no mesmo passo e no mesmo
+     sítio da grade do palco */
+  const vp = document.getElementById('viewport');
+  vp.style.setProperty('--fit', fitScale);
+  vp.style.setProperty('--gx', (W/2 - 640*fitScale).toFixed(1) + 'px');
+  vp.style.setProperty('--gy', (H/2 - 360*fitScale).toFixed(1) + 'px');
 }
 addEventListener('resize', ajustaPalco);
 ajustaPalco();
@@ -3162,7 +3220,7 @@ const VOLTA13 = { '1.3A':11.7, '1.3B':10.5, dura:1.4 };
 /* ============================================================
    OS EVENTOS DA "1.3A" — os símbolos de uma letra e os de duas
      1,2 s        o símbolo dentro do card do escolhido pulsa duas vezes
-     8,7 → 13 s   os elementos de DUAS letras crescem, um a um (luz âmbar)
+     8,7 → 13 s   oito de duas letras crescem, um a um, com luz âmbar
      16 → 23 s    oito elementos cujo nome em português COMEÇA PELO
                   SÍMBOLO crescem, um a um (luz marrom)
      24,9 s       o F gira e cresce no lugar; 26 s o nome dele pulsa 2×;
@@ -3173,7 +3231,10 @@ const VOLTA13 = { '1.3A':11.7, '1.3B':10.5, dura:1.4 };
    ============================================================ */
 const EV13A = {
   pulsoSimbolo:{ de:1.2, dura:0.9, mais:0.32 },
-  duasLetras:  { de:8.7,  ate:13.0, largura:0.5, cresce:0.55, classe:'luz-onda',   suja:false },
+  duasLetras:  { de:8.7,  ate:13.0, largura:0.8, cresce:0.55, classe:'luz-onda',   suja:false },
+  /* os oito da onda âmbar: de duas letras, espalhados pela tabela, e
+     nenhum repetido da onda marrom que vem logo a seguir */
+  duas:['He','Li','Mg','Si','Zn','Br','Ag','Pt'],
   iniciais:    { de:16.0, ate:23.0, largura:1.0, cresce:0.6,  classe:'luz-marrom', suja:false },
   /* os oito da onda marrom: nome a começar pelo símbolo, de uma e de duas
      letras (esta é a trilha dos de uma letra), espalhados da linha 1 à 6.
@@ -3191,8 +3252,8 @@ const EV13A = {
 let LISTA_DUAS = null, LISTA_INICIAIS = null;
 function listasDas13A(){
   if (LISTA_DUAS) return;
-  const todos = TP.todos().slice().sort((a, b) => +a.dataset.z - +b.dataset.z);
-  LISTA_DUAS     = todos.filter(c => c.dataset.sym.length === 2);
+  /* só oito, um de cada vez: todos os de duas letras eram demais */
+  LISTA_DUAS     = EV13A.duas.map(s => TP.cubo(s)).filter(Boolean);
   /* só oito, um de cada vez — todos os 53 eram demais para sete segundos */
   LISTA_INICIAIS = EV13A.oito.map(s => TP.cubo(s)).filter(Boolean);
 }
@@ -4248,6 +4309,7 @@ function atualizaCabecalho(){
   stage.classList.toggle('sem-marca', atual === 1);
   navNoSlide();
   progress.style.width = ((atual)/(SLIDES.length-1)*100) + '%';
+  progress.style.setProperty('--prog', atual/(SLIDES.length-1));
   counter.innerHTML = '<b>'+(atual+1)+'</b> / '+SLIDES.length;
   slides.forEach(sl => {
     const r = sl.querySelector('.regua');

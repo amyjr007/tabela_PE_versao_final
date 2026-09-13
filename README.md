@@ -200,7 +200,7 @@ frase que a está a explicar.
 | fim da `1.2` | o play fica pronto na **`1.3A`** se o símbolo do escolhido tem uma letra, ou na **`1.3B`** se tem duas |
 | `1.3A` · 11,7 s / `1.3B` · 10,5 s | o elemento volta para a casa dele — a ida vista ao contrário |
 | `1.3A` · 1,2 s | o símbolo dentro do card do escolhido pulsa duas vezes |
-| `1.3A` · 8,7 → 13 s | os elementos de **duas letras** crescem, um a um, com luz âmbar |
+| `1.3A` · 8,7 → 13 s | oito elementos de símbolo com duas letras — He, Li, Mg, Si, Zn, Br, Ag, Pt — crescem um a um, com luz âmbar |
 | `1.3A` · 16 → 23 s | oito elementos cujo **nome em português começa pelo símbolo** — H, C, N, Al, Cl, Fe, I, Ba — crescem um a um, com luz marrom |
 | `1.3A` · 24,9 s | o **F** gira e cresce no lugar; 26 s o nome pulsa 2×; 27 s volta, com a animação ao contrário |
 | `1.3A` · 29,2 s | o mesmo com o **Ca**; 31 s o nome pulsa; 33 s volta |
@@ -388,6 +388,19 @@ outra.
 `{periodo:3}`, `{de:57, ate:71}`. Sem nada, são os 118.
 
 ## Na tela
+
+**No celular deitado a cena ocupa a tela inteira.** A tela dele é mais
+larga do que 16:9, e a cena (1280 × 720, medida pela altura) deixava duas
+faixas nos lados. No celular (tela com o lado menor até 540 px) mais largo
+do que 16:9 — e só nele —,
+o papel de fundo passa para a tela inteira, as camadas que cobrem a cena
+(a tela escura, o quiz, o jogo, o vermelho do erro) cobrem também as
+faixas, e o play e a versão vão para os cantos da tela. A cena em si não
+muda de tamanho nem de lugar. Tablets, Chromebooks e computadores ficam
+exatamente como eram, mesmo com a janela do navegador mais larga do que
+16:9. A página também pede ao navegador
+que não a escureça (`color-scheme: only light`): o modo escuro automático
+de alguns celulares pintava de preto o fundo fora do palco.
 
 | tecla | o que faz |
 |---|---|
