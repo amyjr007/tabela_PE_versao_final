@@ -1075,6 +1075,29 @@ body.montagem .capa .digitado{pointer-events:auto}
 .quiz-cartao button.forte{background:var(--indigo);color:#fff}
 .quiz-cartao button.forte:hover{background:var(--tinta)}
 
+/* ---------- o ajuste da tabela (temporário, só no celular) ----------
+   Uma ferramenta de medida: ligado, a tabela do slide 1 fica travada e
+   move-se com um dedo e cresce ou encolhe com a pinça. O painel no alto
+   mostra a medida e copia-a. Fica fora do palco, como a barra. */
+#ajuste{position:fixed;top:10px;left:50%;z-index:77;transform:translateX(-50%);
+  display:flex;align-items:center;gap:8px;padding:6px 8px 6px 14px;
+  background:rgba(255,255,255,.94);border:1px solid var(--indigo-dim);border-radius:12px;
+  backdrop-filter:blur(9px);box-shadow:0 10px 28px rgba(32,28,66,.2);
+  font-family:var(--mono);font-size:12px;color:var(--tinta);white-space:nowrap;
+  touch-action:manipulation}
+#ajuste[hidden]{display:none}
+#ajuste .aj-rot{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--indigo)}
+#ajuste output{min-width:176px}
+#ajuste button{font-family:var(--display);font-weight:700;font-size:13px;padding:6px 12px;
+  border-radius:9px;cursor:pointer;border:1.5px solid var(--indigo);background:#fff;color:var(--indigo)}
+#ajuste button.forte{background:var(--indigo);color:#fff}
+#ajuste button.x{border:0;background:transparent;color:var(--tinta-dim);font-size:18px;
+  line-height:1;padding:4px 8px}
+#ajuste.copiado .aj-copia{background:#1F9D55;border-color:#1F9D55;color:#fff}
+/* travada: os cubos não recebem o dedo, e o arrastar é da mesa inteira */
+#stage.ajustando .mesa .pc{pointer-events:none}
+#stage.ajustando .slide{cursor:grab}
+
 /* ---------- navegação rápida (tecla N) ----------
    Uma ferramenta de desenvolvimento: a alça na borda direita, a partir
    do slide da tabela, abre a gaveta com os tópicos do slide. Fica fora
@@ -1518,7 +1541,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v2.1';
+const VERSAO = 'v2.2';
 
 /* ============================================================
    OS ELEMENTOS
@@ -1563,6 +1586,9 @@ const stage = document.getElementById('stage');
 const deck  = document.getElementById('deck');
 let fitScale = 1;
 
+/* celular: a tela com o lado menor até 540 px (os telefones andam entre
+   360 e 430; tablets e Chromebooks, de 600 para cima) */
+function ehCelular(){ return Math.min(screen.width, screen.height) <= 540; }
 function ajustaPalco(){
   const W = innerWidth, H = innerHeight;
   fitScale = Math.min(W/1280, H/720);
@@ -1576,7 +1602,7 @@ function ajustaPalco(){
      entre 360 e 430). Não basta a janela ser larga: num Chromebook ou
      num computador, a barra do navegador come a altura e a janela fica
      mais larga do que 16:9 — e esses ficam como sempre foram. */
-  const celular = Math.min(screen.width, screen.height) <= 540;
+  const celular = ehCelular();
   const folga = celular ? Math.max(0, (W/fitScale - 1280) / 2) : 0;
   const largo = folga > 1;
   document.documentElement.classList.toggle('palco-largo', largo);
@@ -2401,6 +2427,8 @@ const VIDA = {
   liga(){
     /* começada a história do slide, a vida solta não volta a meio dela */
     if (this.ligada || atual !== 1 || (window.SEQ && window.SEQ.comecou)) return;
+    /* nem durante o ajuste da tabela: travada é travada */
+    if (window.AJUSTE && AJUSTE.ligado) return;
     this.ligada = true;
     this.marcaCubo(700);
     this.marcaFamilia(1300);
@@ -4308,6 +4336,7 @@ function atualizaCabecalho(){
   stage.classList.toggle('na-capa',   atual === 0);
   stage.classList.toggle('sem-marca', atual === 1);
   navNoSlide();
+  ajusteNoSlide();
   progress.style.width = ((atual)/(SLIDES.length-1)*100) + '%';
   progress.style.setProperty('--prog', atual/(SLIDES.length-1));
   counter.innerHTML = '<b>'+(atual+1)+'</b> / '+SLIDES.length;
@@ -5089,6 +5118,172 @@ function navNoSlide(){
   if (atual < 1) fechaNav();
 }
 montaNav();
+
+/* ============================================================
+   O AJUSTE DA TABELA — temporário, para medir no celular
+   SÓ NO CELULAR (ehCelular): tablets, Chromebooks e computadores não
+   veem nada disto, e a tabela deles não muda.
+   Ligado (AJUSTE_LIGADO), a tabela do slide 1 fica travada: os cubos não
+   respondem ao toque, os toques no slide não fazem nada, e a mesa não
+   se mexe sozinha à espera do play. Um dedo arrasta a tabela; dois, em
+   pinça, aumentam ou diminuem em volta do ponto entre eles, como num
+   mapa (num computador que se passe por celular, o rato arrasta e a
+   roda muda o tamanho).
+   A medida — o deslocamento em pixels do palco e a escala — aparece no
+   painel do alto, e o Copiar leva-a, com o tamanho da tela, para ser
+   colada na conversa e aplicada no app. O × desliga o ajuste até a
+   página recarregar (a medida fica aplicada, para ver a tabela assim).
+   A medida vive nas variáveis que a .mesa já tinha para isso: --px,
+   --py e --zoom, com a origem no meio do palco.
+   ============================================================ */
+var AJUSTE_LIGADO = true;
+var AJUSTE = { ligado:false, x:0, y:0, e:1, dedos:new Map(), ini:null };
+const limitaEscala = e => Math.max(0.4, Math.min(2.5, e));
+/* um ponto da tela, em pixels do palco */
+function noPalco(pt){
+  const r = stage.getBoundingClientRect();
+  return { x:(pt.x - r.left) / fitScale, y:(pt.y - r.top) / fitScale };
+}
+function meioDosDedos(d){
+  const n = d.length || 1;
+  return { x:d.reduce((a, p) => a + p.x, 0) / n, y:d.reduce((a, p) => a + p.y, 0) / n };
+}
+const distDosDedos = d => d.length > 1 ? Math.hypot(d[0].x - d[1].x, d[0].y - d[1].y) : 0;
+
+function montaAjuste(){
+  const p = document.createElement('div');
+  p.id = 'ajuste';
+  p.hidden = true;
+  p.innerHTML = '<span class="aj-rot">Ajuste da tabela</span><output></output>' +
+    '<button type="button" class="aj-zera">Zerar</button>' +
+    '<button type="button" class="forte aj-copia">Copiar</button>' +
+    '<button type="button" class="x" aria-label="Desligar o ajuste da tabela">×</button>';
+  document.body.appendChild(p);
+  p.querySelector('.aj-zera').addEventListener('click', () => {
+    AJUSTE.x = AJUSTE.y = 0; AJUSTE.e = 1; aplicaAjuste();
+  });
+  p.querySelector('.aj-copia').addEventListener('click', copiaAjuste);
+  p.querySelector('.x').addEventListener('click', () => { AJUSTE_LIGADO = false; ajusteNoSlide(); });
+  const sl = slides[1];
+  sl.addEventListener('pointerdown', dedoDesce);
+  sl.addEventListener('pointermove', dedoAnda);
+  sl.addEventListener('pointerup', dedoSobe);
+  sl.addEventListener('pointercancel', dedoSobe);
+  sl.addEventListener('wheel', rodaAjuste, { passive:false });
+  /* ZERO INTERAÇÕES: nenhum clique chega a quem está no slide (a tela
+     escura, o quiz, os cubos) enquanto o ajuste está ligado */
+  sl.addEventListener('click', ev => {
+    if (AJUSTE.ligado){ ev.stopPropagation(); ev.preventDefault(); }
+  }, true);
+  ajusteNoSlide();
+}
+/* o ajuste só existe no slide da tabela, e só no celular: nas telas
+   maiores a tabela continua como sempre, interativa, sem painel e sem
+   nenhuma medida aplicada */
+function ajusteNoSlide(){
+  if (!window.AJUSTE) return;
+  const celular = ehCelular();
+  const on = AJUSTE_LIGADO && atual === 1 && celular;
+  AJUSTE.ligado = on;
+  AJUSTE.dedos.clear();
+  stage.classList.toggle('ajustando', on);
+  const p = document.getElementById('ajuste');
+  if (p) p.hidden = !on;
+  if (on) VIDA.desliga();
+  if (celular) aplicaAjuste();
+}
+function aplicaAjuste(){
+  const m = slides[1] && slides[1].querySelector('.mesa');
+  if (m){
+    m.style.setProperty('--px', AJUSTE.x.toFixed(1) + 'px');
+    m.style.setProperty('--py', AJUSTE.y.toFixed(1) + 'px');
+    m.style.setProperty('--zoom', AJUSTE.e.toFixed(3));
+  }
+  const o = document.querySelector('#ajuste output');
+  if (o) o.textContent = 'x ' + Math.round(AJUSTE.x) + ' · y ' + Math.round(AJUSTE.y) +
+                         ' · escala ' + AJUSTE.e.toFixed(2);
+}
+
+/* O GESTO. No começo de cada gesto (e sempre que um dedo entra ou sai)
+   guarda-se onde a mesa estava e o ponto da mesa que está debaixo do meio
+   dos dedos; a cada passo, a mesa é posta de modo que esse mesmo ponto
+   continue debaixo do meio dos dedos, no tamanho que a pinça pede. Com um
+   dedo só, isso é arrastar. */
+function comecaGesto(){
+  const d = [...AJUSTE.dedos.values()];
+  const m0 = noPalco(meioDosDedos(d));
+  AJUSTE.ini = { x:AJUSTE.x, y:AJUSTE.y, e:AJUSTE.e, dist:distDosDedos(d),
+                 p:{ x:(m0.x - 640 - AJUSTE.x) / AJUSTE.e, y:(m0.y - 360 - AJUSTE.y) / AJUSTE.e } };
+}
+function dedoDesce(ev){
+  if (!AJUSTE.ligado) return;
+  ev.preventDefault();
+  try { slides[1].setPointerCapture(ev.pointerId); } catch(_){}
+  AJUSTE.dedos.set(ev.pointerId, { x:ev.clientX, y:ev.clientY });
+  comecaGesto();
+}
+function dedoAnda(ev){
+  if (!AJUSTE.ligado || !AJUSTE.dedos.has(ev.pointerId)) return;
+  AJUSTE.dedos.set(ev.pointerId, { x:ev.clientX, y:ev.clientY });
+  const d = [...AJUSTE.dedos.values()], i = AJUSTE.ini;
+  const e = (d.length > 1 && i.dist > 0) ? limitaEscala(i.e * distDosDedos(d) / i.dist) : i.e;
+  const m = noPalco(meioDosDedos(d));
+  AJUSTE.e = e;
+  AJUSTE.x = m.x - 640 - e * i.p.x;
+  AJUSTE.y = m.y - 360 - e * i.p.y;
+  aplicaAjuste();
+}
+function dedoSobe(ev){
+  if (!AJUSTE.dedos.has(ev.pointerId)) return;
+  AJUSTE.dedos.delete(ev.pointerId);
+  /* o dedo que fica continua o arrasto, sem salto */
+  if (AJUSTE.dedos.size) comecaGesto();
+}
+/* a roda do rato: cresce e encolhe em volta do ponteiro */
+function rodaAjuste(ev){
+  if (!AJUSTE.ligado) return;
+  ev.preventDefault();
+  const m = noPalco({ x:ev.clientX, y:ev.clientY });
+  const p = { x:(m.x - 640 - AJUSTE.x) / AJUSTE.e, y:(m.y - 360 - AJUSTE.y) / AJUSTE.e };
+  AJUSTE.e = limitaEscala(AJUSTE.e * Math.exp(-ev.deltaY * 0.0015));
+  AJUSTE.x = m.x - 640 - AJUSTE.e * p.x;
+  AJUSTE.y = m.y - 360 - AJUSTE.e * p.y;
+  aplicaAjuste();
+}
+
+/* A MEDIDA PARA A CONVERSA: o deslocamento e a escala da mesa, e a tela
+   em que foram medidos (com a folga dos lados, no celular) */
+function textoDoAjuste(){
+  const folga = parseFloat(stage.style.getPropertyValue('--folga')) || 0;
+  return 'mesa: x ' + Math.round(AJUSTE.x) + ', y ' + Math.round(AJUSTE.y) +
+         ', escala ' + AJUSTE.e.toFixed(3) + ' | tela ' + innerWidth + 'x' + innerHeight +
+         ', palco ' + fitScale.toFixed(3) + ', folga ' + Math.round(folga);
+}
+async function copiaAjuste(){
+  const t = textoDoAjuste();
+  let ok = false;
+  try { await navigator.clipboard.writeText(t); ok = true; } catch(_){}
+  if (!ok){
+    /* sem a área de transferência (alguns navegadores negam): o velho
+       caminho, por um campo de texto escondido */
+    const ta = document.createElement('textarea');
+    ta.value = t;
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { ok = document.execCommand('copy'); } catch(_){}
+    ta.remove();
+  }
+  const p = document.getElementById('ajuste'), b = p.querySelector('.aj-copia');
+  b.textContent = ok ? 'Copiado!' : 'Copie o aviso';
+  p.classList.toggle('copiado', ok);
+  /* e o texto aparece na tela, para conferir — ou copiar à mão */
+  TP.diz(t);
+  setTimeout(() => { p.classList.remove('copiado'); b.textContent = 'Copiar'; }, 1800);
+}
+montaAjuste();
+/* a tela gira ou muda de tamanho: o celular pode deixar de o ser */
+addEventListener('resize', ajusteNoSlide);
 
 addEventListener('keydown', ev => {
   const k = ev.key;

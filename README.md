@@ -423,6 +423,29 @@ leva a aula para lá.
 O toque num cubo dá-lhe uma volta — é a única coisa que o aluno pode
 fazer com as mãos, por enquanto.
 
+## Ajuste da tabela (temporário, só no celular)
+
+Uma ferramenta de medida, ligada por enquanto (`AJUSTE_LIGADO = true`),
+que existe **só no celular** (lado menor da tela até 540 px): tablets,
+Chromebooks e computadores não veem o painel, e a tabela deles não muda.
+No celular, no slide da tabela, **a tabela fica travada** — os cubos não
+respondem ao toque, os toques no slide não fazem nada e a mesa não se
+mexe sozinha — e:
+
+- **um dedo arrasta** a tabela;
+- **dois dedos, em pinça, aumentam ou diminuem**, em volta do ponto entre
+  eles.
+
+O painel no alto da tela mostra a medida (deslocamento em pixels do
+palco e escala). **Copiar** leva para a área de transferência uma linha
+como `mesa: x -20, y 30, escala 1.180 | tela 893x314, palco 0.436,
+folga 384` — é ela que se cola na conversa para o tamanho ser aplicado
+no app, também só no celular — e mostra-a num aviso na tela. **Zerar**
+volta ao tamanho de sempre. **×** desliga o ajuste até a página
+recarregar (a medida fica aplicada, para ver a tabela assim com as
+interações de volta). A medida vive nas variáveis da `.mesa` — `--px`,
+`--py` e `--zoom` —, com a origem no meio do palco.
+
 ## Navegação rápida (tecla N)
 
 Uma ferramenta de desenvolvimento. Do slide da tabela em diante há uma
