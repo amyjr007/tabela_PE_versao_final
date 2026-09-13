@@ -1535,6 +1535,11 @@ const SLIDES = [
     autor:'Designed by Prof. Amauri Junior' },
 
   { title:'A Tabela Periódica',
+    subtitle:'Os 118 elementos' },
+
+  /* o slide 3: a mesma tabela, com a narração "2" (os eventos dela
+     chegam depois) */
+  { title:'A Tabela Periódica',
     subtitle:'Os 118 elementos' }
 ];
 
@@ -1543,7 +1548,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v2.3';
+const VERSAO = 'v2.4';
 
 /* ============================================================
    OS ELEMENTOS
@@ -1839,6 +1844,23 @@ SLIDES.forEach((sl,i) => {
 
 const slides = [...deck.children];
 
+/* OS SLIDES COM TABELA. A mesa é a mesma em todos (montaTabela), e as
+   funções dos cubos (TP), a vida solta (VIDA) e a medida do celular
+   valem para a mesa do slide em que se está. O que é da história do
+   slide 1 — a tela escura, o quiz, o jogo — continua a ser só dele. */
+const SLIDES_COM_MESA = [1, 2];
+const temMesa = i => SLIDES_COM_MESA.includes(i);
+function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
+/* chegar a um slide com tabela: a mesa é posta de novo e respira à
+   espera do play. No slide 1 a história dele também recomeça. */
+function recomecaMesa(i){
+  if (i === 1) SEQ.reinicia();
+  else if (temMesa(i)) SEQ.comecou = false;
+  else return;
+  pousaTabela();
+  setTimeout(() => VIDA.liga(), 1500);
+}
+
 /* ============================================================
    SLIDE 1 · A TABELA PRONTA
    Os 118 elementos já nos lugares deles. Cada um é um CUBO de seis
@@ -1917,8 +1939,8 @@ function criaCubo(z){
   return c;
 }
 
-function montaTabela(){
-  const sl = slides[1];
+function montaTabela(i){
+  const sl = slides[i];
   if (!sl || sl.querySelector('.cena')) return;
 
   const cena = document.createElement('div');
@@ -2072,7 +2094,7 @@ function pousaTabela(){
      visita anterior volta ao lugar, e a narração recomeça com a tabela
      no estado em que ela a espera */
   TP.reinicia();
-  const cubos = [...slides[1].querySelectorAll('.pc')];
+  const cubos = [...slideDaMesa().querySelectorAll('.pc')];
   cubos.forEach((c,i) => {
     c.classList.remove('pousando');
     c.style.animationDelay = '';
@@ -2145,9 +2167,13 @@ const TP = {
     const sel = typeof alvo === 'number'
       ? '.pc[data-z="'+alvo+'"]'
       : '.pc[data-sym="'+alvo+'"]';
-    return slides[1] && slides[1].querySelector(sel);
+    const sl = slideDaMesa();
+    return sl && sl.querySelector(sel);
   },
-  todos(){ return slides[1] ? [...slides[1].querySelectorAll('.pc:not(.serie-oculta)')] : []; },
+  todos(){
+    const sl = slideDaMesa();
+    return sl ? [...sl.querySelectorAll('.pc:not(.serie-oculta)')] : [];
+  },
 
   /* quem satisfaz um pedido: um número, um símbolo, uma lista deles,
      {familia}, {grupo}, {periodo}, {linha} — ou nada, que é todos */
@@ -2287,7 +2313,7 @@ const TP = {
     o = o || {};
     const c = this.quem(alvo)[0];
     if (!c) return 0;
-    const mesa = slides[1].querySelector('.mesa');
+    const mesa = slideDaMesa().querySelector('.mesa');
     if (!mesa) return 0;
     const linha = +c.dataset.linha, col = +c.dataset.col;
 
@@ -2347,7 +2373,7 @@ const TP = {
     return fica;
   },
   semCoordenadas(){
-    const mesa = slides[1] && slides[1].querySelector('.mesa');
+    const sl = slideDaMesa(), mesa = sl && sl.querySelector('.mesa');
     if (!mesa) return;
     mesa.classList.remove('tem-cruz');
     mesa.querySelectorAll('.banda').forEach(b => b.classList.remove('on'));
@@ -2360,8 +2386,8 @@ const TP = {
   reinicia(){
     this.apaga();
     this.semCoordenadas();
-    if (slides[1])
-      slides[1].querySelectorAll('.eixo.recuado')
+    if (slideDaMesa())
+      slideDaMesa().querySelectorAll('.eixo.recuado')
                .forEach(e => e.classList.remove('recuado'));
     this.todos().forEach(c => {
       const cubo = c.querySelector('.cubo');
@@ -2428,7 +2454,7 @@ const VIDA = {
 
   liga(){
     /* começada a história do slide, a vida solta não volta a meio dela */
-    if (this.ligada || atual !== 1 || (window.SEQ && window.SEQ.comecou)) return;
+    if (this.ligada || !temMesa(atual) || (window.SEQ && window.SEQ.comecou)) return;
     /* nem durante o ajuste da tabela: travada é travada */
     if (window.AJUSTE && AJUSTE.ligado) return;
     this.ligada = true;
@@ -2553,7 +2579,7 @@ const VIDA = {
       .sort((a,b) => +a.dataset.linha - +b.dataset.linha);
     if (!cartas.length) return 900;
     this.ocupadas.add(col);
-    const numero = slides[1].querySelector('.eixo[data-grupo="'+col+'"]');
+    const numero = slideDaMesa().querySelector('.eixo[data-grupo="'+col+'"]');
     if (numero) numero.classList.add('recuado');
     const degrau = 55, noAr = 700;
     cartas.forEach((c,i) => setTimeout(() => TP.poe(c, 22, 420), i*degrau));
@@ -2595,10 +2621,11 @@ const TRILHAS = {
   '1.3A': 'Audios/audio_tabela_1.3A.mp3',  /* se o símbolo dele tem uma letra */
   '1.3B': 'Audios/audio_tabela_1.3B.mp3',  /* se tem duas */
   '1.4':  'Audios/audio_tabela_1.4.mp3',   /* o sódio, o chumbo e o cobre; e o quiz deles */
-  '1.jogo': 'Audios/audio_tabela_1_jogo_memória.mp3'  /* depois do quiz 2: o convite ao jogo */
+  '1.jogo': 'Audios/audio_tabela_1_jogo_memória.mp3', /* depois do quiz 2: o convite ao jogo */
+  '2':    'Audios/audio_tabela_2.mp3'      /* o slide 3 (os eventos dela chegam depois) */
 };
 /* a trilha com que cada slide começa */
-const TRILHA_DO_SLIDE = ['capa', '1'];
+const TRILHA_DO_SLIDE = ['capa', '1', '2'];
 
 /* ---- A COREOGRAFIA ----
    Cada slide tem a sua lista: no segundo tal, faça isto. Voltando o
@@ -2647,7 +2674,9 @@ const ROTEIROS = {
   '1.3A': [], /* e a volta dele para casa, em efeitos13() */
   '1.3B': [],
   '1.4':  [],
-  '1.jogo': []
+  '1.jogo': [],
+  /* slide 3 */
+  '2':    []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -2835,9 +2864,9 @@ somBtn.addEventListener('click', tocaOuPara);
 som.addEventListener('play',  () => {
   mostraPausa(true);
   VIDA.desliga();
-  /* começada a narração do slide 1, a vida solta da tabela não volta
-     mais nesta visita: as pausas no meio da história não a acordam */
-  if (atual === 1) SEQ.comecou = true;
+  /* começada a narração de um slide com tabela, a vida solta dela não
+     volta mais nesta visita: as pausas no meio da história não a acordam */
+  if (temMesa(atual)) SEQ.comecou = true;
 });
 som.addEventListener('pause', () => { mostraPausa(false); if (!andando) VIDA.liga(); });
 som.addEventListener('ended', () => {
@@ -4023,6 +4052,7 @@ function fechaMemoria(ja){
   const ov = memAberto;
   memAberto = null; memCartas = []; memViradas = []; memConferindo = false;
   memGeracao++;
+  calaFalaDoFim();
   stage.classList.remove('em-jogo');
   ov.classList.remove('on');
   if (ja) ov.remove();
@@ -4097,15 +4127,24 @@ function poeCartaoDaMemoria(nota){
     '<em class="erro">' + memErros + '</em> enganos · ' + memPontos + ' pontos',
     memAberto,
     () => { fechaMemoria(); setTimeout(abreMemoria, 520); },
-    () => fechaMemoria());
+    () => go(2),                        /* Continuar: o slide 3 */
+    'Audios/audio_tabela_1_jogo_memória_fim.mp3');
 }
 /* O CARTÃO DO RESULTADO, o do professor: a pontuação de 0 a 10 num anel
    que se enche, a conta, um recado (bom a partir de 5), e Refazer e
-   Sair. Sair fecha o jogo e devolve a mesa, com o botão do jogo ainda
-   no canto para outra partida. */
+   Continuar (no jogo da memória, Continuar leva ao slide 3). Depois do
+   som do placar toca a fala do fim ('fala'); um botão tocado com ela a
+   meio corta-a, e a aula segue para o que foi escolhido. */
+var FALA_FIM = null;
+function calaFalaDoFim(){
+  if (!FALA_FIM) return;
+  FALA_FIM.pause();
+  EFEITOS.delete(FALA_FIM);
+  FALA_FIM = null;
+}
 const RECADOS_BONS   = ['Você está aprendendo bem!', 'Ótimo resultado!', 'Muito bem! Continue assim!'];
 const RECADOS_FRACOS = ['Continue praticando!', 'Quase lá, não desista!', 'Pratique mais um pouco!'];
-function cartaoDoResultado(nota, contaHTML, onde, refazer, sair){
+function cartaoDoResultado(nota, contaHTML, onde, refazer, seguir, fala){
   if (!onde) return;
   const bom = nota >= 5;
   const recado = (bom ? RECADOS_BONS : RECADOS_FRACOS)[Math.floor(Math.random() * 3)];
@@ -4128,23 +4167,36 @@ function cartaoDoResultado(nota, contaHTML, onde, refazer, sair){
     '</div>' +
     '<div class="conta">' + contaHTML + '</div>' +
     '<div class="recado">' + recado + '</div>' +
-    '<div class="botoes"><button type="button" class="forte refaz">Refazer</button>' +
-      '<button type="button" class="sair">Sair</button></div>';
+    '<div class="botoes"><button type="button" class="refaz">Refazer</button>' +
+      '<button type="button" class="forte segue">Continuar →</button></div>';
   onde.appendChild(c);
   c.getBoundingClientRect();
   c.classList.add('on');
-  tocaEfeito('statistics');
+  /* o som do placar, e depois dele a fala do fim, se o cartão ainda
+     estiver à espera de uma escolha */
+  const g = memGeracao;
+  tocaEfeito('statistics').then(() => {
+    if (!fala || g !== memGeracao || !c.isConnected || !c.classList.contains('on')) return;
+    calaFalaDoFim();
+    const a = new Audio(encodeURI(fala));
+    FALA_FIM = a;
+    EFEITOS.add(a);
+    a.addEventListener('ended', () => { EFEITOS.delete(a); if (FALA_FIM === a) FALA_FIM = null; });
+    a.play().catch(() => {});
+  });
   /* o anel só se enche depois de o cartão entrar */
   setTimeout(() => {
     const arco = c.querySelectorAll('circle')[1];
     if (arco) arco.setAttribute('stroke-dashoffset', (volta * (1 - nota/10)).toFixed(1));
   }, 120);
-  c.querySelector('.sair').addEventListener('click', () => {
+  c.querySelector('.segue').addEventListener('click', () => {
+    calaFalaDoFim();
     c.classList.remove('on');
     setTimeout(() => c.remove(), 400);
-    sair();
+    seguir();
   });
   c.querySelector('.refaz').addEventListener('click', () => {
+    calaFalaDoFim();
     c.classList.remove('on');
     setTimeout(() => c.remove(), 400);
     refazer();
@@ -4317,7 +4369,7 @@ function go(i, dir){
      a acabar de ser posta, e não posta de antemão */
   /* e a mesa começa a respirar assim que os cubos assentam */
   /* chegando ao slide 1, a história dele recomeça do princípio */
-  if (i === 1){ SEQ.reinicia(); pousaTabela(); setTimeout(() => VIDA.liga(), 1500); }
+  recomecaMesa(i);
 
   setTimeout(() => {
     sai.classList.remove('is-active','is-leaving','fx-cube-out-next','fx-cube-out-prev');
@@ -4336,7 +4388,7 @@ function go(i, dir){
 
 function atualizaCabecalho(){
   stage.classList.toggle('na-capa',   atual === 0);
-  stage.classList.toggle('sem-marca', atual === 1);
+  stage.classList.toggle('sem-marca', temMesa(atual));
   navNoSlide();
   ajusteNoSlide();
   progress.style.width = ((atual)/(SLIDES.length-1)*100) + '%';
@@ -4717,7 +4769,7 @@ function modoMontagem(v){
       : 'Este slide não tem peças de montagem — a capa tem.', 4200);
   } else {
     coord.classList.remove('on');
-    if (atual === 1) VIDA.liga();
+    if (temMesa(atual)) VIDA.liga();
   }
 }
 montBtn.addEventListener('click', () => modoMontagem());
@@ -4974,7 +5026,7 @@ function recomecaSlide(i){
   mostraPausa(false);
   VIDA.desliga();
   DEMO.corta();
-  if (i === 1){ SEQ.reinicia(); pousaTabela(); setTimeout(() => VIDA.liga(), 1500); }
+  recomecaMesa(i);
   trilhaAtual = -1;          /* a mesma trilha também recomeça */
   carregaTrilha(TRILHA_DO_SLIDE[i]);
 }
@@ -5209,16 +5261,16 @@ function ajusteNoSlide(){
   else tiraAjuste();
 }
 function tiraAjuste(){
-  const m = slides[1] && slides[1].querySelector('.mesa');
-  if (m) ['--px', '--py', '--zoom'].forEach(v => m.style.removeProperty(v));
+  document.querySelectorAll('#deck .mesa').forEach(m =>
+    ['--px', '--py', '--zoom'].forEach(v => m.style.removeProperty(v)));
 }
 function aplicaAjuste(){
-  const m = slides[1] && slides[1].querySelector('.mesa');
-  if (m){
+  /* a medida vale para a mesa de todos os slides com tabela */
+  document.querySelectorAll('#deck .mesa').forEach(m => {
     m.style.setProperty('--px', AJUSTE.x.toFixed(1) + 'px');
     m.style.setProperty('--py', AJUSTE.y.toFixed(1) + 'px');
     m.style.setProperty('--zoom', AJUSTE.e.toFixed(3));
-  }
+  });
   const o = document.querySelector('#ajuste output');
   if (o) o.textContent = 'x ' + Math.round(AJUSTE.x) + ' · y ' + Math.round(AJUSTE.y) +
                          ' · escala ' + AJUSTE.e.toFixed(2);
@@ -5345,7 +5397,7 @@ addEventListener('keydown', ev => {
    A ABERTURA
    ------------------------------------------------------------ */
 slides[0].classList.add('is-active');
-montaTabela();
+SLIDES_COM_MESA.forEach(i => montaTabela(i));
 montaBlocosDaCapa();
 montaFrases();
 montaCenaDoSlide1();

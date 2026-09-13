@@ -15,6 +15,7 @@ dá zoom nele, como no app do professor.
    acende um deles lá em baixo, o bloco dá uma volta aqui em cima.
 2. **A Tabela Periódica** — os elementos prontos na mesa; por enquanto
    sem os lantanídeos e os actinídeos, que a narração revela mais tarde.
+3. **O slide 3** — a mesma tabela, com a narração `audio_tabela_2`.
 
 A passagem entre as duas é o cubo girando, a mesma do app do professor.
 Os outros slides entram na lista `SLIDES`, no alto do script, e o resto
@@ -47,6 +48,21 @@ centrado na altura (`TAB_TOPO` 164). A letra das faces cresce junto, por
 `--k = LADO / LADO_BASE`. Crescido no lugar, um cubo nunca passa das
 bordas do palco: o Na, na coluna 1, é empurrado para dentro enquanto
 cresce. O Urânio saiu do quiz por ser actinídeo.
+
+## O slide 3
+
+Chega-se a ele pelo **Continuar** do cartão do jogo da memória (ou pela
+barra). A tabela é a mesma do slide 2 — sem as séries, com a medida do
+celular — e, como lá, respira sozinha à espera do play: cubos que
+saltam e giram, famílias que sobem e descem, a cruz das coordenadas. O
+play toca `audio_tabela_2`; os eventos atrelados ao relógio dela ainda
+vão ser coreografados.
+
+Por dentro, `SLIDES_COM_MESA = [1, 2]`: a mesa é montada em cada um
+desses slides, e as funções dos cubos (`TP`), a vida solta (`VIDA`) e a
+medida do celular valem para a mesa do slide em que se está
+(`slideDaMesa()`). A tela escura, o quiz e o jogo continuam a ser só do
+slide 2.
 
 ## A narração
 
@@ -318,11 +334,15 @@ sons:
 - **o fim**: confetes e o cartão do resultado do professor — troféu, a
   pontuação de 0 a 10 num anel que se enche (pontos ÷ 120), a conta de
   pares, enganos e pontos, um recado, o som `statistics` e os botões
-  **Refazer** (outra partida, baralhada de novo) e **Sair**.
+  **Refazer** (outra partida, baralhada de novo) e **Continuar**, que
+  leva ao slide 3;
+- **a fala do fim**: acabado o `statistics`, toca
+  `audio_tabela_1_jogo_memória_fim`. Um botão do cartão tocado com ela a
+  meio corta-a, e a aula vai para o que foi escolhido.
 
-Enquanto o jogo dura o play sai de cena; o Esc fecha o jogo. Saindo, o
-botão do jogo continua no canto, para outra partida. Mudando de slide,
-o jogo fecha.
+Enquanto o jogo dura o play sai de cena; o Esc fecha o jogo (e cala a
+fala), com o botão do jogo ainda no canto para outra partida. Mudando de
+slide, o jogo fecha.
 
 ### As frases digitadas
 
