@@ -684,7 +684,8 @@ body.montagem .capa .digitado{pointer-events:auto}
   text-decoration-thickness:2px;text-underline-offset:4px}
 
 /* durante o quiz o play sai de cena: quem faz a aula andar é a escolha */
-#stage.em-quiz #som, #stage.em-quiz #som-dica{display:none!important}
+#stage.em-quiz #som, #stage.em-quiz #som-dica,
+#stage.em-jogo #som, #stage.em-jogo #som-dica{display:none!important}
 /* e com a tela escura também: ali o que faz a aula seguir é o toque na tela */
 #stage.tela-escura #som, #stage.tela-escura #som-dica{display:none!important}
 
@@ -704,9 +705,18 @@ body.montagem .capa .digitado{pointer-events:auto}
 .nota-de{font-size:36px;color:var(--tinta-faint);margin-left:4px}
 .nota-acertos{font-size:20px;color:var(--tinta-dim);margin-bottom:14px}
 .nota-msg{font-family:var(--display);font-weight:600;font-size:26px;line-height:1.25;color:var(--ouro)}
-.quiz.sem-seta .nota-seta{display:none}
-.nota-seta{margin-top:20px;font-family:var(--mono);font-size:12px;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--tinta-faint)}
+/* os dois botões: Refazer (outro quiz igual) e Continuar (a narração
+   seguinte). O play do canto fica fora de cena: quem segue são eles. */
+.nota-botoes{display:flex;justify-content:center;gap:12px;margin-top:24px}
+.nota-botoes button{font-family:var(--display);font-weight:700;font-size:17px;
+  padding:12px 26px;border-radius:13px;cursor:pointer;
+  border:1.5px solid var(--indigo);background:#fff;color:var(--indigo);
+  transition:background .2s,color .2s,transform .15s}
+.nota-botoes button:hover{background:var(--indigo);color:#fff}
+.nota-botoes button:active{transform:scale(.95)}
+.nota-botoes .nota-segue{background:var(--indigo);color:#fff}
+.nota-botoes .nota-segue:hover{background:var(--tinta)}
+.quiz.sem-seguir .nota-segue{display:none}
 
 /* o cubo da pergunta: à frente do cartão, e com um "?" no lugar do nome */
 .pc.pergunta{z-index:45;pointer-events:none}
@@ -776,6 +786,13 @@ body.montagem .capa .digitado{pointer-events:auto}
 }
 .dica-escolha.on{opacity:1;transform:translateX(-50%) translateY(0);
   animation:somChama 2.6s ease-in-out infinite}
+
+/* ---- o botão vira o do JOGO quando a narração do jogo acaba ----
+   O play e a pausa saem, entra o controle; o anel sai também, porque
+   já não há áudio a correr. */
+#som #ic-jogo{display:none}
+#som.jogo #ic-play,#som.jogo #ic-pause,#som.jogo .anel{display:none}
+#som.jogo #ic-jogo{display:block}
 
 /* ---- o botão vira "Iniciar" quando a abertura acaba ----
    Cresce para a esquerda, a partir do canto onde estava: o lado direito
@@ -889,6 +906,137 @@ body.montagem .capa .digitado{pointer-events:auto}
   background:rgba(76,63,191,.4);transition:background .25s,width .25s}
 #puxador:hover::before{background:var(--ouro-luz);width:60px}
 #puxador.fora{transform:translateX(-50%) translateY(120%);opacity:0;pointer-events:none}
+
+/* ============================================================
+   O JOGO DA MEMÓRIA — o do slide 2 do app do professor
+   Vinte cartas viradas para baixo, dez pares: de um lado o símbolo,
+   do outro o nome do elemento. As faces chamam-se mem-face, e não
+   face como lá: aqui .face é a face dos cubos da tabela.
+   ============================================================ */
+.memoria{
+  --neon:#FF2E4C;--natural:#1F9D55;
+  position:absolute;inset:0;z-index:52;pointer-events:auto;
+  display:flex;flex-direction:column;align-items:center;
+  opacity:0;transition:opacity .4s ease;
+  background:radial-gradient(ellipse 92% 82% at 50% 46%,
+             rgba(20,17,46,.95) 0%, rgba(11,9,30,.985) 62%, rgba(7,6,22,.995) 100%);
+}
+.memoria.on{opacity:1}
+.mem-topo{
+  display:flex;align-items:baseline;gap:26px;margin:72px 0 10px;
+  font-family:var(--display);color:#EDE8FA;
+}
+.mem-topo b{font-size:30px;font-weight:800;color:var(--ouro-luz);line-height:1}
+.mem-topo i{font-style:normal;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(226,222,240,.5);margin-left:7px}
+/* a grelha: cinco por quatro, medida para caber no palco */
+.mem-grade{
+  display:grid;grid-template-columns:repeat(5, 168px);
+  grid-auto-rows:126px;gap:10px;
+}
+.mem-carta{perspective:900px;cursor:pointer}
+.mem-carta .giro{
+  position:relative;width:100%;height:100%;transform-style:preserve-3d;
+  transition:transform .45s cubic-bezier(.3,.9,.3,1);
+}
+.mem-carta.virada .giro, .mem-carta.casada .giro{transform:rotateY(180deg)}
+.mem-carta .mem-face{
+  position:absolute;inset:0;backface-visibility:hidden;border-radius:11px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 8px 22px rgba(6,5,26,.5), inset 0 1px 0 rgba(255,255,255,.18);
+}
+/* o verso: o átomo, na cor da estrutura */
+.mem-carta .costas{
+  background:linear-gradient(150deg,#3A3270,#221D4C 60%,#171338);
+  border:1px solid rgba(207,198,245,.26);
+  font-size:44px;color:rgba(207,198,245,.5);
+}
+.mem-carta .frente{
+  transform:rotateY(180deg);gap:3px;padding:8px;
+  background:linear-gradient(160deg,#FBFAFE,#E9E5F4);
+  border:1px solid rgba(255,255,255,.5);
+}
+.mem-carta .chapeu{
+  font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--tinta-faint);
+}
+.mem-carta .simbolo{font-family:var(--display);font-size:44px;font-weight:700;
+  color:var(--indigo);line-height:1}
+.mem-carta .nome{font-family:var(--display);font-size:19px;font-weight:700;
+  color:var(--tinta);line-height:1.1;text-align:center}
+.mem-carta .miudo{font-family:var(--mono);font-size:10px;color:var(--tinta-dim)}
+.mem-carta .emoji{font-size:26px;line-height:1}
+/* o par certo assenta e apaga-se, na cor do par; o errado treme em
+   vermelho. A cor (--ph, --ps) é posta na carta ao nascer: é etiqueta
+   de par, e no fim diz qual símbolo é de qual nome. */
+.mem-carta.casada{pointer-events:none}
+.mem-carta.casada .frente{
+  background:linear-gradient(160deg,
+             hsl(var(--ph,150) var(--ps,45%) 94%),
+             hsl(var(--ph,150) var(--ps,45%) 83%));
+  border-color:hsl(var(--ph,150) var(--ps,45%) 58% / .6);
+  box-shadow:0 0 0 2.5px hsl(var(--ph,150) var(--ps,45%) 46%),
+             0 0 20px 5px hsl(var(--ph,150) var(--ps,45%) 50% / .38);
+}
+.mem-carta.casada .simbolo,
+.mem-carta.casada .nome{color:hsl(var(--ph,150) var(--ps,45%) 26%)}
+.mem-carta.casada .chapeu,
+.mem-carta.casada .miudo{color:hsl(var(--ph,150) var(--ps,45%) 38% / .8)}
+.mem-carta.casada{opacity:.62;transition:opacity .5s ease .3s}
+.mem-carta.errada .frente{
+  box-shadow:0 0 0 2.5px var(--neon), 0 0 20px 6px rgba(255,46,76,.5);
+  animation:memTreme .4s ease;
+}
+@keyframes memTreme{
+  0%,100%{translate:0 0} 25%{translate:-7px 0} 60%{translate:6px 0} 85%{translate:-3px 0}
+}
+.mem-dica{
+  margin-top:14px;font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(226,222,240,.42);
+}
+
+/* o cartão do resultado do jogo — o do professor: troféu, o anel da
+   pontuação, a conta, um recado, e Refazer e Sair */
+.quiz-cartao{
+  position:absolute;left:640px;top:380px;z-index:60;
+  transform:translate(-50%,-50%) scale(.86);
+  display:flex;flex-direction:column;align-items:center;gap:9px;
+  min-width:280px;padding:22px 30px 20px;
+  background:var(--fundo-alto);border:1.5px solid var(--indigo-dim);
+  border-radius:20px;box-shadow:0 22px 60px rgba(32,28,66,.34);
+  font-family:var(--display);text-align:center;pointer-events:auto;
+  opacity:0;transition:opacity .45s ease, transform .5s cubic-bezier(.2,1.3,.4,1);
+}
+.quiz-cartao.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.quiz-cartao .trofeu{font-size:44px;line-height:1}
+.quiz-cartao .chapeu{
+  font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--tinta-faint);
+}
+.quiz-cartao .anel{position:relative;width:118px;height:118px}
+.quiz-cartao .anel svg{width:100%;height:100%;transform:rotate(-90deg)}
+.quiz-cartao .anel .miolo{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;line-height:1;
+}
+.quiz-cartao .anel .miolo span{font-size:10px;color:var(--tinta-faint);font-weight:600}
+.quiz-cartao .anel .miolo b{font-size:34px;color:var(--tinta);font-weight:800}
+.quiz-cartao .conta{font-size:15px;color:var(--tinta-dim);font-weight:600}
+.quiz-cartao .conta em{font-style:normal;font-weight:800}
+.quiz-cartao .conta em.acerto{color:var(--natural)}
+.quiz-cartao .conta em.erro{color:var(--neon)}
+.quiz-cartao .recado{font-size:17px;color:var(--tinta);font-weight:600;max-width:270px}
+.quiz-cartao .botoes{display:flex;gap:10px;margin-top:6px}
+.quiz-cartao button{
+  font-family:var(--display);font-weight:700;font-size:14px;
+  padding:9px 18px;border-radius:11px;cursor:pointer;
+  border:1.5px solid var(--indigo);background:#fff;color:var(--indigo);
+  transition:background .2s,color .2s,transform .15s;
+}
+.quiz-cartao button:hover{background:var(--indigo);color:#fff}
+.quiz-cartao button:active{transform:scale(.95)}
+.quiz-cartao button.forte{background:var(--indigo);color:#fff}
+.quiz-cartao button.forte:hover{background:var(--tinta)}
 
 /* ---------- navegação rápida (tecla N) ----------
    Uma ferramenta de desenvolvimento: a alça na borda direita, a partir
@@ -1228,6 +1376,12 @@ body.montagem .solto.pego{outline:1.5px solid var(--ouro);background:rgba(226,16
           <rect x="6.5" y="5" width="4.2" height="14" rx="1.3"/>
           <rect x="13.3" y="5" width="4.2" height="14" rx="1.3"/>
         </svg>
+        <svg id="ic-jogo" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M17.3 6H6.7a4 4 0 0 0-3.98 3.6L2.1 15.6a2.4 2.4 0 0 0 4.1 1.9L8 15.6h8l1.8 1.9a2.4 2.4 0 0 0 4.1-1.9l-.62-6A4 4 0 0 0 17.3 6z"/>
+          <path d="M6.5 10.5v3M5 12h3"/>
+          <circle cx="15.6" cy="12.4" r=".55" fill="currentColor"/>
+          <circle cx="17.8" cy="10.4" r=".55" fill="currentColor"/>
+        </svg>
       </span>
     </button>
 
@@ -1327,7 +1481,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v1.9';
+const VERSAO = 'v2.0';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2352,7 +2506,8 @@ const TRILHAS = {
   '1.2':  'Audios/audio_tabela_1.2.mp3',   /* o elemento escolhido */
   '1.3A': 'Audios/audio_tabela_1.3A.mp3',  /* se o símbolo dele tem uma letra */
   '1.3B': 'Audios/audio_tabela_1.3B.mp3',  /* se tem duas */
-  '1.4':  'Audios/audio_tabela_1.4.mp3'    /* o sódio, o chumbo e o cobre; e o quiz deles */
+  '1.4':  'Audios/audio_tabela_1.4.mp3',   /* o sódio, o chumbo e o cobre; e o quiz deles */
+  '1.jogo': 'Audios/audio_tabela_1_jogo_memória.mp3'  /* depois do quiz 2: o convite ao jogo */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1'];
@@ -2403,7 +2558,8 @@ const ROTEIROS = {
   '1.2': [],  /* os do elemento escolhido moram em efeitos12() */
   '1.3A': [], /* e a volta dele para casa, em efeitos13() */
   '1.3B': [],
-  '1.4':  []
+  '1.4':  [],
+  '1.jogo': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -2510,6 +2666,7 @@ function carregaTrilha(i){
   trilhaAtual = i;
   temTrilha = false;
   viraIniciar(false);      /* trilha nova, botão de play outra vez */
+  viraJogo(false);
   som.pause();
   som.removeAttribute('src');
   const url = TRILHAS[i];
@@ -2568,8 +2725,11 @@ function tocaOuPara(){
   if (somBtn.classList.contains('iniciar')){ go(1); return; }
   /* na tela escura à espera do toque, o botão também serve de toque */
   if (SEQ.aguardaToque){ SEQ.continua(); return; }
-  /* no meio do quiz nada toca — nem pela barra de espaço */
-  if (QUIZ.aberto && !QUIZ.mostrandoNota) return;
+  /* o botão do jogo abre o jogo */
+  if (somBtn.classList.contains('jogo')){ abreMemoria(); return; }
+  /* no quiz — e no cartão da nota, que segue pelos botões dele — e no
+     jogo, nada toca, nem pela barra de espaço */
+  if (QUIZ.aberto || memAberto) return;
   if (!temTrilha){
     TP.diz('A narração deste slide ainda não foi gravada.');
     return;
@@ -2663,6 +2823,7 @@ const SEQ = {
     if (DIG_VEU) DIG_VEU.limpa();
     ONDA_FAM.suja = ONDA_118.suja = false;
     this.quizDa = null;
+    fechaMemoria(true);
     document.querySelectorAll('.latim.on').forEach(b => b.classList.remove('on'));
     VERDE.z = -1;
   },
@@ -2692,6 +2853,8 @@ const SEQ = {
        acabar; se o áudio chegou ao fim sem passar por lá (arrastado
        para a frente), abre agora */
     else if (id in QUIZ_NA_HORA) this.abreQuiz(id);
+    /* a narração do jogo acaba: o botão do canto vira o do jogo */
+    else if (id === '1.jogo') viraJogo(true);
   },
   /* o quiz de cada trilha abre uma vez só */
   abreQuiz(id){
@@ -2761,6 +2924,18 @@ function viraIniciar(sim){
   }
 }
 
+/* O BOTÃO DO JOGO: acabada a narração do jogo da memória, o botão do
+   canto troca o play por um controle, e um toque nele abre o jogo */
+function viraJogo(sim){
+  somBtn.classList.toggle('jogo', sim);
+  if (sim){
+    somBtn.title = 'Abrir o jogo da memória';
+    somBtn.setAttribute('aria-label', somBtn.title);
+  }
+  if (!somDica.dataset.orig) somDica.dataset.orig = somDica.textContent;
+  somDica.textContent = sim ? 'Jogo da memória' : somDica.dataset.orig;
+}
+
 /* as peças da sequência que moram no slide 1: a tela escura, as frases
    dela, o pedido de toque e o convite para escolher um elemento */
 function montaCenaDoSlide1(){
@@ -2790,10 +2965,13 @@ function montaCenaDoSlide1(){
       '<div class="nota-rotulo">Sua nota</div>' +
       '<div class="nota-valor"><span class="nota-num"></span><span class="nota-de">/10</span></div>' +
       '<div class="nota-acertos"></div><div class="nota-msg"></div>' +
-      '<div class="nota-seta">Toque no play para continuar →</div>' +
+      '<div class="nota-botoes"><button type="button" class="nota-refaz">Refazer</button>' +
+      '<button type="button" class="nota-segue">Continuar →</button></div>' +
     '</div></div>');
   if (!document.getElementById('flash-erro'))
     stage.insertAdjacentHTML('beforeend', '<div id="flash-erro" aria-hidden="true"></div>');
+  sl.querySelector('.nota-refaz').addEventListener('click', () => QUIZ.refaz());
+  sl.querySelector('.nota-segue').addEventListener('click', () => QUIZ.continua());
   DIG_VEU = criaDigitacao(sl.querySelector('.veu-frases'), FRASES_VEU);
   veu.addEventListener('click', () => SEQ.continua());
 }
@@ -3381,7 +3559,7 @@ const QUIZ_DIFERENTES = [
   { z:16, latim:'Sulfur', op:['Enxofre','Silício','Sódio'] }
 ];
 /* a narração que o play carrega depois de cada quiz (null: ainda não há) */
-const DEPOIS_DO_QUIZ = { '1.3A':'1.4', '1.3B':'1.4', '1.4':null };
+const DEPOIS_DO_QUIZ = { '1.3A':'1.4', '1.3B':'1.4', '1.4':'1.jogo' };
 /* A HORA DO QUIZ, no relógio da narração: o primeiro exemplo rola para a
    frente com o fim da fala ainda a tocar */
 const QUIZ_NA_HORA = { '1.3A':42.0, '1.3B':35.5, '1.4':54.0 };
@@ -3617,11 +3795,24 @@ const QUIZ = {
     this.mostrandoNota = true;
     this.nota = nota;
     tocaEfeito('statistics');
-    /* o play volta só se houver narração a seguir; depois do quiz da
-       "1.4" ainda não há, e o cartão fica sem a seta */
-    const proxima = DEPOIS_DO_QUIZ[this.origem];
-    cx.classList.toggle('sem-seta', !proxima);
-    if (proxima){ stage.classList.remove('em-quiz'); carregaTrilha(proxima); }
+    /* o play fica fora de cena: quem segue é o Continuar do cartão, que
+       toca a narração seguinte, ou o Refazer, que abre outro quiz igual */
+    cx.classList.toggle('sem-seguir', !DEPOIS_DO_QUIZ[this.origem]);
+  },
+  /* OS DOIS BOTÕES DO CARTÃO. Refazer: outro quiz igual, com outro
+     sorteio. Continuar: o cartão sai, e toca a narração seguinte. */
+  refaz(){
+    if (!this.mostrandoNota) return;
+    const o = this.origem;
+    this.saiDaNota();
+    this.abre(o);
+  },
+  continua(){
+    if (!this.mostrandoNota) return;
+    const p = DEPOIS_DO_QUIZ[this.origem];
+    this.saiDaNota();
+    stage.classList.remove('em-quiz');
+    if (p) tocaTrilha(p);
   },
   /* começada a narração seguinte, o cartão da nota sai de cena */
   saiDaNota(){
@@ -3651,6 +3842,223 @@ function mensagemDaNota(n){
   return 'Você está começando — e é assim que se aprende. Vamos em frente!';
 }
 som.addEventListener('play', () => { if (QUIZ.mostrandoNota) QUIZ.saiDaNota(); });
+
+/* ============================================================
+   O JOGO DA MEMÓRIA — o do slide 2 do app do professor (lá, o "quiz 2")
+   Vinte cartas viradas para baixo, dez pares: de um lado o SÍMBOLO
+   com o número atômico e a massa, do outro o NOME com o grupo e o
+   período. Achar o par é reconhecer que "Fe" e "Ferro" são a mesma
+   casa da tabela.
+   As regras são as de lá: dez pontos por par, vinte se for prata ou
+   ouro, mais cinco se o par seguinte for do mesmo grupo do anterior, e
+   menos dois por engano. Os sons também: flipcard ao virar, right no
+   par, error com a tela a tremer no engano, e no fim os confetes, o
+   cartão do resultado e o statistics.
+   Abre pelo botão do canto, que vira o do jogo quando a narração
+   "1_jogo_memória" acaba. O estado é var, e não let: o slide pode
+   fechá-lo (SEQ.reinicia, go) antes de o script chegar aqui.
+   ============================================================ */
+/* Cada par tem a SUA cor, e é por ela que os dois se reconhecem depois de
+   virados: os dez matizes espalham-se pela roda inteira, e onde deu, a
+   cor é a do elemento — o ouro é dourado, o cobre é cor de cobre. */
+const MEM_PARES = [
+  { z:1,  sym:'H',  nome:'Hidrogênio', g:1,  p:1, massa:'1,008',  cat:'Ametal',              emoji:'💧', h:208, s:60 },
+  { z:8,  sym:'O',  nome:'Oxigênio',   g:16, p:2, massa:'15,999', cat:'Ametal',              emoji:'🔥', h:330, s:52 },
+  { z:6,  sym:'C',  nome:'Carbono',    g:14, p:2, massa:'12,011', cat:'Ametal',              emoji:'💎', h:272, s:45 },
+  { z:7,  sym:'N',  nome:'Nitrogênio', g:15, p:2, massa:'14,007', cat:'Ametal',              emoji:'🌿', h:138, s:45 },
+  { z:11, sym:'Na', nome:'Sódio',      g:1,  p:3, massa:'22,990', cat:'Metal alcalino',      emoji:'🧂', h: 92, s:45 },
+  { z:26, sym:'Fe', nome:'Ferro',      g:8,  p:4, massa:'55,845', cat:'Metal de transição',  emoji:'⚙️', h:  8, s:42 },
+  { z:29, sym:'Cu', nome:'Cobre',      g:11, p:4, massa:'63,546', cat:'Metal de transição',  emoji:'⚡', h: 34, s:70 },
+  { z:47, sym:'Ag', nome:'Prata',      g:11, p:5, massa:'107,87', cat:'Metal de transição',  emoji:'🌟', h:224, s:14 },
+  { z:79, sym:'Au', nome:'Ouro',       g:11, p:6, massa:'196,97', cat:'Metal de transição',  emoji:'👑', h: 56, s:78 },
+  { z:30, sym:'Zn', nome:'Zinco',      g:12, p:4, massa:'65,38',  cat:'Metal de transição',  emoji:'🛡️', h:166, s:52 }
+];
+var memAberto = null, memCartas = [], memViradas = [], memGeracao = 0;
+var memPontos = 0, memPares = 0, memErros = 0, memUltimoG = null, memConferindo = false;
+
+function cartaDaMemoria(d, tipo){
+  const corpo = tipo === 'sym'
+    ? '<div class="chapeu">Símbolo</div>' +
+      '<div class="simbolo">' + d.sym + '</div>' +
+      '<div class="miudo">Z = ' + d.z + '</div>' +
+      '<div class="miudo">' + d.massa + ' g/mol</div>'
+    : '<div class="chapeu">Nome do elemento</div>' +
+      '<div class="emoji">' + d.emoji + '</div>' +
+      '<div class="nome">' + d.nome + '</div>' +
+      '<div class="miudo">' + d.cat + '</div>' +
+      '<div class="miudo">Grupo ' + d.g + ' · ' + d.p + 'º período</div>';
+  return '<div class="mem-carta" data-z="' + d.z + '" data-tipo="' + tipo + '" data-g="' + d.g + '"' +
+              ' style="--ph:' + d.h + ';--ps:' + d.s + '%">' +
+           '<div class="giro">' +
+             '<div class="mem-face costas">⚛</div>' +
+             '<div class="mem-face frente">' + corpo + '</div>' +
+           '</div>' +
+         '</div>';
+}
+function baralhaMemoria(){
+  const baralho = [];
+  MEM_PARES.forEach(d => { baralho.push({d, tipo:'sym'}); baralho.push({d, tipo:'nome'}); });
+  return embaralha(baralho);
+}
+
+function abreMemoria(){
+  if (memAberto || atual !== 1) return;
+  const sl = slides[1];
+  if (!sl) return;
+  mostraBarra(false);
+  fechaNav();
+  memPontos = 0; memPares = 0; memErros = 0; memUltimoG = null; memConferindo = false;
+  memViradas = [];
+  memGeracao++;
+  const ov = document.createElement('div');
+  ov.className = 'memoria';
+  ov.innerHTML =
+    '<div class="mem-topo"><span><b class="pt">0</b><i>pontos</i></span>' +
+    '<span><b class="pr">0</b><i>de 10 pares</i></span></div>' +
+    '<div class="mem-grade">' + baralhaMemoria().map(c => cartaDaMemoria(c.d, c.tipo)).join('') + '</div>' +
+    '<div class="mem-dica">Ache o símbolo e o nome do mesmo elemento</div>';
+  sl.appendChild(ov);
+  memAberto = ov;
+  memCartas = [...ov.querySelectorAll('.mem-carta')];
+  memCartas.forEach((el, i) => el.addEventListener('click', () => viraMemoria(i)));
+  /* o play sai de cena enquanto o jogo dura, como no quiz */
+  stage.classList.add('em-jogo');
+  ov.getBoundingClientRect();
+  ov.classList.add('on');
+}
+/* ja: sem esmaecer (o slide está a ser deixado ou recomeçado) */
+function fechaMemoria(ja){
+  if (!memAberto) return;
+  const ov = memAberto;
+  memAberto = null; memCartas = []; memViradas = []; memConferindo = false;
+  memGeracao++;
+  stage.classList.remove('em-jogo');
+  ov.classList.remove('on');
+  if (ja) ov.remove();
+  else setTimeout(() => ov.remove(), 450);
+}
+function placarMemoria(){
+  if (!memAberto) return;
+  memAberto.querySelector('.pt').textContent = memPontos;
+  memAberto.querySelector('.pr').textContent = memPares;
+}
+function viraMemoria(i){
+  if (memConferindo || !memAberto) return;
+  const el = memCartas[i];
+  if (!el || el.classList.contains('casada') || el.classList.contains('virada')) return;
+  if (memViradas.length >= 2) return;
+  el.classList.add('virada');
+  tocaEfeito('flipcard');
+  memViradas.push(i);
+  if (memViradas.length === 2) conferePar();
+}
+function conferePar(){
+  memConferindo = true;
+  const g = memGeracao;
+  const [ia, ib] = memViradas;
+  const a = memCartas[ia], b = memCartas[ib];
+  const igual = a.dataset.z === b.dataset.z && a.dataset.tipo !== b.dataset.tipo;
+  if (igual){
+    /* prata e ouro valem o dobro, e dois pares seguidos do mesmo grupo
+       dão um bônus: são as regras do jogo de onde ele veio */
+    const z = +a.dataset.z, gr = a.dataset.g;
+    let pts = (z === 47 || z === 79) ? 20 : 10;
+    if (memUltimoG !== null && memUltimoG === gr) pts += 5;
+    memUltimoG = gr;
+    memPontos += pts; memPares++;
+    placarMemoria();
+    tocaEfeito('right');
+    setTimeout(() => {
+      if (g !== memGeracao) return;
+      a.classList.remove('virada'); a.classList.add('casada');
+      b.classList.remove('virada'); b.classList.add('casada');
+      memViradas = []; memConferindo = false;
+      if (memPares === MEM_PARES.length) setTimeout(() => { if (g === memGeracao) fimDaMemoria(); }, 700);
+    }, 420);
+  } else {
+    memErros++; memPontos = Math.max(0, memPontos - 2); memUltimoG = null;
+    placarMemoria();
+    tocaEfeito('error');
+    tremeVermelho();
+    a.classList.add('errada'); b.classList.add('errada');
+    setTimeout(() => {
+      if (g !== memGeracao) return;
+      a.classList.remove('virada', 'errada');
+      b.classList.remove('virada', 'errada');
+      memViradas = []; memConferindo = false;
+    }, 1200);
+  }
+}
+/* o fim: a nota é a dos pontos sobre o melhor possível — dez pares,
+   com prata e ouro a dobrar */
+function fimDaMemoria(){
+  if (!memAberto) return;
+  const teto = 10 * 10 + 20;
+  /* os bônus de grupo podem passar do teto: a nota pára nos 10 */
+  const nota = Math.min(10, Math.max(0, Math.round(memPontos / teto * 100) / 10));
+  confete();
+  memAberto.querySelector('.mem-dica').textContent = 'Todos os pares encontrados';
+  poeCartaoDaMemoria(nota);
+}
+function poeCartaoDaMemoria(nota){
+  cartaoDoResultado(nota,
+    '<em class="acerto">' + memPares + '</em> pares · ' +
+    '<em class="erro">' + memErros + '</em> enganos · ' + memPontos + ' pontos',
+    memAberto,
+    () => { fechaMemoria(); setTimeout(abreMemoria, 520); },
+    () => fechaMemoria());
+}
+/* O CARTÃO DO RESULTADO, o do professor: a pontuação de 0 a 10 num anel
+   que se enche, a conta, um recado (bom a partir de 5), e Refazer e
+   Sair. Sair fecha o jogo e devolve a mesa, com o botão do jogo ainda
+   no canto para outra partida. */
+const RECADOS_BONS   = ['Você está aprendendo bem!', 'Ótimo resultado!', 'Muito bem! Continue assim!'];
+const RECADOS_FRACOS = ['Continue praticando!', 'Quase lá, não desista!', 'Pratique mais um pouco!'];
+function cartaoDoResultado(nota, contaHTML, onde, refazer, sair){
+  if (!onde) return;
+  const bom = nota >= 5;
+  const recado = (bom ? RECADOS_BONS : RECADOS_FRACOS)[Math.floor(Math.random() * 3)];
+  const volta = 2 * Math.PI * 38;
+  const c = document.createElement('div');
+  c.className = 'quiz-cartao';
+  c.innerHTML =
+    '<div class="trofeu">🏆</div>' +
+    '<div class="chapeu">Seu resultado</div>' +
+    '<div class="anel">' +
+      '<svg viewBox="0 0 100 100">' +
+        '<circle cx="50" cy="50" r="38" fill="none" stroke="rgba(76,63,191,.16)" stroke-width="9"/>' +
+        '<circle cx="50" cy="50" r="38" fill="none" stroke-width="9" stroke-linecap="round" ' +
+          'stroke="' + (bom ? 'var(--natural)' : 'var(--ouro-luz)') + '" ' +
+          'stroke-dasharray="' + volta.toFixed(1) + '" ' +
+          'stroke-dashoffset="' + volta.toFixed(1) + '" ' +
+          'style="transition:stroke-dashoffset .9s cubic-bezier(.4,0,.2,1) .35s"/>' +
+      '</svg>' +
+      '<div class="miolo"><span>Pontuação</span><b>' + nota.toFixed(1).replace('.', ',') + '</b></div>' +
+    '</div>' +
+    '<div class="conta">' + contaHTML + '</div>' +
+    '<div class="recado">' + recado + '</div>' +
+    '<div class="botoes"><button type="button" class="forte refaz">Refazer</button>' +
+      '<button type="button" class="sair">Sair</button></div>';
+  onde.appendChild(c);
+  c.getBoundingClientRect();
+  c.classList.add('on');
+  tocaEfeito('statistics');
+  /* o anel só se enche depois de o cartão entrar */
+  setTimeout(() => {
+    const arco = c.querySelectorAll('circle')[1];
+    if (arco) arco.setAttribute('stroke-dashoffset', (volta * (1 - nota/10)).toFixed(1));
+  }, 120);
+  c.querySelector('.sair').addEventListener('click', () => {
+    c.classList.remove('on');
+    setTimeout(() => c.remove(), 400);
+    sair();
+  });
+  c.querySelector('.refaz').addEventListener('click', () => {
+    c.classList.remove('on');
+    setTimeout(() => c.remove(), 400);
+    refazer();
+  });
+}
 
 /* OS CONFETES — dois canhões, um em cada canto de baixo, a atirar para o
    meio. Não é coreografia da narração (acontece com ela parada), e por
@@ -3802,6 +4210,9 @@ function go(i, dir){
   mostraPausa(false);
   VIDA.desliga();
   DEMO.corta();          /* e a cena da capa não fica a meio */
+  /* saindo do slide 1, o quiz e o jogo fecham: aberto, qualquer um
+     deles escondia o play da capa */
+  if (i !== 1){ QUIZ.fecha(); fechaMemoria(true); }
 
   andando = true;
   sai.classList.add('is-leaving', 'fx-cube-out-' + dir);
@@ -4429,7 +4840,19 @@ const NAV_TOPICOS = [
       eleitoDaNavegacao(0);
       depoisDaMesa(g, () => tocaDesde('1.4', QUIZ_NA_HORA['1.4'], g));
     } },
-  { titulo:'Jogo da memória', sub:'', slide:1, engatilhado:true }
+  { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1,
+    variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
+    entra(v, g){
+      eleitoDaNavegacao(0);
+      depoisDaMesa(g, () => {
+        if (v !== 'jogo'){ tocaDesde('1.jogo', 0, g); return; }
+        /* direto ao jogo: a narração já passou, o botão já é o do jogo */
+        trilhaAtual = -1;
+        carregaTrilha('1.jogo');
+        viraJogo(true);
+        abreMemoria();
+      });
+    } }
 ];
 const NAV = { geracao:0, eleitoAntes:null };
 
@@ -4510,6 +4933,7 @@ function tocaDesde(id, t, g){
 /* em que tópico a aula está agora — é o que a gaveta acende */
 function topicoAtual(){
   if (atual !== 1) return -1;
+  if (memAberto || trilhaAtual === '1.jogo') return 3;
   if (QUIZ.aberto && QUIZ.origem === '1.4') return 2;
   if (QUIZ.aberto || trilhaAtual === '1.4') return 1;
   return 0;
@@ -4608,6 +5032,7 @@ addEventListener('keydown', ev => {
   const k = ev.key;
   /* a gaveta aberta fecha com o Esc antes de tudo o resto */
   if (navAberta() && k === 'Escape'){ fechaNav(); ev.preventDefault(); return; }
+  if (memAberto && k === 'Escape'){ fechaMemoria(); ev.preventDefault(); return; }
   /* o menu do endereço aberto fecha com o Esc antes de tudo o resto */
   if (!menuEmail.hidden && k === 'Escape'){ fechaMenuEmail(); ev.preventDefault(); return; }
   /* ---- a montagem ---- */

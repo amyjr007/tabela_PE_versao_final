@@ -213,12 +213,14 @@ frase que a está a explicar.
 | `1.3B` · 25,6 s | o **Ca** gira e cresce; 27 s o nome pulsa 2×; 28 s volta |
 | `1.3B` · 28 s | e o **O** gira e cresce; 29 s o nome pulsa 2×; 32 s volta |
 | `1.3A` · 42 s / `1.3B` · 35,5 s | **o quiz**: seis perguntas seguidas — "Qual o nome desse elemento?" —, com o fim da narração ainda a tocar |
-| fim do quiz | o cartão da nota, e o play pronto na **`1.4`** |
+| fim do quiz 1 | o cartão da nota, com **Refazer** e **Continuar**; Continuar toca a **`1.4`** |
 | `1.4` · 1 → 8 s | oito elementos de símbolo sem nada a ver com o nome em português — P, K, Ag, Sn, Sb, W, Au, Hg — crescem um a um, com luz vinho |
 | `1.4` · 10 s | o **Na** gira e cresce no lugar, e o nome dele some; 15 s "Sódio" aparece e pulsa 2×; 16,8 s o símbolo pulsa; 17,7 s o nome pulsa outra vez; 21 s **"Natrium"** é escrito à direita, em destaque; 24 s o Na volta, e a palavra sai a girar até sumir junto com ele |
 | `1.4` · 25 s | o **Pb**, do mesmo jeito; 29 s "Chumbo" aparece e pulsa 2×; 30 s **"Plumbum"** à esquerda; 34 s volta, e a palavra some a girar |
 | `1.4` · 35,6 s | o **Cu**; 39,7 s "Cobre" aparece e pulsa 2×; 41 s **"Cuprum"** à esquerda; 45 s volta, e a palavra some a girar |
 | `1.4` · 54 s | **o segundo quiz**, com os de nome diferente (arrastado o áudio para depois dos 54 s, abre quando ele acaba) |
+| fim do quiz 2 | o cartão da nota, com **Refazer** e **Continuar**; Continuar toca `audio_tabela_1_jogo_memória` |
+| fim da narração do jogo | o botão do canto troca o play por um **controle de jogo**; um toque abre o jogo da memória |
 
 Tudo o que anima é **função do tempo da narração** (`efeitosDoTempo`):
 a altura de cada coluna na onda é um seno do segundo em que o áudio
@@ -259,10 +261,12 @@ efeito sonoro espera o anterior acabar.
 **No fim, o cartão da nota**: de 1 a 10, pela fração de acertos
 (acertos ÷ 6 × 10, arredondado, nunca abaixo de 1 — 6 acertos dão 10, 5
 dão 8, 4 dão 7, 3 dão 5), com uma mensagem sempre positiva que muda com a
-nota, e o som `statistics`. Depois do quiz da `1.3A`/`1.3B` o play volta, já
-carregado com a `1.4`. Depois do quiz da `1.4` ainda não há narração
-seguinte: o cartão fica sem a seta "Toque no play para continuar", e o
-play não volta (`DEPOIS_DO_QUIZ` diz o que vem depois de cada quiz).
+nota, e o som `statistics`. O cartão tem dois botões, e **o play do canto
+fica fora de cena** (nem a barra de espaço toca): **Refazer** abre outro
+quiz igual, com outro sorteio; **Continuar** tira o cartão e toca a
+narração seguinte — a `1.4` depois do quiz 1, e
+`audio_tabela_1_jogo_memória` depois do quiz 2 (`DEPOIS_DO_QUIZ` diz o que
+vem depois de cada quiz).
 
 Os elementos saem de listas (`QUIZ_UMA`, `QUIZ_DUAS`) em que **o símbolo
 sai do nome em português** — Carbono dá C, Cobalto dá Co. Ficaram de fora
@@ -294,6 +298,31 @@ A volta do elemento é a ida ao contrário: a ida sai depressa e chega
 devagar, então a volta sai devagar e chega depressa — a fração do
 caminho feita é p³, e posição, tamanho e giro seguem a mesma curva, em
 função do tempo da narração.
+
+### O jogo da memória
+
+Acabada a narração `audio_tabela_1_jogo_memória`, o botão do canto troca
+o play por um **controle de jogo**, com a legenda "Jogo da memória"; um
+toque nele (ou a barra de espaço) abre o jogo. É o jogo do slide 2 do
+app do professor — lá, o "quiz 2" —, com a mesma estrutura e os mesmos
+sons:
+
+- **vinte cartas viradas, dez pares**: de um lado o símbolo com o número
+  atômico e a massa, do outro o nome com um emoji, a categoria, o grupo e
+  o período (H, O, C, N, Na, Fe, Cu, Ag, Au, Zn). Cada par tem a sua cor,
+  que aparece quando ele é achado;
+- **os pontos**: 10 por par, 20 se for prata ou ouro, mais 5 se o par
+  seguinte for do mesmo grupo do anterior, e menos 2 por engano;
+- **os sons**: `flipcard` ao virar uma carta, `right` no par certo,
+  `error` com a tela a tremer em vermelho no engano;
+- **o fim**: confetes e o cartão do resultado do professor — troféu, a
+  pontuação de 0 a 10 num anel que se enche (pontos ÷ 120), a conta de
+  pares, enganos e pontos, um recado, o som `statistics` e os botões
+  **Refazer** (outra partida, baralhada de novo) e **Sair**.
+
+Enquanto o jogo dura o play sai de cena; o Esc fecha o jogo. Saindo, o
+botão do jogo continua no canto, para outra partida. Mudando de slide,
+o jogo fecha.
 
 ### As frases digitadas
 
@@ -394,7 +423,7 @@ fora dela ou com a tecla N.
 | 1. Visão geral da tabela | o começo do slide, como quem acaba de chegar a ele |
 | 2. Quiz 1 | aos 42 s da `1.3A` ou aos 35,5 s da `1.3B`: o quiz entra com o fim da fala. Os atalhos **1.3A · uma letra** e **1.3B · duas letras** escolhem a versão |
 | 3. Quiz 2 | aos 54 s da `1.4`: o quiz dos nomes diferentes |
-| 4. Jogo da memória | engatilhado — aparece como "em breve" e ainda não abre |
+| 4. Jogo da memória | a narração `audio_tabela_1_jogo_memória` do começo, que acaba no botão do jogo; o atalho **abrir o jogo direto** pula a narração |
 
 **Um tópico abre com a mesa montada como se os anteriores tivessem
 acontecido.** O slide recomeça sempre do zero; cada tópico anterior
