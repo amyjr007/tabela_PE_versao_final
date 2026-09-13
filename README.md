@@ -88,7 +88,7 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 | `2.5` · 12–16 s | o mesmo brilho, coluna a coluna (de cima para baixo) |
 | fim da `2.5` | a tabela junta-se e toca a **`2.5A`**; daí em diante, um toque em qualquer lugar da tabela a abre em linhas, o seguinte em colunas, o terceiro fecha |
 | fim da `2.5A` | o botão do canto troca o play por um **ponto de interrogação**: o quiz |
-| o quiz | junta a tabela e abre a questão 1 de 8 — ver "O quiz do slide 3" |
+| o quiz | junta a tabela, apaga o fundo (preto, como no quiz do professor), toca `quiz1` e, acabado ele, a tabela gira as faces e entra a questão 1 de 8 — ver "O quiz do slide 3" |
 | — | todo salto é curvo: uma Bézier com o ponto de controlo ao lado do meio do caminho (`pontoDoArco`), na desordem, no encaixe e na montagem final |
 
 Na desordem, **só os 48 primeiros (do 1 ao 48) ficam na tela**, todos na

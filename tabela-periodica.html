@@ -903,6 +903,24 @@ body.montagem .capa .digitado{pointer-events:auto}
   font-family:var(--display);font-weight:600;font-size:28px;line-height:1.25;color:var(--indigo);
   opacity:0;transform:translateY(-8px);transition:opacity .35s ease, transform .35s ease}
 .dica-final.on{opacity:1;transform:none}
+/* O ESCURO DO QUIZ (slide 3), como no quiz do professor: preto cheio,
+   em fade, por baixo de tudo o que vem depois dele no slide — a tabela,
+   o cabeçalho e a questão continuam acesos por cima */
+.breu-quiz{position:absolute;inset:0;z-index:0;pointer-events:none;background:#000;
+  opacity:0;transition:opacity .55s ease}
+.breu-quiz.on{opacity:1}
+/* e o cabeçalho clareia junto: no escuro, a letra escura some */
+.slide.quiz-escuro .title{color:#F3F0FB}
+.slide.quiz-escuro .subtitle{color:var(--ouro-luz)}
+.slide.quiz-escuro .num{color:#CFC6F5;opacity:.42}
+.slide.quiz-escuro .regua button{border-color:rgba(207,198,245,.4)}
+.slide.quiz-escuro .regua button.feito{background:rgba(207,198,245,.5)}
+.slide.quiz-escuro .title, .slide.quiz-escuro .subtitle, .slide.quiz-escuro .num,
+.slide.quiz-escuro .regua button{transition:color .5s ease, background .5s ease, border-color .5s ease}
+/* os números da tabela, no escuro: o índigo não se lê, passam a âmbar */
+.slide.quiz-escuro .eixo{color:rgba(243,240,251,.6)}
+.slide.quiz-escuro .eixo.prof{color:var(--ouro-luz);border-color:rgba(226,162,43,.75);background:rgba(226,162,43,.14)}
+.slide.quiz-escuro .casa.serie{color:rgba(243,240,251,.6)}
 @keyframes naoTreme{0%,100%{translate:0 0} 25%{translate:-6px 0} 75%{translate:6px 0}}
 /* a desordem: a posição anda a cada tique do relógio, e uma transição
    curta alisa o caminho entre um tique e o seguinte */
@@ -1725,7 +1743,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v3.7';
+const VERSAO = 'v3.8';
 
 /* ============================================================
    OS ELEMENTOS
@@ -4274,6 +4292,21 @@ const QUIZ3 = {
     return houve;
   },
   giroT:null,
+  /* O ESCURO DO QUIZ, o do professor: um véu preto cobre o slide em
+     fade, por baixo da tabela, e a letra do cabeçalho clareia com ele */
+  escurece(sim){
+    const sl = slides[2];
+    if (!sl) return;
+    let v = sl.querySelector(':scope > .breu-quiz');
+    if (sim && !v){
+      v = document.createElement('div');
+      v.className = 'breu-quiz';
+      sl.insertBefore(v, sl.firstChild);
+      v.getBoundingClientRect();
+    }
+    sl.classList.toggle('quiz-escuro', sim);
+    if (v) v.classList.toggle('on', sim);
+  },
   /* a volta da tabela, na onda diagonal (a mesma do professor) */
   giraTabela(){
     const m = slides[2].querySelector('.mesa');
@@ -4301,7 +4334,16 @@ const QUIZ3 = {
     /* se o aluno a deixou aberta, a tabela junta-se: as respostas são
        na tabela de sempre */
     LC25.poe('junta');
-    this.apresenta(g);
+    /* a sala apaga-se (é o sinal de que ali já não é a aula), toca o
+       "quiz1", e só quando ele acaba vem a transição: a tabela gira as
+       faces e a questão 1 entra pela esquerda. Até lá, o toque espera. */
+    this.travado = true;
+    this.escurece(true);
+    tocaEfeito('Audios/quiz1.mp3').then(() => {
+      if (g !== this.g) return;
+      this.giraTabela();
+      this.apresenta(g);
+    });
   },
   apresenta(g){
     if (g !== this.g) return;
@@ -4372,6 +4414,7 @@ const QUIZ3 = {
     this.g++;
     this.aberto = false; this.travado = false;
     stage.classList.remove('em-quiz');
+    this.escurece(false);
     clearTimeout(this.giroT);
     if (slides[2]){
       slides[2].querySelectorAll('.quiz3').forEach(e => e.remove());
