@@ -381,6 +381,34 @@ leva a aula para lá.
 O toque num cubo dá-lhe uma volta — é a única coisa que o aluno pode
 fazer com as mãos, por enquanto.
 
+## Navegação rápida (tecla N)
+
+Uma ferramenta de desenvolvimento. Do slide da tabela em diante há uma
+**alça na borda direita** ("Navegação"); ela abre uma gaveta com os
+tópicos do slide, e um toque num tópico leva direto a ele. A gaveta
+acende o tópico em que a aula está, e fecha com o Esc, com um toque
+fora dela ou com a tecla N.
+
+| tópico | aonde leva |
+|---|---|
+| 1. Visão geral da tabela | o começo do slide, como quem acaba de chegar a ele |
+| 2. Quiz 1 | aos 42 s da `1.3A` ou aos 35,5 s da `1.3B`: o quiz entra com o fim da fala. Os atalhos **1.3A · uma letra** e **1.3B · duas letras** escolhem a versão |
+| 3. Quiz 2 | aos 54 s da `1.4`: o quiz dos nomes diferentes |
+| 4. Jogo da memória | engatilhado — aparece como "em breve" e ainda não abre |
+
+**Um tópico abre com a mesa montada como se os anteriores tivessem
+acontecido.** O slide recomeça sempre do zero; cada tópico anterior
+deixa na mesa o que construiu (`deixa()`), e só então o escolhido entra
+(`entra()`). Voltar para trás é o mesmo caminho: estando no 3 e indo ao
+2, tudo se desfaz e o 2 é refeito como na primeira vez, depois do 1. Por
+enquanto nenhum tópico deixa nada — a mesa só vai mudar de verdade
+quando as séries forem reveladas, e é aí que o `deixa()` passa a contar.
+
+Nos quizzes vale o elemento que o aluno tinha escolhido (se servir para
+a versão pedida); senão, um ao acaso. A narração volta depois de a mesa
+pousar, a partir do segundo do tópico, e os eventos seguem o relógio.
+Um tópico novo é um item a mais em `NAV_TOPICOS`.
+
 ## Na montagem (tecla G)
 
 Fora da aula, a capa vira mesa de trabalho: **G** — ou o ícone ✥ da

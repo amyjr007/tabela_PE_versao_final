@@ -890,6 +890,74 @@ body.montagem .capa .digitado{pointer-events:auto}
 #puxador:hover::before{background:var(--ouro-luz);width:60px}
 #puxador.fora{transform:translateX(-50%) translateY(120%);opacity:0;pointer-events:none}
 
+/* ---------- navegação rápida (tecla N) ----------
+   Uma ferramenta de desenvolvimento: a alça na borda direita, a partir
+   do slide da tabela, abre a gaveta com os tópicos do slide. Fica fora
+   do palco, como a barra, e por baixo da visão geral. */
+#nav-alca{
+  position:fixed;right:0;top:50%;z-index:69;transform:translateY(-50%);
+  width:26px;height:132px;padding:0;cursor:pointer;display:grid;place-items:center;
+  background:rgba(255,255,255,.9);border:1px solid var(--indigo-dim);border-right:0;
+  border-radius:12px 0 0 12px;backdrop-filter:blur(9px);
+  box-shadow:-6px 8px 24px rgba(32,28,66,.14);color:var(--tinta-dim);
+  transition:transform .35s var(--e-desl),opacity .3s,color .2s,background .2s;
+}
+#nav-alca span{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--mono);
+  font-size:10px;letter-spacing:.24em;text-transform:uppercase}
+#nav-alca:hover{color:var(--ouro);background:#fff}
+#nav-alca.fora,#nav-alca.some{transform:translate(110%,-50%);opacity:0;pointer-events:none}
+#nav-fundo{position:fixed;inset:0;z-index:75;background:rgba(32,28,66,.16);
+  opacity:0;pointer-events:none;transition:opacity .3s}
+#nav-fundo.on{opacity:1;pointer-events:auto}
+#nav{
+  position:fixed;top:0;right:0;bottom:0;z-index:76;width:min(360px,88vw);
+  display:flex;flex-direction:column;font-family:var(--display);
+  background:rgba(255,255,255,.97);border-left:1px solid var(--indigo-dim);
+  box-shadow:-18px 0 44px rgba(32,28,66,.2);
+  transform:translateX(104%);transition:transform .42s var(--e-desl);
+}
+#nav.aberta{transform:none}
+#nav header{position:relative;padding:26px 24px 18px;border-bottom:1px solid var(--indigo-dim)}
+.nav-rotulo{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--indigo)}
+#nav h2{margin:8px 0 0;font-size:22px;font-weight:600;color:var(--tinta)}
+.nav-fecha{position:absolute;top:18px;right:14px;width:34px;height:34px;border:0;border-radius:9px;
+  background:transparent;color:var(--tinta-dim);cursor:pointer;display:grid;place-items:center}
+.nav-fecha:hover{background:rgba(76,63,191,.12);color:var(--indigo)}
+.nav-lista{list-style:none;margin:0;padding:12px;overflow-y:auto;flex:1}
+.nav-item{width:100%;display:flex;gap:14px;align-items:flex-start;text-align:left;position:relative;
+  padding:12px;border:0;border-radius:12px;background:transparent;cursor:pointer;
+  font:inherit;color:var(--tinta);transition:background .2s}
+.nav-item:hover{background:rgba(76,63,191,.08)}
+.nav-n{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;
+  font-family:var(--mono);font-size:13px;color:var(--ouro);
+  border:1.5px solid var(--ouro-luz);background:rgba(226,162,43,.1)}
+.nav-txt b{display:block;font-size:16px;font-weight:600;line-height:1.25}
+.nav-txt small{display:block;margin-top:3px;font-family:var(--mono);font-size:11px;
+  line-height:1.4;color:var(--tinta-dim)}
+/* o tópico em que a aula está agora */
+.nav-item.atual{background:rgba(226,162,43,.14)}
+.nav-item.atual::before{content:'';position:absolute;left:0;top:10px;bottom:10px;width:3px;
+  border-radius:2px;background:var(--ouro)}
+.nav-item.atual .nav-n{background:var(--ouro);border-color:var(--ouro);color:#fff}
+.nav-aqui{display:none;margin-left:8px;font-family:var(--mono);font-size:10px;font-weight:400;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ouro);vertical-align:2px}
+.nav-item.atual .nav-aqui{display:inline}
+/* o engatilhado: ainda não existe */
+.nav-item:disabled{cursor:default;opacity:.55}
+.nav-item:disabled:hover{background:transparent}
+.nav-breve{display:inline-block;margin-top:5px;padding:2px 8px;border-radius:99px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--tinta-dim);border:1px dashed var(--tinta-faint)}
+/* os atalhos para uma variante do tópico (a 1.3A ou a 1.3B) */
+.nav-variantes{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 8px 54px}
+.nav-var{padding:5px 10px;border-radius:8px;border:1px solid var(--indigo-dim);background:#fff;
+  cursor:pointer;font-family:var(--mono);font-size:11px;color:var(--tinta-dim);
+  transition:border-color .2s,color .2s}
+.nav-var:hover{border-color:var(--ouro-luz);color:var(--ouro)}
+.nav-pe{margin:0;padding:14px 24px 22px;font-size:12px;line-height:1.45;color:var(--tinta-faint);
+  border-top:1px solid var(--indigo-dim)}
+
 /* ---------- visão geral (tecla O) ----------
    As miniaturas não são desenhos dos slides: são os próprios slides,
    copiados e postos em escala. O que estiver dentro deles aparece ali
@@ -1259,7 +1327,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v1.8';
+const VERSAO = 'v1.9';
 
 /* ============================================================
    OS ELEMENTOS
@@ -3767,6 +3835,7 @@ function go(i, dir){
 function atualizaCabecalho(){
   stage.classList.toggle('na-capa',   atual === 0);
   stage.classList.toggle('sem-marca', atual === 1);
+  navNoSlide();
   progress.style.width = ((atual)/(SLIDES.length-1)*100) + '%';
   counter.innerHTML = '<b>'+(atual+1)+'</b> / '+SLIDES.length;
   slides.forEach(sl => {
@@ -3847,6 +3916,7 @@ function montaMiniaturas(){
 }
 
 function mostraOverview(v){
+  if (v) fechaNav();
   const abre = v === undefined ? overview.hidden : !!v;
   overview.hidden = !abre;
   overBtn.classList.toggle('on', abre);
@@ -4323,8 +4393,221 @@ function telaCheia(){
 /* ---- o teclado ----
    As setas andam entre a capa e a tabela; o espaço toca e pára a
    narração, que é o comando que esta tela tem. */
+/* ============================================================
+   A NAVEGAÇÃO RÁPIDA — uma ferramenta de desenvolvimento
+   Uma alça na borda direita, a partir do slide da tabela, abre uma
+   gaveta com os tópicos do slide. Um toque num tópico leva direto a
+   ele, COM A MESA MONTADA COMO SE O ALUNO TIVESSE PASSADO PELOS
+   ANTERIORES: o slide recomeça do zero, cada tópico anterior deixa na
+   mesa o que construiu (deixa), e só então o escolhido entra (entra).
+   Voltar para trás é o mesmo caminho: tudo se desfaz, e o tópico é
+   refeito como na primeira vez.
+
+   Um tópico novo é um item a mais em NAV_TOPICOS:
+     titulo, sub   o que a gaveta escreve
+     slide         em que slide ele mora
+     deixa()       o que ele deixa construído na mesa para os seguintes
+                   (por enquanto nenhum deixa nada: a mesa só muda de
+                   verdade quando as séries forem reveladas)
+     entra(v, g)   como se chega a ele; v é a variante escolhida, g o
+                   número desta ida (uma ida nova cancela a anterior)
+     variantes     atalhos para uma versão do tópico
+     engatilhado   o tópico ainda não existe: aparece, mas não abre
+   ============================================================ */
+const NAV_TOPICOS = [
+  { titulo:'Visão geral da tabela', sub:'o slide desde o começo', slide:1,
+    entra(){ /* o recomeço do slide já é o tópico */ } },
+  { titulo:'Quiz 1', sub:'aos 42 s da 1.3A ou aos 35,5 s da 1.3B', slide:1,
+    variantes:[ { id:'1.3A', rotulo:'1.3A · uma letra' }, { id:'1.3B', rotulo:'1.3B · duas letras' } ],
+    entra(v, g){
+      const c = eleitoDaNavegacao(v === '1.3A' ? 1 : v === '1.3B' ? 2 : 0);
+      const id = c.dataset.sym.length === 1 ? '1.3A' : '1.3B';
+      depoisDaMesa(g, () => tocaDesde(id, QUIZ_NA_HORA[id], g));
+    } },
+  { titulo:'Quiz 2', sub:'aos 54 s da 1.4 · os nomes diferentes', slide:1,
+    entra(v, g){
+      eleitoDaNavegacao(0);
+      depoisDaMesa(g, () => tocaDesde('1.4', QUIZ_NA_HORA['1.4'], g));
+    } },
+  { titulo:'Jogo da memória', sub:'', slide:1, engatilhado:true }
+];
+const NAV = { geracao:0, eleitoAntes:null };
+
+function irPara(i, variante){
+  const item = NAV_TOPICOS[i];
+  if (!item || item.engatilhado) return;
+  fechaNav();
+  const g = ++NAV.geracao;
+  /* o elemento que o aluno tinha escolhido fica guardado: chegando a um
+     quiz, é ele que volta a valer (se servir) */
+  if (SEQ.eleito) NAV.eleitoAntes = +SEQ.eleito.dataset.z;
+  const segue = () => {
+    if (g !== NAV.geracao || atual !== item.slide) return;
+    NAV_TOPICOS.slice(0, i).forEach(t => { if (t.deixa) t.deixa(); });
+    item.entra(variante, g);
+  };
+  /* de outro slide, o go() já recomeça este; no mesmo, recomeça-se à mão */
+  if (atual !== item.slide){ go(item.slide); setTimeout(segue, 900); }
+  else { recomecaSlide(item.slide); segue(); }
+}
+
+/* o slide recomeça no lugar, como se o aluno acabasse de chegar a ele: é o
+   que o go() faz, e ele não faz nada quando o destino é o slide atual */
+function recomecaSlide(i){
+  som.pause();
+  mostraPausa(false);
+  VIDA.desliga();
+  DEMO.corta();
+  if (i === 1){ SEQ.reinicia(); pousaTabela(); setTimeout(() => VIDA.liga(), 1500); }
+  trilhaAtual = -1;          /* a mesma trilha também recomeça */
+  carregaTrilha(TRILHA_DO_SLIDE[i]);
+}
+
+/* O ELEITO de quem chega direto: na aula ele sai da escolha do aluno na
+   "1.1", e é o símbolo dele que decide entre a "1.3A" e a "1.3B" (e fica
+   fora do quiz). Vale o que tinha sido escolhido antes, se servir; senão
+   um ao acaso — de uma letra, de duas, ou qualquer um. Chegando ao
+   quiz, ele já voltou para casa: não leva classe nenhuma. */
+function eleitoDaNavegacao(letras){
+  const serve = c => !!c && (!letras || c.dataset.sym.length === letras);
+  const todos = TP.todos();
+  let c = todos.find(x => +x.dataset.z === NAV.eleitoAntes);
+  if (!serve(c)){
+    const pool = todos.filter(serve);
+    c = pool[Math.floor(Math.random() * pool.length)];
+  }
+  SEQ.eleito = c;
+  return c;
+}
+
+/* a narração só volta depois de a mesa pousar; e a mesa não se põe a
+   respirar à espera do play, porque a aula já vai adiantada */
+function depoisDaMesa(g, fn){
+  SEQ.comecou = true;
+  VIDA.desliga();
+  setTimeout(() => { if (g === NAV.geracao) fn(); }, 1500);
+}
+
+/* toca uma trilha a partir de um segundo. O salto só pode ser dado com
+   o áudio já a saber a duração (loadedmetadata). Os eventos seguem o
+   relógio, e por isso a mesa fica logo como naquele segundo; e se o
+   áudio não carregar, o quiz daquela trilha abre na mesma. */
+function tocaDesde(id, t, g){
+  trilhaAtual = -1;
+  carregaTrilha(id);
+  const vai = () => {
+    if (g !== NAV.geracao || trilhaAtual !== id) return;
+    som.currentTime = t;
+    som.play().catch(avisaSeNaoTocou);
+  };
+  if (som.readyState >= 1) vai();
+  else som.addEventListener('loadedmetadata', vai, { once:true });
+  som.addEventListener('error', () => {
+    if (g === NAV.geracao && trilhaAtual === id && id in QUIZ_NA_HORA) SEQ.abreQuiz(id);
+  }, { once:true });
+}
+
+/* em que tópico a aula está agora — é o que a gaveta acende */
+function topicoAtual(){
+  if (atual !== 1) return -1;
+  if (QUIZ.aberto && QUIZ.origem === '1.4') return 2;
+  if (QUIZ.aberto || trilhaAtual === '1.4') return 1;
+  return 0;
+}
+
+/* A GAVETA. As peças são var, e não let: o cabeçalho pergunta por elas
+   (navNoSlide) antes de elas existirem, e um let ali ainda não existe. */
+var navAlca = null, navGaveta = null, navFundo = null;
+function montaNav(){
+  navAlca = document.createElement('button');
+  navAlca.id = 'nav-alca';
+  navAlca.type = 'button';
+  navAlca.title = 'Navegação rápida (N)';
+  navAlca.setAttribute('aria-label', 'Abrir a navegação rápida');
+  navAlca.innerHTML = '<span>Navegação</span>';
+  navAlca.addEventListener('click', abreNav);
+
+  navFundo = document.createElement('div');
+  navFundo.id = 'nav-fundo';
+  navFundo.addEventListener('click', fechaNav);
+
+  navGaveta = document.createElement('aside');
+  navGaveta.id = 'nav';
+  navGaveta.setAttribute('aria-label', 'Navegação rápida');
+  navGaveta.setAttribute('aria-hidden', 'true');
+  navGaveta.innerHTML =
+    '<header><div class="nav-rotulo">Navegação rápida</div><h2>A Tabela Periódica</h2>' +
+    '<button class="nav-fecha" type="button" aria-label="Fechar a navegação rápida">' +
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"' +
+    ' stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>' +
+    '<ol class="nav-lista"></ol>' +
+    '<p class="nav-pe">Cada tópico abre com a mesa montada como se os anteriores ' +
+    'tivessem acontecido. Tecla N abre e fecha.</p>';
+  navGaveta.querySelector('.nav-fecha').addEventListener('click', fechaNav);
+  const lista = navGaveta.querySelector('.nav-lista');
+  NAV_TOPICOS.forEach((t, i) => {
+    const li = document.createElement('li');
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'nav-item';
+    b.innerHTML = '<span class="nav-n">' + (i + 1) + '</span><span class="nav-txt"><b></b>' +
+      (t.engatilhado ? '<span class="nav-breve">em breve</span>' : '<small></small>') + '</span>';
+    b.querySelector('b').textContent = t.titulo;
+    b.querySelector('b').insertAdjacentHTML('beforeend', '<span class="nav-aqui">aqui</span>');
+    if (t.engatilhado) b.disabled = true;
+    else {
+      b.querySelector('small').textContent = t.sub;
+      b.addEventListener('click', () => irPara(i));
+    }
+    li.appendChild(b);
+    if (t.variantes){
+      const vs = document.createElement('div');
+      vs.className = 'nav-variantes';
+      t.variantes.forEach(v => {
+        const vb = document.createElement('button');
+        vb.type = 'button';
+        vb.className = 'nav-var';
+        vb.textContent = v.rotulo;
+        vb.addEventListener('click', () => irPara(i, v.id));
+        vs.appendChild(vb);
+      });
+      li.appendChild(vs);
+    }
+    lista.appendChild(li);
+  });
+  document.body.append(navAlca, navFundo, navGaveta);
+  navNoSlide();
+}
+function navAberta(){ return !!navGaveta && navGaveta.classList.contains('aberta'); }
+function abreNav(){
+  if (!navGaveta || atual < 1) return;
+  const aqui = topicoAtual();
+  navGaveta.querySelectorAll('.nav-item').forEach((b, i) => b.classList.toggle('atual', i === aqui));
+  navGaveta.classList.add('aberta');
+  navGaveta.setAttribute('aria-hidden', 'false');
+  navFundo.classList.add('on');
+  navAlca.classList.add('fora');
+}
+function fechaNav(){
+  if (!navGaveta) return;
+  navGaveta.classList.remove('aberta');
+  navGaveta.setAttribute('aria-hidden', 'true');
+  navFundo.classList.remove('on');
+  navAlca.classList.remove('fora');
+}
+function alternaNav(){ navAberta() ? fechaNav() : abreNav(); }
+/* a alça só existe do slide da tabela em diante */
+function navNoSlide(){
+  if (!navAlca) return;
+  navAlca.classList.toggle('some', atual < 1);
+  if (atual < 1) fechaNav();
+}
+montaNav();
+
 addEventListener('keydown', ev => {
   const k = ev.key;
+  /* a gaveta aberta fecha com o Esc antes de tudo o resto */
+  if (navAberta() && k === 'Escape'){ fechaNav(); ev.preventDefault(); return; }
   /* o menu do endereço aberto fecha com o Esc antes de tudo o resto */
   if (!menuEmail.hidden && k === 'Escape'){ fechaMenuEmail(); ev.preventDefault(); return; }
   /* ---- a montagem ---- */
@@ -4345,6 +4628,7 @@ addEventListener('keydown', ev => {
     return;
   }
   if (k === 'o' || k === 'O'){ mostraOverview(true); ev.preventDefault(); return; }
+  if ((k === 'n' || k === 'N') && atual >= 1 && !naMontagem()){ alternaNav(); ev.preventDefault(); return; }
   if (k === 'ArrowRight' || k === 'PageDown'){ go(atual+1); ev.preventDefault(); }
   else if (k === 'ArrowLeft' || k === 'PageUp'){ go(atual-1); ev.preventDefault(); }
   else if (k === ' '){ tocaOuPara(); ev.preventDefault(); }
