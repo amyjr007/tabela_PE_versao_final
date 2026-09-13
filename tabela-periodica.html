@@ -1643,7 +1643,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v3.2';
+const VERSAO = 'v3.3';
 
 /* ============================================================
    OS ELEMENTOS
@@ -3121,6 +3121,18 @@ const SEQ = {
     FINAL.zera();
     COLUNAS_24.suja = true;
     if (DIG_COL) DIG_COL.limpa();
+    /* nenhum card fica marcado como "em casa": o que o encaixe ou um
+       atalho pôs no lugar é desfeito aqui. A desordem só desfazia isso
+       antes dos 18 s da "2" — e o atalho do critério 1 entra aos 25 s:
+       vindo do critério 2, a tabela ficava meio montada. */
+    TP.todos().forEach(c => {
+      c._vooG = (c._vooG || 0) + 1;
+      c._voo = 0;
+      c._noLugar = false;
+      c.classList.remove('no-lugar', 'encaixando', 'chama', 'nao');
+      c.style.removeProperty('--vx');
+      c.style.removeProperty('--vy');
+    });
     stage.classList.remove('em-toque');
     if (veu2){
       veu2.classList.remove('on', 'pede-toque');
