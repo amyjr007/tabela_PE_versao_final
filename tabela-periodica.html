@@ -722,6 +722,7 @@ body.montagem .capa .digitado{pointer-events:auto}
 
 /* durante o quiz o play sai de cena: quem faz a aula andar é a escolha */
 #stage.em-quiz #som, #stage.em-quiz #som-dica,
+#stage.em-toque #som, #stage.em-toque #som-dica,
 #stage.em-jogo #som, #stage.em-jogo #som-dica{display:none!important}
 /* e com a tela escura também: ali o que faz a aula seguir é o toque na tela */
 #stage.tela-escura #som, #stage.tela-escura #som-dica{display:none!important}
@@ -812,6 +813,35 @@ body.montagem .capa .digitado{pointer-events:auto}
 .toque-continuar.on{opacity:1;animation:respira 2.2s ease-in-out infinite}
 @keyframes respira{0%,100%{opacity:.4} 50%{opacity:1}}
 .veu.pede-toque{cursor:pointer}
+
+/* ---- o slide 3 ---- */
+/* o brilho verde que varre a tabela aos 14 s: uma lavagem verde por cima
+   da cor do card, o contorno e o halo */
+.pc.luz-verde .face{box-shadow:inset 0 0 0 60px rgba(46,204,113,.36),
+  0 0 0 2px #3EE08A, 0 0 20px 5px rgba(46,204,113,.6)}
+.pc.luz-verde .cubo{--sc:1.06}
+/* a desordem: a posição anda a cada tique do relógio, e uma transição
+   curta alisa o caminho entre um tique e o seguinte */
+/* e, desarrumada a mesa, as casas vazias e os números saem de cena */
+.mesa.sem-casas .casa, .mesa.sem-casas .eixo{opacity:0;transition:opacity .35s ease}
+.pc.desordem{transition:left 90ms linear, top 90ms linear,
+  transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease}
+/* o clarão da desordem, o do professor */
+.clarao2{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 55%,rgba(255,255,255,.9),rgba(255,255,255,0) 72%)}
+/* Henry Moseley na tela escura: a foto à esquerda, o critério à direita */
+.veu-moseley .moseley{position:absolute;left:150px;top:118px;width:268px;margin:0;
+  opacity:0;text-align:center;will-change:transform}
+.veu-moseley .moseley img{display:block;width:268px;height:auto;border-radius:14px;
+  border:3px solid rgba(255,255,255,.9);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.veu-moseley figcaption{margin-top:14px;font-family:var(--display);color:#F4F2F8}
+.veu-moseley figcaption b{display:block;font-size:26px;font-weight:600}
+.veu-moseley figcaption span{display:block;margin-top:2px;font-family:var(--mono);
+  font-size:18px;letter-spacing:.2em;color:var(--ouro-luz)}
+.veu-moseley .veu-frases{position:absolute;left:520px;top:190px;width:640px;text-align:left}
+.veu-moseley .frase{font-size:32px;line-height:1.3;font-weight:500;color:#F4F2F8}
+.veu-moseley .frase:first-child{font-size:54px;font-weight:700;color:var(--ouro-luz);margin-bottom:22px}
+.veu-moseley .frase:nth-child(2){color:#F4F2F8}
 
 /* o convite para escolher um elemento, no rodapé do slide */
 .dica-escolha{
@@ -1537,10 +1567,9 @@ const SLIDES = [
   { title:'A Tabela Periódica',
     subtitle:'Os 118 elementos' },
 
-  /* o slide 3: a mesma tabela, com a narração "2" (os eventos dela
-     chegam depois) */
-  { title:'A Tabela Periódica',
-    subtitle:'Os 118 elementos' }
+  /* o slide 3: a mesma tabela, a desordem, e o critério de Moseley */
+  { title:'Os critérios de Organização',
+    subtitle:'A lei periódica' }
 ];
 
 /* A VERSÃO DO APP — sobe a cada mudança publicada. É daqui, e só daqui,
@@ -1548,7 +1577,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v2.4';
+const VERSAO = 'v2.5';
 
 /* ============================================================
    OS ELEMENTOS
@@ -1855,7 +1884,7 @@ function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
    espera do play. No slide 1 a história dele também recomeça. */
 function recomecaMesa(i){
   if (i === 1) SEQ.reinicia();
-  else if (temMesa(i)) SEQ.comecou = false;
+  else if (temMesa(i)){ SEQ.comecou = false; if (i === 2) SEQ.reinicia2(); }
   else return;
   pousaTabela();
   setTimeout(() => VIDA.liga(), 1500);
@@ -2622,7 +2651,8 @@ const TRILHAS = {
   '1.3B': 'Audios/audio_tabela_1.3B.mp3',  /* se tem duas */
   '1.4':  'Audios/audio_tabela_1.4.mp3',   /* o sódio, o chumbo e o cobre; e o quiz deles */
   '1.jogo': 'Audios/audio_tabela_1_jogo_memória.mp3', /* depois do quiz 2: o convite ao jogo */
-  '2':    'Audios/audio_tabela_2.mp3'      /* o slide 3 (os eventos dela chegam depois) */
+  '2':    'Audios/audio_tabela_2.mp3',     /* o slide 3: a desordem e Moseley */
+  '2.1':  'Audios/audio_tabela_2.1.mp3'    /* depois do toque (os eventos dela chegam depois) */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2'];
@@ -2676,7 +2706,8 @@ const ROTEIROS = {
   '1.4':  [],
   '1.jogo': [],
   /* slide 3 */
-  '2':    []
+  '2':    [],
+  '2.1':  []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -2842,6 +2873,7 @@ function tocaOuPara(){
   if (somBtn.classList.contains('iniciar')){ go(1); return; }
   /* na tela escura à espera do toque, o botão também serve de toque */
   if (SEQ.aguardaToque){ SEQ.continua(); return; }
+  if (SEQ.aguardaToque2){ SEQ.continua2(); return; }
   /* o botão do jogo abre o jogo */
   if (somBtn.classList.contains('jogo')){ abreMemoria(); return; }
   /* no quiz — e no cartão da nota, que segue pelos botões dele — e no
@@ -2972,12 +3004,50 @@ const SEQ = {
     else if (id in QUIZ_NA_HORA) this.abreQuiz(id);
     /* a narração do jogo acaba: o botão do canto vira o do jogo */
     else if (id === '1.jogo') viraJogo(true);
+    /* o fim da "2": o play sai, e a tela escura pede o toque */
+    else if (id === '2'){
+      this.aguardaToque2 = true;
+      if (veu2){ veu2.classList.add('pede-toque'); toque2.classList.add('on'); }
+      stage.classList.add('em-toque');
+    }
   },
   /* o quiz de cada trilha abre uma vez só */
   abreQuiz(id){
     if (this.quizDa === id || QUIZ.aberto) return;
     this.quizDa = id;
     QUIZ.abre(id);
+  },
+  /* o toque na tela escura do slide 3: ela esmaece, com a foto e o
+     texto, e toca a "2.1". A desordem fica. */
+  continua2(){
+    if (!this.aguardaToque2) return;
+    this.aguardaToque2 = false;
+    veu2.classList.remove('pede-toque');
+    toque2.classList.remove('on');
+    stage.classList.remove('em-toque');
+    tocaTrilha('2.1');
+  },
+  /* chegar ao slide 3: a tela clara, e a mesa volta a ser arrumada no
+     primeiro tique (os eventos veem que estão sujos) */
+  reinicia2(){
+    this.aguardaToque2 = false;
+    stage.classList.remove('em-toque');
+    if (veu2){
+      veu2.classList.remove('on', 'pede-toque');
+      toque2.classList.remove('on');
+      DIG2.limpa();
+      foto2.style.opacity = '0';
+    }
+    if (clarao2) clarao2.style.opacity = '0';
+    ONDA_VERDE.suja = true;
+    DESORDEM.suja = true; DESORDEM.pousou = false;
+    const m = slides[2] && slides[2].querySelector('.mesa');
+    if (m) m.classList.remove('sem-casas');
+  },
+  /* sair do slide 3 com o pedido de toque em cena: o play volta */
+  deixa2(){
+    this.aguardaToque2 = false;
+    stage.classList.remove('em-toque');
   },
   /* o toque na tela escura: ela desfaz-se, e a narração segue */
   continua(){
@@ -3101,6 +3171,8 @@ function efeitosDoTempo(){
      tem de voltar — e o resto desta função nem corre fora do slide 1. */
   stage.classList.toggle('tela-escura', atual === 1 && trilhaAtual === '1' && t >= 13.6);
   if (trilhaAtual === 'capa' && DIG_CAPA) DIG_CAPA.escreve(t);
+  /* o slide 3 tem os eventos dele */
+  if (atual === 2){ efeitos2(t); return; }
   if (atual !== 1 || !veu) return;
 
   /* a tela escura é da trilha "1", dos 13,6 s em diante — e continua
@@ -3511,6 +3583,163 @@ function efeitos13A(t){
   ondaDeUmEmUm(t, EV13A.iniciais,   LISTA_INICIAIS);
   EV13A.zooms.forEach(z => zoomNoLugar(t, z));
 }
+/* ============================================================
+   O SLIDE 3 · OS CRITÉRIOS DE ORGANIZAÇÃO — A LEI PERIÓDICA
+   Os eventos da narração "2", todos função do relógio dela:
+     14 → 17,2 s  um brilho verde cobre a tabela da esquerda para a
+                  direita (até 15,6 s) e volta, da direita para a esquerda
+     18 s         os cards desorganizam-se pela tela, todos de uma vez,
+                  com o clarão — a desordem do slide 2 do professor
+     29 s         a tela escurece, e Henry Moseley entra pela borda
+                  direita, com o nome e o ano (1913) embaixo
+     39 s         "Critério 1", à direita
+     40,2 → 44 s  o critério, escrito
+     fim          o play sai e fica "Toque na tela para continuar"; o
+                  toque desfaz a tela escura (em fade) e toca a "2.1"
+   A desordem continua depois do toque: é dela que as narrações seguintes
+   vão tirar a ordem.
+   ============================================================ */
+const ONDA_VERDE = { de:14.0, meio:15.6, ate:17.2, suja:false };
+/* A DESORDEM. 'dura' é a velocidade de cada card (o professor usa 0,56 s:
+   é o número a acertar de ouvido); 'fila' é o atraso de um card para o
+   seguinte (0: todos de uma vez, como lá); 'alto' é a altura do arco;
+   'giro' a inclinação máxima; 'clarao' quanto dura o clarão. */
+const DESORDEM = { de:18.0, dura:0.56, fila:0, alto:70, giro:17, clarao:0.72, suja:false, pousou:false };
+/* as trilhas do slide 3 depois da "2": nelas a desordem já está feita */
+const DEPOIS_DA_2 = ['2.1', '2.2', '2.3'];
+const MOSELEY = { escurece:29.0, entra:29.0, dura:1.4 };
+const FRASES_CRITERIO1 = [
+  { de:39.0, ate:39.8, txt:'Critério 1' },
+  { de:40.2, ate:44.0, txt:'Os elementos serão organizados em linhas, em ordem crescente de número atômico' }
+];
+let veu2 = null, toque2 = null, foto2 = null, clarao2 = null, DIG2 = null;
+
+function montaCenaDoSlide3(){
+  const sl = slides[2];
+  if (!sl || sl.querySelector('.veu-moseley')) return;
+  sl.insertAdjacentHTML('beforeend',
+    '<div class="clarao2" aria-hidden="true"></div>' +
+    '<div class="veu veu-moseley" aria-live="polite">' +
+      '<figure class="moseley"><img src="Imagens/henry_moseley.jpg" alt="Henry Moseley" draggable="false">' +
+        '<figcaption><b>Henry Moseley</b><span>1913</span></figcaption></figure>' +
+      '<div class="veu-frases"></div>' +
+      '<div class="toque-continuar">Toque na tela para continuar</div>' +
+    '</div>');
+  veu2    = sl.querySelector('.veu-moseley');
+  toque2  = veu2.querySelector('.toque-continuar');
+  foto2   = veu2.querySelector('.moseley');
+  clarao2 = sl.querySelector('.clarao2');
+  DIG2 = criaDigitacao(veu2.querySelector('.veu-frases'), FRASES_CRITERIO1);
+  veu2.addEventListener('click', () => SEQ.continua2());
+}
+
+function efeitos2(t){
+  ondaVerde(t);
+  desordem(t);
+  cena2(t);
+}
+
+/* O BRILHO VERDE: uma frente que anda pelas colunas — da 1 à 18 até ao
+   meio, e de volta até ao fim —, e verde é quem está atrás dela */
+function ondaVerde(t){
+  const o = ONDA_VERDE;
+  const dentro = trilhaAtual === '2' && t >= o.de && t <= o.ate;
+  if (!dentro && !o.suja) return;
+  let frente = 0;
+  if (dentro) frente = t < o.meio ? 1 + 17*(t - o.de)/(o.meio - o.de)
+                                  : 18 - 17*(t - o.meio)/(o.ate - o.meio);
+  TP.todos().forEach(c => c.classList.toggle('luz-verde', dentro && +c.dataset.col <= frente + 0.001));
+  o.suja = dentro;
+}
+
+/* AS 88 VAGAS DA DESORDEM: a folha abaixo do cabeçalho partida em 11 por
+   8, e cada card no meio da sua parte com um tremor — a grade do
+   professor, do tamanho destes cards: o monte fica desarrumado sem
+   buracos nem pilhas. O sorteio é fixo, e voltar o áudio refaz a mesma
+   desordem. */
+let VAGAS = null;
+function vagasDaDesordem(){
+  if (VAGAS) return VAGAS;
+  let sem = 2024;
+  const r = () => (sem = (sem*1664525 + 1013904223) % 4294967296) / 4294967296;
+  /* longe do play, no canto de baixo à direita, e da borda de baixo */
+  const x0 = 60, x1 = 1140, y0 = 150, y1 = 664, cols = 11, linhas = 8;
+  const dx = (x1 - x0)/cols, dy = (y1 - y0)/linhas, vagas = [];
+  for (let l = 0; l < linhas; l++)
+    for (let c = 0; c < cols; c++)
+      vagas.push({ x: x0 + c*dx + dx/2 + (r() - .5)*dx*.42,
+                   y: y0 + l*dy + dy/2 + (r() - .5)*dy*.36,
+                   rot: r()*2*DESORDEM.giro - DESORDEM.giro });
+  for (let i = vagas.length - 1; i > 0; i--){ const j = (r()*(i + 1))|0; [vagas[i], vagas[j]] = [vagas[j], vagas[i]]; }
+  VAGAS = new Map();
+  TP.todos().slice().sort((a, b) => +a.dataset.z - +b.dataset.z)
+    .forEach((c, i) => VAGAS.set(+c.dataset.z, vagas[i % vagas.length]));
+  return VAGAS;
+}
+
+/* A DESORDEM, função do relógio: cada card sai da casa dele para a vaga
+   num arco — devagar, depressa, e pousa —, e a inclinação chega até ao
+   meio do caminho, como no voo do professor. Antes dos 18 s (voltando o
+   áudio atrás, ou a chegar ao slide) a mesa está arrumada; nas trilhas
+   seguintes do slide, desarrumada. */
+function desordem(t){
+  const o = DESORDEM;
+  let q;
+  if (trilhaAtual === '2') q = t - o.de;
+  else if (DEPOIS_DA_2.includes(trilhaAtual)) q = Infinity;
+  else q = -1;
+  if (q < 0 && !o.suja) return;
+  const cubos = TP.todos();
+  const fim = o.dura + cubos.length * o.fila;
+  /* a desordem não tem tabela por baixo: as casas vazias e os números
+     dos grupos e dos períodos esmaecem com ela, e voltam com a ordem */
+  const mesa = slideDaMesa().querySelector('.mesa');
+  if (mesa) mesa.classList.toggle('sem-casas', q >= 0);
+  if (clarao2){
+    const k = (q >= 0 && q < o.clarao) ? Math.pow(1 - q/o.clarao, 2) : 0;
+    clarao2.style.opacity = k.toFixed(3);
+  }
+  /* pousados todos, já não há nada a escrever a cada tique */
+  if (q > fim + 0.2 && o.pousou) return;
+  const vagas = vagasDaDesordem();
+  cubos.forEach((c, i) => {
+    const cubo = c.querySelector('.cubo');
+    const casa = alvoDe(+c.dataset.z), v = vagas.get(+c.dataset.z);
+    if (q < 0){
+      c.classList.remove('desordem');
+      c.style.left = casa.x.toFixed(1) + 'px';
+      c.style.top  = casa.y.toFixed(1) + 'px';
+      cubo.style.setProperty('--rz', '0deg');
+      return;
+    }
+    const p = Math.max(0, Math.min(1, (q - i*o.fila) / o.dura));
+    const e = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2)/2;
+    c.classList.add('desordem');
+    c.style.left = (casa.x + (v.x - casa.x)*e).toFixed(1) + 'px';
+    c.style.top  = (casa.y + (v.y - casa.y)*e - o.alto*4*e*(1 - e)).toFixed(1) + 'px';
+    cubo.style.setProperty('--dur', '90ms');
+    cubo.style.setProperty('--rz', (v.rot * Math.min(1, e/.4)).toFixed(1) + 'deg');
+  });
+  o.suja = q >= 0;
+  o.pousou = q > fim + 0.2;
+}
+
+/* A TELA ESCURA DE MOSELEY: escurece aos 29 s e fica até ao toque; a foto
+   entra pela borda direita e pousa à esquerda (sai depressa e chega
+   devagar); o critério escreve-se à direita */
+function cena2(t){
+  if (!veu2) return;
+  const tr = trilhaAtual;
+  veu2.classList.toggle('on', (tr === '2' && t >= MOSELEY.escurece) || !!SEQ.aguardaToque2);
+  /* depois do toque, a tela escura esmaece com o que tem */
+  if (tr !== '2') return;
+  const p = Math.max(0, Math.min(1, (t - MOSELEY.entra) / MOSELEY.dura));
+  const e = 1 - Math.pow(1 - p, 3);
+  foto2.style.opacity = p > 0 ? '1' : '0';
+  foto2.style.transform = 'translateX(' + ((1 - e)*1000).toFixed(1) + 'px) rotate(' + ((1 - e)*10).toFixed(2) + 'deg)';
+  DIG2.escreve(t);
+}
+
 /* ============================================================
    OS EVENTOS DA "1.4" — os símbolos que não saem do nome em português
      1 → 8 s      oito deles crescem, um a um, com luz vinho
@@ -4356,6 +4585,7 @@ function go(i, dir){
   /* saindo do slide 1, o quiz e o jogo fecham: aberto, qualquer um
      deles escondia o play da capa */
   if (i !== 1){ QUIZ.fecha(); fechaMemoria(true); }
+  if (i !== 2) SEQ.deixa2();
 
   andando = true;
   sai.classList.add('is-leaving', 'fx-cube-out-' + dir);
@@ -5401,6 +5631,7 @@ SLIDES_COM_MESA.forEach(i => montaTabela(i));
 montaBlocosDaCapa();
 montaFrases();
 montaCenaDoSlide1();
+montaCenaDoSlide3();
 atualizaCabecalho();
 /* a capa vai para o lugar que ficou arrumado à mão */
 aplicaLayout(0);

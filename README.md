@@ -15,7 +15,8 @@ dá zoom nele, como no app do professor.
    acende um deles lá em baixo, o bloco dá uma volta aqui em cima.
 2. **A Tabela Periódica** — os elementos prontos na mesa; por enquanto
    sem os lantanídeos e os actinídeos, que a narração revela mais tarde.
-3. **O slide 3** — a mesma tabela, com a narração `audio_tabela_2`.
+3. **2 · Os critérios de Organização — A lei periódica** — a mesma tabela,
+   a desordem, e o critério de Moseley (narrações `2` e `2.1`).
 
 A passagem entre as duas é o cubo girando, a mesma do app do professor.
 Os outros slides entram na lista `SLIDES`, no alto do script, e o resto
@@ -49,14 +50,28 @@ centrado na altura (`TAB_TOPO` 164). A letra das faces cresce junto, por
 bordas do palco: o Na, na coluna 1, é empurrado para dentro enquanto
 cresce. O Urânio saiu do quiz por ser actinídeo.
 
-## O slide 3
+## O slide 3 · Os critérios de Organização — A lei periódica
 
 Chega-se a ele pelo **Continuar** do cartão do jogo da memória (ou pela
 barra). A tabela é a mesma do slide 2 — sem as séries, com a medida do
 celular — e, como lá, respira sozinha à espera do play: cubos que
-saltam e giram, famílias que sobem e descem, a cruz das coordenadas. O
-play toca `audio_tabela_2`; os eventos atrelados ao relógio dela ainda
-vão ser coreografados.
+saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
+
+| quando | o que acontece |
+|---|---|
+| `2` · 14 → 17,2 s | um brilho verde cobre a tabela da esquerda para a direita (até 15,6 s) e volta, da direita para a esquerda |
+| `2` · 18 s | **os cards desorganizam-se** pela tela, todos de uma vez, cada um num arco até a sua vaga, com um clarão — a desordem do slide 2 do professor. Os números em `DESORDEM`: `dura` 0,56 s (a velocidade, a acertar de ouvido), `fila` 0 (o atraso de um card para o seguinte), `alto` 70 (o arco), `giro` 17° |
+| `2` · 29 s | a tela escurece e **Henry Moseley** entra pela borda direita e pousa à esquerda, com "Henry Moseley · 1913" embaixo |
+| `2` · 39 → 39,8 s | "Critério 1" é digitado à direita |
+| `2` · 40,2 → 44 s | "Os elementos serão organizados em linhas, em ordem crescente de número atômico" |
+| fim da `2` | o play sai e aparece "Toque na tela para continuar" |
+| o toque | a tela escura esmaece com a foto e o texto, e toca a `2.1`; a desordem fica |
+
+As vagas da desordem são uma grade de 11 × 8 abaixo do cabeçalho (longe
+do play e da borda de baixo), com um tremor; o sorteio é fixo, e voltar o
+áudio refaz a mesma desordem. Desarrumada a mesa, as casas vazias e os
+números dos grupos e dos períodos esmaecem — voltam com a ordem.
+Tudo segue o relógio da narração: pausar congela, voltar desfaz.
 
 Por dentro, `SLIDES_COM_MESA = [1, 2]`: a mesa é montada em cada um
 desses slides, e as funções dos cubos (`TP`), a vida solta (`VIDA`) e a
