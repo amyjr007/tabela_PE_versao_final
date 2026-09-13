@@ -892,6 +892,17 @@ body.montagem .capa .digitado{pointer-events:auto}
 .pc.no-lugar.encaixando{z-index:30}
 /* o toque fora de ordem: um tremor curto */
 .pc.nao{animation:naoTreme .35s ease}
+/* o toque errado no fim do slide 3: balança, em vermelho */
+.pc.nao-verm{z-index:20;animation:naoTreme .42s ease}
+.pc.nao-verm .face{box-shadow:0 0 0 3px #FF2E4C, 0 0 22px 7px rgba(255,46,76,.8)}
+/* e a pergunta dele, no vazio da tabela */
+.dica-final{position:absolute;left:170px;top:190px;width:664px;z-index:26;pointer-events:none;
+  padding:18px 26px;border-radius:18px;text-align:center;
+  background:rgba(255,255,255,.96);border:1px solid var(--indigo-dim);
+  box-shadow:0 16px 40px rgba(32,28,66,.18);
+  font-family:var(--display);font-weight:600;font-size:28px;line-height:1.25;color:var(--indigo);
+  opacity:0;transform:translateY(-8px);transition:opacity .35s ease, transform .35s ease}
+.dica-final.on{opacity:1;transform:none}
 @keyframes naoTreme{0%,100%{translate:0 0} 25%{translate:-6px 0} 75%{translate:6px 0}}
 /* a desordem: a posição anda a cada tique do relógio, e uma transição
    curta alisa o caminho entre um tique e o seguinte */
@@ -1714,7 +1725,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v3.6';
+const VERSAO = 'v3.7';
 
 /* ============================================================
    OS ELEMENTOS
@@ -4042,8 +4053,9 @@ const LC25 = {
     /* os números das linhas, à esquerda da coluna 1 (nas colunas saem:
        a tabela alarga-se e não sobra lugar para eles) */
     m.querySelectorAll('.eixo[data-periodo]').forEach(e => {
-      const p = +e.dataset.periodo, prof = modo === 'linhas';
-      e.classList.toggle('prof', prof);
+      /* mostrados uma vez no modelo do professor, ficam assim */
+      if (modo === 'linhas') e.classList.add('prof');
+      const p = +e.dataset.periodo, prof = e.classList.contains('prof');
       e.classList.toggle('some25', modo === 'colunas');
       e.style.setProperty('--atraso', (p - 1) * 40 + 'ms');
       e.style.left = (xDaColuna(1) - LADO/2 - (prof ? 26 : 19)).toFixed(1) + 'px';
@@ -4051,8 +4063,8 @@ const LC25 = {
     });
     /* e os das colunas, em cima da primeira linha */
     m.querySelectorAll('.eixo[data-grupo]').forEach(e => {
-      const g = +e.dataset.grupo, prof = modo === 'colunas';
-      e.classList.toggle('prof', prof);
+      if (modo === 'colunas') e.classList.add('prof');
+      const g = +e.dataset.grupo, prof = e.classList.contains('prof');
       e.style.setProperty('--atraso', (g - 1) * 26 + 'ms');
       e.style.left = (xDaColuna(g) + (g - 9.5) * vC).toFixed(1) + 'px';
       e.style.top  = (yDaLinha(1) - 3 * vL - LADO/2 - (prof ? 22 : 15)).toFixed(1) + 'px';
@@ -4378,27 +4390,52 @@ const QUIZ3 = {
 const FINAL = {
   esperando:false, ativo:false, feito:false, g:0,
   proximo:37, passo:0.0875,
+  /* acabada a "2.4", a tabela espera o toque no próximo — sem piscar:
+     quem o procura é o aluno */
   chama(){
     this.esperando = true;
-    const c = TP.cubo(this.proximo);
-    if (c) c.classList.add('chama');
+  },
+  /* a pergunta do toque errado, no vazio da tabela */
+  dica(){
+    let d = slides[2].querySelector('.dica-final');
+    if (!d){
+      d = document.createElement('div');
+      d.className = 'dica-final';
+      d.setAttribute('aria-live', 'polite');
+      slides[2].appendChild(d);
+    }
+    return d;
+  },
+  tiraDica(){
+    const d = slides[2] && slides[2].querySelector('.dica-final');
+    if (d) d.classList.remove('on');
   },
   toca(c){
     if (!this.esperando) return;
     if (+c.dataset.z !== this.proximo){
-      c.classList.remove('nao'); void c.offsetWidth; c.classList.add('nao');
+      /* o errado balança em vermelho, e a pergunta aparece */
+      c.classList.remove('nao-verm'); void c.offsetWidth; c.classList.add('nao-verm');
+      clearTimeout(c._naoT);
+      c._naoT = setTimeout(() => c.classList.remove('nao-verm'), 700);
+      const d = this.dica();
+      d.textContent = 'Que elemento vem depois do ' + (this.proximo - 1) + '?';
+      d.getBoundingClientRect();
+      d.classList.add('on');
       return;
     }
     this.esperando = false;
-    this.monta();
+    this.tiraDica();
+    /* o tocado salta já, sem esperar pelos outros */
+    encaixaCubo(c);
+    this.monta(c);
   },
-  monta(){
+  monta(primeiro){
     this.ativo = true;
     const g = ++this.g;
     const cubos = TP.todos();
     cubos.forEach(c => c.classList.remove('chama'));
     /* as colunas juntam-se e o H volta ao lugar */
-    cubos.filter(c => c._noLugar).forEach(c => {
+    cubos.filter(c => c._noLugar && c !== primeiro).forEach(c => {
       limpaColuna(c, true);
       voaEmArco(c, alvoDe(+c.dataset.z), SALTO, () => c.style.removeProperty('transition'), 0.15);
     });
@@ -4411,7 +4448,8 @@ const FINAL = {
       encaixaCubo(falta[i++]);
       setTimeout(vai, this.passo * 1000);
     };
-    setTimeout(vai, 700);
+    /* os outros vêm logo atrás do tocado, no compasso da montagem */
+    setTimeout(vai, this.passo * 1000);
   },
   festa(){
     this.ativo = false;
@@ -4427,6 +4465,7 @@ const FINAL = {
   },
   zera(){
     this.esperando = false; this.ativo = false; this.feito = false; this.g++;
+    this.tiraDica();
     const m = slides[2] && slides[2].querySelector('.mesa');
     if (m) m.classList.remove('brilho-final');
   }

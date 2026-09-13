@@ -83,6 +83,7 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 | depois da festa | toca a **`2.5`**; a tabela volta a ser de cubos (um toque num card fá-lo girar) |
 | `2.5` · 4,8 s | a tabela abre-se em **7 linhas**, com os números delas (o modelo do professor) |
 | `2.5` · 6–8 s | brilho verde e aumento sutil do 1 ao 118, forte na frente e a apagar atrás |
+| números | uma vez na bolinha do professor, os números das linhas e das colunas ficam assim (os das linhas só se escondem com a tabela em colunas) |
 | `2.5` · 9,1 s | a tabela passa às **18 colunas**, com os números delas |
 | `2.5` · 12–16 s | o mesmo brilho, coluna a coluna (de cima para baixo) |
 | fim da `2.5` | a tabela junta-se e toca a **`2.5A`**; daí em diante, um toque em qualquer lugar da tabela a abre em linhas, o seguinte em colunas, o terceiro fecha |
