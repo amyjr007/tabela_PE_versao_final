@@ -485,7 +485,10 @@ body.montagem .capa .digitado{pointer-events:auto}
   /* --onda é o crescer das ondas da narração; o brilho delas vai num
      filter escrito à mão, só enquanto a onda passa — um filter fixo nos
      118 obrigaria o navegador a manter 118 camadas acesas à toa */
-  transform:translate(-50%,-50%) translateY(var(--sobe,0px)) scale(var(--onda,1));
+  /* --vx/--vy: o deslocamento de um voo em arco (voaEmArco), que anda
+     dentro do transform e não obriga a refazer o desenho da página */
+  transform:translate(-50%,-50%) translate(var(--vx,0px),var(--vy,0px))
+            translateY(var(--sobe,0px)) scale(var(--onda,1));
   transition:transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease,
              opacity .45s ease;
   perspective:var(--persp,620px);
@@ -1637,7 +1640,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v3.0';
+const VERSAO = 'v3.1';
 
 /* ============================================================
    OS ELEMENTOS
@@ -3697,7 +3700,7 @@ const ONDA_VERDE = { de:14.0, meio:15.6, ate:17.2, cauda:3, suja:false };
    ≈ 6 s ao todo: os números a acertar de ouvido. 'curva' é o quanto o
    salto se dobra (fração da distância), 'giro' a inclinação máxima, 'clarao' o clarão do professor (0:
    sem ele, que era da desordem de uma vez só). */
-const DESORDEM = { de:18.0, dura:0.8, fila:0.06, curva:0.35, giro:17, clarao:0, suja:false, pousou:false };
+const DESORDEM = { de:18.0, dura:0.8, fila:0.06, curva:0.35, giro:12, clarao:0, suja:false, pousou:false };
 /* as trilhas do slide 3 depois da "2": nelas a desordem já está feita */
 const DEPOIS_DA_2 = ['2.1', '2.2', '2.3', '2.4'];
 const FRASES_CRITERIO1 = [
@@ -3720,15 +3723,15 @@ const FRASES_CRITERIO2 = [
      15 s         o H cresce e destaca-se, em dourado
      18,2 → 21 s  só na coluna 1: o Li, o Na e o K crescem e brilham em
                   sequência, descendo e subindo de volta
-     fim          as colunas juntam-se de novo, e o H volta ao normal
+     25 s         as colunas juntam-se de novo, e o H volta ao normal
    No fim, o 37 brilha; tocado, a tabela inteira arruma-se (FINAL). */
 const COLUNAS_24 = {
-  /* 'fim' é a duração da narração, se o áudio ainda não a souber */
-  separa:2.8, dura:1.0, vao:14, zoom:0.88, fim:32.37,
+  /* abrem-se aos 2,8 s e juntam-se de novo aos 25 s (com o H) */
+  separa:2.8, volta:25.0, dura:1.0, vao:14, zoom:0.88,
   /* com a digitação, a varredura das colunas, uma de cada vez */
   varre:{ de:8.0, ate:11.0 },
   /* o H: cresce e destaca-se aos 15 s, um fio para dentro (maior, sairia
-     pela borda), e volta ao normal no fim da narração */
+     pela borda), e volta ao normal aos 25 s, com as colunas */
   hidrogenio:{ de:15.0, dura:0.6, cresce:0.6, desvio:{ x:40, y:10 } },
   /* a onda, só na coluna 1 (sem o H, que está em destaque) */
   onda:{ de:18.2, meio:19.6, ate:21.0, cresce:0.3, coluna:1 },
@@ -3815,13 +3818,12 @@ function colunas24(t){
     if (o.suja){ TP.todos().forEach(c => limpaColuna(c)); o.suja = false; }
     return;
   }
-  const fim = isFinite(som.duration) && som.duration > 0 ? som.duration : o.fim;
-  /* as colunas abrem-se aos 2,8 s e fecham-se no fim da narração */
-  const es = suave(entre01((t - o.separa) / o.dura)) * (1 - suave(entre01((t - (fim - o.dura)) / o.dura)));
+  /* as colunas abrem-se aos 2,8 s e juntam-se de novo aos 25 s */
+  const es = suave(entre01((t - o.separa) / o.dura)) * (1 - suave(entre01((t - o.volta) / o.dura)));
   const Z = 1 - (1 - o.zoom)*es, vao = o.vao*es;
   const cy = (yDaLinha(1) + yDaLinha(4)) / 2;
   const oh = o.hidrogenio;
-  const eh = suave(entre01((t - oh.de) / oh.dura)) * (1 - suave(entre01((t - (fim - oh.dura)) / oh.dura)));
+  const eh = suave(entre01((t - oh.de) / oh.dura)) * (1 - suave(entre01((t - o.volta) / oh.dura)));
   const w = o.onda, vr = o.varre, vez = (vr.ate - vr.de) / 18;
   TP.todos().filter(c => c._noLugar).forEach(c => {
     if (c._voo) return;                       /* ainda a pousar */
@@ -3844,8 +3846,8 @@ function colunas24(t){
       k = Math.max(k, b);
     }
     if (z === 1){
-      /* o H cresce e destaca-se (em dourado, e não em verde), e no fim
-         da narração volta ao normal */
+      /* o H cresce e destaca-se (em dourado, e não em verde), e aos 25 s
+         volta ao normal, com as colunas */
       x += oh.desvio.x * eh;
       y += oh.desvio.y * eh;
       cresce += oh.cresce * eh;
@@ -4003,48 +4005,56 @@ function pontoDoArco(a, b, curva){
 /* UM VOO EM ARCO com relógio próprio (é o aluno quem o dispara, não a
    narração): do lugar de agora até ao destino, devagar-depressa-devagar,
    e a inclinação desfaz-se no caminho.
-   O VOO VAI NO COMPOSITOR: o card fica logo no destino (left/top), e o que
-   anda é o 'translate' — da diferença até zero, pela curva — e o 'rotate'
-   do cubo, da inclinação até zero. O navegador anima os dois sozinho, sem
-   refazer o desenho da página a cada quadro: vários voos ao mesmo tempo
-   (a montagem automática) não pesam. */
+   O card fica logo no destino (left/top), e o que anda, quadro a quadro,
+   é um deslocamento dentro do transform dele (--vx, --vy) — mudar o
+   transform não obriga o navegador a refazer o desenho da página, e isto
+   funciona em qualquer aparelho (a animação das propriedades 'translate'
+   e 'rotate' à parte, da versão anterior, não anda nos mais antigos: o
+   card sumia e aparecia no destino). O primeiro deslocamento é escrito já
+   aqui, antes de o navegador pintar: o card nunca se vê no destino antes
+   de voar. E o voo acaba no último quadro ou, se os quadros tardarem (a
+   aba em segundo plano), no relógio: nunca fica preso. */
 function voaEmArco(c, para, dur, fim, curva){
   const de = { x: parseFloat(c.style.left), y: parseFloat(c.style.top) };
   const k = pontoDoArco(de, para, curva);
   const cubo = c.querySelector('.cubo');
   const rot0 = parseFloat(cubo.style.getPropertyValue('--rz')) || 0;
+  const ms = dur * 1000, t0 = performance.now();
+  const g = (c._vooG || 0) + 1;
+  c._vooG = g;
+  c._voo = 1;
+  /* sem transições no caminho: cada quadro vale na hora */
+  c.style.setProperty('--tsobe', '0s');
+  cubo.style.setProperty('--dur', '0s');
+  const aplica = p => {
+    const e = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2)/2, u = 1 - e;
+    const x = u*u*de.x + 2*u*e*k.x + e*e*para.x, y = u*u*de.y + 2*u*e*k.y + e*e*para.y;
+    c.style.setProperty('--vx', (x - para.x).toFixed(1) + 'px');
+    c.style.setProperty('--vy', (y - para.y).toFixed(1) + 'px');
+    cubo.style.setProperty('--rz', (rot0 * (1 - Math.min(1, e/.6))).toFixed(1) + 'deg');
+  };
   c.style.left = para.x.toFixed(1) + 'px';
   c.style.top  = para.y.toFixed(1) + 'px';
-  cubo.style.setProperty('--dur', '0s');
-  cubo.style.setProperty('--rz', '0deg');
-  const passos = [], giros = [], N = 12;
-  for (let i = 0; i <= N; i++){
-    const p = i/N, e = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2)/2, u = 1 - e;
-    const x = u*u*de.x + 2*u*e*k.x + e*e*para.x, y = u*u*de.y + 2*u*e*k.y + e*e*para.y;
-    passos.push({ translate: (x - para.x).toFixed(1) + 'px ' + (y - para.y).toFixed(1) + 'px', offset: p });
-    giros.push({ rotate: (rot0 * (1 - Math.min(1, e/.6))).toFixed(1) + 'deg', offset: p });
-  }
-  if (c._anim) c._anim.cancel();
-  if (c._animR) c._animR.cancel();
-  const ms = dur * 1000;
-  const a = c.animate(passos, { duration: ms, easing: 'linear' });
-  c._animR = cubo.animate(giros, { duration: ms, easing: 'linear' });
-  c._anim = a;
-  c._voo = 1;
-  /* o voo acaba no aviso do navegador ou, se ele tardar (a aba em
-     segundo plano, um aparelho ocupado), no relógio: o card nunca fica
-     preso como "a voar" */
+  aplica(0);
   let feito = false;
   const acaba = () => {
-    if (feito) return;
+    if (feito || c._vooG !== g) return;
     feito = true;
-    if (c._anim !== a) return;             /* outro voo já o substituiu */
-    c._anim = null; c._voo = 0;
+    c._voo = 0;
+    c.style.removeProperty('--vx');
+    c.style.removeProperty('--vy');
+    c.style.removeProperty('--tsobe');
+    cubo.style.setProperty('--rz', '0deg');
     if (fim) fim();
   };
-  a.onfinish = acaba;
-  a.oncancel = () => { feito = true; if (c._anim === a){ c._anim = null; c._voo = 0; } };
-  setTimeout(acaba, ms + 40);
+  const quadro = () => {
+    if (feito || c._vooG !== g) return;
+    const p = Math.min(1, (performance.now() - t0) / ms);
+    aplica(p);
+    if (p >= 1) acaba(); else requestAnimationFrame(quadro);
+  };
+  requestAnimationFrame(quadro);
+  setTimeout(acaba, ms + 60);
 }
 /* quanto dura o salto de um card para casa: 0,26 s (0,7 s do começo,
    80 % mais rápido e depois mais 50 %) — o mesmo no toque, no
@@ -4094,12 +4104,14 @@ function ondaVerde(t){
   o.suja = dentro;
 }
 
-/* AS VAGAS DA DESORDEM. Só os 48 primeiros (do 1 ao 48) ficam na tela: a
-   folha abaixo do cabeçalho partida em 8 por 6, e cada um no meio da sua
-   parte com um tremor — a grade do professor, que com menos cards fica
-   mais folgada e por igual. Os outros saem pela direita, para fora da
-   tela, e só voltam quando são chamados (na arrumação final). O sorteio
-   é fixo, e voltar o áudio refaz a mesma desordem. */
+/* AS VAGAS DA DESORDEM. Só os 48 primeiros (do 1 ao 48) ficam na tela, e
+   todos na FAIXA DE BAIXO — o espaço das linhas 5 a 7, que fica livre
+   enquanto a tabela se monta até à linha 4: a parte de cima é onde a
+   tabela se forma, e nada lá fica por cima dela. A faixa partida em 12
+   por 4, e cada um no meio da sua parte com um tremor pequeno (a grade
+   é apertada). Os outros saem pela direita, para fora da tela, e só
+   voltam quando são chamados (na arrumação final). O sorteio é fixo, e
+   voltar o áudio refaz a mesma desordem. */
 const NA_TELA = 48;
 let VAGAS = null;
 function vagasDaDesordem(){
@@ -4107,12 +4119,13 @@ function vagasDaDesordem(){
   let sem = 2024;
   const r = () => (sem = (sem*1664525 + 1013904223) % 4294967296) / 4294967296;
   /* longe do play, no canto de baixo à direita, e da borda de baixo */
-  const x0 = 60, x1 = 1140, y0 = 150, y1 = 664, cols = 8, linhas = 6;
+  /* a faixa das linhas 5 a 7, longe do play (canto de baixo à direita) */
+  const x0 = 50, x1 = 1150, y0 = 445, y1 = 690, cols = 12, linhas = 4;
   const dx = (x1 - x0)/cols, dy = (y1 - y0)/linhas, vagas = [];
   for (let l = 0; l < linhas; l++)
     for (let c = 0; c < cols; c++)
-      vagas.push({ x: x0 + c*dx + dx/2 + (r() - .5)*dx*.42,
-                   y: y0 + l*dy + dy/2 + (r() - .5)*dy*.36,
+      vagas.push({ x: x0 + c*dx + dx/2 + (r() - .5)*dx*.34,
+                   y: y0 + l*dy + dy/2 + (r() - .5)*dy*.18,
                    rot: r()*2*DESORDEM.giro - DESORDEM.giro });
   for (let i = vagas.length - 1; i > 0; i--){ const j = (r()*(i + 1))|0; [vagas[i], vagas[j]] = [vagas[j], vagas[i]]; }
   /* e a ordem em que saem, também sorteada: um de cada vez, ao acaso */
@@ -4166,9 +4179,11 @@ function desordem(t){
       c.style.top  = casa.y.toFixed(1) + 'px';
       cubo.style.setProperty('--rz', '0deg');
       c._noLugar = false;
-      if (c._anim) c._anim.cancel();
-      if (c._animR) c._animR.cancel();
+      /* um voo a meio fica sem efeito */
+      c._vooG = (c._vooG || 0) + 1;
       c._voo = 0;
+      c.style.removeProperty('--vx');
+      c.style.removeProperty('--vy');
       c.classList.remove('no-lugar', 'encaixando');
       neutro(c, false);
       return;

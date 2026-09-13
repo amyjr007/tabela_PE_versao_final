@@ -74,17 +74,19 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 | `2.3` · 2,5 s | a tela escurece de novo, com Moseley já no lugar e "Critério 2" já escrito |
 | `2.3` · 3,6 → 7 s | em duas linhas: "Os elementos quimicamente semelhantes / formarão colunas." |
 | fim da `2.3` | "Toque na tela para continuar"; o toque desfaz a tela escura, em fade, e toca a `2.4` |
-| `2.4` · 2,8 s | o que está montado (do 1 ao 36) **abre-se em colunas** — um pouco menores, para caberem — e fica à frente dos espalhados, sem brilho fixo; **no fim da narração as colunas juntam-se de novo** |
+| `2.4` · 2,8 s | o que está montado (do 1 ao 36) **abre-se em colunas** — um pouco menores, para caberem — e fica à frente dos espalhados, sem brilho fixo; **aos 25 s as colunas juntam-se de novo** |
 | `2.4` · 8 → 11 s | no vazio da tabela, num quadro claro: "Nessas colunas todos são semelhantes"; junto com a digitação, um brilho verde varre **uma coluna de cada vez, de cima para baixo**, e não fica — quando uma acende, a anterior volta ao normal |
-| `2.4` · 15 s | o **H** cresce e destaca-se, com luz dourada, à frente de todos (um fio para dentro, para não sair do palco); **no fim da narração volta ao normal**, ao lugar dele |
+| `2.4` · 15 s | o **H** cresce e destaca-se, com luz dourada, à frente de todos (um fio para dentro, para não sair do palco); **aos 25 s volta ao normal**, ao lugar dele, junto com as colunas |
 | `2.4` · 18,2 → 21 s | **só na coluna 1**: o Li, o Na e o K crescem e brilham em sequência, descendo e subindo de volta |
 | `2.4` · 24 s | o texto apaga-se |
 | fim da `2.4` | o **37** brilha; tocado, a tabela inteira arruma-se — as colunas juntam-se, o H volta, e os que faltam voam para casa um de cada vez — e, montada, **brilha**, com `funfare`, confetes e `applause` |
 | — | todo salto é curvo: uma Bézier com o ponto de controlo ao lado do meio do caminho (`pontoDoArco`), na desordem, no encaixe e na montagem final |
 
-Na desordem, **só os 48 primeiros (do 1 ao 48) ficam na tela**, numa grade
-de 8 × 6 abaixo do cabeçalho (longe do play e da borda de baixo), com um
-tremor — com menos cards, a distribuição fica folgada e por igual. Os
+Na desordem, **só os 48 primeiros (do 1 ao 48) ficam na tela**, todos na
+**faixa de baixo** — o espaço das linhas 5 a 7, que fica livre enquanto a
+tabela se monta até à linha 4 —, numa grade de 12 × 4 com um tremor
+pequeno: a parte de cima é onde a tabela se forma, e nada lá fica por
+cima dela. Os
 outros saem voando pela direita, para fora da tela, e só voltam quando
 são chamados, na arrumação final (`NA_TELA`); o sorteio é fixo, e voltar o
 áudio refaz a mesma desordem. Desarrumada a mesa, as casas vazias e os
@@ -97,10 +99,13 @@ medida do celular valem para a mesa do slide em que se está
 (`slideDaMesa()`). A tela escura, o quiz e o jogo continuam a ser só do
 slide 2.
 
-**Desempenho no slide 3.** Os voos para casa vão no compositor — o
-navegador anima o `translate` do card e o `rotate` do cubo sozinho, sem
-refazer o desenho da página a cada quadro —, e vários voos ao mesmo tempo
-não pesam. Calada a vida solta (depois dos 12 s da `2`), a mesa fica
+**Desempenho no slide 3.** Os voos para casa andam, quadro a quadro, num
+deslocamento dentro do `transform` do card (`--vx`, `--vy`), que o
+navegador compõe sem refazer o desenho da página — e que funciona em
+qualquer aparelho —; o primeiro passo é escrito antes de o navegador
+pintar, e o card nunca aparece no destino antes de voar (na versão
+anterior, a animação das propriedades `translate`/`rotate` à parte não
+andava em aparelhos mais antigos, e o card "teleportava"). Calada a vida solta (depois dos 12 s da `2`), a mesa fica
 **plana**: só a face da frente de cada cubo é desenhada, sem a perspectiva
 de cada um — 88 camadas a compor em vez de 528 —, com a face do mesmo
 tamanho. Ao entrar nela, cada cubo é posto de frente sem se ver (as seis
