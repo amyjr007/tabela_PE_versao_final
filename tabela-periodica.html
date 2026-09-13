@@ -556,10 +556,15 @@ body.montagem .capa .digitado{pointer-events:auto}
 .f5{transform:rotateX( 90deg) translateZ(var(--H,29px))}
 .f6{transform:rotateX(-90deg) translateZ(var(--H,29px))}
 /* as faces de lado escurecem um fio: é o que dá volume ao cubo
-   enquanto ele roda. Paradas, as seis são a mesma carta. */
-.f2,.f4{filter:brightness(.93)}
-.f5,.f6{filter:brightness(1.05)}
-.f3{filter:brightness(.88)}
+   enquanto ele roda. Paradas, as seis são a mesma carta.
+   Não é um filter (eram mil e tantas faces filtradas nas duas mesas,
+   e cada filter é uma superfície à parte para o navegador pintar): é
+   um véu por cima da cor, abaixo da letra — o mesmo tom, de graça. */
+.f2::after,.f3::after,.f4::after,.f5::after,.f6::after{
+  content:'';position:absolute;inset:0;z-index:2;pointer-events:none}
+.f2::after,.f4::after{background:rgba(0,0,0,.07)}
+.f3::after{background:rgba(0,0,0,.12)}
+.f5::after,.f6::after{background:rgba(255,255,255,.05)}
 
 .face i,.face b,.face u,.face em{
   position:relative;z-index:3;font-style:normal;text-decoration:none;color:#fff;
@@ -602,7 +607,9 @@ body.montagem .capa .digitado{pointer-events:auto}
 .pc.aceso .face{box-shadow:0 0 0 2px var(--ouro-luz), 0 0 22px 4px rgba(226,162,43,.55)}
 /* o apagado: quando a narração fala de um grupo, os outros recuam */
 .pc.apagado .cubo{--sc:.96}
-.pc.apagado .face{filter:saturate(.22) brightness(1.06) opacity(.55)}
+/* na carta inteira (uma superfície por cubo), e não em cada uma das
+   seis faces: o mesmo desbotado, com um sexto do trabalho */
+.pc.apagado{filter:saturate(.22) brightness(1.06);opacity:.55}
 
 /* O VERDE — o elemento que a narração sorteia: cresce e acende. */
 .pc.verde{z-index:9}
@@ -949,14 +956,14 @@ body.montagem .capa .digitado{pointer-events:auto}
   transition:opacity .46s ease .14s, translate .5s cubic-bezier(.45,.02,.62,1)}
 /* O GIRO DA TROCA, também o do professor: trocada a questão, a tabela
    inteira gira, uma carta pouco depois da vizinha, na diagonal,
-   encolhendo um pouco no meio da volta. Aqui o giro é o das FACES: o
-   cubo dá uma volta em pé (eixo y) e mostra os lados. Vai nas
+   encolhendo um pouco no meio da volta. É o do professor, no plano da
+   tela: a mesa do quiz é plana (uma face por cubo) e fica leve. Vai nas
    propriedades 'rotate' e 'scale', e não no transform, que é o giro
    do cubo e continua valendo. */
 @keyframes giraCarta3{
-  0%  {rotate:y 0deg;   scale:1}
-  50% {rotate:y 180deg; scale:.82}
-  100%{rotate:y 360deg; scale:1}
+  0%  {rotate:0deg;   scale:1}
+  50% {rotate:180deg; scale:.82}
+  100%{rotate:360deg; scale:1}
 }
 .mesa.gira-troca .pc .cubo{animation:giraCarta3 .72s var(--giro-atraso,0ms) cubic-bezier(.42,0,.36,1)}
 .q3-marca{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
@@ -1044,7 +1051,7 @@ body.montagem .capa .digitado{pointer-events:auto}
   width:70px;height:70px;padding:0;cursor:pointer;
   display:grid;place-items:center;
   background:rgba(255,255,255,.92);border:1px solid var(--ouro-dim);
-  border-radius:50%;backdrop-filter:blur(9px);
+  border-radius:50%;   /* sem backdrop-filter: por cima da tabela que anda, pesava */
   box-shadow:0 12px 30px rgba(32,28,66,.22);
   /* o âmbar do "Tabela Periódica": o botão é da cor do que a capa tem
      de mais importante escrito nela */
@@ -1103,7 +1110,7 @@ body.montagem .capa .digitado{pointer-events:auto}
   transform:translateX(-50%);
   display:flex;align-items:center;gap:5px;padding:7px 9px;
   background:rgba(255,255,255,.92);border:1px solid var(--indigo-dim);
-  border-radius:14px;backdrop-filter:blur(9px);
+  border-radius:14px;
   box-shadow:0 12px 34px rgba(32,28,66,.2);
   transition:transform .42s var(--e-desl),opacity .3s;
 }
@@ -1299,7 +1306,7 @@ body.montagem .capa .digitado{pointer-events:auto}
   position:fixed;right:0;top:50%;z-index:69;transform:translateY(-50%);
   width:26px;height:132px;padding:0;cursor:pointer;display:grid;place-items:center;
   background:rgba(255,255,255,.9);border:1px solid var(--indigo-dim);border-right:0;
-  border-radius:12px 0 0 12px;backdrop-filter:blur(9px);
+  border-radius:12px 0 0 12px;
   box-shadow:-6px 8px 24px rgba(32,28,66,.14);color:var(--tinta-dim);
   transition:transform .35s var(--e-desl),opacity .3s,color .2s,background .2s;
 }
@@ -1743,7 +1750,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v3.8';
+const VERSAO = 'v3.9';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2370,16 +2377,34 @@ function correcaoDeLeitura(rx, ry, rz){
 
 const TP = {
   /* o cubo de um elemento, pelo número atômico ou pelo símbolo */
+  /* Os cubos de uma mesa nascem uma vez e não mudam: a lista e os
+     índices (pelo número atômico e pelo símbolo) ficam guardados no
+     slide, em vez de a página ser varrida a cada chamada — e há
+     chamadas a cada tique do relógio. Refeita a mesa, o primeiro
+     guardado já não está na página, e tudo se refaz. (Quando as séries
+     forem reveladas, apagar sl._cubos.) */
+  _guarda(sl){
+    let g = sl._cubos;
+    if (!g || !g.lista.length || !g.lista[0].isConnected){
+      const todos = [...sl.querySelectorAll('.pc')];
+      g = sl._cubos = { lista: todos.filter(c => !c.classList.contains('serie-oculta')),
+                        porZ: new Map(), porSym: new Map() };
+      todos.forEach(c => {
+        if (!g.porZ.has(+c.dataset.z)) g.porZ.set(+c.dataset.z, c);
+        if (!g.porSym.has(c.dataset.sym)) g.porSym.set(c.dataset.sym, c);
+      });
+    }
+    return g;
+  },
   cubo(alvo){
-    const sel = typeof alvo === 'number'
-      ? '.pc[data-z="'+alvo+'"]'
-      : '.pc[data-sym="'+alvo+'"]';
     const sl = slideDaMesa();
-    return sl && sl.querySelector(sel);
+    if (!sl) return null;
+    const g = this._guarda(sl);
+    return (typeof alvo === 'number' ? g.porZ.get(alvo) : g.porSym.get(alvo)) || null;
   },
   todos(){
     const sl = slideDaMesa();
-    return sl ? [...sl.querySelectorAll('.pc:not(.serie-oculta)')] : [];
+    return sl ? this._guarda(sl).lista.slice() : [];
   },
 
   /* quem satisfaz um pedido: um número, um símbolo, uma lista deles,
@@ -3934,9 +3959,10 @@ function deFrente(c){
 function efeitos2(t){
   /* a mesa plana, calada a vida solta (ver o CSS de .mesa.plana) */
   const m3 = slides[2].querySelector('.mesa');
-  /* montada a tabela inteira, ela volta a ser de cubos: um toque num card
-     fá-lo girar, e na mesa plana ele sumiria */
-  const plana = !FINAL.feito && (DEPOIS_DA_2.includes(trilhaAtual) || (trilhaAtual === '2' && t >= VIDA_ATE_2));
+  /* e fica plana até ao fim do slide — a "2.5", os toques, o quiz: só a
+     face da frente é desenhada, 88 cubos de uma face em vez de seis. O
+     giro da troca do quiz é no plano da tela (o do professor). */
+  const plana = DEPOIS_DA_2.includes(trilhaAtual) || (trilhaAtual === '2' && t >= VIDA_ATE_2);
   if (m3 && plana !== m3.classList.contains('plana')){
     /* entrando nela, cada cubo é posto de frente — sem se ver, porque as
        seis faces são iguais. A plana só desenha a face da frente, e um

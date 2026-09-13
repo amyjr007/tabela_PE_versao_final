@@ -155,6 +155,21 @@ entrada (`eesseaqui` e `próximo` alternados, `sómaisesse` antes da
 com **Refazer** (outro sorteio) e **Continuar**, que fecha o quiz e deixa
 o botão dele no canto. Enquanto o quiz dura, o play sai de cena.
 
+## Desempenho
+
+- **Sem filter nas faces.** O sombreado das faces de lado dos cubos é um véu
+  (`::after`) por cima da cor, e não um `filter: brightness()`: eram 1195
+  faces filtradas nas duas mesas, cada uma uma superfície à parte.
+- **O apagado na carta**, e não nas seis faces (`.pc.apagado`).
+- **Os cubos guardados.** `TP.todos()` e `TP.cubo()` leem uma lista e dois
+  índices guardados no slide (`sl._cubos`), em vez de varrer a página a cada
+  chamada. Revelando as séries, apagar `sl._cubos`.
+- **O slide 3 na mesa plana até ao fim** (a `2.5`, os toques, o quiz): uma face
+  desenhada por cubo em vez de seis. O giro da troca do quiz é o do professor,
+  no plano da tela.
+- **Sem `backdrop-filter`** no botão do play, na alça da navegação e na barra:
+  por cima da tabela em movimento, obrigavam a redesenhar o fundo a cada quadro.
+
 ## A narração
 
 O ícone troca pelo **atributo** `hidden`, e não pela propriedade: os
