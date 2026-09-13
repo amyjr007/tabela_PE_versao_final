@@ -68,21 +68,25 @@ saltam e giram, famílias que sobem e descem, a cruz das coordenadas.
 | fim da `2` | o play sai e aparece "Toque na tela para continuar" |
 | o toque | a tela escura esmaece com a foto e o texto, e toca a `2.1`; a desordem fica |
 | fim da `2.1` | as casas vazias voltam e **o 1 brilha**, em vermelho neon: tocando nele, ele voa para a casa dele (e ganha a cor ao assentar) e toca a `2.2`. Depois brilham o 2, o 3 e o 4 — só o que brilha responde; os outros tremem um fio |
-| depois do 4 | a tabela arruma-se sozinha, um card de cada vez, até ao **36**, e pára; toca a `2.3` (`ENCAIXE`: `toqueAte` 4, `sozinhoAte` 36, `passo` 0,0875 s — 60 % mais rápido que os 0,14 s do começo) |
+| depois do 4 | a tabela arruma-se sozinha, um card de cada vez, até ao **36**, e pára; **a `2.3` dispara quando o 32 salta** para o lugar dele (`ENCAIXE`: `toqueAte` 4, `sozinhoAte` 36, `gatilho` 32, `passo` 0,0875 s — 60 % mais rápido que os 0,14 s do começo) |
 | — | o card que volta para casa voa por cima dos espalhados e fica acima deles: a tabela que se forma nunca fica tapada |
+| — | cada salto para casa leva **0,39 s** (`SALTO`) — 80 % mais rápido que os 0,7 s do começo —, igual no toque, no automático e na junção das colunas |
 | `2.3` · 2,5 s | a tela escurece de novo, com Moseley já no lugar e "Critério 2" já escrito |
 | `2.3` · 3,6 → 7 s | em duas linhas: "Os elementos quimicamente semelhantes / formarão colunas." |
 | fim da `2.3` | "Toque na tela para continuar"; o toque desfaz a tela escura, em fade, e toca a `2.4` |
 | `2.4` · 2,8 s | o que está montado (do 1 ao 36) **abre-se em colunas** — um pouco menores, para caberem — e fica à frente dos espalhados, com brilho verde |
 | `2.4` · 8 → 11 s | no vazio da tabela, num quadro claro: "Nessas colunas todos são semelhantes" |
-| `2.4` · 15 s | o **H** sai de lado, perde o verde e escurece |
-| `2.4` · 18,2 → 21 s | os cards crescem em sequência, descendo a coluna e subindo de volta; na volta, o verde apaga-se em todos |
+| `2.4` · 15 s | o **H** cresce e destaca-se, com luz dourada, à frente de todos (um fio para dentro, para não sair do palco); **no fim da narração volta ao normal**, ao lugar dele |
+| `2.4` · 18,2 → 21 s | **só na coluna 1**: o Li, o Na e o K crescem em sequência, descendo e subindo de volta; na volta, o verde da coluna 1 apaga-se (as outras colunas ficam verdes até à arrumação final) |
 | `2.4` · 24 s | o texto apaga-se |
 | fim da `2.4` | o **37** brilha; tocado, a tabela inteira arruma-se — as colunas juntam-se, o H volta, e os que faltam voam para casa um de cada vez — e, montada, **brilha**, com `funfare`, confetes e `applause` |
 | — | todo salto é curvo: uma Bézier com o ponto de controlo ao lado do meio do caminho (`pontoDoArco`), na desordem, no encaixe e na montagem final |
 
-As vagas da desordem são uma grade de 11 × 8 abaixo do cabeçalho (longe
-do play e da borda de baixo), com um tremor; o sorteio é fixo, e voltar o
+Na desordem, **só os 40 primeiros (do 1 ao 40) ficam na tela**, numa grade
+de 8 × 5 abaixo do cabeçalho (longe do play e da borda de baixo), com um
+tremor — com menos cards, a distribuição fica folgada e por igual. Os
+outros saem voando pela direita, para fora da tela, e só voltam quando
+são chamados, na arrumação final (`NA_TELA`); o sorteio é fixo, e voltar o
 áudio refaz a mesma desordem. Desarrumada a mesa, as casas vazias e os
 números dos grupos e dos períodos esmaecem — voltam com a ordem.
 Tudo segue o relógio da narração: pausar congela, voltar desfaz.
