@@ -622,7 +622,7 @@ a numeração a começar do 1. No slide 3 (Os critérios de Organização):
 |---|---|
 | 1. Início | o começo do slide |
 | 2. O critério 1 de organização | aos **25 s da narração `2`**, com a tabela já desmontada — a mesa aparece desarrumada, sem os cards a correr para lá |
-| 4. Quiz | a tabela montada inteira, e o botão do quiz no canto |
+| 4. Quiz | abre o quiz direto: a tabela montada, a sala apaga-se, toca o `quiz1` e entra a questão 1 |
 | 3. O critério 2 de organização | a narração **`2.3`** do começo, com a tabela **montada até à linha 4** (do 1 ao 36, em casa e coloridos), o 37 ao 48 espalhados embaixo e o resto fora da tela |
 
 Cada atalho começa do zero: nenhum card fica marcado como "em casa" de um

@@ -1774,7 +1774,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v4.1';
+const VERSAO = 'v4.2';
 
 /* ============================================================
    OS ELEMENTOS
@@ -6418,7 +6418,7 @@ const NAV_TOPICOS = [
       TP.todos().filter(c => +c.dataset.z <= ENCAIXE.sozinhoAte).forEach(poeNoLugarJa);
       depoisDaMesa(g, () => tocaDesde('2.3', 0, g));
     } },
-  { titulo:'Quiz', sub:'a tabela montada, o toque que a abre e o botão do quiz no canto', slide:2,
+  { titulo:'Quiz', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:2,
     entra(v, g){
       semTransicaoUmInstante();
       trilhaAtual = -1;
@@ -6426,7 +6426,9 @@ const NAV_TOPICOS = [
       TP.todos().forEach(poeNoLugarJa);
       FINAL.feito = true;
       LC25.liga();
-      depoisDaMesa(g, () => viraQuiz(true));
+      /* e o quiz abre já, como se o botão tivesse sido tocado: a sala
+         apaga-se, toca o quiz1 e entra a questão 1 */
+      depoisDaMesa(g, () => { viraQuiz(true); QUIZ3.abre(); });
     } },
   /* ---- o slide 4 · As coordenadas periódicas ---- */
   { titulo:'Início', sub:'o começo do slide', slide:3,
