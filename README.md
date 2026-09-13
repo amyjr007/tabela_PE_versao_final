@@ -146,7 +146,8 @@ tabela inteira gira as faces dos cubos, em onda diagonal (só na
 troca, não na primeira). O rótulo é "Questão N de 8" (e "Questão N de
 6" no quiz do slide 2).
 
-No **acerto**, o card fica verde, com confetes, `funfare` e `applause`, e
+No **acerto**, o card cresce e passa à frente dos outros (volta ao tamanho
+quando entra a questão seguinte, ainda à frente até assentar), fica verde, com confetes, `funfare` e `applause`, e
 depois a voz — sorteada entre `exato!`, `muitobem`, `issomesmo!` e
 `excelente`, sem repetir (a mesma regra vale no quiz do slide 2); na
 última, `perfeito`. No **erro**, a questão não muda: o card tocado balança

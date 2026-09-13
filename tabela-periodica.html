@@ -982,6 +982,8 @@ body.montagem .capa .digitado{pointer-events:auto}
 /* a dica do erro: debaixo da pergunta, em âmbar escuro */
 .q3-msg.dica{color:#9A6410;font-weight:500;font-size:17px}
 .pc.errada3{animation:naoTreme .42s ease}
+/* o certo, crescido, à frente dos outros — na ida e na volta */
+.mesa .pc.frente3{z-index:30}
 /* a pista do segundo erro: a resposta pulsa em âmbar */
 .pc.pista3{z-index:19}
 /* o brilho fica mesmo sem a animação (movimento reduzido) */
@@ -1774,7 +1776,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v4.2';
+const VERSAO = 'v4.3';
 
 /* ============================================================
    OS ELEMENTOS
@@ -4365,6 +4367,27 @@ const QUIZ3 = {
     return houve;
   },
   giroT:null,
+  /* O CERTO CRESCE e passa à frente dos outros; quando entra a questão
+     seguinte, volta ao tamanho — ainda à frente, até assentar, para não
+     encolher por baixo dos vizinhos */
+  cresce(c){
+    clearTimeout(c._frenteT);
+    c.classList.add('frente3');
+    c.style.setProperty('--tsobe', '.45s');
+    c.style.setProperty('--onda', '1.5');
+  },
+  encolhe(){
+    if (!slides[2]) return;
+    slides[2].querySelectorAll('.pc.frente3').forEach(c => {
+      c.style.setProperty('--onda', '1');
+      clearTimeout(c._frenteT);
+      c._frenteT = setTimeout(() => {
+        c.classList.remove('frente3');
+        c.style.removeProperty('--onda');
+        c.style.removeProperty('--tsobe');
+      }, 500);
+    });
+  },
   /* O ESCURO DO QUIZ, o do professor: um véu preto cobre o slide em
      fade, por baixo da tabela, e a letra do cabeçalho clareia com ele */
   escurece(sim){
@@ -4463,6 +4486,7 @@ const QUIZ3 = {
     this.acertos++;
     TP.todos().forEach(x => x.classList.remove('pista3', 'errada3'));
     c.classList.add('certa3');
+    this.cresce(c);
     const voz = vozDoAcerto(ultima);
     msg.textContent = voz.frase + ' ' + p.explica;
     msg.className = 'q3-msg ok';
@@ -4473,6 +4497,7 @@ const QUIZ3 = {
     if (g !== this.g) return;
     await tocaEfeito(voz.som);
     if (g !== this.g) return;
+    this.encolhe();
     TP.todos().forEach(x => x.classList.remove('certa3', 'errada3', 'pista3'));
     this.passo++;
     if (this.passo >= this.itens.length){ this.resultado(); return; }
@@ -4497,6 +4522,7 @@ const QUIZ3 = {
     this.aberto = false; this.travado = false;
     stage.classList.remove('em-quiz');
     this.escurece(false);
+    this.encolhe();
     clearTimeout(this.giroT);
     if (slides[2]){
       slides[2].querySelectorAll('.quiz3').forEach(e => e.remove());
