@@ -204,6 +204,15 @@ no relógio do áudio (`EV3`, `efeitos3`):
 | depois da 07 | a narração **`3.7`**; no fim dela, as questões 08, 09 e 10: "Toque no período e família do elemento …" (Mg, Zn, I) — o aluno toca o **número do período** (à esquerda) e o **da família** (em cima); o elemento não acende, e de uma questão para a outra só o elemento do texto muda; no erro, a dica (no segundo o elemento pisca; no terceiro, a linha e a coluna acendem) |
 | no fim das 10 | o **cartão com a nota** (`statistics`): cada erro desconta o valor de uma questão; **Refazer** recomeça as perguntas (a `3.3`), **Continuar** fecha o quiz |
 
+## O ícone
+
+O ícone do app (na área de trabalho, na tela inicial e na aba) sai de
+`icones/Icone do App-selection.png` (480×480): `app-192.png` e `app-512.png`
+(os cantos transparentes), `app-180.png` (o do iPhone/iPad, opaco) e as
+versões `maskable` (o desenho a 80%, no mesmo lilás do fundo, para o sistema
+poder recortar em círculo). Os nomes são novos de propósito: o Chrome só
+troca o ícone de um app já instalado quando o endereço dele no manifesto muda.
+
 ## Desempenho
 
 - **Sem filter nas faces.** O sombreado das faces de lado dos cubos é um véu
