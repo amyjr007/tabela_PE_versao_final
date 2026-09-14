@@ -204,6 +204,18 @@ no relógio do áudio (`EV3`, `efeitos3`):
 | depois da 07 | a narração **`3.7`**; no fim dela, as questões 08, 09 e 10: "Toque no período e família do elemento …" (Mg, Zn, I) — o aluno toca o **número do período** (à esquerda) e o **da família** (em cima); o elemento não acende, e de uma questão para a outra só o elemento do texto muda; no erro, a dica (no segundo o elemento pisca; no terceiro, a linha e a coluna acendem) |
 | no fim das 10 | o **cartão com a nota** (`statistics`): cada erro desconta o valor de uma questão; **Refazer** recomeça as perguntas (a `3.3`), **Continuar** fecha o quiz |
 
+## A capa nova (CAPA_NOVA)
+
+A ideia do Claude Design, em teste: fundo escuro só na capa (no celular
+deitado, a tela inteira), "Química · Ensino Médio" e "Audiobook interativo"
+em âmbar, "Tabela Periódica Moderna" grande e claro à esquerda com um risco
+âmbar, o retrato redondo ao lado de "Prof. Amauri Junior" e do e-mail, a
+tabelinha grande e apagada ao fundo à direita, o sódio, o ítrio e o lantânio
+como cartas por cima dela (com as massas 22,99 u, 88,91 u e 138,9 u), e o
+play em anel claro. A narração da capa (os destaques, as frases digitadas, a
+mãozinha) é a mesma. Com `CAPA_NOVA = false` no começo do código, a capa
+antiga volta inteira — o desenho, o layout e as cartas.
+
 ## O ícone
 
 O ícone do app (na área de trabalho, na tela inicial e na aba) sai de

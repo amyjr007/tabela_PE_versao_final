@@ -321,6 +321,53 @@ body.montagem .capa .digitado{pointer-events:auto}
 }
 .capa .foto img{width:100%;height:100%;object-fit:cover;display:block;border-radius:2px}
 
+/* ============================================================
+   A CAPA NOVA (CAPA_NOVA) — fundo escuro, o título claro à esquerda,
+   a tabelinha apagada ao fundo e as três cartas por cima dela
+   ============================================================ */
+#stage.na-capa.capa-nova::before{background-image:none;background:#14131B}
+#stage.na-capa.capa-nova::after{
+  background:radial-gradient(70% 70% at 80% 32%,rgba(76,63,191,.18),transparent 62%),
+             radial-gradient(55% 60% at 0% 100%,rgba(226,162,43,.07),transparent 60%)}
+html.palco-largo.capa-escura #viewport{background:#14131B}
+#stage.capa-nova .capa .marca{color:#C9A15B;font-size:12.5px;letter-spacing:.3em}
+#stage.capa-nova .capa h1{font-size:80px;line-height:1.0;letter-spacing:-.032em;color:#F2EEE6;text-align:left}
+#stage.capa-nova .capa h1 .p-audio,
+#stage.capa-nova .capa h1 .p-inter{font-size:26px;font-weight:600;letter-spacing:-.005em;color:#D08A4A}
+#stage.capa-nova .capa h1 em{display:block;width:430px;margin-top:14px;color:#F2EEE6}
+#stage.capa-nova .capa h1 .linha,
+#stage.capa-nova .capa h1 .ult{display:block;text-align:left}
+#stage.capa-nova .capa .risco{width:140px;height:3px;background:#C9A15B}
+#stage.capa-nova .capa .autor{font-size:21px;color:#F2EEE6}
+#stage.capa-nova .capa .autor .por{display:none}
+#stage.capa-nova .capa .autor b{font-weight:700;color:#F2EEE6}
+#stage.capa-nova .capa .email{font-size:14px;color:rgba(242,238,230,.55)}
+#stage.capa-nova .capa .email:hover{color:#C9A15B;border-bottom-color:rgba(201,161,91,.4)}
+/* o retrato, redondo e pequeno, ao lado do nome */
+#stage.capa-nova .capa .foto{width:92px;height:92px;padding:0;border-radius:50%;overflow:hidden;
+  background:#24222E;border:1.5px solid rgba(242,238,230,.22);box-shadow:none}
+#stage.capa-nova .capa .foto img{border-radius:50%;object-position:50% 16%}
+#stage.capa-nova .capa .frase{color:#EDE8F5;text-shadow:0 2px 14px rgba(12,11,18,.95), 0 0 4px rgba(12,11,18,.9)}
+/* sem o vão entre as duas palavras */
+#stage.capa-nova .capa h1 .p-audio{margin-right:0}
+/* a tabelinha apagada ao fundo: a cor da família, mas quase no escuro */
+#stage.na-capa.capa-nova #tabela .cel{fill-opacity:.3;stroke:rgba(255,255,255,.05)}
+/* as cartas: o texto à esquerda — o número, o símbolo, o nome e a massa */
+#stage.capa-nova .capa .blocos .face{align-items:flex-start;text-align:left;
+  padding:calc(6px * var(--k,1)) calc(9px * var(--k,1)) calc(6px * var(--k,1))}
+#stage.capa-nova .capa .blocos .face i{order:1}
+/* o símbolo cede o espaço (e não o nome, que se cortava até sumir) */
+#stage.capa-nova .capa .blocos .face b{order:2;place-items:center start;align-self:stretch;min-height:0;
+  font-size:calc(17.5px * var(--k,1))}
+#stage.capa-nova .capa .blocos .face em{order:3;align-self:stretch;text-align:left;flex-shrink:0;
+  font-size:calc(8.2px * var(--k,1));margin-bottom:calc(1.5px * var(--k,1))}
+#stage.capa-nova .capa .blocos .face u{order:4;align-self:stretch;text-align:left;flex-shrink:0}
+/* o play, em anel claro */
+#stage.na-capa.capa-nova #som{background:rgba(255,255,255,.04);border:1.5px solid rgba(242,238,230,.75);
+  color:#F2EEE6;box-shadow:none}
+#stage.na-capa.capa-nova #som .trilho{stroke:rgba(242,238,230,.14)}
+#stage.na-capa.capa-nova #som-dica{color:rgba(242,238,230,.5)}
+
 /* ---------- cabeçalho: a tira do alto ----------
    É a arrumação que o professor deixou nos slides de conteúdo: régua,
    número, título e subtítulo lado a lado numa tira só, no alto. Vale
@@ -1875,7 +1922,15 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v5.5';
+const VERSAO = 'v5.6';
+
+/* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
+   claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
+   ítrio e o lantânio como cartas por cima dela; o retrato redondo ao
+   lado do nome, e o play em anel. Com false, a capa antiga volta inteira
+   (o desenho, o layout e as massas das cartas). A narração da capa é a
+   mesma nas duas. */
+const CAPA_NOVA = true;
 
 /* ============================================================
    OS ELEMENTOS
@@ -2137,7 +2192,7 @@ SLIDES.forEach((sl,i) => {
         '<em><span class="linha"><span class="p-tabela">Tabela Periódica</span></span>' +
         '<span class="ult">Moderna</span></em></h1>' +
       '<div class="risco"></div>' +
-      '<div class="autor">Designed by Prof. <b>Amauri Junior</b></div>' +
+      '<div class="autor"><span class="por">Designed by </span>Prof. <b>Amauri Junior</b></div>' +
       /* o endereço abre o e-mail já endereçado a ele */
       '<a class="email" href="mailto:amauri.junior@escola.seduc.pa.gov.br">' +
         'amauri.junior@escola.seduc.pa.gov.br</a>' +
@@ -2388,6 +2443,8 @@ function montaTabela(i){
    ============================================================ */
 const BLOCOS_CAPA = [11, 39, 57];     /* Na, Y, La */
 const LADO_CAPA = 140;
+/* as massas das três cartas da capa nova */
+const MASSA_CAPA = { 11:'22,99', 39:'88,91', 57:'138,9' };
 
 function montaBlocosDaCapa(){
   const sl = slides[0];
@@ -2399,6 +2456,8 @@ function montaBlocosDaCapa(){
     /* na montagem cada um tem nome próprio, para sair identificado no
        Ctrl+C e voltar para cá como valor */
     c.dataset.mont = 'bloco-' + SIMBOLOS[z-1];
+    /* na capa nova as cartas dizem a massa com as casas, e a unidade */
+    if (CAPA_NOVA) c.querySelectorAll('.face u').forEach(u => { u.textContent = MASSA_CAPA[z] + ' u'; });
     c.style.setProperty('--L', LADO_CAPA + 'px');
     c.style.setProperty('--H', (LADO_CAPA/2) + 'px');
     c.style.setProperty('--k', (LADO_CAPA/LADO_BASE).toFixed(3));
@@ -6781,6 +6840,10 @@ function go(i, dir){
 
 function atualizaCabecalho(){
   stage.classList.toggle('na-capa',   atual === 0);
+  /* a capa nova é escura: no celular deitado o papel da tela inteira
+     escurece com ela */
+  stage.classList.toggle('capa-nova', CAPA_NOVA);
+  document.documentElement.classList.toggle('capa-escura', CAPA_NOVA && atual === 0);
   stage.classList.toggle('sem-marca', temMesa(atual));
   navNoSlide();
   ajusteNoSlide();
@@ -6986,6 +7049,25 @@ const LAYOUTS = {
     som:         {x:1216, y:645, esc:1.00}
   }
 };
+
+/* a capa nova: o título, o risco e o autor alinhados à esquerda; a
+   tabelinha grande à direita, cortada pela borda; as três cartas por
+   cima dela; as frases digitadas no vão entre o título e as cartas */
+const LAYOUT_CAPA_NOVA = {
+  marca:      {esq: 74, y:150, esc:1.00},
+  titulo:     {esq: 74, y:322, esc:1.00},
+  risco:      {esq: 74, y:500, esc:1.00},
+  foto:       {x:  124, y:592, esc:1.00},
+  autor:      {esq:196, y:576, esc:1.00},
+  email:      {esq:196, y:612, esc:1.00},
+  tabelinha:  {x:  945, y:392, esc:1.58},
+  'bloco-Na': {x:  850, y:158, esc:1.08},
+  'bloco-La': {x: 1122, y:300, esc:1.08},
+  'bloco-Y':  {x:  930, y:470, esc:1.08},
+  frases:     {x:  690, y:420, esc:1.00},
+  som:        {x: 1160, y:612, esc:1.00}
+};
+if (CAPA_NOVA) LAYOUTS[0] = LAYOUT_CAPA_NOVA;
 
 function aplicaLayout(i){
   const mapa = LAYOUTS[i];
