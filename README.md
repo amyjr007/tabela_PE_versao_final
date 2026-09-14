@@ -197,9 +197,9 @@ no relógio do áudio (`EV3`, `efeitos3`):
 | `3.3` · começo | as perguntas começam: a sala escurece (o véu do quiz) e cada pergunta vem no quadro padrão ("Questão 01"…), com a troca da esteira e o giro da tabela |
 | `3.3` · 6 s | põe o **8**, e a resposta passa a ser um toque na tabela; acabada a narração, o play sai do canto (e fica fora nas perguntas seguintes) |
 | perguntas | o elemento tocado gira, acende e mostra a faixa da linha e a da coluna dele; no acerto, cresce e fica verde, com confetes, `funfare`, `applause` e a voz, e toca a narração da pergunta seguinte; no erro, balança em vermelho, toca `error` e vem a dica (no segundo erro, a resposta pulsa em âmbar) |
-| `3.4` | Questão 02, digitada dos 0 aos 4 s: "Toque no elemento que tá no terceiro período, grupo 17." (o Cl) |
-| `3.5` | Questão 03, digitada de 1 a 4,7 s: "Toque no elemento que tá no sétimo período, grupo 2." (o Ra) |
-| `3.6` | no fim do áudio, a Questão 04: "Selecione o período e a família do elemento a seguir." — três elementos (K, Sn, Ba), um de cada vez: o elemento acende e gira, e vem a **caixa do carrossel** (o uso da do app de referência): pequena, no meio da altura da tabela e do lado oposto ao do elemento; os carrosséis giram com o arrasto, a roda do mouse (um número por passo) ou, clicados, as setas ↑/↓; o confirmar. No erro a caixa treme e fica avermelhada; no segundo, a linha e a coluna do elemento acendem |
+| `3.4` | Questão 02, digitada dos 0 aos 4 s, numa linha: "Toque no elemento que tá no terceiro período, grupo 17." (o Cl) |
+| `3.5` | Questão 03, digitada de 1 a 4,7 s, numa linha: "Toque no elemento que tá no sétimo período, grupo 2." (o Ra) |
+| `3.6` | dos 2 aos 6 s, elementos ao acaso crescem e giram (na vertical ou na horizontal); no fim do áudio, as questões do carrossel, uma por elemento, numeradas: 04 "Selecione o período e a família do elemento a seguir." (K), 05 "E a posição desse?" (Sn), 06 "Agora as coordenadas desse." (Ba), 07 "Só mais esse?" (Ag). O elemento **não acende**: o aluno procura. A caixa do carrossel (o uso da do app de referência) fica do lado oposto ao do elemento, presa sempre à mesma altura; os carrosséis giram com o arrasto, a roda do mouse ou as setas ↑/↓, e ←/→ passam de um ao outro. No erro, a caixa treme e avermelha e vem a dica para tentar de novo (no segundo, o elemento pisca; a partir do terceiro, a linha e a coluna dele acendem); no acerto, sem texto, a caixa cresce um fio e acende |
 
 ## Desempenho
 

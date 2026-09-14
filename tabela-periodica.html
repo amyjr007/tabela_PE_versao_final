@@ -905,10 +905,14 @@ body.montagem .capa .digitado{pointer-events:auto}
 /* O QUIZ DO SLIDE 4: o quadro padrão das perguntas (o do quiz do slide
    3), no vazio da tabela do slide 4; na primeira, o cursor da digitação */
 .quiz3.q4{left:190px;width:640px;top:162px}
-.quiz3.q4 .q3-q{font-size:23px}
+.quiz3.q4 .q3-q{font-size:23px;white-space:nowrap}
 /* sem resposta escrita, sem a linha dela: o quadro fica baixo, e não
    encosta na caixa do carrossel da questão 04 */
 .quiz3.q4 .q3-msg:empty{display:none}
+/* os que crescem e giram ao acaso durante a "3.6" */
+.pc.salta36{z-index:10}
+.pc.salta36 .cubo{--sc:1.35;--dz:14px}
+.pc.salta36 .face{box-shadow:0 0 0 2px var(--ouro-luz), 0 0 24px 6px rgba(226,162,43,.6)}
 .quiz3.q4 .q3-q b{color:var(--ouro)}
 .quiz3.q4.digitando .q3-q::after{content:'';display:inline-block;width:3px;height:.9em;margin-left:5px;
   vertical-align:-.1em;background:var(--ouro);animation:piscaCursor 1.05s steps(1) infinite}
@@ -918,24 +922,28 @@ body.montagem .capa .digitado{pointer-events:auto}
 .roda4{position:absolute;z-index:40;pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:9px;
   padding:12px 18px 14px;border-radius:14px;background:rgba(255,255,255,.97);
   border:1px solid var(--indigo-dim);box-shadow:0 10px 28px rgba(20,17,46,.35);
-  transform:translate(-50%,-50%);transition:background .3s ease, border-color .3s ease;
+  transform:translate(-50%,0);
+  transition:background .3s ease, border-color .3s ease, transform .3s cubic-bezier(.2,.9,.3,1.3), box-shadow .3s ease;
   animation:rodaEntra .9s cubic-bezier(.3,1.4,.5,1) both}
 @keyframes rodaEntra{
-  0%  {transform:translate(-50%,-50%) scale(.1) rotate(-15deg);opacity:0}
-  55% {transform:translate(-50%,-50%) scale(1.18) rotate(6deg);opacity:1}
-  80% {transform:translate(-50%,-50%) scale(.95) rotate(-3deg);opacity:1}
-  100%{transform:translate(-50%,-50%) scale(1) rotate(0deg);opacity:1}
+  0%  {transform:translate(-50%,0) scale(.1) rotate(-15deg);opacity:0}
+  55% {transform:translate(-50%,0) scale(1.18) rotate(6deg);opacity:1}
+  80% {transform:translate(-50%,0) scale(.95) rotate(-3deg);opacity:1}
+  100%{transform:translate(-50%,0) scale(1) rotate(0deg);opacity:1}
 }
 .roda4.pousada{animation:none}
 .roda4.treme{animation:rodaTreme .4s ease}
 @keyframes rodaTreme{
-  0%,100%{transform:translate(-50%,-50%)}
-  20%{transform:translate(calc(-50% - 8px),-50%)} 40%{transform:translate(calc(-50% + 8px),-50%)}
-  60%{transform:translate(calc(-50% - 5px),-50%)} 80%{transform:translate(calc(-50% + 5px),-50%)}
+  0%,100%{transform:translate(-50%,0)}
+  20%{transform:translate(calc(-50% - 8px),0)} 40%{transform:translate(calc(-50% + 8px),0)}
+  60%{transform:translate(calc(-50% - 5px),0)} 80%{transform:translate(calc(-50% + 5px),0)}
 }
 .roda4.sai{animation:rodaSai .35s ease forwards}
-@keyframes rodaSai{to{transform:translate(-50%,-50%) scale(.6);opacity:0}}
+@keyframes rodaSai{to{transform:translate(-50%,0) scale(.6);opacity:0}}
 .roda4.errada{border-color:rgba(255,46,76,.75);background:rgba(255,226,230,.97)}
+/* o acerto: sem texto — a caixa cresce um fio e acende de verde */
+.roda4.certa{transform:translate(-50%,0) scale(1.06);border-color:#1F9D55;
+  box-shadow:0 0 0 3px rgba(62,224,138,.5), 0 0 34px 10px rgba(46,204,113,.55)}
 .rd-marca{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ouro)}
 .rd-el{display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1}
 .rd-el span{font-family:var(--mono);font-size:15px;color:var(--tinta-dim)}
@@ -960,6 +968,7 @@ body.montagem .capa .digitado{pointer-events:auto}
 .rd-msg{max-width:190px;font-family:var(--display);font-size:13px;font-weight:600;line-height:1.3;text-align:center}
 .rd-msg:empty{display:none}
 .rd-msg.ok{color:#1F9D55}
+.rd-msg.dica{color:#9A6410;font-weight:500}
 .rd-ok{padding:6px 18px;border:1px solid var(--indigo-dim);border-radius:8px;cursor:pointer;
   font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.04em;
   color:var(--indigo);background:rgba(76,63,191,.1)}
@@ -1858,7 +1867,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v5.2';
+const VERSAO = 'v5.3';
 
 /* ============================================================
    OS ELEMENTOS
@@ -4633,8 +4642,13 @@ function breuNoSlide(sl, sim){
   sl.classList.toggle('quiz-escuro', sim);
   if (v) v.classList.toggle('on', sim);
 }
-/* os três da questão 04 (o carrossel): o K, o Sn e o Ba */
-const CARROSSEL_Q4 = [19, 50, 56];
+/* as questões do carrossel, uma por elemento — a 04, a 05, a 06 e a 07 */
+const CARROSSEL_Q4 = [
+  { z:19, txt:'Selecione o período e a família do elemento a seguir.' },   /* K  */
+  { z:50, txt:'E a posição desse?' },                                      /* Sn */
+  { z:56, txt:'Agora as coordenadas desse.' },                             /* Ba */
+  { z:47, txt:'Só mais esse?' }                                            /* Ag */
+];
 const QUIZ4 = {
   trilhas:['3.3', '3.4', '3.5', '3.6'],
   itens:[
@@ -4665,6 +4679,25 @@ const QUIZ4 = {
     if (i > this.passo) this.poe(i);
     const it = this.itens[this.passo];
     if (it && it.digita && trilhaAtual === it.id) this.digita(it, t);
+    /* na "3.6", dos 2 aos 6 s: elementos ao acaso crescem e giram */
+    this.brilhos(trilhaAtual === '3.6' ? t : -1);
+  },
+  brT:0,
+  brilhos(t){
+    const on = t >= 2 && t < 6 && !som.paused;
+    if (on && !this.brT) this.brT = setInterval(() => this.umBrilho(), 320);
+    else if (!on && this.brT){ clearInterval(this.brT); this.brT = 0; }
+  },
+  /* um deles: cresce, acende e dá uma volta — em pé ou deitada */
+  umBrilho(){
+    const m = this.mesa();
+    if (!m) return;
+    const cs = [...m.querySelectorAll('.pc:not(.serie-oculta):not(.salta36)')];
+    const c = cs[(Math.random() * cs.length) | 0];
+    if (!c) return;
+    c.classList.add('salta36');
+    TP.gira(c, { eixo: Math.random() < .5 ? 'y' : 'x', graus: Math.random() < .5 ? 360 : -360, dur:760 });
+    setTimeout(() => c.classList.remove('salta36'), 860);
   },
   /* começadas as perguntas: a sala escurece */
   abre(){
@@ -4694,7 +4727,7 @@ const QUIZ4 = {
   },
   /* o quadro novo entra pela esquerda enquanto o anterior sai pela direita,
      e a tabela gira na troca (o do quiz do slide 3) */
-  caixaNova(rotulo, txt){
+  caixaNova(rotulo, txt, cheio){
     let houve = false;
     this.sl().querySelectorAll('.quiz3:not(.sai)').forEach(e => {
       e.classList.add('sai');
@@ -4709,9 +4742,20 @@ const QUIZ4 = {
     cx.querySelector('.q3-marca').textContent = rotulo;
     cx.querySelector('.q3-q').innerHTML = txt;
     this.sl().appendChild(cx);
+    this.cabe(cx, cheio || txt);
     cx.getBoundingClientRect();
     cx.classList.add('on');
     return cx;
+  },
+  /* a pergunta numa linha só: se o texto inteiro não couber, a letra
+     encolhe o que for preciso */
+  cabe(cx, texto){
+    const q = cx.querySelector('.q3-q'), antes = q.innerHTML;
+    q.style.fontSize = '';
+    q.textContent = String(texto).replace(/<[^>]+>/g, '');
+    const w = q.scrollWidth, d = q.clientWidth;
+    if (d && w > d) q.style.fontSize = Math.max(15, Math.floor(parseFloat(getComputedStyle(q).fontSize) * d / w * 10) / 10) + 'px';
+    q.innerHTML = antes;
   },
   giraTabela(){
     const m = this.mesa();
@@ -4730,7 +4774,7 @@ const QUIZ4 = {
   digita(it, t){
     const d = it.digita;
     if (t < d.de) return;
-    const cx = this.caixa() || this.caixaNova(it.rotulo, '');
+    const cx = this.caixa() || this.caixaNova(it.rotulo, '', it.txt + (it.fim || ''));
     /* pronta a pergunta (o último número, se houver; senão o fim da
        digitação), vale o toque */
     const pronto = d.num !== undefined ? d.num : d.ate;
@@ -4778,7 +4822,7 @@ const QUIZ4 = {
     if (msg){ msg.innerHTML = dica; msg.className = 'q3-msg dica'; }
     if (this.tropecos >= 2){
       const it = this.itens[this.passo];
-      const z = it.carrossel ? CARROSSEL_Q4[this.sub] : it.z;
+      const z = it.carrossel ? CARROSSEL_Q4[this.sub].z : it.z;
       this.carta(z).classList.add('pista3');
     }
     tremeVermelho();
@@ -4799,7 +4843,7 @@ const QUIZ4 = {
     QUIZ3.cresce(c);
     const voz = vozDoAcerto(ultima);
     const msg = this.msg();
-    if (msg){ msg.textContent = voz.frase + ' ' + frase; msg.className = 'q3-msg ok'; }
+    if (msg && frase){ msg.textContent = voz.frase + ' ' + frase; msg.className = 'q3-msg ok'; }
     confete();
     const fanfarra = tocaEfeito('funfare');
     tocaEfeito('applause');
@@ -4833,20 +4877,17 @@ const QUIZ4 = {
   coordsComeca(){
     if (!this.ativo) return;
     stage.classList.add('em-quiz');
-    /* a questão 04 aparece agora, no fim do áudio, e com ela a caixa */
-    const it = this.itens[this.passo];
-    this.caixaNova(it.rotulo, it.txt);
+    /* a questão 04 aparece agora, no fim do áudio (em rodaPoe) */
     this.sub = 0;
     this.rodaPoe();
   },
   rodaPoe(){
-    const c = this.carta(CARROSSEL_Q4[this.sub]);
-    /* o progresso (1 de 3…) no título do quadro da pergunta */
-    const cx = this.caixa();
-    if (cx) cx.querySelector('.q3-marca').textContent = 'Questão 04 · ' + (this.sub + 1) + ' de ' + CARROSSEL_Q4.length;
+    const q = CARROSSEL_Q4[this.sub], c = this.carta(q.z);
+    /* cada elemento é uma questão (a 04, a 05…), com o quadro dela — a
+       troca é a da esteira, com o giro da tabela. O elemento não acende:
+       quem o procura na tabela é o aluno. */
+    this.caixaNova('Questão ' + String(4 + this.sub).padStart(2, '0'), q.txt);
     this.tropecos = 0;
-    c.classList.add('aceso');
-    TP.gira(c, { eixo:'y', graus:360, dur:900 });
     this.roda = this.rodaNova(c);
     this.aceita = true;
   },
@@ -4860,7 +4901,9 @@ const QUIZ4 = {
     const b = document.createElement('div');
     b.className = 'roda4';
     b.style.left = (+c.dataset.grupo <= 9 ? xDaColuna(14.5) : xDaColuna(4.5)) + 'px';
-    b.style.top  = (TAB_TOPO + 3.5 * PASSO + 10) + 'px';
+    /* presa pelo alto, sempre à mesma altura: a dica, quando vem, cresce
+       para baixo (e não sobe por cima do quadro da pergunta) */
+    b.style.top  = (TAB_TOPO + 3.5 * PASSO + 10 - 136) + 'px';
     const lista = n => '<div class="rd-pad"></div>' +
       Array.from({ length:n }, (_, i) => '<div class="rd-v">' + (i + 1) + '</div>').join('') +
       '<div class="rd-pad"></div>';
@@ -4915,6 +4958,15 @@ const QUIZ4 = {
        do teclado também o giram */
     r.tabIndex = 0;
     r.addEventListener('keydown', ev => {
+      /* ← e → passam de um carrossel ao outro (e não mudam o slide) */
+      if (ev.key === 'ArrowLeft' || ev.key === 'ArrowRight'){
+        ev.preventDefault();
+        ev.stopPropagation();
+        const rs = [...r.closest('.roda4').querySelectorAll('.rd-roda')];
+        const outro = rs[(rs.indexOf(r) + (ev.key === 'ArrowRight' ? 1 : rs.length - 1)) % rs.length];
+        if (outro) outro.focus({ preventScroll:true });
+        return;
+      }
       if (ev.key !== 'ArrowUp' && ev.key !== 'ArrowDown') return;
       ev.preventDefault();
       ev.stopPropagation();
@@ -4955,7 +5007,7 @@ const QUIZ4 = {
      linha e a coluna do elemento acendem na tabela */
   confirma(){
     if (!this.roda || !this.aceita || this.travado) return;
-    const z = CARROSSEL_Q4[this.sub], c = this.carta(z), sym = SIMBOLOS[z-1];
+    const z = CARROSSEL_Q4[this.sub].z, c = this.carta(z), sym = SIMBOLOS[z-1];
     const p = this.valor('p'), g = this.valor('g');
     if (!(p === +c.dataset.periodo && g === +c.dataset.grupo)){
       this.erros++; this.tropecos++;
@@ -4963,7 +5015,17 @@ const QUIZ4 = {
       b.classList.remove('treme'); void b.offsetWidth; b.classList.add('treme', 'errada');
       clearTimeout(b._erroT);
       b._erroT = setTimeout(() => b.classList.remove('errada'), 900);
-      if (this.tropecos >= 2) EV3.poeCruz(this.mesa(), c, true, true);
+      /* a dica, para tentar de novo: o que está errado e onde olhar; no
+         segundo erro o elemento pisca na tabela; a partir do terceiro, a
+         linha e a coluna dele acendem */
+      const okP = p === +c.dataset.periodo, okG = g === +c.dataset.grupo;
+      let dica = !okP && !okG ? 'Ache o ' + sym + ' na tabela. O período é o número da linha dele (à esquerda); o grupo, o da coluna (em cima).'
+               : !okP ? 'O grupo está certo. Confira o período: o número da linha do ' + sym + ', à esquerda.'
+                      : 'O período está certo. Confira o grupo: o número da coluna do ' + sym + ', em cima.';
+      if (this.tropecos >= 2){ c.classList.add('pista3'); dica += ' Olhe: ele está piscando na tabela.'; }
+      if (this.tropecos >= 3) EV3.poeCruz(this.mesa(), c, true, true);
+      const msg = this.msg();
+      if (msg){ msg.textContent = dica; msg.className = 'rd-msg dica'; }
       tremeVermelho();
       const gg = this.g, sub = this.sub, e = tocaEfeito('error');
       if (this.tropecos === 1) e.then(() => {
@@ -4975,16 +5037,21 @@ const QUIZ4 = {
     c.classList.remove('aceso');
     EV3.poeCruz(this.mesa(), c, true, true);
     const ultimo = this.sub === CARROSSEL_Q4.length - 1;
-    this.acerta(c, 'O ' + sym + ' está no ' + p + 'º período, grupo ' + g + '.', ultimo, () => this.rodaSeguinte());
+    /* o acerto: nenhum texto — a caixa só cresce um fio e acende */
+    this.roda.classList.add('certa');
+    const msg = this.msg();
+    if (msg){ msg.textContent = ''; msg.className = 'rd-msg'; }
+    this.acerta(c, '', ultimo, () => this.rodaSeguinte());
   },
   rodaSeguinte(){
-    EV3.poeCruz(this.mesa(), this.carta(CARROSSEL_Q4[this.sub]), false, false);
+    EV3.poeCruz(this.mesa(), this.carta(CARROSSEL_Q4[this.sub].z), false, false);
     if (this.roda){ const b = this.roda; b.classList.add('sai'); setTimeout(() => b.remove(), 400); this.roda = null; }
     this.sub++;
     if (this.sub < CARROSSEL_Q4.length){ this.rodaPoe(); return; }
-    /* os três: a questão 04 acaba (o que vem depois ainda está por vir) */
+    /* os quatro: as questões do carrossel acabam (o que vem depois ainda
+       está por vir) */
     this.aceita = false;
-    this.caixaNova('Questão 04', 'Muito bem! Você achou o período e o grupo dos três elementos.');
+    this.caixaNova('Coordenadas periódicas', 'Muito bem! Você achou o período e a família dos quatro elementos.');
   },
   fecha(){
     const sl = this.sl();
@@ -4994,6 +5061,7 @@ const QUIZ4 = {
     this.ativo = false; this.passo = -1; this.aceita = false; this.travado = false; this.sub = 0;
     this.roda = null;
     clearTimeout(this.giroT);
+    clearInterval(this.brT); this.brT = 0;
     breuNoSlide(sl, false);
     sl.querySelectorAll('.quiz3').forEach(e => e.remove());
     const m = this.mesa();
@@ -7635,6 +7703,8 @@ addEventListener('resize', ajusteNoSlide);
 
 addEventListener('keydown', ev => {
   const k = ev.key;
+  /* no carrossel da questão 04 em diante, as setas são dele */
+  if (ev.target && ev.target.closest && ev.target.closest('.rd-roda')) return;
   /* a gaveta aberta fecha com o Esc antes de tudo o resto */
   if (navAberta() && k === 'Escape'){ fechaNav(); ev.preventDefault(); return; }
   if (memAberto && k === 'Escape'){ fechaMemoria(); ev.preventDefault(); return; }
