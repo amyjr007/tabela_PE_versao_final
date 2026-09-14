@@ -196,10 +196,10 @@ no relógio do áudio (`EV3`, `efeitos3`):
 | `3.3` · 2,2 → 5 s | no vazio da tabela, digita "Toque no elemento que tá no 4º período, grupo" |
 | `3.3` · começo | as perguntas começam: a sala escurece (o véu do quiz) e cada pergunta vem no quadro padrão ("Questão 01"…), com a troca da esteira e o giro da tabela |
 | `3.3` · 6 s | põe o **8**, e a resposta passa a ser um toque na tabela; acabada a narração, o play sai do canto (e fica fora nas perguntas seguintes) |
-| perguntas | no acerto, o card cresce e fica verde, com confetes, `funfare`, `applause` e a voz, e toca a narração da pergunta seguinte; no erro, balança em vermelho, toca `error` e vem a dica (no segundo erro, a resposta pulsa em âmbar) |
-| `3.4` | Questão 02: "Agora toque no elemento que tá no terceiro período, grupo 17." (o Cl) |
-| `3.5` | Questão 03: "Toque no elemento que tá no sétimo período, grupo 2." (o Ra) |
-| `3.6` | Questão 04: a explicação; acabado o áudio, três elementos (K, Sn, Ba), um de cada vez: o elemento acende e gira na tabela, e vem a **caixa do carrossel**, com o uso da do app de referência (quiz do capítulo 2): pequena, sempre no meio da altura da tabela e do lado oposto ao do elemento (para nunca o tapar), entra com um salto; o elemento em cima, dois carrosséis (período e grupo, três números à vista) e o confirmar. No erro a caixa treme e fica avermelhada um instante; no segundo, a linha e a coluna do elemento acendem |
+| perguntas | o elemento tocado gira, acende e mostra a faixa da linha e a da coluna dele; no acerto, cresce e fica verde, com confetes, `funfare`, `applause` e a voz, e toca a narração da pergunta seguinte; no erro, balança em vermelho, toca `error` e vem a dica (no segundo erro, a resposta pulsa em âmbar) |
+| `3.4` | Questão 02, digitada dos 0 aos 4 s: "Toque no elemento que tá no terceiro período, grupo 17." (o Cl) |
+| `3.5` | Questão 03, digitada de 1 a 4,7 s: "Toque no elemento que tá no sétimo período, grupo 2." (o Ra) |
+| `3.6` | no fim do áudio, a Questão 04: "Selecione o período e a família do elemento a seguir." — três elementos (K, Sn, Ba), um de cada vez: o elemento acende e gira, e vem a **caixa do carrossel** (o uso da do app de referência): pequena, no meio da altura da tabela e do lado oposto ao do elemento; os carrosséis giram com o arrasto, a roda do mouse (um número por passo) ou, clicados, as setas ↑/↓; o confirmar. No erro a caixa treme e fica avermelhada; no segundo, a linha e a coluna do elemento acendem |
 
 ## Desempenho
 

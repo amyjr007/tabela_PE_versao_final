@@ -904,14 +904,18 @@ body.montagem .capa .digitado{pointer-events:auto}
 .texto-colunas.texto3{left:232px;width:578px}
 /* O QUIZ DO SLIDE 4: o quadro padrão das perguntas (o do quiz do slide
    3), no vazio da tabela do slide 4; na primeira, o cursor da digitação */
-.quiz3.q4{left:190px;width:640px}
+.quiz3.q4{left:190px;width:640px;top:168px}
+.quiz3.q4 .q3-q{font-size:23px}
+/* sem resposta escrita, sem a linha dela: o quadro fica baixo, e não
+   encosta na caixa do carrossel da questão 04 */
+.quiz3.q4 .q3-msg:empty{display:none}
 .quiz3.q4 .q3-q b{color:var(--ouro)}
 .quiz3.q4.digitando .q3-q::after{content:'';display:inline-block;width:3px;height:.9em;margin-left:5px;
   vertical-align:-.1em;background:var(--ouro);animation:piscaCursor 1.05s steps(1) infinite}
 /* A CAIXA DO CARROSSEL (questão 04), com o uso da do app de referência:
    pequena, centrada no meio da altura da tabela, do lado oposto ao do
    elemento; entra com um salto, treme e avermelha no erro */
-.roda4{position:absolute;z-index:40;display:flex;flex-direction:column;align-items:center;gap:9px;
+.roda4{position:absolute;z-index:40;pointer-events:auto;display:flex;flex-direction:column;align-items:center;gap:9px;
   padding:12px 18px 14px;border-radius:14px;background:rgba(255,255,255,.97);
   border:1px solid var(--indigo-dim);box-shadow:0 10px 28px rgba(20,17,46,.35);
   transform:translate(-50%,-50%);transition:background .3s ease, border-color .3s ease;
@@ -935,7 +939,7 @@ body.montagem .capa .digitado{pointer-events:auto}
 .rd-marca{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ouro)}
 .rd-el{display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1}
 .rd-el span{font-family:var(--mono);font-size:15px;color:var(--tinta-dim)}
-.rd-el b{font-family:var(--display);font-size:46px;font-weight:700;color:var(--indigo)}
+.rd-el b{font-family:var(--display);font-size:42px;font-weight:700;color:var(--indigo)}
 .rd-el em{font-style:normal;font-family:var(--display);font-size:14px;color:var(--tinta-dim)}
 .rd-colunas{display:flex;gap:14px;align-items:flex-end}
 .rd-col{display:flex;flex-direction:column;align-items:center;gap:4px}
@@ -946,6 +950,8 @@ body.montagem .capa .digitado{pointer-events:auto}
   background:rgba(255,255,255,.8);border:1px solid var(--indigo-dim);border-radius:8px}
 .rd-roda::-webkit-scrollbar{display:none}
 .rd-roda.arrastando{scroll-snap-type:none}
+.rd-roda:focus{outline:none}
+.rd-roda:focus-visible, .rd-roda:focus{border-color:var(--ouro);box-shadow:0 0 0 2px rgba(226,162,43,.35)}
 .rd-pad{height:36px}
 .rd-v{height:36px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;cursor:pointer;
   font-family:var(--display);font-size:15px;font-weight:500;color:rgba(32,28,66,.4);
@@ -1852,7 +1858,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v5.0';
+const VERSAO = 'v5.1';
 
 /* ============================================================
    OS ELEMENTOS
@@ -4634,12 +4640,12 @@ const QUIZ4 = {
   itens:[
     { id:'3.3', rotulo:'Questão 01', z:26, digita:{ de:2.2, ate:5.0, num:6.0 },
       txt:'Toque no elemento que tá no 4º\u00a0período, grupo', fim:' 8' },
-    { id:'3.4', rotulo:'Questão 02', z:17,
-      txt:'Agora toque no elemento que tá no terceiro período, grupo 17.' },
-    { id:'3.5', rotulo:'Questão 03', z:88,
+    { id:'3.4', rotulo:'Questão 02', z:17, digita:{ de:0.0, ate:4.0 },
+      txt:'Toque no elemento que tá no terceiro período, grupo 17.' },
+    { id:'3.5', rotulo:'Questão 03', z:88, digita:{ de:1.0, ate:4.7 },
       txt:'Toque no elemento que tá no sétimo período, grupo 2.' },
     { id:'3.6', rotulo:'Questão 04', carrossel:true,
-      txt:'Tá, agora vamos fazer assim: eu te dou o elemento e você seleciona o período e a família dele na tela, tá bom? Lá vai o primeiro.' }
+      txt:'Selecione o período e a família do elemento a seguir.' }
   ],
   ativo:false, passo:-1, aceita:false, travado:false, tropecos:0, erros:0, g:0, sub:0,
   roda:null, giroT:0,
@@ -4671,9 +4677,20 @@ const QUIZ4 = {
   poe(i){
     this.passo = i; this.tropecos = 0; this.aceita = false; this.sub = 0;
     const it = this.itens[i];
-    if (it.digita) return;
+    /* a pergunta digitada entra no relógio (digita); a da questão 04, só no
+       fim do áudio (coordsComeca). A anterior sai já, e a tabela gira. */
+    if (it.digita || it.carrossel){ if (this.despede()) this.giraTabela(); return; }
     this.caixaNova(it.rotulo, it.txt);
-    if (!it.carrossel) this.aceita = true;
+    this.aceita = true;
+  },
+  despede(){
+    let houve = false;
+    this.sl().querySelectorAll('.quiz3:not(.sai)').forEach(e => {
+      e.classList.add('sai');
+      setTimeout(() => e.remove(), 700);
+      houve = true;
+    });
+    return houve;
   },
   /* o quadro novo entra pela esquerda enquanto o anterior sai pela direita,
      e a tabela gira na troca (o do quiz do slide 3) */
@@ -4714,18 +4731,27 @@ const QUIZ4 = {
     const d = it.digita;
     if (t < d.de) return;
     const cx = this.caixa() || this.caixaNova(it.rotulo, '');
+    /* pronta a pergunta (o último número, se houver; senão o fim da
+       digitação), vale o toque */
+    const pronto = d.num !== undefined ? d.num : d.ate;
     const n = Math.round(entre01((t - d.de) / (d.ate - d.de)) * it.txt.length);
-    const txt = it.txt.slice(0, n) + (t >= d.num ? it.fim : '');
+    const txt = it.txt.slice(0, n) + (d.num !== undefined && t >= d.num ? it.fim : '');
     const q = cx.querySelector('.q3-q');
     if (q.dataset.txt !== txt){ q.dataset.txt = txt; q.textContent = txt; }
-    cx.classList.toggle('digitando', t < d.num);
-    if (t >= d.num && !this.travado) this.aceita = true;
+    cx.classList.toggle('digitando', t < pronto);
+    /* o toque vale só com a pergunta pronta (e volta a não valer se o
+       relógio voltar para trás) */
+    if (!this.travado) this.aceita = t >= pronto;
   },
   /* as questões 01 a 03: o toque num card */
   tocaCarta(c){
     const it = this.itens[this.passo];
     if (!it || it.carrossel || !this.aceita || this.travado) return;
     const z = +c.dataset.z;
+    /* o escolhido gira, acende (verde no acerto, vermelho no erro), e a
+       linha e a coluna dele acendem na tabela */
+    TP.gira(c, { eixo:'y', graus:360, dur:800 });
+    EV3.poeCruz(this.mesa(), c, true, true);
     if (z !== it.z){
       const alvo = this.carta(it.z);
       this.erra(c, 'Ache a linha ' + alvo.dataset.periodo + ' e siga pela coluna ' + alvo.dataset.grupo +
@@ -4782,6 +4808,7 @@ const QUIZ4 = {
     await tocaEfeito(voz.som);
     if (g !== this.g) return;
     this.encolhe();
+    EV3.poeCruz(this.mesa(), c, false, false);
     this.travado = false;
     depois();
   },
@@ -4806,16 +4833,17 @@ const QUIZ4 = {
   coordsComeca(){
     if (!this.ativo) return;
     stage.classList.add('em-quiz');
-    /* o quadro da explicação sai: a caixa do carrossel toma a cena */
-    this.sl().querySelectorAll('.quiz3:not(.sai)').forEach(e => {
-      e.classList.add('sai');
-      setTimeout(() => e.remove(), 700);
-    });
+    /* a questão 04 aparece agora, no fim do áudio, e com ela a caixa */
+    const it = this.itens[this.passo];
+    this.caixaNova(it.rotulo, it.txt);
     this.sub = 0;
     this.rodaPoe();
   },
   rodaPoe(){
     const c = this.carta(CARROSSEL_Q4[this.sub]);
+    /* o progresso (1 de 3…) no título do quadro da pergunta */
+    const cx = this.caixa();
+    if (cx) cx.querySelector('.q3-marca').textContent = 'Questão 04 · ' + (this.sub + 1) + ' de ' + CARROSSEL_Q4.length;
     this.tropecos = 0;
     c.classList.add('aceso');
     TP.gira(c, { eixo:'y', graus:360, dur:900 });
@@ -4837,7 +4865,6 @@ const QUIZ4 = {
       Array.from({ length:n }, (_, i) => '<div class="rd-v">' + (i + 1) + '</div>').join('') +
       '<div class="rd-pad"></div>';
     b.innerHTML =
-      '<div class="rd-marca">Questão 04 · ' + (this.sub + 1) + ' de ' + CARROSSEL_Q4.length + '</div>' +
       '<div class="rd-el"><span>' + c.dataset.z + '</span><b>' + c.dataset.sym + '</b><em>' + NOMES[c.dataset.z - 1] + '</em></div>' +
       '<div class="rd-colunas">' +
         '<div class="rd-col"><div class="rd-tit">período</div><div class="rd-roda" data-tipo="p">' + lista(7) + '</div></div>' +
@@ -4868,7 +4895,25 @@ const QUIZ4 = {
     };
     const vai = i => r.scrollTo({ top: Math.max(0, Math.min(vs.length - 1, i)) * H, behavior:'smooth' });
     r.addEventListener('scroll', marca, { passive:true });
+    /* a roda do mouse: um número por passo (e o trackpad não dispara) */
+    r.addEventListener('wheel', ev => {
+      ev.preventDefault();
+      const agora = performance.now();
+      if (Math.abs(ev.deltaY) < 1 || agora - (r._w || 0) < 110) return;
+      r._w = agora;
+      vai((r._i || 0) + (ev.deltaY > 0 ? 1 : -1));
+    }, { passive:false });
+    /* clicado (ou tocado), fica em foco: as setas para cima e para baixo
+       do teclado também o giram */
+    r.tabIndex = 0;
+    r.addEventListener('keydown', ev => {
+      if (ev.key !== 'ArrowUp' && ev.key !== 'ArrowDown') return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      vai((r._i || 0) + (ev.key === 'ArrowDown' ? 1 : -1));
+    });
     r.addEventListener('pointerdown', ev => {
+      try { r.focus({ preventScroll:true }); } catch(_){}
       r._arr = { y:ev.clientY, top:r.scrollTop, moveu:false, v:ev.target.closest('.rd-v'),
                  k:(r.getBoundingClientRect().height / r.offsetHeight) || 1 };
       if (ev.pointerType === 'mouse'){ try { r.setPointerCapture(ev.pointerId); } catch(_){} }
