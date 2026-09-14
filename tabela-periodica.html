@@ -904,7 +904,7 @@ body.montagem .capa .digitado{pointer-events:auto}
 .texto-colunas.texto3{left:232px;width:578px}
 /* O QUIZ DO SLIDE 4: o quadro padrão das perguntas (o do quiz do slide
    3), no vazio da tabela do slide 4; na primeira, o cursor da digitação */
-.quiz3.q4{left:190px;width:640px;top:168px}
+.quiz3.q4{left:190px;width:640px;top:162px}
 .quiz3.q4 .q3-q{font-size:23px}
 /* sem resposta escrita, sem a linha dela: o quadro fica baixo, e não
    encosta na caixa do carrossel da questão 04 */
@@ -1858,7 +1858,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v5.1';
+const VERSAO = 'v5.2';
 
 /* ============================================================
    OS ELEMENTOS
@@ -4860,7 +4860,7 @@ const QUIZ4 = {
     const b = document.createElement('div');
     b.className = 'roda4';
     b.style.left = (+c.dataset.grupo <= 9 ? xDaColuna(14.5) : xDaColuna(4.5)) + 'px';
-    b.style.top  = (TAB_TOPO + 3.5 * PASSO) + 'px';
+    b.style.top  = (TAB_TOPO + 3.5 * PASSO + 10) + 'px';
     const lista = n => '<div class="rd-pad"></div>' +
       Array.from({ length:n }, (_, i) => '<div class="rd-v">' + (i + 1) + '</div>').join('') +
       '<div class="rd-pad"></div>';
@@ -4889,11 +4889,19 @@ const QUIZ4 = {
     const H = 36, vs = [...r.querySelectorAll('.rd-v')];
     const marca = () => {
       const i = Math.max(0, Math.min(vs.length - 1, Math.round(r.scrollTop / H)));
+      if (r._alvo !== undefined && r._alvo !== null && i === r._alvo) r._alvo = null;
       if (r._i === i) return;
       r._i = i;
-      vs.forEach((v, k) => v.classList.toggle('atual', k === i));
+      if (r._alvo === undefined || r._alvo === null) vs.forEach((v, k) => v.classList.toggle('atual', k === i));
     };
-    const vai = i => r.scrollTo({ top: Math.max(0, Math.min(vs.length - 1, i)) * H, behavior:'smooth' });
+    /* ir a um número: anota-o (o destaque vai logo para ele) e rola até lá */
+    const vai = i => {
+      i = Math.max(0, Math.min(vs.length - 1, i));
+      r._alvo = i;
+      vs.forEach((v, k) => v.classList.toggle('atual', k === i));
+      r.scrollTo({ top: i * H, behavior:'smooth' });
+    };
+    const onde = () => (r._alvo !== undefined && r._alvo !== null) ? r._alvo : (r._i || 0);
     r.addEventListener('scroll', marca, { passive:true });
     /* a roda do mouse: um número por passo (e o trackpad não dispara) */
     r.addEventListener('wheel', ev => {
@@ -4901,7 +4909,7 @@ const QUIZ4 = {
       const agora = performance.now();
       if (Math.abs(ev.deltaY) < 1 || agora - (r._w || 0) < 110) return;
       r._w = agora;
-      vai((r._i || 0) + (ev.deltaY > 0 ? 1 : -1));
+      vai(onde() + (ev.deltaY > 0 ? 1 : -1));
     }, { passive:false });
     /* clicado (ou tocado), fica em foco: as setas para cima e para baixo
        do teclado também o giram */
@@ -4910,10 +4918,11 @@ const QUIZ4 = {
       if (ev.key !== 'ArrowUp' && ev.key !== 'ArrowDown') return;
       ev.preventDefault();
       ev.stopPropagation();
-      vai((r._i || 0) + (ev.key === 'ArrowDown' ? 1 : -1));
+      vai(onde() + (ev.key === 'ArrowDown' ? 1 : -1));
     });
     r.addEventListener('pointerdown', ev => {
       try { r.focus({ preventScroll:true }); } catch(_){}
+      r._alvo = null;
       r._arr = { y:ev.clientY, top:r.scrollTop, moveu:false, v:ev.target.closest('.rd-v'),
                  k:(r.getBoundingClientRect().height / r.offsetHeight) || 1 };
       if (ev.pointerType === 'mouse'){ try { r.setPointerCapture(ev.pointerId); } catch(_){} }
@@ -4938,7 +4947,8 @@ const QUIZ4 = {
   },
   valor(tipo){
     const r = this.roda.querySelector('.rd-roda[data-tipo="' + tipo + '"]');
-    return Math.round(r.scrollTop / 36) + 1;
+    const alvo = (r._alvo !== undefined && r._alvo !== null) ? r._alvo : Math.round(r.scrollTop / 36);
+    return alvo + 1;
   },
   /* o confirmar: os dois certos, a festa; senão a caixa treme e fica
      avermelhada um instante (como na referência), e no segundo erro a
