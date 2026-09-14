@@ -168,7 +168,7 @@ celular), agora no **tabuleiro liso** do app do professor: todas as cartas
 no lilás claro (`#DCD7F3 → #C0B8E8`), com a letra escura (`.mesa.lisa`).
 Chega com o play à espera da narração `3`; até ele ser tocado — e nos
 primeiros 5 s dela —, a mesa respira com as animações sutis dos outros
-slides (a vida solta). Na navegação rápida: "1. Início". Os eventos, todos
+slides (a vida solta). Na navegação rápida: "1. Início" e "2. Quiz" (o começo da `3.3`). Os eventos, todos
 no relógio do áudio (`EV3`, `efeitos3`):
 
 | Narração · tempo | O que acontece |
@@ -198,8 +198,8 @@ no relógio do áudio (`EV3`, `efeitos3`):
 | `3.3` · 6 s | põe o **8**, e a resposta passa a ser um toque na tabela; acabada a narração, o play sai do canto (e fica fora nas perguntas seguintes) |
 | perguntas | no acerto, o card cresce e fica verde, com confetes, `funfare`, `applause` e a voz, e toca a narração da pergunta seguinte; no erro, balança em vermelho, toca `error` e vem a dica (no segundo erro, a resposta pulsa em âmbar) |
 | `3.4` | Questão 02: "Agora toque no elemento que tá no terceiro período, grupo 17." (o Cl) |
-| `3.5` | Questão 03: "Mais um: toque no elemento que tá no sétimo período, grupo 2." (o Ra) |
-| `3.6` | Questão 04: a explicação; acabado o áudio, oito elementos (Ca, O, Al, Ag, Br, Ba, Au, He), um de cada vez: o aluno toca o **número do período** (à esquerda) e o **do grupo** (em cima); cada um certo acende a faixa dele, e os dois juntos fazem a festa |
+| `3.5` | Questão 03: "Toque no elemento que tá no sétimo período, grupo 2." (o Ra) |
+| `3.6` | Questão 04: a explicação; acabado o áudio, três elementos (K, Sn, Ba), um de cada vez: o elemento acende e gira na tabela, e do lado oposto ao dele (sempre na mesma altura, para nunca o tapar) vem a caixa com ele e dois **carrosséis** — o período e o grupo — que o aluno gira (arrasto, roda do mouse ou toque no número) e confirma; no erro a caixa treme, o carrossel errado fica vermelho e vem a dica (no segundo, a linha e a coluna do elemento acendem) |
 
 ## Desempenho
 

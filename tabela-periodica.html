@@ -908,12 +908,56 @@ body.montagem .capa .digitado{pointer-events:auto}
 .quiz3.q4 .q3-q b{color:var(--ouro)}
 .quiz3.q4.digitando .q3-q::after{content:'';display:inline-block;width:3px;height:.9em;margin-left:5px;
   vertical-align:-.1em;background:var(--ouro);animation:piscaCursor 1.05s steps(1) infinite}
-/* na questão 04 os números da tabela respondem ao toque — com uma folga
-   em volta, para o dedo */
-.mesa.toca-eixos .eixo{pointer-events:auto;cursor:pointer}
-.mesa.toca-eixos .eixo::before{content:'';position:absolute;inset:-9px;border-radius:50%}
-.eixo.errada3{background:#FF2E4C!important;border-color:#FF2E4C!important;color:#fff!important;
-  animation:naoTreme .42s ease}
+/* A CAIXA DO CARROSSEL (questão 04): o elemento, os dois carrosséis e o
+   Confirmar, no desenho do app — ao lado oposto ao do elemento */
+.roda4{position:absolute;z-index:40;width:290px;opacity:0;transform:translate(-50%,-10px);
+  display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 18px 16px;
+  border-radius:18px;background:rgba(255,255,255,.97);border:1px solid var(--indigo-dim);
+  box-shadow:0 18px 44px rgba(20,17,46,.35);
+  transition:opacity .35s ease, transform .35s cubic-bezier(.2,.9,.3,1)}
+.roda4.on{opacity:1;transform:translate(-50%,0)}
+.roda4.sai{opacity:0;transform:translate(-50%,10px)}
+.roda4.treme{animation:naoTreme .42s ease}
+.rd-marca{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
+.rd-el{display:flex;flex-direction:column;align-items:center;line-height:1}
+.rd-el span{font-family:var(--mono);font-size:15px;color:var(--tinta-dim)}
+.rd-el b{font-family:var(--display);font-size:54px;font-weight:700;color:var(--indigo);margin:2px 0 4px}
+.rd-el em{font-style:normal;font-family:var(--display);font-size:16px;color:var(--tinta-dim)}
+.rd-colunas{display:flex;gap:16px;margin-top:4px}
+.rd-col{display:flex;flex-direction:column;align-items:center;gap:5px}
+.rd-tit{font-family:var(--display);font-size:13px;font-weight:600;color:var(--tinta-dim)}
+/* o carrossel: três números à vista, o do meio é o escolhido (a faixa
+   clara atrás dele não rola: o fundo é do quadro, não da lista) */
+.rd-roda{width:80px;height:120px;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;
+  touch-action:none;cursor:grab;scrollbar-width:none;
+  border:1.5px solid var(--indigo-dim);border-radius:14px;
+  background:linear-gradient(transparent 40px, rgba(76,63,191,.1) 40px, rgba(76,63,191,.1) 80px, transparent 80px),#fff;
+  -webkit-mask-image:linear-gradient(transparent, #000 28%, #000 72%, transparent);
+  mask-image:linear-gradient(transparent, #000 28%, #000 72%, transparent);
+  transition:border-color .2s, box-shadow .2s}
+.rd-roda::-webkit-scrollbar{display:none}
+.rd-roda.arrastando{scroll-snap-type:none;cursor:grabbing}
+.rd-pad{height:40px}
+.rd-v{height:40px;display:grid;place-items:center;scroll-snap-align:center;
+  font-family:var(--display);font-size:22px;font-weight:600;color:rgba(32,28,66,.32);
+  transition:color .2s, font-size .2s}
+.rd-v.atual{color:var(--indigo);font-size:30px;font-weight:700}
+/* o estado tinge a faixa do meio (a borda se esfuma em cima e embaixo) */
+.rd-roda.errada{border-color:#FF2E4C;box-shadow:0 0 0 3px rgba(255,46,76,.25);
+  background:linear-gradient(transparent 40px, rgba(255,46,76,.16) 40px, rgba(255,46,76,.16) 80px, transparent 80px),#fff}
+.rd-roda.errada .rd-v.atual{color:#C8243F}
+.rd-roda.certa{border-color:#1F9D55;box-shadow:0 0 0 3px rgba(46,204,113,.25);
+  background:linear-gradient(transparent 40px, rgba(46,204,113,.16) 40px, rgba(46,204,113,.16) 80px, transparent 80px),#fff}
+.rd-roda.certa .rd-v.atual{color:#1F9D55}
+.rd-msg{font-family:var(--display);font-size:14px;font-weight:600;line-height:1.3;text-align:center}
+.rd-msg:empty{display:none}
+.rd-msg.dica{color:#9A6410;font-weight:500}
+.rd-msg.ok{color:#1F9D55}
+.rd-ok{margin-top:2px;padding:9px 28px;border:0;border-radius:12px;cursor:pointer;
+  font-family:var(--display);font-weight:700;font-size:16px;color:#fff;background:var(--indigo);
+  box-shadow:0 8px 18px rgba(76,63,191,.3)}
+.rd-ok:active{transform:scale(.96)}
+.rd-ok:disabled{opacity:.5;cursor:default}
 /* o botão do fim da narração "3", no vazio da tabela, à direita do símbolo */
 .entendi3{position:absolute;z-index:30;transform:translate(-50%,-50%) scale(.9);
   padding:12px 36px;border:0;border-radius:14px;cursor:pointer;
@@ -1806,7 +1850,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v4.8';
+const VERSAO = 'v4.9';
 
 /* ============================================================
    OS ELEMENTOS
@@ -4382,11 +4426,6 @@ const EV3 = {
     cx.setAttribute('aria-live', 'polite');
     slides[3].appendChild(cx);
     this.dig = criaDigitacao(cx, FRASES_3);
-    /* os números da tabela respondem na questão 04 (o período e o grupo) */
-    this.mesa().addEventListener('click', ev => {
-      const e = ev.target.closest && ev.target.closest('.eixo');
-      if (e && QUIZ4.ativo) QUIZ4.tocaEixo(e);
-    });
     /* e a folha dos confetes, que o slide 4 ainda não tinha */
     if (!slides[3].querySelector('.confete'))
       slides[3].insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
@@ -4569,8 +4608,9 @@ function efeitos3(t){ EV3.tick(t); }
      3.3  Questão 01: 4.º período, grupo 8 (o Fe) — digitada no relógio
      3.4  Questão 02: 3.º período, grupo 17 (o Cl)
      3.5  Questão 03: 7.º período, grupo 2 (o Ra)
-     3.6  Questão 04: o elemento é dado, e o aluno toca o período e o grupo
-          dele (os números da tabela) — oito elementos, depois do áudio
+     3.6  Questão 04: depois do áudio, três elementos, um de cada vez: o
+          elemento acende, e numa caixa do lado oposto ao dele o aluno
+          gira os dois carrosséis (o período e o grupo) e confirma
    ============================================================ */
 /* o véu do quiz num slide qualquer (o do slide 3 tem o seu, em QUIZ3) */
 function breuNoSlide(sl, sim){
@@ -4585,8 +4625,8 @@ function breuNoSlide(sl, sim){
   sl.classList.toggle('quiz-escuro', sim);
   if (v) v.classList.toggle('on', sim);
 }
-/* os oito da questão 04: o Ca, o O, o Al, a Ag, o Br, o Ba, o Au e o He */
-const COORDS_Q4 = [20, 8, 13, 47, 35, 56, 79, 2];
+/* os três da questão 04 (o carrossel): o K, o Sn e o Ba */
+const CARROSSEL_Q4 = [19, 50, 56];
 const QUIZ4 = {
   trilhas:['3.3', '3.4', '3.5', '3.6'],
   itens:[
@@ -4595,17 +4635,21 @@ const QUIZ4 = {
     { id:'3.4', rotulo:'Questão 02', z:17,
       txt:'Agora toque no elemento que tá no terceiro período, grupo 17.' },
     { id:'3.5', rotulo:'Questão 03', z:88,
-      txt:'Mais um: toque no elemento que tá no sétimo período, grupo 2.' },
-    { id:'3.6', rotulo:'Questão 04', coords:true,
+      txt:'Toque no elemento que tá no sétimo período, grupo 2.' },
+    { id:'3.6', rotulo:'Questão 04', carrossel:true,
       txt:'Tá, agora vamos fazer assim: eu te dou o elemento e você seleciona o período e a família dele na tela, tá bom? Lá vai o primeiro.' }
   ],
   ativo:false, passo:-1, aceita:false, travado:false, tropecos:0, erros:0, g:0, sub:0,
-  feito:{ p:false, g:false }, giroT:0,
+  roda:null, giroT:0,
   sl(){ return slides[3]; },
   mesa(){ return slides[3] && slides[3].querySelector('.mesa'); },
   carta(z){ return this.mesa().querySelector('.pc[data-z="' + z + '"]'); },
   caixa(){ return this.sl().querySelector('.quiz3:not(.sai)'); },
-  msg(){ const cx = this.caixa(); return cx && cx.querySelector('.q3-msg'); },
+  msg(){
+    if (this.roda) return this.roda.querySelector('.rd-msg');
+    const cx = this.caixa();
+    return cx && cx.querySelector('.q3-msg');
+  },
   /* a cada tique do relógio, nas trilhas das perguntas (chamado por EV3) */
   tick(t){
     if (!this.ativo) this.abre();
@@ -4627,7 +4671,7 @@ const QUIZ4 = {
     const it = this.itens[i];
     if (it.digita) return;
     this.caixaNova(it.rotulo, it.txt);
-    if (!it.coords) this.aceita = true;
+    if (!it.carrossel) this.aceita = true;
   },
   /* o quadro novo entra pela esquerda enquanto o anterior sai pela direita,
      e a tabela gira na troca (o do quiz do slide 3) */
@@ -4678,7 +4722,7 @@ const QUIZ4 = {
   /* as questões 01 a 03: o toque num card */
   tocaCarta(c){
     const it = this.itens[this.passo];
-    if (!it || it.coords || !this.aceita || this.travado) return;
+    if (!it || it.carrossel || !this.aceita || this.travado) return;
     const z = +c.dataset.z;
     if (z !== it.z){
       const alvo = this.carta(it.z);
@@ -4706,7 +4750,7 @@ const QUIZ4 = {
     if (msg){ msg.innerHTML = dica; msg.className = 'q3-msg dica'; }
     if (this.tropecos >= 2){
       const it = this.itens[this.passo];
-      const z = it.coords ? COORDS_Q4[this.sub] : it.z;
+      const z = it.carrossel ? CARROSSEL_Q4[this.sub] : it.z;
       this.carta(z).classList.add('pista3');
     }
     tremeVermelho();
@@ -4753,64 +4797,142 @@ const QUIZ4 = {
       }, 500);
     });
   },
-  /* A QUESTÃO 04: os oito, um de cada vez, depois da "3.6" */
+  /* A QUESTÃO 04, depois da "3.6": três elementos, um de cada vez. O
+     elemento acende na tabela e, do lado oposto ao dele — sempre na mesma
+     altura, para a caixa nunca o tapar —, vem a caixa: o elemento, os dois
+     carrosséis (o período e o grupo) que o aluno gira, e o Confirmar. */
   coordsComeca(){
     if (!this.ativo) return;
     stage.classList.add('em-quiz');
-    const m = this.mesa();
-    m.classList.add('toca-eixos');
-    /* os números no modelo do professor: maiores, para o dedo */
-    m.querySelectorAll('.eixo').forEach(e => e.classList.add('prof'));
+    /* o quadro da explicação sai: a caixa do carrossel toma a cena */
+    this.sl().querySelectorAll('.quiz3:not(.sai)').forEach(e => {
+      e.classList.add('sai');
+      setTimeout(() => e.remove(), 700);
+    });
     this.sub = 0;
-    this.coordsPoe();
+    this.rodaPoe();
   },
-  coordsPoe(){
-    const z = COORDS_Q4[this.sub];
+  rodaPoe(){
+    const c = this.carta(CARROSSEL_Q4[this.sub]);
     this.tropecos = 0;
-    this.feito = { p:false, g:false };
-    this.caixaNova('Questão 04 · ' + (this.sub + 1) + ' de ' + COORDS_Q4.length,
-      'Em que período e em que grupo está o <b>' + SIMBOLOS[z-1] + '</b> (' + NOMES[z-1] + ')?' +
-      ' Toque nos dois números da tabela.');
+    c.classList.add('aceso');
+    TP.gira(c, { eixo:'y', graus:360, dur:900 });
+    this.roda = this.rodaNova(c);
     this.aceita = true;
   },
-  /* o toque num número: o do período (à esquerda) ou o do grupo (em cima) */
-  tocaEixo(e){
-    const it = this.itens[this.passo];
-    if (!it || !it.coords || !this.aceita || this.travado) return;
-    const z = COORDS_Q4[this.sub], c = this.carta(z), sym = SIMBOLOS[z-1];
-    const ehP = e.dataset.periodo !== undefined;
-    if (ehP ? this.feito.p : this.feito.g) return;
-    const certo = ehP ? +e.dataset.periodo === +c.dataset.periodo : +e.dataset.grupo === +c.dataset.grupo;
-    if (!certo){
-      this.erra(e, ehP
-        ? 'O período é o número da linha, à esquerda da tabela.<br>Ache o ' + sym + ' e siga a linha dele até o número.'
-        : 'O grupo é o número da coluna, em cima da tabela.<br>Ache o ' + sym + ' e suba pela coluna dele até o número.');
-      return;
-    }
-    if (ehP) this.feito.p = true; else this.feito.g = true;
-    /* a faixa do que já acertou acende (a cruz do slide) */
-    EV3.poeCruz(this.mesa(), c, this.feito.p, this.feito.g);
-    if (!(this.feito.p && this.feito.g)){
-      tocaEfeito('right');
-      const msg = this.msg();
-      if (msg){
-        msg.innerHTML = ehP ? '<b>' + c.dataset.periodo + 'º</b> período. Agora o grupo.'
-                            : 'Grupo <b>' + c.dataset.grupo + '</b>. Agora o período.';
-        msg.className = 'q3-msg ok';
-      }
-      return;
-    }
-    const ultimo = this.sub === COORDS_Q4.length - 1;
-    this.acerta(c, 'O ' + sym + ' está no ' + c.dataset.periodo + 'º período, grupo ' + c.dataset.grupo + '.',
-                ultimo, () => this.coordsSeguinte());
+  rodaNova(c){
+    const m = this.mesa();
+    const b = document.createElement('div');
+    b.className = 'roda4';
+    /* do lado oposto ao do elemento, sempre na mesma altura */
+    b.style.left = (+c.dataset.grupo <= 9 ? xDaColuna(14.5) : xDaColuna(4.5)) + 'px';
+    b.style.top  = (TAB_TOPO + 10) + 'px';
+    const lista = n => '<div class="rd-pad"></div>' +
+      Array.from({ length:n }, (_, i) => '<div class="rd-v">' + (i + 1) + '</div>').join('') +
+      '<div class="rd-pad"></div>';
+    b.innerHTML =
+      '<div class="rd-marca">Questão 04 · ' + (this.sub + 1) + ' de ' + CARROSSEL_Q4.length + '</div>' +
+      '<div class="rd-el"><span>' + c.dataset.z + '</span><b>' + c.dataset.sym + '</b><em>' + NOMES[c.dataset.z - 1] + '</em></div>' +
+      '<div class="rd-colunas">' +
+        '<div class="rd-col"><div class="rd-tit">período</div><div class="rd-roda" data-tipo="p">' + lista(7) + '</div></div>' +
+        '<div class="rd-col"><div class="rd-tit">grupo</div><div class="rd-roda" data-tipo="g">' + lista(18) + '</div></div>' +
+      '</div>' +
+      '<div class="rd-msg"></div>' +
+      '<button type="button" class="rd-ok">Confirmar</button>';
+    m.appendChild(b);
+    b.querySelectorAll('.rd-roda').forEach(r => this.giravel(r));
+    b.querySelector('.rd-ok').addEventListener('click', () => this.confirma());
+    b.getBoundingClientRect();
+    b.classList.add('on');
+    return b;
   },
-  coordsSeguinte(){
-    EV3.poeCruz(this.mesa(), this.carta(COORDS_Q4[this.sub]), false, false);
+  /* O CARROSSEL: gira com o arrasto do dedo, com a roda do mouse, ou com um
+     toque num número, e assenta sempre num número. O arrasto é feito à mão
+     (o palco não deixa o toque rolar nada por si), com a escala do palco
+     descontada. */
+  giravel(r){
+    const H = 40, vs = [...r.querySelectorAll('.rd-v')];
+    const marca = () => {
+      const i = Math.max(0, Math.min(vs.length - 1, Math.round(r.scrollTop / H)));
+      if (r._i === i) return;
+      r._i = i;
+      vs.forEach((v, k) => v.classList.toggle('atual', k === i));
+      r.classList.remove('errada', 'certa');
+    };
+    const vai = i => r.scrollTo({ top: Math.max(0, Math.min(vs.length - 1, i)) * H, behavior:'smooth' });
+    r.addEventListener('scroll', marca, { passive:true });
+    r.addEventListener('pointerdown', ev => {
+      r._arr = { y:ev.clientY, top:r.scrollTop, moveu:false, v:ev.target.closest('.rd-v'),
+                 k:(r.getBoundingClientRect().height / r.offsetHeight) || 1 };
+      try { r.setPointerCapture(ev.pointerId); } catch(_){}
+      r.classList.add('arrastando');
+      ev.preventDefault();
+    });
+    r.addEventListener('pointermove', ev => {
+      const a = r._arr;
+      if (!a) return;
+      const dy = (ev.clientY - a.y) / a.k;
+      if (Math.abs(dy) > 4) a.moveu = true;
+      r.scrollTop = a.top - dy;
+    });
+    const solta = () => {
+      const a = r._arr;
+      if (!a) return;
+      r._arr = null;
+      r.classList.remove('arrastando');
+      if (!a.moveu && a.v) vai(vs.indexOf(a.v));
+      else vai(Math.round(r.scrollTop / H));
+    };
+    r.addEventListener('pointerup', solta);
+    r.addEventListener('pointercancel', solta);
+    marca();
+  },
+  valor(tipo){
+    const r = this.roda.querySelector('.rd-roda[data-tipo="' + tipo + '"]');
+    return Math.round(r.scrollTop / 40) + 1;
+  },
+  /* o Confirmar: os dois certos, a festa; senão, a caixa treme, o carrossel
+     errado fica vermelho e vem a dica — e no segundo erro a linha e a
+     coluna do elemento acendem */
+  confirma(){
+    if (!this.roda || !this.aceita || this.travado) return;
+    const z = CARROSSEL_Q4[this.sub], c = this.carta(z), sym = SIMBOLOS[z-1];
+    const p = this.valor('p'), g = this.valor('g');
+    const okP = p === +c.dataset.periodo, okG = g === +c.dataset.grupo;
+    const rp = this.roda.querySelector('.rd-roda[data-tipo="p"]'), rg = this.roda.querySelector('.rd-roda[data-tipo="g"]');
+    rp.classList.toggle('certa', okP); rp.classList.toggle('errada', !okP);
+    rg.classList.toggle('certa', okG); rg.classList.toggle('errada', !okG);
+    if (!(okP && okG)){
+      this.erros++; this.tropecos++;
+      const b = this.roda;
+      b.classList.remove('treme'); void b.offsetWidth; b.classList.add('treme');
+      const msg = this.msg();
+      msg.innerHTML = !okP && !okG ? 'O período é a linha do ' + sym + ' (os números à esquerda);<br>o grupo, a coluna (os números em cima).'
+                    : !okP ? 'O grupo está certo. O período é a linha do ' + sym + ':<br>os números à esquerda da tabela.'
+                           : 'O período está certo. O grupo é a coluna do ' + sym + ':<br>os números em cima da tabela.';
+      msg.className = 'rd-msg dica';
+      if (this.tropecos >= 2) EV3.poeCruz(this.mesa(), c, true, true);
+      tremeVermelho();
+      const gg = this.g, sub = this.sub, e = tocaEfeito('error');
+      if (this.tropecos === 1) e.then(() => {
+        if (gg === this.g && this.ativo && !this.travado && this.sub === sub) tocaEfeito('Calmanaproximaacerta');
+      });
+      return;
+    }
+    this.roda.querySelector('.rd-ok').disabled = true;
+    c.classList.remove('aceso');
+    EV3.poeCruz(this.mesa(), c, true, true);
+    const ultimo = this.sub === CARROSSEL_Q4.length - 1;
+    this.acerta(c, 'O ' + sym + ' está no ' + p + 'º período, grupo ' + g + '.', ultimo, () => this.rodaSeguinte());
+  },
+  rodaSeguinte(){
+    EV3.poeCruz(this.mesa(), this.carta(CARROSSEL_Q4[this.sub]), false, false);
+    if (this.roda){ const b = this.roda; b.classList.add('sai'); setTimeout(() => b.remove(), 400); this.roda = null; }
     this.sub++;
-    if (this.sub < COORDS_Q4.length){ this.coordsPoe(); return; }
-    /* os oito: a questão 04 acaba (o que vem depois ainda está por vir) */
+    if (this.sub < CARROSSEL_Q4.length){ this.rodaPoe(); return; }
+    /* os três: a questão 04 acaba (o que vem depois ainda está por vir) */
     this.aceita = false;
-    this.caixaNova('Questão 04', 'Muito bem! Você achou o período e o grupo dos oito elementos.');
+    this.caixaNova('Questão 04', 'Muito bem! Você achou o período e o grupo dos três elementos.');
   },
   fecha(){
     const sl = this.sl();
@@ -4818,12 +4940,17 @@ const QUIZ4 = {
     if (this.ativo) stage.classList.remove('em-quiz');
     this.g++;
     this.ativo = false; this.passo = -1; this.aceita = false; this.travado = false; this.sub = 0;
+    this.roda = null;
     clearTimeout(this.giroT);
     breuNoSlide(sl, false);
     sl.querySelectorAll('.quiz3').forEach(e => e.remove());
     const m = this.mesa();
     if (m){
-      m.classList.remove('toca-eixos', 'gira-troca');
+      m.classList.remove('gira-troca');
+      m.querySelectorAll('.roda4').forEach(e => e.remove());
+      m.querySelectorAll('.pc.aceso').forEach(x => x.classList.remove('aceso'));
+      const qualquer = m.querySelector('.pc');
+      if (qualquer) EV3.poeCruz(m, qualquer, false, false);
       m.querySelectorAll('.certa3, .errada3, .pista3, .frente3').forEach(x => {
         x.classList.remove('certa3', 'errada3', 'pista3', 'frente3');
         x.style.removeProperty('--onda');
@@ -7037,6 +7164,8 @@ const NAV_TOPICOS = [
   /* ---- o slide 4 · As coordenadas periódicas ---- */
   { titulo:'Início', sub:'o começo do slide', slide:3,
     entra(){ /* o recomeço do slide já é o tópico */ } },
+  { titulo:'Quiz', sub:'o começo da 3.3: as perguntas', slide:3,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('3.3', 0, g)); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1,
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
@@ -7154,7 +7283,10 @@ function tocaDesde(id, t, g){
 
 /* em que tópico a aula está agora — é o que a gaveta acende */
 function topicoAtual(){
-  if (atual === 3) return NAV_TOPICOS.findIndex(t => t.slide === 3);
+  if (atual === 3){
+    const base = NAV_TOPICOS.findIndex(t => t.slide === 3);
+    return base + (QUIZ4.ativo || QUIZ4.trilhas.includes(trilhaAtual) ? 1 : 0);
+  }
   if (atual === 2){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 2);
     const tr = trilhaAtual, t = som.currentTime || 0;
