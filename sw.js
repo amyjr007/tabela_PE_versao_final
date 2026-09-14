@@ -65,6 +65,7 @@ const CASCA = [
   './Audios/audio_tabela_3.4.mp3',
   './Audios/audio_tabela_3.5.mp3',
   './Audios/audio_tabela_3.6.mp3',
+  './Audios/audio_tabela_3.7.mp3',
   './Audios/quiz1.mp3',
   './Imagens/henry_moseley.jpg',
   './Audios/vfx/flipcard.mp3',
