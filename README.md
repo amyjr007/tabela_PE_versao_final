@@ -199,7 +199,7 @@ no relógio do áudio (`EV3`, `efeitos3`):
 | perguntas | no acerto, o card cresce e fica verde, com confetes, `funfare`, `applause` e a voz, e toca a narração da pergunta seguinte; no erro, balança em vermelho, toca `error` e vem a dica (no segundo erro, a resposta pulsa em âmbar) |
 | `3.4` | Questão 02: "Agora toque no elemento que tá no terceiro período, grupo 17." (o Cl) |
 | `3.5` | Questão 03: "Toque no elemento que tá no sétimo período, grupo 2." (o Ra) |
-| `3.6` | Questão 04: a explicação; acabado o áudio, três elementos (K, Sn, Ba), um de cada vez: o elemento acende e gira na tabela, e do lado oposto ao dele (sempre na mesma altura, para nunca o tapar) vem a caixa com ele e dois **carrosséis** — o período e o grupo — que o aluno gira (arrasto, roda do mouse ou toque no número) e confirma; no erro a caixa treme, o carrossel errado fica vermelho e vem a dica (no segundo, a linha e a coluna do elemento acendem) |
+| `3.6` | Questão 04: a explicação; acabado o áudio, três elementos (K, Sn, Ba), um de cada vez: o elemento acende e gira na tabela, e vem a **caixa do carrossel**, com o uso da do app de referência (quiz do capítulo 2): pequena, sempre no meio da altura da tabela e do lado oposto ao do elemento (para nunca o tapar), entra com um salto; o elemento em cima, dois carrosséis (período e grupo, três números à vista) e o confirmar. No erro a caixa treme e fica avermelhada um instante; no segundo, a linha e a coluna do elemento acendem |
 
 ## Desempenho
 

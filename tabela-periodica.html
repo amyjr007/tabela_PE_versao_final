@@ -908,54 +908,56 @@ body.montagem .capa .digitado{pointer-events:auto}
 .quiz3.q4 .q3-q b{color:var(--ouro)}
 .quiz3.q4.digitando .q3-q::after{content:'';display:inline-block;width:3px;height:.9em;margin-left:5px;
   vertical-align:-.1em;background:var(--ouro);animation:piscaCursor 1.05s steps(1) infinite}
-/* A CAIXA DO CARROSSEL (questão 04): o elemento, os dois carrosséis e o
-   Confirmar, no desenho do app — ao lado oposto ao do elemento */
-.roda4{position:absolute;z-index:40;width:290px;opacity:0;transform:translate(-50%,-10px);
-  display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 18px 16px;
-  border-radius:18px;background:rgba(255,255,255,.97);border:1px solid var(--indigo-dim);
-  box-shadow:0 18px 44px rgba(20,17,46,.35);
-  transition:opacity .35s ease, transform .35s cubic-bezier(.2,.9,.3,1)}
-.roda4.on{opacity:1;transform:translate(-50%,0)}
-.roda4.sai{opacity:0;transform:translate(-50%,10px)}
-.roda4.treme{animation:naoTreme .42s ease}
-.rd-marca{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ouro)}
-.rd-el{display:flex;flex-direction:column;align-items:center;line-height:1}
+/* A CAIXA DO CARROSSEL (questão 04), com o uso da do app de referência:
+   pequena, centrada no meio da altura da tabela, do lado oposto ao do
+   elemento; entra com um salto, treme e avermelha no erro */
+.roda4{position:absolute;z-index:40;display:flex;flex-direction:column;align-items:center;gap:9px;
+  padding:12px 18px 14px;border-radius:14px;background:rgba(255,255,255,.97);
+  border:1px solid var(--indigo-dim);box-shadow:0 10px 28px rgba(20,17,46,.35);
+  transform:translate(-50%,-50%);transition:background .3s ease, border-color .3s ease;
+  animation:rodaEntra .9s cubic-bezier(.3,1.4,.5,1) both}
+@keyframes rodaEntra{
+  0%  {transform:translate(-50%,-50%) scale(.1) rotate(-15deg);opacity:0}
+  55% {transform:translate(-50%,-50%) scale(1.18) rotate(6deg);opacity:1}
+  80% {transform:translate(-50%,-50%) scale(.95) rotate(-3deg);opacity:1}
+  100%{transform:translate(-50%,-50%) scale(1) rotate(0deg);opacity:1}
+}
+.roda4.pousada{animation:none}
+.roda4.treme{animation:rodaTreme .4s ease}
+@keyframes rodaTreme{
+  0%,100%{transform:translate(-50%,-50%)}
+  20%{transform:translate(calc(-50% - 8px),-50%)} 40%{transform:translate(calc(-50% + 8px),-50%)}
+  60%{transform:translate(calc(-50% - 5px),-50%)} 80%{transform:translate(calc(-50% + 5px),-50%)}
+}
+.roda4.sai{animation:rodaSai .35s ease forwards}
+@keyframes rodaSai{to{transform:translate(-50%,-50%) scale(.6);opacity:0}}
+.roda4.errada{border-color:rgba(255,46,76,.75);background:rgba(255,226,230,.97)}
+.rd-marca{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ouro)}
+.rd-el{display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1}
 .rd-el span{font-family:var(--mono);font-size:15px;color:var(--tinta-dim)}
-.rd-el b{font-family:var(--display);font-size:54px;font-weight:700;color:var(--indigo);margin:2px 0 4px}
-.rd-el em{font-style:normal;font-family:var(--display);font-size:16px;color:var(--tinta-dim)}
-.rd-colunas{display:flex;gap:16px;margin-top:4px}
-.rd-col{display:flex;flex-direction:column;align-items:center;gap:5px}
-.rd-tit{font-family:var(--display);font-size:13px;font-weight:600;color:var(--tinta-dim)}
-/* o carrossel: três números à vista, o do meio é o escolhido (a faixa
-   clara atrás dele não rola: o fundo é do quadro, não da lista) */
-.rd-roda{width:80px;height:120px;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;
-  touch-action:none;cursor:grab;scrollbar-width:none;
-  border:1.5px solid var(--indigo-dim);border-radius:14px;
-  background:linear-gradient(transparent 40px, rgba(76,63,191,.1) 40px, rgba(76,63,191,.1) 80px, transparent 80px),#fff;
-  -webkit-mask-image:linear-gradient(transparent, #000 28%, #000 72%, transparent);
-  mask-image:linear-gradient(transparent, #000 28%, #000 72%, transparent);
-  transition:border-color .2s, box-shadow .2s}
+.rd-el b{font-family:var(--display);font-size:46px;font-weight:700;color:var(--indigo)}
+.rd-el em{font-style:normal;font-family:var(--display);font-size:14px;color:var(--tinta-dim)}
+.rd-colunas{display:flex;gap:14px;align-items:flex-end}
+.rd-col{display:flex;flex-direction:column;align-items:center;gap:4px}
+.rd-tit{font-family:var(--display);font-size:12px;font-weight:500;letter-spacing:.03em;color:var(--tinta-dim)}
+/* o carrossel: três números à vista, o do meio é o escolhido */
+.rd-roda{width:56px;height:108px;overflow-y:scroll;scroll-snap-type:y mandatory;overscroll-behavior:contain;
+  touch-action:pan-y;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  background:rgba(255,255,255,.8);border:1px solid var(--indigo-dim);border-radius:8px}
 .rd-roda::-webkit-scrollbar{display:none}
-.rd-roda.arrastando{scroll-snap-type:none;cursor:grabbing}
-.rd-pad{height:40px}
-.rd-v{height:40px;display:grid;place-items:center;scroll-snap-align:center;
-  font-family:var(--display);font-size:22px;font-weight:600;color:rgba(32,28,66,.32);
+.rd-roda.arrastando{scroll-snap-type:none}
+.rd-pad{height:36px}
+.rd-v{height:36px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;cursor:pointer;
+  font-family:var(--display);font-size:15px;font-weight:500;color:rgba(32,28,66,.4);
   transition:color .2s, font-size .2s}
-.rd-v.atual{color:var(--indigo);font-size:30px;font-weight:700}
-/* o estado tinge a faixa do meio (a borda se esfuma em cima e embaixo) */
-.rd-roda.errada{border-color:#FF2E4C;box-shadow:0 0 0 3px rgba(255,46,76,.25);
-  background:linear-gradient(transparent 40px, rgba(255,46,76,.16) 40px, rgba(255,46,76,.16) 80px, transparent 80px),#fff}
-.rd-roda.errada .rd-v.atual{color:#C8243F}
-.rd-roda.certa{border-color:#1F9D55;box-shadow:0 0 0 3px rgba(46,204,113,.25);
-  background:linear-gradient(transparent 40px, rgba(46,204,113,.16) 40px, rgba(46,204,113,.16) 80px, transparent 80px),#fff}
-.rd-roda.certa .rd-v.atual{color:#1F9D55}
-.rd-msg{font-family:var(--display);font-size:14px;font-weight:600;line-height:1.3;text-align:center}
+.rd-v.atual{color:var(--indigo);font-size:21px;font-weight:700}
+.rd-msg{max-width:190px;font-family:var(--display);font-size:13px;font-weight:600;line-height:1.3;text-align:center}
 .rd-msg:empty{display:none}
-.rd-msg.dica{color:#9A6410;font-weight:500}
 .rd-msg.ok{color:#1F9D55}
-.rd-ok{margin-top:2px;padding:9px 28px;border:0;border-radius:12px;cursor:pointer;
-  font-family:var(--display);font-weight:700;font-size:16px;color:#fff;background:var(--indigo);
-  box-shadow:0 8px 18px rgba(76,63,191,.3)}
+.rd-ok{padding:6px 18px;border:1px solid var(--indigo-dim);border-radius:8px;cursor:pointer;
+  font-family:var(--display);font-weight:600;font-size:14px;letter-spacing:.04em;
+  color:var(--indigo);background:rgba(76,63,191,.1)}
+.rd-ok:hover{background:rgba(76,63,191,.18)}
 .rd-ok:active{transform:scale(.96)}
 .rd-ok:disabled{opacity:.5;cursor:default}
 /* o botão do fim da narração "3", no vazio da tabela, à direita do símbolo */
@@ -1850,7 +1852,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v4.9';
+const VERSAO = 'v5.0';
 
 /* ============================================================
    OS ELEMENTOS
@@ -4820,13 +4822,17 @@ const QUIZ4 = {
     this.roda = this.rodaNova(c);
     this.aceita = true;
   },
+  /* A CAIXA, com o uso da do app de referência (o quiz do capítulo 2):
+     pequena, sempre no meio da altura da tabela, e só muda de lado — do
+     lado oposto ao do elemento, para nunca o tapar; entra com um salto; o
+     elemento em cima, os dois carrosséis (três números à vista) e o
+     confirmar. No desenho deste app. */
   rodaNova(c){
     const m = this.mesa();
     const b = document.createElement('div');
     b.className = 'roda4';
-    /* do lado oposto ao do elemento, sempre na mesma altura */
     b.style.left = (+c.dataset.grupo <= 9 ? xDaColuna(14.5) : xDaColuna(4.5)) + 'px';
-    b.style.top  = (TAB_TOPO + 10) + 'px';
+    b.style.top  = (TAB_TOPO + 3.5 * PASSO) + 'px';
     const lista = n => '<div class="rd-pad"></div>' +
       Array.from({ length:n }, (_, i) => '<div class="rd-v">' + (i + 1) + '</div>').join('') +
       '<div class="rd-pad"></div>';
@@ -4838,79 +4844,70 @@ const QUIZ4 = {
         '<div class="rd-col"><div class="rd-tit">grupo</div><div class="rd-roda" data-tipo="g">' + lista(18) + '</div></div>' +
       '</div>' +
       '<div class="rd-msg"></div>' +
-      '<button type="button" class="rd-ok">Confirmar</button>';
+      '<button type="button" class="rd-ok">confirmar</button>';
     m.appendChild(b);
     b.querySelectorAll('.rd-roda').forEach(r => this.giravel(r));
     b.querySelector('.rd-ok').addEventListener('click', () => this.confirma());
-    b.getBoundingClientRect();
-    b.classList.add('on');
+    /* acabado o salto da entrada, a caixa assenta (e o tremor do erro não
+       o repete) */
+    setTimeout(() => b.classList.add('pousada'), 950);
     return b;
   },
-  /* O CARROSSEL: gira com o arrasto do dedo, com a roda do mouse, ou com um
-     toque num número, e assenta sempre num número. O arrasto é feito à mão
-     (o palco não deixa o toque rolar nada por si), com a escala do palco
-     descontada. */
+  /* O CARROSSEL rola sozinho, como no app de referência (o dedo e a roda do
+     mouse, e assenta sempre num número); um toque num número também o
+     escolhe. Onde o palco não deixar o dedo rolar, o arrasto é feito à mão —
+     e se o navegador tomar o gesto para ele, chega o pointercancel e a mão
+     larga. */
   giravel(r){
-    const H = 40, vs = [...r.querySelectorAll('.rd-v')];
+    const H = 36, vs = [...r.querySelectorAll('.rd-v')];
     const marca = () => {
       const i = Math.max(0, Math.min(vs.length - 1, Math.round(r.scrollTop / H)));
       if (r._i === i) return;
       r._i = i;
       vs.forEach((v, k) => v.classList.toggle('atual', k === i));
-      r.classList.remove('errada', 'certa');
     };
     const vai = i => r.scrollTo({ top: Math.max(0, Math.min(vs.length - 1, i)) * H, behavior:'smooth' });
     r.addEventListener('scroll', marca, { passive:true });
     r.addEventListener('pointerdown', ev => {
       r._arr = { y:ev.clientY, top:r.scrollTop, moveu:false, v:ev.target.closest('.rd-v'),
                  k:(r.getBoundingClientRect().height / r.offsetHeight) || 1 };
-      try { r.setPointerCapture(ev.pointerId); } catch(_){}
-      r.classList.add('arrastando');
-      ev.preventDefault();
+      if (ev.pointerType === 'mouse'){ try { r.setPointerCapture(ev.pointerId); } catch(_){} }
     });
     r.addEventListener('pointermove', ev => {
       const a = r._arr;
       if (!a) return;
       const dy = (ev.clientY - a.y) / a.k;
-      if (Math.abs(dy) > 4) a.moveu = true;
-      r.scrollTop = a.top - dy;
+      if (!a.moveu && Math.abs(dy) > 4){ a.moveu = true; r.classList.add('arrastando'); }
+      if (a.moveu) r.scrollTop = a.top - dy;
     });
-    const solta = () => {
+    r.addEventListener('pointerup', () => {
       const a = r._arr;
       if (!a) return;
       r._arr = null;
       r.classList.remove('arrastando');
       if (!a.moveu && a.v) vai(vs.indexOf(a.v));
-      else vai(Math.round(r.scrollTop / H));
-    };
-    r.addEventListener('pointerup', solta);
-    r.addEventListener('pointercancel', solta);
+      else if (a.moveu) vai(Math.round(r.scrollTop / H));
+    });
+    r.addEventListener('pointercancel', () => { r._arr = null; r.classList.remove('arrastando'); });
     marca();
   },
   valor(tipo){
     const r = this.roda.querySelector('.rd-roda[data-tipo="' + tipo + '"]');
-    return Math.round(r.scrollTop / 40) + 1;
+    return Math.round(r.scrollTop / 36) + 1;
   },
-  /* o Confirmar: os dois certos, a festa; senão, a caixa treme, o carrossel
-     errado fica vermelho e vem a dica — e no segundo erro a linha e a
-     coluna do elemento acendem */
+  /* o confirmar: os dois certos, a festa; senão a caixa treme e fica
+     avermelhada um instante (como na referência), e no segundo erro a
+     linha e a coluna do elemento acendem na tabela */
   confirma(){
     if (!this.roda || !this.aceita || this.travado) return;
     const z = CARROSSEL_Q4[this.sub], c = this.carta(z), sym = SIMBOLOS[z-1];
     const p = this.valor('p'), g = this.valor('g');
-    const okP = p === +c.dataset.periodo, okG = g === +c.dataset.grupo;
-    const rp = this.roda.querySelector('.rd-roda[data-tipo="p"]'), rg = this.roda.querySelector('.rd-roda[data-tipo="g"]');
-    rp.classList.toggle('certa', okP); rp.classList.toggle('errada', !okP);
-    rg.classList.toggle('certa', okG); rg.classList.toggle('errada', !okG);
-    if (!(okP && okG)){
+    if (!(p === +c.dataset.periodo && g === +c.dataset.grupo)){
       this.erros++; this.tropecos++;
       const b = this.roda;
-      b.classList.remove('treme'); void b.offsetWidth; b.classList.add('treme');
-      const msg = this.msg();
-      msg.innerHTML = !okP && !okG ? 'O período é a linha do ' + sym + ' (os números à esquerda);<br>o grupo, a coluna (os números em cima).'
-                    : !okP ? 'O grupo está certo. O período é a linha do ' + sym + ':<br>os números à esquerda da tabela.'
-                           : 'O período está certo. O grupo é a coluna do ' + sym + ':<br>os números em cima da tabela.';
-      msg.className = 'rd-msg dica';
+      b.classList.remove('treme'); void b.offsetWidth; b.classList.add('treme', 'errada');
+      clearTimeout(b._erroT);
+      b._erroT = setTimeout(() => b.classList.remove('errada'), 900);
       if (this.tropecos >= 2) EV3.poeCruz(this.mesa(), c, true, true);
       tremeVermelho();
       const gg = this.g, sub = this.sub, e = tocaEfeito('error');
