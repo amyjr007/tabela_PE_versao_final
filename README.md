@@ -194,7 +194,12 @@ no relógio do áudio (`EV3`, `efeitos3`):
 | `3.2` · 3,7 s / 5 s | digita "grupo"; depois digita o **14**, com a faixa da **coluna** |
 | fim da `3.2` | o **Entendi**; tocado, acende, toca o `right` e passa à `3.3` |
 | `3.3` · 2,2 → 5 s | no vazio da tabela, digita "Toque no elemento que tá no 4º período, grupo" |
-| `3.3` · 6 s | põe o **8**, e a resposta passa a ser um toque na tabela: no acerto (o Fe), o card cresce e fica verde, com confetes, `funfare`, `applause` e a voz; no erro, balança em vermelho, toca `error` e vem a dica (no segundo erro, a resposta pulsa em âmbar) |
+| `3.3` · começo | as perguntas começam: a sala escurece (o véu do quiz) e cada pergunta vem no quadro padrão ("Questão 01"…), com a troca da esteira e o giro da tabela |
+| `3.3` · 6 s | põe o **8**, e a resposta passa a ser um toque na tabela; acabada a narração, o play sai do canto (e fica fora nas perguntas seguintes) |
+| perguntas | no acerto, o card cresce e fica verde, com confetes, `funfare`, `applause` e a voz, e toca a narração da pergunta seguinte; no erro, balança em vermelho, toca `error` e vem a dica (no segundo erro, a resposta pulsa em âmbar) |
+| `3.4` | Questão 02: "Agora toque no elemento que tá no terceiro período, grupo 17." (o Cl) |
+| `3.5` | Questão 03: "Mais um: toque no elemento que tá no sétimo período, grupo 2." (o Ra) |
+| `3.6` | Questão 04: a explicação; acabado o áudio, oito elementos (Ca, O, Al, Ag, Br, Ba, Au, He), um de cada vez: o aluno toca o **número do período** (à esquerda) e o **do grupo** (em cima); cada um certo acende a faixa dele, e os dois juntos fazem a festa |
 
 ## Desempenho
 

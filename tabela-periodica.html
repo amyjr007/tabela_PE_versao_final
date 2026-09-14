@@ -902,20 +902,18 @@ body.montagem .capa .digitado{pointer-events:auto}
 /* no slide 4 o quadro é mais estreito: com a tabela aberta em linhas
    ou em colunas ele cabe entre a coluna 2 e a 13, sem tapar ninguém */
 .texto-colunas.texto3{left:232px;width:578px}
-/* a pergunta da "3.3", no mesmo vazio; a resposta é um toque num card */
-.pergunta4{position:absolute;left:232px;top:186px;width:578px;z-index:26;pointer-events:none;
-  padding:14px 24px 16px;border-radius:18px;background:rgba(255,255,255,.96);
-  border:1px solid var(--indigo-dim);box-shadow:0 16px 40px rgba(32,28,66,.18);
-  opacity:0;transition:opacity .4s ease}
-.pergunta4.on{opacity:1}
-.q4-q{margin:0;font-family:var(--display);font-weight:600;font-size:28px;line-height:1.25;
-  color:var(--indigo);text-align:center}
-.pergunta4.digitando .q4-q::after{content:'';display:inline-block;width:3px;height:.9em;margin-left:5px;
+/* O QUIZ DO SLIDE 4: o quadro padrão das perguntas (o do quiz do slide
+   3), no vazio da tabela do slide 4; na primeira, o cursor da digitação */
+.quiz3.q4{left:190px;width:640px}
+.quiz3.q4 .q3-q b{color:var(--ouro)}
+.quiz3.q4.digitando .q3-q::after{content:'';display:inline-block;width:3px;height:.9em;margin-left:5px;
   vertical-align:-.1em;background:var(--ouro);animation:piscaCursor 1.05s steps(1) infinite}
-.q4-msg{margin:8px 0 0;font-family:var(--display);font-weight:600;font-size:18px;line-height:1.3;text-align:center}
-.q4-msg:empty{display:none}
-.q4-msg.ok{color:#1F9D55}
-.q4-msg.dica{color:#9A6410;font-weight:500;font-size:17px}
+/* na questão 04 os números da tabela respondem ao toque — com uma folga
+   em volta, para o dedo */
+.mesa.toca-eixos .eixo{pointer-events:auto;cursor:pointer}
+.mesa.toca-eixos .eixo::before{content:'';position:absolute;inset:-9px;border-radius:50%}
+.eixo.errada3{background:#FF2E4C!important;border-color:#FF2E4C!important;color:#fff!important;
+  animation:naoTreme .42s ease}
 /* o botão do fim da narração "3", no vazio da tabela, à direita do símbolo */
 .entendi3{position:absolute;z-index:30;transform:translate(-50%,-50%) scale(.9);
   padding:12px 36px;border:0;border-radius:14px;cursor:pointer;
@@ -1808,7 +1806,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v4.7';
+const VERSAO = 'v4.8';
 
 /* ============================================================
    OS ELEMENTOS
@@ -2266,12 +2264,15 @@ function montaTabela(i){
       /* no slide 3, durante o encaixe, o toque encaixa */
       /* no quiz do slide 3, responde-se tocando na tabela */
       if (i === 2 && QUIZ3.aberto){ QUIZ3.toca(c); return; }
-      /* no slide 4, a pergunta da "3.3" responde-se tocando na tabela */
-      if (i === 3 && EV3.pergunta){ EV3.responde(c); return; }
+      /* no slide 4, nas perguntas, responde-se tocando na tabela */
+      if (i === 3 && QUIZ4.ativo){ QUIZ4.tocaCarta(c); return; }
       /* depois da "2.5", o toque abre e fecha a tabela (ver LC25) */
       if (i === 2 && LC25.livre) return;
       if (i === 2 && ENCAIXE.ativo){ ENCAIXE.toca(c); return; }
       if (i === 2 && FINAL.esperando){ FINAL.toca(c); return; }
+      /* no slide 2, escolhido o elemento, a tabela não responde mais ao
+         toque: nada de outro sair do lugar e deixar o primeiro fora */
+      if (i === 1 && SEQ.eleito && !SEQ.escolhendo) return;
       if (SEQ.escolhendo) SEQ.escolhe(c); else TP.gira(z);
     });
     mesa.appendChild(c);
@@ -2920,7 +2921,10 @@ const TRILHAS = {
   '3':    'Audios/audio_tabela_3.mp3',     /* o slide 4: as coordenadas */
   '3.1':  'Audios/audio_tabela_3.1.mp3',   /* depois do Entendi: o Mn */
   '3.2':  'Audios/audio_tabela_3.2.mp3',   /* o Pb */
-  '3.3':  'Audios/audio_tabela_3.3.mp3'    /* a pergunta: o 4.º período, grupo 8 */
+  '3.3':  'Audios/audio_tabela_3.3.mp3',   /* questão 01: o 4.º período, grupo 8 */
+  '3.4':  'Audios/audio_tabela_3.4.mp3',   /* questão 02: o 3.º período, grupo 17 */
+  '3.5':  'Audios/audio_tabela_3.5.mp3',   /* questão 03: o 7.º período, grupo 2 */
+  '3.6':  'Audios/audio_tabela_3.6.mp3'    /* questão 04: o período e o grupo de 8 elementos */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3'];
@@ -2987,7 +2991,10 @@ const ROTEIROS = {
   ],
   '3.1':  [],
   '3.2':  [],
-  '3.3':  []
+  '3.3':  [],
+  '3.4':  [],
+  '3.5':  [],
+  '3.6':  []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -3272,9 +3279,9 @@ const SEQ = {
     }
     else if (id === '1.1'){
       /* o verde apaga, e a tabela passa a esperar a escolha do aluno */
-      this.escolhendo = true;
       verdeAoAcaso(-1);
-      escolhaHint.classList.add('on');
+      /* uma escolha só: escolhido um elemento, não há outra */
+      if (!this.eleito){ this.escolhendo = true; escolhaHint.classList.add('on'); }
     }
     else if (id === '1.2'){
       /* O PRÓXIMO PLAY DEPENDE DO QUE O ALUNO ESCOLHEU: símbolo de uma
@@ -3306,6 +3313,10 @@ const SEQ = {
     else if (id === '2.5A') viraQuiz(true);
     /* o fim da "3", da "3.1" e da "3.2": o botão Entendi, que leva à seguinte */
     else if (id === '3' || id === '3.1' || id === '3.2') EV3.entendi(true);
+    /* o fim das perguntas: o play sai do canto (quem faz a aula andar é o
+       toque no elemento certo); o da "3.6" abre os oito da questão 04 */
+    else if (id === '3.3' || id === '3.4' || id === '3.5') QUIZ4.semPlay();
+    else if (id === '3.6') QUIZ4.coordsComeca();
   },
   /* o quiz de cada trilha abre uma vez só */
   abreQuiz(id){
@@ -3381,7 +3392,7 @@ const SEQ = {
   /* o aluno escolheu: o elemento sobe a girar e a crescer até o vazio
      acima do ferro e do cobalto, e pousado ele, a narração fala dele */
   escolhe(c){
-    if (!this.escolhendo) return;
+    if (!this.escolhendo || this.eleito) return;
     this.escolhendo = false;
     escolhaHint.classList.remove('on');
     this.eleito = c;
@@ -4359,11 +4370,7 @@ const EV3 = {
     '3.1':{ z:25, de:1.0, periodo:3.3, grupo:5.0, numero:6.3 },
     '3.2':{ z:82, de:0.6, periodo:1.9, grupo:3.7, numero:5.0, digita:true }
   },
-  /* a "3.3": a pergunta, digitada, e a resposta (o Fe) */
-  q33:{ de:2.2, ate:5.0, num:6.0, txt:'Toque no elemento que tá no 4º período, grupo', fim:' 8', z:26,
-        dica:'Ache a linha 4 e desça pela coluna 8:<br>o elemento está no cruzamento das duas.' },
   dig:null, botao:null, feOn:false, cruz:'', naK:0, k31:0, trilha:null, suja:false, pausaT:0,
-  caixa4:null, pergunta:null, respondida:false, errosQ:0,
   mesa(){ return slides[3] && slides[3].querySelector('.mesa'); },
   cartas(m){ return [...m.querySelectorAll('.pc:not(.serie-oculta)')]; },
   carta(m, z){ return m.querySelector('.pc[data-z="' + z + '"]'); },
@@ -4375,13 +4382,11 @@ const EV3 = {
     cx.setAttribute('aria-live', 'polite');
     slides[3].appendChild(cx);
     this.dig = criaDigitacao(cx, FRASES_3);
-    /* o quadro da pergunta (a "3.3"), no vazio da tabela */
-    const q = document.createElement('div');
-    q.className = 'pergunta4';
-    q.setAttribute('aria-live', 'polite');
-    q.innerHTML = '<p class="q4-q"></p><p class="q4-msg"></p>';
-    slides[3].appendChild(q);
-    this.caixa4 = q;
+    /* os números da tabela respondem na questão 04 (o período e o grupo) */
+    this.mesa().addEventListener('click', ev => {
+      const e = ev.target.closest && ev.target.closest('.eixo');
+      if (e && QUIZ4.ativo) QUIZ4.tocaEixo(e);
+    });
     /* e a folha dos confetes, que o slide 4 ainda não tinha */
     if (!slides[3].querySelector('.confete'))
       slides[3].insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
@@ -4414,7 +4419,7 @@ const EV3 = {
     if (trilhaAtual !== this.trilha){ if (this.suja) this.zera(); this.trilha = trilhaAtual; }
     const ex = this.exemplos[trilhaAtual];
     if (ex){ this.tickEx(m, t, ex); return; }
-    if (trilhaAtual === '3.3'){ this.tickQ(m, t); return; }
+    if (QUIZ4.trilhas.includes(trilhaAtual)){ QUIZ4.tick(t); return; }
     if (trilhaAtual !== '3') return;
     /* a vida solta, só até aos 5 s da narração */
     if (VIDA.ligada && t >= this.vidaAte && !som.paused) VIDA.desliga();
@@ -4470,51 +4475,6 @@ const EV3 = {
       const sg = m.querySelector('.coords-el .grp');
       if (sg.dataset.html !== html){ sg.dataset.html = html; sg.innerHTML = html; }
     }
-  },
-  /* A PERGUNTA (a "3.3"): digitada, e a partir do número a resposta é um
-     toque na tabela */
-  tickQ(m, t){
-    const q = this.q33, cx = this.caixa4;
-    const n = Math.round(entre01((t - q.de) / (q.ate - q.de)) * q.txt.length);
-    const txt = t < q.de ? '' : q.txt.slice(0, n) + (t >= q.num ? q.fim : '');
-    if (cx.dataset.txt !== txt){ cx.dataset.txt = txt; cx.querySelector('.q4-q').textContent = txt; }
-    cx.classList.toggle('on', t >= q.de);
-    cx.classList.toggle('digitando', t >= q.de && t < q.num);
-    if (t >= q.num && !this.respondida) this.pergunta = q;
-    else if (t < q.num) this.pergunta = null;
-    this.suja = true;
-  },
-  responde(c){
-    const q = this.pergunta;
-    if (!q) return;
-    const m = this.mesa(), msg = this.caixa4.querySelector('.q4-msg');
-    if (+c.dataset.z !== q.z){
-      /* o erro: o card balança em vermelho e vem a dica; no segundo, a
-         resposta pulsa em âmbar */
-      this.errosQ++;
-      c.classList.remove('errada3'); void c.offsetWidth; c.classList.add('errada3');
-      clearTimeout(c._erroT);
-      c._erroT = setTimeout(() => c.classList.remove('errada3'), 700);
-      msg.innerHTML = q.dica;
-      msg.className = 'q4-msg dica';
-      if (this.errosQ >= 2) this.carta(m, q.z).classList.add('pista3');
-      tremeVermelho();
-      tocaEfeito('error');
-      return;
-    }
-    /* o acerto: cresce e fica à frente, confetes, fanfarra e aplausos, e a voz */
-    this.respondida = true;
-    this.pergunta = null;
-    c.classList.remove('pista3');
-    c.classList.add('certa3');
-    QUIZ3.cresce(c);
-    const voz = vozDoAcerto(false);
-    msg.textContent = voz.frase + ' É o ' + NOMES[q.z-1] + ' (' + SIMBOLOS[q.z-1] + ').';
-    msg.className = 'q4-msg ok';
-    confete();
-    const fanfarra = tocaEfeito('funfare');
-    tocaEfeito('applause');
-    fanfarra.then(() => { if (atual === 3 && this.respondida) tocaEfeito(voz.som); });
   },
   poeCruz(m, c, linha, coluna){
     const lin = +c.dataset.linha, col = +c.dataset.col;
@@ -4592,18 +4552,287 @@ const EV3 = {
     });
     const sg = m.querySelector('.coords-el .grp');
     if (sg) delete sg.dataset.html;
-    if (this.caixa4){
-      this.caixa4.classList.remove('on', 'digitando');
-      this.caixa4.dataset.txt = '';
-      this.caixa4.querySelector('.q4-q').textContent = '';
-      const ms = this.caixa4.querySelector('.q4-msg');
-      ms.textContent = ''; ms.className = 'q4-msg';
-    }
-    this.pergunta = null; this.respondida = false; this.errosQ = 0;
+    QUIZ4.fecha();
     this.feOn = false; this.cruz = ''; this.naK = 0; this.k31 = 0; this.suja = false;
   }
 };
 function efeitos3(t){ EV3.tick(t); }
+
+/* ============================================================
+   O QUIZ DO SLIDE 4 — as perguntas das coordenadas, da "3.3" à "3.6"
+   Começadas as perguntas, a sala escurece (o véu do quiz) e cada uma vem
+   no quadro padrão (Questão 01, 02…), com a troca da esteira e o giro da
+   tabela. Acabada a narração da pergunta, o play sai do canto: quem faz a
+   aula andar é o toque no elemento certo. O erro balança em vermelho e dá
+   a dica (no segundo, a resposta pulsa em âmbar); o acerto cresce, acende,
+   confetes, fanfarra, aplausos e a voz — e toca a narração seguinte.
+     3.3  Questão 01: 4.º período, grupo 8 (o Fe) — digitada no relógio
+     3.4  Questão 02: 3.º período, grupo 17 (o Cl)
+     3.5  Questão 03: 7.º período, grupo 2 (o Ra)
+     3.6  Questão 04: o elemento é dado, e o aluno toca o período e o grupo
+          dele (os números da tabela) — oito elementos, depois do áudio
+   ============================================================ */
+/* o véu do quiz num slide qualquer (o do slide 3 tem o seu, em QUIZ3) */
+function breuNoSlide(sl, sim){
+  if (!sl) return;
+  let v = sl.querySelector(':scope > .breu-quiz');
+  if (sim && !v){
+    v = document.createElement('div');
+    v.className = 'breu-quiz';
+    sl.insertBefore(v, sl.firstChild);
+    v.getBoundingClientRect();
+  }
+  sl.classList.toggle('quiz-escuro', sim);
+  if (v) v.classList.toggle('on', sim);
+}
+/* os oito da questão 04: o Ca, o O, o Al, a Ag, o Br, o Ba, o Au e o He */
+const COORDS_Q4 = [20, 8, 13, 47, 35, 56, 79, 2];
+const QUIZ4 = {
+  trilhas:['3.3', '3.4', '3.5', '3.6'],
+  itens:[
+    { id:'3.3', rotulo:'Questão 01', z:26, digita:{ de:2.2, ate:5.0, num:6.0 },
+      txt:'Toque no elemento que tá no 4º\u00a0período, grupo', fim:' 8' },
+    { id:'3.4', rotulo:'Questão 02', z:17,
+      txt:'Agora toque no elemento que tá no terceiro período, grupo 17.' },
+    { id:'3.5', rotulo:'Questão 03', z:88,
+      txt:'Mais um: toque no elemento que tá no sétimo período, grupo 2.' },
+    { id:'3.6', rotulo:'Questão 04', coords:true,
+      txt:'Tá, agora vamos fazer assim: eu te dou o elemento e você seleciona o período e a família dele na tela, tá bom? Lá vai o primeiro.' }
+  ],
+  ativo:false, passo:-1, aceita:false, travado:false, tropecos:0, erros:0, g:0, sub:0,
+  feito:{ p:false, g:false }, giroT:0,
+  sl(){ return slides[3]; },
+  mesa(){ return slides[3] && slides[3].querySelector('.mesa'); },
+  carta(z){ return this.mesa().querySelector('.pc[data-z="' + z + '"]'); },
+  caixa(){ return this.sl().querySelector('.quiz3:not(.sai)'); },
+  msg(){ const cx = this.caixa(); return cx && cx.querySelector('.q3-msg'); },
+  /* a cada tique do relógio, nas trilhas das perguntas (chamado por EV3) */
+  tick(t){
+    if (!this.ativo) this.abre();
+    const i = this.trilhas.indexOf(trilhaAtual);
+    if (i > this.passo) this.poe(i);
+    const it = this.itens[this.passo];
+    if (it && it.digita && trilhaAtual === it.id) this.digita(it, t);
+  },
+  /* começadas as perguntas: a sala escurece */
+  abre(){
+    this.ativo = true; this.passo = -1; this.erros = 0; this.g++;
+    breuNoSlide(this.sl(), true);
+  },
+  /* acabada a narração da pergunta, o play sai do canto */
+  semPlay(){ if (this.ativo) stage.classList.add('em-quiz'); },
+  /* a pergunta i: a da "3.3" entra no relógio (digitada); as outras, já */
+  poe(i){
+    this.passo = i; this.tropecos = 0; this.aceita = false; this.sub = 0;
+    const it = this.itens[i];
+    if (it.digita) return;
+    this.caixaNova(it.rotulo, it.txt);
+    if (!it.coords) this.aceita = true;
+  },
+  /* o quadro novo entra pela esquerda enquanto o anterior sai pela direita,
+     e a tabela gira na troca (o do quiz do slide 3) */
+  caixaNova(rotulo, txt){
+    let houve = false;
+    this.sl().querySelectorAll('.quiz3:not(.sai)').forEach(e => {
+      e.classList.add('sai');
+      setTimeout(() => e.remove(), 700);
+      houve = true;
+    });
+    if (houve) this.giraTabela();
+    const cx = document.createElement('div');
+    cx.className = 'quiz3 q4';
+    cx.setAttribute('aria-live', 'polite');
+    cx.innerHTML = '<div class="q3-marca"></div><div class="q3-q"></div><div class="q3-msg"></div>';
+    cx.querySelector('.q3-marca').textContent = rotulo;
+    cx.querySelector('.q3-q').innerHTML = txt;
+    this.sl().appendChild(cx);
+    cx.getBoundingClientRect();
+    cx.classList.add('on');
+    return cx;
+  },
+  giraTabela(){
+    const m = this.mesa();
+    if (!m) return;
+    m.querySelectorAll('.pc').forEach(c => {
+      const p = posDe(+c.dataset.z);
+      c.style.setProperty('--giro-atraso', ((p.col + p.row) * 22) + 'ms');
+    });
+    m.classList.remove('gira-troca');
+    void m.offsetWidth;
+    m.classList.add('gira-troca');
+    clearTimeout(this.giroT);
+    this.giroT = setTimeout(() => m.classList.remove('gira-troca'), 1500);
+  },
+  /* a questão 01, digitada no relógio da "3.3"; com o 8, vale o toque */
+  digita(it, t){
+    const d = it.digita;
+    if (t < d.de) return;
+    const cx = this.caixa() || this.caixaNova(it.rotulo, '');
+    const n = Math.round(entre01((t - d.de) / (d.ate - d.de)) * it.txt.length);
+    const txt = it.txt.slice(0, n) + (t >= d.num ? it.fim : '');
+    const q = cx.querySelector('.q3-q');
+    if (q.dataset.txt !== txt){ q.dataset.txt = txt; q.textContent = txt; }
+    cx.classList.toggle('digitando', t < d.num);
+    if (t >= d.num && !this.travado) this.aceita = true;
+  },
+  /* as questões 01 a 03: o toque num card */
+  tocaCarta(c){
+    const it = this.itens[this.passo];
+    if (!it || it.coords || !this.aceita || this.travado) return;
+    const z = +c.dataset.z;
+    if (z !== it.z){
+      const alvo = this.carta(it.z);
+      this.erra(c, 'Ache a linha ' + alvo.dataset.periodo + ' e siga pela coluna ' + alvo.dataset.grupo +
+                   ':<br>o elemento está no cruzamento das duas.');
+      return;
+    }
+    this.acerta(c, 'É o ' + NOMES[z-1] + ' (' + SIMBOLOS[z-1] + ').', false, () => this.seguinte());
+  },
+  /* a pergunta seguinte: a narração dela, e o quadro com ela */
+  seguinte(){
+    const i = this.passo + 1;
+    if (i >= this.itens.length) return;
+    tocaTrilha(this.itens[i].id);
+    this.poe(i);
+  },
+  /* O ERRO: balança em vermelho, a tela treme, error; a dica debaixo da
+     pergunta; no segundo erro da mesma pergunta, a resposta pulsa */
+  erra(el, dica){
+    this.erros++; this.tropecos++;
+    el.classList.remove('errada3'); void el.offsetWidth; el.classList.add('errada3');
+    clearTimeout(el._erroT);
+    el._erroT = setTimeout(() => el.classList.remove('errada3'), 700);
+    const msg = this.msg();
+    if (msg){ msg.innerHTML = dica; msg.className = 'q3-msg dica'; }
+    if (this.tropecos >= 2){
+      const it = this.itens[this.passo];
+      const z = it.coords ? COORDS_Q4[this.sub] : it.z;
+      this.carta(z).classList.add('pista3');
+    }
+    tremeVermelho();
+    const g = this.g, passo = this.passo, sub = this.sub, e = tocaEfeito('error');
+    /* a voz de ânimo, só se a mesma pergunta ainda estiver por responder
+       (acertada logo a seguir, ela tocaria por cima da festa) */
+    if (this.tropecos === 1) e.then(() => {
+      if (g === this.g && this.ativo && !this.travado && this.passo === passo && this.sub === sub) tocaEfeito('Calmanaproximaacerta');
+    });
+  },
+  /* O ACERTO: o card cresce, à frente, e acende; confetes, fanfarra,
+     aplausos e a voz; e depois, o que vem a seguir */
+  async acerta(c, frase, ultima, depois){
+    this.travado = true; this.aceita = false;
+    const g = this.g;
+    this.mesa().querySelectorAll('.pista3').forEach(x => x.classList.remove('pista3'));
+    c.classList.add('certa3');
+    QUIZ3.cresce(c);
+    const voz = vozDoAcerto(ultima);
+    const msg = this.msg();
+    if (msg){ msg.textContent = voz.frase + ' ' + frase; msg.className = 'q3-msg ok'; }
+    confete();
+    const fanfarra = tocaEfeito('funfare');
+    tocaEfeito('applause');
+    await fanfarra;
+    if (g !== this.g) return;
+    await tocaEfeito(voz.som);
+    if (g !== this.g) return;
+    this.encolhe();
+    this.travado = false;
+    depois();
+  },
+  encolhe(){
+    const m = this.mesa();
+    if (!m) return;
+    m.querySelectorAll('.pc.certa3').forEach(c => c.classList.remove('certa3'));
+    m.querySelectorAll('.pc.frente3').forEach(c => {
+      c.style.setProperty('--onda', '1');
+      clearTimeout(c._frenteT);
+      c._frenteT = setTimeout(() => {
+        c.classList.remove('frente3');
+        c.style.removeProperty('--onda');
+        c.style.removeProperty('--tsobe');
+      }, 500);
+    });
+  },
+  /* A QUESTÃO 04: os oito, um de cada vez, depois da "3.6" */
+  coordsComeca(){
+    if (!this.ativo) return;
+    stage.classList.add('em-quiz');
+    const m = this.mesa();
+    m.classList.add('toca-eixos');
+    /* os números no modelo do professor: maiores, para o dedo */
+    m.querySelectorAll('.eixo').forEach(e => e.classList.add('prof'));
+    this.sub = 0;
+    this.coordsPoe();
+  },
+  coordsPoe(){
+    const z = COORDS_Q4[this.sub];
+    this.tropecos = 0;
+    this.feito = { p:false, g:false };
+    this.caixaNova('Questão 04 · ' + (this.sub + 1) + ' de ' + COORDS_Q4.length,
+      'Em que período e em que grupo está o <b>' + SIMBOLOS[z-1] + '</b> (' + NOMES[z-1] + ')?' +
+      ' Toque nos dois números da tabela.');
+    this.aceita = true;
+  },
+  /* o toque num número: o do período (à esquerda) ou o do grupo (em cima) */
+  tocaEixo(e){
+    const it = this.itens[this.passo];
+    if (!it || !it.coords || !this.aceita || this.travado) return;
+    const z = COORDS_Q4[this.sub], c = this.carta(z), sym = SIMBOLOS[z-1];
+    const ehP = e.dataset.periodo !== undefined;
+    if (ehP ? this.feito.p : this.feito.g) return;
+    const certo = ehP ? +e.dataset.periodo === +c.dataset.periodo : +e.dataset.grupo === +c.dataset.grupo;
+    if (!certo){
+      this.erra(e, ehP
+        ? 'O período é o número da linha, à esquerda da tabela.<br>Ache o ' + sym + ' e siga a linha dele até o número.'
+        : 'O grupo é o número da coluna, em cima da tabela.<br>Ache o ' + sym + ' e suba pela coluna dele até o número.');
+      return;
+    }
+    if (ehP) this.feito.p = true; else this.feito.g = true;
+    /* a faixa do que já acertou acende (a cruz do slide) */
+    EV3.poeCruz(this.mesa(), c, this.feito.p, this.feito.g);
+    if (!(this.feito.p && this.feito.g)){
+      tocaEfeito('right');
+      const msg = this.msg();
+      if (msg){
+        msg.innerHTML = ehP ? '<b>' + c.dataset.periodo + 'º</b> período. Agora o grupo.'
+                            : 'Grupo <b>' + c.dataset.grupo + '</b>. Agora o período.';
+        msg.className = 'q3-msg ok';
+      }
+      return;
+    }
+    const ultimo = this.sub === COORDS_Q4.length - 1;
+    this.acerta(c, 'O ' + sym + ' está no ' + c.dataset.periodo + 'º período, grupo ' + c.dataset.grupo + '.',
+                ultimo, () => this.coordsSeguinte());
+  },
+  coordsSeguinte(){
+    EV3.poeCruz(this.mesa(), this.carta(COORDS_Q4[this.sub]), false, false);
+    this.sub++;
+    if (this.sub < COORDS_Q4.length){ this.coordsPoe(); return; }
+    /* os oito: a questão 04 acaba (o que vem depois ainda está por vir) */
+    this.aceita = false;
+    this.caixaNova('Questão 04', 'Muito bem! Você achou o período e o grupo dos oito elementos.');
+  },
+  fecha(){
+    const sl = this.sl();
+    if (!sl) return;
+    if (this.ativo) stage.classList.remove('em-quiz');
+    this.g++;
+    this.ativo = false; this.passo = -1; this.aceita = false; this.travado = false; this.sub = 0;
+    clearTimeout(this.giroT);
+    breuNoSlide(sl, false);
+    sl.querySelectorAll('.quiz3').forEach(e => e.remove());
+    const m = this.mesa();
+    if (m){
+      m.classList.remove('toca-eixos', 'gira-troca');
+      m.querySelectorAll('.certa3, .errada3, .pista3, .frente3').forEach(x => {
+        x.classList.remove('certa3', 'errada3', 'pista3', 'frente3');
+        x.style.removeProperty('--onda');
+        x.style.removeProperty('--tsobe');
+      });
+      m.querySelectorAll('.eixo.prof').forEach(e => e.classList.remove('prof'));
+    }
+  }
+};
 
 /* ============================================================
    O QUIZ DO SLIDE 3 — as cinco perguntas do slide 2 do app do professor
@@ -6143,7 +6372,7 @@ function go(i, dir){
      deles escondia o play da capa */
   if (i !== 1){ QUIZ.fecha(); fechaMemoria(true); }
   if (i !== 2) SEQ.deixa2();
-  if (i !== 3) EV3.entendi(false);
+  if (i !== 3){ EV3.entendi(false); if (QUIZ4.ativo) QUIZ4.fecha(); }
 
   andando = true;
   sai.classList.add('is-leaving', 'fx-cube-out-' + dir);
