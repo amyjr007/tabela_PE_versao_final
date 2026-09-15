@@ -1922,7 +1922,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v5.6';
+const VERSAO = 'v5.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4718,16 +4718,30 @@ function breuNoSlide(sl, sim){
   sl.classList.toggle('quiz-escuro', sim);
   if (v) v.classList.toggle('on', sim);
 }
-/* as questões do carrossel, uma por elemento — a 04, a 05, a 06 e a 07 */
+/* as questões do carrossel, uma por elemento — a 04, a 05, a 06 e a 07.
+   Os textos são fixos; os elementos são sorteados a cada abertura do
+   quiz (sorteiaQ4) */
 const CARROSSEL_Q4 = [
-  { z:19, txt:'Selecione o período e a família do elemento a seguir.' },   /* K  */
-  { z:50, txt:'E a posição desse?' },                                      /* Sn */
-  { z:56, txt:'Agora as coordenadas desse.' },                             /* Ba */
-  { z:47, txt:'Só mais esse?' }                                            /* Ag */
+  { z:19, txt:'Selecione o período e a família do elemento a seguir.' },
+  { z:50, txt:'E a posição desse?' },
+  { z:56, txt:'Agora as coordenadas desse.' },
+  { z:47, txt:'Só mais esse?' }
 ];
-/* as questões 08 a 10, depois da 3.7: tocar no período e na família — o
-   Mg, o Zn e o I (o texto é o mesmo; só o elemento muda) */
-const EIXOS_Q8 = [12, 30, 53];
+/* as questões 08 a 10, depois da 3.7: tocar no período e na família (o
+   texto é o mesmo; só o elemento muda) — também sorteados */
+let EIXOS_Q8 = [12, 30, 53];
+/* O SORTEIO DAS QUESTÕES 04 A 10: sete elementos diferentes da tabela do
+   slide (sem as séries, que não estão nela), e nenhum dos que já foram
+   resposta nas questões 01 a 03 (o Fe, o Cl e o Ra). A cada abertura do
+   quiz — ao abrir o app e em cada Refazer — sai um sorteio novo. */
+function sorteiaQ4(){
+  const fora = new Set([26, 17, 88]);
+  const pool = [];
+  for (let z = 1; z <= 118; z++) if (naMesa(z) && !fora.has(z)) pool.push(z);
+  const sete = embaralha(pool).slice(0, CARROSSEL_Q4.length + 3);
+  CARROSSEL_Q4.forEach((q, i) => { q.z = sete[i]; });
+  EIXOS_Q8 = sete.slice(CARROSSEL_Q4.length);
+}
 const QUIZ4 = {
   trilhas:['3.3', '3.4', '3.5', '3.6', '3.7'],
   itens:[
@@ -4782,6 +4796,8 @@ const QUIZ4 = {
   /* começadas as perguntas: a sala escurece */
   abre(){
     this.ativo = true; this.passo = -1; this.erros = 0; this.g++;
+    /* os elementos das questões 04 a 10: um sorteio novo a cada abertura */
+    sorteiaQ4();
     breuNoSlide(this.sl(), true);
   },
   /* acabada a narração da pergunta, o play sai do canto */
