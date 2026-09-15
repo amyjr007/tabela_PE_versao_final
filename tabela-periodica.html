@@ -685,6 +685,22 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
   font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:.01em;
   color:#C39B2E;
 }
+/* O SLIDE 11 (o subnível mais energético) PINTA POR BLOCO, com as cores
+   do app do professor: o s no laranja (colunas 1 e 2, e o hélio, que é
+   s² sentado no fim da linha), o p no verde (13 a 18), o d no azul (3 a
+   12) e o f no roxo — as séries, e as casas delas. Só os números das
+   linhas ficam, na bolinha do professor. */
+.mesa.blocos .pc{--cor:var(--cat-ametais)!important}
+.mesa.blocos .pc:is([data-col="1"],[data-col="2"]),
+.mesa.blocos .pc[data-z="2"]{--cor:var(--cat-alcalinos)!important}
+.mesa.blocos .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
+  [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]){--cor:var(--cat-transicao)!important}
+.mesa.blocos .pc:is([data-fam="lantanideos"],[data-fam="actinideos"]){--cor:var(--cat-lantanideos)!important}
+.mesa.blocos .casa.serie,.mesa.blocos .casa.serie.act{
+  background:linear-gradient(145deg,color-mix(in srgb,var(--cat-lantanideos) 84%,#fff),
+                                    color-mix(in srgb,var(--cat-lantanideos) 86%,#000));
+  border:1px solid rgba(255,255,255,.24);color:#fff}
+.mesa.blocos .eixo[data-grupo]{opacity:0}
 /* (o slide 9, a natureza, tem as séries à vista desde o começo, e por
    isso a mesma medida) */
 .mesa.series8,.mesa.natureza{top:-108px;bottom:108px;--zoom:.94}
@@ -2010,6 +2026,10 @@ const SLIDES = [
 
   /* o slide 10: os grupos A acesos, com os nomes 1A a 8A; os B apagados */
   { title:'A tabela e os elétrons de valência',
+    subtitle:'' },
+
+  /* o slide 11: a tabela pintada pelos blocos s, p, d e f */
+  { title:'A tabela e o subnível mais energético',
     subtitle:'' }
 ];
 
@@ -2018,7 +2038,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v6.5';
+const VERSAO = 'v6.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2337,7 +2357,7 @@ const slides = [...deck.children];
    funções dos cubos (TP), a vida solta (VIDA) e a medida do celular
    valem para a mesa do slide em que se está. O que é da história do
    slide 1 — a tela escura, o quiz, o jogo — continua a ser só dele. */
-const SLIDES_COM_MESA = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const SLIDES_COM_MESA = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const temMesa = i => SLIDES_COM_MESA.includes(i);
 function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
 /* chegar a um slide com tabela: a mesa é posta de novo e respira à
@@ -2447,7 +2467,8 @@ function montaTabela(i){
   const comSeries = i === 8;
   mesa.className = 'mesa' + (i === 3 || i === 5 || i === 8 ? ' lisa' : '') + (i === 4 ? ' tipos' : '')
                  + (i === 6 || i === 7 || i === 9 ? ' grupos' : '') + (i === 7 ? ' series8' : '')
-                 + (comSeries ? ' natureza' : '') + (i === 9 ? ' valencia' : '');
+                 + (comSeries ? ' natureza' : '') + (i === 9 ? ' valencia' : '')
+                 + (i === 10 ? ' blocos' : '');   /* o slide 11: os blocos s, p, d e f */
   mesa.style.setProperty('--L', LADO + 'px');
   mesa.style.setProperty('--H', (LADO/2) + 'px');
   mesa.style.setProperty('--k', (LADO/LADO_BASE).toFixed(3));
@@ -2462,9 +2483,9 @@ function montaTabela(i){
     e.dataset.grupo = g;      /* é por aqui que ele sabe quando recuar */
     mesa.appendChild(e);
   }
-  /* no slide 7 os números das linhas já nascem na bolinha do professor,
-     no mesmo lugar em que o slide 4 os deixa (ver LC25) */
-  const linhasProf = i === 6;
+  /* nos slides 7 e 11 os números das linhas já nascem na bolinha do
+     professor, no mesmo lugar em que o slide 4 os deixa (ver LC25) */
+  const linhasProf = i === 6 || i === 10;
   for (let p = 1; p <= 7;  p++){
     const e = eixo(p, linhasProf ? xDaColuna(1) - LADO/2 - 26 : TAB_ESQ - 19, yDaLinha(p));
     e.dataset.periodo = p;
@@ -3202,10 +3223,11 @@ const TRILHAS = {
   '6':    'Audios/audio_tabela_6.mp3',     /* o slide 7: os grupos A e B (ainda por gravar) */
   '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
   '8':    'Audios/audio_tabela_8.mp3',     /* o slide 9: a natureza (ainda por gravar) */
-  '9':    'Audios/audio_tabela_9.mp3'      /* o slide 10: a valência (ainda por gravar) */
+  '9':    'Audios/audio_tabela_9.mp3',     /* o slide 10: a valência (ainda por gravar) */
+  '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: os blocos (ainda por gravar) */
 };
 /* a trilha com que cada slide começa */
-const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 
 /* ---- A COREOGRAFIA ----
    Cada slide tem a sua lista: no segundo tal, faça isto. Voltando o
@@ -3279,7 +3301,8 @@ const ROTEIROS = {
   '6':    [],
   '7':    [],   /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
   '8':    [],
-  '9':    []
+  '9':    [],
+  '10':   []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -7772,6 +7795,9 @@ const NAV_TOPICOS = [
   /* ---- o slide 10 · A tabela e os elétrons de valência ---- */
   { titulo:'Início', sub:'o começo do slide', slide:9,
     entra(){ /* o recomeço do slide já é o tópico */ } },
+  /* ---- o slide 11 · A tabela e o subnível mais energético ---- */
+  { titulo:'Início', sub:'o começo do slide', slide:10,
+    entra(){ /* o recomeço do slide já é o tópico */ } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1,
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
@@ -7895,6 +7921,7 @@ function topicoAtual(){
   if (atual === 7) return NAV_TOPICOS.findIndex(t => t.slide === 7);
   if (atual === 8) return NAV_TOPICOS.findIndex(t => t.slide === 8);
   if (atual === 9) return NAV_TOPICOS.findIndex(t => t.slide === 9);
+  if (atual === 10) return NAV_TOPICOS.findIndex(t => t.slide === 10);
   if (atual === 3){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 3);
     return base + (QUIZ4.ativo || QUIZ4.trilhas.includes(trilhaAtual) ? 1 : 0);

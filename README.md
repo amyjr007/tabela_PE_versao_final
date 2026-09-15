@@ -269,6 +269,16 @@ dourado (`.rot-a`). Chega-se pela seta de avançar do slide 9 (ou pela
 navegação, "1. Início"), com o play à espera da narração `9`
 (`Audios/audio_tabela_9.mp3`, ainda por gravar).
 
+### Slide 11 · A tabela e o subnível mais energético
+
+A tabela (sem as séries) pintada pelos **blocos** (`.mesa.blocos`), com as
+cores do app do professor: o **s** no laranja — colunas 1 e 2, e o hélio, que
+é s² —, o **p** no verde (13 a 18), o **d** no azul (3 a 12) e o **f** no
+roxo, nas casas 57–71 e 89–103. À esquerda, só os números das linhas, na
+bolinha índigo do professor (como no slide 7). Chega-se pela seta de avançar
+do slide 10 (ou pela navegação, "1. Início"), com o play à espera da
+narração `10` (`Audios/audio_tabela_10.mp3`, ainda por gravar).
+
 ## A capa nova (CAPA_NOVA)
 
 A ideia do Claude Design, em teste: fundo escuro só na capa (no celular
