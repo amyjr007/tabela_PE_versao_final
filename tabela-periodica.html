@@ -367,6 +367,27 @@ html.palco-largo.capa-escura #viewport{background:#14131B}
   color:#F2EEE6;box-shadow:none}
 #stage.na-capa.capa-nova #som .trilho{stroke:rgba(242,238,230,.14)}
 #stage.na-capa.capa-nova #som-dica{color:rgba(242,238,230,.5)}
+/* e a versão do app, no canto de baixo: clara, para se ler no escuro */
+html.capa-escura #versao{color:rgba(242,238,230,.55)}
+
+/* O BOTÃO INSTALAR, na capa, no canto de cima à direita; e a ajuda do
+   iPhone e do iPad, logo abaixo dele */
+.capa .instalar{position:absolute;top:30px;right:40px;z-index:8;display:flex;align-items:center;gap:8px;
+  padding:9px 17px 9px 13px;border-radius:999px;cursor:pointer;
+  font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.01em;
+  color:var(--indigo);background:rgba(255,255,255,.92);border:1px solid var(--indigo-dim);
+  box-shadow:0 8px 20px rgba(32,28,66,.14);transition:transform .2s var(--e-salto), background .2s}
+.capa .instalar:hover{transform:translateY(-2px)}
+.capa .instalar:active{transform:scale(.96)}
+.capa .instalar[hidden], .capa .instalar-ajuda[hidden]{display:none}
+.capa .instalar svg{flex:none}
+#stage.capa-nova .capa .instalar{color:#F2EEE6;background:rgba(255,255,255,.06);
+  border-color:rgba(242,238,230,.35);box-shadow:none}
+#stage.capa-nova .capa .instalar:hover{background:rgba(255,255,255,.13)}
+.capa .instalar-ajuda{position:absolute;top:82px;right:40px;z-index:8;width:290px;padding:12px 15px;
+  border-radius:12px;font-family:var(--body);font-size:14px;line-height:1.5;color:var(--tinta);
+  background:#fff;border:1px solid var(--indigo-dim);box-shadow:0 14px 34px rgba(20,17,46,.3)}
+.capa .instalar-ajuda svg{vertical-align:-3px;color:var(--indigo)}
 
 /* ---------- cabeçalho: a tira do alto ----------
    É a arrumação que o professor deixou nos slides de conteúdo: régua,
@@ -1935,7 +1956,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v5.9';
+const VERSAO = 'v6.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8018,6 +8039,77 @@ if (document.fonts && document.fonts.ready)
 animaCapa();
 vidaDosBlocos();
 carregaTrilha('capa');
+
+/* ============================================================
+   O BOTÃO INSTALAR — na capa, no canto de cima à direita.
+   No Chrome e no Edge (computador, Chromebook, celular e tablet Android)
+   é o convite do próprio navegador (beforeinstallprompt), guardado e
+   mostrado quando o botão é tocado. No iPhone e no iPad, que não têm esse
+   convite, o botão mostra como se faz: Compartilhar → Adicionar à Tela
+   de Início. Aberto já como app instalado — ou num navegador sem
+   nenhuma das duas saídas —, o botão não aparece; instalado, some.
+   ============================================================ */
+const INSTALA = { convite:null };
+function jaInstalado(){
+  return ['standalone', 'fullscreen', 'minimal-ui'].some(m => matchMedia('(display-mode: ' + m + ')').matches) ||
+         navigator.standalone === true;
+}
+function ehIOS(){
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);   /* o iPad que se diz Mac */
+}
+const ICONE_BAIXAR = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"' +
+  ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>';
+const ICONE_PARTILHAR = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"' +
+  ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3"/><path d="M8 7l4-4 4 4"/>' +
+  '<path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
+function montaInstalar(){
+  const sl = slides[0];
+  if (!sl || sl.querySelector('.instalar')) return;
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'instalar';
+  b.hidden = true;
+  b.innerHTML = ICONE_BAIXAR + '<span>Instalar app</span>';
+  const ajuda = document.createElement('div');
+  ajuda.className = 'instalar-ajuda';
+  ajuda.hidden = true;
+  ajuda.innerHTML = '<b>No iPhone e no iPad:</b> toque em ' + ICONE_PARTILHAR + ' <b>Compartilhar</b>' +
+                    ' e depois em <b>Adicionar à Tela de Início</b>.';
+  b.addEventListener('click', async ev => {
+    ev.stopPropagation();
+    if (naMontagem()) return;
+    const c = INSTALA.convite;
+    if (c){
+      /* o convite do navegador só pode ser usado uma vez */
+      INSTALA.convite = null;
+      try { await c.prompt(); await c.userChoice; } catch(_){}
+      mostraInstalar();
+    } else if (ehIOS()) ajuda.hidden = !ajuda.hidden;
+  });
+  /* a ajuda fecha com qualquer toque fora dela */
+  document.addEventListener('click', ev => {
+    if (!ajuda.hidden && !(ev.target.closest && ev.target.closest('.instalar, .instalar-ajuda'))) ajuda.hidden = true;
+  });
+  sl.appendChild(b);
+  sl.appendChild(ajuda);
+  mostraInstalar();
+}
+function mostraInstalar(){
+  const b = slides[0] && slides[0].querySelector('.instalar');
+  if (!b) return;
+  b.hidden = jaInstalado() || !(INSTALA.convite || ehIOS());
+  if (b.hidden){ const a = slides[0].querySelector('.instalar-ajuda'); if (a) a.hidden = true; }
+}
+window.addEventListener('beforeinstallprompt', ev => {
+  /* o convite fica guardado para o botão (e a barrinha do navegador não
+     aparece por cima da capa) */
+  ev.preventDefault();
+  INSTALA.convite = ev;
+  mostraInstalar();
+});
+window.addEventListener('appinstalled', () => { INSTALA.convite = null; mostraInstalar(); });
+montaInstalar();
 
 /* o serviço que guarda a aula no aparelho */
 /* o selo da versão, no canto */

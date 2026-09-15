@@ -227,6 +227,16 @@ play em anel claro. A narração da capa (os destaques, as frases digitadas, a
 mãozinha) é a mesma. Com `CAPA_NOVA = false` no começo do código, a capa
 antiga volta inteira — o desenho, o layout e as cartas.
 
+## O botão Instalar
+
+Na capa, no canto de cima à direita. No Chrome e no Edge — computador,
+Chromebook, celular e tablet Android — ele abre o convite de instalação do
+próprio navegador (`beforeinstallprompt`, guardado para o botão). No iPhone
+e no iPad, que não têm esse convite, ele mostra como se faz: Compartilhar →
+Adicionar à Tela de Início. Com o app aberto já instalado, ou num navegador
+sem nenhuma das duas saídas (o convite só vem quando o app ainda não está
+instalado), o botão não aparece; instalado, some.
+
 ## O ícone
 
 O ícone do app (na área de trabalho, na tela inicial e na aba) sai de
