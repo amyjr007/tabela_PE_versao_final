@@ -219,7 +219,7 @@ antiga volta inteira — o desenho, o layout e as cartas.
 ## O ícone
 
 O ícone do app (na área de trabalho, na tela inicial e na aba) sai de
-`icones/Icone do App-selection.png` (480×480): `app-192.png` e `app-512.png`
+`icones/icone tablet.png` (480×480): `app-192.png` e `app-512.png`
 (os cantos transparentes), `app-180.png` (o do iPhone/iPad, opaco) e as
 versões `maskable` (o desenho a 80%, no mesmo lilás do fundo, para o sistema
 poder recortar em círculo). Os nomes são novos de propósito: o Chrome só
