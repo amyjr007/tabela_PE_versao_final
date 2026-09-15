@@ -215,6 +215,14 @@ nota do slide 4 (ou pela navegação, "1. Início"), com o play à espera da
 narração `4` (`Audios/audio_tabela_4.mp3`, ainda por gravar) e a mesa a
 respirar até ele ser tocado.
 
+### Slide 6 · As principais famílias — Os Alcalinos, Alcalinos-Terrosos, Calcogênios e Halogênios
+
+A mesma tabela (sem as séries), de novo no **tabuleiro liso** do slide 4, de
+uma cor só (`.mesa.lisa`). Chega-se a ele pela seta de avançar do slide 5 (ou
+pela navegação, "1. Início"), com o play à espera da narração `5`
+(`Audios/audio_tabela_5.mp3`, ainda por gravar) e a mesa a respirar até ele
+ser tocado.
+
 ## A capa nova (CAPA_NOVA)
 
 A ideia do Claude Design, em teste: fundo escuro só na capa (no celular

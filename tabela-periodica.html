@@ -424,6 +424,9 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 }
 .subtitle{font-size:28px;font-weight:300;color:var(--ouro);letter-spacing:.005em;
   white-space:nowrap}
+/* o subtítulo comprido (o slide 6, com as quatro famílias) desce de
+   corpo para caber na tira, ao lado do título, sem passar da borda */
+.subtitle.longo{font-size:20px}
 
 /* área de conteúdo — o palco inteiro, por baixo da tira.
    Como ela cobre o slide todo, as contas da tabela são feitas em
@@ -1948,7 +1951,12 @@ const SLIDES = [
 
   /* o slide 5: a mesma tabela, pintada pelo tipo do elemento */
   { title:'Os tipos de elementos',
-    subtitle:'Metais, Ametais e Gases Nobres' }
+    subtitle:'Metais, Ametais e Gases Nobres' },
+
+  /* o slide 6: a mesma tabela, de novo no tabuleiro liso do slide 4 */
+  { title:'As principais famílias',
+    subtitle:'Os Alcalinos, Alcalinos-Terrosos, Calcogênios e Halogênios',
+    subLongo:true }
 ];
 
 /* A VERSÃO DO APP — sobe a cada mudança publicada. É daqui, e só daqui,
@@ -1956,7 +1964,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v6.0';
+const VERSAO = 'v6.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2250,7 +2258,7 @@ SLIDES.forEach((sl,i) => {
         '<div class="regua" aria-label="Ir para um slide"></div>' +
         '<div class="num">'+i+'</div>' +
         '<h2 class="title">'+esc(sl.title)+'</h2>' +
-        '<div class="subtitle">'+esc(sl.subtitle || '')+'</div>' +
+        '<div class="subtitle'+(sl.subLongo ? ' longo' : '')+'">'+esc(sl.subtitle || '')+'</div>' +
       '</div>' +
       '<div class="body-area"></div>';
 
@@ -2275,7 +2283,7 @@ const slides = [...deck.children];
    funções dos cubos (TP), a vida solta (VIDA) e a medida do celular
    valem para a mesa do slide em que se está. O que é da história do
    slide 1 — a tela escura, o quiz, o jogo — continua a ser só dele. */
-const SLIDES_COM_MESA = [1, 2, 3, 4];
+const SLIDES_COM_MESA = [1, 2, 3, 4, 5];
 const temMesa = i => SLIDES_COM_MESA.includes(i);
 function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
 /* chegar a um slide com tabela: a mesa é posta de novo e respira à
@@ -2375,8 +2383,9 @@ function montaTabela(i){
   cena.className = 'cena';
   const mesa = document.createElement('div');
   /* no slide 4 (as coordenadas) o tabuleiro é liso, de uma cor só */
-  /* e no slide 5 (os tipos) a cor é a do tipo, e não a da família */
-  mesa.className = 'mesa' + (i === 3 ? ' lisa' : '') + (i === 4 ? ' tipos' : '');
+  /* e no slide 5 (os tipos) a cor é a do tipo, e não a da família;
+     no slide 6 (as principais famílias) volta o tabuleiro liso */
+  mesa.className = 'mesa' + (i === 3 || i === 5 ? ' lisa' : '') + (i === 4 ? ' tipos' : '');
   mesa.style.setProperty('--L', LADO + 'px');
   mesa.style.setProperty('--H', (LADO/2) + 'px');
   mesa.style.setProperty('--k', (LADO/LADO_BASE).toFixed(3));
@@ -3101,10 +3110,11 @@ const TRILHAS = {
   '3.5':  'Audios/audio_tabela_3.5.mp3',   /* questão 03: o 7.º período, grupo 2 */
   '3.6':  'Audios/audio_tabela_3.6.mp3',   /* questão 04: o carrossel */
   '3.7':  'Audios/audio_tabela_3.7.mp3',   /* as questões 08 a 10: tocar no período e na família */
-  '4':    'Audios/audio_tabela_4.mp3'      /* o slide 5: os tipos (ainda por gravar) */
+  '4':    'Audios/audio_tabela_4.mp3',     /* o slide 5: os tipos (ainda por gravar) */
+  '5':    'Audios/audio_tabela_5.mp3'      /* o slide 6: as principais famílias (ainda por gravar) */
 };
 /* a trilha com que cada slide começa */
-const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4'];
+const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5'];
 
 /* ---- A COREOGRAFIA ----
    Cada slide tem a sua lista: no segundo tal, faça isto. Voltando o
@@ -3173,7 +3183,8 @@ const ROTEIROS = {
   '3.5':  [],
   '3.6':  [],
   '3.7':  [],
-  '4':    []
+  '4':    [],
+  '5':    []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -7565,6 +7576,9 @@ const NAV_TOPICOS = [
   /* ---- o slide 5 · Os tipos de elementos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:4,
     entra(){ /* o recomeço do slide já é o tópico */ } },
+  /* ---- o slide 6 · As principais famílias ---- */
+  { titulo:'Início', sub:'o começo do slide', slide:5,
+    entra(){ /* o recomeço do slide já é o tópico */ } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1,
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
@@ -7683,6 +7697,7 @@ function tocaDesde(id, t, g){
 /* em que tópico a aula está agora — é o que a gaveta acende */
 function topicoAtual(){
   if (atual === 4) return NAV_TOPICOS.findIndex(t => t.slide === 4);
+  if (atual === 5) return NAV_TOPICOS.findIndex(t => t.slide === 5);
   if (atual === 3){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 3);
     return base + (QUIZ4.ativo || QUIZ4.trilhas.includes(trilhaAtual) ? 1 : 0);
