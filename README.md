@@ -247,6 +247,18 @@ escondidas. O timing da narração `7` (`Audios/audio_tabela_7.mp3`, ainda por
 gravar) virá depois: o roteiro `'7'` só terá de chamar `SERIES8.desce('lan')`
 e `SERIES8.desce('act')`.
 
+### Slide 9 · A Natureza dos elementos — Os naturais, os artificiais e os radioativos
+
+A base da cena do app do professor: o **tabuleiro liso**, com as duas séries
+já à vista nas linhas delas embaixo (`comSeries`, `.mesa.natureza`, na mesma
+medida do slide 8), com as casas e o "↓" nos bilhetes 57–71 e 89–103. Aqui as
+séries entram no `TP.todos()`: a vida solta e as ondas passam por elas também.
+Chega-se pela seta de avançar do slide 8 (ou pela navegação, "1. Início"),
+com o play à espera da narração `8` (`Audios/audio_tabela_8.mp3`, ainda por
+gravar). As cores da natureza (o verde dos naturais até o urânio, o âmbar do
+Tc e do Pm, o brilho dos artificiais, os estáveis e os radioativos) ficam
+para depois.
+
 ## A capa nova (CAPA_NOVA)
 
 A ideia do Claude Design, em teste: fundo escuro só na capa (no celular

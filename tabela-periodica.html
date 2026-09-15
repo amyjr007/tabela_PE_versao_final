@@ -673,8 +673,10 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
    narração" — pelo top/bottom e por um --zoom da folha, que a ferramenta
    de ajuste, escrevendo o dela no style, ainda sobrepõe —, os números
    saem, e as casas 57–71 e 89–103 viram botão */
-.mesa.series8{top:-108px;bottom:108px;--zoom:.94}
-.mesa.series8 .eixo{opacity:0}
+/* (o slide 9, a natureza, tem as séries à vista desde o começo, e por
+   isso a mesma medida) */
+.mesa.series8,.mesa.natureza{top:-108px;bottom:108px;--zoom:.94}
+.mesa.series8 .eixo,.mesa.natureza .eixo{opacity:0}
 .mesa.series8 .casa.serie{pointer-events:auto;cursor:pointer;transition:transform .2s ease,filter .2s ease}
 .mesa.series8 .casa.serie:hover{filter:brightness(1.12)}
 .mesa.series8 .casa.serie:active{transform:translate(-50%,-50%) scale(.94)}
@@ -1987,7 +1989,12 @@ const SLIDES = [
 
   /* o slide 8: a tabela A e B, mais acima; as séries descem ao toque */
   { title:'Os Lantanídeos e Actinídeos',
-    subtitle:'' }
+    subtitle:'' },
+
+  /* o slide 9: o tabuleiro liso, com as duas séries já à vista embaixo */
+  { title:'A Natureza dos elementos',
+    subtitle:'Os naturais, os artificiais e os radioativos',
+    subLongo:true }
 ];
 
 /* A VERSÃO DO APP — sobe a cada mudança publicada. É daqui, e só daqui,
@@ -1995,7 +2002,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v6.3';
+const VERSAO = 'v6.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2314,7 +2321,7 @@ const slides = [...deck.children];
    funções dos cubos (TP), a vida solta (VIDA) e a medida do celular
    valem para a mesa do slide em que se está. O que é da história do
    slide 1 — a tela escura, o quiz, o jogo — continua a ser só dele. */
-const SLIDES_COM_MESA = [1, 2, 3, 4, 5, 6, 7];
+const SLIDES_COM_MESA = [1, 2, 3, 4, 5, 6, 7, 8];
 const temMesa = i => SLIDES_COM_MESA.includes(i);
 function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
 /* chegar a um slide com tabela: a mesa é posta de novo e respira à
@@ -2418,9 +2425,12 @@ function montaTabela(i){
   /* e no slide 5 (os tipos) a cor é a do tipo, e não a da família;
      no slide 6 (as principais famílias) volta o tabuleiro liso;
      no slide 7 (os grupos A e B), dourado e vermelho; e no slide 8 (as
-     séries) as mesmas cores, com a mesa mais acima */
-  mesa.className = 'mesa' + (i === 3 || i === 5 ? ' lisa' : '') + (i === 4 ? ' tipos' : '')
-                 + (i === 6 || i === 7 ? ' grupos' : '') + (i === 7 ? ' series8' : '');
+     séries) as mesmas cores, com a mesa mais acima; no slide 9 (a
+     natureza) o liso de novo, e as séries já à vista, embaixo */
+  const comSeries = i === 8;
+  mesa.className = 'mesa' + (i === 3 || i === 5 || i === 8 ? ' lisa' : '') + (i === 4 ? ' tipos' : '')
+                 + (i === 6 || i === 7 ? ' grupos' : '') + (i === 7 ? ' series8' : '')
+                 + (comSeries ? ' natureza' : '');
   mesa.style.setProperty('--L', LADO + 'px');
   mesa.style.setProperty('--H', (LADO/2) + 'px');
   mesa.style.setProperty('--k', (LADO/LADO_BASE).toFixed(3));
@@ -2461,7 +2471,7 @@ function montaTabela(i){
 
   /* --- as casas: o encaixe de cada cubo, e a sombra dele --- */
   for (let z = 1; z <= 118; z++){
-    if (!SERIES_VISIVEIS && ehDaSerie(z)) continue;
+    if (!SERIES_VISIVEIS && !comSeries && ehDaSerie(z)) continue;
     const a = alvoDe(z);
     mesa.appendChild(casa(a.x, a.y));
   }
@@ -2477,7 +2487,7 @@ function montaTabela(i){
   const cubos = [];
   for (let z = 1; z <= 118; z++){
     const c = criaCubo(z);
-    if (!SERIES_VISIVEIS && ehDaSerie(z)) c.classList.add('serie-oculta');
+    if (!SERIES_VISIVEIS && !comSeries && ehDaSerie(z)) c.classList.add('serie-oculta');
     const a = alvoDe(z);
     c.style.left = a.x.toFixed(1) + 'px';
     c.style.top  = a.y.toFixed(1) + 'px';
@@ -2526,7 +2536,7 @@ function montaTabela(i){
   function casaSerie(x, y, faixa, act){
     const d = casa(x, y);
     d.className = 'casa serie' + (act ? ' act' : '');
-    d.innerHTML = faixa + (SERIES_VISIVEIS ? '<br>↓' : '');
+    d.innerHTML = faixa + (SERIES_VISIVEIS || comSeries ? '<br>↓' : '');
     return d;
   }
 }
@@ -2867,9 +2877,10 @@ const TP = {
     /* nas duas linhas de baixo a coluna desenhada não é a do grupo: ali
        a faixa vertical mentiria, e por isso só se acende a da linha */
     if (comColuna){
-      /* no slide 8 não há número do grupo por cima, e a mesa, mais
+      /* nos slides 8 e 9 não há número do grupo por cima, e a mesa, mais
          acima, levaria a faixa para baixo do título: ela pára na linha 1 */
-      const larg = LADO + 14, acima = mesa.classList.contains('series8') ? 8 : 30;
+      const semNumeros = mesa.classList.contains('series8') || mesa.classList.contains('natureza');
+      const larg = LADO + 14, acima = semNumeros ? 8 : 30;
       b2.style.left   = (xDaColuna(col) - larg/2) + 'px';
       b2.style.width  = larg + 'px';
       b2.style.top    = (TAB_TOPO - acima) + 'px';
@@ -3160,10 +3171,11 @@ const TRILHAS = {
   '4':    'Audios/audio_tabela_4.mp3',     /* o slide 5: os tipos (ainda por gravar) */
   '5':    'Audios/audio_tabela_5.mp3',     /* o slide 6: as principais famílias (ainda por gravar) */
   '6':    'Audios/audio_tabela_6.mp3',     /* o slide 7: os grupos A e B (ainda por gravar) */
-  '7':    'Audios/audio_tabela_7.mp3'      /* o slide 8: as séries (ainda por gravar) */
+  '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
+  '8':    'Audios/audio_tabela_8.mp3'      /* o slide 9: a natureza (ainda por gravar) */
 };
 /* a trilha com que cada slide começa */
-const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7'];
+const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8'];
 
 /* ---- A COREOGRAFIA ----
    Cada slide tem a sua lista: no segundo tal, faça isto. Voltando o
@@ -3235,7 +3247,8 @@ const ROTEIROS = {
   '4':    [],
   '5':    [],
   '6':    [],
-  '7':    []    /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
+  '7':    [],   /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
+  '8':    []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -7722,6 +7735,9 @@ const NAV_TOPICOS = [
   /* ---- o slide 8 · Os Lantanídeos e Actinídeos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:7,
     entra(){ /* o recomeço do slide já é o tópico */ } },
+  /* ---- o slide 9 · A Natureza dos elementos ---- */
+  { titulo:'Início', sub:'o começo do slide', slide:8,
+    entra(){ /* o recomeço do slide já é o tópico */ } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1,
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
@@ -7843,6 +7859,7 @@ function topicoAtual(){
   if (atual === 5) return NAV_TOPICOS.findIndex(t => t.slide === 5);
   if (atual === 6) return NAV_TOPICOS.findIndex(t => t.slide === 6);
   if (atual === 7) return NAV_TOPICOS.findIndex(t => t.slide === 7);
+  if (atual === 8) return NAV_TOPICOS.findIndex(t => t.slide === 8);
   if (atual === 3){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 3);
     return base + (QUIZ4.ativo || QUIZ4.trilhas.includes(trilhaAtual) ? 1 : 0);
