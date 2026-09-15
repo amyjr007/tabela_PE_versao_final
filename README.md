@@ -204,6 +204,17 @@ no relógio do áudio (`EV3`, `efeitos3`):
 | depois da 07 | a narração **`3.7`**; no fim dela, as questões 08, 09 e 10: "Toque no período e família do elemento …" (elementos também sorteados; os sete das questões 04 a 10 são todos diferentes, sem as séries e sem o Fe, o Cl e o Ra das questões 01 a 03) — o aluno toca o **número do período** (à esquerda) e o **da família** (em cima); o elemento não acende, e de uma questão para a outra só o elemento do texto muda; no erro, a dica (no segundo o elemento pisca; no terceiro, a linha e a coluna acendem) |
 | no fim das 10 | o **cartão com a nota** (`statistics`): cada erro desconta o valor de uma questão; **Refazer** recomeça as perguntas (a `3.3`), **Continuar** fecha o quiz |
 
+### Slide 5 · Os tipos de elementos — Metais, Ametais e Gases Nobres
+
+A mesma tabela (sem as séries), agora pintada pelo **tipo** do elemento, com
+as cores do app do professor: metais no azul (o dos de transição), ametais no
+verde, gases nobres no violeta, e o hidrogênio — um ametal — no verde
+(`.mesa.tipos`, `tipoDe`). O sistema é o moderno, sem semimetais: B, Si, As e
+Te são ametais; Ge e Sb, metais. Chega-se a ele pelo Continuar do cartão da
+nota do slide 4 (ou pela navegação, "1. Início"), com o play à espera da
+narração `4` (`Audios/audio_tabela_4.mp3`, ainda por gravar) e a mesa a
+respirar até ele ser tocado.
+
 ## A capa nova (CAPA_NOVA)
 
 A ideia do Claude Design, em teste: fundo escuro só na capa (no celular

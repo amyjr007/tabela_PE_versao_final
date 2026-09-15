@@ -622,6 +622,15 @@ html.palco-largo.capa-escura #viewport{background:#14131B}
 .mesa.lisa .face::before{opacity:0}
 .mesa.lisa .face i,.mesa.lisa .face u,.mesa.lisa .face em{color:rgba(32,28,66,.58);text-shadow:none}
 .mesa.lisa .face b{color:var(--tinta);text-shadow:none}
+/* O SLIDE 5 PINTA POR TIPO (as cores do app do professor): os metais no
+   azul dos de transição, que são a maior parte deles; os ametais no
+   verde; os gases nobres no violeta; e o hidrogênio, que é um ametal, no
+   verde. Com !important: a cor da família nasce na carta como estilo
+   inline, e aqui é a folha que manda. */
+.mesa.tipos .pc[data-tipo="metais"]     {--cor:var(--cat-transicao)!important}
+.mesa.tipos .pc[data-tipo="ametais"]    {--cor:var(--cat-ametais)!important}
+.mesa.tipos .pc[data-tipo="nobres"]     {--cor:var(--cat-nobres)!important}
+.mesa.tipos .pc[data-tipo="hidrogenio"] {--cor:var(--cat-ametais)!important}
 
 .face i,.face b,.face u,.face em{
   position:relative;z-index:3;font-style:normal;text-decoration:none;color:#fff;
@@ -1914,7 +1923,11 @@ const SLIDES = [
 
   /* o slide 4: a mesma tabela, no tabuleiro liso do professor */
   { title:'As coordenadas periódicas',
-    subtitle:'Os grupos e os períodos' }
+    subtitle:'Os grupos e os períodos' },
+
+  /* o slide 5: a mesma tabela, pintada pelo tipo do elemento */
+  { title:'Os tipos de elementos',
+    subtitle:'Metais, Ametais e Gases Nobres' }
 ];
 
 /* A VERSÃO DO APP — sobe a cada mudança publicada. É daqui, e só daqui,
@@ -1922,7 +1935,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v5.8';
+const VERSAO = 'v5.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2065,6 +2078,17 @@ function familiaDe(col, row){
 }
 /* a família é do elemento, não da casa: as duas séries dividem a casa
    do grupo 3, que sozinha diria "metal de transição" */
+/* OS TIPOS: metais, ametais e gases nobres — o sistema moderno, sem
+   semimetais —, e o hidrogênio à parte (um ametal sentado em cima dos
+   metais alcalinos). É o tipoDe do app do professor, sobre a mesma
+   familiaDe: os dois apps pintam os mesmos elementos da mesma cor. */
+function tipoDe(z){
+  if (z === 1) return 'hidrogenio';
+  const f = familiaDoZ(z);
+  if (f === 'nobres') return 'nobres';
+  if (f === 'ametais' || f === 'halogenios') return 'ametais';
+  return 'metais';
+}
 function familiaDoZ(z){
   if (z >= 57 && z <= 71)  return 'lantanideos';
   if (z >= 89 && z <= 103) return 'actinideos';
@@ -2230,7 +2254,7 @@ const slides = [...deck.children];
    funções dos cubos (TP), a vida solta (VIDA) e a medida do celular
    valem para a mesa do slide em que se está. O que é da história do
    slide 1 — a tela escura, o quiz, o jogo — continua a ser só dele. */
-const SLIDES_COM_MESA = [1, 2, 3];
+const SLIDES_COM_MESA = [1, 2, 3, 4];
 const temMesa = i => SLIDES_COM_MESA.includes(i);
 function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
 /* chegar a um slide com tabela: a mesa é posta de novo e respira à
@@ -2302,6 +2326,7 @@ function criaCubo(z){
   c.dataset.z    = z;
   c.dataset.sym  = SIMBOLOS[z-1];
   c.dataset.fam  = familiaDoZ(z);
+  c.dataset.tipo = tipoDe(z);   /* o slide 5 pinta por aqui */
   const p = posFull(z);
   c.dataset.col  = p.col;
   c.dataset.linha = p.row;
@@ -2329,7 +2354,8 @@ function montaTabela(i){
   cena.className = 'cena';
   const mesa = document.createElement('div');
   /* no slide 4 (as coordenadas) o tabuleiro é liso, de uma cor só */
-  mesa.className = 'mesa' + (i === 3 ? ' lisa' : '');
+  /* e no slide 5 (os tipos) a cor é a do tipo, e não a da família */
+  mesa.className = 'mesa' + (i === 3 ? ' lisa' : '') + (i === 4 ? ' tipos' : '');
   mesa.style.setProperty('--L', LADO + 'px');
   mesa.style.setProperty('--H', (LADO/2) + 'px');
   mesa.style.setProperty('--k', (LADO/LADO_BASE).toFixed(3));
@@ -3053,10 +3079,11 @@ const TRILHAS = {
   '3.4':  'Audios/audio_tabela_3.4.mp3',   /* questão 02: o 3.º período, grupo 17 */
   '3.5':  'Audios/audio_tabela_3.5.mp3',   /* questão 03: o 7.º período, grupo 2 */
   '3.6':  'Audios/audio_tabela_3.6.mp3',   /* questão 04: o carrossel */
-  '3.7':  'Audios/audio_tabela_3.7.mp3'    /* as questões 08 a 10: tocar no período e na família */
+  '3.7':  'Audios/audio_tabela_3.7.mp3',   /* as questões 08 a 10: tocar no período e na família */
+  '4':    'Audios/audio_tabela_4.mp3'      /* o slide 5: os tipos (ainda por gravar) */
 };
 /* a trilha com que cada slide começa */
-const TRILHA_DO_SLIDE = ['capa', '1', '2', '3'];
+const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4'];
 
 /* ---- A COREOGRAFIA ----
    Cada slide tem a sua lista: no segundo tal, faça isto. Voltando o
@@ -3124,7 +3151,8 @@ const ROTEIROS = {
   '3.4':  [],
   '3.5':  [],
   '3.6':  [],
-  '3.7':  []
+  '3.7':  [],
+  '4':    []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -5254,7 +5282,7 @@ const QUIZ4 = {
     const n = 3 + CARROSSEL_Q4.length + EIXOS_Q8.length, e = this.erros;
     cartaoDoResultado(Math.round(Math.max(0, n - e) / n * 100) / 10,
       n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
-      this.sl(), () => { this.fecha(); tocaTrilha('3.3'); }, () => this.fecha(), null);
+      this.sl(), () => { this.fecha(); tocaTrilha('3.3'); }, () => { this.fecha(); go(4); }, null);
   },
   fecha(){
     const sl = this.sl();
@@ -7513,6 +7541,9 @@ const NAV_TOPICOS = [
     entra(){ /* o recomeço do slide já é o tópico */ } },
   { titulo:'Quiz', sub:'o começo da 3.3: as perguntas', slide:3,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('3.3', 0, g)); } },
+  /* ---- o slide 5 · Os tipos de elementos ---- */
+  { titulo:'Início', sub:'o começo do slide', slide:4,
+    entra(){ /* o recomeço do slide já é o tópico */ } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1,
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
@@ -7630,6 +7661,7 @@ function tocaDesde(id, t, g){
 
 /* em que tópico a aula está agora — é o que a gaveta acende */
 function topicoAtual(){
+  if (atual === 4) return NAV_TOPICOS.findIndex(t => t.slide === 4);
   if (atual === 3){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 3);
     return base + (QUIZ4.ativo || QUIZ4.trilhas.includes(trilhaAtual) ? 1 : 0);
