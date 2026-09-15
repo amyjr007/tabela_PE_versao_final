@@ -259,6 +259,16 @@ gravar). As cores da natureza (o verde dos naturais até o urânio, o âmbar do
 Tc e do Pm, o brilho dos artificiais, os estáveis e os radioativos) ficam
 para depois.
 
+### Slide 10 · A tabela e os elétrons de valência
+
+A tabela das cores dos grupos A e B (sem as séries), mas com os **grupos B e
+as casas das séries quase apagados** (`.mesa.valencia`, opacidade 0,3): só os
+grupos A ficam inteiros, no dourado. Os números das linhas e das colunas
+saem, e por cima das colunas 1, 2 e 13 a 18 ficam os nomes **1A a 8A**, no
+dourado (`.rot-a`). Chega-se pela seta de avançar do slide 9 (ou pela
+navegação, "1. Início"), com o play à espera da narração `9`
+(`Audios/audio_tabela_9.mp3`, ainda por gravar).
+
 ## A capa nova (CAPA_NOVA)
 
 A ideia do Claude Design, em teste: fundo escuro só na capa (no celular
