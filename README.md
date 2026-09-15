@@ -207,7 +207,7 @@ no relógio do áudio (`EV3`, `efeitos3`):
 ## A capa nova (CAPA_NOVA)
 
 A ideia do Claude Design, em teste: fundo escuro só na capa (no celular
-deitado, a tela inteira), "Química · Ensino Médio" e "Audiobook interativo"
+deitado, a tela inteira), "Química · Ensino Fundamental e Médio" e "Audiobook interativo"
 em âmbar, "Tabela Periódica Moderna" grande e claro à esquerda com um risco
 âmbar, o retrato redondo ao lado de "Prof. Amauri Junior" e do e-mail, a
 tabelinha grande e apagada ao fundo à direita, o sódio, o ítrio e o lantânio
