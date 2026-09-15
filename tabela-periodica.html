@@ -665,6 +665,19 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 .mesa.grupos .casa.serie,.mesa.grupos .casa.serie.act{
   background:rgba(166,56,47,.82);border-color:rgba(120,32,26,.55);color:rgba(255,255,255,.88)}
 .mesa.grupos .eixo[data-grupo]{opacity:0}
+/* os lantanídeos e os actinídeos são do bloco B: vermelhos também, mesmo
+   sentados, na linha deles, debaixo das colunas 13 a 17 */
+.mesa.grupos .pc:is([data-fam="lantanideos"],[data-fam="actinideos"]){--cor:#A6382F!important}
+/* O SLIDE 8 (as séries): a mesa sobe e encolhe um fio (6%) para dar
+   lugar às duas linhas de baixo sem tocar no play nem no "tocar a
+   narração" — pelo top/bottom e por um --zoom da folha, que a ferramenta
+   de ajuste, escrevendo o dela no style, ainda sobrepõe —, os números
+   saem, e as casas 57–71 e 89–103 viram botão */
+.mesa.series8{top:-108px;bottom:108px;--zoom:.94}
+.mesa.series8 .eixo{opacity:0}
+.mesa.series8 .casa.serie{pointer-events:auto;cursor:pointer;transition:transform .2s ease,filter .2s ease}
+.mesa.series8 .casa.serie:hover{filter:brightness(1.12)}
+.mesa.series8 .casa.serie:active{transform:translate(-50%,-50%) scale(.94)}
 
 .face i,.face b,.face u,.face em{
   position:relative;z-index:3;font-style:normal;text-decoration:none;color:#fff;
@@ -1970,7 +1983,11 @@ const SLIDES = [
 
   /* o slide 7: a mesma tabela, pintada por grupo A (dourado) e B (vermelho) */
   { title:'Os Grupos A e B',
-    subtitle:'Os elementos principais' }
+    subtitle:'Os elementos principais' },
+
+  /* o slide 8: a tabela A e B, mais acima; as séries descem ao toque */
+  { title:'Os Lantanídeos e Actinídeos',
+    subtitle:'' }
 ];
 
 /* A VERSÃO DO APP — sobe a cada mudança publicada. É daqui, e só daqui,
@@ -1978,7 +1995,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v6.2';
+const VERSAO = 'v6.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2297,14 +2314,15 @@ const slides = [...deck.children];
    funções dos cubos (TP), a vida solta (VIDA) e a medida do celular
    valem para a mesa do slide em que se está. O que é da história do
    slide 1 — a tela escura, o quiz, o jogo — continua a ser só dele. */
-const SLIDES_COM_MESA = [1, 2, 3, 4, 5, 6];
+const SLIDES_COM_MESA = [1, 2, 3, 4, 5, 6, 7];
 const temMesa = i => SLIDES_COM_MESA.includes(i);
 function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
 /* chegar a um slide com tabela: a mesa é posta de novo e respira à
    espera do play. No slide 1 a história dele também recomeça. */
 function recomecaMesa(i){
   if (i === 1) SEQ.reinicia();
-  else if (temMesa(i)){ SEQ.comecou = false; if (i === 2) SEQ.reinicia2(); if (i === 3) EV3.zera(); }
+  else if (temMesa(i)){ SEQ.comecou = false; if (i === 2) SEQ.reinicia2(); if (i === 3) EV3.zera();
+                        if (i === 7) SERIES8.zera(); }
   else return;
   pousaTabela();
   setTimeout(() => VIDA.liga(), 1500);
@@ -2399,9 +2417,10 @@ function montaTabela(i){
   /* no slide 4 (as coordenadas) o tabuleiro é liso, de uma cor só */
   /* e no slide 5 (os tipos) a cor é a do tipo, e não a da família;
      no slide 6 (as principais famílias) volta o tabuleiro liso;
-     no slide 7 (os grupos A e B), dourado e vermelho */
+     no slide 7 (os grupos A e B), dourado e vermelho; e no slide 8 (as
+     séries) as mesmas cores, com a mesa mais acima */
   mesa.className = 'mesa' + (i === 3 || i === 5 ? ' lisa' : '') + (i === 4 ? ' tipos' : '')
-                 + (i === 6 ? ' grupos' : '');
+                 + (i === 6 || i === 7 ? ' grupos' : '') + (i === 7 ? ' series8' : '');
   mesa.style.setProperty('--L', LADO + 'px');
   mesa.style.setProperty('--H', (LADO/2) + 'px');
   mesa.style.setProperty('--k', (LADO/LADO_BASE).toFixed(3));
@@ -2450,6 +2469,9 @@ function montaTabela(i){
      elemento dentro, têm o bilhete que diz onde procurar */
   mesa.appendChild(casaSerie(xDaColuna(3), yDaLinha(6), '57–71', false));
   mesa.appendChild(casaSerie(xDaColuna(3), yDaLinha(7), '89–103', true));
+  /* no slide 8 o bilhete é botão: tocado, a série desce (ver SERIES8) */
+  if (i === 7) mesa.querySelectorAll('.casa.serie').forEach(d =>
+    d.addEventListener('click', () => { if (!naMontagem()) SERIES8.toca(d.classList.contains('act') ? 'act' : 'lan'); }));
 
   /* --- os 118 cubos --- */
   const cubos = [];
@@ -2466,6 +2488,9 @@ function montaTabela(i){
       if (i === 2 && QUIZ3.aberto){ QUIZ3.toca(c); return; }
       /* no slide 4, nas perguntas, responde-se tocando na tabela */
       if (i === 3 && QUIZ4.ativo){ QUIZ4.tocaCarta(c); return; }
+      /* no slide 8, a carta de uma série que já desceu dá a volta dela
+         (elas ficam fora do TP.todos(), e o TP.gira(z) não as acharia) */
+      if (i === 7 && ehDaSerie(z)){ if (!c._voo) TP.gira(c); return; }
       /* depois da "2.5", o toque abre e fecha a tabela (ver LC25) */
       if (i === 2 && LC25.livre) return;
       if (i === 2 && ENCAIXE.ativo){ ENCAIXE.toca(c); return; }
@@ -2842,7 +2867,9 @@ const TP = {
     /* nas duas linhas de baixo a coluna desenhada não é a do grupo: ali
        a faixa vertical mentiria, e por isso só se acende a da linha */
     if (comColuna){
-      const larg = LADO + 14, acima = 30;
+      /* no slide 8 não há número do grupo por cima, e a mesa, mais
+         acima, levaria a faixa para baixo do título: ela pára na linha 1 */
+      const larg = LADO + 14, acima = mesa.classList.contains('series8') ? 8 : 30;
       b2.style.left   = (xDaColuna(col) - larg/2) + 'px';
       b2.style.width  = larg + 'px';
       b2.style.top    = (TAB_TOPO - acima) + 'px';
@@ -3132,10 +3159,11 @@ const TRILHAS = {
   '3.7':  'Audios/audio_tabela_3.7.mp3',   /* as questões 08 a 10: tocar no período e na família */
   '4':    'Audios/audio_tabela_4.mp3',     /* o slide 5: os tipos (ainda por gravar) */
   '5':    'Audios/audio_tabela_5.mp3',     /* o slide 6: as principais famílias (ainda por gravar) */
-  '6':    'Audios/audio_tabela_6.mp3'      /* o slide 7: os grupos A e B (ainda por gravar) */
+  '6':    'Audios/audio_tabela_6.mp3',     /* o slide 7: os grupos A e B (ainda por gravar) */
+  '7':    'Audios/audio_tabela_7.mp3'      /* o slide 8: as séries (ainda por gravar) */
 };
 /* a trilha com que cada slide começa */
-const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6'];
+const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7'];
 
 /* ---- A COREOGRAFIA ----
    Cada slide tem a sua lista: no segundo tal, faça isto. Voltando o
@@ -3206,7 +3234,8 @@ const ROTEIROS = {
   '3.7':  [],
   '4':    [],
   '5':    [],
-  '6':    []
+  '6':    [],
+  '7':    []    /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -5732,6 +5761,92 @@ const FINAL = {
   }
 };
 
+/* ============================================================
+   SLIDE 8 · AS SÉRIES DESCEM
+   Tocada a casa 57–71 (ou a 89–103), os quinze lantanídeos (ou
+   actinídeos) saem dela um a um, como cartas dadas, e voam em arco até
+   a linha deles, embaixo da tabela — cada um dá a volta no caminho, com
+   o som da carta virando. Tocada de novo, a série recolhe-se ao
+   contrário, a última a sair é a primeira a voltar. O timing da
+   narração virá depois: o roteiro '7' só terá de chamar desce('lan') e
+   desce('act').
+   ============================================================ */
+const SERIES8 = {
+  g: 0,
+  passo: 110,        /* ms entre uma carta e a seguinte */
+  voo: .55,          /* s de cada voo */
+  aberta: { lan:false, act:false },
+  anda:   { lan:false, act:false },
+  mesa(){ return slides[7] && slides[7].querySelector('.mesa'); },
+  zs(qual){ const a = qual === 'lan' ? 57 : 89; return Array.from({length:15}, (_, k) => a + k); },
+  carta(m, z){ return m.querySelector('.pc[data-z="'+z+'"]'); },
+  /* o bilhete de onde a série sai e para onde volta */
+  origem(qual){ return { x: xDaColuna(3), y: yDaLinha(qual === 'lan' ? 6 : 7) }; },
+  toca(qual){
+    if (this.anda[qual]) return;
+    this.aberta[qual] ? this.sobe(qual) : this.desce(qual);
+  },
+  desce(qual){
+    const m = this.mesa();
+    if (!m || this.aberta[qual] || this.anda[qual]) return;
+    const g = this.g, o = this.origem(qual), zs = this.zs(qual);
+    this.aberta[qual] = true; this.anda[qual] = true;
+    zs.forEach((z, k) => setTimeout(() => {
+      if (g !== this.g) return;
+      const c = this.carta(m, z);
+      c.style.left = o.x.toFixed(1) + 'px';
+      c.style.top  = o.y.toFixed(1) + 'px';
+      c.classList.remove('serie-oculta');
+      c.classList.add('sobe');
+      voaEmArco(c, alvoDe(z), this.voo, () => {
+        c.classList.remove('sobe');
+        if (k === zs.length - 1 && g === this.g) this.anda[qual] = false;
+      }, 0.15);
+      TP.gira(c, { eixo:'y', graus:360, dur: this.voo * 1000 });
+      tocaEfeito('flipcard');
+    }, k * this.passo));
+  },
+  sobe(qual){
+    const m = this.mesa();
+    if (!m || !this.aberta[qual] || this.anda[qual]) return;
+    const g = this.g, o = this.origem(qual), zs = this.zs(qual).reverse();
+    this.anda[qual] = true;
+    zs.forEach((z, k) => setTimeout(() => {
+      if (g !== this.g) return;
+      const c = this.carta(m, z);
+      c.classList.add('sobe');
+      voaEmArco(c, o, this.voo, () => {
+        c.classList.remove('sobe');
+        c.classList.add('serie-oculta');
+        const a = alvoDe(z);
+        c.style.left = a.x.toFixed(1) + 'px';
+        c.style.top  = a.y.toFixed(1) + 'px';
+        if (k === zs.length - 1 && g === this.g){ this.aberta[qual] = false; this.anda[qual] = false; }
+      }, 0.15);
+      TP.gira(c, { eixo:'y', graus:-360, dur: this.voo * 1000 });
+      if (k % 2 === 0) tocaEfeito('flipcard');
+    }, k * this.passo * .7));
+  },
+  /* chegar ao slide: as duas séries de volta aos bilhetes, escondidas */
+  zera(){
+    this.g++;
+    this.aberta = { lan:false, act:false };
+    this.anda   = { lan:false, act:false };
+    const m = this.mesa();
+    if (!m) return;
+    [...this.zs('lan'), ...this.zs('act')].forEach(z => {
+      const c = this.carta(m, z), a = alvoDe(z);
+      c._vooG = (c._vooG || 0) + 1;   /* um voo a meio já não é o dela */
+      c._voo = 0;
+      ['--vx', '--vy', '--tsobe'].forEach(v => c.style.removeProperty(v));
+      c.classList.remove('sobe');
+      c.classList.add('serie-oculta');
+      c.style.left = a.x.toFixed(1) + 'px';
+      c.style.top  = a.y.toFixed(1) + 'px';
+    });
+  }
+};
+
 /* A COR NEUTRA de quem está fora do lugar: um cinza morno que escurece
    devagar com o número atômico (o do professor). A cor da família volta
    quando o card assenta na casa dele. */
@@ -7604,6 +7719,9 @@ const NAV_TOPICOS = [
   /* ---- o slide 7 · Os Grupos A e B ---- */
   { titulo:'Início', sub:'o começo do slide', slide:6,
     entra(){ /* o recomeço do slide já é o tópico */ } },
+  /* ---- o slide 8 · Os Lantanídeos e Actinídeos ---- */
+  { titulo:'Início', sub:'o começo do slide', slide:7,
+    entra(){ /* o recomeço do slide já é o tópico */ } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1,
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
@@ -7724,6 +7842,7 @@ function topicoAtual(){
   if (atual === 4) return NAV_TOPICOS.findIndex(t => t.slide === 4);
   if (atual === 5) return NAV_TOPICOS.findIndex(t => t.slide === 5);
   if (atual === 6) return NAV_TOPICOS.findIndex(t => t.slide === 6);
+  if (atual === 7) return NAV_TOPICOS.findIndex(t => t.slide === 7);
   if (atual === 3){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 3);
     return base + (QUIZ4.ativo || QUIZ4.trilhas.includes(trilhaAtual) ? 1 : 0);

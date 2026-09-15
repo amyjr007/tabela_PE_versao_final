@@ -234,6 +234,19 @@ Chega-se pela seta de avançar do slide 6 (ou pela navegação, "1. Início"),
 com o play à espera da narração `6` (`Audios/audio_tabela_6.mp3`, ainda por
 gravar).
 
+### Slide 8 · Os Lantanídeos e Actinídeos
+
+A tabela com as cores dos grupos A e B do slide 7 (as séries também no
+vermelho), 92 px mais acima (`.mesa.series8`, pelo `top`/`bottom` da mesa —
+o `--py` é da ferramenta de ajuste), sem os números. As casas **57–71** e
+**89–103** viram botão (`SERIES8`): tocada uma delas, os quinze elementos da
+série saem dela um a um, como cartas dadas, e voam em arco até a linha deles
+embaixo da tabela, cada um dando a volta com o som `flipcard`; tocada de
+novo, a série recolhe-se ao contrário. Chegando ao slide, as duas voltam
+escondidas. O timing da narração `7` (`Audios/audio_tabela_7.mp3`, ainda por
+gravar) virá depois: o roteiro `'7'` só terá de chamar `SERIES8.desce('lan')`
+e `SERIES8.desce('act')`.
+
 ## A capa nova (CAPA_NOVA)
 
 A ideia do Claude Design, em teste: fundo escuro só na capa (no celular
