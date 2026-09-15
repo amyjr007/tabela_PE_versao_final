@@ -223,6 +223,17 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 (`Audios/audio_tabela_5.mp3`, ainda por gravar) e a mesa a respirar até ele
 ser tocado.
 
+### Slide 7 · Os Grupos A e B — Os elementos principais
+
+A mesma tabela (sem as séries), pintada pela **coluna** (`.mesa.grupos`): os
+grupos A — 1, 2 e 13 a 18, o hidrogênio junto — no dourado; os grupos B — 3
+a 12, os de transição — no vermelho, e as casas das séries (57–71, 89–103)
+também. À esquerda ficam só os números das linhas, já na bolinha índigo do
+professor (a mesma que o slide 4 mostra); os números das colunas saem.
+Chega-se pela seta de avançar do slide 6 (ou pela navegação, "1. Início"),
+com o play à espera da narração `6` (`Audios/audio_tabela_6.mp3`, ainda por
+gravar).
+
 ## A capa nova (CAPA_NOVA)
 
 A ideia do Claude Design, em teste: fundo escuro só na capa (no celular
