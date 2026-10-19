@@ -1742,14 +1742,15 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
   color:var(--tinta-dim);box-shadow:0 6px 18px rgba(32,28,66,.12);
   transition:color .2s,transform .2s,opacity .25s;
 }
-#ver-slides:hover{color:var(--indigo);transform:translateY(-2px)}
+/* solto na montagem, o transform é o do lugar e da escala: o pulinho não */
+#ver-slides:not(.solto):hover{color:var(--indigo);transform:translateY(-2px)}
 #ver-slides svg{width:24px;height:24px}
 #stage.na-capa.capa-nova #ver-slides{background:rgba(255,255,255,.05);border-color:rgba(242,238,230,.35);color:#F2EEE6}
 /* no celular deitado ele NÃO vai para a borda da tela: lá o canto é
    arredondado e tem a câmera, e o botão sumia debaixo deles. Fica no
    canto do palco, que está para dentro da folga */
-#stage.em-quiz #ver-slides, #stage.em-jogo #ver-slides, #stage.tela-escura #ver-slides,
-body.montagem #ver-slides{display:none}
+/* (na montagem ele fica: é peça a arrastar e a mudar de tamanho) */
+#stage.em-quiz #ver-slides, #stage.em-jogo #ver-slides, #stage.tela-escura #ver-slides{display:none}
 /* com o carrossel aberto, os botões do palco saem de cena */
 #stage.em-carrossel #som, #stage.em-carrossel #som-dica, #stage.em-carrossel #vel,
 #stage.em-carrossel #ver-slides{opacity:0;pointer-events:none;transition:opacity .2s}
@@ -2252,7 +2253,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v8.7';
+const VERSAO = 'v8.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7878,6 +7879,8 @@ function pecasDe(sl){
   /* o botão da velocidade mora no palco e fica fora da capa: nos outros
      slides, em cena, é peça como as outras */
   else if (!velBtn.hidden) lista.push(velBtn);
+  /* e o botão do carrossel, no canto de cima, que está em todos */
+  lista.push(document.getElementById('ver-slides'));
   return lista;
 }
 
@@ -8049,9 +8052,9 @@ function reancora(el, g){
 const naMontagem = () => document.body.classList.contains('montagem');
 function pecaDe(ev){
   const sl = slides[atual];
-  const el = ev.target.closest(MOVEIS + ', #tabela, #vel');
+  const el = ev.target.closest(MOVEIS + ', #tabela, #vel, #ver-slides');
   if (!el) return null;
-  if (el.id === 'vel') return pecasDe(sl).includes(el) ? el : null;
+  if (el.id === 'vel' || el.id === 'ver-slides') return pecasDe(sl).includes(el) ? el : null;
   return (sl.contains(el) || el.id === 'tabela') ? el : null;
 }
 /* o rótulo que diz onde a peça está, enquanto ela anda */
@@ -8326,6 +8329,7 @@ function nomeDe(el){
   if (el.dataset.mont) return el.dataset.mont;   /* peça com nome próprio */
   if (el.id === 'tabela') return 'tabelinha';
   if (el.id === 'vel')    return 'velocidade';
+  if (el.id === 'ver-slides') return 'carrossel';
   const c = el.classList;
   if (c.contains('marca')) return 'marca';
   if (c.contains('risco')) return 'risco';
