@@ -451,6 +451,10 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 }
 /* A TABELA ABERTA (LC25): as cartas andam para as linhas ou para as
    colunas, os números vão junto, e a mesa encolhe um fio para caber */
+/* a coluna que sobe inteira na onda da "1" (COLUNAS_1): uma caixa do
+   tamanho da mesa, que não pega o dedo — os cubos dentro pegam */
+.coluna-onda{position:absolute;inset:0;pointer-events:none;
+  transition:transform 90ms linear;will-change:transform}
 .mesa.lc25{transition:transform .55s cubic-bezier(.3,.85,.3,1)}
 .mesa.lc25 .pc{transition:left .55s cubic-bezier(.3,.85,.3,1), top .55s cubic-bezier(.3,.85,.3,1),
   transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease, opacity .45s ease}
@@ -2038,7 +2042,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v6.7';
+const VERSAO = 'v6.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3834,6 +3838,8 @@ function efeitosDoTempo(){
      para todos os slides: saindo do slide 1 com a tela escura, o botão
      tem de voltar — e o resto desta função nem corre fora do slide 1. */
   stage.classList.toggle('tela-escura', atual === 1 && trilhaAtual === '1' && t >= 13.6);
+  /* acabada a "1", ou fora dela, as colunas da onda soltam os cubos */
+  if (COLUNAS_1.caixas && (atual !== 1 || trilhaAtual !== '1' || som.ended)) COLUNAS_1.solta();
   if (trilhaAtual === 'capa' && DIG_CAPA) DIG_CAPA.escreve(t);
   /* o slide 3 tem os eventos dele */
   if (atual === 2){ efeitos2(t); return; }
@@ -3864,25 +3870,57 @@ function efeitosDoTempo(){
 
 /* A ONDA DAS FAMÍLIAS — de 2,6 a 4,8 s: cada coluna sobe e desce, uma
    depois da outra, da esquerda para a direita. A altura de cada coluna
-   é um seno do tempo: sobe, chega ao alto no meio, e desce. */
+   é um seno do tempo: sobe, chega ao alto no meio, e desce.
+   A COLUNA SOBE INTEIRA, COMO UMA PEÇA SÓ: no começo da "1" os cubos de
+   cada coluna entram numa caixa (COLUNAS_1), e é a caixa que anda — 18
+   coisas a mexer em vez de 118, e nenhum cubo é tocado a cada tique.
+   Acabada a "1" (ou saindo dela), os cubos voltam soltos para a mesa,
+   cada um para o lugar exato em que estava. */
 const ONDA_FAM = { de:2.6, ate:4.8, dura:0.6, alto:26, suja:false };
+const COLUNAS_1 = {
+  caixas:null,       /* as 18 caixas, enquanto os cubos estão nelas */
+  marcas:[],         /* [marca, cubo]: o lugar de cada cubo na mesa */
+  agrupa(){
+    if (this.caixas) return;
+    const cubos = TP.todos();
+    if (!cubos.length) return;
+    const mesa = cubos[0].parentNode;
+    this.caixas = [];
+    for (let col = 1; col <= 18; col++){
+      const cx = document.createElement('div');
+      cx.className = 'coluna-onda';
+      mesa.appendChild(cx);
+      this.caixas.push(cx);
+    }
+    cubos.forEach(c => {
+      const m = document.createComment('');
+      c.replaceWith(m);
+      this.marcas.push([m, c]);
+      this.caixas[+c.dataset.col - 1].appendChild(c);
+    });
+  },
+  solta(){
+    if (!this.caixas) return;
+    this.marcas.forEach(([m, c]) => m.replaceWith(c));
+    this.caixas.forEach(cx => cx.remove());
+    this.caixas = null;
+    this.marcas = [];
+  }
+};
 function ondaDasFamilias(t){
   const o = ONDA_FAM;
+  /* só com a narração a tocar: parada, a mesa pode estar a montar-se,
+     e mudar os cubos de lugar cortaria o voo deles */
+  if (!som.paused && t < o.ate) COLUNAS_1.agrupa();
   const dentro = t >= o.de && t <= o.ate + 0.1;
   if (!dentro && !o.suja) return;          /* fora dela, e já arrumada */
+  const caixas = COLUNAS_1.caixas;
+  if (!caixas) return;
   const passo = (o.ate - o.de - o.dura) / 17;
-  TP.todos().forEach(c => {
-    if (!dentro){
-      c.style.removeProperty('--sobe'); c.style.removeProperty('--tsobe');
-      c.classList.remove('sobe');
-      return;
-    }
-    const p = (t - o.de - (+c.dataset.col - 1)*passo) / o.dura;
-    const h = (p > 0 && p < 1) ? Math.sin(Math.PI*p) * o.alto : 0;
-    /* a transição curta segue o tique sem o atrasar */
-    c.style.setProperty('--tsobe', '90ms');
-    c.style.setProperty('--sobe', (-h).toFixed(1) + 'px');
-    c.classList.toggle('sobe', h > .5);
+  caixas.forEach((cx, i) => {
+    const p = (t - o.de - i*passo) / o.dura;
+    const h = (dentro && p > 0 && p < 1) ? Math.sin(Math.PI*p) * o.alto : 0;
+    cx.style.transform = h ? 'translateY(' + (-h).toFixed(1) + 'px)' : '';
   });
   o.suja = dentro;
 }
