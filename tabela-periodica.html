@@ -386,7 +386,7 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 /* O BOTÃO INSTALAR, na capa, no canto de cima à direita; e a ajuda do
    iPhone e do iPad, logo abaixo dele */
 /* à esquerda do botão dos slides, que mora no canto, e na mesma altura */
-.capa .instalar{position:absolute;top:15px;right:78px;z-index:8;display:flex;align-items:center;gap:8px;
+.capa .instalar{position:absolute;top:15px;right:106px;z-index:8;display:flex;align-items:center;gap:8px;
   padding:9px 17px 9px 13px;border-radius:999px;cursor:pointer;
   font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.01em;
   color:var(--indigo);background:rgba(255,255,255,.92);border:1px solid var(--indigo-dim);
@@ -398,7 +398,7 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 #stage.capa-nova .capa .instalar{color:#F2EEE6;background:rgba(255,255,255,.06);
   border-color:rgba(242,238,230,.35);box-shadow:none}
 #stage.capa-nova .capa .instalar:hover{background:rgba(255,255,255,.13)}
-.capa .instalar-ajuda{position:absolute;top:67px;right:78px;z-index:8;width:290px;padding:12px 15px;
+.capa .instalar-ajuda{position:absolute;top:67px;right:106px;z-index:8;width:290px;padding:12px 15px;
   border-radius:12px;font-family:var(--body);font-size:14px;line-height:1.5;color:var(--tinta);
   background:#fff;border:1px solid var(--indigo-dim);box-shadow:0 14px 34px rgba(20,17,46,.3)}
 .capa .instalar-ajuda svg{vertical-align:-3px;color:var(--indigo)}
@@ -1790,7 +1790,11 @@ html.palco-largo #carrossel{left:calc(-1 * var(--folga));right:calc(-1 * var(--f
      quadro: no tamanho do palco, o que eles deixam ver por baixo é o
      próprio slide, igual. Com o will-change, cada cartão é desenhado uma
      vez e só desliza e encolhe na placa de vídeo. */
-  border-radius:30px;will-change:transform;
+  /* SEM will-change: com ele o celular guardava cada cartão na
+     resolução da tela cheia, mesmo mostrado pequeno, e a memória da
+     placa de vídeo acabava — pedaços das fotos sumiam. Sem ele, cada
+     cartão é desenhado no tamanho em que aparece. */
+  border-radius:30px;
   transition:transform .6s var(--e-capa);
 }
 /* o papel quadriculado e as duas luzes, as mesmas do palco */
@@ -2263,7 +2267,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v9.3';
+const VERSAO = 'v9.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7682,8 +7686,14 @@ const CAR = {
     /* cheio, os vizinhos ficam além das faixas do celular deitado: lá o
        palco vai até às bordas, e a folga não pode mostrar outro slide */
     const meia = 640 + (parseFloat(stage.style.getPropertyValue('--folga')) || 0);   /* meia largura do cartão */
-    if (cheio) return { x: d*(2*meia + this.GAP), y: 0, s: 1 };
     const s = d === 0 ? this.S0 : this.S1, a = Math.abs(d);
+    /* cheio, só o do meio é do tamanho do palco; os vizinhos esperam fora
+       da tela já pequenos — do tamanho da tela, o celular preparava cada
+       um em vários megapixels só para os mostrar encolhidos */
+    if (cheio){
+      if (!d) return { x: 0, y: 0, s: 1 };
+      return { x: Math.sign(d) * (meia + this.GAP + this.S1*meia + (a-1)*(this.S1*2*meia + this.GAP)), y: this.CY - 360, s: this.S1 };
+    }
     const x = d === 0 ? 0 : Math.sign(d) * (this.S0*meia + this.GAP + this.S1*meia + (a-1)*(this.S1*2*meia + this.GAP));
     return { x, y: this.CY - 360, s };
   },
@@ -7722,13 +7732,14 @@ const CAR = {
     this.el.hidden = false;
     stage.classList.add('em-carrossel');
     document.body.classList.add('em-carrossel');
+    /* o cartão do meio, do tamanho do palco, cobre o slide de verdade já
+       neste quadro: ele sai de cena logo, e não depois de a fila se
+       afastar — a abertura é o momento mais pesado */
+    stage.classList.add('car-cobre');
     void this.el.offsetWidth;
     this.el.classList.remove('sem-trans');
     this.el.classList.add('aberto');
     this.aplica(false);
-    /* afastada a fila e escuro o fundo, o slide de verdade sai de cena */
-    clearTimeout(this.tCobre);
-    this.tCobre = setTimeout(() => { if (this.aberto && !this.ocupado) stage.classList.add('car-cobre'); }, 650);
   },
   vai(k){
     if (!this.aberto || this.ocupado) return;
@@ -7740,9 +7751,6 @@ const CAR = {
     if (!this.aberto || this.ocupado) return;
     this.ocupado = true;
     this.sel = k;
-    /* o slide de verdade volta para debaixo do cartão que vai crescer */
-    clearTimeout(this.tCobre);
-    stage.classList.remove('car-cobre');
     if (k !== atual){
       const viva = k === 0;
       vaiDireto(k);
@@ -7752,10 +7760,11 @@ const CAR = {
     }
     this.el.classList.remove('aberto');
     this.aplica(true);
-    /* cheio, o cartão sai num esmaecer curto: por baixo já está o mesmo
-       slide, e o esmaecer só apaga a diferença de nitidez da foto */
-    setTimeout(() => this.el.classList.add('troca'), 600);
-    setTimeout(() => {
+    /* o slide de verdade só volta quando o cartão já cobre o palco
+       inteiro — enquanto ele cresce, o celular só desenha o cartão. Volta
+       por baixo dele, e só depois de desenhado (dois quadros) o cartão
+       sai, num esmaecer curto que apaga a diferença de nitidez da foto */
+    const fecha = () => {
       this.el.classList.remove('troca');
       this.el.hidden = true;
       this.trilho.innerHTML = '';
@@ -7764,7 +7773,14 @@ const CAR = {
       document.body.classList.remove('em-carrossel');
       this.aberto = this.ocupado = false;
       if (temMesa(atual)) VIDA.liga();
-    }, 760);
+    };
+    setTimeout(() => {
+      stage.classList.remove('car-cobre');
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        this.el.classList.add('troca');
+        setTimeout(fecha, 160);
+      }));
+    }, 600);
   },
   fecha(){ this.entra(atual); }
 };
@@ -7977,7 +7993,10 @@ const LAYOUT_CAPA_NOVA = {
   'bloco-La': {x: 1122, y:300, esc:1.08},
   'bloco-Y':  {x:  930, y:470, esc:1.08},
   frases:     {x:  690, y:420, esc:1.00},
-  som:        {x: 1160, y:612, esc:1.00}
+  som:        {x: 1160, y:612, esc:1.00},
+  /* o botão do carrossel, na capa maior e um fio para dentro; nos outros
+     slides ele volta ao canto do CSS (arrumaPecasDoPalco) */
+  carrossel:  {x: 1220, y: 62, esc:1.44}
 };
 if (CAPA_NOVA) LAYOUTS[0] = LAYOUT_CAPA_NOVA;
 
@@ -8009,7 +8028,7 @@ function aplicaLayout(i){
    senão ficariam para sempre onde a capa os deixou. */
 function arrumaPecasDoPalco(){
   if (atual === 0) return;
-  ['tabela','som'].forEach(id => {
+  ['tabela','som','ver-slides'].forEach(id => {
     const el = document.getElementById(id);
     if (!el || !el.classList.contains('solto')) return;
     el.classList.remove('solto','pego');
