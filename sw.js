@@ -83,6 +83,8 @@ const CASCA = [
   './Imagens/henry_moseley.jpg',
   './Audios/vfx/flipcard.mp3',
   './Audios/vfx/right.mp3',
+  './Audios/vfx/typing sound.mp3',
+  './Audios/vfx/transition_cube.mp3',
   './fontes/fontes.css',
   './fontes/space-grotesk-normal-latin.woff2',
   './fontes/space-grotesk-normal-latin-ext.woff2',

@@ -2271,7 +2271,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v9.5';
+const VERSAO = 'v9.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3581,6 +3581,25 @@ function montaFrases(){
 /* UMA MÁQUINA DE ESCREVER, para qualquer caixa e qualquer lista de
    frases: a capa tem uma, a tela escura tem outra. Sem 'some', a frase
    fica escrita até alguém a limpar. */
+/* O SOM DAS TECLAS — enquanto alguma coisa se escreve na tela, toca o
+   "typing sound", em volta; parada a escrita (o texto acabou, a narração
+   pausou), ele cala-se logo. Quem escreve chama TECLAS.bate() a cada
+   letra nova. */
+const TECLAS = {
+  a:null, t:0,
+  bate(){
+    if (document.hidden) return;
+    if (!this.a){
+      this.a = new Audio(encodeURI('Audios/vfx/typing sound.mp3'));
+      this.a.loop = true;
+    }
+    if (this.a.paused) this.a.play().catch(() => {});
+    clearTimeout(this.t);
+    this.t = setTimeout(() => this.cala(), 220);
+  },
+  cala(){ clearTimeout(this.t); if (this.a && !this.a.paused) this.a.pause(); }
+};
+
 function criaDigitacao(caixa, lista){
   const frases = lista.map(f => Object.assign({}, f));
   const cursor = document.createElement('span');
@@ -3608,7 +3627,10 @@ function criaDigitacao(caixa, lista){
         }
         const n = Math.round(Math.min(1, (t - f.de) / (f.ate - f.de)) * f.txt.length);
         /* só mexe no texto quando muda: isto corre a cada 60 ms */
-        if (n !== f.mostrado){ f.txtEl.textContent = f.txt.slice(0, n); f.mostrado = n; }
+        if (n !== f.mostrado){
+          if (n > Math.max(0, f.mostrado)) TECLAS.bate();   /* letra nova: a tecla */
+          f.txtEl.textContent = f.txt.slice(0, n); f.mostrado = n;
+        }
         if (!saindo && (!ativa || f.de > ativa.de)) ativa = f;
       });
       /* o tracinho mora no fim da frase mais recente: firme enquanto ela
@@ -4310,7 +4332,10 @@ function efeitos12(t){
 
   const e = FOCO12.escreveMassa;
   const n = t < e.de ? 0 : Math.round(Math.min(1, (t - e.de)/(e.ate - e.de)) * e.txt.length);
-  if (massaTxt.textContent.length !== n) massaTxt.textContent = e.txt.slice(0, n);
+  if (massaTxt.textContent.length !== n){
+    if (n > massaTxt.textContent.length) TECLAS.bate();
+    massaTxt.textContent = e.txt.slice(0, n);
+  }
   rotMassa.classList.toggle('on', n > 0);
   rotMassa.classList.toggle('brilha', massaG);
 }
@@ -4468,7 +4493,10 @@ function caixaDoLatim(o, t, x, y, meiaCubo, e){
   if (!visivel) return;
   const n = Math.min(L.texto.length, Math.floor((t - L.de) / EV14.porLetra) + 1);
   const txt = L.texto.slice(0, n);
-  if (b.textContent !== txt) b.textContent = txt;
+  if (b.textContent !== txt){
+    if (txt.length > b.textContent.length) TECLAS.bate();
+    b.textContent = txt;
+  }
   b.classList.toggle('digitando', n < L.texto.length);
   /* na volta, 'e' desce de 1 a 0: a caixa gira uma volta e encolhe */
   const g = t >= o.volta ? e : 1;
@@ -5364,7 +5392,10 @@ const QUIZ4 = {
     const n = Math.round(entre01((t - d.de) / (d.ate - d.de)) * it.txt.length);
     const txt = it.txt.slice(0, n) + (d.num !== undefined && t >= d.num ? it.fim : '');
     const q = cx.querySelector('.q3-q');
-    if (q.dataset.txt !== txt){ q.dataset.txt = txt; q.textContent = txt; }
+    if (q.dataset.txt !== txt){
+      if (txt.length > (q.dataset.txt || '').length) TECLAS.bate();
+      q.dataset.txt = txt; q.textContent = txt;
+    }
     cx.classList.toggle('digitando', t < pronto);
     /* o toque vale só com a pergunta pronta (e volta a não valer se o
        relógio voltar para trás) */
@@ -6775,6 +6806,7 @@ som.addEventListener('play', calaAbertura);
 document.addEventListener('visibilitychange', () => {
   if (document.hidden){
     if (!som.paused) som.pause();
+    TECLAS.cala();
     EFEITOS.forEach(a => { if (!a.paused){ a._pausadoNaSaida = true; a.pause(); } });
   } else {
     EFEITOS.forEach(a => {
@@ -7463,6 +7495,8 @@ function go(i, dir){
   andando = true;
   sai.classList.add('is-leaving', 'fx-cube-out-' + dir);
   entra.classList.add('is-active', 'fx-cube-in-' + dir);
+  /* o som do cubo a virar, junto com o giro */
+  tocaEfeito('transition_cube');
 
   atual = i;
   atualizaCabecalho();
