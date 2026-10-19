@@ -136,6 +136,9 @@ html.palco-largo .quiz    {box-shadow:0 0 0 var(--folga) rgba(12,10,32,.55)}
 html.palco-largo .memoria {box-shadow:0 0 0 var(--folga) rgba(7,6,22,.995)}
 html.palco-largo #flash-erro{box-shadow:0 0 0 var(--folga) rgba(220,38,60,.55)}
 html.palco-largo #som, html.palco-largo #som-dica, html.palco-largo #vel{translate:var(--folga) 0}
+/* solto na montagem, o botão da velocidade já foi medido com a folga:
+   somá-la outra vez o faria saltar para o lado */
+html.palco-largo #vel.solto{translate:none}
 html.palco-largo #versao{translate:calc(-1 * var(--folga)) 0}
 /* e a barrinha do progresso, de borda a borda: a fração vem em --prog */
 html.palco-largo #progress{left:calc(-1 * var(--folga));right:calc(-1 * var(--folga));width:auto!important;
@@ -2066,7 +2069,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v6.9';
+const VERSAO = 'v7.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3458,7 +3461,8 @@ const Velocidade = {
 };
 Velocidade.aplicar(som);
 Velocidade.botao();
-velBtn.addEventListener('click', () => Velocidade.trocar());
+/* na montagem o botão é peça a arrastar: o toque não troca a velocidade */
+velBtn.addEventListener('click', () => { if (!naMontagem()) Velocidade.trocar(); });
 somBtn.style.setProperty('--volta', VOLTA.toFixed(1));
 somBtn.style.setProperty('--falta', VOLTA.toFixed(1));
 
@@ -7363,6 +7367,9 @@ function pecasDe(sl){
     lista.push(document.getElementById('tabela'));
     lista.push(document.getElementById('som'));
   }
+  /* o botão da velocidade mora no palco e fica fora da capa: nos outros
+     slides, em cena, é peça como as outras */
+  else if (!velBtn.hidden) lista.push(velBtn);
   return lista;
 }
 
@@ -7532,8 +7539,9 @@ function reancora(el, g){
 const naMontagem = () => document.body.classList.contains('montagem');
 function pecaDe(ev){
   const sl = slides[atual];
-  const el = ev.target.closest(MOVEIS + ', #tabela');
+  const el = ev.target.closest(MOVEIS + ', #tabela, #vel');
   if (!el) return null;
+  if (el.id === 'vel') return pecasDe(sl).includes(el) ? el : null;
   return (sl.contains(el) || el.id === 'tabela') ? el : null;
 }
 /* o rótulo que diz onde a peça está, enquanto ela anda */
@@ -7640,6 +7648,7 @@ const coordsMsg = document.getElementById('coords-msg');
 function nomeDe(el){
   if (el.dataset.mont) return el.dataset.mont;   /* peça com nome próprio */
   if (el.id === 'tabela') return 'tabelinha';
+  if (el.id === 'vel')    return 'velocidade';
   const c = el.classList;
   if (c.contains('marca')) return 'marca';
   if (c.contains('risco')) return 'risco';
