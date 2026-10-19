@@ -40,7 +40,9 @@ const srv = http.createServer((q, r) => {
 }).listen(PORTA);
 
 const perfil = fs.mkdtempSync(path.join(os.tmpdir(), 'miniaturas-'));
-const chrome = spawn(CHROME, ['--headless=new', '--remote-debugging-port=' + DEPURA,
+/* mudo: o Chrome invisível tocaria a narração e as aberturas nas caixas
+   de som de quem estiver ao computador */
+const chrome = spawn(CHROME, ['--headless=new', '--mute-audio', '--remote-debugging-port=' + DEPURA,
   '--user-data-dir=' + perfil, '--hide-scrollbars', 'about:blank'], { stdio: 'ignore' });
 const espera = ms => new Promise(ok => setTimeout(ok, ms));
 let alvo;
