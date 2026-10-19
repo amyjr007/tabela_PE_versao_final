@@ -18,7 +18,10 @@ import os from 'node:os';
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DESTINO = path.join(RAIZ, 'Imagens', 'slides');
 const CHROME = process.env.CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe';
-const ESCALA = 1.25;      /* pixels da foto por pixel do palco */
+/* pixels da foto por pixel do palco. No celular a foto é menor: lá ela
+   aparece pequena no carrossel, e fotos grandes enchiam a memória da
+   placa de vídeo — o celular perdia pedaços delas, e elas tremiam */
+const ESCALA = { pc:1.25, cel:0.8 };
 const MARGEM_CEL = 100;   /* o que a foto do celular leva além do palco, de cada lado */
 const PORTA = 8791, DEPURA = 9391;
 
@@ -78,7 +81,7 @@ for (const [nome, metr] of Object.entries(JOGOS)){
       return { x:r.left, y:r.top, w:r.width, h:r.height, fit:fitScale }; })()`);
     const margem = nome === 'cel' ? MARGEM_CEL * r.fit : 0;
     const shot = await cmd('Page.captureScreenshot', { format:'webp', quality:82,
-      clip:{ x:r.x - margem, y:r.y, width:r.w + 2*margem, height:r.h, scale: ESCALA / r.fit } });
+      clip:{ x:r.x - margem, y:r.y, width:r.w + 2*margem, height:r.h, scale: ESCALA[nome] / r.fit } });
     const arq = path.join(DESTINO, nome + '-' + String(i).padStart(2, '0') + '.webp');
     fs.writeFileSync(arq, Buffer.from(shot.result.data, 'base64'));
     await js(`['som','som-dica','vel','versao','ver-slides','progress','puxador','nav-alca','aviso','coord']

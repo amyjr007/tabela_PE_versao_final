@@ -1769,8 +1769,16 @@ html.palco-largo #carrossel{left:calc(-1 * var(--folga));right:calc(-1 * var(--f
 .car-cartao{
   position:absolute;inset:0;overflow:hidden;cursor:pointer;transform-origin:center;pointer-events:auto;
   background:linear-gradient(160deg,var(--fundo-alto),var(--fundo) 52%,var(--fundo-2));
-  transition:transform .6s var(--e-capa), border-radius .6s var(--e-capa), box-shadow .6s ease;
+  /* SÓ O TRANSFORM ANDA. Os cantos e a sombra não se animam: animados,
+     o celular redesenhava o cartão inteiro a cada quadro, e o cartão
+     tremia. Os cantos arredondados podem estar lá desde o primeiro
+     quadro: no tamanho do palco, o que eles deixam ver por baixo é o
+     próprio slide, igual. Com o will-change, cada cartão é desenhado uma
+     vez e só desliza e encolhe na placa de vídeo. */
+  border-radius:30px;will-change:transform;
+  transition:transform .6s var(--e-capa);
 }
+.car-item{will-change:transform}
 /* o papel quadriculado e as duas luzes, as mesmas do palco */
 .car-cartao::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
   background-image:linear-gradient(rgba(76,63,191,.07) 1px,transparent 1px),
@@ -1783,8 +1791,9 @@ html.palco-largo #carrossel{left:calc(-1 * var(--folga));right:calc(-1 * var(--f
 .car-cartao.capa::after{
   background:radial-gradient(70% 70% at 80% 32%,rgba(76,63,191,.18),transparent 62%),
              radial-gradient(55% 60% at 0% 100%,rgba(226,162,43,.07),transparent 60%)}
-#carrossel.aberto .car-cartao{border-radius:30px;box-shadow:0 40px 90px rgba(0,0,0,.45)}
-#carrossel.aberto .car-item.centro .car-cartao{box-shadow:0 0 0 6px var(--ouro-luz),0 40px 90px rgba(0,0,0,.5)}
+/* a sombra, curta: uma sombra larga e borrada pesa em cada cartão */
+#carrossel.aberto .car-cartao{box-shadow:0 18px 40px rgba(0,0,0,.4)}
+#carrossel.aberto .car-item.centro .car-cartao{box-shadow:0 0 0 6px var(--ouro-luz),0 18px 40px rgba(0,0,0,.45)}
 .car-deck{position:absolute;inset:0;z-index:1;pointer-events:none}
 .car-deck .slide{opacity:1;visibility:visible}
 /* na cópia nada se mexe: ela é uma fotografia do slide, já no fim de
@@ -2235,7 +2244,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v8.2';
+const VERSAO = 'v8.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7612,7 +7621,11 @@ const CAR = {
       it.querySelector('.car-tit').style.transform =
         'translateY(' + (360 - 360*p.s - 18) + 'px) translateY(-100%) scale(' + (d === 0 ? 1 : .74) + ')';
       it.classList.toggle('centro', d === 0);
-      it.style.opacity = !cheio && Math.abs(d) > 2 ? 0 : 1;
+      /* os longe do meio nem são desenhados: na placa de vídeo do celular
+         cada foto ocupa memória, e com todas lá ele perdia pedaços delas */
+      const longe = Math.abs(d) > 2;
+      it.style.opacity = !cheio && longe ? 0 : 1;
+      it.style.visibility = longe ? 'hidden' : '';
     });
     this.el.querySelector('.car-seta.ant').disabled  = this.sel === 0;
     this.el.querySelector('.car-seta.prox').disabled = this.sel === SLIDES.length - 1;
