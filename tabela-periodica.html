@@ -965,8 +965,12 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 #stage.treme{animation:telaTreme .5s ease}
 @keyframes telaTreme{0%,100%{translate:0 0} 15%{translate:-14px 0} 30%{translate:12px 0}
   45%{translate:-9px 0} 60%{translate:7px 0} 75%{translate:-4px 0}}
+/* a peça que treme sozinha (tremeVermelho com peças): o mesmo tremor */
+.treme-peca{animation:telaTreme .5s ease}
 #flash-erro{
   position:absolute;inset:0;z-index:90;pointer-events:none;opacity:0;
+  /* numa camada só dele: o clarão acende sem o celular redesenhar o palco */
+  will-change:opacity;
   background:radial-gradient(ellipse at center,rgba(220,38,60,.12),rgba(220,38,60,.55));
 }
 #flash-erro.on{animation:flashErro .75s ease-out}
@@ -2244,7 +2248,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v8.3';
+const VERSAO = 'v8.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6701,10 +6705,33 @@ function tocaEfeito(nome){
     const fim = () => { if (feito) return; feito = true; EFEITOS.delete(a); pronto(a); };
     a.addEventListener('ended', fim);
     a.addEventListener('error', fim);
-    setTimeout(fim, 12000);            /* rede de segurança: nunca fica preso */
+    /* rede de segurança: nunca fica preso. Com o app fora da tela (o som
+       pausado pela saída), ela espera a volta: senão a cena andava sozinha
+       lá atrás, sem ninguém a ver nem a ouvir */
+    const seguranca = () => (document.hidden || a._pausadoNaSaida) ? setTimeout(seguranca, 1000) : fim();
+    setTimeout(seguranca, 12000);
     a.play().catch(fim);
   });
 }
+
+/* SAINDO DO APP, TUDO PÁRA. O aluno vai para outro aplicativo, ou a tela
+   apaga: a narração pausa — e com ela a cena, que segue o relógio dela —,
+   e os efeitos que estiverem a tocar (o "error", a fanfarra, a fala do
+   fim do jogo) pausam também. Na volta, os efeitos continuam de onde
+   estavam, para a cena que esperava por eles seguir; a narração fica
+   parada, à espera do play, para o aluno retomar quando estiver pronto. */
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden){
+    if (!som.paused) som.pause();
+    EFEITOS.forEach(a => { if (!a.paused){ a._pausadoNaSaida = true; a.pause(); } });
+  } else {
+    EFEITOS.forEach(a => {
+      if (!a._pausadoNaSaida) return;
+      a._pausadoNaSaida = false;
+      a.play().catch(() => {});
+    });
+  }
+});
 const espera = ms => new Promise(ok => setTimeout(ok, ms));
 
 /* A MENSAGEM DA RESPOSTA. Com o nome latino (quiz da "1.4"): "Exato!
@@ -6740,9 +6767,17 @@ function palavraLatina(palavra, sym){
   return w;
 }
 
-/* a tela treme e pisca de vermelho */
-function tremeVermelho(){
-  stage.classList.remove('treme'); void stage.offsetWidth; stage.classList.add('treme');
+/* a tela treme e pisca de vermelho. Com 'pecas', tremem só elas (o
+   cartão e o cubo da pergunta), e não o palco inteiro: o palco leva a
+   tabela de 118 cubos, e sacudido inteiro pesava no celular, que perdia
+   pedaços da tela */
+function tremeVermelho(pecas){
+  const alvos = pecas ? pecas.filter(Boolean) : [stage];
+  alvos.forEach(p => {
+    const cls = p === stage ? 'treme' : 'treme-peca';
+    p.classList.remove(cls); void p.offsetWidth; p.classList.add(cls);
+    if (p !== stage) setTimeout(() => p.classList.remove(cls), 550);
+  });
   const f = document.getElementById('flash-erro');
   if (f){ f.classList.remove('on'); void f.offsetWidth; f.classList.add('on'); }
 }
@@ -6873,7 +6908,7 @@ const QUIZ = {
       b.classList.add('errada');
       escreveResposta(msg, item, certa, null);
       msg.className = 'quiz-msg erro';
-      tremeVermelho();
+      tremeVermelho([cx.querySelector('.quiz-card'), this.cubo]);
       await tocaEfeito('error');
       if (g !== this.geracao) return;
       await tocaEfeito('Calmanaproximaacerta');
@@ -7111,7 +7146,8 @@ function conferePar(){
     memErros++; memPontos = Math.max(0, memPontos - 2); memUltimoG = null;
     placarMemoria();
     tocaEfeito('error');
-    tremeVermelho();
+    /* treme a grade das cartas, e não o palco com a tabela por baixo */
+    tremeVermelho([document.querySelector('.memoria .mem-grade')]);
     a.classList.add('errada'); b.classList.add('errada');
     setTimeout(() => {
       if (g !== memGeracao) return;
