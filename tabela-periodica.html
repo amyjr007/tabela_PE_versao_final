@@ -14,8 +14,11 @@
 <meta name="apple-mobile-web-app-title" content="Audiobook da Tabela">
 <meta name="description" content="O audiobook interativo da Tabela Periódica do Prof. Amauri Junior: a aula guiada por áudio, com os 118 elementos em cubos que giram.">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="icones/app-192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="icones/app-180.png">
+<!-- os ícones levam ?v=2: o endereço novo é o que faz o aparelho trocar o
+     ícone que guardou do app instalado -->
+<link rel="icon" type="image/png" sizes="32x32" href="icones/app-32.png?v=2">
+<link rel="icon" type="image/png" sizes="192x192" href="icones/app-192.png?v=2">
+<link rel="apple-touch-icon" sizes="180x180" href="icones/app-180.png?v=2">
 <!-- AS FONTES MORAM AQUI DENTRO, como no app do professor: o aluno abre
      isto no celular da casa dele, e nada é pedido para fora. -->
 <link rel="stylesheet" href="fontes/fontes.css">
@@ -2255,7 +2258,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v8.9';
+const VERSAO = 'v9.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
