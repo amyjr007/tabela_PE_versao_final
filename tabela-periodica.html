@@ -1770,8 +1770,7 @@ html.palco-largo #carrossel{left:calc(-1 * var(--folga));right:calc(-1 * var(--f
 .car-foto{position:absolute;top:0;left:0;width:1280px;height:720px;pointer-events:none;user-select:none}
 .car-foto.cel{left:-100px;width:1480px}
 #carrossel.troca .car-item.centro{opacity:0;transition:opacity .15s linear}
-.car-tit small{display:block;font-family:var(--mono);font-size:.5em;letter-spacing:.24em;
-  text-transform:uppercase;color:var(--ouro-luz);margin-bottom:8px}
+.car-tit .car-n{font-family:var(--display);font-weight:600;color:var(--ouro-luz);margin-right:.3em}
 .car-tit b{font-family:var(--display);font-weight:600}
 #carrossel.aberto .car-tit{opacity:.55}
 #carrossel.aberto .car-item.centro .car-tit{opacity:1}
@@ -2195,7 +2194,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v7.4';
+const VERSAO = 'v7.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7539,9 +7538,10 @@ const CAR = {
     this.itens = SLIDES.map((sl, i) => {
       const it = document.createElement('div');
       it.className = 'car-item';
-      /* a numeração é a do próprio slide: a capa, e depois 1, 2, 3… */
-      it.innerHTML = '<div class="car-tit"><small>' + (i === 0 ? 'Capa' : 'Slide ' + String(i).padStart(2,'0')) +
-        '</small><b></b></div><div class="car-cartao"></div>';
+      /* o número do slide ao lado do título, "01. A Tabela Periódica" (a
+         numeração é a do próprio slide; a capa vai sem número) */
+      it.innerHTML = '<div class="car-tit">' + (i === 0 ? '' : '<span class="car-n">' + String(i).padStart(2,'0') + '.</span>') +
+        '<b></b></div><div class="car-cartao"></div>';
       it.querySelector('b').textContent = i === 0 ? 'Audiobook da Tabela Periódica' : sl.title;
       this.copia(i, it.querySelector('.car-cartao'));
       it.dataset.i = i;
