@@ -1782,7 +1782,6 @@ html.palco-largo #carrossel{left:calc(-1 * var(--folga));right:calc(-1 * var(--f
   border-radius:30px;will-change:transform;
   transition:transform .6s var(--e-capa);
 }
-.car-item{will-change:transform}
 /* o papel quadriculado e as duas luzes, as mesmas do palco */
 .car-cartao::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
   background-image:linear-gradient(rgba(76,63,191,.07) 1px,transparent 1px),
@@ -1803,9 +1802,14 @@ html.palco-largo #carrossel{left:calc(-1 * var(--folga));right:calc(-1 * var(--f
 /* na cópia nada se mexe: ela é uma fotografia do slide, já no fim de
    cada animação, e não no começo */
 .car-deck *{animation-delay:-100s!important;animation-play-state:paused!important;transition:none!important}
-.car-deck .mesa.plana .pc.car-3d{perspective:var(--persp,620px)}
-.car-deck .mesa.plana .pc.car-3d .face:not(.f1){display:flex}
-.car-deck .mesa.plana .pc.car-3d .face.f1{transform:translateZ(var(--H,29px))}
+/* a mesa da cópia, em 2D: sem perspectiva, sem os giros do cubo, e a
+   face da frente no tamanho em que a perspectiva a mostrava (--plano) */
+.car-deck .mesa .pc{perspective:none!important}
+.car-deck .mesa .cubo{transform:none!important;transform-style:flat!important}
+.car-deck .mesa .face.f1{transform:scale(var(--plano,1.05))!important}
+/* e enquanto o carrossel cobre o palco, o slide de verdade não é
+   desenhado: são 118 cubos 3D que ninguém está a ver */
+#stage.car-cobre #deck{visibility:hidden;content-visibility:hidden}
 .car-marca{position:absolute;z-index:0;pointer-events:none}
 .car-marca .cel{fill-opacity:.3;stroke:rgba(255,255,255,.05)}
 .car-tit{position:absolute;top:0;left:0;right:0;text-align:center;font-size:30px;
@@ -2248,7 +2252,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v8.4';
+const VERSAO = 'v8.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7602,19 +7606,14 @@ const CAR = {
     c.querySelectorAll('[id]').forEach(e => e.removeAttribute('id'));
     c.querySelectorAll('button').forEach(b => { b.tabIndex = -1; b.disabled = true; });
     c.querySelectorAll('.pousando').forEach(e => e.classList.remove('pousando'));
+    /* A MESA DA CÓPIA É PLANA, EM 2D: cada cubo só com a face da frente,
+       de frente (ver o CSS de .car-deck .mesa). Um cubo 3D é uma camada à
+       parte na placa de vídeo, e 118 deles a encolher dentro do cartão —
+       além dos 118 do slide de verdade — faziam o celular perder pedaços
+       da tela. Plana, a cópia inteira é desenhada como uma figura só. Um
+       cubo que estivesse virado aparece de frente: no cartão, ninguém vê. */
     c.querySelectorAll('.mesa').forEach(m => m.classList.add('plana'));
-    /* o cubo que estiver virado (a tabela viva, um giro da narração)
-       continua inteiro e em 3D: só com a face da frente, virado, sumia */
-    const vivos = slides[i].querySelectorAll('.mesa .pc'), copias = c.querySelectorAll('.mesa .pc');
-    /* virado agora, ou a caminho de virar: o giro anda por transição, e
-       a cópia leva já o ângulo final que está no estilo do cubo */
-    const angulo = cubo => ['--rx','--ry','--rz','--rzc','--dz'].some(v => parseFloat(cubo.style.getPropertyValue(v)) % 360);
-    copias.forEach((p, k) => {
-      const cubo = vivos[k] && vivos[k].querySelector('.cubo');
-      const t = cubo ? getComputedStyle(cubo).transform : 'none';
-      if ((t !== 'none' && t !== 'matrix(1, 0, 0, 1, 0, 0)') || (cubo && angulo(cubo))) p.classList.add('car-3d');
-      else p.querySelectorAll('.face:not(.f1)').forEach(f => f.remove());
-    });
+    c.querySelectorAll('.mesa .pc .face:not(.f1)').forEach(f => f.remove());
     deckC.appendChild(c);
     palco.appendChild(deckC);
   },
@@ -7686,6 +7685,9 @@ const CAR = {
     this.el.classList.remove('sem-trans');
     this.el.classList.add('aberto');
     this.aplica(false);
+    /* afastada a fila e escuro o fundo, o slide de verdade sai de cena */
+    clearTimeout(this.tCobre);
+    this.tCobre = setTimeout(() => { if (this.aberto && !this.ocupado) stage.classList.add('car-cobre'); }, 650);
   },
   vai(k){
     if (!this.aberto || this.ocupado) return;
@@ -7697,6 +7699,9 @@ const CAR = {
     if (!this.aberto || this.ocupado) return;
     this.ocupado = true;
     this.sel = k;
+    /* o slide de verdade volta para debaixo do cartão que vai crescer */
+    clearTimeout(this.tCobre);
+    stage.classList.remove('car-cobre');
     if (k !== atual){
       const viva = k === 0;
       vaiDireto(k);
