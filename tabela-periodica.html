@@ -333,7 +333,7 @@ body.montagem .capa .digitado{pointer-events:auto}
   background:radial-gradient(70% 70% at 80% 32%,rgba(76,63,191,.18),transparent 62%),
              radial-gradient(55% 60% at 0% 100%,rgba(226,162,43,.07),transparent 60%)}
 html.palco-largo.capa-escura #viewport{background:#14131B}
-#stage.capa-nova .capa .marca{color:#C9A15B;font-size:12.5px;letter-spacing:.3em}
+#stage.capa-nova .capa .marca{color:#C9A15B;font-size:12.5px;letter-spacing:.3em;white-space:nowrap}
 #stage.capa-nova .capa h1{font-size:80px;line-height:1.0;letter-spacing:-.032em;color:#F2EEE6;text-align:left}
 #stage.capa-nova .capa h1 .p-audio,
 #stage.capa-nova .capa h1 .p-inter{font-size:26px;font-weight:600;letter-spacing:-.005em;color:#D08A4A}
@@ -2202,7 +2202,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v7.7';
+const VERSAO = 'v7.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2480,7 +2480,7 @@ SLIDES.forEach((sl,i) => {
          cada um por sua vez, e para isso precisa de lhes pegar */
       '<h1><span class="p-audio">Audiobook</span> ' +
         '<span class="p-inter">interativo</span>' +
-        '<em><span class="linha"><span class="p-tabela">Tabela Periódica</span></span>' +
+        '<em><span class="linha"><span class="p-tabela">Tabela <br>Periódica</span></span>' +
         '<span class="ult">Moderna</span></em></h1>' +
       '<div class="risco"></div>' +
       '<div class="autor"><span class="por">Designed by </span>Prof. <b>Amauri Junior</b></div>' +
@@ -7832,13 +7832,15 @@ const LAYOUTS = {
 /* a capa nova: o título, o risco e o autor alinhados à esquerda; a
    tabelinha grande à direita, cortada pela borda; as três cartas por
    cima dela; as frases digitadas no vão entre o título e as cartas */
+/* (marca, autor e e-mail: o lugar que o professor deixou na montagem, no
+   Chromebook — a marca numa linha só) */
 const LAYOUT_CAPA_NOVA = {
-  marca:      {esq: 74, y:150, esc:1.00},
+  marca:      {esq: 41.5, y:145, esc:1.00},
   titulo:     {esq: 74, y:322, esc:1.00},
   risco:      {esq: 74, y:500, esc:1.00},
   foto:       {x:  124, y:592, esc:1.00},
-  autor:      {esq:196, y:576, esc:1.00},
-  email:      {esq:196, y:612, esc:1.00},
+  autor:      {esq:198.5, y:570, esc:1.00},
+  email:      {esq:196.5, y:612, esc:1.00},
   tabelinha:  {x:  945, y:392, esc:1.58},
   'bloco-Na': {x:  850, y:158, esc:1.08},
   'bloco-La': {x: 1122, y:300, esc:1.08},
