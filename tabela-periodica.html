@@ -2252,7 +2252,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v8.5';
+const VERSAO = 'v8.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3635,6 +3635,7 @@ const Velocidade = {
     try { localStorage.setItem(this.CHAVE, String(this.v)); } catch (_) {}
     this.aplicar(som);
     if (FALA_FIM) this.aplicar(FALA_FIM);
+    if (ABERTURA) this.aplicar(ABERTURA);
     this.botao();
   },
   botao(){
@@ -6718,6 +6719,34 @@ function tocaEfeito(nome){
   });
 }
 
+/* A ABERTURA DE CADA CAPÍTULO (audio_tabela_N.0): chegando a um slide —
+   pelas setas, pelo "Iniciar" da capa, pelo carrossel ou pelo sumário —,
+   toca a apresentação dele. Ela é uma fala à parte, e não a trilha do
+   slide: a narração continua à espera do play, como sempre. Apertado o
+   play (ou mudado o slide), a abertura cala-se, para as vozes não se
+   sobreporem; e um subtópico do sumário, que já chega a falar, não a
+   toca (ABERTURA_SUSPENSA). */
+var ABERTURA = null, ABERTURA_SUSPENSA = false;
+function calaAbertura(){
+  if (!ABERTURA) return;
+  ABERTURA.pause();
+  EFEITOS.delete(ABERTURA);
+  ABERTURA = null;
+}
+function tocaAbertura(i){
+  calaAbertura();
+  if (i < 1 || ABERTURA_SUSPENSA) return;
+  const a = new Audio(encodeURI('Audios/audio_tabela_' + i + '.0.mp3'));
+  Velocidade.aplicar(a);
+  EFEITOS.add(a);
+  ABERTURA = a;
+  const fim = () => { EFEITOS.delete(a); if (ABERTURA === a) ABERTURA = null; };
+  a.addEventListener('ended', fim);
+  a.addEventListener('error', fim);
+  a.play().catch(fim);
+}
+som.addEventListener('play', calaAbertura);
+
 /* SAINDO DO APP, TUDO PÁRA. O aluno vai para outro aplicativo, ou a tela
    apaga: a narração pausa — e com ela a cena, que segue o relógio dela —,
    e os efeitos que estiverem a tocar (o "error", a fanfarra, a fala do
@@ -7439,6 +7468,7 @@ function go(i, dir){
   }, 880);
 
   carregaTrilha(TRILHA_DO_SLIDE[i]);
+  tocaAbertura(i);
 }
 
 function atualizaCabecalho(){
@@ -7747,6 +7777,7 @@ function vaiDireto(i){
   arrumaPecasDoPalco();
   if (LAYOUTS[atual]) aplicaLayout(atual);
   carregaTrilha(TRILHA_DO_SLIDE[i]);
+  tocaAbertura(i);
 }
 
 /* as fotos chegam antes de serem pedidas: com a página sossegada, uma de
@@ -8612,6 +8643,10 @@ function irPara(i, variante){
   /* o elemento que o aluno tinha escolhido fica guardado: chegando a um
      quiz, é ele que volta a valer (se servir) */
   if (SEQ.eleito) NAV.eleitoAntes = +SEQ.eleito.dataset.z;
+  /* um subtópico já começa com a narração dele: a abertura do capítulo
+     não toca, senão as duas vozes falavam por cima uma da outra */
+  const capitulo = NAV_TOPICOS.findIndex(t => t.slide === item.slide) === i;
+  if (!capitulo) ABERTURA_SUSPENSA = true;
   const segue = () => {
     if (g !== NAV.geracao || atual !== item.slide) return;
     NAV_TOPICOS.slice(0, i).forEach(t => { if (t.slide === item.slide && t.deixa) t.deixa(); });
@@ -8620,6 +8655,7 @@ function irPara(i, variante){
   /* de outro slide, o go() já recomeça este; no mesmo, recomeça-se à mão */
   if (atual !== item.slide){ go(item.slide); setTimeout(segue, 900); }
   else { recomecaSlide(item.slide); segue(); }
+  ABERTURA_SUSPENSA = false;
 }
 
 /* o slide recomeça no lugar, como se o aluno acabasse de chegar a ele: é o
@@ -8632,6 +8668,7 @@ function recomecaSlide(i){
   recomecaMesa(i);
   trilhaAtual = -1;          /* a mesma trilha também recomeça */
   carregaTrilha(TRILHA_DO_SLIDE[i]);
+  tocaAbertura(i);
 }
 
 /* O ELEITO de quem chega direto: na aula ele sai da escolha do aluno na
