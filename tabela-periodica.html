@@ -1851,6 +1851,12 @@ body.montagem #coord.on{display:block}
   transition:transform var(--tsobe,.42s) var(--e-salto), filter .42s ease, box-shadow .42s ease;
 }
 #stage .solto.pego{transition:none!important}
+/* O TEXTO EDITADO NA MONTAGEM: as linhas são só as dos Enters (<br>) —
+   nenhuma quebra pela largura —, e a caixa cresce com o que se escreve */
+.texto-livre, .texto-livre *{white-space:nowrap!important}
+.texto-livre *{width:auto!important;max-width:none!important}
+.editando{user-select:text!important;-webkit-user-select:text!important;touch-action:auto!important;
+  cursor:text!important;outline:2px dashed var(--ouro-luz)!important;outline-offset:6px;caret-color:var(--ouro-luz)}
 body.montagem .solto{
   cursor:move;touch-action:none;
   outline:1px dashed rgba(76,63,191,.5);outline-offset:4px;border-radius:2px;
@@ -2196,7 +2202,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v7.6';
+const VERSAO = 'v7.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7939,8 +7945,173 @@ function mostraCoord(el){
   coord.classList.add('on');
 }
 
+/* ---- OS TEXTOS, EDITADOS NA PRÓPRIA FOLHA ----
+   Dois toques num texto (ou duplo clique) e ele vira caixa de escrever.
+   As linhas passam a ser só as que se escrevem: o Enter quebra a linha,
+   e o que não tiver Enter fica numa linha só. Para isso, ao começar, as
+   quebras que a largura da caixa fazia viram quebras de verdade (<br>) —
+   o texto não salta — e a caixa passa a crescer com o que se escreve.
+   Os pedaços com nome (os que a narração acende) ficam onde estão. O
+   Esc, ou um toque fora, termina; o Ctrl+C leva também os textos. */
+const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle';
+const EDICAO = {
+  el:null, ultimo:null, tUlt:0, editados:new Set(),
+  /* o bloco de linhas a que um texto pertence, dentro da peça */
+  bloco(e, raiz){
+    for (; e && e !== raiz; e = e.parentElement)
+      if (getComputedStyle(e).display === 'block') return e;
+    return raiz;
+  },
+  /* a quebra que a largura fazia vira um <br> antes da palavra que desceu */
+  fixaLinhas(el){
+    const r = document.createRange(), quebras = [];
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    let ant = null;
+    for (let t; (t = w.nextNode()); ){
+      const bloco = this.bloco(t.parentElement, el);
+      for (const m of t.data.matchAll(/\S+/g)){
+        r.setStart(t, m.index); r.setEnd(t, m.index + m[0].length);
+        const q = r.getClientRects()[0];
+        if (!q) continue;                          /* escondido (display:none) */
+        if (ant && ant.bloco === bloco && q.top > ant.top + q.height*.5) quebras.push([t, m.index]);
+        ant = { top:q.top, bloco };
+      }
+    }
+    quebras.reverse().forEach(([t, i]) => {
+      /* o espaço do fim da linha fica: lá ele não se vê, e juntadas as
+         linhas outra vez as palavras não colam */
+      const resto = t.splitText(i);
+      resto.parentNode.insertBefore(document.createElement('br'), resto);
+    });
+  },
+  /* a peça solta cresce para a direita e para baixo: a borda esquerda e
+     a de cima ficam paradas (os textos da capa são alinhados por elas),
+     e o centro acompanha */
+  esq:0, topo:0,
+  acompanha(){
+    const el = this.el, m = el && MEDIDAS.get(el);
+    if (!m || !el.classList.contains('solto')) return;
+    el.style.width = 'max-content';
+    m.w = el.offsetWidth;
+    m.h = el.offsetHeight;
+    m.cx = this.esq  + m.w*m.esc/2;
+    m.cy = this.topo + m.h*m.esc/2;
+    aplicaEl(el);
+    el.style.width = 'max-content';
+  },
+  comeca(el, x, y){
+    this.termina();
+    /* o ponto do cursor é tirado antes de qualquer mudança: a caixa vai
+       mudar de largura, e o texto debaixo do dedo com ela (o Range
+       acompanha as quebras que o fixaLinhas fizer) */
+    const p = document.caretRangeFromPoint ? document.caretRangeFromPoint(x, y) : null;
+    if (!el.classList.contains('texto-livre')){ this.fixaLinhas(el); el.classList.add('texto-livre'); }
+    this.el = el;
+    const m = MEDIDAS.get(el);
+    if (m && el.classList.contains('solto')){
+      this.esq  = m.cx - m.w*m.esc/2;
+      this.topo = m.cy - m.h*m.esc/2;
+      this.acompanha();
+    }
+    el.classList.add('editando');
+    el.contentEditable = 'true';
+    el.spellcheck = false;
+    el.focus();
+    /* o cursor vai para onde se tocou */
+    const sel = getSelection();
+    if (p && el.contains(p.startContainer)){
+      /* tocado no começo de uma linha que era quebra da largura, o ponto
+         ficou no fim da linha de cima: passa para depois do <br> */
+      const n = p.startContainer;
+      if (n.nodeType === 3 && p.startOffset >= n.length && n.nextSibling && n.nextSibling.nodeName === 'BR'){
+        const depois = n.nextSibling.nextSibling;
+        if (depois) p.setStart(depois, 0); else p.setStartAfter(n.nextSibling);
+        p.collapse(true);
+      }
+      sel.removeAllRanges(); sel.addRange(p);
+    }
+    this.editados.add(el);
+    coord.classList.remove('on');
+    TP.diz('Editando o texto · Enter quebra a linha · Esc ou um toque fora termina', 3600);
+  },
+  termina(){
+    const el = this.el;
+    if (!el) return;
+    /* a peça solta fica com a largura do que se escreveu */
+    this.acompanha();
+    this.el = null;
+    el.removeAttribute('contenteditable');
+    el.classList.remove('editando');
+    const m = MEDIDAS.get(el);
+    if (m && el.classList.contains('solto')) aplicaEl(el);
+    getSelection().removeAllRanges();
+  },
+  nome(el){
+    if (el.classList.contains('title'))    return 'titulo-do-slide';
+    if (el.classList.contains('subtitle')) return 'subtitulo-do-slide';
+    return nomeDe(el);
+  }
+};
+/* o Enter quebra a linha (e não abre um parágrafo novo); colado, entra
+   só o texto, sem a letra e as cores de onde veio */
+stage.addEventListener('keydown', ev => {
+  if (!EDICAO.el || !EDICAO.el.contains(ev.target)) return;
+  if (ev.key === 'Enter'){ ev.preventDefault(); document.execCommand('insertLineBreak'); }
+  /* o Backspace logo depois de uma quebra junta as duas linhas com um
+     espaço entre as palavras (o navegador apagaria o espaço também) */
+  if (ev.key === 'Backspace'){
+    const s = getSelection();
+    if (!s.isCollapsed) return;
+    const n = s.anchorNode, o = s.anchorOffset;
+    const br = n.nodeType === 3 ? (o === 0 ? n.previousSibling : null) : n.childNodes[o - 1];
+    if (!br || br.nodeName !== 'BR') return;
+    ev.preventDefault();
+    const antes = br.previousSibling, depois = br.nextSibling;
+    br.remove();
+    const r = document.createRange();
+    if (antes && antes.nodeType === 3){
+      const colaDepois = depois && depois.nodeType === 3 && /^\S/.test(depois.data);
+      if (/\S$/.test(antes.data) && colaDepois) antes.appendData(' ');
+      r.setStart(antes, antes.length);
+    } else if (depois) r.setStartBefore(depois);
+    else r.selectNodeContents(EDICAO.el), r.collapse(false);
+    r.collapse(true);
+    s.removeAllRanges(); s.addRange(r);
+    EDICAO.acompanha();
+  }
+});
+/* escrevendo, a caixa cresce com o texto */
+stage.addEventListener('input', ev => {
+  if (EDICAO.el && EDICAO.el.contains(ev.target)) EDICAO.acompanha();
+});
+stage.addEventListener('paste', ev => {
+  if (!EDICAO.el || !EDICAO.el.contains(ev.target)) return;
+  ev.preventDefault();
+  document.execCommand('insertText', false, (ev.clipboardData || window.clipboardData).getData('text/plain'));
+});
+
 stage.addEventListener('pointerdown', (ev) => {
   if (!naMontagem()) return;
+  /* escrevendo: o toque dentro do texto é do cursor; fora, termina */
+  if (EDICAO.el){
+    if (EDICAO.el.contains(ev.target)) return;
+    EDICAO.termina();
+  }
+  /* dois toques no mesmo texto, e ele abre para escrever */
+  const txt = ev.target.closest && ev.target.closest(TEXTOS);
+  if (txt && slides[atual].contains(txt)){
+    const agora = performance.now();
+    if (EDICAO.ultimo === txt && agora - EDICAO.tUlt < 450){
+      EDICAO.ultimo = null;
+      ev.preventDefault();
+      ev.stopPropagation();
+      /* o dedo do primeiro toque pode ter deixado a peça na mão */
+      gestos.delete(txt); txt.classList.remove('pego');
+      EDICAO.comeca(txt, ev.clientX, ev.clientY);
+      return;
+    }
+    EDICAO.ultimo = txt; EDICAO.tUlt = agora;
+  }
   const el = pecaDe(ev);
   if (!el) return;
   soltaSlide(slides[atual]);
@@ -8013,10 +8184,9 @@ function modoMontagem(v){
     som.pause(); mostraPausa(false);
     soltaSlide(slides[atual]);
     mostraBarra(true);
-    TP.diz(pecasDe(slides[atual]).length
-      ? 'Montagem: arraste as peças · roda ou pinça muda o tamanho · Ctrl+C copia · R devolve'
-      : 'Este slide não tem peças de montagem — a capa tem.', 4200);
+    TP.diz('Montagem: arraste as peças · roda ou pinça muda o tamanho · dois toques num texto o editam · Ctrl+C copia · R devolve', 4800);
   } else {
+    EDICAO.termina();
     coord.classList.remove('on');
     if (temMesa(atual)) VIDA.liga();
   }
@@ -8078,6 +8248,16 @@ function textoDoSlide(i){
            (o.fonte === null ? ' '.repeat(13) : ', fonte:' + pad(o.fonte,5)) +
            ', esc:' + o.esc.toFixed(2) + ' },\n';
   });
+  /* e os textos que foram editados neste slide, como estão agora (o <br>
+     é cada Enter) */
+  const textos = [...EDICAO.editados].filter(el => slides[i].contains(el));
+  if (textos.length){
+    out += '  /* textos editados */\n';
+    textos.forEach(el => {
+      out += "  { el:'" + EDICAO.nome(el) + "', texto:'" +
+             el.innerHTML.replace(/\s*\n\s*/g, ' ').replace(/'/g, "\\'") + "' },\n";
+    });
+  }
   return out;
 }
 function copiaCoords(){
@@ -8719,6 +8899,11 @@ addEventListener('keydown', ev => {
   const k = ev.key;
   /* no carrossel da questão 04 em diante, as setas são dele */
   if (ev.target && ev.target.closest && ev.target.closest('.rd-roda')) return;
+  /* escrevendo um texto, o teclado é da escrita; o Esc termina */
+  if (EDICAO.el){
+    if (k === 'Escape'){ EDICAO.termina(); ev.preventDefault(); }
+    return;
+  }
   /* com o carrossel dos slides aberto, o teclado é só dele */
   if (CAR.aberto){
     if (k === 'ArrowRight') CAR.vai(CAR.sel + 1);
