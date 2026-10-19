@@ -575,13 +575,17 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 }
 /* as duas casas que guardam as séries: elas não têm elemento dentro,
    têm um bilhete dizendo onde procurar */
+/* um card cinza, com o acabamento dos cubos (a luz de cima para baixo, a
+   borda clara): é lugar de elemento, mas os dele estão lá embaixo */
 .casa.serie{
   display:grid;place-items:center;
   font-family:var(--mono);font-size:10px;line-height:1.4;text-align:center;
-  color:var(--tinta-dim);background:rgba(139,63,190,.10);
-  border:1px dashed rgba(139,63,190,.45);
+  color:rgba(255,255,255,.92);text-shadow:0 1px 2px rgba(0,0,0,.35);
+  background:linear-gradient(145deg,#A3A1AE,#7E7C8B);
+  border:1px solid rgba(255,255,255,.24);
+  box-shadow:0 2px 6px rgba(32,28,66,.18);
 }
-.casa.serie.act{background:rgba(177,64,140,.10);border-color:rgba(177,64,140,.45)}
+.casa.serie.act{background:linear-gradient(145deg,#A3A1AE,#7E7C8B)}
 
 /* ---------- O CUBO ----------
    Cada elemento é um cubo de seis faces iguais: em todas elas o mesmo
@@ -2259,7 +2263,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v9.2';
+const VERSAO = 'v9.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
