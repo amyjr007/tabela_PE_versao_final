@@ -1375,11 +1375,11 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 /* o nome do que o botão faz, para quem nunca viu esta tela. Fica à
    ESQUERDA do botão, e não por cima dele: em cima ele cairia na última
    linha da tabela, que chega até ali. */
-/* A VELOCIDADE DA NARRAÇÃO: no canto de cima, à direita, logo abaixo do
-   botão do carrossel. O lugar é o que o professor deixou na montagem: o
-   centro em x 1244, y 91 do palco de 1280x720 */
+/* A VELOCIDADE DA NARRAÇÃO: no alto, à esquerda do botão do carrossel.
+   O lugar é o que o professor deixou na montagem: o centro em x 1130,
+   y 79 do palco de 1280x720 */
 #vel{
-  position:absolute;right:11px;top:66px;z-index:12;
+  position:absolute;right:125px;top:54px;z-index:12;
   height:50px;min-width:50px;padding:0 10px;cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
   background:rgba(255,255,255,.92);border:1px solid var(--ouro-dim);border-radius:25px;
@@ -1745,16 +1745,18 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
    tem o tamanho exato do palco, 1280 × 720, e só a escala muda: na
    escala 1 ele cobre o palco ponto por ponto, e é por isso que o slide
    pode encolher até ao carrossel, e crescer de volta, sem corte. */
+/* o lugar e o tamanho que o professor deixou na montagem (slide 6): o
+   centro em x 1205, y 80 do palco, 66 px de lado */
 #ver-slides{
-  position:absolute;top:12px;right:16px;z-index:14;
-  width:46px;height:46px;padding:0;cursor:pointer;display:grid;place-items:center;
-  background:rgba(255,255,255,.88);border:1px solid var(--indigo-dim);border-radius:12px;
+  position:absolute;top:47px;right:42px;z-index:14;
+  width:66px;height:66px;padding:0;cursor:pointer;display:grid;place-items:center;
+  background:rgba(255,255,255,.88);border:1px solid var(--indigo-dim);border-radius:17px;
   color:var(--tinta-dim);box-shadow:0 6px 18px rgba(32,28,66,.12);
   transition:color .2s,transform .2s,opacity .25s;
 }
 /* solto na montagem, o transform é o do lugar e da escala: o pulinho não */
 #ver-slides:not(.solto):hover{color:var(--indigo);transform:translateY(-2px)}
-#ver-slides svg{width:24px;height:24px}
+#ver-slides svg{width:35px;height:35px}
 #stage.na-capa.capa-nova #ver-slides{background:rgba(255,255,255,.05);border-color:rgba(242,238,230,.35);color:#F2EEE6}
 /* no celular deitado ele NÃO vai para a borda da tela: lá o canto é
    arredondado e tem a câmera, e o botão sumia debaixo deles. Fica no
@@ -1853,7 +1855,9 @@ html.palco-largo #carrossel{left:calc(-1 * var(--folga));right:calc(-1 * var(--f
 .car-seta{top:392px;transform:translateY(-50%)}
 .car-seta.ant{left:calc(28px + var(--folga,0px))}
 .car-seta.prox{right:calc(28px + var(--folga,0px))}
-.car-fecha{top:12px;right:calc(16px + var(--folga,0px));width:46px;height:46px;border-radius:12px}
+/* o X fica onde estava o botão que abriu o carrossel */
+.car-fecha{top:47px;right:calc(42px + var(--folga,0px));width:66px;height:66px;border-radius:17px}
+.car-fecha svg{width:32px;height:32px}
 #carrossel.aberto .car-seta, #carrossel.aberto .car-fecha{opacity:1;pointer-events:auto}
 #carrossel.aberto .car-seta[disabled]{opacity:.2;pointer-events:none}
 .car-conta{position:absolute;left:0;right:0;bottom:26px;text-align:center;z-index:3;
@@ -2267,7 +2271,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v9.4';
+const VERSAO = 'v9.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7994,9 +7998,9 @@ const LAYOUT_CAPA_NOVA = {
   'bloco-Y':  {x:  930, y:470, esc:1.08},
   frases:     {x:  690, y:420, esc:1.00},
   som:        {x: 1160, y:612, esc:1.00},
-  /* o botão do carrossel, na capa maior e um fio para dentro; nos outros
-     slides ele volta ao canto do CSS (arrumaPecasDoPalco) */
-  carrossel:  {x: 1220, y: 62, esc:1.44}
+  /* o botão do carrossel, na capa um fio mais acima e à direita; nos
+     outros slides ele volta ao lugar do CSS (arrumaPecasDoPalco) */
+  carrossel:  {x: 1220, y: 62, esc:1.00}
 };
 if (CAPA_NOVA) LAYOUTS[0] = LAYOUT_CAPA_NOVA;
 
