@@ -2183,8 +2183,10 @@ const SLIDES = [
     title:'Audiobook interativo da Tabela Periódica Moderna',
     autor:'Designed by Prof. Amauri Junior' },
 
+  /* 'sumario': o nome do capítulo no sumário, quando não é o título */
   { title:'A Tabela Periódica',
-    subtitle:'Os 118 elementos' },
+    subtitle:'Os 118 elementos',
+    sumario:'Layout geral' },
 
   /* o slide 3: a mesma tabela, a desordem, e o critério de Moseley */
   { title:'Os critérios de Organização',
@@ -2230,7 +2232,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v8.0';
+const VERSAO = 'v8.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8692,7 +8694,7 @@ function montaNav(){
     cb.className = 'nav-item sum-cap-bt';
     cb.dataset.topico = doSlide[0].i;
     cb.innerHTML = '<span class="sum-num">' + s + '.</span><span class="nav-txt"><b></b><small></small></span>';
-    cb.querySelector('b').textContent = SLIDES[s].title;
+    cb.querySelector('b').textContent = SLIDES[s].sumario || SLIDES[s].title;
     cb.querySelector('b').insertAdjacentHTML('beforeend', '<span class="nav-aqui">aqui</span>');
     cb.querySelector('small').textContent = SLIDES[s].subtitle || '';
     cb.addEventListener('click', () => irPara(doSlide[0].i));
