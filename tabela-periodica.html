@@ -341,7 +341,10 @@ html.palco-largo.capa-escura #viewport{background:#14131B}
 #stage.capa-nova .capa h1 .linha,
 #stage.capa-nova .capa h1 .ult{display:block;text-align:left}
 #stage.capa-nova .capa .risco{width:140px;height:3px;background:#C9A15B}
-#stage.capa-nova .capa .autor{font-size:21px;color:#F2EEE6}
+/* o nome e o endereço numa linha só, sempre: com a caixa na largura
+   medida, uma letra que chegasse mais larga partia o nome em dois */
+#stage.capa-nova .capa .autor{font-size:21px;color:#F2EEE6;white-space:nowrap}
+#stage.capa-nova .capa .email{white-space:nowrap}
 #stage.capa-nova .capa .autor .por{display:none}
 #stage.capa-nova .capa .autor b{font-weight:700;color:#F2EEE6}
 #stage.capa-nova .capa .email{font-size:14px;color:rgba(242,238,230,.55)}
@@ -2232,7 +2235,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v8.1';
+const VERSAO = 'v8.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7997,9 +8000,12 @@ const EDICAO = {
   /* a quebra que a largura fazia vira um <br> antes da palavra que desceu */
   fixaLinhas(el){
     const r = document.createRange(), quebras = [];
-    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
     let ant = null;
     for (let t; (t = w.nextNode()); ){
+      /* uma quebra que já é <br> não ganha outra */
+      if (t.nodeName === 'BR'){ ant = null; continue; }
+      if (t.nodeType !== 3) continue;
       const bloco = this.bloco(t.parentElement, el);
       for (const m of t.data.matchAll(/\S+/g)){
         r.setStart(t, m.index); r.setEnd(t, m.index + m[0].length);
@@ -8281,12 +8287,34 @@ function textoDoSlide(i){
            ', esc:' + o.esc.toFixed(2) + ' },\n';
   });
   /* e os textos que foram editados neste slide, como estão agora (o <br>
-     é cada Enter) */
+     é cada Enter). 'linhas' é quantas linhas o texto mostra: editado, ele
+     só quebra onde houver Enter, e isso não se vê no texto */
   const textos = [...EDICAO.editados].filter(el => slides[i].contains(el));
+  /* as linhas contam-se pelos pedaços de texto que se sobrepõem na
+     altura: letras de tamanhos diferentes na mesma linha são uma linha */
+  const linhas = el => {
+    /* só os pedaços de texto: o retângulo de um bloco cobre várias linhas */
+    const r = document.createRange(), qs = [];
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    for (let t; (t = w.nextNode()); ){
+      if (!t.data.trim()) continue;
+      r.selectNodeContents(t);
+      qs.push(...[...r.getClientRects()].filter(q => q.width > 0 && q.height > 0));
+    }
+    /* um pedaço é linha nova quando o centro dele não cai perto do centro
+       de uma linha já contada (a letra grande passa da altura da linha,
+       e os retângulos das linhas vizinhas encostam) */
+    const centros = [];
+    qs.forEach(q => {
+      const c = (q.top + q.bottom) / 2;
+      if (!centros.some(x => Math.abs(x - c) < q.height * .4)) centros.push(c);
+    });
+    return centros.length;
+  };
   if (textos.length){
-    out += '  /* textos editados */\n';
+    out += '  /* textos editados (numa linha só, a não ser onde houver <br>) */\n';
     textos.forEach(el => {
-      out += "  { el:'" + EDICAO.nome(el) + "', texto:'" +
+      out += "  { el:'" + EDICAO.nome(el) + "', linhas:" + linhas(el) + ", texto:'" +
              el.innerHTML.replace(/\s*\n\s*/g, ' ').replace(/'/g, "\\'") + "' },\n";
     });
   }
