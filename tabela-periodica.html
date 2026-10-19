@@ -1647,6 +1647,34 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 .nav-pe{margin:0;padding:14px 24px 22px;font-size:12px;line-height:1.45;color:var(--tinta-faint);
   border-top:1px solid var(--indigo-dim)}
 
+/* ---- O SUMÁRIO: os capítulos (um por slide) e os subtópicos ---- */
+#nav{width:min(420px,92vw)}
+.nav-lista{position:relative;padding:10px 12px 16px}
+.sum-cap{padding:4px 0 8px}
+.sum-cap + .sum-cap{border-top:1px solid var(--indigo-dim);padding-top:10px}
+/* o capítulo: "1." em dourado, o título, e o subtítulo do slide por baixo */
+.sum-num{flex:none;min-width:26px;font-family:var(--display);font-size:17px;font-weight:700;
+  line-height:1.25;color:var(--ouro);text-align:right}
+.sum-cap-bt .nav-txt b{font-size:16.5px}
+.sum-cap-bt .nav-txt small{font-family:var(--display);font-size:12.5px;color:var(--tinta-dim)}
+.sum-cap-bt .nav-txt small:empty{display:none}
+/* o capítulo em que a aula está, mesmo num subtópico dele */
+.sum-cap.aqui > .sum-cap-bt .sum-num{color:var(--ouro);text-shadow:0 0 12px rgba(226,162,43,.35)}
+/* os subtópicos: recuados, com a letra no lugar do número */
+.sum-subs{list-style:none;margin:2px 0 0;padding:0 0 0 40px}
+.sum-sub{padding:8px 12px;gap:10px}
+.sum-letra{flex:none;min-width:22px;font-family:var(--mono);font-size:13px;line-height:1.5;color:var(--ouro)}
+.sum-sub .nav-txt b{font-size:15px;font-weight:500}
+.sum-subs .nav-variantes{margin:0 0 6px 44px}
+/* no celular deitado a tela é baixa: o cabeçalho encolhe e o rodapé sai,
+   e a altura fica para a lista */
+@media (max-height:500px){
+  #nav header{padding:12px 20px 10px}
+  #nav h2{margin-top:2px;font-size:17px}
+  .nav-fecha{top:10px}
+  .nav-pe{display:none}
+}
+
 /* ---------- visão geral (tecla O) ----------
    As miniaturas não são desenhos dos slides: são os próprios slides,
    copiados e postos em escala. O que estiver dentro deles aparece ali
@@ -2202,7 +2230,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v7.8';
+const VERSAO = 'v7.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8625,9 +8653,9 @@ function montaNav(){
   navAlca = document.createElement('button');
   navAlca.id = 'nav-alca';
   navAlca.type = 'button';
-  navAlca.title = 'Navegação rápida (N)';
-  navAlca.setAttribute('aria-label', 'Abrir a navegação rápida');
-  navAlca.innerHTML = '<span>Navegação</span>';
+  navAlca.title = 'Sumário (N)';
+  navAlca.setAttribute('aria-label', 'Abrir o sumário');
+  navAlca.innerHTML = '<span>Sumário</span>';
   navAlca.addEventListener('click', abreNav);
 
   navFundo = document.createElement('div');
@@ -8636,11 +8664,11 @@ function montaNav(){
 
   navGaveta = document.createElement('aside');
   navGaveta.id = 'nav';
-  navGaveta.setAttribute('aria-label', 'Navegação rápida');
+  navGaveta.setAttribute('aria-label', 'Sumário');
   navGaveta.setAttribute('aria-hidden', 'true');
   navGaveta.innerHTML =
-    '<header><div class="nav-rotulo">Navegação rápida</div><h2>A Tabela Periódica</h2>' +
-    '<button class="nav-fecha" type="button" aria-label="Fechar a navegação rápida">' +
+    '<header><div class="nav-rotulo">Sumário</div><h2>A Tabela Periódica Moderna</h2>' +
+    '<button class="nav-fecha" type="button" aria-label="Fechar o sumário">' +
     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"' +
     ' stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>' +
     '<ol class="nav-lista"></ol>' +
@@ -8648,39 +8676,66 @@ function montaNav(){
     'tivessem acontecido. Tecla N abre e fecha.</p>';
   navGaveta.querySelector('.nav-fecha').addEventListener('click', fechaNav);
   const lista = navGaveta.querySelector('.nav-lista');
-  NAV_TOPICOS.forEach((t, i) => {
-    const li = document.createElement('li');
-    /* cada slide tem os tópicos dele, numerados a partir do 1 */
-    li.dataset.slide = t.slide;
-    const n = NAV_TOPICOS.slice(0, i).filter(x => x.slide === t.slide).length + 1;
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'nav-item';
-    b.innerHTML = '<span class="nav-n">' + n + '</span><span class="nav-txt"><b></b>' +
-      (t.engatilhado ? '<span class="nav-breve">em breve</span>' : '<small></small>') + '</span>';
-    b.querySelector('b').textContent = t.titulo;
-    b.querySelector('b').insertAdjacentHTML('beforeend', '<span class="nav-aqui">aqui</span>');
-    if (t.engatilhado) b.disabled = true;
-    else {
-      b.querySelector('small').textContent = t.sub;
-      b.addEventListener('click', () => irPara(i));
-    }
-    li.appendChild(b);
-    if (t.variantes){
-      const vs = document.createElement('div');
-      vs.className = 'nav-variantes';
-      t.variantes.forEach(v => {
-        const vb = document.createElement('button');
-        vb.type = 'button';
-        vb.className = 'nav-var';
-        vb.textContent = v.rotulo;
-        vb.addEventListener('click', () => irPara(i, v.id));
-        vs.appendChild(vb);
+  /* O SUMÁRIO: um capítulo por slide, com o número dele ("1. A Tabela
+     Periódica"), e debaixo os subtópicos, por letra (a, b, c…). O
+     primeiro tópico de cada slide (a "Visão geral", o "Início") é o
+     próprio capítulo: tocar no título leva ao começo do slide. */
+  const letra = k => String.fromCharCode(97 + k);
+  for (let s = 1; s < SLIDES.length; s++){
+    const doSlide = NAV_TOPICOS.map((t, i) => ({ t, i })).filter(o => o.t.slide === s);
+    if (!doSlide.length) continue;
+    const cap = document.createElement('li');
+    cap.className = 'sum-cap';
+    cap.dataset.slide = s;
+    const cb = document.createElement('button');
+    cb.type = 'button';
+    cb.className = 'nav-item sum-cap-bt';
+    cb.dataset.topico = doSlide[0].i;
+    cb.innerHTML = '<span class="sum-num">' + s + '.</span><span class="nav-txt"><b></b><small></small></span>';
+    cb.querySelector('b').textContent = SLIDES[s].title;
+    cb.querySelector('b').insertAdjacentHTML('beforeend', '<span class="nav-aqui">aqui</span>');
+    cb.querySelector('small').textContent = SLIDES[s].subtitle || '';
+    cb.addEventListener('click', () => irPara(doSlide[0].i));
+    cap.appendChild(cb);
+    const subs = doSlide.slice(1);
+    if (subs.length){
+      const ol = document.createElement('ol');
+      ol.className = 'sum-subs';
+      subs.forEach(({ t, i }, k) => {
+        const li = document.createElement('li');
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'nav-item sum-sub';
+        b.dataset.topico = i;
+        b.innerHTML = '<span class="sum-letra">' + letra(k) + ' –</span><span class="nav-txt"><b></b>' +
+          (t.engatilhado ? '<span class="nav-breve">em breve</span>' : '<small></small>') + '</span>';
+        b.querySelector('b').textContent = t.titulo;
+        b.querySelector('b').insertAdjacentHTML('beforeend', '<span class="nav-aqui">aqui</span>');
+        if (t.engatilhado) b.disabled = true;
+        else {
+          b.querySelector('small').textContent = t.sub;
+          b.addEventListener('click', () => irPara(i));
+        }
+        li.appendChild(b);
+        if (t.variantes){
+          const vs = document.createElement('div');
+          vs.className = 'nav-variantes';
+          t.variantes.forEach(v => {
+            const vb = document.createElement('button');
+            vb.type = 'button';
+            vb.className = 'nav-var';
+            vb.textContent = v.rotulo;
+            vb.addEventListener('click', () => irPara(i, v.id));
+            vs.appendChild(vb);
+          });
+          li.appendChild(vs);
+        }
+        ol.appendChild(li);
       });
-      li.appendChild(vs);
+      cap.appendChild(ol);
     }
-    lista.appendChild(li);
-  });
+    lista.appendChild(cap);
+  }
   document.body.append(navAlca, navFundo, navGaveta);
   navNoSlide();
 }
@@ -8688,10 +8743,12 @@ function navAberta(){ return !!navGaveta && navGaveta.classList.contains('aberta
 function abreNav(){
   if (!navGaveta || atual < 1) return;
   const aqui = topicoAtual();
-  /* só os tópicos do slide em que se está, e o título dele */
-  navGaveta.querySelector('h2').textContent = SLIDES[atual].title;
-  navGaveta.querySelectorAll('.nav-lista li').forEach(li => { li.hidden = +li.dataset.slide !== atual; });
-  navGaveta.querySelectorAll('.nav-item').forEach((b, i) => b.classList.toggle('atual', i === aqui));
+  /* acende o capítulo em que se está e, dentro dele, o tópico */
+  navGaveta.querySelectorAll('.sum-cap').forEach(li => li.classList.toggle('aqui', +li.dataset.slide === atual));
+  navGaveta.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('atual', +b.dataset.topico === aqui));
+  const cap = navGaveta.querySelector('.sum-cap.aqui');
+  /* o capítulo de agora à vista, no alto da lista (sem rolar a página) */
+  if (cap) navGaveta.querySelector('.nav-lista').scrollTop = cap.offsetTop - 12;
   navGaveta.classList.add('aberta');
   navGaveta.setAttribute('aria-hidden', 'false');
   navFundo.classList.add('on');
