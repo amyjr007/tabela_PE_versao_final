@@ -1759,9 +1759,14 @@ html.palco-largo #carrossel{left:calc(-1 * var(--folga));right:calc(-1 * var(--f
 .car-deck .mesa.plana .pc.car-3d .face.f1{transform:translateZ(var(--H,29px))}
 .car-marca{position:absolute;z-index:0;pointer-events:none}
 .car-marca .cel{fill-opacity:.3;stroke:rgba(255,255,255,.05)}
-.car-tit{position:absolute;left:0;right:0;text-align:center;transform:translateY(-100%);
-  color:#F2EEE6;opacity:0;pointer-events:none;
-  transition:top .6s var(--e-capa), opacity .4s ease, font-size .6s var(--e-capa)}
+.car-tit{position:absolute;top:0;left:0;right:0;text-align:center;font-size:30px;
+  transform-origin:50% 100%;color:#F2EEE6;opacity:0;pointer-events:none;
+  transition:transform .6s var(--e-capa), opacity .4s ease}
+/* a foto do slide, no lugar do palco; a do celular leva 100 px a mais de
+   cada lado, porque a mesa do celular passa do palco */
+.car-foto{position:absolute;top:0;left:0;width:1280px;height:720px;pointer-events:none;user-select:none}
+.car-foto.cel{left:-100px;width:1480px}
+#carrossel.troca .car-item.centro{opacity:0;transition:opacity .15s linear}
 .car-tit small{display:block;font-family:var(--mono);font-size:.5em;letter-spacing:.24em;
   text-transform:uppercase;color:var(--ouro-luz);margin-bottom:8px}
 .car-tit b{font-family:var(--display);font-weight:600}
@@ -2187,7 +2192,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v7.2';
+const VERSAO = 'v7.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7464,10 +7469,27 @@ const CAR = {
   S0:.5, S1:.34, GAP:44, CY:392,   /* as escalas, o vão e o centro da fila */
   get trilho(){ return this.el.querySelector('.car-trilho'); },
 
-  /* a cópia de um slide como ele está agora, aplainada: cada cubo só
-     com a face da frente (a mesa plana, que desenha igual), para a
-     fila inteira não pesar onze vezes 118 cubos de seis faces */
+  /* O CARTÃO DE CADA SLIDE É UMA FOTO (Imagens/slides, feitas pelo
+     ferramentas/gera-miniaturas.mjs): o slide como o aluno o encontra ao
+     chegar. Uma foto pesa nada ao lado de 118 cubos copiados. Só o slide
+     em que a aula está — que pode estar no meio da narração, com a mesa
+     noutro estado — e a capa, que é leve, vão como cópia viva. */
+  foto(i){
+    const cel = ehCelular();
+    return 'Imagens/slides/' + (cel ? 'cel' : 'pc') + '-' + String(i).padStart(2, '0') + '.webp?v=' + VERSAO;
+  },
   copia(i, cartao){
+    if (i === 0 || i === atual) return this.copiaViva(i, cartao);
+    cartao.classList.remove('capa');
+    cartao.innerHTML = '<div class="car-palco"><img class="car-foto' + (ehCelular() ? ' cel' : '') +
+                       '" alt="" decoding="async" draggable="false"></div>';
+    const img = cartao.querySelector('img');
+    img.onerror = () => this.copiaViva(i, cartao);   /* sem a foto, a cópia viva */
+    img.src = this.foto(i);
+  },
+  /* a cópia de um slide como ele está agora, aplainada: cada cubo só
+     com a face da frente (a mesa plana, que desenha igual) */
+  copiaViva(i, cartao){
     cartao.innerHTML = '<div class="car-palco"></div>';
     cartao.classList.toggle('capa', i === 0 && CAPA_NOVA);
     const palco = cartao.firstChild;
@@ -7541,9 +7563,10 @@ const CAR = {
       const d = k - this.sel, p = this.lugar(d, cheio);
       it.style.transform = 'translate(' + (p.x + (arrasto || 0)).toFixed(1) + 'px,' + p.y + 'px)';
       it.querySelector('.car-cartao').style.transform = 'scale(' + p.s + ')';
-      const tit = it.querySelector('.car-tit');
-      tit.style.top = (360 - 360*p.s - 18) + 'px';
-      tit.style.fontSize = (d === 0 ? 30 : 22) + 'px';
+      /* o título anda só por transform: mexer no top ou na letra refazia
+         o desenho da página a cada quadro */
+      it.querySelector('.car-tit').style.transform =
+        'translateY(' + (360 - 360*p.s - 18) + 'px) translateY(-100%) scale(' + (d === 0 ? 1 : .74) + ')';
       it.classList.toggle('centro', d === 0);
       it.style.opacity = !cheio && Math.abs(d) > 2 ? 0 : 1;
     });
@@ -7582,13 +7605,19 @@ const CAR = {
     this.ocupado = true;
     this.sel = k;
     if (k !== atual){
+      const viva = k === 0;
       vaiDireto(k);
-      /* a cópia é refeita do slide já posto como ele vai aparecer */
-      this.copia(k, this.itens[k].querySelector('.car-cartao'));
+      /* a cópia viva é refeita do slide já posto como ele vai aparecer;
+         a foto já é ele assim */
+      if (viva) this.copiaViva(k, this.itens[k].querySelector('.car-cartao'));
     }
     this.el.classList.remove('aberto');
     this.aplica(true);
+    /* cheio, o cartão sai num esmaecer curto: por baixo já está o mesmo
+       slide, e o esmaecer só apaga a diferença de nitidez da foto */
+    setTimeout(() => this.el.classList.add('troca'), 600);
     setTimeout(() => {
+      this.el.classList.remove('troca');
       this.el.hidden = true;
       this.trilho.innerHTML = '';
       this.itens = [];
@@ -7596,7 +7625,7 @@ const CAR = {
       document.body.classList.remove('em-carrossel');
       this.aberto = this.ocupado = false;
       if (temMesa(atual)) VIDA.liga();
-    }, 640);
+    }, 760);
   },
   fecha(){ this.entra(atual); }
 };
@@ -7621,6 +7650,20 @@ function vaiDireto(i){
   if (LAYOUTS[atual]) aplicaLayout(atual);
   carregaTrilha(TRILHA_DO_SLIDE[i]);
 }
+
+/* as fotos chegam antes de serem pedidas: com a página sossegada, uma de
+   cada vez, para não disputar a rede com a narração */
+setTimeout(() => {
+  const fila = SLIDES.map((_, i) => i).filter(i => i > 0);
+  const proxima = () => {
+    const i = fila.shift();
+    if (i === undefined) return;
+    const img = new Image();
+    img.onload = img.onerror = proxima;
+    img.src = CAR.foto(i);
+  };
+  proxima();
+}, 6000);
 
 document.getElementById('ver-slides').addEventListener('click', () => CAR.abre());
 CAR.el.querySelector('.car-seta.ant').addEventListener('click', () => CAR.vai(CAR.sel - 1));
