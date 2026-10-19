@@ -2259,7 +2259,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v9.1';
+const VERSAO = 'v9.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8845,20 +8845,10 @@ function montaNav(){
         b.querySelector('b').insertAdjacentHTML('beforeend', '<span class="nav-aqui">aqui</span>');
         if (t.engatilhado) b.disabled = true;
         else b.addEventListener('click', () => irPara(i));
+        /* os atalhos das variantes (1.3A, 1.3B, o jogo direto) ficam fora do
+           sumário: eram ferramenta de teste, e o aluno não precisa deles. O
+           tópico, tocado, escolhe a variante sozinho. */
         li.appendChild(b);
-        if (t.variantes){
-          const vs = document.createElement('div');
-          vs.className = 'nav-variantes';
-          t.variantes.forEach(v => {
-            const vb = document.createElement('button');
-            vb.type = 'button';
-            vb.className = 'nav-var';
-            vb.textContent = v.rotulo;
-            vb.addEventListener('click', () => irPara(i, v.id));
-            vs.appendChild(vb);
-          });
-          li.appendChild(vs);
-        }
         ol.appendChild(li);
       });
       cap.appendChild(ol);
