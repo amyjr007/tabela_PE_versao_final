@@ -1710,7 +1710,9 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 #ver-slides:hover{color:var(--indigo);transform:translateY(-2px)}
 #ver-slides svg{width:24px;height:24px}
 #stage.na-capa.capa-nova #ver-slides{background:rgba(255,255,255,.05);border-color:rgba(242,238,230,.35);color:#F2EEE6}
-html.palco-largo #ver-slides{translate:var(--folga) 0}
+/* no celular deitado ele NÃO vai para a borda da tela: lá o canto é
+   arredondado e tem a câmera, e o botão sumia debaixo deles. Fica no
+   canto do palco, que está para dentro da folga */
 #stage.em-quiz #ver-slides, #stage.em-jogo #ver-slides, #stage.tela-escura #ver-slides,
 body.montagem #ver-slides{display:none}
 /* com o carrossel aberto, os botões do palco saem de cena */
@@ -2194,7 +2196,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v7.5';
+const VERSAO = 'v7.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
