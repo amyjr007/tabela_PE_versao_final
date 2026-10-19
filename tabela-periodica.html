@@ -135,7 +135,7 @@ html.palco-largo .veu     {box-shadow:0 0 0 var(--folga) rgba(12,10,32,.87)}
 html.palco-largo .quiz    {box-shadow:0 0 0 var(--folga) rgba(12,10,32,.55)}
 html.palco-largo .memoria {box-shadow:0 0 0 var(--folga) rgba(7,6,22,.995)}
 html.palco-largo #flash-erro{box-shadow:0 0 0 var(--folga) rgba(220,38,60,.55)}
-html.palco-largo #som, html.palco-largo #som-dica{translate:var(--folga) 0}
+html.palco-largo #som, html.palco-largo #som-dica, html.palco-largo #vel{translate:var(--folga) 0}
 html.palco-largo #versao{translate:calc(-1 * var(--folga)) 0}
 /* e a barrinha do progresso, de borda a borda: a fração vem em --prog */
 html.palco-largo #progress{left:calc(-1 * var(--folga));right:calc(-1 * var(--folga));width:auto!important;
@@ -909,9 +909,10 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 #stage.em-entendi #som, #stage.em-entendi #som-dica,
 #stage.em-quiz #som, #stage.em-quiz #som-dica,
 #stage.em-toque #som, #stage.em-toque #som-dica,
-#stage.em-jogo #som, #stage.em-jogo #som-dica{display:none!important}
+#stage.em-jogo #som, #stage.em-jogo #som-dica,
+#stage.em-entendi #vel, #stage.em-quiz #vel, #stage.em-toque #vel, #stage.em-jogo #vel{display:none!important}
 /* e com a tela escura também: ali o que faz a aula seguir é o toque na tela */
-#stage.tela-escura #som, #stage.tela-escura #som-dica{display:none!important}
+#stage.tela-escura #som, #stage.tela-escura #som-dica, #stage.tela-escura #vel{display:none!important}
 
 /* ---- o cartão da nota, no fim do quiz ---- */
 .nota-card{
@@ -1352,8 +1353,25 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 /* o nome do que o botão faz, para quem nunca viu esta tela. Fica à
    ESQUERDA do botão, e não por cima dele: em cima ele cairia na última
    linha da tabela, que chega até ali. */
+/* A VELOCIDADE DA NARRAÇÃO: à esquerda do play, na mesma faixa de
+   papel abaixo da última linha da tabela; a dica do play vai para a
+   esquerda dela */
+#vel{
+  position:absolute;right:108px;bottom:32px;z-index:12;
+  height:50px;min-width:50px;padding:0 10px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  background:rgba(255,255,255,.92);border:1px solid var(--ouro-dim);border-radius:25px;
+  color:var(--tinta-dim);font-family:var(--mono);font-size:12px;font-weight:600;
+  box-shadow:0 8px 22px rgba(32,28,66,.16);
+  transition:color .2s,transform .2s;
+}
+#vel svg{width:22px;height:22px}
+#vel span{font-variant-numeric:tabular-nums;min-width:3.2ch;text-align:center}
+#vel:hover{transform:translateY(-2px)}
+#vel[aria-pressed="true"]{color:var(--ouro)}
+#vel[hidden]{display:none}
 #som-dica{
-  position:absolute;right:108px;bottom:44px;z-index:12;
+  position:absolute;right:172px;bottom:44px;z-index:12;
   font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
   color:var(--tinta-faint);text-align:right;pointer-events:none;white-space:nowrap;
   transition:opacity .4s;
@@ -1907,6 +1925,12 @@ body.montagem .solto.pego{outline:1.5px solid var(--ouro);background:rgba(226,16
         </svg>
       </span>
     </button>
+    <button id="vel" type="button" aria-pressed="false" aria-label="Velocidade da narração: normal. Toque para acelerar" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4.5 17.5a8.5 8.5 0 1 1 15 0"/><path d="M12 13.5 16 9"/><circle cx="12" cy="13.5" r="1.4" fill="currentColor" stroke="none"/>
+      </svg>
+      <span>1×</span>
+    </button>
 
     <div id="aviso" role="status" aria-live="polite"></div>
     <div id="versao" aria-label="Versão do app"></div>
@@ -2042,7 +2066,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v6.8';
+const VERSAO = 'v6.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3399,6 +3423,42 @@ const somDica = document.getElementById('som-dica');
 const curso   = somBtn.querySelector('.curso');
 const VOLTA   = 2*Math.PI*26;            /* o perímetro do anel do botão */
 som.preload = 'auto';
+
+/* A VELOCIDADE DA NARRAÇÃO (1×, 1,1× ou 1,2×) — a mesma do app das
+   moléculas. Cada toque no botão passa para a seguinte, e da última
+   volta a 1×; fica guardada no aparelho. A voz acelera sem mudar de tom,
+   e a cena acelera junto sem mais nada: tudo o que anima aqui lê o
+   relógio do próprio áudio. As falas soltas (a do fim do jogo, a do
+   quiz) também; os efeitos da pasta vfx não. */
+const velBtn = document.getElementById('vel');
+const Velocidade = {
+  CHAVE: 'tabela-aluno-velocidade',
+  NIVEIS: [1, 1.1, 1.2],
+  v: (() => { try { const g = Number(localStorage.getItem('tabela-aluno-velocidade')); return [1, 1.1, 1.2].includes(g) ? g : 1; } catch (_) { return 1; } })(),
+  /* o defaultPlaybackRate é o que sobrevive à troca de trilha: um src
+     novo devolve o playbackRate a ele */
+  aplicar(a){
+    if (!a || !('playbackRate' in a)) return;
+    a.preservesPitch = true; a.defaultPlaybackRate = this.v; a.playbackRate = this.v;
+  },
+  trocar(){
+    const N = this.NIVEIS;
+    this.v = N[(N.indexOf(this.v) + 1) % N.length];
+    try { localStorage.setItem(this.CHAVE, String(this.v)); } catch (_) {}
+    this.aplicar(som);
+    if (FALA_FIM) this.aplicar(FALA_FIM);
+    this.botao();
+  },
+  botao(){
+    const rapido = this.v !== 1, txt = String(this.v).replace('.', ','), ultima = this.v === this.NIVEIS[this.NIVEIS.length - 1];
+    velBtn.querySelector('span').textContent = txt + '×';
+    velBtn.setAttribute('aria-pressed', String(rapido));
+    velBtn.setAttribute('aria-label', 'Velocidade da narração: ' + (rapido ? txt + ' vezes' : 'normal') + (ultima ? '. Toque para voltar ao normal' : '. Toque para acelerar'));
+  }
+};
+Velocidade.aplicar(som);
+Velocidade.botao();
+velBtn.addEventListener('click', () => Velocidade.trocar());
 somBtn.style.setProperty('--volta', VOLTA.toFixed(1));
 somBtn.style.setProperty('--falta', VOLTA.toFixed(1));
 
@@ -3431,6 +3491,8 @@ function mostraBotaoSom(sim){
   /* na capa o rótulo não entra: aquele canto já tem o endereço, e um
      play desenhado dispensa legenda */
   somDica.hidden = !sim || atual === 0;
+  /* a velocidade também fica fora da capa: lá o play mora noutro canto */
+  velBtn.hidden  = !sim || atual === 0;
 }
 function marcaSemSom(){
   temTrilha = false;
@@ -6452,6 +6514,7 @@ function tocaEfeito(nome){
   return new Promise(pronto => {
     /* um nome é um efeito da pasta vfx; com barra, é o caminho do arquivo */
     const a = new Audio(encodeURI(nome.includes('/') ? nome : 'Audios/vfx/' + nome + '.mp3'));
+    if (nome.includes('/')) Velocidade.aplicar(a);   /* as falas, e não os efeitos */
     EFEITOS.add(a);
     let feito = false;
     const fim = () => { if (feito) return; feito = true; EFEITOS.delete(a); pronto(a); };
@@ -6948,6 +7011,7 @@ function cartaoDoResultado(nota, contaHTML, onde, refazer, seguir, fala){
     const a = new Audio(encodeURI(fala));
     FALA_FIM = a;
     EFEITOS.add(a);
+    Velocidade.aplicar(a);
     a.addEventListener('ended', () => { EFEITOS.delete(a); if (FALA_FIM === a) FALA_FIM = null; });
     a.play().catch(() => {});
   });
