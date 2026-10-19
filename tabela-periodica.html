@@ -2230,7 +2230,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v7.9';
+const VERSAO = 'v8.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8707,15 +8707,13 @@ function montaNav(){
         b.type = 'button';
         b.className = 'nav-item sum-sub';
         b.dataset.topico = i;
+        /* só o título: o 'sub' de cada tópico é nota técnica, e fica no código */
         b.innerHTML = '<span class="sum-letra">' + letra(k) + ' –</span><span class="nav-txt"><b></b>' +
-          (t.engatilhado ? '<span class="nav-breve">em breve</span>' : '<small></small>') + '</span>';
+          (t.engatilhado ? '<span class="nav-breve">em breve</span>' : '') + '</span>';
         b.querySelector('b').textContent = t.titulo;
         b.querySelector('b').insertAdjacentHTML('beforeend', '<span class="nav-aqui">aqui</span>');
         if (t.engatilhado) b.disabled = true;
-        else {
-          b.querySelector('small').textContent = t.sub;
-          b.addEventListener('click', () => irPara(i));
-        }
+        else b.addEventListener('click', () => irPara(i));
         li.appendChild(b);
         if (t.variantes){
           const vs = document.createElement('div');
