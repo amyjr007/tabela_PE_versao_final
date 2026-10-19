@@ -375,7 +375,8 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 
 /* O BOTÃO INSTALAR, na capa, no canto de cima à direita; e a ajuda do
    iPhone e do iPad, logo abaixo dele */
-.capa .instalar{position:absolute;top:30px;right:40px;z-index:8;display:flex;align-items:center;gap:8px;
+/* à esquerda do botão dos slides, que mora no canto, e na mesma altura */
+.capa .instalar{position:absolute;top:15px;right:78px;z-index:8;display:flex;align-items:center;gap:8px;
   padding:9px 17px 9px 13px;border-radius:999px;cursor:pointer;
   font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.01em;
   color:var(--indigo);background:rgba(255,255,255,.92);border:1px solid var(--indigo-dim);
@@ -387,7 +388,7 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 #stage.capa-nova .capa .instalar{color:#F2EEE6;background:rgba(255,255,255,.06);
   border-color:rgba(242,238,230,.35);box-shadow:none}
 #stage.capa-nova .capa .instalar:hover{background:rgba(255,255,255,.13)}
-.capa .instalar-ajuda{position:absolute;top:82px;right:40px;z-index:8;width:290px;padding:12px 15px;
+.capa .instalar-ajuda{position:absolute;top:67px;right:78px;z-index:8;width:290px;padding:12px 15px;
   border-radius:12px;font-family:var(--body);font-size:14px;line-height:1.5;color:var(--tinta);
   background:#fff;border:1px solid var(--indigo-dim);box-shadow:0 14px 34px rgba(20,17,46,.3)}
 .capa .instalar-ajuda svg{vertical-align:-3px;color:var(--indigo)}
@@ -1692,6 +1693,101 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
   position:absolute;left:0;right:0;bottom:0;z-index:2;padding:20px 12px 10px;
   background:linear-gradient(0deg,rgba(255,255,255,.97) 46%,rgba(255,255,255,0));
 }
+/* ---------- o carrossel dos slides (o botão do canto de cima) ----------
+   Mora DENTRO do palco, e não por cima da janela: as cópias dos slides
+   continuam debaixo do #stage, e todo o CSS que pinta um slide (o da
+   capa nova, o da mesa) vale nelas como vale no original. Cada cartão
+   tem o tamanho exato do palco, 1280 × 720, e só a escala muda: na
+   escala 1 ele cobre o palco ponto por ponto, e é por isso que o slide
+   pode encolher até ao carrossel, e crescer de volta, sem corte. */
+#ver-slides{
+  position:absolute;top:12px;right:16px;z-index:14;
+  width:46px;height:46px;padding:0;cursor:pointer;display:grid;place-items:center;
+  background:rgba(255,255,255,.88);border:1px solid var(--indigo-dim);border-radius:12px;
+  color:var(--tinta-dim);box-shadow:0 6px 18px rgba(32,28,66,.12);
+  transition:color .2s,transform .2s,opacity .25s;
+}
+#ver-slides:hover{color:var(--indigo);transform:translateY(-2px)}
+#ver-slides svg{width:24px;height:24px}
+#stage.na-capa.capa-nova #ver-slides{background:rgba(255,255,255,.05);border-color:rgba(242,238,230,.35);color:#F2EEE6}
+html.palco-largo #ver-slides{translate:var(--folga) 0}
+#stage.em-quiz #ver-slides, #stage.em-jogo #ver-slides, #stage.tela-escura #ver-slides,
+body.montagem #ver-slides{display:none}
+/* com o carrossel aberto, os botões do palco saem de cena */
+#stage.em-carrossel #som, #stage.em-carrossel #som-dica, #stage.em-carrossel #vel,
+#stage.em-carrossel #ver-slides{opacity:0;pointer-events:none;transition:opacity .2s}
+/* e a alça da navegação rápida, que mora fora do palco, também */
+body.em-carrossel #nav-alca{transform:translate(110%,-50%);opacity:0;pointer-events:none}
+
+#carrossel{position:absolute;inset:0;z-index:60;overflow:hidden;touch-action:none}
+#carrossel[hidden]{display:none}
+html.palco-largo #carrossel{left:calc(-1 * var(--folga));right:calc(-1 * var(--folga))}
+.car-fundo{position:absolute;inset:0;background:#17152E;opacity:0;transition:opacity .6s ease}
+#carrossel.aberto .car-fundo{opacity:1}
+/* no celular deitado o cartão é a tela inteira — o palco e as duas
+   faixas (--folga) —, porque a mesa ampliada do celular passa do palco */
+.car-item{position:absolute;left:50%;top:0;height:720px;
+  width:calc(1280px + 2 * var(--folga,0px));margin-left:calc(-640px - var(--folga,0px));
+  transition:transform .6s var(--e-capa), opacity .4s ease}
+.car-palco{position:absolute;top:0;left:var(--folga,0px);width:1280px;height:720px;z-index:1}
+.car-cartao{
+  position:absolute;inset:0;overflow:hidden;cursor:pointer;transform-origin:center;
+  background:linear-gradient(160deg,var(--fundo-alto),var(--fundo) 52%,var(--fundo-2));
+  transition:transform .6s var(--e-capa), border-radius .6s var(--e-capa), box-shadow .6s ease;
+}
+/* o papel quadriculado e as duas luzes, as mesmas do palco */
+.car-cartao::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(76,63,191,.07) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(76,63,191,.07) 1px,transparent 1px);
+  background-size:52px 58px;background-position:var(--folga,0px) 0}
+.car-cartao::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(115% 85% at 82% 6%,rgba(76,63,191,.09),transparent 58%),
+             radial-gradient(85% 75% at 4% 100%,rgba(226,162,43,.14),transparent 62%)}
+.car-cartao.capa::before{background-image:none;background:#14131B}
+.car-cartao.capa::after{
+  background:radial-gradient(70% 70% at 80% 32%,rgba(76,63,191,.18),transparent 62%),
+             radial-gradient(55% 60% at 0% 100%,rgba(226,162,43,.07),transparent 60%)}
+#carrossel.aberto .car-cartao{border-radius:30px;box-shadow:0 40px 90px rgba(0,0,0,.45)}
+#carrossel.aberto .car-item.centro .car-cartao{box-shadow:0 0 0 6px var(--ouro-luz),0 40px 90px rgba(0,0,0,.5)}
+.car-deck{position:absolute;inset:0;z-index:1;pointer-events:none}
+.car-deck .slide{opacity:1;visibility:visible}
+/* na cópia nada se mexe: ela é uma fotografia do slide, já no fim de
+   cada animação, e não no começo */
+.car-deck *{animation-delay:-100s!important;animation-play-state:paused!important;transition:none!important}
+.car-deck .mesa.plana .pc.car-3d{perspective:var(--persp,620px)}
+.car-deck .mesa.plana .pc.car-3d .face:not(.f1){display:flex}
+.car-deck .mesa.plana .pc.car-3d .face.f1{transform:translateZ(var(--H,29px))}
+.car-marca{position:absolute;z-index:0;pointer-events:none}
+.car-marca .cel{fill-opacity:.3;stroke:rgba(255,255,255,.05)}
+.car-tit{position:absolute;left:0;right:0;text-align:center;transform:translateY(-100%);
+  color:#F2EEE6;opacity:0;pointer-events:none;
+  transition:top .6s var(--e-capa), opacity .4s ease, font-size .6s var(--e-capa)}
+.car-tit small{display:block;font-family:var(--mono);font-size:.5em;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--ouro-luz);margin-bottom:8px}
+.car-tit b{font-family:var(--display);font-weight:600}
+#carrossel.aberto .car-tit{opacity:.55}
+#carrossel.aberto .car-item.centro .car-tit{opacity:1}
+/* arrastando, o carrossel segue o dedo sem inércia */
+#carrossel.arrastando .car-item, #carrossel.arrastando .car-cartao, #carrossel.arrastando .car-tit,
+#carrossel.sem-trans .car-item, #carrossel.sem-trans .car-cartao, #carrossel.sem-trans .car-tit{transition:none}
+.car-seta, .car-fecha{
+  position:absolute;z-index:3;width:58px;height:58px;padding:0;cursor:pointer;
+  display:grid;place-items:center;border-radius:50%;
+  background:rgba(255,255,255,.1);border:1.5px solid rgba(242,238,230,.5);color:#F2EEE6;
+  opacity:0;pointer-events:none;transition:opacity .35s ease, background .2s;
+}
+.car-seta:hover, .car-fecha:hover{background:rgba(255,255,255,.2)}
+.car-seta svg, .car-fecha svg{width:26px;height:26px}
+.car-seta{top:392px;transform:translateY(-50%)}
+.car-seta.ant{left:calc(28px + var(--folga,0px))}
+.car-seta.prox{right:calc(28px + var(--folga,0px))}
+.car-fecha{top:12px;right:calc(16px + var(--folga,0px));width:46px;height:46px;border-radius:12px}
+#carrossel.aberto .car-seta, #carrossel.aberto .car-fecha{opacity:1;pointer-events:auto}
+#carrossel.aberto .car-seta[disabled]{opacity:.2;pointer-events:none}
+.car-conta{position:absolute;left:0;right:0;bottom:26px;text-align:center;z-index:3;
+  font-family:var(--mono);font-size:15px;letter-spacing:.2em;color:rgba(242,238,230,.6);
+  opacity:0;transition:opacity .35s ease}
+#carrossel.aberto .car-conta{opacity:1}
 .card .n{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--tinta-faint)}
 .card .t{font-family:var(--display);font-weight:600;font-size:13.5px;line-height:1.2;margin-top:2px}
 
@@ -1938,6 +2034,27 @@ body.montagem .solto.pego{outline:1.5px solid var(--ouro);background:rgba(226,16
 
     <div id="aviso" role="status" aria-live="polite"></div>
     <div id="versao" aria-label="Versão do app"></div>
+
+    <!-- o carrossel dos slides: o botão no canto de cima, à direita -->
+    <button id="ver-slides" type="button" title="Ver os slides" aria-label="Ver todos os slides">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="6.5" y="6" width="11" height="12" rx="2"/><path d="M3 8.5v7M21 8.5v7"/>
+      </svg>
+    </button>
+    <div id="carrossel" hidden role="dialog" aria-label="Os slides">
+      <div class="car-fundo"></div>
+      <div class="car-trilho"></div>
+      <button class="car-seta ant" type="button" aria-label="Slide anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="car-seta prox" type="button" aria-label="Próximo slide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+      <button class="car-fecha" type="button" aria-label="Fechar e voltar ao slide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="car-conta"></div>
+    </div>
   </div>
 </div>
 
@@ -2070,7 +2187,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v7.1';
+const VERSAO = 'v7.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2394,12 +2511,14 @@ const temMesa = i => SLIDES_COM_MESA.includes(i);
 function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
 /* chegar a um slide com tabela: a mesa é posta de novo e respira à
    espera do play. No slide 1 a história dele também recomeça. */
-function recomecaMesa(i){
+/* semPouso: chegando pelo carrossel, a mesa já está posta na miniatura
+   que cresceu até cobrir o palco — os cubos não caem outra vez */
+function recomecaMesa(i, semPouso){
   if (i === 1) SEQ.reinicia();
   else if (temMesa(i)){ SEQ.comecou = false; if (i === 2) SEQ.reinicia2(); if (i === 3) EV3.zera();
                         if (i === 7) SERIES8.zera(); }
   else return;
-  pousaTabela();
+  if (semPouso) TP.reinicia(); else pousaTabela();
   setTimeout(() => VIDA.liga(), 1500);
 }
 
@@ -7330,6 +7449,219 @@ overBtn.addEventListener('click', () => mostraOverview());
 /* o clique no fundo fecha; o clique num cartão é dele */
 overview.addEventListener('click', e => { if (e.target === overview) mostraOverview(false); });
 
+/* ------------------------------------------------------------
+   O CARROSSEL DOS SLIDES — o botão do canto de cima, à direita
+   Tocado, o palco afasta-se: o slide em que a aula está encolhe até
+   virar o cartão do meio de uma fila, com o título em cima, e os
+   outros entram pelos lados. Arrasta-se a fila com o dedo, ou pelas
+   setas. Escolhido um slide, o cartão dele cresce até cobrir o palco —
+   e, no instante em que o cobre, o slide de verdade já está por baixo,
+   igualzinho: o cartão sai e ninguém vê a troca.
+   ------------------------------------------------------------ */
+const CAR = {
+  el: document.getElementById('carrossel'),
+  aberto:false, ocupado:false, sel:0, itens:[],
+  S0:.5, S1:.34, GAP:44, CY:392,   /* as escalas, o vão e o centro da fila */
+  get trilho(){ return this.el.querySelector('.car-trilho'); },
+
+  /* a cópia de um slide como ele está agora, aplainada: cada cubo só
+     com a face da frente (a mesa plana, que desenha igual), para a
+     fila inteira não pesar onze vezes 118 cubos de seis faces */
+  copia(i, cartao){
+    cartao.innerHTML = '<div class="car-palco"></div>';
+    cartao.classList.toggle('capa', i === 0 && CAPA_NOVA);
+    const palco = cartao.firstChild;
+    if (i === 0){
+      const marca = document.getElementById('tabela').cloneNode(true);
+      marca.removeAttribute('id');
+      marca.classList.add('car-marca');
+      marca.querySelectorAll('.luz').forEach(l => l.remove());
+      /* fora da capa a tabelinha volta ao canto do CSS: a cópia vai para
+         o lugar que o layout fixado lhe dá na capa */
+      const p = LAYOUTS[0] && LAYOUTS[0].tabelinha;
+      if (!marca.classList.contains('solto') && p && p.x !== undefined)
+        marca.setAttribute('style', 'left:' + p.x + 'px;top:' + p.y + 'px;width:520px;' +
+          'transform:translate(-50%,-50%) scale(' + p.esc + ')');
+      palco.appendChild(marca);
+    }
+    const deckC = document.createElement('div');
+    deckC.className = 'car-deck';
+    const c = slides[i].cloneNode(true);
+    c.classList.remove('is-leaving','fx-cube-in-next','fx-cube-in-prev','fx-cube-out-next','fx-cube-out-prev');
+    c.classList.add('is-active');
+    c.querySelectorAll('[id]').forEach(e => e.removeAttribute('id'));
+    c.querySelectorAll('button').forEach(b => { b.tabIndex = -1; b.disabled = true; });
+    c.querySelectorAll('.pousando').forEach(e => e.classList.remove('pousando'));
+    c.querySelectorAll('.mesa').forEach(m => m.classList.add('plana'));
+    /* o cubo que estiver virado (a tabela viva, um giro da narração)
+       continua inteiro e em 3D: só com a face da frente, virado, sumia */
+    const vivos = slides[i].querySelectorAll('.mesa .pc'), copias = c.querySelectorAll('.mesa .pc');
+    /* virado agora, ou a caminho de virar: o giro anda por transição, e
+       a cópia leva já o ângulo final que está no estilo do cubo */
+    const angulo = cubo => ['--rx','--ry','--rz','--rzc','--dz'].some(v => parseFloat(cubo.style.getPropertyValue(v)) % 360);
+    copias.forEach((p, k) => {
+      const cubo = vivos[k] && vivos[k].querySelector('.cubo');
+      const t = cubo ? getComputedStyle(cubo).transform : 'none';
+      if ((t !== 'none' && t !== 'matrix(1, 0, 0, 1, 0, 0)') || (cubo && angulo(cubo))) p.classList.add('car-3d');
+      else p.querySelectorAll('.face:not(.f1)').forEach(f => f.remove());
+    });
+    deckC.appendChild(c);
+    palco.appendChild(deckC);
+  },
+
+  monta(){
+    this.trilho.innerHTML = '';
+    this.itens = SLIDES.map((sl, i) => {
+      const it = document.createElement('div');
+      it.className = 'car-item';
+      /* a numeração é a do próprio slide: a capa, e depois 1, 2, 3… */
+      it.innerHTML = '<div class="car-tit"><small>' + (i === 0 ? 'Capa' : 'Slide ' + String(i).padStart(2,'0')) +
+        '</small><b></b></div><div class="car-cartao"></div>';
+      it.querySelector('b').textContent = i === 0 ? 'Audiobook da Tabela Periódica' : sl.title;
+      this.copia(i, it.querySelector('.car-cartao'));
+      it.dataset.i = i;
+      this.trilho.appendChild(it);
+      return it;
+    });
+  },
+
+  /* onde fica cada cartão: d é a distância ao escolhido; cheio é o
+     palco inteiro (escala 1), e o resto da fila fora dele, aos lados */
+  lugar(d, cheio){
+    /* cheio, os vizinhos ficam além das faixas do celular deitado: lá o
+       palco vai até às bordas, e a folga não pode mostrar outro slide */
+    const meia = 640 + (parseFloat(stage.style.getPropertyValue('--folga')) || 0);   /* meia largura do cartão */
+    if (cheio) return { x: d*(2*meia + this.GAP), y: 0, s: 1 };
+    const s = d === 0 ? this.S0 : this.S1, a = Math.abs(d);
+    const x = d === 0 ? 0 : Math.sign(d) * (this.S0*meia + this.GAP + this.S1*meia + (a-1)*(this.S1*2*meia + this.GAP));
+    return { x, y: this.CY - 360, s };
+  },
+  aplica(cheio, arrasto){
+    this.itens.forEach((it, k) => {
+      const d = k - this.sel, p = this.lugar(d, cheio);
+      it.style.transform = 'translate(' + (p.x + (arrasto || 0)).toFixed(1) + 'px,' + p.y + 'px)';
+      it.querySelector('.car-cartao').style.transform = 'scale(' + p.s + ')';
+      const tit = it.querySelector('.car-tit');
+      tit.style.top = (360 - 360*p.s - 18) + 'px';
+      tit.style.fontSize = (d === 0 ? 30 : 22) + 'px';
+      it.classList.toggle('centro', d === 0);
+      it.style.opacity = !cheio && Math.abs(d) > 2 ? 0 : 1;
+    });
+    this.el.querySelector('.car-seta.ant').disabled  = this.sel === 0;
+    this.el.querySelector('.car-seta.prox').disabled = this.sel === SLIDES.length - 1;
+    this.el.querySelector('.car-conta').textContent = this.sel === 0 ? 'Capa' : this.sel + ' / ' + (SLIDES.length - 1);
+  },
+
+  abre(){
+    if (this.aberto || this.ocupado || andando || naMontagem()) return;
+    mostraOverview(false); fechaNav();
+    som.pause(); mostraPausa(false); VIDA.desliga();
+    this.aberto = true;
+    this.sel = atual;
+    this.monta();
+    /* o primeiro quadro é o palco tal como estava: o cartão do slide em
+       escala 1, por cima do original; só depois a fila se afasta */
+    this.el.classList.add('sem-trans');
+    this.aplica(true);
+    this.el.hidden = false;
+    stage.classList.add('em-carrossel');
+    document.body.classList.add('em-carrossel');
+    void this.el.offsetWidth;
+    this.el.classList.remove('sem-trans');
+    this.el.classList.add('aberto');
+    this.aplica(false);
+  },
+  vai(k){
+    if (!this.aberto || this.ocupado) return;
+    this.sel = Math.max(0, Math.min(SLIDES.length - 1, k));
+    this.aplica(false);
+  },
+  /* entra no slide k: o cartão dele cresce até ser o palco */
+  entra(k){
+    if (!this.aberto || this.ocupado) return;
+    this.ocupado = true;
+    this.sel = k;
+    if (k !== atual){
+      vaiDireto(k);
+      /* a cópia é refeita do slide já posto como ele vai aparecer */
+      this.copia(k, this.itens[k].querySelector('.car-cartao'));
+    }
+    this.el.classList.remove('aberto');
+    this.aplica(true);
+    setTimeout(() => {
+      this.el.hidden = true;
+      this.trilho.innerHTML = '';
+      this.itens = [];
+      stage.classList.remove('em-carrossel');
+      document.body.classList.remove('em-carrossel');
+      this.aberto = this.ocupado = false;
+      if (temMesa(atual)) VIDA.liga();
+    }, 640);
+  },
+  fecha(){ this.entra(atual); }
+};
+
+/* ir direto para um slide, sem o giro do cubo: é o carrossel que faz a
+   passagem. O resto é o mesmo que o go() faz ao chegar. */
+function vaiDireto(i){
+  if (i === atual) return;
+  som.pause();
+  mostraPausa(false);
+  VIDA.desliga();
+  DEMO.corta();
+  if (i !== 1){ QUIZ.fecha(); fechaMemoria(true); }
+  if (i !== 2) SEQ.deixa2();
+  if (i !== 3){ EV3.entendi(false); if (QUIZ4.ativo) QUIZ4.fecha(); }
+  slides[atual].classList.remove('is-active','is-leaving');
+  slides[i].classList.add('is-active');
+  atual = i;
+  atualizaCabecalho();
+  recomecaMesa(i, true);
+  arrumaPecasDoPalco();
+  if (LAYOUTS[atual]) aplicaLayout(atual);
+  carregaTrilha(TRILHA_DO_SLIDE[i]);
+}
+
+document.getElementById('ver-slides').addEventListener('click', () => CAR.abre());
+CAR.el.querySelector('.car-seta.ant').addEventListener('click', () => CAR.vai(CAR.sel - 1));
+CAR.el.querySelector('.car-seta.prox').addEventListener('click', () => CAR.vai(CAR.sel + 1));
+CAR.el.querySelector('.car-fecha').addEventListener('click', () => CAR.fecha());
+/* o dedo: arrastar anda pela fila; tocar num cartão do lado traz ele
+   para o meio; tocar no do meio entra nele */
+(() => {
+  let x0 = null, dx = 0, mexeu = false;
+  CAR.el.addEventListener('pointerdown', ev => {
+    if (!CAR.aberto || CAR.ocupado || ev.target.closest('button')) return;
+    x0 = ev.clientX; dx = 0; mexeu = false;
+    try { CAR.el.setPointerCapture(ev.pointerId); } catch(_){}
+  });
+  CAR.el.addEventListener('pointermove', ev => {
+    if (x0 === null) return;
+    dx = (ev.clientX - x0) / fitScale;
+    if (!mexeu && Math.abs(dx) > 10){ mexeu = true; CAR.el.classList.add('arrastando'); }
+    if (mexeu) CAR.aplica(false, dx);
+  });
+  const solta = ev => {
+    if (x0 === null) return;
+    x0 = null;
+    CAR.el.classList.remove('arrastando');
+    if (mexeu){
+      const passo = CAR.S1*1280 + CAR.GAP;
+      let n = Math.round(-dx / passo);
+      if (!n && Math.abs(dx) > 50) n = dx < 0 ? 1 : -1;
+      CAR.vai(CAR.sel + n);
+      return;
+    }
+    if (ev.type !== 'pointerup') return;
+    const it = ev.target.closest && ev.target.closest('.car-item');
+    if (!it) return;
+    const k = +it.dataset.i;
+    if (k === CAR.sel) CAR.entra(k); else CAR.vai(k);
+  };
+  CAR.el.addEventListener('pointerup', solta);
+  CAR.el.addEventListener('pointercancel', solta);
+})();
+
 /* ============================================================
    MODO MONTAGEM (tecla G)
    Fora da aula, a capa vira mesa de trabalho: tudo o que está nela se
@@ -8336,6 +8668,16 @@ addEventListener('keydown', ev => {
   const k = ev.key;
   /* no carrossel da questão 04 em diante, as setas são dele */
   if (ev.target && ev.target.closest && ev.target.closest('.rd-roda')) return;
+  /* com o carrossel dos slides aberto, o teclado é só dele */
+  if (CAR.aberto){
+    if (k === 'ArrowRight') CAR.vai(CAR.sel + 1);
+    else if (k === 'ArrowLeft') CAR.vai(CAR.sel - 1);
+    else if (k === 'Enter' || k === ' ') CAR.entra(CAR.sel);
+    else if (k === 'Escape') CAR.fecha();
+    else return;
+    ev.preventDefault();
+    return;
+  }
   /* a gaveta aberta fecha com o Esc antes de tudo o resto */
   if (navAberta() && k === 'Escape'){ fechaNav(); ev.preventDefault(); return; }
   if (memAberto && k === 'Escape'){ fechaMemoria(); ev.preventDefault(); return; }
