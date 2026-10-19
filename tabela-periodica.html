@@ -1728,10 +1728,13 @@ html.palco-largo #carrossel{left:calc(-1 * var(--folga));right:calc(-1 * var(--f
    faixas (--folga) —, porque a mesa ampliada do celular passa do palco */
 .car-item{position:absolute;left:50%;top:0;height:720px;
   width:calc(1280px + 2 * var(--folga,0px));margin-left:calc(-640px - var(--folga,0px));
+  /* a caixa tem o palco inteiro e as dos vizinhos sobrepõem-se: o toque
+     é só do cartão que se vê, em escala, lá dentro */
+  pointer-events:none;
   transition:transform .6s var(--e-capa), opacity .4s ease}
 .car-palco{position:absolute;top:0;left:var(--folga,0px);width:1280px;height:720px;z-index:1}
 .car-cartao{
-  position:absolute;inset:0;overflow:hidden;cursor:pointer;transform-origin:center;
+  position:absolute;inset:0;overflow:hidden;cursor:pointer;transform-origin:center;pointer-events:auto;
   background:linear-gradient(160deg,var(--fundo-alto),var(--fundo) 52%,var(--fundo-2));
   transition:transform .6s var(--e-capa), border-radius .6s var(--e-capa), box-shadow .6s ease;
 }
@@ -2192,7 +2195,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v7.3';
+const VERSAO = 'v7.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7672,10 +7675,13 @@ CAR.el.querySelector('.car-fecha').addEventListener('click', () => CAR.fecha());
 /* o dedo: arrastar anda pela fila; tocar num cartão do lado traz ele
    para o meio; tocar no do meio entra nele */
 (() => {
-  let x0 = null, dx = 0, mexeu = false;
+  /* o cartão tocado é guardado na descida do dedo: com o dedo capturado
+     pelo carrossel, o pointerup chega com o próprio carrossel como alvo */
+  let x0 = null, dx = 0, mexeu = false, tocado = null;
   CAR.el.addEventListener('pointerdown', ev => {
     if (!CAR.aberto || CAR.ocupado || ev.target.closest('button')) return;
     x0 = ev.clientX; dx = 0; mexeu = false;
+    tocado = ev.target.closest('.car-item');
     try { CAR.el.setPointerCapture(ev.pointerId); } catch(_){}
   });
   CAR.el.addEventListener('pointermove', ev => {
@@ -7695,9 +7701,9 @@ CAR.el.querySelector('.car-fecha').addEventListener('click', () => CAR.fecha());
       CAR.vai(CAR.sel + n);
       return;
     }
-    if (ev.type !== 'pointerup') return;
-    const it = ev.target.closest && ev.target.closest('.car-item');
-    if (!it) return;
+    const it = tocado;
+    tocado = null;
+    if (ev.type !== 'pointerup' || !it) return;
     const k = +it.dataset.i;
     if (k === CAR.sel) CAR.entra(k); else CAR.vai(k);
   };
