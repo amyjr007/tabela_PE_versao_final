@@ -1358,9 +1358,10 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
    linha da tabela, que chega até ali. */
 /* A VELOCIDADE DA NARRAÇÃO: à esquerda do play, na mesma faixa de
    papel abaixo da última linha da tabela; a dica do play vai para a
-   esquerda dela */
+   esquerda dela. O lugar é o que o professor deixou na montagem: o
+   centro em x 1154, y 682 do palco de 1280x720 */
 #vel{
-  position:absolute;right:108px;bottom:32px;z-index:12;
+  position:absolute;right:101px;bottom:13px;z-index:12;
   height:50px;min-width:50px;padding:0 10px;cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
   background:rgba(255,255,255,.92);border:1px solid var(--ouro-dim);border-radius:25px;
@@ -2069,7 +2070,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v7.0';
+const VERSAO = 'v7.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
