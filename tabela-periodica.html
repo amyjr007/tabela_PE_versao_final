@@ -1063,7 +1063,18 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 .texto-colunas.texto3{left:232px;width:578px}
 /* O QUIZ DO SLIDE 4: o quadro padrão das perguntas (o do quiz do slide
    3), no vazio da tabela do slide 4; na primeira, o cursor da digitação */
-.quiz3.q4{left:190px;width:640px;top:162px}
+/* a caixa da pergunta, no alto (o lugar que o professor deixou na
+   montagem: o centro em x 629, y 69 do palco) */
+.quiz3.q4{left:309px;width:640px;top:27px}
+/* e o cabeçalho do slide durante o quiz (breuNoSlide): os lugares, em px
+   do palco, contam a partir da faixa, que está em 80, 10 */
+.slide.quiz4-aberto .tira > .regua,
+.slide.quiz4-aberto .tira > .num,
+.slide.quiz4-aberto .tira > .title{position:absolute;transform:translate(-50%,-50%);white-space:nowrap}
+.slide.quiz4-aberto .tira > .regua{left:1069px;top:42px}      /* x 1149, y 52 */
+.slide.quiz4-aberto .tira > .num  {left:-13px;top:33px}       /* x   67, y 43 */
+.slide.quiz4-aberto .tira > .title{left:61px;top:34px}        /* x  141, y 44: "Quiz" */
+.slide.quiz4-aberto .tira > .subtitle{display:none}
 .quiz3.q4 .q3-q{font-size:23px;white-space:nowrap}
 /* sem resposta escrita, sem a linha dela: o quadro fica baixo, e não
    encosta na caixa do carrossel da questão 04 */
@@ -2279,7 +2290,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v9.9';
+const VERSAO = 'v10.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5244,6 +5255,16 @@ function breuNoSlide(sl, sim){
   }
   sl.classList.toggle('quiz-escuro', sim);
   if (v) v.classList.toggle('on', sim);
+  /* O CABEÇALHO DO QUIZ (o arranjo que o professor deixou na montagem):
+     o número no canto, "Quiz" ao lado dele, a régua à direita e o
+     subtítulo fora — ver o CSS de .slide.quiz4-aberto. Fechado o quiz,
+     o título de sempre volta. */
+  sl.classList.toggle('quiz4-aberto', sim);
+  const t = sl.querySelector('.tira .title');
+  if (t){
+    if (sim){ if (t.dataset.orig === undefined) t.dataset.orig = t.innerHTML; t.textContent = 'Quiz'; }
+    else if (t.dataset.orig !== undefined){ t.innerHTML = t.dataset.orig; delete t.dataset.orig; }
+  }
 }
 /* as questões do carrossel, uma por elemento — a 04, a 05, a 06 e a 07.
    Os textos são fixos; os elementos são sorteados a cada abertura do
