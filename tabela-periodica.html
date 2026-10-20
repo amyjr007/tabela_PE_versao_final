@@ -2271,7 +2271,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v9.6';
+const VERSAO = 'v9.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3521,8 +3521,8 @@ const ROTEIROS = {
   '2.5':  [],
   '2.5A': [],
   '3':    [
-    /* aos 15,6 s o áudio pára um segundo, e continua */
-    { t:15.6, faz(){ EV3.pausa(); } }
+    /* aos 18 s o áudio pára um segundo, e continua */
+    { t:18.0, faz(){ EV3.pausa(); } }
   ],
   '3.1':  [],
   '3.2':  [],
@@ -4964,20 +4964,21 @@ const LC25 = {
 
 /* ============================================================
    O SLIDE 4 · AS COORDENADAS PERIÓDICAS — a narração "3", no relógio dela
-     0 → 5 s       a mesa ainda respira (a vida solta), e aos 5 s cala-se
-     7 s           o Fe gira em 3D, cresce e acende de verde
-     9 s           a faixa da linha dele (o 4.º período) acende
-     9,8 s         e a da coluna (o grupo 8)
-     11 s          tudo volta ao normal
-     13 s          a tabela abre-se em linhas; 14 → 15 s "séries ou períodos"
-     15,6 s        o áudio pára um segundo, e continua
-     16 s          fecha, e o texto sai em fade
-     16,4 s        abre-se em colunas; 16,8 → 18 s "grupos ou famílias"
-     20,4 s        o texto sai e a tabela fecha
-     22,5 s        o Na gira em 3D, cresce e acende (como o Fe), e o
+   (os tempos da narração regravada, de 2026-10-20)
+     0 → 8 s       a mesa ainda respira (a vida solta), e aos 8 s cala-se
+     8,5 s         o Fe gira em 3D, cresce e acende de verde
+     10,5 s        a faixa da linha dele (o 4.º período) acende
+     11,3 s        e a da coluna (o grupo 8)
+     12,5 s        tudo volta ao normal
+     14,5 s        a tabela abre-se em linhas; 16 → 17,5 s "séries ou períodos"
+     18 s          o áudio pára um segundo, e continua
+     18,4 s        fecha, e o texto sai em fade
+     18,8 s        abre-se em colunas; 19,2 → 20,4 s "grupos ou famílias"
+     22,8 s        o texto sai e a tabela fecha
+     24,9 s        o Na gira em 3D, cresce e acende (como o Fe), e o
                    símbolo dele vai para o vazio da tabela
-     25,6 s        "3º período", ao lado do símbolo, e a faixa da linha
-     26,8 s        "grupo 1", embaixo, e a faixa da coluna
+     28 s          "3º período", ao lado do símbolo, e a faixa da linha
+     29,2 s        "grupo 1", embaixo, e a faixa da coluna
    No fim, o botão "Entendi", à direita do símbolo: tocado, acende, toca
    o "right" e passa à narração "3.1":
      1 s           o Mn gira em 3D, cresce e acende, e o símbolo dele vai
@@ -5002,15 +5003,15 @@ const LC25 = {
    da mesa (as de TP.coordenadas).
    ============================================================ */
 const FRASES_3 = [
-  { de:14.0, ate:15.0, some:16.0, txt:'séries ou períodos' },
-  { de:16.8, ate:18.0, some:20.4, txt:'grupos ou famílias' }
+  { de:16.0, ate:17.5, some:18.4, txt:'séries ou períodos' },
+  { de:19.2, ate:20.4, some:22.8, txt:'grupos ou famílias' }
 ];
 const EV3 = {
-  vidaAte:5.0,
-  fe:{ z:26, de:7.0, linha:9.0, coluna:9.8, ate:11.0 },
-  linhas:{ de:13.0, ate:16.0 },
-  colunas:{ de:16.4, ate:20.4 },
-  na:{ z:11, de:22.5, periodo:25.6, grupo:26.8 },
+  vidaAte:8.0,
+  fe:{ z:26, de:8.5, linha:10.5, coluna:11.3, ate:12.5 },
+  linhas:{ de:14.5, ate:18.4 },
+  colunas:{ de:18.8, ate:22.8 },
+  na:{ z:11, de:24.9, periodo:28.0, grupo:29.2 },
   /* os exemplos: o elemento, e as coordenadas dele — a palavra "grupo"
      antes do número; na "3.2" os dois são digitados */
   exemplos:{
@@ -5384,6 +5385,11 @@ const QUIZ4 = {
   /* a questão 01, digitada no relógio da "3.3"; com o 8, vale o toque */
   digita(it, t){
     const d = it.digita;
+    /* acabado o áudio da pergunta, ela está pronta, com o número e tudo —
+       mesmo que uma regravação mais curta tenha deixado alguma marca
+       depois do fim (a 3.3 regravada tem 5,8 s, e o "8" era aos 6): sem
+       isto, o toque nunca valia e o quiz parava ali */
+    if (som.ended || (isFinite(som.duration) && som.duration > 0 && t >= som.duration - 0.05)) t = Infinity;
     if (t < d.de) return;
     const cx = this.caixa() || this.caixaNova(it.rotulo, '', it.txt + (it.fim || ''));
     /* pronta a pergunta (o último número, se houver; senão o fim da
