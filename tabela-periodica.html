@@ -2279,7 +2279,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v9.8';
+const VERSAO = 'v9.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2569,11 +2569,14 @@ SLIDES.forEach((sl,i) => {
       '<figure class="foto"><img src="Imagens/amauri_jr.jpg" alt="Professor Amauri Junior" draggable="false"></figure>';
   } else {
     el.innerHTML =
+      /* na montagem, cada parte da faixa do alto é peça: a régua, o
+         número, o título e o subtítulo movem-se e mudam de tamanho cada
+         um; o título e o subtítulo, com dois toques, editam-se */
       '<div class="tira">' +
-        '<div class="regua" aria-label="Ir para um slide"></div>' +
-        '<div class="num">'+i+'</div>' +
-        '<h2 class="title">'+esc(sl.title)+'</h2>' +
-        '<div class="subtitle'+(sl.subLongo ? ' longo' : '')+'">'+esc(sl.subtitle || '')+'</div>' +
+        '<div class="regua" data-mont="regua" aria-label="Ir para um slide"></div>' +
+        '<div class="num" data-mont="numero">'+i+'</div>' +
+        '<h2 class="title" data-mont="titulo-do-slide">'+esc(sl.title)+'</h2>' +
+        '<div class="subtitle'+(sl.subLongo ? ' longo' : '')+'" data-mont="subtitulo-do-slide">'+esc(sl.subtitle || '')+'</div>' +
       '</div>' +
       '<div class="body-area"></div>';
 
@@ -7993,8 +7996,13 @@ function soltaSlide(sl){
 function aplicaEl(el){
   const m = MEDIDAS.get(el);
   if (!m) return;
-  el.style.left  = m.cx.toFixed(1) + 'px';
-  el.style.top   = m.cy.toFixed(1) + 'px';
+  /* as partes da faixa do alto moram dentro dela, e é a faixa (e não o
+     slide) que lhes serve de referência: o lugar, medido no slide,
+     desconta onde a faixa está */
+  const tira = el.parentElement && el.parentElement.classList.contains('tira') ? el.parentElement : null;
+  const dx = tira ? tira.offsetLeft : 0, dy = tira ? tira.offsetTop : 0;
+  el.style.left  = (m.cx - dx).toFixed(1) + 'px';
+  el.style.top   = (m.cy - dy).toFixed(1) + 'px';
   el.style.width = m.w.toFixed(1)  + 'px';
   if (el.matches(COM_ALTURA)) el.style.height = m.h.toFixed(1) + 'px';
   el.style.setProperty('--esc', m.esc.toFixed(3));
