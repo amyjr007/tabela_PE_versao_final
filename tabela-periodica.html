@@ -1203,6 +1203,9 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 html.palco-largo .breu-quiz{box-shadow:0 0 0 var(--folga) #000}
 /* na montagem, a caixa da pergunta do slide 4 é peça: pega-se com a mão */
 body.montagem .quiz3.q4{pointer-events:auto}
+/* e os números das linhas e das colunas também (fora dela não pegam o dedo) */
+body.montagem .mesa .eixo{pointer-events:auto;cursor:move}
+body.montagem .mesa .pc{cursor:move}
 /* e não perde o fundo branco com o realce da montagem (o dourado claro
    do :hover e da peça na mão) */
 body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
@@ -2294,7 +2297,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v10.1';
+const VERSAO = 'v10.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2742,6 +2745,7 @@ function montaTabela(i){
   for (let g = 1; g <= 18; g++){
     const e = eixo(g, xDaColuna(g), TAB_TOPO - 15);
     e.dataset.grupo = g;      /* é por aqui que ele sabe quando recuar */
+    e.dataset.mont = 'grupo-' + g;     /* na montagem, peça */
     mesa.appendChild(e);
   }
   /* nos slides 7 e 11 os números das linhas já nascem na bolinha do
@@ -2750,6 +2754,7 @@ function montaTabela(i){
   for (let p = 1; p <= 7;  p++){
     const e = eixo(p, linhasProf ? xDaColuna(1) - LADO/2 - 26 : TAB_ESQ - 19, yDaLinha(p));
     e.dataset.periodo = p;
+    e.dataset.mont = 'periodo-' + p;   /* na montagem, peça */
     if (linhasProf){ e.classList.add('prof'); e.style.setProperty('--atraso', (p - 1) * 40 + 'ms'); }
     mesa.appendChild(e);
   }
@@ -8082,6 +8087,19 @@ function aplicaEl(el){
      slide) que lhes serve de referência: o lugar, medido no slide,
      desconta onde a faixa está */
   const tira = el.parentElement && el.parentElement.classList.contains('tira') ? el.parentElement : null;
+  /* e os números das linhas e das colunas moram na mesa, que pode estar
+     deslocada e em escala (no celular, ou movida na montagem): o lugar e
+     a largura, medidos no slide, passam para as contas da mesa */
+  const mesa = el.parentElement && el.parentElement.classList.contains('mesa') ? el.parentElement : null;
+  if (mesa){
+    const rs = mesa.closest('.slide').getBoundingClientRect(), rm = mesa.getBoundingClientRect();
+    const z = (rm.width / mesa.offsetWidth) || fitScale;      /* px da tela por px da mesa */
+    el.style.left  = ((rs.left + m.cx*fitScale - rm.left) / z).toFixed(1) + 'px';
+    el.style.top   = ((rs.top  + m.cy*fitScale - rm.top ) / z).toFixed(1) + 'px';
+    el.style.width = (m.w * fitScale / z).toFixed(1) + 'px';
+    el.style.setProperty('--esc', m.esc.toFixed(3));
+    return;
+  }
   const dx = tira ? tira.offsetLeft : 0, dy = tira ? tira.offsetTop : 0;
   el.style.left  = (m.cx - dx).toFixed(1) + 'px';
   el.style.top   = (m.cy - dy).toFixed(1) + 'px';
@@ -8420,7 +8438,13 @@ stage.addEventListener('pointerdown', (ev) => {
     EDICAO.ultimo = txt; EDICAO.tUlt = agora;
   }
   const el = pecaDe(ev);
-  if (!el) return;
+  if (!el){
+    /* fora das peças, um cubo ou o vazio da tabela: é a mesa inteira que
+       se pega — um dedo arrasta, dois pinçam */
+    const mesa = ev.target.closest && ev.target.closest('.mesa');
+    if (mesa && slides[atual].contains(mesa)){ MESA_MONT.pega(ev, mesa); ev.preventDefault(); ev.stopPropagation(); }
+    return;
+  }
   soltaSlide(slides[atual]);
   let g = gestos.get(el);
   if (!g){ g = {ptr:new Map()}; gestos.set(el, g); }
@@ -8460,11 +8484,81 @@ function largaDedo(ev){
 document.addEventListener('pointerup', largaDedo, true);
 document.addEventListener('pointercancel', largaDedo, true);
 
+/* A MESA INTEIRA NA MONTAGEM: anda e cresce pelas mesmas variáveis com
+   que o ajuste do celular a move (--px, --py, --zoom). O Ctrl+C leva-a
+   como { el:'tabela', x, y, esc } — o deslocamento, em px do palco, e a
+   escala. Um toque num cubo, na montagem, não o faz girar. */
+const MESA_MONT = {
+  mesa:null, ptr:new Map(), base:null, mexidas:new Set(),
+  le(mesa){
+    const cs = getComputedStyle(mesa), v = (n, d) => { const x = parseFloat(mesa.style.getPropertyValue(n) || cs.getPropertyValue(n)); return isNaN(x) ? d : x; };
+    return { x:v('--px', 0), y:v('--py', 0), e:v('--zoom', 1) };
+  },
+  poe(mesa, p){
+    mesa.style.setProperty('--px', p.x.toFixed(1) + 'px');
+    mesa.style.setProperty('--py', p.y.toFixed(1) + 'px');
+    mesa.style.setProperty('--zoom', p.e.toFixed(3));
+    this.mexidas.add(mesa);
+    /* os números soltos andam com a mesa: o lugar guardado deles (no
+       slide) é refeito, senão saltavam ao serem pegos outra vez */
+    const rs = mesa.closest('.slide').getBoundingClientRect();
+    mesa.querySelectorAll('.solto').forEach(el => {
+      const m = MEDIDAS.get(el);
+      if (!m) return;
+      const r = el.getBoundingClientRect();
+      m.cx = (r.left + r.width/2  - rs.left) / fitScale;
+      m.cy = (r.top  + r.height/2 - rs.top ) / fitScale;
+      m.w  = r.width / fitScale / (m.esc || 1);
+    });
+    coord.textContent = 'tabela · x: ' + Math.round(p.x) + '   y: ' + Math.round(p.y) + '   esc: ' + p.e.toFixed(2);
+    coord.style.left = '640px'; coord.style.top = '80px';
+    coord.classList.add('on');
+  },
+  ancora(){ this.base = Object.assign(centroDe(this.ptr), this.le(this.mesa)); },
+  pega(ev, mesa){
+    if (this.mesa !== mesa){ this.ptr.clear(); this.mesa = mesa; }
+    mesa.style.transition = 'none';            /* na mão, sem inércia */
+    this.ptr.set(ev.pointerId, { x:ev.clientX, y:ev.clientY });
+    try { mesa.setPointerCapture(ev.pointerId); } catch(_){}
+    this.ancora();
+  },
+  move(ev){
+    if (!this.mesa || !this.ptr.has(ev.pointerId)) return;
+    this.ptr.set(ev.pointerId, { x:ev.clientX, y:ev.clientY });
+    const a = centroDe(this.ptr), b = this.base;
+    const e = this.ptr.size > 1 && b.d > 12 ? Math.max(.3, Math.min(3, b.e * a.d / b.d)) : b.e;
+    this.poe(this.mesa, { x: b.x + (a.cx - b.cx)/fitScale, y: b.y + (a.cy - b.cy)/fitScale, e });
+  },
+  larga(ev){
+    if (!this.ptr.has(ev.pointerId)) return;
+    this.ptr.delete(ev.pointerId);
+    if (this.ptr.size) this.ancora();
+    else { this.mesa.style.removeProperty('transition'); this.mesa = null; }
+  }
+};
+document.addEventListener('pointermove', ev => MESA_MONT.move(ev), true);
+document.addEventListener('pointerup', ev => MESA_MONT.larga(ev), true);
+document.addEventListener('pointercancel', ev => MESA_MONT.larga(ev), true);
+/* na montagem o toque na mesa é gesto, e não clique: o cubo não gira e a
+   resposta do quiz não conta */
+stage.addEventListener('click', ev => {
+  if (naMontagem() && ev.target.closest && ev.target.closest('.mesa')){ ev.stopPropagation(); ev.preventDefault(); }
+}, true);
+
 /* a roda do mouse faz o que a pinça faz */
 stage.addEventListener('wheel', (ev) => {
   if (!naMontagem()) return;
   const el = pecaDe(ev);
-  if (!el) return;
+  if (!el){
+    const mesa = ev.target.closest && ev.target.closest('.mesa');
+    if (mesa && slides[atual].contains(mesa)){
+      const p = MESA_MONT.le(mesa);
+      p.e = Math.max(.3, Math.min(3, p.e * (1 - ev.deltaY * 0.0015)));
+      MESA_MONT.poe(mesa, p);
+      ev.preventDefault();
+    }
+    return;
+  }
   soltaSlide(slides[atual]);
   const m = MEDIDAS.get(el);
   if (!m) return;
@@ -8556,6 +8650,13 @@ function textoDoSlide(i){
            (o.fonte === null ? ' '.repeat(13) : ', fonte:' + pad(o.fonte,5)) +
            ', esc:' + o.esc.toFixed(2) + ' },\n';
   });
+  /* a mesa inteira, se foi movida ou mudou de tamanho na montagem */
+  const mesaI = slides[i].querySelector('.mesa');
+  if (mesaI && MESA_MONT.mexidas.has(mesaI)){
+    const p = MESA_MONT.le(mesaI);
+    out += "  { el:'tabela',     x:" + pad(Math.round(p.x),4) + ", y:" + pad(Math.round(p.y),3) +
+           ", esc:" + p.e.toFixed(2) + " },   /* o deslocamento da mesa inteira, em px do palco */\n";
+  }
   /* e os textos que foram editados neste slide, como estão agora (o <br>
      é cada Enter). 'linhas' é quantas linhas o texto mostra: editado, ele
      só quebra onde houver Enter, e isso não se vê no texto */
