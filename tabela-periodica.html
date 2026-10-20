@@ -1183,6 +1183,14 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 .breu-quiz{position:absolute;inset:0;z-index:0;pointer-events:none;background:#000;
   opacity:0;transition:opacity .55s ease}
 .breu-quiz.on{opacity:1}
+/* no celular deitado o escuro vai até às bordas da tela: só no palco, as
+   faixas dos lados mostravam o papel quadriculado, e atrapalhava */
+html.palco-largo .breu-quiz{box-shadow:0 0 0 var(--folga) #000}
+/* na montagem, a caixa da pergunta do slide 4 é peça: pega-se com a mão */
+body.montagem .quiz3.q4{pointer-events:auto}
+/* e não perde o fundo branco com o realce da montagem (o dourado claro
+   do :hover e da peça na mão) */
+body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 /* e o cabeçalho clareia junto: no escuro, a letra escura some */
 .slide.quiz-escuro .title{color:#F3F0FB}
 .slide.quiz-escuro .subtitle{color:var(--ouro-luz)}
@@ -2271,7 +2279,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v9.7';
+const VERSAO = 'v9.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5349,6 +5357,7 @@ const QUIZ4 = {
     if (houve) this.giraTabela();
     const cx = document.createElement('div');
     cx.className = 'quiz3 q4';
+    cx.dataset.mont = 'pergunta';     /* na montagem, peça: move, cresce, e o texto edita */
     cx.setAttribute('aria-live', 'polite');
     cx.innerHTML = '<div class="q3-marca"></div><div class="q3-q"></div><div class="q3-msg"></div>';
     cx.querySelector('.q3-marca').textContent = rotulo;
@@ -8149,7 +8158,7 @@ function mostraCoord(el){
    o texto não salta — e a caixa passa a crescer com o que se escreve.
    Os pedaços com nome (os que a narração acende) ficam onde estão. O
    Esc, ou um toque fora, termina; o Ctrl+C leva também os textos. */
-const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle';
+const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle, .quiz3.q4 .q3-q';
 const EDICAO = {
   el:null, ultimo:null, tUlt:0, editados:new Set(),
   /* o bloco de linhas a que um texto pertence, dentro da peça */
@@ -8186,9 +8195,12 @@ const EDICAO = {
   /* a peça solta cresce para a direita e para baixo: a borda esquerda e
      a de cima ficam paradas (os textos da capa são alinhados por elas),
      e o centro acompanha */
-  esq:0, topo:0,
+  esq:0, topo:0, peca:null,
+  /* a peça que cresce: o próprio texto, se for peça solta, ou a caixa
+     solta que o contém (a pergunta do quiz mora numa caixa) */
+  pecaDe(el){ return el.classList.contains('solto') ? el : el.closest('.solto'); },
   acompanha(){
-    const el = this.el, m = el && MEDIDAS.get(el);
+    const el = this.peca, m = el && MEDIDAS.get(el);
     if (!m || !el.classList.contains('solto')) return;
     el.style.width = 'max-content';
     m.w = el.offsetWidth;
@@ -8206,8 +8218,9 @@ const EDICAO = {
     const p = document.caretRangeFromPoint ? document.caretRangeFromPoint(x, y) : null;
     if (!el.classList.contains('texto-livre')){ this.fixaLinhas(el); el.classList.add('texto-livre'); }
     this.el = el;
-    const m = MEDIDAS.get(el);
-    if (m && el.classList.contains('solto')){
+    this.peca = this.pecaDe(el);
+    const m = this.peca && MEDIDAS.get(this.peca);
+    if (m){
       this.esq  = m.cx - m.w*m.esc/2;
       this.topo = m.cy - m.h*m.esc/2;
       this.acompanha();
@@ -8238,16 +8251,21 @@ const EDICAO = {
     if (!el) return;
     /* a peça solta fica com a largura do que se escreveu */
     this.acompanha();
-    this.el = null;
+    const peca = this.peca;
+    this.el = this.peca = null;
     el.removeAttribute('contenteditable');
     el.classList.remove('editando');
-    const m = MEDIDAS.get(el);
-    if (m && el.classList.contains('solto')) aplicaEl(el);
+    if (peca && MEDIDAS.get(peca)) aplicaEl(peca);
     getSelection().removeAllRanges();
   },
   nome(el){
     if (el.classList.contains('title'))    return 'titulo-do-slide';
     if (el.classList.contains('subtitle')) return 'subtitulo-do-slide';
+    /* a pergunta do quiz leva o rótulo dela: "pergunta (Questão 01)" */
+    if (el.classList.contains('q3-q')){
+      const r = el.parentNode.querySelector('.q3-marca');
+      return 'pergunta (' + (r ? r.textContent : '') + ')';
+    }
     return nomeDe(el);
   }
 };
