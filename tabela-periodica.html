@@ -551,8 +551,12 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
   font-family:var(--display);line-height:1;
 }
 .ficha.on{opacity:1}
-.ficha span{font-family:var(--mono);font-size:19px;color:var(--tinta-dim);margin-bottom:5px}
+/* o número atômico em cima do símbolo, à vista (era pequeno e apagado) */
+.ficha span{font-family:var(--display);font-size:28px;font-weight:600;color:var(--ouro);margin-bottom:4px}
 .ficha b{font-size:58px;font-weight:600;color:var(--indigo);letter-spacing:-.02em}
+/* no escuro do quiz, o símbolo claro */
+.slide.quiz-escuro .ficha b{color:#F3F0FB}
+.slide.quiz-escuro .ficha span{color:var(--ouro-luz)}
 /* e os nomes das duas coordenadas, ao lado dela */
 .coords-el{
   position:absolute;z-index:8;transform:translateY(-50%);pointer-events:none;
@@ -1072,7 +1076,7 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
    três alturas — o 1 e o 18 sobre o H e o He; o 2 e o 13 a 17 sobre a
    2.ª linha; o 3 a 12 sobre a 4.ª. Os das linhas só crescem. (As
    alturas contam na mesa, já descontados os 12 px.) */
-.slide.quiz4-aberto .mesa{translate:4px 12px}
+.slide.quiz4-aberto .mesa{translate:4px 12px;scale:.99}
 .slide.quiz4-aberto .mesa .eixo{width:39px;height:39px;font-size:19.4px}
 .slide.quiz4-aberto .mesa .eixo:is([data-grupo="1"],[data-grupo="18"]){top:129px!important}
 .slide.quiz4-aberto .mesa .eixo:is([data-grupo="2"],[data-grupo="13"],[data-grupo="14"],[data-grupo="15"],
@@ -1083,7 +1087,7 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 /* (o 3 a 12 subiu 22 px: na resposta certa o card cresce 50% e o número
    da coluna acende maior — a 335 os dois encostavam) */
 /* e, enquanto o quiz abre ou fecha, a mesa e os números deslizam */
-.slide.quiz4-anima .mesa{transition:translate .85s cubic-bezier(.3,.85,.3,1)}
+.slide.quiz4-anima .mesa{transition:translate .85s cubic-bezier(.3,.85,.3,1), scale .85s cubic-bezier(.3,.85,.3,1)}
 .slide.quiz4-anima .mesa .eixo{transition:top .85s cubic-bezier(.3,.85,.3,1), width .85s cubic-bezier(.3,.85,.3,1),
   height .85s cubic-bezier(.3,.85,.3,1), font-size .85s cubic-bezier(.3,.85,.3,1)}
 /* e o cabeçalho do slide durante o quiz (breuNoSlide): os lugares, em px
@@ -2317,7 +2321,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v10.5';
+const VERSAO = 'v10.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5412,6 +5416,8 @@ const QUIZ4 = {
     if (i > this.passo) this.poe(i);
     const it = this.itens[this.passo];
     if (it && it.digita && trilhaAtual === it.id) this.digita(it, t);
+    /* na "3.7", o exemplo do Ti com a mãozinha (demo37) */
+    if (trilhaAtual === '3.7') this.demo37(t); else if (this.k37) this.limpa37();
     /* na "3.6", dos 2 aos 6 s: elementos ao acaso crescem e giram */
     this.brilhos(trilhaAtual === '3.6' ? t : -1);
   },
@@ -5805,8 +5811,62 @@ const QUIZ4 = {
   /* AS QUESTÕES 08 A 10, depois da "3.7": o aluno toca o número do
      período (à esquerda) e o da família (em cima). O elemento não acende;
      de uma questão para a outra, só muda o elemento do texto. */
+  /* O EXEMPLO DA "3.7", no relógio dela, antes das questões 08 a 10:
+       2,5 s   a ficha do Ti (22) no vazio da tabela
+       4 s     o Ti acende de verde, e a mãozinha aparece nele
+       6 s     a mão toca o número do período (4): a faixa da linha acende
+       7 s     e o da família (4): a da coluna acende, e o acerto é simulado
+               — o Ti cresce de certo, confetes e o "right" (sem a fanfarra,
+               que cobriria a voz)
+     Voltando o áudio atrás, a cena volta com ele; acabada a narração, ela
+     sai e entram as perguntas de verdade. */
+  k37:0, ex37:{ z:22, ficha:2.5, verde:4.0, periodo:6.0, grupo:7.0 },
+  demo37(t){
+    const e = this.ex37, m = this.mesa(), c = this.carta(e.z);
+    if (!m || !c) return;
+    const k = (t >= e.ficha ? 1 : 0) | (t >= e.verde ? 2 : 0) | (t >= e.periodo ? 4 : 0) | (t >= e.grupo ? 8 : 0);
+    if (k === this.k37) return;
+    const antes = this.k37;
+    this.k37 = k;
+    const f = m.querySelector('.ficha');
+    f.querySelector('span').textContent = c.dataset.z;
+    f.querySelector('b').textContent = c.dataset.sym;
+    f.classList.toggle('on', !!(k & 1));
+    c.classList.toggle('verde', !!(k & 2) && !(k & 8));
+    const ep = m.querySelector('.eixo[data-periodo="' + c.dataset.periodo + '"]'),
+          eg = m.querySelector('.eixo[data-grupo="' + c.dataset.grupo + '"]');
+    /* a mão: no Ti, depois no período, depois na família */
+    limpaMao();
+    if (!(k & 2)) tiraMao();
+    else levaMao(k & 8 ? eg : k & 4 ? ep : c);
+    /* os toques, só a andar para a frente (o som e os confetes não se
+       repetem ao voltar atrás); a faixa segue sempre o relógio */
+    const avanca = (bit) => (k & bit) && !(antes & bit);
+    if (avanca(4)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('right'); }, 450));
+    if (avanca(8)) maoT.push(setTimeout(() => {
+      bateMao(); tocaEfeito('right'); confete();
+      c.classList.add('certa3'); QUIZ3.cresce(c);
+    }, 450));
+    EV3.poeCruz(m, c, !!(k & 4), !!(k & 8));
+    if (!(k & 8) && c.classList.contains('certa3')){
+      c.classList.remove('certa3', 'frente3');
+      c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe');
+    }
+  },
+  limpa37(){
+    if (!this.k37) return;
+    this.k37 = 0;
+    const m = this.mesa(), c = m && this.carta(this.ex37.z);
+    limpaMao(); tiraMao();
+    if (!m || !c) return;
+    m.querySelector('.ficha').classList.remove('on');
+    c.classList.remove('verde', 'certa3', 'frente3');
+    c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe');
+    EV3.poeCruz(m, c, false, false);
+  },
   eixosComeca(){
     if (!this.ativo) return;
+    this.limpa37();       /* o exemplo sai: agora é a vez do aluno */
     stage.classList.add('em-quiz');
     const m = this.mesa();
     m.classList.add('toca-eixos');
@@ -5907,6 +5967,7 @@ const QUIZ4 = {
   fecha(){
     const sl = this.sl();
     if (!sl) return;
+    this.limpa37();
     if (this.ativo) stage.classList.remove('em-quiz');
     this.g++;
     this.ativo = false; this.passo = -1; this.aceita = false; this.travado = false; this.sub = 0;
