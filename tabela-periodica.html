@@ -1079,7 +1079,9 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
   [data-grupo="16"],[data-grupo="17"]){top:199px!important}
 .slide.quiz4-aberto .mesa .eixo:is([data-grupo="3"],[data-grupo="4"],[data-grupo="5"],[data-grupo="6"],
   [data-grupo="7"],[data-grupo="8"],[data-grupo="9"],[data-grupo="10"],[data-grupo="11"],
-  [data-grupo="12"]){top:335px!important}
+  [data-grupo="12"]){top:313px!important}
+/* (o 3 a 12 subiu 22 px: na resposta certa o card cresce 50% e o número
+   da coluna acende maior — a 335 os dois encostavam) */
 /* e, enquanto o quiz abre ou fecha, a mesa e os números deslizam */
 .slide.quiz4-anima .mesa{transition:translate .85s cubic-bezier(.3,.85,.3,1)}
 .slide.quiz4-anima .mesa .eixo{transition:top .85s cubic-bezier(.3,.85,.3,1), width .85s cubic-bezier(.3,.85,.3,1),
@@ -2315,7 +2317,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v10.3';
+const VERSAO = 'v10.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
