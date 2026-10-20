@@ -1074,7 +1074,11 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 .slide.quiz4-aberto .tira > .regua{left:1069px;top:42px}      /* x 1149, y 52 */
 .slide.quiz4-aberto .tira > .num  {left:-13px;top:33px}       /* x   67, y 43 */
 .slide.quiz4-aberto .tira > .title{left:61px;top:34px}        /* x  141, y 44: "Quiz" */
-.slide.quiz4-aberto .tira > .subtitle{display:none}
+.slide.quiz4-aberto .tira > .subtitle{opacity:0;visibility:hidden}
+/* as letras do título a transformarem-se (transformaLetras) */
+.tira .letra{display:inline-block;white-space:pre;transition:opacity .24s ease, transform .24s cubic-bezier(.3,1.4,.5,1)}
+.tira .letra.some{opacity:0;transform:translateY(-16px) scale(.6)}
+.tira .letra.nasce{opacity:0;transform:translateY(16px) scale(.6)}
 .quiz3.q4 .q3-q{font-size:23px;white-space:nowrap}
 /* sem resposta escrita, sem a linha dela: o quadro fica baixo, e não
    encosta na caixa do carrossel da questão 04 */
@@ -2290,7 +2294,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v10.0';
+const VERSAO = 'v10.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5259,12 +5263,69 @@ function breuNoSlide(sl, sim){
      o número no canto, "Quiz" ao lado dele, a régua à direita e o
      subtítulo fora — ver o CSS de .slide.quiz4-aberto. Fechado o quiz,
      o título de sempre volta. */
-  sl.classList.toggle('quiz4-aberto', sim);
+  if (sl.classList.contains('quiz4-aberto') === !!sim) return;
   const t = sl.querySelector('.tira .title');
+  const pecas = [...sl.querySelectorAll('.tira > .regua, .tira > .num, .tira > .title, .tira > .subtitle')];
+  /* TUDO EM CENA, À VISTA: cada peça desliza do lugar antigo para o novo
+     (medido o antes e o depois, o caminho é desfeito com um translate e
+     depois percorrido), e as letras do título transformam-se */
+  deslizaEntre(pecas, () => sl.classList.toggle('quiz4-aberto', sim));
   if (t){
-    if (sim){ if (t.dataset.orig === undefined) t.dataset.orig = t.innerHTML; t.textContent = 'Quiz'; }
-    else if (t.dataset.orig !== undefined){ t.innerHTML = t.dataset.orig; delete t.dataset.orig; }
+    if (sim){
+      if (t.dataset.orig === undefined) t.dataset.orig = t.textContent;
+      transformaLetras(t, 'Quiz');
+    } else if (t.dataset.orig !== undefined){
+      const orig = t.dataset.orig;
+      delete t.dataset.orig;
+      transformaLetras(t, orig);
+    }
   }
+}
+
+/* uma mudança de arranjo, sem salto: mede onde cada peça está, aplica a
+   mudança, mede onde ficou, e leva-a do lugar antigo ao novo (pelo
+   centro, que é por onde as peças do quiz se posicionam) */
+function deslizaEntre(pecas, muda){
+  const centro = e => { const r = e.getBoundingClientRect(); return { x:r.left + r.width/2, y:r.top + r.height/2 }; };
+  const antes = pecas.map(centro);
+  muda();
+  pecas.forEach((e, i) => {
+    const d = centro(e);
+    e.style.transition = 'none';
+    e.style.translate = ((antes[i].x - d.x) / fitScale).toFixed(1) + 'px ' + ((antes[i].y - d.y) / fitScale).toFixed(1) + 'px';
+  });
+  requestAnimationFrame(() => requestAnimationFrame(() => pecas.forEach(e => {
+    e.style.transition = 'translate .85s cubic-bezier(.3,.85,.3,1), opacity .4s ease, visibility .4s';
+    e.style.translate = '0px 0px';
+  })));
+  setTimeout(() => pecas.forEach(e => { e.style.removeProperty('transition'); e.style.removeProperty('translate'); }), 950);
+}
+
+/* AS LETRAS QUE SE TRANSFORMAM: as do texto velho desfazem-se uma a uma
+   (sobem e somem), e as do novo nascem uma a uma, com o som das teclas.
+   Uma transformação nova cancela a que estiver a meio. */
+function transformaLetras(el, novo){
+  const g = (el._letrasG || 0) + 1;
+  el._letrasG = g;
+  const letras = (txt, cls) => [...txt].map(c =>
+    '<span class="letra' + (cls ? ' ' + cls : '') + '">' + (c === ' ' ? '&nbsp;' : esc(c)) + '</span>').join('');
+  const velho = el.textContent;
+  el.innerHTML = letras(velho);
+  const vs = [...el.querySelectorAll('.letra')];
+  el.getBoundingClientRect();
+  vs.forEach((s, i) => setTimeout(() => { if (el._letrasG === g) s.classList.add('some'); }, i * 14));
+  setTimeout(() => {
+    if (el._letrasG !== g) return;
+    el.innerHTML = letras(novo, 'nasce');
+    const ns = [...el.querySelectorAll('.letra')];
+    el.getBoundingClientRect();
+    ns.forEach((s, i) => setTimeout(() => {
+      if (el._letrasG !== g) return;
+      s.classList.remove('nasce');
+      if (novo[i] !== ' ') TECLAS.bate();
+    }, i * 55));
+    setTimeout(() => { if (el._letrasG === g) el.textContent = novo; }, ns.length * 55 + 300);
+  }, vs.length * 14 + 200);
 }
 /* as questões do carrossel, uma por elemento — a 04, a 05, a 06 e a 07.
    Os textos são fixos; os elementos são sorteados a cada abertura do
