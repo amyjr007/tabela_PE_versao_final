@@ -1166,11 +1166,11 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
 /* no slide 4 o quadro é mais estreito: com a tabela aberta em linhas
    ou em colunas ele cabe entre a coluna 2 e a 13, sem tapar ninguém */
 .texto-colunas.texto3{left:232px;width:578px}
-/* no slide 3 ("Nessas colunas todos são semelhantes"): o lugar e o tamanho
-   que o professor deixou na montagem — o centro em x 477, y 292, a 0,88,
-   e a frase numa linha só */
-.texto-colunas:not(.texto3){left:477px;top:292px;width:max-content;
-  transform:translate(-50%,-50%) scale(.88);white-space:nowrap}
+/* no slide 3 ("Dentro de uma mesma coluna / todos são semelhantes"): o
+   lugar e o tamanho que o professor deixou na montagem — o centro em
+   x 486, y 277, a 0,88, e a frase em duas linhas (a quebra é a do texto) */
+.texto-colunas:not(.texto3){left:486px;top:277px;width:max-content;
+  transform:translate(-50%,-50%) scale(.88);white-space:pre-line}
 /* O QUIZ DO SLIDE 4: o quadro padrão das perguntas (o do quiz do slide
    3), no vazio da tabela do slide 4; na primeira, o cursor da digitação */
 /* a caixa da pergunta, no alto (o lugar que o professor deixou na
@@ -2437,7 +2437,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v15.7';
+const VERSAO = 'v15.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5173,7 +5173,7 @@ const COLUNAS_24 = {
    a narração segue (aos 12,6 s: o relógio chega à pausa com uns
    centésimos de atraso, e a frase não pode estar já a sair) */
 const FRASES_COLUNAS = [
-  { de:7.0, ate:10.0, some:12.6, txt:'Nessas colunas todos são semelhantes' }
+  { de:7.0, ate:10.0, some:12.6, txt:'Dentro de uma mesma coluna\ntodos são semelhantes' }
 ];
 let veu2 = null, toque2 = null, foto2 = null, clarao2 = null, DIG2 = null, DIG3 = null, DIG_COL = null;
 
