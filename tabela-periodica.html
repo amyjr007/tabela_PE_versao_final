@@ -1002,6 +1002,31 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
 }
 .quiz.nota-on .nota-card{transform:translate(-50%,-50%);opacity:1;pointer-events:auto}
 .nota-rotulo{font-family:var(--mono);font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--ouro)}
+/* o nome do aluno, dado no Iniciar da capa; sem nome, a linha some */
+.nota-nome{margin-top:6px;font-family:var(--display);font-weight:700;font-size:28px;color:var(--tinta)}
+.nota-nome:empty{display:none}
+
+/* ---- o pop-up do nome, no Iniciar da capa ---- */
+#nome-pop{position:absolute;inset:0;z-index:90;display:grid;place-items:center;
+  background:rgba(12,11,18,.62);animation:nomeEntra .3s ease both}
+#nome-pop[hidden]{display:none}
+@keyframes nomeEntra{from{opacity:0}}
+.nome-card{width:460px;padding:30px 34px 26px;border-radius:22px;text-align:center;
+  background:#FFFDF8;border:1px solid var(--ouro-dim);box-shadow:0 30px 70px rgba(0,0,0,.45);
+  animation:nomeCard .35s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes nomeCard{from{transform:scale(.88);opacity:0}}
+.nome-card h2{margin:0;font-family:var(--display);font-weight:700;font-size:30px;color:var(--tinta)}
+.nome-card p{margin:6px 0 18px;font-family:var(--display);font-size:16px;color:var(--tinta-dim)}
+#nome-campo{width:100%;box-sizing:border-box;padding:13px 16px;border-radius:12px;
+  border:1.5px solid var(--indigo-dim);background:#fff;outline:none;text-align:center;
+  font-family:var(--display);font-weight:600;font-size:24px;color:var(--tinta);
+  user-select:text;-webkit-user-select:text}
+#nome-campo:focus{border-color:var(--ouro);box-shadow:0 0 0 4px rgba(226,162,43,.2)}
+.nome-botoes{display:flex;gap:12px;justify-content:center;margin-top:20px}
+.nome-botoes button{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:30px;
+  cursor:pointer;font-family:var(--display);font-weight:600;font-size:18px}
+.nome-pula{border:1.5px solid var(--indigo-dim);background:transparent;color:var(--tinta-dim)}
+.nome-ok{border:0;background:var(--ouro);color:#fff;box-shadow:0 8px 20px rgba(226,162,43,.35)}
 .nota-valor{margin:6px 0 4px;font-family:var(--display);font-weight:700;line-height:1;color:var(--indigo)}
 .nota-num{font-size:128px;letter-spacing:-.04em}
 .nota-de{font-size:36px;color:var(--tinta-faint);margin-left:4px}
@@ -2208,6 +2233,20 @@ body.montagem #versao{color:var(--ouro)}
 
     <div id="aviso" role="status" aria-live="polite"></div>
     <div id="versao" aria-label="Versão do app"></div>
+    <!-- o nome do aluno: pedido no Iniciar da capa, usado no cartão da nota -->
+    <div id="nome-pop" hidden role="dialog" aria-modal="true" aria-labelledby="nome-tit">
+      <form class="nome-card" autocomplete="off">
+        <h2 id="nome-tit">Qual é o seu nome?</h2>
+        <p>Ele aparece no seu cartão de nota.</p>
+        <input id="nome-campo" type="text" maxlength="30" placeholder="Seu nome" aria-label="Seu nome" spellcheck="false">
+        <div class="nome-botoes">
+          <button type="button" class="nome-pula">Agora não</button>
+          <button type="submit" class="nome-ok">Começar
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
 
     <!-- o carrossel dos slides: o botão no canto de cima, à direita -->
     <button id="ver-slides" type="button" title="Ver os slides" aria-label="Ver todos os slides">
@@ -2333,7 +2372,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v12.8';
+const VERSAO = 'v12.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3989,8 +4028,9 @@ function tocaOuPara(){
      espera da escolha de um elemento, quem faz a aula seguir é a escolha */
   if (naMontagem() || SEQ.escolhendo) return;
   /* acabada a abertura, o botão é "Iniciar": leva ao slide da tabela */
-  /* o "Iniciar" do começo toca a narração, como o play (segue abaixo) */
   if (somBtn.dataset.pilula === 'comecar'){ go(1); return; }
+  /* o "Iniciar" do começo pede o nome; é o pop-up que toca a narração */
+  if (somBtn.dataset.pilula === 'iniciar'){ NOME.pede(); return; }
   /* na tela escura à espera do toque, o botão também serve de toque */
   if (SEQ.aguardaToque){ SEQ.continua(); return; }
   if (SEQ.aguardaToque2){ SEQ.continua2(); return; }
@@ -4292,6 +4332,35 @@ function viraIniciar(modo){
   somBtn.title = p.titulo;
   somBtn.setAttribute('aria-label', p.titulo);
 }
+/* O NOME DO ALUNO — o "Iniciar" da capa pede-o num pop-up antes de a
+   narração começar, e o cartão da nota do quiz mostra-o. Fica guardado no
+   aparelho e volta já escrito na vez seguinte; "Agora não" segue sem ele. */
+const NOME = {
+  CHAVE: 'tabela-aluno-nome',
+  el: document.getElementById('nome-pop'),
+  campo: document.getElementById('nome-campo'),
+  le(){ try { return localStorage.getItem(this.CHAVE) || ''; } catch (_) { return ''; } },
+  guarda(n){ try { n ? localStorage.setItem(this.CHAVE, n) : localStorage.removeItem(this.CHAVE); } catch (_) {} },
+  aberto(){ return !this.el.hidden; },
+  pede(){
+    this.campo.value = this.le();
+    this.el.hidden = false;
+    setTimeout(() => { this.campo.focus(); this.campo.select(); }, 60);
+  },
+  /* fecha o pop-up e começa a narração da capa (o toque no botão é o gesto
+     que o navegador pede para deixar tocar) */
+  segue(){
+    this.el.hidden = true;
+    if (atual === 0 && trilhaAtual === 'capa') som.play().catch(avisaSeNaoTocou);
+  }
+};
+NOME.el.querySelector('form').addEventListener('submit', ev => {
+  ev.preventDefault();
+  NOME.guarda(NOME.campo.value.trim().replace(/\s+/g, ' '));
+  NOME.segue();
+});
+NOME.el.querySelector('.nome-pula').addEventListener('click', () => NOME.segue());
+
 /* na capa, o modo do botão segue o relógio da narração: parada no zero,
    "Iniciar"; dos 51 s em diante (ou acabada), "Começar"; no meio, o play */
 function botaoDaCapa(t){
@@ -4370,7 +4439,7 @@ function montaCenaDoSlide1(){
       '<div class="quiz-ops"></div><div class="quiz-msg" aria-live="polite"></div>' +
     '</div>' +
     '<div class="nota-card" role="status" aria-live="polite">' +
-      '<div class="nota-rotulo">Sua nota</div>' +
+      '<div class="nota-rotulo">Sua nota</div><div class="nota-nome"></div>' +
       '<div class="nota-valor"><span class="nota-num"></span><span class="nota-de">/10</span></div>' +
       '<div class="nota-acertos"></div><div class="nota-msg"></div>' +
       '<div class="nota-botoes"><button type="button" class="nota-refaz">Refazer</button>' +
@@ -7515,6 +7584,7 @@ const QUIZ = {
     const nota = Math.max(1, Math.round(a / total * 10));
     const cx = this.caixa();
     cx.querySelector('.nota-num').textContent = nota;
+    cx.querySelector('.nota-nome').textContent = NOME.le();
     /* a nota é dos acertos de primeira; os erros contam-se à parte */
     const e = this.erros;
     cx.querySelector('.nota-acertos').textContent = 'Você acertou ' + a + ' de ' + total + ' de primeira' +
@@ -9814,6 +9884,11 @@ addEventListener('resize', ajusteNoSlide);
 
 addEventListener('keydown', ev => {
   const k = ev.key;
+  /* com o pop-up do nome aberto, o teclado é da escrita; o Esc segue sem nome */
+  if (NOME.aberto()){
+    if (k === 'Escape'){ NOME.segue(); ev.preventDefault(); }
+    return;
+  }
   /* no carrossel da questão 04 em diante, as setas são dele */
   if (ev.target && ev.target.closest && ev.target.closest('.rd-roda')) return;
   /* escrevendo um texto, o teclado é da escrita; o Esc termina */
