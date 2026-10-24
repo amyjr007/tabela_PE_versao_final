@@ -2357,7 +2357,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v10.7';
+const VERSAO = 'v10.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3576,7 +3576,7 @@ const ROTEIROS = {
      e moram em efeitosCapa(); aqui ficam a pausa e a demonstração */
   'capa': [
     /* com a tabela no meio, a narração pára um segundo, e continua */
-    { t:12.00, faz: () => pausaDaCapa() },
+    { t:12.70, faz: () => pausaDaCapa() },
 
     /* a demonstração dos controles, passo a passo — sem voz de outro
        capítulo: a narração da capa continua por cima de tudo */
@@ -3792,7 +3792,7 @@ requestAnimationFrame(function quadroDaCapa(){
   }
   requestAnimationFrame(quadroDaCapa);
 });
-/* aos 12 s, com a tabela no meio, um segundo de silêncio */
+/* aos 12,7 s, com a tabela no meio, um segundo de silêncio */
 let pausaCapaT = 0;
 function pausaDaCapa(){
   clearTimeout(pausaCapaT);
