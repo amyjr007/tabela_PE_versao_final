@@ -1121,6 +1121,12 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
 .pc.luz-verde .face{box-shadow:inset 0 0 0 60px rgba(46,204,113,calc(.36 * var(--verde,1))),
   0 0 0 2px rgba(62,224,138,var(--verde,1)), 0 0 20px 5px rgba(46,204,113,calc(.6 * var(--verde,1)))}
 .pc.luz-verde .cubo{--sc:calc(1 + .06 * var(--verde,1))}
+/* o Li, o Na e o K na "2.4", depois de o H sair da coluna: à frente dos
+   vizinhos — e do próprio H em destaque, que ficava por cima do Li — e com
+   luz mais forte */
+.mesa .pc.enfase-24.coluna-frente, .mesa .pc.enfase-24{z-index:18}
+.pc.enfase-24.luz-verde .face{box-shadow:inset 0 0 0 60px rgba(46,204,113,calc(.45 * var(--verde,1))),
+  0 0 0 3px rgba(62,224,138,var(--verde,1)), 0 0 30px 9px rgba(46,204,113,calc(.85 * var(--verde,1)))}
 /* o próximo card a tocar: brilha em vermelho neon e pulsa (o brilho fica
    mesmo sem a animação, para quem tem o movimento reduzido) */
 .pc.chama{z-index:20;cursor:pointer}
@@ -2402,7 +2408,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v14.5';
+const VERSAO = 'v14.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3670,7 +3676,11 @@ const ROTEIROS = {
   '2.1':  [],
   '2.2':  [],
   '2.3':  [],
-  '2.4':  [],
+  '2.4':  [
+    /* aos 12,2 s a narração pára 2 s; o brilho das colunas corre em ciclo
+       enquanto ela está parada (COLUNAS_24.ciclo), e acaba quando ela segue */
+    { t:12.2, faz(){ COLUNAS_24.ciclo = performance.now(); pausaPor('2.4', COLUNAS_24.pausa.ms); } }
+  ],
   '2.5':  [],
   '2.5A': [],
   '3':    [
@@ -3846,12 +3856,14 @@ requestAnimationFrame(function quadroDaCapa(){
    ainda for a mesma e ninguém a tiver mexido (na capa aos 12,7 s, com a
    tabela no meio; na "2" aos 40,4 s, com a tela de Moseley) */
 let pausaT = 0;
-function pausaUmSegundo(id){
+function pausaUmSegundo(id){ pausaPor(id, 1000); }
+/* o mesmo silêncio, com a duração que se quiser (na "2.4", 2 s) */
+function pausaPor(id, ms){
   clearTimeout(pausaT);
   som.pause();
   pausaT = setTimeout(() => {
     if (trilhaAtual === id && som.paused) som.play().catch(avisaSeNaoTocou);
-  }, 1000);
+  }, ms);
 }
 function pausaDaCapa(){ if (atual === 0) pausaUmSegundo('capa'); }
 
@@ -5087,6 +5099,8 @@ const FRASES_CRITERIO2 = [
                   junto, um brilho verde varre uma coluna de cada vez —
                   só as que têm mais de um card: a 1, a 2 e da 13 à 18 —,
                   de cima para baixo, e não fica
+     12,2 s       a narração pára 2 s: a frase fica, e o brilho das colunas
+                  corre em ciclo; seguindo ela, a frase sai em fade
      14,4 s       o H cresce e destaca-se, em dourado
      17,3 → 20,1 s  só na coluna 1: o Li, o Na e o K crescem e brilham em
                   sequência, descendo e subindo de volta
@@ -5102,12 +5116,18 @@ const COLUNAS_24 = {
   /* o H: cresce e destaca-se aos 14,4 s, um fio para dentro (maior, sairia
      pela borda), e volta ao normal aos 25 s, com as colunas */
   hidrogenio:{ de:14.4, dura:0.6, cresce:0.6, desvio:{ x:40, y:10 } },
-  /* a onda, só na coluna 1 (sem o H, que está em destaque) */
-  onda:{ de:17.3, meio:18.7, ate:20.1, cresce:0.3, coluna:1 },
+  /* a onda, só na coluna 1 (sem o H, que está em destaque): o Li, o Na e
+     o K crescem bem (0,6) e com luz forte (ver .enfase-24) */
+  onda:{ de:17.3, meio:18.7, ate:20.1, cresce:0.6, coluna:1 },
+  /* a pausa de 2 s aos 12,2 s, com o brilho das colunas em ciclo: uma
+     volta pelas 8 colunas por segundo, duas voltas inteiras na pausa */
+  pausa:{ de:12.2, ms:2000, volta:1.0 }, ciclo:0,
   suja:false
 };
+/* a frase fica escrita durante a pausa dos 12,2 s, e sai em fade quando
+   a narração segue */
 const FRASES_COLUNAS = [
-  { de:7.0, ate:10.0, some:12.0, txt:'Nessas colunas todos são semelhantes' }
+  { de:7.0, ate:10.0, some:12.25, txt:'Nessas colunas todos são semelhantes' }
 ];
 let veu2 = null, toque2 = null, foto2 = null, clarao2 = null, DIG2 = null, DIG3 = null, DIG_COL = null;
 
@@ -5177,7 +5197,7 @@ const entre01 = p => Math.max(0, Math.min(1, p));
 function limpaColuna(c, fica){
   ['--onda', '--verde', '--tsobe'].forEach(v => c.style.removeProperty(v));
   c.style.removeProperty('filter');
-  c.classList.remove('luz-verde', 'coluna-frente', 'destaque-h');
+  c.classList.remove('luz-verde', 'coluna-frente', 'destaque-h', 'enfase-24');
   c._c24 = null;                   /* o que colunas24 escreveu já não vale */
   if (!fica && c._noLugar){
     const casa = alvoDe(+c.dataset.z);
@@ -5189,6 +5209,8 @@ function colunas24(t){
   const o = COLUNAS_24;
   if (FINAL.ativo || FINAL.feito) return;
   const na24 = trilhaAtual === '2.4';
+  /* o ciclo da pausa acaba quando a narração segue (ou sai da "2.4") */
+  if (o.ciclo && (!na24 || !som.paused)) o.ciclo = 0;
   if (!na24){
     if (o.suja){ TP.todos().forEach(c => limpaColuna(c)); o.suja = false; }
     return;
@@ -5200,6 +5222,11 @@ function colunas24(t){
   const oh = o.hidrogenio;
   const eh = suave(entre01((t - oh.de) / oh.dura)) * (1 - suave(entre01((t - o.volta) / oh.dura)));
   const w = o.onda, vr = o.varre, vez = (vr.ate - vr.de) / vr.colunas.length;
+  /* NA PAUSA DOS 12,2 s o brilho das colunas continua, em ciclo, no
+     relógio de parede (o do áudio está parado): da primeira coluna à
+     última, e de volta ao começo, até a narração seguir */
+  const vc0 = o.pausa.volta;   /* uma volta pelas 8 colunas, em segundos */
+  const tv = o.ciclo ? vr.de + (((performance.now() - o.ciclo) / 1000) % vc0) / vc0 * (vr.ate - vr.de) : t;
   TP.todos().filter(c => c._noLugar).forEach(c => {
     if (c._voo) return;                       /* ainda a pousar */
     const z = +c.dataset.z, col = +c.dataset.col, row = +c.dataset.linha;
@@ -5212,15 +5239,19 @@ function colunas24(t){
     /* a varredura: na vez da coluna, um brilho desce das linhas de cima
        para as de baixo; fora da vez dela, nada fica aceso */
     const vc = vr.colunas.indexOf(col);
-    const q = vc < 0 ? -1 : (t - vr.de - vc*vez) / vez;
+    const q = vc < 0 ? -1 : (tv - vr.de - vc*vez) / vez;
     if (q >= 0 && q < 1) k = Math.exp(-Math.pow((row - (0.5 + 4*q)) / 0.7, 2));
-    /* a onda da coluna 1 (sem o H): cresce e brilha, descendo e subindo */
+    /* a onda da coluna 1 (sem o H): cresce e brilha, descendo e subindo —
+       com mais ênfase, à frente dos vizinhos (o H acabou de sair dela) */
+    let enfase = false;
     if (col === w.coluna && z !== 1 && t >= w.de && t <= w.ate){
       const f = t < w.meio ? 1 + 3*(t - w.de)/(w.meio - w.de) : 4 - 3*(t - w.meio)/(w.ate - w.meio);
       const b = Math.exp(-Math.pow((row - f)/0.55, 2));
       cresce += w.cresce * b;
       k = Math.max(k, b);
+      enfase = b > .05;
     }
+    c.classList.toggle('enfase-24', enfase);
     if (z === 1){
       /* o H cresce e destaca-se (em dourado, e não em verde), e aos 25 s
          volta ao normal, com as colunas */
