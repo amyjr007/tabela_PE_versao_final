@@ -2428,7 +2428,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v15.3';
+const VERSAO = 'v15.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3439,9 +3439,10 @@ window.TP = TP;
 const VIDA = {
   ligada:false, tCubo:0, tFam:0, tCruz:0, fila:[], ocupadas:new Set(),
 
-  liga(){
+  /* forca: liga mesmo com a história começada (a espera do jogo da memória) */
+  liga(forca){
     /* começada a história do slide, a vida solta não volta a meio dela */
-    if (this.ligada || !temMesa(atual) || (window.SEQ && window.SEQ.comecou)) return;
+    if (this.ligada || !temMesa(atual) || (!forca && window.SEQ && window.SEQ.comecou)) return;
     /* no slide 3, depois da narração "2", também não */
     if (atual === 2 && DEPOIS_DA_2.includes(trilhaAtual)) return;
     /* nem durante o ajuste da tabela: travada é travada */
@@ -4201,6 +4202,7 @@ const SEQ = {
       massaTxt.textContent = numTxt.textContent = '';
     }
     QUIZ.fecha();
+    JOGO_ENTROU = false;       /* voltando ao slide, a espera do jogo volta a valer */
     if (DIG_VEU) DIG_VEU.limpa();
     ONDA_FAM.suja = ONDA_118.suja = false;
     this.quizDa = null;
@@ -4572,7 +4574,19 @@ function efeitosDoTempo(){
   if (trilhaAtual === '1.3A') efeitos13A(t);
   if (trilhaAtual === '1.3B') efeitos13B(t);
   if (trilhaAtual === '1.4')  efeitos14(t);
+  esperaDoJogo();
   quizNaHora(t);
+}
+
+/* A ESPERA DO JOGO — durante a narração do jogo da memória ("1.jogo") e
+   depois dela, até o botão do jogo ser tocado, a tabela tem a vida solta
+   da espera (os pulinhos e as voltas de quando aguarda o play). O toque
+   no botão acaba com ela (JOGO_ENTROU), e ela não volta neste slide. */
+var JOGO_ENTROU = false;
+function esperaDoJogo(){
+  const espera = atual === 1 && trilhaAtual === '1.jogo' && !JOGO_ENTROU && !memAberto && !naMontagem();
+  if (espera && !VIDA.ligada) VIDA.liga(true);
+  else if (!espera && VIDA.ligada && trilhaAtual === '1.jogo') VIDA.desliga();
 }
 
 /* OS SALTOS AO ACASO — dos 6 s até a tela escurecer (VEU_DE): a cada
@@ -7503,11 +7517,14 @@ som.addEventListener('play', calaAbertura);
               última cresce e volta como as outras
    Pausada a abertura, a animação pára onde está; calada (o play, a troca
    de slide) ou acabada, o título volta ao que era. */
+/* em todos os capítulos: o número aos 0,5 s e as letras a partir de 1 s
+   (no capítulo 2, que veio primeiro, as letras começam aos 1,2 s) */
 const TITULO_NA_ABERTURA = {
-  2: { num:0.5, letras:1.2, passo:0.07 }
+  padrao: { num:0.5, letras:1.0, passo:0.07 },
+  2:      { num:0.5, letras:1.2, passo:0.07 }
 };
 function animaTituloNaAbertura(i, a){
-  const o = TITULO_NA_ABERTURA[i], sl = slides[i];
+  const o = TITULO_NA_ABERTURA[i] || TITULO_NA_ABERTURA.padrao, sl = slides[i];
   if (!o || !sl) return;
   const num = sl.querySelector('.tira .num'), tit = sl.querySelector('.tira .title');
   if (!num || !tit || tit.children.length) return;   /* editado na montagem: fica quieto */
@@ -7971,6 +7988,8 @@ function abreMemoria(ordem){
    delas na grade. Pousadas, brilham, e toca a fala das regras. */
 const ENTRADA_JOGO = { voo:900, brilho:700, raio:1050 };
 function entraNoJogo(){
+  JOGO_ENTROU = true;         /* a espera da tabela acaba aqui */
+  VIDA.desliga();
   abreMemoria();
   if (!memAberto) return;
   const ov = memAberto, g = memGeracao, n = memCartas.length;
