@@ -2303,7 +2303,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v11.5';
+const VERSAO = 'v11.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4365,6 +4365,7 @@ function efeitosDoTempo(){
   veu.classList.toggle('on', trilhaAtual === '1' && t >= VEU_DE);
   if (trilhaAtual === '1'){
     ondaDasFamilias(t);
+    saltosDo1(t);
     DIG_VEU.escreve(t);
   }
   if (trilhaAtual === '1.1'){
@@ -4379,6 +4380,19 @@ function efeitosDoTempo(){
   if (trilhaAtual === '1.3B') efeitos13B(t);
   if (trilhaAtual === '1.4')  efeitos14(t);
   quizNaHora(t);
+}
+
+/* OS SALTOS AO ACASO — dos 6 s até a tela escurecer (VEU_DE): a cada
+   0,12 s um elemento qualquer dá um pulinho, uma volta, ou os dois ao
+   mesmo tempo (o mesmo sorteio da vida solta, VIDA.umCubo). Segue o
+   relógio da narração: em pausa, ninguém salta. */
+const SALTOS_1 = { de:6.0, cada:0.12, prox:0 };
+function saltosDo1(t){
+  const o = SALTOS_1;
+  if (t < o.de){ o.prox = o.de; return; }
+  if (som.paused || t >= VEU_DE) return;
+  if (t < o.prox - 1) o.prox = t;            /* voltou atrás no áudio */
+  if (t >= o.prox){ VIDA.umCubo(); o.prox = t + o.cada; }
 }
 
 /* A ONDA DAS FAMÍLIAS — de 2,6 a 4,8 s: cada coluna sobe e desce, uma
