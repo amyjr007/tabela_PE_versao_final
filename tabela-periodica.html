@@ -1168,9 +1168,12 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
 .texto-colunas.texto3{left:232px;width:578px}
 /* no slide 3 ("Dentro de uma mesma coluna / todos são semelhantes"): o
    lugar e o tamanho que o professor deixou na montagem — o centro em
-   x 486, y 277, a 0,88, e a frase em duas linhas (a quebra é a do texto) */
-.texto-colunas:not(.texto3){left:486px;top:277px;width:max-content;
-  transform:translate(-50%,-50%) scale(.88);white-space:pre-line}
+   x 486, y 277, a 0,88, e a frase em duas linhas: só quebra onde o texto
+   manda (pre), nunca pela largura da caixa — com pre-line, numa caixa mais
+   estreita o "coluna" descia e ficavam três linhas */
+.texto-colunas:not(.texto3){left:486px;top:277px;width:max-content!important;
+  transform:translate(-50%,-50%) scale(.88);white-space:pre}
+.texto-colunas:not(.texto3) .frase{white-space:pre}
 /* O QUIZ DO SLIDE 4: o quadro padrão das perguntas (o do quiz do slide
    3), no vazio da tabela do slide 4; na primeira, o cursor da digitação */
 /* a caixa da pergunta, no alto (o lugar que o professor deixou na
@@ -2437,7 +2440,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v15.8';
+const VERSAO = 'v15.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
