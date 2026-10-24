@@ -2390,7 +2390,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v13.8';
+const VERSAO = 'v14.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5059,10 +5059,11 @@ const FRASES_CRITERIO1 = [
 ];
 /* o nome de Moseley, digitado debaixo da foto, na "2" */
 const NOME_MOSELEY = { de:29.0, ate:31.5, txt:'Henry Moseley - 1913' };
-/* o critério 2, na "2.3": o título já está escrito quando a tela escurece */
+/* o critério 2, na "2.3": a tela escurece aos 2,5 s, e dos 4 aos 9 s
+   escreve-se o título e depois o critério */
 const FRASES_CRITERIO2 = [
-  { de:0,   ate:0.01, txt:'Critério 2' },
-  { de:3.6, ate:7.0,  txt:'Os elementos quimicamente semelhantes\nformarão colunas.' }
+  { de:4.0, ate:4.8, txt:'Critério 2:' },
+  { de:5.2, ate:9.0, txt:'Os elementos quimicamente semelhantes\nformarão colunas.' }
 ];
 /* A "2.4" · AS COLUNAS, função do relógio dela:
      2,8 s        o que está montado (do 1 ao 36) abre-se em colunas —
@@ -6868,6 +6869,7 @@ const ENCAIXE = {
       return;
     }
     encaixaCubo(c);
+    tocaEfeito('flip');            /* o som do card a voar para a casa */
     if (z === 1) tocaTrilha('2.2');
     this.proximo++;
     if (z >= this.toqueAte){ this.sozinho(); return; }
@@ -6883,6 +6885,7 @@ const ENCAIXE = {
       if (g !== this.g) return;
       if (z > this.sozinhoAte){ this.ativo = false; this.auto = false; return; }
       encaixaCubo(TP.cubo(z));
+      tocaEfeito('flip');          /* sozinho também, um a cada card */
       /* a "2.3" começa no salto do 32 */
       if (z === this.gatilho) tocaTrilha('2.3');
       z++;
@@ -7114,8 +7117,8 @@ function desordem(t){
 /* A TELA ESCURA DE MOSELEY, nas duas narrações em que ele aparece. Na
    "2" escurece aos 29 s, a foto entra pela borda esquerda e pousa (sai
    depressa e chega devagar), e o critério 1 escreve-se à direita. Na
-   "2.3" escurece aos 2,5 s com a foto já no lugar e "Critério 2" já
-   escrito, e o resto escreve-se de 3,6 a 7 s. Fica até ao toque, que a
+   "2.3" escurece aos 2,5 s com a foto já no lugar, e "Critério 2:" e o
+   critério escrevem-se dos 4 aos 9 s. Fica até ao toque, que a
    desfaz (SEQ.dispensou). */
 const CENAS_MOSELEY = {
   '2':   { escurece:28.5, entra:28.5, dura:1.4, criterio:1 },
@@ -9684,13 +9687,18 @@ function depoisDaMesa(g, fn){
    o áudio já a saber a duração (loadedmetadata). Os eventos seguem o
    relógio, e por isso a mesa fica logo como naquele segundo; e se o
    áudio não carregar, o quiz daquela trilha abre na mesma. */
+/* O SALTO VEM ANTES DO PLAY: tocar e saltar ao mesmo tempo deixava o
+   celular tocar uma fração de segundo do começo da narração antes de
+   chegar ao segundo pedido. A trilha só é recarregada se for outra (a
+   mesma, já carregada, recomeça o roteiro sem baixar tudo de novo). */
 function tocaDesde(id, t, g){
-  trilhaAtual = -1;
-  carregaTrilha(id);
+  if (trilhaAtual === id && som.readyState >= 1){ som.pause(); zeraRoteiro(id); }
+  else { trilhaAtual = -1; carregaTrilha(id); }
   const vai = () => {
     if (g !== NAV.geracao || trilhaAtual !== id) return;
-    som.currentTime = t;
-    som.play().catch(avisaSeNaoTocou);
+    const toca = () => { if (g === NAV.geracao && trilhaAtual === id) som.play().catch(avisaSeNaoTocou); };
+    if (Math.abs(som.currentTime - t) < 0.05) toca();
+    else { som.addEventListener('seeked', toca, { once:true }); som.currentTime = t; }
   };
   if (som.readyState >= 1) vai();
   else som.addEventListener('loadedmetadata', vai, { once:true });
