@@ -2333,7 +2333,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v12.6';
+const VERSAO = 'v12.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4594,8 +4594,14 @@ function medeMarcas(c){
   const px = r => ({ x:(r.left-rs.left)/fitScale, y:(r.top-rs.top)/fitScale,
                      w:r.width/fitScale, h:r.height/fitScale });
   const rc = px(c.getBoundingClientRect());
-  const ri = px(f1.querySelector('i').getBoundingClientRect());
-  const ru = px(f1.querySelector('u').getBoundingClientRect());
+  /* mede-se na face que está à vista, e não na f1: um giro de um quarto
+     (os saltos ao acaso da "1") pode ter deixado outra face de frente — as
+     seis são iguais e nada se nota, mas a f1 deitada dava à massa a altura
+     do número */
+  const area = f => { const r = f.getBoundingClientRect(); return r.width * r.height; };
+  const frente = [...c.querySelectorAll('.face')].reduce((a, f) => area(f) > area(a) ? f : a, f1);
+  const ri = px(frente.querySelector('i').getBoundingClientRect());
+  const ru = px(frente.querySelector('u').getBoundingClientRect());
   c.classList.toggle('foco-num', tinha[0]);
   c.classList.toggle('foco-massa', tinha[1]);
   void c.offsetWidth;
