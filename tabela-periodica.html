@@ -2333,7 +2333,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v12.7';
+const VERSAO = 'v12.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4656,10 +4656,10 @@ const VOLTA13 = { '1.3A':12.0, '1.3B':12.2, dura:1.4 };
      1,2 s        o símbolo dentro do card do escolhido pulsa duas vezes
      8,7 → 13 s   oito de duas letras crescem, um a um, com luz âmbar
      12 s         o escolhido volta para casa (em efeitos13)
-     14 → 21 s    oito elementos cujo nome em português COMEÇA PELO
+     15 → 22 s    oito elementos cujo nome em português COMEÇA PELO
                   SÍMBOLO crescem, um a um (luz marrom)
-     23 s         o F gira e cresce no lugar; 24,6 s o nome dele pulsa 2×;
-                  25 s volta, com a animação ao contrário
+     23 s         o F gira e cresce no lugar; 25,2 s o nome dele pulsa 2×;
+                  26 s volta, com a animação ao contrário
      26,2 s       o mesmo com o Ca; 28 s pulsa o nome; 29 s volta
      29 s         o mesmo com o O;  31 s pulsa o nome; 32 s volta
      35,8 s       o quiz (QUIZ_NA_HORA)
@@ -4671,13 +4671,13 @@ const EV13A = {
   /* os oito da onda âmbar: de duas letras, espalhados pela tabela, e
      nenhum repetido da onda marrom que vem logo a seguir */
   duas:['He','Li','Mg','Si','Zn','Br','Ag','Pt'],
-  iniciais:    { de:14.0, ate:21.0, largura:1.0, cresce:0.6,  classe:'luz-marrom', nomes:true, suja:false },
+  iniciais:    { de:15.0, ate:22.0, largura:1.0, cresce:0.6,  classe:'luz-marrom', nomes:true, suja:false },
   /* os oito da onda marrom: nome a começar pelo símbolo, de uma e de duas
      letras (esta é a trilha dos de uma letra), espalhados da linha 1 à 6.
      F, Ca e O ficam de fora — são eles que aparecem logo a seguir. */
   oito:['H','C','N','Al','Cl','Fe','I','Ba'],
   zooms: [
-    { sym:'F',  cresce:23.0, pulsa:24.6, volta:25.0, suja:false },
+    { sym:'F',  cresce:23.0, pulsa:25.2, volta:26.0, suja:false },
     { sym:'Ca', cresce:26.2, pulsa:28.0, volta:29.0, suja:false },
     { sym:'O',  cresce:29.0, pulsa:31.0, volta:32.0, suja:false }
   ],
