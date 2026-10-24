@@ -876,6 +876,17 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
    têm o nome a começar pelo símbolo */
 .pc.luz-onda .face  {box-shadow:0 0 0 2px var(--ouro-luz), 0 0 18px 4px rgba(226,162,43,.6)}
 .pc.luz-marrom .face{box-shadow:0 0 0 2px #8B5A2B, 0 0 24px 7px rgba(139,90,43,.8)}
+/* o nome que acompanha a onda marrom: entra crescendo com o card e sai
+   encolhendo com ele (--k, escrito a cada tique); o pé fica no alto do card */
+.nome-onda{position:absolute;z-index:42;pointer-events:none;white-space:nowrap;
+  transform:translate(-50%,-100%) scale(var(--k,0));transform-origin:50% 100%;
+  padding:4px 12px;border-radius:10px;background:rgba(255,253,248,.96);
+  border:1.5px solid #8B5A2B;box-shadow:0 8px 20px rgba(32,28,66,.2);
+  font-family:var(--display);font-weight:600;font-size:22px;color:var(--tinta);
+  transition:transform 90ms linear, top 90ms linear;   /* alisa o tique de 60 ms, como o card */
+  visibility:hidden}
+.nome-onda.on{visibility:visible}
+.nome-onda b{color:#8B5A2B;font-weight:800;text-decoration:underline;text-underline-offset:3px}
 /* e vinho a da "1.4": os que têm o símbolo sem nada a ver com o nome */
 .pc.luz-vinho .face {box-shadow:0 0 0 2px #9C2F4A, 0 0 24px 7px rgba(156,47,74,.75)}
 /* o nome escondido enquanto o elemento está lá fora ("1.4"): some, e na
@@ -2322,7 +2333,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v12.4';
+const VERSAO = 'v12.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3277,6 +3288,7 @@ const TP = {
       c.style.removeProperty('--psym');
       c.style.removeProperty('--pl2');
       c.style.removeProperty('--pnome');
+      if (c._nomeOnda) c._nomeOnda.classList.remove('on');
       delete c._marcas;
       delete c._voltou;
       c.style.removeProperty('--sobe');
@@ -4653,7 +4665,7 @@ const EV13A = {
   /* os oito da onda âmbar: de duas letras, espalhados pela tabela, e
      nenhum repetido da onda marrom que vem logo a seguir */
   duas:['He','Li','Mg','Si','Zn','Br','Ag','Pt'],
-  iniciais:    { de:14.0, ate:21.0, largura:1.0, cresce:0.6,  classe:'luz-marrom', suja:false },
+  iniciais:    { de:14.0, ate:21.0, largura:1.0, cresce:0.6,  classe:'luz-marrom', nomes:true, suja:false },
   /* os oito da onda marrom: nome a começar pelo símbolo, de uma e de duas
      letras (esta é a trilha dos de uma letra), espalhados da linha 1 à 6.
      F, Ca e O ficam de fora — são eles que aparecem logo a seguir. */
@@ -4683,7 +4695,9 @@ const duasPulsadas = (t, de, dura) => {
 };
 
 /* UMA ONDA DE UM EM UM: cada elemento da lista cresce e volta, um logo
-   depois do outro, e o último acaba exatamente no fim da janela */
+   depois do outro, e o último acaba exatamente no fim da janela. Com
+   'nomes', o nome do elemento aparece por cima do card ao mesmo tempo:
+   cresce com ele e encolhe com ele (nomeDaOnda) */
 function ondaDeUmEmUm(t, o, lista){
   const dentro = t >= o.de - 0.05 && t <= o.ate + 0.1;
   if (!dentro && !o.suja) return;
@@ -4692,6 +4706,7 @@ function ondaDeUmEmUm(t, o, lista){
     if (!dentro){
       c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe');
       c.classList.remove('sobe', o.classe);
+      if (o.nomes) nomeDaOnda(c, 0, 0);
       return;
     }
     const p = (t - o.de - i*passo) / o.largura;
@@ -4700,8 +4715,31 @@ function ondaDeUmEmUm(t, o, lista){
     c.style.setProperty('--onda', (1 + o.cresce*k).toFixed(3));
     c.classList.toggle('sobe', k > .05);
     c.classList.toggle(o.classe, k > .2);
+    if (o.nomes) nomeDaOnda(c, k, o.cresce);
   });
   o.suja = dentro;
+}
+
+/* O NOME POR CIMA DO CARD, na onda marrom (o nome que começa pelo
+   símbolo): as letras do símbolo vão em destaque. k é o quanto o card
+   está crescido (0 a 1): o nome tem a mesma escala, e o pé dele fica
+   encostado ao alto do card crescido. */
+const semAcento = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+function nomeDaOnda(c, k, cresce){
+  let r = c._nomeOnda;
+  if (!r){
+    if (!k) return;
+    const nome = NOMES[+c.dataset.z - 1], s = c.dataset.sym;
+    const n = semAcento(nome).startsWith(semAcento(s)) ? s.length : 0;
+    r = c._nomeOnda = document.createElement('div');
+    r.className = 'nome-onda';
+    r.innerHTML = '<b>' + esc(nome.slice(0, n)) + '</b>' + esc(nome.slice(n));
+    c.parentNode.appendChild(r);
+  }
+  r.style.left = c.style.left;
+  r.style.top  = (parseFloat(c.style.top) - (LADO/2)*(1 + cresce*k) - 6).toFixed(1) + 'px';
+  r.style.setProperty('--k', k.toFixed(3));
+  r.classList.toggle('on', k > .01);
 }
 
 /* O ZOOM NO LUGAR: gira e cresce ao mesmo tempo; o nome pulsa duas vezes;
@@ -4799,7 +4837,7 @@ function caixaDoLatim(o, t, x, y, meiaCubo, e){
    OS EVENTOS DA "1.3B" — o escolhido tem símbolo de duas letras
      1 s          o símbolo do card do escolhido pulsa duas vezes
      7,1 s        só a SEGUNDA letra dele pulsa duas vezes
-     11,5 s       o símbolo todo pulsa uma vez
+     10,7 s       o símbolo todo pulsa uma vez
      12,2 s       o escolhido volta para casa (em efeitos13)
      14 → 21,2 s  oito elementos cujo nome começa pelo símbolo crescem,
                   um a um, com luz marrom
@@ -4809,13 +4847,13 @@ function caixaDoLatim(o, t, x, y, meiaCubo, e){
    ============================================================ */
 const EV13B = {
   pulsosSimbolo:[ { de:1.0,  dura:0.9,  vezes:2, mais:0.32 },
-                  { de:11.5, dura:0.55, vezes:1, mais:0.34 } ],
+                  { de:10.7, dura:0.55, vezes:1, mais:0.34 } ],
   pulsoSegunda:   { de:7.1,  dura:0.9,  vezes:2, mais:0.6 },
   /* os oito da onda marrom: todos de duas letras, porque esta é a trilha
      dos símbolos de duas letras, e espalhados pela tabela. F, Ca e O ficam
      de fora — são eles que aparecem logo a seguir, um de cada vez. */
   oito:['He','Li','Ne','Al','Cl','Fe','Ni','Ba'],
-  iniciais:{ de:14.0, ate:21.2, largura:1.0, cresce:0.6, classe:'luz-marrom', suja:false },
+  iniciais:{ de:14.0, ate:21.2, largura:1.0, cresce:0.6, classe:'luz-marrom', nomes:true, suja:false },
   zooms:[
     { sym:'F',  cresce:22.9, pulsa:24.7, volta:26.0, suja:false },
     { sym:'Ca', cresce:26.0, pulsa:28.1, volta:29.0, suja:false },
