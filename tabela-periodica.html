@@ -147,7 +147,7 @@ html.palco-largo #som, html.palco-largo #som-dica{translate:var(--folga) 0}
    somá-la outra vez o faria saltar para o lado */
 html.palco-largo #vel.solto{translate:none}
 /* o mesmo para o play solto fora da capa (na capa ele vive do layout fixado) */
-html.palco-largo #stage:not(.na-capa) #som.solto{translate:none}
+html.palco-largo #stage:not(.na-capa) :is(#som, #som-dica).solto{translate:none}
 html.palco-largo #versao{translate:calc(-1 * var(--folga)) 0}
 /* e a barrinha do progresso, de borda a borda: a fração vem em --prog */
 html.palco-largo #progress{left:calc(-1 * var(--folga));right:calc(-1 * var(--folga));width:auto!important;
@@ -1987,6 +1987,11 @@ body.montagem .solto{
   user-select:none;-webkit-user-select:none;
 }
 body.montagem .solto img{-webkit-user-drag:none;pointer-events:none}
+/* os textos que normalmente deixam o toque passar: na montagem, à vista,
+   pegam-se com a mão (escondidos, continuam a deixá-lo passar) */
+body.montagem .solto:is(.dica-escolha, .toque-continuar, .rotulo-el, .entendi3, .dica-final).on,
+body.montagem .solto.texto-colunas:has(.frase.on:not(.saindo)),
+body.montagem #som-dica.solto:not(.fora){pointer-events:auto}
 body.montagem .solto:hover{outline:1px solid var(--ouro);background:rgba(226,162,43,.07)}
 /* o que está sendo mexido agora */
 body.montagem .solto.pego{outline:1.5px solid var(--ouro);background:rgba(226,162,43,.12)}
@@ -2303,7 +2308,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v11.6';
+const VERSAO = 'v11.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8334,8 +8339,13 @@ CAR.el.querySelector('.car-fecha').addEventListener('click', () => CAR.fecha());
    para mim: com ele eu fixo no arquivo, como valores, o que foi
    arrumado à mão aqui.
    ============================================================ */
+/* os textos que aparecem por cima dos slides — os convites, as frases das
+   telas escuras, os rótulos, os quadros de frases, o Entendi: também são
+   peças (nomeDe dá-lhes o nome) */
+const TEXTOS_SOLTOS = '.dica-escolha, .toque-continuar, .veu-frases, .rotulo-el,' +
+                      ' .texto-colunas, .entendi3, .dica-final';
 const MOVEIS = '.capa .marca, .capa h1, .capa .risco, .capa .autor,' +
-               ' .capa .email, .capa .foto, [data-mont]';
+               ' .capa .email, .capa .foto, [data-mont], ' + TEXTOS_SOLTOS;
 /* quem encolhe até o conteúdo antes de ser medido — o texto.
    O risco e a foto já têm a caixa que têm. */
 const ENCOLHE = '.capa .marca, .capa h1, .capa .autor, .capa .email';
@@ -8361,6 +8371,7 @@ function pecasDe(sl){
   else {
     if (!velBtn.hidden) lista.push(velBtn);
     if (!somBtn.hidden) lista.push(somBtn);
+    if (!somDica.hidden) lista.push(somDica);   /* o "Tocar a narração" */
   }
   /* e o botão do carrossel, no canto de cima, que está em todos */
   lista.push(document.getElementById('ver-slides'));
@@ -8503,7 +8514,7 @@ function aplicaLayout(i){
    senão ficariam para sempre onde a capa os deixou. */
 function arrumaPecasDoPalco(){
   if (atual === 0) return;
-  ['tabela','som','ver-slides'].forEach(id => {
+  ['tabela','som','som-dica','ver-slides'].forEach(id => {
     const el = document.getElementById(id);
     if (!el || !el.classList.contains('solto')) return;
     el.classList.remove('solto','pego');
@@ -8561,9 +8572,9 @@ function reancora(el, g){
 const naMontagem = () => document.body.classList.contains('montagem');
 function pecaDe(ev){
   const sl = slides[atual];
-  const el = ev.target.closest(MOVEIS + ', #tabela, #vel, #ver-slides');
+  const el = ev.target.closest(MOVEIS + ', #tabela, #vel, #ver-slides, #som-dica');
   if (!el) return null;
-  if (el.id === 'vel' || el.id === 'ver-slides' || el.id === 'som') return pecasDe(sl).includes(el) ? el : null;
+  if (['vel', 'ver-slides', 'som', 'som-dica'].includes(el.id)) return pecasDe(sl).includes(el) ? el : null;
   return (sl.contains(el) || el.id === 'tabela') ? el : null;
 }
 /* o rótulo que diz onde a peça está, enquanto ela anda */
@@ -8944,7 +8955,19 @@ function nomeDe(el){
   if (el.id === 'tabela') return 'tabelinha';
   if (el.id === 'vel')    return 'velocidade';
   if (el.id === 'ver-slides') return 'carrossel';
+  if (el.id === 'som-dica')   return 'dica-do-play';
   const c = el.classList;
+  /* os textos por cima dos slides */
+  if (c.contains('dica-escolha'))    return 'toque-em-um-elemento';
+  if (c.contains('toque-continuar')) return 'toque-para-continuar';
+  if (c.contains('frases-c1'))       return 'frases-criterio-1';
+  if (c.contains('frases-c2'))       return 'frases-criterio-2';
+  if (c.contains('veu-frases'))      return 'frases-da-tela-escura';
+  if (c.contains('r-num'))           return 'rotulo-numero-atomico';
+  if (c.contains('r-massa'))         return 'rotulo-massa';
+  if (c.contains('texto-colunas'))   return 'quadro-de-frases';
+  if (c.contains('entendi3'))        return 'botao-entendi';
+  if (c.contains('dica-final'))      return 'dica-final';
   if (c.contains('marca')) return 'marca';
   if (c.contains('risco')) return 'risco';
   if (c.contains('autor')) return 'autor';
