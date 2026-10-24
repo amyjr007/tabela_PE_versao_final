@@ -1372,16 +1372,21 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 .veu-moseley .frase:first-child{font-size:54px;font-weight:700;color:var(--ouro-luz);margin-bottom:22px}
 .veu-moseley .frase:nth-child(2){color:#F4F2F8}
 
-/* o convite para escolher um elemento, no rodapé do slide */
+/* o convite para escolher um elemento: digitado no vazio acima dos metais
+   de transição (o lugar que o professor deixou na montagem, centrado em
+   x 495, y 289), sem fundo, e com a barrinha a piscar no fim. A caixa
+   começa à esquerda, para o texto crescer para a direita ao ser escrito */
 .dica-escolha{
-  position:absolute;left:50%;bottom:18px;z-index:20;transform:translateX(-50%) translateY(10px);
-  padding:10px 22px;border-radius:30px;white-space:nowrap;pointer-events:none;
-  background:rgba(255,255,255,.94);border:1px solid var(--ouro-dim);
-  font-family:var(--display);font-weight:600;font-size:17px;color:var(--ouro);
-  opacity:0;transition:opacity .4s ease, transform .4s var(--e-salto);
+  position:absolute;left:352px;top:289px;z-index:20;transform:translateY(-50%);
+  white-space:nowrap;pointer-events:none;
+  font-family:var(--display);font-weight:600;font-size:26px;color:var(--ouro);
+  text-shadow:0 0 10px rgba(255,255,255,.9);
+  opacity:0;transition:opacity .4s ease;
 }
-.dica-escolha.on{opacity:1;transform:translateX(-50%) translateY(0);
-  animation:somChama 2.6s ease-in-out infinite}
+.dica-escolha.on{opacity:1}
+.dica-escolha .cursor{display:inline-block;width:3px;height:.9em;margin-left:4px;vertical-align:-.1em;
+  background:var(--ouro);border-radius:1px}
+.dica-escolha .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
 
 /* ---- o botão vira o do JOGO quando a narração do jogo acaba ----
    O play e a pausa saem, entra o controle; o anel sai também, porque
@@ -2308,7 +2313,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v11.7';
+const VERSAO = 'v11.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4059,7 +4064,7 @@ const SEQ = {
     this.comecou = this.aguardaToque = this.escolhendo = false;
     this.eleito = null;
     if (veu){ veu.classList.remove('on','pede-toque'); toqueHint.classList.remove('on'); }
-    if (escolhaHint) escolhaHint.classList.remove('on');
+    dicaEscolha(false);
     if (rotNum){
       rotNum.classList.remove('on','brilha');
       rotMassa.classList.remove('on','brilha');
@@ -4086,7 +4091,7 @@ const SEQ = {
       /* o verde apaga, e a tabela passa a esperar a escolha do aluno */
       verdeAoAcaso(-1);
       /* uma escolha só: escolhido um elemento, não há outra */
-      if (!this.eleito){ this.escolhendo = true; escolhaHint.classList.add('on'); }
+      if (!this.eleito){ this.escolhendo = true; dicaEscolha(true); }
     }
     else if (id === '1.2'){
       /* O PRÓXIMO PLAY DEPENDE DO QUE O ALUNO ESCOLHEU: símbolo de uma
@@ -4201,7 +4206,7 @@ const SEQ = {
   escolhe(c){
     if (!this.escolhendo || this.eleito) return;
     this.escolhendo = false;
-    escolhaHint.classList.remove('on');
+    dicaEscolha(false);      /* escolhido, o convite some */
     this.eleito = c;
     const alvo = { x:(xDaColuna(8) + xDaColuna(9))/2, y:yDaLinha(2) };
     const curva = '1.4s cubic-bezier(.3,.8,.25,1)';
@@ -4295,6 +4300,26 @@ function viraJogo(sim){
   somDica.textContent = sim ? 'Jogo da memória' : somDica.dataset.orig;
 }
 
+/* O CONVITE "Toque em um elemento": aparece digitado, letra a letra, com o
+   som das teclas, e a barrinha fica a piscar no fim; escondido, esmaece */
+const DICA_ESCOLHA = 'Toque em um elemento';
+let dicaT = 0;
+function dicaEscolha(sim){
+  if (!escolhaHint) return;
+  clearInterval(dicaT);
+  escolhaHint.classList.toggle('on', sim);
+  if (!sim) return;                 /* o texto fica enquanto esmaece */
+  const txt = escolhaHint.querySelector('.txt'), cur = escolhaHint.querySelector('.cursor');
+  txt.textContent = '';
+  cur.classList.remove('pisca');
+  let n = 0;
+  dicaT = setInterval(() => {
+    txt.textContent = DICA_ESCOLHA.slice(0, ++n);
+    TECLAS.bate();
+    if (n >= DICA_ESCOLHA.length){ clearInterval(dicaT); cur.classList.add('pisca'); }
+  }, 45);
+}
+
 /* as peças da sequência que moram no slide 1: a tela escura, as frases
    dela, o pedido de toque e o convite para escolher um elemento */
 function montaCenaDoSlide1(){
@@ -4303,7 +4328,7 @@ function montaCenaDoSlide1(){
   sl.insertAdjacentHTML('beforeend',
     '<div class="veu" aria-live="polite"><div class="veu-frases"></div>' +
     '<div class="toque-continuar">Toque na tela para continuar</div></div>' +
-    '<div class="dica-escolha">Toque em um elemento</div>' +
+    '<div class="dica-escolha"><span class="txt"></span><span class="cursor"></span></div>' +
     '<div class="rotulo-el r-num">Número atômico' + SETA_DIREITA + '</div>' +
     '<div class="rotulo-el r-massa"><span class="txt"></span>' + SETA_DIREITA + '</div>' +
     '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
