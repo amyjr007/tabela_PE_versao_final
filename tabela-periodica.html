@@ -2440,7 +2440,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v16.0';
+const VERSAO = 'v16.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5309,6 +5309,13 @@ function colunas24(t){
       cresce += oh.cresce * eh;
       if (eh > .02) k = 0;
       c.classList.toggle('destaque-h', eh > .02);
+      /* e sai a girar, e volta a girar ao contrário: uma volta inteira no
+         plano da tela (a mesa é plana, só tem a face da frente) */
+      const giro = (360 * eh).toFixed(1) + 'deg', cubo = c.querySelector('.cubo');
+      if (cubo.style.getPropertyValue('--rzc') !== giro){
+        cubo.style.setProperty('--dur', '90ms');
+        cubo.style.setProperty('--rzc', giro);
+      }
     }
     /* SÓ O QUE MUDOU É ESCRITO: com as colunas paradas (a maior parte da
        narração), um tique não toca em nada — reescrever o mesmo valor nos
@@ -5417,6 +5424,7 @@ const LC25 = {
      o relógio parado no fim da "2.5" não a volta a abrir */
     if (this.livre) return;
     this.poe(t >= this.colunas.de ? 'colunas' : t >= this.linhas.de ? 'linhas' : 'junta');
+    this.contaNoTempo(t);
     const nasLinhas = t < this.colunas.de;
     const o = nasLinhas ? this.linhas.onda : this.colunas.onda;
     const ordem = nasLinhas ? this.ordemLinhas() : this.ordemColunas();
@@ -5448,6 +5456,7 @@ const LC25 = {
   fimDa25(){
     this.apaga();
     this.poe('junta');
+    this.conta('junta');
     this.liga();
     setTimeout(() => { if (atual === 2 && trilhaAtual === '2.5') tocaTrilha('2.5A'); }, 400);
   },
@@ -5480,9 +5489,12 @@ const LC25 = {
   /* "São 7 linhas" / "São 18 colunas", digitado no vazio acima dos metais
      de transição (dentro da mesa: anda e encolhe com ela), com a barrinha
      a piscar no fim; juntada a tabela, esmaece */
-  conta(modo){
+  TXT_CONTA:{ linhas:'São 7 linhas', colunas:'São 18 colunas' },
+  /* a caixa do texto, no lugar que a leitura dá: o meio das colunas 3 a
+     12, na altura da linha 2 */
+  caixaConta(modo){
     const m = this.mesa();
-    if (!m) return;
+    if (!m) return null;
     let r = m.querySelector('.conta-lc25');
     if (!r){
       r = document.createElement('div');
@@ -5490,15 +5502,40 @@ const LC25 = {
       r.innerHTML = '<span class="txt"></span><span class="cursor"></span>';
       m.appendChild(r);
     }
+    if (modo !== 'junta'){
+      const vC = modo === 'colunas' ? this.vao : 0, vL = modo === 'linhas' ? this.vao : 0;
+      const x3 = xDaColuna(3) + (3 - 9.5)*vC, x12 = xDaColuna(12) + (12 - 9.5)*vC;
+      r.style.left = ((x3 + x12) / 2).toFixed(1) + 'px';
+      r.style.top  = (yDaLinha(2) + (2 - 4)*vL).toFixed(1) + 'px';
+    }
+    return r;
+  },
+  /* NA "2.5", pelo relógio dela: "São 7 linhas" escreve-se quando a
+     tabela se abre em linhas (4,8 s), apaga-se quando ela muda (9,1 s), e
+     "São 18 colunas" escreve-se aos 10,5 s. Pausar congela; voltar o
+     áudio des-escreve. */
+  contaNoTempo(t){
+    const vez = t >= 10.5 ? 'colunas' : (t >= this.linhas.de && t < this.colunas.de) ? 'linhas' : '';
+    const r = this.caixaConta(vez || this.modo);
+    if (!r) return;
     clearInterval(this._dig);
-    const txt = modo === 'linhas' ? 'São 7 linhas' : modo === 'colunas' ? 'São 18 colunas' : '';
+    r.classList.toggle('on', !!vez);
+    if (!vez) return;
+    const de = vez === 'linhas' ? this.linhas.de : 10.5, txt = this.TXT_CONTA[vez];
+    const el = r.querySelector('.txt');
+    /* trocado o texto, recomeça do zero */
+    if (r.dataset.vez !== vez){ r.dataset.vez = vez; el.textContent = ''; }
+    const n = escreveRotulo(t, { de, ate: de + txt.length*0.055, txt }, el);
+    r.querySelector('.cursor').classList.toggle('pisca', n >= txt.length);
+  },
+  conta(modo){
+    const r = this.caixaConta(modo);
+    if (!r) return;
+    clearInterval(this._dig);
+    const txt = this.TXT_CONTA[modo] || '';
     r.classList.toggle('on', !!txt);
     if (!txt) return;
-    /* o meio das colunas 3 a 12, na altura da linha 2, como a leitura os põe */
-    const vC = modo === 'colunas' ? this.vao : 0, vL = modo === 'linhas' ? this.vao : 0;
-    const x3 = xDaColuna(3) + (3 - 9.5)*vC, x12 = xDaColuna(12) + (12 - 9.5)*vC;
-    r.style.left = ((x3 + x12) / 2).toFixed(1) + 'px';
-    r.style.top  = (yDaLinha(2) + (2 - 4)*vL).toFixed(1) + 'px';
+    r.dataset.vez = modo;
     const el = r.querySelector('.txt'), cur = r.querySelector('.cursor');
     el.textContent = '';
     cur.classList.remove('pisca');
