@@ -1431,6 +1431,9 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
   transition:transform .25s var(--e-salto),box-shadow .25s,color .2s,border-color .2s;
 }
 #som:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(32,28,66,.26)}
+/* fora da capa, no Chromebook (e em toda a tela que não é de celular), o
+   lugar que o professor deixou na montagem: o centro em 1213 × 675 */
+html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
 /* PARADO, ELE CHAMA. Um brilho que respira e um anel que se abre e se
    desfaz: é ali que a aula começa, e quem nunca viu esta tela precisa
    de o descobrir. A tocar, cala-se — já foi encontrado. */
@@ -2300,7 +2303,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v11.3';
+const VERSAO = 'v11.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2370,6 +2373,7 @@ function ajustaPalco(){
      num computador, a barra do navegador come a altura e a janela fica
      mais larga do que 16:9 — e esses ficam como sempre foram. */
   const celular = ehCelular();
+  document.documentElement.classList.toggle('celular', celular);
   const folga = celular ? Math.max(0, (W/fitScale - 1280) / 2) : 0;
   const largo = folga > 1;
   document.documentElement.classList.toggle('palco-largo', largo);
@@ -8507,6 +8511,8 @@ function desprende(sl){
    layout fixado diz, e não o que o CSS sozinho faria */
 function refazLayout(){
   const sl = slides[atual];
+  /* de volta à origem, as peças deixam de contar como mexidas */
+  pecasDe(sl).forEach(el => MEXIDAS.delete(el));
   desprende(sl);
   if (LAYOUTS[atual]) aplicaLayout(atual);
   else if (naMontagem()) soltaSlide(sl);
@@ -8520,6 +8526,9 @@ function refazLayout(){
    escala segue a razão entre a distância de agora e a do começo. Com um
    dedo só a distância não existe, e sobra o arrasto puro. */
 const gestos = new Map();
+/* as peças que a mão mexeu (arrasto, pinça, roda ou texto editado): só
+   elas vão para a cópia das posições */
+const MEXIDAS = new Set();
 
 function centroDe(mapa){
   const pts = [...mapa.values()];
@@ -8604,6 +8613,7 @@ const EDICAO = {
   acompanha(){
     const el = this.peca, m = el && MEDIDAS.get(el);
     if (!m || !el.classList.contains('solto')) return;
+    MEXIDAS.add(el);
     el.style.width = 'max-content';
     m.w = el.offsetWidth;
     m.h = el.offsetHeight;
@@ -8760,6 +8770,7 @@ document.addEventListener('pointermove', (ev) => {
     m.cy = b.mcy + (agora.cy - b.cy)/fitScale;
     if (g.ptr.size > 1 && b.d > 12)
       m.esc = Math.max(.15, Math.min(8, b.esc * (agora.d / b.d)));
+    MEXIDAS.add(el);
     aplicaEl(el);
     mostraCoord(el);
   });
@@ -8857,6 +8868,7 @@ stage.addEventListener('wheel', (ev) => {
   const m = MEDIDAS.get(el);
   if (!m) return;
   m.esc = Math.max(.15, Math.min(8, m.esc * (1 - ev.deltaY * 0.0015)));
+  MEXIDAS.add(el);
   aplicaEl(el);
   mostraCoord(el);
   ev.preventDefault();
@@ -8884,6 +8896,8 @@ function modoMontagem(v){
     EDICAO.termina();
     coord.classList.remove('on');
     copiaCoords();
+    /* o que foi copiado já foi entregue: a próxima montagem conta do zero */
+    MEXIDAS.clear(); MESA_MONT.mexidas.clear(); EDICAO.editados.clear();
     if (temMesa(atual)) VIDA.liga();
   }
 }
@@ -8932,6 +8946,7 @@ function medeSlide(i){
     const m = MEDIDAS.get(el);
     const esc = m ? m.esc : 1;
     return {
+      el,
       nome:  nomeDe(el),
       x:     Math.round((r.left + r.width/2  - rs.left)/fitScale),
       y:     Math.round((r.top  + r.height/2 - rs.top )/fitScale),
@@ -8950,7 +8965,12 @@ const pad = (v,n) => String(v).padStart(n, ' ');
 function textoDoSlide(i){
   const sl = SLIDES[i];
   let out = '/* slide ' + (i+1) + ' · ' + (sl.kind === 'capa' ? 'Capa' : sl.title) + ' */\n';
-  medeSlide(i).forEach(o => {
+  /* só as peças que a mão mexeu: as que ficaram como estavam não vão */
+  const mexidas = medeSlide(i).filter(o => MEXIDAS.has(o.el));
+  if (!mexidas.length && !(slides[i].querySelector('.mesa') && MESA_MONT.mexidas.has(slides[i].querySelector('.mesa'))) &&
+      ![...EDICAO.editados].some(el => slides[i].contains(el)))
+    out += '  /* nenhuma peça foi mexida */\n';
+  mexidas.forEach(o => {
     out += '  { ' + ("el:'" + o.nome + "',").padEnd(16, ' ') +
            ' x:' + pad(o.x,4) + ', y:' + pad(o.y,3) +
            ', larg:' + pad(o.larg,4) + ', alt:' + pad(o.alt,3) +
@@ -9717,7 +9737,9 @@ aplicaLayout(0);
    medida da letra dele, e até a fonte de casa carregar quem está na
    tela é a do sistema, que tem outra largura */
 if (document.fonts && document.fonts.ready)
-  document.fonts.ready.then(() => { desprende(slides[0]); aplicaLayout(0); });
+  /* (só se ainda se está na capa: aberto direto noutro slide, o play e a
+     tabelinha, que moram no palco, iam parar ao lugar que têm na capa) */
+  document.fonts.ready.then(() => { desprende(slides[0]); if (atual === 0) aplicaLayout(0); else arrumaPecasDoPalco(); });
 animaCapa();
 vidaDosBlocos();
 carregaTrilha('capa');
@@ -9727,7 +9749,11 @@ carregaTrilha('capa');
    na capa, 0. As fotos do carrossel (?miniaturas) começam sempre na capa. */
 const ABRE_NO_SLIDE = 1;
 if (ABRE_NO_SLIDE && !/miniaturas/.test(location.search)){
+  /* calado: a cada recarga (e o editor recarrega a página a cada arquivo
+     salvo) a abertura do capítulo começava e era cortada pela seguinte */
+  ABERTURA_SUSPENSA = true;
   vaiDireto(ABRE_NO_SLIDE);
+  ABERTURA_SUSPENSA = false;
   pousaTabela();
 }
 
