@@ -2106,13 +2106,13 @@ body.montagem .solto.pego{outline:1.5px solid var(--ouro);background:rgba(226,16
   position:absolute;left:14px;bottom:9px;z-index:13;
   font-family:var(--mono);font-size:14.7px;letter-spacing:.08em;
   color:var(--tinta-faint);
-  /* segurada 2 s, abre e fecha a montagem: sem seleção nem menu do toque */
+  /* segurada 1 s, abre e fecha a montagem: sem seleção nem menu do toque */
   padding:6px 4px 3px;margin:-6px -4px -3px;touch-action:none;
   user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
 }
 #versao::after{content:'';position:absolute;left:4px;right:4px;bottom:0;height:2px;border-radius:1px;
   background:var(--ouro-luz);transform:scaleX(0);transform-origin:left;transition:transform .2s ease}
-#versao.segurando::after{transform:scaleX(1);transition:transform 2s linear}
+#versao.segurando::after{transform:scaleX(1);transition:transform 1s linear}
 body.montagem #versao{color:var(--ouro)}
 
 /* o aviso curto, quando alguma coisa precisa ser dita ao aluno */
@@ -2298,7 +2298,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v11.1';
+const VERSAO = 'v11.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8860,7 +8860,7 @@ stage.addEventListener('wheel', (ev) => {
 stage.addEventListener('contextmenu', ev => { if (naMontagem()) ev.preventDefault(); });
 
 /* A MONTAGEM abre e fecha segurando a versão, no canto de baixo à
-   esquerda, por 2 s (ou com a tecla G). Ao fechar, as posições e os
+   esquerda, por 1 s (ou com a tecla G). Ao fechar, as posições e os
    tamanhos do slide são copiados sozinhos — a folha abre com eles. */
 function modoMontagem(v){
   const abre = v === undefined ? !naMontagem() : !!v;
@@ -8879,7 +8879,7 @@ function modoMontagem(v){
     if (temMesa(atual)) VIDA.liga();
   }
 }
-/* o dedo (ou o rato) na versão: segurando 2 s, a montagem abre ou fecha.
+/* o dedo (ou o rato) na versão: segurando 1 s, a montagem abre ou fecha.
    O traço por baixo dela enche-se enquanto se segura */
 const versaoEl = document.getElementById('versao');
 let seguraVersao = 0;
@@ -8887,7 +8887,7 @@ versaoEl.addEventListener('pointerdown', ev => {
   ev.preventDefault();
   clearTimeout(seguraVersao);
   versaoEl.classList.add('segurando');
-  seguraVersao = setTimeout(() => { versaoEl.classList.remove('segurando'); modoMontagem(); }, 2000);
+  seguraVersao = setTimeout(() => { versaoEl.classList.remove('segurando'); modoMontagem(); }, 1000);
 });
 ['pointerup', 'pointerleave', 'pointercancel'].forEach(t => versaoEl.addEventListener(t, () => {
   clearTimeout(seguraVersao);
