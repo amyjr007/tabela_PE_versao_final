@@ -507,6 +507,14 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
 }
 /* A TABELA ABERTA (LC25): as cartas andam para as linhas ou para as
    colunas, os números vão junto, e a mesa encolhe um fio para caber */
+/* "São 7 linhas" / "São 18 colunas", na tabela aberta pelo toque (LC25.conta) */
+.conta-lc25{position:absolute;z-index:30;transform:translate(-50%,-50%);white-space:nowrap;
+  pointer-events:none;font-family:var(--display);font-weight:700;font-size:38px;color:var(--ouro);
+  text-shadow:0 0 12px rgba(255,255,255,.95);opacity:0;transition:opacity .4s ease}
+.conta-lc25.on{opacity:1}
+.conta-lc25 .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;
+  background:var(--ouro);border-radius:1px}
+.conta-lc25 .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
 /* a coluna que sobe inteira na onda da "1" (COLUNAS_1): uma caixa do
    tamanho da mesa, que não pega o dedo — os cubos dentro pegam */
 .coluna-onda{position:absolute;inset:0;pointer-events:none;
@@ -2408,7 +2416,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v14.8';
+const VERSAO = 'v14.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5424,11 +5432,48 @@ const LC25 = {
     });
     return ev.clientX >= l && ev.clientX <= r && ev.clientY >= t && ev.clientY <= b;
   },
-  /* junta → linhas → colunas → junta */
-  alterna(){ this.poe({ junta:'linhas', linhas:'colunas', colunas:'junta' }[this.modo]); },
+  /* junta → linhas → colunas → junta; aberta pelo toque, a tabela diz
+     quantas linhas ou colunas tem */
+  alterna(){
+    this.poe({ junta:'linhas', linhas:'colunas', colunas:'junta' }[this.modo]);
+    this.conta(this.modo);
+  },
+  /* "São 7 linhas" / "São 18 colunas", digitado no vazio acima dos metais
+     de transição (dentro da mesa: anda e encolhe com ela), com a barrinha
+     a piscar no fim; juntada a tabela, esmaece */
+  conta(modo){
+    const m = this.mesa();
+    if (!m) return;
+    let r = m.querySelector('.conta-lc25');
+    if (!r){
+      r = document.createElement('div');
+      r.className = 'conta-lc25';
+      r.innerHTML = '<span class="txt"></span><span class="cursor"></span>';
+      m.appendChild(r);
+    }
+    clearInterval(this._dig);
+    const txt = modo === 'linhas' ? 'São 7 linhas' : modo === 'colunas' ? 'São 18 colunas' : '';
+    r.classList.toggle('on', !!txt);
+    if (!txt) return;
+    /* o meio das colunas 3 a 12, na altura da linha 2, como a leitura os põe */
+    const vC = modo === 'colunas' ? this.vao : 0, vL = modo === 'linhas' ? this.vao : 0;
+    const x3 = xDaColuna(3) + (3 - 9.5)*vC, x12 = xDaColuna(12) + (12 - 9.5)*vC;
+    r.style.left = ((x3 + x12) / 2).toFixed(1) + 'px';
+    r.style.top  = (yDaLinha(2) + (2 - 4)*vL).toFixed(1) + 'px';
+    const el = r.querySelector('.txt'), cur = r.querySelector('.cursor');
+    el.textContent = '';
+    cur.classList.remove('pisca');
+    let n = 0;
+    this._dig = setInterval(() => {
+      el.textContent = txt.slice(0, ++n);
+      TECLAS.bate();
+      if (n >= txt.length){ clearInterval(this._dig); cur.classList.add('pisca'); }
+    }, 55);
+  },
   zera(){
     this.livre = false;
     this.apaga();
+    this.conta('junta');
     const m = this.mesa();
     if (m && m.classList.contains('lc25')){
       m.classList.remove('lc25', 'aberta25');
