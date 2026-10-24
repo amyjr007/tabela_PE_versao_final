@@ -1608,10 +1608,9 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
 }
 .mem-carta .simbolo{font-family:var(--display);font-size:44px;font-weight:700;
   color:var(--indigo);line-height:1}
-.mem-carta .nome{font-family:var(--display);font-size:19px;font-weight:700;
-  color:var(--tinta);line-height:1.1;text-align:center}
-.mem-carta .miudo{font-family:var(--mono);font-size:10px;color:var(--tinta-dim)}
-.mem-carta .emoji{font-size:26px;line-height:1}
+.mem-carta .nome{font-family:var(--display);font-size:27px;font-weight:700;
+  color:var(--tinta);line-height:1.1;text-align:center}.mem-carta .miudo{font-family:var(--mono);font-size:10px;color:var(--tinta-dim)}
+.mem-carta .emoji{font-size:32px;line-height:1}
 /* o par certo assenta e apaga-se, na cor do par; o errado treme em
    vermelho. A cor (--ph, --ps) é posta na carta ao nascer: é etiqueta
    de par, e no fim diz qual símbolo é de qual nome. */
@@ -2384,7 +2383,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v13.3';
+const VERSAO = 'v13.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7722,11 +7721,11 @@ function cartaDaMemoria(d, tipo){
       '<div class="simbolo">' + d.sym + '</div>' +
       '<div class="miudo">Z = ' + d.z + '</div>' +
       '<div class="miudo">' + d.massa + ' g/mol</div>'
+    /* a carta do nome leva só o nome (e o desenho): o tipo e o lugar na
+       tabela saíram, e o nome cresce no espaço que eles deixaram */
     : '<div class="chapeu">Nome do elemento</div>' +
       '<div class="emoji">' + d.emoji + '</div>' +
-      '<div class="nome">' + d.nome + '</div>' +
-      '<div class="miudo">' + d.cat + '</div>' +
-      '<div class="miudo">Grupo ' + d.g + ' · ' + d.p + 'º período</div>';
+      '<div class="nome">' + d.nome + '</div>';
   return '<div class="mem-carta" data-z="' + d.z + '" data-tipo="' + tipo + '" data-g="' + d.g + '"' +
               ' style="--ph:' + d.h + ';--ps:' + d.s + '%">' +
            '<div class="giro">' +
