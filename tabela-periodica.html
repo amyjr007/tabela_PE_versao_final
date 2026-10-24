@@ -2390,7 +2390,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v14.1';
+const VERSAO = 'v14.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5075,8 +5075,8 @@ const FRASES_CRITERIO2 = [
                   junto, um brilho verde varre uma coluna de cada vez —
                   só as que têm mais de um card: a 1, a 2 e da 13 à 18 —,
                   de cima para baixo, e não fica
-     15 s         o H cresce e destaca-se, em dourado
-     18,2 → 21 s  só na coluna 1: o Li, o Na e o K crescem e brilham em
+     14,4 s       o H cresce e destaca-se, em dourado
+     17,3 → 20,1 s  só na coluna 1: o Li, o Na e o K crescem e brilham em
                   sequência, descendo e subindo de volta
      25 s         as colunas juntam-se de novo, e o H volta ao normal
    No fim, o 37 brilha; tocado, a tabela inteira arruma-se (FINAL). */
@@ -5087,11 +5087,11 @@ const COLUNAS_24 = {
      que já têm mais de um card (a 1, a 2 e da 13 à 18: nas de transição,
      com a tabela montada até à linha 4, só há um) */
   varre:{ de:7.0, ate:12.0, colunas:[1, 2, 13, 14, 15, 16, 17, 18] },
-  /* o H: cresce e destaca-se aos 15 s, um fio para dentro (maior, sairia
+  /* o H: cresce e destaca-se aos 14,4 s, um fio para dentro (maior, sairia
      pela borda), e volta ao normal aos 25 s, com as colunas */
-  hidrogenio:{ de:15.0, dura:0.6, cresce:0.6, desvio:{ x:40, y:10 } },
+  hidrogenio:{ de:14.4, dura:0.6, cresce:0.6, desvio:{ x:40, y:10 } },
   /* a onda, só na coluna 1 (sem o H, que está em destaque) */
-  onda:{ de:18.2, meio:19.6, ate:21.0, cresce:0.3, coluna:1 },
+  onda:{ de:17.3, meio:18.7, ate:20.1, cresce:0.3, coluna:1 },
   suja:false
 };
 const FRASES_COLUNAS = [
