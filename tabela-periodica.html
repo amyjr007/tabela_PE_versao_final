@@ -2408,7 +2408,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v14.6';
+const VERSAO = 'v14.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5115,7 +5115,8 @@ const COLUNAS_24 = {
   varre:{ de:7.0, ate:12.0, colunas:[1, 2, 13, 14, 15, 16, 17, 18] },
   /* o H: cresce e destaca-se aos 14,4 s, um fio para dentro (maior, sairia
      pela borda), e volta ao normal aos 25 s, com as colunas */
-  hidrogenio:{ de:14.4, dura:0.6, cresce:0.6, desvio:{ x:40, y:10 } },
+  /* (e sobe 50 px: crescido, ele cobria o Li, que cresce logo a seguir) */
+  hidrogenio:{ de:14.4, dura:0.6, cresce:0.6, desvio:{ x:40, y:-50 } },
   /* a onda, só na coluna 1 (sem o H, que está em destaque): o Li, o Na e
      o K crescem bem (0,6) e com luz forte (ver .enfase-24) */
   onda:{ de:17.3, meio:18.7, ate:20.1, cresce:0.6, coluna:1 },
