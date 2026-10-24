@@ -2372,7 +2372,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v13.0';
+const VERSAO = 'v13.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7116,14 +7116,14 @@ function cena2(t){
    OS EVENTOS DA "1.4" — os símbolos que não saem do nome em português
      1 → 8 s      oito deles crescem, um a um, com luz vinho
      10 s         o Na gira e cresce no lugar, e o nome some;
-                  15 s "Sódio" aparece e pulsa 2×; 16,8 s o símbolo
-                  pulsa; 17,7 s o nome pulsa outra vez; 21 s "Natrium"
+                  14,8 s "Sódio" aparece e pulsa 2×; 16,5 s o símbolo
+                  pulsa; 17 s o nome pulsa outra vez; 20,5 s "Natrium"
                   escrito à direita; 24 s volta, e a palavra sai a girar
-     25 s         o Pb; 29 s "Chumbo" aparece e pulsa 2×; 30 s
-                  "Plumbum" à esquerda; 34 s volta
-     35,6 s       o Cu; 39,7 s "Cobre" aparece e pulsa 2×; 41 s
-                  "Cuprum" à esquerda; 45 s volta
-     54 s         o quiz, agora com os de nome diferente
+     24 s         o Pb; 27 s "Chumbo" aparece e pulsa 2×; 28,7 s
+                  "Plumbum" à esquerda; 31 s volta
+     31,5 s       o Cu; 34 s "Cobre" aparece e pulsa 2×; 35,5 s
+                  "Cuprum" à esquerda; 38,5 s volta
+     47 s         o quiz, agora com os de nome diferente
    O zoom é o mesmo da "1.3A" (zoomNoLugar). Tudo é função do tempo da
    narração, menos o quiz (QUIZ_NA_HORA): aberto, fica aberto.
    ============================================================ */
@@ -7132,13 +7132,13 @@ const EV14 = {
   oito:['P','K','Ag','Sn','Sb','W','Au','Hg'],
   onda:{ de:1.0, ate:8.0, largura:1.0, cresce:0.6, classe:'luz-vinho', suja:false },
   zooms:[
-    /* o Na: o nome pulsa aos 15 e aos 17,7 s, o símbolo aos 16,8 s */
-    { sym:'Na', cresce:10.0, pulsa:[15.0, 17.7], pulsaSym:[16.8], volta:24.0, esconde:true,
-      latim:{ texto:'Natrium', de:21.0, lado:'direita'  }, suja:false },
-    { sym:'Pb', cresce:25.0, pulsa:29.0, volta:34.0, esconde:true,
-      latim:{ texto:'Plumbum', de:30.0, lado:'esquerda' }, suja:false },
-    { sym:'Cu', cresce:35.6, pulsa:39.7, volta:45.0, esconde:true,
-      latim:{ texto:'Cuprum',  de:41.0, lado:'esquerda' }, suja:false }
+    /* o Na: o nome pulsa aos 14,8 e aos 17 s, o símbolo aos 16,5 s */
+    { sym:'Na', cresce:10.0, pulsa:[14.8, 17.0], pulsaSym:[16.5], volta:24.0, esconde:true,
+      latim:{ texto:'Natrium', de:20.5, lado:'direita'  }, suja:false },
+    { sym:'Pb', cresce:24.0, pulsa:27.0, volta:31.0, esconde:true,
+      latim:{ texto:'Plumbum', de:28.7, lado:'esquerda' }, suja:false },
+    { sym:'Cu', cresce:31.5, pulsa:34.0, volta:38.5, esconde:true,
+      latim:{ texto:'Cuprum',  de:35.5, lado:'esquerda' }, suja:false }
   ],
   /* a palavra latina: quanto tempo leva cada letra a ser escrita */
   porLetra:0.09
@@ -7283,7 +7283,7 @@ const QUIZ_DIFERENTES = [
 const DEPOIS_DO_QUIZ = { '1.3A':'1.4', '1.3B':'1.4', '1.4':'1.jogo' };
 /* A HORA DO QUIZ, no relógio da narração: o primeiro exemplo rola para a
    frente com o fim da fala ainda a tocar */
-const QUIZ_NA_HORA = { '1.3A':35.8, '1.3B':35.5, '1.4':54.0 };
+const QUIZ_NA_HORA = { '1.3A':35.8, '1.3B':35.5, '1.4':47.0 };
 function quizNaHora(t){
   const h = QUIZ_NA_HORA[trilhaAtual];
   if (h !== undefined && t >= h) SEQ.abreQuiz(trilhaAtual);
@@ -9381,7 +9381,7 @@ const NAV_TOPICOS = [
       const id = c.dataset.sym.length === 1 ? '1.3A' : '1.3B';
       depoisDaMesa(g, () => tocaDesde(id, QUIZ_NA_HORA[id], g));
     } },
-  { titulo:'Quiz 2', sub:'aos 54 s da 1.4 · os nomes diferentes', slide:1,
+  { titulo:'Quiz 2', sub:'aos 47 s da 1.4 · os nomes diferentes', slide:1,
     entra(v, g){
       eleitoDaNavegacao(0);
       depoisDaMesa(g, () => tocaDesde('1.4', QUIZ_NA_HORA['1.4'], g));
