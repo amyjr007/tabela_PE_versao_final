@@ -364,7 +364,7 @@ html.palco-largo.capa-escura #viewport{background:#14131B}
 /* sem o vão entre as duas palavras */
 #stage.capa-nova .capa h1 .p-audio{margin-right:0}
 /* a tabelinha apagada ao fundo: a cor da família, mas quase no escuro */
-#stage.na-capa.capa-nova #tabela .cel{fill-opacity:.3;stroke:rgba(255,255,255,.05)}
+#stage.na-capa.capa-nova #tabela .cel{stroke:rgba(255,255,255,.05)}
 /* as cartas: o texto à esquerda — o número, o símbolo, o nome e a massa */
 #stage.capa-nova .capa .blocos .face{align-items:flex-start;text-align:left;
   padding:calc(6px * var(--k,1)) calc(9px * var(--k,1)) calc(6px * var(--k,1))}
@@ -382,6 +382,42 @@ html.palco-largo.capa-escura #viewport{background:#14131B}
 #stage.na-capa.capa-nova #som-dica{color:rgba(242,238,230,.5)}
 /* e a versão do app, no canto de baixo: clara, para se ler no escuro */
 html.capa-escura #versao{color:rgba(242,238,230,.55)}
+
+/* ============================================================
+   A ABERTURA (a narração 0) — efeitosCapa() decide, pelo segundo do
+   áudio, as classes do palco e das peças:
+   · abre-capa  a narração corre: a parte esquerda apaga e só volta
+                peça a peça — digitada (.dig) ou esmaecendo (.ve)
+   · tab-meio   a tabelinha está no meio da capa: o resto sai de cena
+   ============================================================ */
+#stage.abre-capa .capa :is(.marca, h1, .risco, .autor, .email, .foto){
+  opacity:0;
+  transition:transform var(--tsobe,.42s) var(--e-salto), filter .42s ease, box-shadow .42s ease, opacity .6s ease}
+#stage.abre-capa .capa .ve{opacity:1}
+/* digitada, a peça acende de uma vez: quem aparece aos poucos são as letras */
+#stage.abre-capa .capa .dig{opacity:1;transition-duration:.42s,.42s,.42s,0s}
+#stage.abre-capa .capa .dig .lt{visibility:hidden}
+#stage.abre-capa .capa .dig .lt.vis{visibility:visible}
+/* o tracinho de quem escreve: fora do fluxo, para não partir a palavra */
+.capa .cursor-dig{position:absolute;display:inline-block;width:0;height:1em}
+.capa .cursor-dig::after{content:'';position:absolute;left:2px;top:.08em;width:3px;height:.9em;
+  border-radius:1px;background:var(--ouro-luz)}
+/* "Desenvolvido pelo", por cima do nome, só durante a abertura */
+.capa .autor .desenv{display:none;position:absolute;left:0;bottom:100%;margin-bottom:2px;
+  font-size:17px;font-weight:400;color:rgba(242,238,230,.72)}
+#stage.abre-capa .capa .autor .desenv{display:block}
+/* a tabela no meio: as peças da capa saem pelo filtro (a opacidade é da
+   digitação) e as cartas pela opacidade */
+#stage.tab-meio .capa :is(h1, .risco, .autor, .foto, .digitado){filter:opacity(0)}
+.capa .digitado{transition:filter .42s ease}
+.capa .blocos{transition:opacity .45s ease}
+#stage.tab-meio .capa .blocos{opacity:0}
+/* os símbolos das casas: apagados, e a narração acende-os (--sim). Sem o
+   #tabela no seletor: as cópias da tabelinha (carrossel, visão geral)
+   perdem o id e têm de os esconder também */
+text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:middle;
+  fill:#fff;opacity:var(--sim,0);pointer-events:none}
+#stage.na-capa.capa-nova #tabela .cel{fill-opacity:var(--celop,.3)}
 
 /* O BOTÃO INSTALAR, na capa, no canto de cima à direita; e a ajuda do
    iPhone e do iPad, logo abaixo dele */
@@ -2321,7 +2357,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v10.6';
+const VERSAO = 'v10.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2509,11 +2545,15 @@ function familiaDoZ(z){
   for (let i = 0; i < 15; i++) html += cel(i+2, 9.55, 'actinideos',  89+i);
   svg.innerHTML = html;
 
+  /* cada casa leva o símbolo do elemento, apagado: só aparece quando a
+     abertura traz a tabela para o meio da capa (efeitosCapa) */
   function cel(c, r, cat, z){
     const x = (c*(L+G)).toFixed(2), y = (r*(L+G)).toFixed(2);
     return '<rect class="cel" x="'+x+'" y="'+y+'" width="'+L+'" height="'+L+
-           '" rx="1.2" fill="var(--cat-'+cat+')"' +
-           (z ? ' data-z="'+z+'"' : '') + '/>';
+           '" rx="1.2" fill="var(--cat-'+cat+')" data-cor="var(--cat-'+cat+')"' +
+           (z ? ' data-z="'+z+'"' : '') + '/>' +
+           (z ? '<text class="sim" x="'+(c*(L+G) + L/2).toFixed(2)+'" y="'+(r*(L+G) + 6.1).toFixed(2)+'">' +
+                SIMBOLOS[z-1] + '</text>' : '');
   }
 })();
 
@@ -2577,6 +2617,8 @@ function animaCapa(){
 
   setInterval(() => {
     if (atual !== 0) return;            /* fora da capa, a tabelinha cala */
+    /* e no meio da capa, na abertura, ela fica com as cores da família */
+    if (stage.classList.contains('abre-capa') && som.currentTime > MEIO.vai - 3 && som.currentTime < MEIO.fica) return;
     baralha();
     acende(proxima());
   }, 3000);
@@ -2602,7 +2644,9 @@ SLIDES.forEach((sl,i) => {
         '<em><span class="linha"><span class="p-tabela">Tabela <br>Periódica</span></span>' +
         '<span class="ult">Moderna</span></em></h1>' +
       '<div class="risco"></div>' +
-      '<div class="autor"><span class="por">Designed by </span>Prof. <b>Amauri Junior</b></div>' +
+      /* "Desenvolvido pelo" só aparece na abertura, digitado por cima do nome */
+      '<div class="autor"><span class="desenv">Desenvolvido pelo</span>' +
+        '<span class="por">Designed by </span>Prof. <b>Amauri Junior</b></div>' +
       /* o endereço abre o e-mail já endereçado a ele */
       '<a class="email" href="mailto:amauri.junior@escola.seduc.pa.gov.br">' +
         'amauri.junior@escola.seduc.pa.gov.br</a>' +
@@ -2929,8 +2973,9 @@ function giraBlocoDaCapa(z){
    completamente parada */
 function vidaDosBlocos(){
   setInterval(() => {
-    /* com a narração a correr, quem manda na capa é o roteiro */
-    if (atual !== 0 || naMontagem() || document.hidden || !som.paused) return;
+    /* na abertura elas continuam a girar ao lado da narração; só com a
+       tabela no meio é que saem de cena */
+    if (atual !== 0 || naMontagem() || document.hidden || stage.classList.contains('tab-meio')) return;
     const blocos = [...slides[0].querySelectorAll('.pc')];
     if (!blocos.length) return;
     const c = blocos[(Math.random()*blocos.length)|0];
@@ -3527,36 +3572,39 @@ const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '1
    cubos. O que cada um sabe fazer está na tabela do README. */
 const ROTEIROS = {
   /* ---- capa · a abertura ---- */
+  /* o título, o nome, o retrato e a tabela no meio são função do tempo,
+     e moram em efeitosCapa(); aqui ficam a pausa e a demonstração */
   'capa': [
-    /* "Audiobook interativo" — cada palavra por sua vez, e a caixa de
-       luz desliza de uma para a outra. O conjunto acaba aos 3,6 s. */
-    { t: 1.80, faz: () => foca('.p-audio') },
-    { t: 2.70, faz: () => foca('.p-inter') },
-    { t: 3.60, faz: () => semFoco() },
-    /* o retrato e o nome do autor, os dois ao mesmo tempo */
-    { t: 4.00, faz: () => foca(['.capa .foto', '.capa .autor']) },
-    /* "Tabela Periódica", e o destaque dura um segundo */
-    { t: 7.00, faz: () => foca('.p-tabela') },
-    { t: 8.00, faz: () => semFoco() },
-    /* a tabelinha da direita */
-    { t: 9.60, faz: () => foca('#tabela') },
-    { t:13.60, faz: () => semFoco() },
+    /* com a tabela no meio, a narração pára um segundo, e continua */
+    { t:12.00, faz: () => pausaDaCapa() },
 
-    /* a demonstração dos controles, passo a passo */
-    { t:33.60, faz: () => DEMO.vaiAAlca()   },
-    { t:34.45, faz: () => DEMO.abreBarra()  },
-    { t:35.25, faz: () => DEMO.vaiAoOver()  },
-    { t:36.05, faz: () => DEMO.abreOver()   },
-    { t:36.65, faz: () => DEMO.mostraSlides() },
-    { t:37.70, faz: () => DEMO.fechaOver()  },
-    { t:38.30, faz: () => DEMO.arruma()     },
-
-    /* e o botão da narração: primeiro apontado, depois apertado */
-    { t:38.80, faz: () => DEMO.apontaPlay() },
-    { t:41.20, faz: () => tiraMao()         },
-    { t:46.00, faz: () => DEMO.apontaPlay() },
-    { t:46.75, faz: () => bateMao()         },
-    { t:47.40, faz: () => tiraMao()         }
+    /* a demonstração dos controles, passo a passo — sem voz de outro
+       capítulo: a narração da capa continua por cima de tudo */
+    { t:30.00, faz: () => DEMO.aparece()     },
+    /* o carrossel dos slides, no canto de cima à direita */
+    { t:32.60, faz: () => DEMO.vaiAoCarrossel() },
+    { t:33.20, faz: () => DEMO.abreCarrossel() },
+    /* passa ao tópico 1, e entra nele */
+    { t:36.00, faz: () => DEMO.vaiASeta()    },
+    { t:36.60, faz: () => DEMO.passaAo1()    },
+    { t:37.30, faz: () => DEMO.vaiAoCartao() },
+    { t:37.90, faz: () => DEMO.entraNo1()    },
+    /* o sumário da direita: abre, rola (DEMO.rola, no tempo) e fecha */
+    { t:38.70, faz: () => DEMO.vaiAoSumario() },
+    { t:39.30, faz: () => DEMO.abreSumario() },
+    { t:44.10, faz: () => DEMO.vaiAoFecha()  },
+    { t:44.70, faz: () => DEMO.fechaSumario() },
+    { t:45.20, faz: () => tiraMao()          },
+    /* o play: a mão aparece ao lado dele, chega, e aperta (só mímica) */
+    { t:46.00, faz: () => DEMO.pertoDoPlay() },
+    { t:48.40, faz: () => DEMO.apontaPlay()  },
+    { t:49.00, faz: () => DEMO.apertaPlay()  },
+    { t:49.70, faz: () => DEMO.soltaPlay()   },
+    /* de volta à capa; e o Iniciar, tocado pela mão */
+    { t:50.00, faz: () => DEMO.voltaACapa()  },
+    { t:51.00, faz: () => DEMO.apontaPlay()  },
+    { t:51.80, faz: () => bateMao()          },
+    { t:52.80, faz: () => DEMO.acaba()       }
   ],
   /* slide 1 — o que acontece nestas três é quase tudo função do tempo,
      e mora em efeitosDoTempo(); as marcas soltas entram aqui */
@@ -3605,14 +3653,154 @@ const ROTEIROS = {
    some     : quando ela se apaga (esmaece em SAIDA_FRASES segundos) */
 const FRASES_CAPA = [
   /* três perguntas, uma debaixo da outra */
-  { de:14.5, ate:15.5, some:22, txt:'O que é a tabela...' },
-  { de:15.8, ate:16.6, some:22, txt:'Pra que serve?' },
-  { de:17.2, ate:20.0, some:22, txt:'Como podemos usá-la na Química...' },
+  { de:15.0, ate:15.8, some:23.6, txt:'O que é a tabela...' },
+  { de:16.1, ate:16.9, some:23.6, txt:'Pra que serve?' },
+  { de:17.7, ate:21.0, some:23.6, txt:'Como podemos usá-la na Química...' },
   /* e para quem é: começa de novo em cima */
-  { de:24.5, ate:25.1, some:30, txt:'9º ano' },
-  { de:27.0, ate:28.0, some:30, txt:'1º ano do Ensino Médio' }
+  { de:24.3, ate:24.9, some:29.5, txt:'9º ano' },
+  { de:26.8, ate:27.8, some:29.5, txt:'1º ano do Ensino Médio' }
 ];
 const SAIDA_FRASES = 0.4;
+
+/* ---- A ABERTURA DA CAPA ----
+   Começada a narração, a parte esquerda apaga e fica só a tabelinha ao
+   fundo, com as cartas a girar. Depois a capa volta peça a peça, no
+   lugar de sempre: o título e o nome digitados letra a letra (cada letra
+   já tem o seu lugar, escondida, e nada salta na linha), o retrato
+   esmaecendo. Aos 50 s, de volta da demonstração, a capa está inteira.
+   Como as frases, tudo é função do segundo do áudio. */
+const DIG_PECAS = [
+  { sel:'h1 .p-audio, h1 .p-inter', de: 2.3, ate: 3.2 },  /* Audiobook interativo */
+  { sel:'.autor',                   de: 5.0, ate: 5.7 },  /* Desenvolvido pelo / Prof. Amauri Junior */
+  { sel:'h1 em',                    de: 7.9, ate: 9.2 }   /* Tabela Periódica Moderna */
+];
+const CAPA_VOLTA = 50;      /* a capa inteira outra vez */
+/* a tabelinha no meio: vai dos 10 aos 11,2 s, os símbolos e as cores
+   acendem até aos 11,5; volta dos 13 aos 14,4 s */
+const MEIO = { vai:10, chega:11.2, acende:[10.3, 11.5], volta:13, fica:14.4, apaga:[13, 13.8] };
+
+/* parte cada letra das peças num <span>, uma vez só */
+function montaDigitacaoDaCapa(){
+  const capa = slides[0];
+  DIG_PECAS.forEach(p => {
+    p.pecas = [...capa.querySelectorAll(p.sel)];
+    /* quem acende é a peça solta inteira (o título, o nome): a ela vai o .dig */
+    p.alvos = [...new Set(p.pecas.map(el => el.closest('h1') || el))];
+    p.letras = [];
+    p.pecas.forEach(el => {
+      const textos = [], w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      while (w.nextNode()) if (!w.currentNode.parentNode.closest('.por')) textos.push(w.currentNode);
+      textos.forEach(tx => {
+        const frag = document.createDocumentFragment();
+        [...tx.nodeValue].forEach(ch => {
+          const s = document.createElement('span');
+          s.className = 'lt';
+          s.textContent = ch;
+          frag.appendChild(s);
+          if (ch.trim()) p.letras.push(s);
+        });
+        tx.replaceWith(frag);
+      });
+    });
+    p.mostrado = -1;
+  });
+}
+const cursorDig = document.createElement('span');
+cursorDig.className = 'cursor-dig';
+
+const entre = (t, a, b) => { const x = (t - a) / (b - a); return x <= 0 ? 0 : x >= 1 ? 1 : x*x*(3 - 2*x); };
+let meioBase = null;
+
+function efeitosCapa(t){
+  const tab = document.getElementById('tabela');
+  const roda = atual === 0 && trilhaAtual === 'capa' && t > 0.05 && t < CAPA_VOLTA && !naMontagem();
+  stage.classList.toggle('abre-capa', roda);
+  const capa = slides[0];
+  if (!roda){
+    stage.classList.remove('tab-meio');
+    capa.querySelectorAll('.dig, .ve').forEach(el => el.classList.remove('dig', 've'));
+    cursorDig.remove();
+    if (meioBase){ meioBase = null; ['translate', 'scale', '--sim', '--celop'].forEach(p => tab.style.removeProperty(p)); }
+    return;
+  }
+  /* as letras */
+  let escrevendo = null;
+  /* o título acende com a primeira parte dele; o "em" só tem as letras */
+  const acesas = new Set();
+  DIG_PECAS.forEach(p => { if (t >= p.de) p.alvos.forEach(el => acesas.add(el)); });
+  DIG_PECAS.forEach(p => p.alvos.forEach(el => el.classList.toggle('dig', acesas.has(el))));
+  DIG_PECAS.forEach(p => {
+    const on = t >= p.de;
+    const n = on ? Math.round(Math.min(1, (t - p.de) / (p.ate - p.de)) * p.letras.length) : 0;
+    if (n !== p.mostrado){
+      if (n > Math.max(0, p.mostrado)) TECLAS.bate();
+      /* os espaços acendem com a letra que vem antes deles */
+      p.pecas.forEach(el => el.querySelectorAll('.lt').forEach(s => s.classList.remove('vis')));
+      p.letras.slice(0, n).forEach(s => {
+        s.classList.add('vis');
+        const esp = s.nextElementSibling;
+        if (esp && esp.classList.contains('lt') && !esp.textContent.trim()) esp.classList.add('vis');
+      });
+      p.mostrado = n;
+    }
+    if (on && t < p.ate + 0.6 && n) escrevendo = p.letras[n - 1];
+  });
+  if (escrevendo){ if (cursorDig.previousSibling !== escrevendo) escrevendo.after(cursorDig); }
+  else cursorDig.remove();
+  /* o retrato chega com o nome; o risco, com o título */
+  capa.querySelector('.foto').classList.toggle('ve', t >= 5.0);
+  capa.querySelector('.risco').classList.toggle('ve', t >= 9.2);
+
+  /* a tabelinha, do fundo para o meio e de volta */
+  const mov = t < MEIO.volta ? entre(t, MEIO.vai, MEIO.chega) : 1 - entre(t, MEIO.volta, MEIO.fica);
+  const luz = t < MEIO.volta ? entre(t, ...MEIO.acende)       : 1 - entre(t, ...MEIO.apaga);
+  stage.classList.toggle('tab-meio', t >= MEIO.vai - 0.2 && t < MEIO.volta + 0.4);
+  if (!mov && !luz){
+    if (meioBase){ meioBase = null; ['translate', 'scale', '--sim', '--celop'].forEach(p => tab.style.removeProperty(p)); }
+    return;
+  }
+  /* medida uma vez, sem nada aplicado: o centro e a escala que o layout
+     lhe deu, e o tamanho da caixa (a escala gira em volta do meio dela) */
+  if (!meioBase){
+    const cx = parseFloat(tab.style.left), cy = parseFloat(tab.style.top);
+    const esc = parseFloat(tab.style.getPropertyValue('--esc')) || 1;
+    const w = tab.clientWidth, h = tab.clientHeight;
+    if (isNaN(cx) || !w) return;
+    /* no meio, 1000 px de largura: livre do Instalar e do carrossel em
+       cima, e do play embaixo. O desenho ocupa 106,4 das 116 unidades
+       de altura da caixa, e é ele (e não a caixa) que fica centrado */
+    const k = 1000 / (w*esc);
+    const u = 1000 / 186;                  /* px do palco por unidade, no meio */
+    meioBase = { cx, cy, ox: cx + w/2, oy: cy + h/2, k, mx: 640 + (93 - 91.8)*u, my: 372 + (58 - 53.2)*u };
+    /* a tabelinha viva baralhou as cores: com os símbolos à vista, cada
+       casa volta à cor da família dela */
+    tab.querySelectorAll('.cel').forEach(c => c.setAttribute('fill', c.dataset.cor));
+  }
+  const b = meioBase, k = 1 + (b.k - 1)*mov;
+  const px = b.cx + (b.mx - b.cx)*mov, py = b.cy + (b.my - b.cy)*mov;
+  tab.style.translate = (px - b.ox - k*(b.cx - b.ox)).toFixed(1) + 'px ' + (py - b.oy - k*(b.cy - b.oy)).toFixed(1) + 'px';
+  tab.style.scale = k.toFixed(4);
+  tab.style.setProperty('--sim', luz.toFixed(3));
+  tab.style.setProperty('--celop', (.3 + .7*luz).toFixed(3));
+}
+/* a tabela anda em cada quadro, e não só a cada tique do relógio */
+requestAnimationFrame(function quadroDaCapa(){
+  if (trilhaAtual === 'capa' && !som.paused){
+    const t = tempoDaNarracao();
+    if (atual === 0) efeitosCapa(t);
+    DEMO.rola(t);
+  }
+  requestAnimationFrame(quadroDaCapa);
+});
+/* aos 12 s, com a tabela no meio, um segundo de silêncio */
+let pausaCapaT = 0;
+function pausaDaCapa(){
+  clearTimeout(pausaCapaT);
+  som.pause();
+  pausaCapaT = setTimeout(() => {
+    if (atual === 0 && trilhaAtual === 'capa' && som.paused) som.play().catch(avisaSeNaoTocou);
+  }, 1000);
+}
 
 /* e as da tela escura do slide 1, que ficam até o aluno tocar */
 const FRASES_VEU = [
@@ -4189,6 +4377,8 @@ function efeitosDoTempo(){
   /* acabada a "1", ou fora dela, as colunas da onda soltam os cubos */
   if (COLUNAS_1.caixas && (atual !== 1 || trilhaAtual !== '1' || som.ended)) COLUNAS_1.solta();
   if (trilhaAtual === 'capa' && DIG_CAPA) DIG_CAPA.escreve(t);
+  efeitosCapa(t);
+  if (trilhaAtual === 'capa') DEMO.rola(t);
   /* o slide 3 tem os eventos dele */
   if (atual === 2){ efeitos2(t); return; }
   /* o slide 4 tem os eventos dele (a narração "3") */
@@ -7619,9 +7809,12 @@ function tiraMao(){
 }
 
 /* ---- as demonstrações ----
-   A mão faz mesmo o que mostra: abre a barra e abre a visão geral. Só
-   o play é mímica — um clique de verdade ali pararia a narração no meio
-   da frase que a está a explicar.
+   A mão faz mesmo o que mostra: abre o carrossel, entra no slide 1, abre
+   e rola o sumário, e volta à capa — tudo com a narração da capa a
+   correr por cima (DEMO.guia: a troca de slide não pára o som, não
+   carrega a narração nem a abertura do slide 1). Só o play e o Iniciar
+   são mímica — um clique de verdade ali pararia a narração no meio da
+   frase que a está a explicar.
 
    CADA PASSO É UMA MARCA DO ROTEIRO, e não um setTimeout encadeado: o
    relógio desta cena é o do áudio, e mais nenhum. Parada a narração,
@@ -7630,27 +7823,74 @@ function tiraMao(){
    temporizadores correria sozinha com o som em pausa, e a mão acabaria
    a apontar coisas que a voz ainda não disse. */
 const DEMO = {
-  /* 1 · a mão vai à alça dos controles */
-  vaiAAlca(){ limpaMao(); emDemo = true; mostraBarra(false); levaMao(puxador); },
-  /* 2 · e abre a barra */
-  abreBarra(){ bateMao(); mostraBarra(true); },
-  /* 3 · vai ao botão da visão geral */
-  vaiAoOver(){ levaMao(document.getElementById('over')); },
-  /* 4 · e abre-a */
-  abreOver(){ bateMao(); mostraOverview(true); },
-  /* 5 · aberta a visão geral, a barra fica por baixo dela — a mão sai
-     de cima de um botão que já não se vê e vai mostrar o que apareceu */
-  mostraSlides(){ levaMao(document.querySelector('#grid .card'), {fy:.62}); },
-  /* 6 · fecha */
-  fechaOver(){ mostraOverview(false); },
-  /* 7 · e arruma a casa */
-  arruma(){ mostraBarra(false); tiraMao(); emDemo = false; },
+  guia:false,      /* é a demonstração que está a trocar de slide */
+  /* troca de slide pela mão da demonstração: só a imagem, o som segue */
+  conduz(fn){ this.guia = true; try { fn(); } finally { this.guia = false; } },
 
+  /* 1 · a mão aparece, no meio da capa */
+  aparece(){ limpaMao(); emDemo = true; levaMao(stage, {fx:.62, fy:.52}); },
+  /* 2 · vai ao carrossel, no canto de cima, e abre-o */
+  vaiAoCarrossel(){ levaMao(document.getElementById('ver-slides')); },
+  abreCarrossel(){ bateMao(); this.conduz(() => CAR.abre()); },
+  /* 3 · a seta da direita passa ao tópico 1 */
+  vaiASeta(){ levaMao(CAR.el.querySelector('.car-seta.prox')); },
+  passaAo1(){ bateMao(); CAR.vai(1); },
+  /* 4 · o cartão do meio, tocado, abre o slide */
+  vaiAoCartao(){ const it = CAR.itens[1]; if (it) levaMao(it.querySelector('.car-cartao'), {fy:.6}); },
+  entraNo1(){ bateMao(); this.conduz(() => CAR.entra(1)); },
+  /* 5 · a alça do sumário, na borda direita: abre, a mão rola a lista
+     (no tempo: DEMO.rola) e vai ao X fechar */
+  vaiAoSumario(){ if (navAlca) levaMao(navAlca); },
+  abreSumario(){ bateMao(); abreNav(); if (navGaveta) navGaveta.querySelector('.nav-lista').scrollTop = 0; },
+  vaiAoFecha(){ mao.style.transition = ''; if (navGaveta) levaMao(navGaveta.querySelector('.nav-fecha')); },
+  fechaSumario(){ bateMao(); fechaNav(); },
+  /* 6 · o play: a mão chega de baixo e da esquerda, e aperta — mímica:
+     o ícone passa a play por um instante, e a narração segue */
+  pertoDoPlay(){ limpaMao(); levaMao(somBtn, {fx:-.9, fy:-.5}); },
   apontaPlay(){ limpaMao(); levaMao(somBtn); },
+  apertaPlay(){
+    bateMao();
+    icPlay.removeAttribute('hidden'); icPause.setAttribute('hidden', '');
+  },
+  soltaPlay(){ mostraPausa(!som.paused); },
+  /* 7 · de volta à capa, pelo cubo, e o Iniciar já no canto */
+  voltaACapa(){
+    tiraMao();
+    this.conduz(() => go(0));
+    viraIniciar(true);
+  },
+  acaba(){ tiraMao(); emDemo = false; },
+
+  /* a mão a rolar o sumário: dois arrastos para cima, dos 40,2 aos 43,8 s.
+     O dedo sobe e a lista sobe com ele. É função do tempo do áudio, como
+     a escrita: pausada a narração, a mão pára onde está. */
+  rola(t){
+    const ARRASTOS = [[40.2, 41.7], [42.1, 43.8]];
+    if (!navAberta() || t < ARRASTOS[0][0] || t >= ARRASTOS[1][1]) return;
+    const lista = navGaveta.querySelector('.nav-lista');
+    const r = lista.getBoundingClientRect(), max = lista.scrollHeight - lista.clientHeight;
+    const n = t < ARRASTOS[1][0] ? 0 : 1, [a, b] = ARRASTOS[n];
+    const k = entre(t, a, b);
+    /* entre um arrasto e o outro, o dedo levanta e volta para baixo */
+    const voltando = n === 0 && t >= b;
+    lista.scrollTop = max * (n + k) / 2;
+    mao.hidden = false; mao.classList.add('on');
+    mao.style.transition = voltando ? 'opacity .3s ease, top .35s ease' : 'opacity .3s ease';
+    mao.style.left = (r.left + r.width*.55 - 22) + 'px';
+    mao.style.top  = (r.top + r.height*(voltando ? .78 : .78 - .5*k) - 7) + 'px';
+  },
+
   /* a narração mudou de slide: a demonstração não fica a meio */
   corta(){
+    if (this.guia) return;
     limpaMao();
-    if (emDemo){ mostraOverview(false); mostraBarra(false); emDemo = false; }
+    if (emDemo){
+      mostraOverview(false); mostraBarra(false); fechaNav(); emDemo = false;
+      /* a demonstração levou a capa a outro slide: a narração dela não
+         continua lá — o próximo carregaTrilha recomeça-a do zero */
+      if (trilhaAtual === 'capa') trilhaAtual = -1;
+    }
+    mao.style.transition = '';
     tiraMao();
     semFoco();
   }
@@ -7672,9 +7912,10 @@ function go(i, dir){
   const entra = slides[i];
 
   /* a narração é de cada slide: mudando de slide, ela para e a do
-     novo fica pronta para começar */
-  som.pause();
-  mostraPausa(false);
+     novo fica pronta para começar — a não ser que seja a mão da
+     demonstração a mudar, com a narração da capa a explicar */
+  const demo = DEMO.guia;
+  if (!demo){ som.pause(); mostraPausa(false); }
   VIDA.desliga();
   DEMO.corta();          /* e a cena da capa não fica a meio */
   /* saindo do slide 1, o quiz e o jogo fecham: aberto, qualquer um
@@ -7687,7 +7928,7 @@ function go(i, dir){
   sai.classList.add('is-leaving', 'fx-cube-out-' + dir);
   entra.classList.add('is-active', 'fx-cube-in-' + dir);
   /* o som do cubo a virar, junto com o giro */
-  tocaEfeito('transition_cube');
+  if (!demo) tocaEfeito('transition_cube');
 
   atual = i;
   atualizaCabecalho();
@@ -7711,6 +7952,7 @@ function go(i, dir){
     else if (naMontagem()) soltaSlide(slides[atual]);
   }, 880);
 
+  if (demo) return;
   carregaTrilha(TRILHA_DO_SLIDE[i]);
   tocaAbertura(i);
 }
@@ -7950,7 +8192,8 @@ const CAR = {
   abre(){
     if (this.aberto || this.ocupado || andando || naMontagem()) return;
     mostraOverview(false); fechaNav();
-    som.pause(); mostraPausa(false); VIDA.desliga();
+    if (!DEMO.guia){ som.pause(); mostraPausa(false); }
+    VIDA.desliga();
     this.aberto = true;
     this.sel = atual;
     this.monta();
@@ -8018,8 +8261,9 @@ const CAR = {
    passagem. O resto é o mesmo que o go() faz ao chegar. */
 function vaiDireto(i){
   if (i === atual) return;
-  som.pause();
-  mostraPausa(false);
+  /* a demonstração da capa entra num slide sem lhe tocar a narração */
+  const demo = DEMO.guia;
+  if (!demo){ som.pause(); mostraPausa(false); }
   VIDA.desliga();
   DEMO.corta();
   if (i !== 1){ QUIZ.fecha(); fechaMemoria(true); }
@@ -8032,6 +8276,7 @@ function vaiDireto(i){
   recomecaMesa(i, true);
   arrumaPecasDoPalco();
   if (LAYOUTS[atual]) aplicaLayout(atual);
+  if (demo) return;
   carregaTrilha(TRILHA_DO_SLIDE[i]);
   tocaAbertura(i);
 }
@@ -9495,6 +9740,7 @@ slides[0].classList.add('is-active');
 SLIDES_COM_MESA.forEach(i => montaTabela(i));
 montaBlocosDaCapa();
 montaFrases();
+montaDigitacaoDaCapa();
 montaCenaDoSlide1();
 montaCenaDoSlide3();
 atualizaCabecalho();
