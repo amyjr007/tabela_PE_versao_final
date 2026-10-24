@@ -2408,7 +2408,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v14.7';
+const VERSAO = 'v14.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3677,9 +3677,9 @@ const ROTEIROS = {
   '2.2':  [],
   '2.3':  [],
   '2.4':  [
-    /* aos 12,2 s a narração pára 2 s; o brilho das colunas corre em ciclo
+    /* aos 12,4 s a narração pára 2 s; o brilho das colunas corre em ciclo
        enquanto ela está parada (COLUNAS_24.ciclo), e acaba quando ela segue */
-    { t:12.2, faz(){ COLUNAS_24.ciclo = performance.now(); pausaPor('2.4', COLUNAS_24.pausa.ms); } }
+    { t:12.4, faz(){ COLUNAS_24.ciclo = performance.now(); pausaPor('2.4', COLUNAS_24.pausa.ms); } }
   ],
   '2.5':  [],
   '2.5A': [],
@@ -5099,7 +5099,7 @@ const FRASES_CRITERIO2 = [
                   junto, um brilho verde varre uma coluna de cada vez —
                   só as que têm mais de um card: a 1, a 2 e da 13 à 18 —,
                   de cima para baixo, e não fica
-     12,2 s       a narração pára 2 s: a frase fica, e o brilho das colunas
+     12,4 s       a narração pára 2 s: a frase fica, e o brilho das colunas
                   corre em ciclo; seguindo ela, a frase sai em fade
      14,4 s       o H cresce e destaca-se, em dourado
      17,3 → 20,1 s  só na coluna 1: o Li, o Na e o K crescem e brilham em
@@ -5120,15 +5120,15 @@ const COLUNAS_24 = {
   /* a onda, só na coluna 1 (sem o H, que está em destaque): o Li, o Na e
      o K crescem bem (0,6) e com luz forte (ver .enfase-24) */
   onda:{ de:17.3, meio:18.7, ate:20.1, cresce:0.6, coluna:1 },
-  /* a pausa de 2 s aos 12,2 s, com o brilho das colunas em ciclo: uma
-     volta pelas 8 colunas por segundo, duas voltas inteiras na pausa */
-  pausa:{ de:12.2, ms:2000, volta:1.0 }, ciclo:0,
+  /* a pausa de 2 s aos 12,4 s, com o brilho das colunas em ciclo, na
+     mesma velocidade da varredura (5 s pelas 8 colunas) */
+  pausa:{ de:12.4, ms:2000, volta:5.0 }, ciclo:0,
   suja:false
 };
-/* a frase fica escrita durante a pausa dos 12,2 s, e sai em fade quando
+/* a frase fica escrita durante a pausa dos 12,4 s, e sai em fade quando
    a narração segue */
 const FRASES_COLUNAS = [
-  { de:7.0, ate:10.0, some:12.25, txt:'Nessas colunas todos são semelhantes' }
+  { de:7.0, ate:10.0, some:12.45, txt:'Nessas colunas todos são semelhantes' }
 ];
 let veu2 = null, toque2 = null, foto2 = null, clarao2 = null, DIG2 = null, DIG3 = null, DIG_COL = null;
 
@@ -5223,7 +5223,7 @@ function colunas24(t){
   const oh = o.hidrogenio;
   const eh = suave(entre01((t - oh.de) / oh.dura)) * (1 - suave(entre01((t - o.volta) / oh.dura)));
   const w = o.onda, vr = o.varre, vez = (vr.ate - vr.de) / vr.colunas.length;
-  /* NA PAUSA DOS 12,2 s o brilho das colunas continua, em ciclo, no
+  /* NA PAUSA DOS 12,4 s o brilho das colunas continua, em ciclo, no
      relógio de parede (o do áudio está parado): da primeira coluna à
      última, e de volta ao começo, até a narração seguir */
   const vc0 = o.pausa.volta;   /* uma volta pelas 8 colunas, em segundos */
