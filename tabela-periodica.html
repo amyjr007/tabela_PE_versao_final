@@ -1439,6 +1439,13 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 #som #ic-jogo{display:none}
 #som.jogo #ic-play,#som.jogo #ic-pause,#som.jogo .anel{display:none}
 #som.jogo #ic-jogo{display:block}
+/* e muda de cor, cheio de verde, a pulsar: pede para ser apertado */
+#som.jogo, #som.jogo.parado{background:#1F9D55;border-color:#1F9D55;color:#fff;
+  animation:jogoChama 1.6s ease-in-out infinite}
+@keyframes jogoChama{
+  0%,100%{box-shadow:0 12px 30px rgba(32,28,66,.22), 0 0 18px rgba(31,157,85,.5), 0 0 0 0 rgba(31,157,85,.55)}
+  55%    {box-shadow:0 12px 30px rgba(32,28,66,.22), 0 0 34px rgba(31,157,85,.8), 0 0 0 16px rgba(31,157,85,0)}
+}
 /* e o do QUIZ, quando a narração "2.5" acaba (a classe não é 'quiz':
    .quiz é a caixa do quiz do slide 1) */
 #som #ic-quiz{display:none}
@@ -1559,8 +1566,10 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
              rgba(20,17,46,.95) 0%, rgba(11,9,30,.985) 62%, rgba(7,6,22,.995) 100%);
 }
 .memoria.on{opacity:1}
+.mem-titulo{margin:26px 0 0;font-family:var(--display);font-weight:700;font-size:32px;
+  letter-spacing:-.01em;color:#F4F2F8}
 .mem-topo{
-  display:flex;align-items:baseline;gap:26px;margin:72px 0 10px;
+  display:flex;align-items:baseline;gap:26px;margin:12px 0 10px;
   font-family:var(--display);color:#EDE8FA;
 }
 .mem-topo b{font-size:30px;font-weight:800;color:var(--ouro-luz);line-height:1}
@@ -1615,11 +1624,14 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
   box-shadow:0 0 0 2.5px hsl(var(--ph,150) var(--ps,45%) 46%),
              0 0 20px 5px hsl(var(--ph,150) var(--ps,45%) 50% / .38);
 }
+/* o símbolo e o nome, cada elemento na sua cor: o matiz do par, vivo e
+   escuro o bastante para se ler no fundo claro do mesmo par (a saturação
+   própria de cada par, baixa no ouro e na prata, deixava-os todos cinzentos) */
 .mem-carta.casada .simbolo,
-.mem-carta.casada .nome{color:hsl(var(--ph,150) var(--ps,45%) 26%)}
+.mem-carta.casada .nome{color:hsl(var(--ph,150) 85% 30%)}
 .mem-carta.casada .chapeu,
 .mem-carta.casada .miudo{color:hsl(var(--ph,150) var(--ps,45%) 38% / .8)}
-.mem-carta.casada{opacity:.62;transition:opacity .5s ease .3s}
+.mem-carta.casada{opacity:.88;transition:opacity .5s ease .3s}
 .mem-carta.errada .frente{
   box-shadow:0 0 0 2.5px var(--neon), 0 0 20px 6px rgba(255,46,76,.5);
   animation:memTreme .4s ease;
@@ -2372,7 +2384,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v13.1';
+const VERSAO = 'v13.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4034,8 +4046,8 @@ function tocaOuPara(){
   /* na tela escura à espera do toque, o botão também serve de toque */
   if (SEQ.aguardaToque){ SEQ.continua(); return; }
   if (SEQ.aguardaToque2){ SEQ.continua2(); return; }
-  /* o botão do jogo abre o jogo */
-  if (somBtn.classList.contains('jogo')){ abreMemoria(); return; }
+  /* o botão do jogo abre o jogo, e a fala das regras toca por cima */
+  if (somBtn.classList.contains('jogo')){ abreMemoria(); falaDoJogo(); return; }
   /* e o do quiz, o quiz do slide 3 */
   if (somBtn.classList.contains('botao-quiz')){ QUIZ3.abre(); return; }
   /* no quiz — e no cartão da nota, que segue pelos botões dele — e no
@@ -7719,6 +7731,7 @@ function abreMemoria(){
   const ov = document.createElement('div');
   ov.className = 'memoria';
   ov.innerHTML =
+    '<h2 class="mem-titulo">Jogo da memória dos elementos</h2>' +
     '<div class="mem-topo"><span><b class="pt">0</b><i>pontos</i></span>' +
     '<span><b class="pr">0</b><i>de 10 pares</i></span></div>' +
     '<div class="mem-grade">' + baralhaMemoria().map(c => cartaDaMemoria(c.d, c.tipo)).join('') + '</div>' +
@@ -7732,6 +7745,28 @@ function abreMemoria(){
   ov.getBoundingClientRect();
   ov.classList.add('on');
 }
+/* A FALA DA ABERTURA DO JOGO (audio_tabela_1_jogo_memória1): toca quando o
+   botão do jogo é apertado, com as cartas já na mesa; o Refazer não a
+   repete. Fechado o jogo, cala-se. */
+var FALA_JOGO = null;
+function falaDoJogo(){
+  calaFalaDoJogo();
+  const a = new Audio(encodeURI('Audios/audio_tabela_1_jogo_memória1.mp3'));
+  Velocidade.aplicar(a);
+  EFEITOS.add(a);
+  FALA_JOGO = a;
+  const fim = () => { EFEITOS.delete(a); if (FALA_JOGO === a) FALA_JOGO = null; };
+  a.addEventListener('ended', fim);
+  a.addEventListener('error', fim);
+  a.play().catch(fim);
+}
+function calaFalaDoJogo(){
+  if (!FALA_JOGO) return;
+  FALA_JOGO.pause();
+  EFEITOS.delete(FALA_JOGO);
+  FALA_JOGO = null;
+}
+
 /* ja: sem esmaecer (o slide está a ser deixado ou recomeçado) */
 function fechaMemoria(ja){
   if (!memAberto) return;
@@ -7739,6 +7774,7 @@ function fechaMemoria(ja){
   memAberto = null; memCartas = []; memViradas = []; memConferindo = false;
   memGeracao++;
   calaFalaDoFim();
+  calaFalaDoJogo();
   stage.classList.remove('em-jogo');
   ov.classList.remove('on');
   if (ja) ov.remove();
