@@ -1604,6 +1604,18 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
   grid-auto-rows:126px;gap:10px;
 }
 .mem-carta{perspective:900px;cursor:pointer}
+/* a entrada (entraNoJogo): as cartas começam fora da tela, cada uma no seu
+   ponto (--ex, --ey) e girada (--eg), e voam todas juntas para a grade;
+   pousadas, brilham. O fundo escurece com o fade da própria .memoria. */
+.memoria.entrando .mem-carta{transform:translate(var(--ex),var(--ey)) rotate(var(--eg)) scale(.7)}
+.memoria.voando .mem-carta{transition:transform .9s cubic-bezier(.2,.8,.25,1)}
+.memoria.entrando .mem-carta, .memoria.voando .mem-carta{pointer-events:none}
+.memoria.pousou .mem-carta .costas{animation:memBrilha .7s ease-out}
+@keyframes memBrilha{
+  0%  {box-shadow:0 8px 22px rgba(6,5,26,.5), 0 0 0 0 rgba(226,162,43,0)}
+  35% {box-shadow:0 8px 22px rgba(6,5,26,.5), 0 0 0 3px var(--ouro-luz), 0 0 34px 10px rgba(226,162,43,.75)}
+  100%{box-shadow:0 8px 22px rgba(6,5,26,.5), 0 0 0 0 rgba(226,162,43,0)}
+}
 .mem-carta .giro{
   position:relative;width:100%;height:100%;transform-style:preserve-3d;
   transition:transform .45s cubic-bezier(.3,.9,.3,1);
@@ -2416,7 +2428,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v15.1';
+const VERSAO = 'v15.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4091,7 +4103,7 @@ function tocaOuPara(){
   if (SEQ.aguardaToque){ SEQ.continua(); return; }
   if (SEQ.aguardaToque2){ SEQ.continua2(); return; }
   /* o botão do jogo abre o jogo, e a fala das regras toca por cima */
-  if (somBtn.classList.contains('jogo')){ abreMemoria(); falaDoJogo(); return; }
+  if (somBtn.classList.contains('jogo')){ entraNoJogo(); return; }
   /* e o do quiz, o quiz do slide 3 */
   if (somBtn.classList.contains('botao-quiz')){ QUIZ3.abre(); return; }
   /* no quiz — e no cartão da nota, que segue pelos botões dele — e no
@@ -7951,6 +7963,46 @@ function abreMemoria(ordem){
   stage.classList.add('em-jogo');
   ov.getBoundingClientRect();
   ov.classList.add('on');
+}
+
+/* A ENTRADA DO JOGO, pelo botão do jogo: a tela escurece, e as vinte
+   cartas entram todas ao mesmo tempo, cada uma de um ponto de fora da
+   tela — os pontos repartidos por igual à volta dela —, e pousam no lugar
+   delas na grade. Pousadas, brilham, e toca a fala das regras. */
+const ENTRADA_JOGO = { voo:900, brilho:700, raio:1050 };
+function entraNoJogo(){
+  abreMemoria();
+  if (!memAberto) return;
+  const ov = memAberto, g = memGeracao, n = memCartas.length;
+  const rs = stage.getBoundingClientRect();
+  /* a volta à tela dividida em n, e cada carta com o seu ângulo, sorteado
+     (senão as vizinhas na grade viriam de pontos vizinhos) */
+  const angulos = embaralha(memCartas.map((_, i) => i * 2*Math.PI / n));
+  ov.classList.add('entrando');
+  memCartas.forEach((c, i) => {
+    const r = c.getBoundingClientRect();
+    const cx = (r.left + r.width/2  - rs.left) / fitScale;
+    const cy = (r.top  + r.height/2 - rs.top ) / fitScale;
+    const a = angulos[i];
+    c.style.setProperty('--ex', (640 + Math.cos(a)*ENTRADA_JOGO.raio - cx).toFixed(0) + 'px');
+    c.style.setProperty('--ey', (360 + Math.sin(a)*ENTRADA_JOGO.raio - cy).toFixed(0) + 'px');
+    c.style.setProperty('--eg', ((Math.random() < .5 ? -1 : 1) * (180 + Math.random()*180)).toFixed(0) + 'deg');
+  });
+  ov.getBoundingClientRect();
+  /* no quadro seguinte, todas partem juntas */
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    if (g !== memGeracao) return;
+    ov.classList.add('voando');
+    ov.classList.remove('entrando');
+  }));
+  setTimeout(() => {
+    if (g !== memGeracao) return;
+    ov.classList.remove('voando');
+    ov.classList.add('pousou');
+    tocaEfeito('flip');
+    falaDoJogo();
+    setTimeout(() => { if (g === memGeracao) ov.classList.remove('pousou'); }, ENTRADA_JOGO.brilho + 400);
+  }, ENTRADA_JOGO.voo + 60);
 }
 /* A FALA DA ABERTURA DO JOGO (audio_tabela_1_jogo_memória1): toca quando o
    botão do jogo é apertado, com as cartas já na mesa; o Refazer não a
