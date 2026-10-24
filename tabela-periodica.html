@@ -663,13 +663,15 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
 /* A ordem importa: o LEVANTAR (--dz) vem primeiro, para ser sempre na
    direção do olho e não na do cubo já virado; depois a CORREÇÃO da
    leitura (--rzc), que é um giro no plano da tela; e só então os três
-   giros do cubo. */
+   giros do cubo. O crescer é nas três dimensões (scale3d): um scale()
+   só estica x e y do cubo, e num cubo deixado de lado por um giro de um
+   quarto a face à vista crescia só num sentido — distorcida. */
 .cubo{
   position:relative;width:100%;height:100%;
   transform-style:preserve-3d;
   transform:translateZ(var(--dz,0px)) rotateZ(var(--rzc,0deg))
             rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) rotateZ(var(--rz,0deg))
-            scale(var(--sc,1));
+            scale3d(var(--sc,1),var(--sc,1),var(--sc,1));
   transition:transform var(--dur,.7s) var(--curva,cubic-bezier(.3,.85,.3,1));
 }
 .face{
@@ -819,7 +821,9 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
 .pc.apagado{filter:saturate(.22) brightness(1.06);opacity:.55}
 
 /* O VERDE — o elemento que a narração sorteia: cresce e acende. */
-.pc.verde{z-index:9}
+/* à frente dos vizinhos ao crescer e também ao voltar (verde-sai, durante
+   o encolher) */
+.pc.verde, .pc.verde-sai{z-index:9}
 .pc.verde .cubo{--sc:1.4;--dz:12px;--dur:.3s}
 .pc.verde .face{box-shadow:0 0 0 2px #3EE08A, 0 0 26px 7px rgba(46,204,113,.78)}
 
@@ -970,7 +974,9 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
 #stage.em-quiz #som, #stage.em-quiz #som-dica,
 #stage.em-toque #som, #stage.em-toque #som-dica,
 #stage.em-jogo #som, #stage.em-jogo #som-dica,
-#stage.em-entendi #vel, #stage.em-quiz #vel, #stage.em-toque #vel, #stage.em-jogo #vel{display:none!important}
+#stage.em-escolha #som, #stage.em-escolha #som-dica,
+#stage.em-entendi #vel, #stage.em-quiz #vel, #stage.em-toque #vel, #stage.em-jogo #vel,
+#stage.em-escolha #vel{display:none!important}
 /* e com a tela escura também: ali o que faz a aula seguir é o toque na tela */
 #stage.tela-escura #som, #stage.tela-escura #som-dica, #stage.tela-escura #vel{display:none!important}
 
@@ -2316,7 +2322,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v11.9';
+const VERSAO = 'v12.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3967,8 +3973,9 @@ function desenhaAnel(frac){
 }
 
 function tocaOuPara(){
-  /* na montagem o play é peça a arrastar: o toque não toca nada */
-  if (naMontagem()) return;
+  /* na montagem o play é peça a arrastar: o toque não toca nada; e à
+     espera da escolha de um elemento, quem faz a aula seguir é a escolha */
+  if (naMontagem() || SEQ.escolhendo) return;
   /* acabada a abertura, o botão é "Iniciar": leva ao slide da tabela */
   /* o "Iniciar" do começo toca a narração, como o play (segue abaixo) */
   if (somBtn.dataset.pilula === 'comecar'){ go(1); return; }
@@ -4311,6 +4318,8 @@ function dicaEscolha(sim){
   if (!escolhaHint) return;
   clearInterval(dicaT);
   escolhaHint.classList.toggle('on', sim);
+  /* com o convite à vista, o play sai: o que leva à "1.2" é a escolha */
+  stage.classList.toggle('em-escolha', sim);
   if (!sim) return;                 /* o texto fica enquanto esmaece */
   const txt = escolhaHint.querySelector('.txt'), cur = escolhaHint.querySelector('.cursor');
   txt.textContent = '';
@@ -4532,7 +4541,16 @@ function verdeAoAcaso(t){
   const z = ativo ? ORDEM_VERDE[Math.floor((t - VERDE.de) / VERDE.cada) % ORDEM_VERDE.length] : 0;
   if (z === VERDE.z) return;               /* só mexe quando troca */
   VERDE.z = z;
-  TP.todos().forEach(c => c.classList.toggle('verde', +c.dataset.z === z));
+  TP.todos().forEach(c => {
+    const era = c.classList.contains('verde'), e = +c.dataset.z === z;
+    c.classList.toggle('verde', e);
+    /* o que se apaga continua à frente enquanto encolhe (.7 s) */
+    if (era && !e){
+      c.classList.add('verde-sai');
+      clearTimeout(c._verdeSai);
+      c._verdeSai = setTimeout(() => c.classList.remove('verde-sai'), 750);
+    }
+  });
 }
 
 /* O ELEITO NA "1.2" — o número atômico e a massa, cada um na sua vez.
