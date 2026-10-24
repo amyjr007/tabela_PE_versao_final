@@ -2390,7 +2390,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v14.0';
+const VERSAO = 'v14.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4499,7 +4499,8 @@ function efeitosDoTempo(){
   /* acabada a "1", ou fora dela, as colunas da onda soltam os cubos */
   if (COLUNAS_1.caixas && (atual !== 1 || trilhaAtual !== '1' || som.ended)) COLUNAS_1.solta();
   if (trilhaAtual === 'capa' && DIG_CAPA) DIG_CAPA.escreve(t);
-  efeitosCapa(t);
+  /* a abertura da capa só tem o que fazer na capa (ou a sair dela) */
+  if (atual === 0 || stage.classList.contains('abre-capa')) efeitosCapa(t);
   botaoDaCapa(t);
   if (trilhaAtual === 'capa') DEMO.rola(t);
   /* o slide 3 tem os eventos dele */
@@ -5165,6 +5166,7 @@ function limpaColuna(c, fica){
   ['--onda', '--verde', '--tsobe'].forEach(v => c.style.removeProperty(v));
   c.style.removeProperty('filter');
   c.classList.remove('luz-verde', 'coluna-frente', 'destaque-h');
+  c._c24 = null;                   /* o que colunas24 escreveu já não vale */
   if (!fica && c._noLugar){
     const casa = alvoDe(+c.dataset.z);
     c.style.left = casa.x.toFixed(1) + 'px';
@@ -5216,13 +5218,22 @@ function colunas24(t){
       if (eh > .02) k = 0;
       c.classList.toggle('destaque-h', eh > .02);
     }
-    c.style.left = x.toFixed(1) + 'px';
-    c.style.top  = y.toFixed(1) + 'px';
+    /* SÓ O QUE MUDOU É ESCRITO: com as colunas paradas (a maior parte da
+       narração), um tique não toca em nada — reescrever o mesmo valor nos
+       36 cards, a cada 60 ms, obrigava o navegador a refazer o desenho
+       (com as sombras de brilho) e a animação perdia quadros */
+    const sx = x.toFixed(1), sy = y.toFixed(1), so = (Z*cresce).toFixed(3);
+    const sk = k > .02 ? k.toFixed(2) : '', frente = es > .001;
+    const ch = sx + '|' + sy + '|' + so + '|' + sk + '|' + frente;
+    if (c._c24 === ch) return;
+    c._c24 = ch;
+    c.style.left = sx + 'px';
+    c.style.top  = sy + 'px';
     c.style.setProperty('--tsobe', '90ms');
-    c.style.setProperty('--onda', (Z*cresce).toFixed(3));
-    c.classList.toggle('luz-verde', k > .02);
-    if (k > .02) c.style.setProperty('--verde', k.toFixed(3)); else c.style.removeProperty('--verde');
-    c.classList.toggle('coluna-frente', es > .001);
+    c.style.setProperty('--onda', so);
+    c.classList.toggle('luz-verde', !!sk);
+    if (sk) c.style.setProperty('--verde', sk); else c.style.removeProperty('--verde');
+    c.classList.toggle('coluna-frente', frente);
   });
   o.suja = true;
   if (DIG_COL) DIG_COL.escreve(t);
