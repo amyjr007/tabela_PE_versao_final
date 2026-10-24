@@ -1062,6 +1062,9 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
 /* visível por si, e a respirar por cima: sem animação (movimento
    reduzido no aparelho) o pedido continua lá */
 .toque-continuar.on{opacity:1;animation:respira 2.2s ease-in-out infinite}
+/* na tela escura do slide 1, o lugar que o professor deixou na montagem:
+   o centro em x 641, y 490, logo abaixo das duas frases */
+.veu:not(.veu-moseley) .toque-continuar{left:641px;top:490px;bottom:auto;transform:translate(-50%,-50%)}
 @keyframes respira{0%,100%{opacity:.4} 50%{opacity:1}}
 .veu.pede-toque{cursor:pointer}
 
@@ -2313,7 +2316,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v11.8';
+const VERSAO = 'v11.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4533,16 +4536,16 @@ function verdeAoAcaso(t){
 }
 
 /* O ELEITO NA "1.2" — o número atômico e a massa, cada um na sua vez.
-     1,0 s        o card dá uma pulsada
-     2,9 → 3,8 s  o número cresce, e "Número atômico" aparece a brilhar
-     3,8 → 7,3 s  a massa cresce e "Massa atômica" escreve-se a brilhar;
-                  o número volta, e o nome dele fica, sem brilho
-     9 → 14 s     o número outra vez, e o nome dele volta a brilhar
-     15,7 s →     e outra vez, até o fim
+     1,5 s           o card dá uma pulsada
+     2,9 → 3,8 s     o número cresce, e "Número atômico" aparece a brilhar
+     3,8 → 7,3 s     a massa cresce e "Massa atômica" escreve-se a brilhar;
+                     o número volta, e o nome dele fica, sem brilho
+     9,8 → 14 s      o número outra vez, e o nome dele volta a brilhar
+     16 → 20,5 s     e outra vez
    Os dois nomes, uma vez escritos, ficam. */
 const FOCO12 = {
-  pulso:{ de:1.0, dura:0.55, mais:0.14 },
-  num:  [[2.9, 3.8], [9.0, 14.0], [15.7, Infinity]],
+  pulso:{ de:1.5, dura:0.55, mais:0.14 },
+  num:  [[2.9, 3.8], [9.8, 14.0], [16.0, 20.5]],
   massa:[[3.8, 7.3]],
   escreveMassa:{ de:3.8, ate:4.5, txt:'Massa atômica' }
 };
