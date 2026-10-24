@@ -146,6 +146,8 @@ html.palco-largo #som, html.palco-largo #som-dica{translate:var(--folga) 0}
 /* solto na montagem, o botão da velocidade já foi medido com a folga:
    somá-la outra vez o faria saltar para o lado */
 html.palco-largo #vel.solto{translate:none}
+/* o mesmo para o play solto fora da capa (na capa ele vive do layout fixado) */
+html.palco-largo #stage:not(.na-capa) #som.solto{translate:none}
 html.palco-largo #versao{translate:calc(-1 * var(--folga)) 0}
 /* e a barrinha do progresso, de borda a borda: a fração vem em --prog */
 html.palco-largo #progress{left:calc(-1 * var(--folga));right:calc(-1 * var(--folga));width:auto!important;
@@ -2298,7 +2300,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v11.2';
+const VERSAO = 'v11.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3946,6 +3948,8 @@ function desenhaAnel(frac){
 }
 
 function tocaOuPara(){
+  /* na montagem o play é peça a arrastar: o toque não toca nada */
+  if (naMontagem()) return;
   /* acabada a abertura, o botão é "Iniciar": leva ao slide da tabela */
   /* o "Iniciar" do começo toca a narração, como o play (segue abaixo) */
   if (somBtn.dataset.pilula === 'comecar'){ go(1); return; }
@@ -8333,8 +8337,11 @@ function pecasDe(sl){
     lista.push(document.getElementById('som'));
   }
   /* o botão da velocidade mora no palco e fica fora da capa: nos outros
-     slides, em cena, é peça como as outras */
-  else if (!velBtn.hidden) lista.push(velBtn);
+     slides, em cena, é peça como as outras — e o play também */
+  else {
+    if (!velBtn.hidden) lista.push(velBtn);
+    if (!somBtn.hidden) lista.push(somBtn);
+  }
   /* e o botão do carrossel, no canto de cima, que está em todos */
   lista.push(document.getElementById('ver-slides'));
   return lista;
@@ -8531,7 +8538,7 @@ function pecaDe(ev){
   const sl = slides[atual];
   const el = ev.target.closest(MOVEIS + ', #tabela, #vel, #ver-slides');
   if (!el) return null;
-  if (el.id === 'vel' || el.id === 'ver-slides') return pecasDe(sl).includes(el) ? el : null;
+  if (el.id === 'vel' || el.id === 'ver-slides' || el.id === 'som') return pecasDe(sl).includes(el) ? el : null;
   return (sl.contains(el) || el.id === 'tabela') ? el : null;
 }
 /* o rótulo que diz onde a peça está, enquanto ela anda */
@@ -8870,6 +8877,7 @@ function modoMontagem(v){
     /* a tabela viva mexeria as peças por baixo da mão */
     VIDA.desliga();
     som.pause(); mostraPausa(false);
+    calaAbertura();          /* nem a narração, nem a abertura do capítulo */
     soltaSlide(slides[atual]);
     TP.diz('Montagem: arraste as peças · roda ou pinça muda o tamanho · dois toques num texto o editam · R devolve · segure a versão para sair e copiar', 4800);
   } else {
