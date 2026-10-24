@@ -2298,7 +2298,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v11.0';
+const VERSAO = 'v11.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -9713,6 +9713,15 @@ if (document.fonts && document.fonts.ready)
 animaCapa();
 vidaDosBlocos();
 carregaTrilha('capa');
+
+/* DESENVOLVIMENTO: a capa está pronta, e o app abre direto no slide 1 —
+   a tabela pousa, e a narração dele espera o play. Para voltar a abrir
+   na capa, 0. As fotos do carrossel (?miniaturas) começam sempre na capa. */
+const ABRE_NO_SLIDE = 1;
+if (ABRE_NO_SLIDE && !/miniaturas/.test(location.search)){
+  vaiDireto(ABRE_NO_SLIDE);
+  pousaTabela();
+}
 
 /* ============================================================
    O BOTÃO INSTALAR — na capa, no canto de cima à direita.
