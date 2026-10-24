@@ -2047,6 +2047,13 @@ body.montagem #coord.on{display:block}
 .texto-livre *{width:auto!important;max-width:none!important}
 .editando{user-select:text!important;-webkit-user-select:text!important;touch-action:auto!important;
   cursor:text!important;outline:2px dashed var(--ouro-luz)!important;outline-offset:6px;caret-color:var(--ouro-luz)}
+/* a barrinha da edição, por cima do texto: quebrar a linha, ou uma só */
+#edita-barra{position:fixed;z-index:120;display:flex;gap:6px;padding:5px;border-radius:12px;
+  background:rgba(255,255,255,.97);border:1px solid var(--indigo-dim);box-shadow:0 10px 26px rgba(32,28,66,.25)}
+#edita-barra[hidden]{display:none}
+#edita-barra button{padding:7px 12px;border:0;border-radius:8px;cursor:pointer;background:transparent;
+  font-family:var(--display);font-weight:600;font-size:14px;color:var(--indigo);white-space:nowrap}
+#edita-barra button:hover{background:rgba(76,63,191,.1)}
 body.montagem .solto{
   cursor:move;touch-action:none;
   outline:1px dashed rgba(76,63,191,.5);outline-offset:4px;border-radius:2px;
@@ -2390,7 +2397,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v14.2';
+const VERSAO = 'v14.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8926,7 +8933,13 @@ function mostraCoord(el){
    o texto não salta — e a caixa passa a crescer com o que se escreve.
    Os pedaços com nome (os que a narração acende) ficam onde estão. O
    Esc, ou um toque fora, termina; o Ctrl+C leva também os textos. */
-const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle, .quiz3.q4 .q3-q';
+/* e os textos por cima dos slides: o convite, o toque para continuar, os
+   rótulos, as frases das telas escuras e dos quadros, a legenda de
+   Moseley, a dica final, o Entendi (nas frases digitadas, edita-se o que
+   já está escrito — a narração parada não o reescreve) */
+const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle, .quiz3.q4 .q3-q,' +
+               ' .dica-escolha .txt, .toque-continuar, .rotulo-el .txt, .veu-frases .frase .txt,' +
+               ' .texto-colunas .frase .txt, .veu-moseley figcaption b, .dica-final, .entendi3';
 const EDICAO = {
   el:null, ultimo:null, tUlt:0, editados:new Set(),
   /* o bloco de linhas a que um texto pertence, dentro da peça */
@@ -9013,11 +9026,69 @@ const EDICAO = {
     }
     this.editados.add(el);
     coord.classList.remove('on');
-    TP.diz('Editando o texto · Enter quebra a linha · Esc ou um toque fora termina', 3600);
+    this.barra(true);
+    TP.diz('Editando o texto · Enter quebra a linha · "Uma linha só" junta tudo · Esc ou um toque fora termina', 3600);
+  },
+  /* A BARRINHA DA EDIÇÃO, por cima do texto: quebrar a linha onde está o
+     cursor, ou juntar o texto todo numa linha só. Os botões não roubam o
+     cursor do texto (pointerdown sem efeito). */
+  barra(sim){
+    let b = document.getElementById('edita-barra');
+    if (!b){
+      b = document.createElement('div');
+      b.id = 'edita-barra';
+      b.innerHTML = '<button type="button" data-faz="quebra">↵ Quebrar linha</button>' +
+                    '<button type="button" data-faz="junta">Uma linha só</button>';
+      b.addEventListener('pointerdown', ev => ev.preventDefault());
+      b.addEventListener('click', ev => {
+        const f = ev.target.closest('button') && ev.target.closest('button').dataset.faz;
+        if (f === 'quebra') this.quebra();
+        if (f === 'junta') this.junta();
+      });
+      document.body.appendChild(b);
+    }
+    b.hidden = !sim;
+    if (sim) this.poeBarra();
+  },
+  poeBarra(){
+    const b = document.getElementById('edita-barra');
+    if (!b || b.hidden || !this.el) return;
+    const r = this.el.getBoundingClientRect();
+    b.style.left = Math.max(8, Math.min(innerWidth - b.offsetWidth - 8, r.left)) + 'px';
+    /* em cima do texto; sem lugar em cima (o título, no alto), embaixo */
+    const cima = r.top - b.offsetHeight - 10;
+    b.style.top  = (cima >= 8 ? cima : r.bottom + 10) + 'px';
+  },
+  quebra(){
+    if (!this.el) return;
+    this.el.focus();
+    document.execCommand('insertLineBreak');
+    this.semEspacoNoInicio();
+    this.acompanha(); this.poeBarra();
+  },
+  /* a linha nova não começa com o espaço que separava as palavras (o
+     navegador guardava-o como espaço duro, e a linha saía deslocada) */
+  semEspacoNoInicio(){
+    const s = getSelection();
+    if (!s.rangeCount) return;
+    let n = s.anchorNode, o = s.anchorOffset;
+    if (n.nodeType !== 3){ n = n.childNodes[o] || null; o = 0; }
+    if (n && n.nodeType === 3 && o === 0 && /^[\s ]/.test(n.data)) n.deleteData(0, 1);
+  },
+  /* tudo numa linha: cada quebra vira um espaço, sem espaços dobrados */
+  junta(){
+    const el = this.el;
+    if (!el) return;
+    el.querySelectorAll('br').forEach(br => br.replaceWith(' '));
+    el.normalize();
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    for (let t; (t = w.nextNode()); ) t.data = t.data.replace(/\s{2,}/g, ' ');
+    this.acompanha(); this.poeBarra();
   },
   termina(){
     const el = this.el;
     if (!el) return;
+    this.barra(false);
     /* a peça solta fica com a largura do que se escreveu */
     this.acompanha();
     const peca = this.peca;
@@ -9030,6 +9101,13 @@ const EDICAO = {
   nome(el){
     if (el.classList.contains('title'))    return 'titulo-do-slide';
     if (el.classList.contains('subtitle')) return 'subtitulo-do-slide';
+    if (el.closest('figcaption'))          return 'legenda-moseley';
+    /* uma frase de uma caixa de frases: o nome da caixa e qual frase é */
+    const fr = el.closest('.frase');
+    if (fr) return nomeDe(fr.parentNode) + ' (frase ' + ([...fr.parentNode.children].indexOf(fr) + 1) + ')';
+    /* o texto de dentro de uma peça (o convite, os rótulos): o nome dela */
+    const dono = el.closest(TEXTOS_SOLTOS);
+    if (dono && dono !== el) return nomeDe(dono);
     /* a pergunta do quiz leva o rótulo dela: "pergunta (Questão 01)" */
     if (el.classList.contains('q3-q')){
       const r = el.parentNode.querySelector('.q3-marca');
@@ -9042,7 +9120,7 @@ const EDICAO = {
    só o texto, sem a letra e as cores de onde veio */
 stage.addEventListener('keydown', ev => {
   if (!EDICAO.el || !EDICAO.el.contains(ev.target)) return;
-  if (ev.key === 'Enter'){ ev.preventDefault(); document.execCommand('insertLineBreak'); }
+  if (ev.key === 'Enter'){ ev.preventDefault(); EDICAO.quebra(); }
   /* o Backspace logo depois de uma quebra junta as duas linhas com um
      espaço entre as palavras (o navegador apagaria o espaço também) */
   if (ev.key === 'Backspace'){
@@ -9066,9 +9144,9 @@ stage.addEventListener('keydown', ev => {
     EDICAO.acompanha();
   }
 });
-/* escrevendo, a caixa cresce com o texto */
+/* escrevendo, a caixa cresce com o texto (e a barrinha acompanha) */
 stage.addEventListener('input', ev => {
-  if (EDICAO.el && EDICAO.el.contains(ev.target)) EDICAO.acompanha();
+  if (EDICAO.el && EDICAO.el.contains(ev.target)){ EDICAO.acompanha(); EDICAO.poeBarra(); }
 });
 stage.addEventListener('paste', ev => {
   if (!EDICAO.el || !EDICAO.el.contains(ev.target)) return;
