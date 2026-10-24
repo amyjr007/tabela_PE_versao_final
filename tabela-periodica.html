@@ -2372,7 +2372,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v12.9';
+const VERSAO = 'v13.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3828,7 +3828,7 @@ const FRASES_VEU = [
 ];
 
 let DIG_CAPA = null, DIG_VEU = null, veu = null, toqueHint = null, escolhaHint = null;
-let rotNum = null, rotMassa = null, massaTxt = null;
+let rotNum = null, rotMassa = null, massaTxt = null, numTxt = null;
 const SETA_DIREITA =
   '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
   ' stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
@@ -4130,7 +4130,7 @@ const SEQ = {
     if (rotNum){
       rotNum.classList.remove('on','brilha');
       rotMassa.classList.remove('on','brilha');
-      massaTxt.textContent = '';
+      massaTxt.textContent = numTxt.textContent = '';
     }
     QUIZ.fecha();
     if (DIG_VEU) DIG_VEU.limpa();
@@ -4422,7 +4422,7 @@ function montaCenaDoSlide1(){
     '<div class="veu" aria-live="polite"><div class="veu-frases"></div>' +
     '<div class="toque-continuar">Toque na tela para continuar</div></div>' +
     '<div class="dica-escolha"><span class="txt"></span><span class="cursor"></span></div>' +
-    '<div class="rotulo-el r-num">Número atômico' + SETA_DIREITA + '</div>' +
+    '<div class="rotulo-el r-num"><span class="txt"></span>' + SETA_DIREITA + '</div>' +
     '<div class="rotulo-el r-massa"><span class="txt"></span>' + SETA_DIREITA + '</div>' +
     '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
   veu         = sl.querySelector('.veu');
@@ -4431,6 +4431,7 @@ function montaCenaDoSlide1(){
   rotNum      = sl.querySelector('.r-num');
   rotMassa    = sl.querySelector('.r-massa');
   massaTxt    = rotMassa.querySelector('.txt');
+  numTxt      = rotNum.querySelector('.txt');
   /* o quiz mora dentro da mesa, para o cubo da pergunta ficar à frente
      do cartão (ver o CSS do quiz) */
   sl.querySelector('.mesa').insertAdjacentHTML('beforeend',
@@ -4636,7 +4637,7 @@ function verdeAoAcaso(t){
 
 /* O ELEITO NA "1.2" — o número atômico e a massa, cada um na sua vez.
      1,5 s           o card dá uma pulsada
-     2,9 → 3,8 s     o número cresce, e "Número atômico" aparece a brilhar
+     2,9 → 3,8 s     o número cresce, e "Número atômico" escreve-se a brilhar
      3,8 → 7,3 s     a massa cresce e "Massa atômica" escreve-se a brilhar;
                      o número volta, e o nome dele fica, sem brilho
      9,8 → 14 s      o número outra vez, e o nome dele volta a brilhar
@@ -4646,8 +4647,20 @@ const FOCO12 = {
   pulso:{ de:1.5, dura:0.55, mais:0.14 },
   num:  [[2.9, 3.8], [9.8, 14.0], [16.0, 20.5]],
   massa:[[3.8, 7.3]],
+  /* os dois nomes são digitados, letra a letra, quando entram */
+  escreveNum:  { de:2.9, ate:3.6, txt:'Número atômico' },
   escreveMassa:{ de:3.8, ate:4.5, txt:'Massa atômica' }
 };
+/* um nome digitado pelo relógio da narração: quantas letras já há no
+   segundo t (pausar congela; voltar o áudio des-escreve) */
+function escreveRotulo(t, e, txtEl){
+  const n = t < e.de ? 0 : Math.round(Math.min(1, (t - e.de)/(e.ate - e.de)) * e.txt.length);
+  if (txtEl.textContent.length !== n){
+    if (n > txtEl.textContent.length) TECLAS.bate();
+    txtEl.textContent = e.txt.slice(0, n);
+  }
+  return n;
+}
 const dentroDe = (t, faixas) => faixas.some(([a,b]) => t >= a && t < b);
 
 /* onde estão o número e a massa no card pousado, em px do palco. Mede-se
@@ -4699,16 +4712,10 @@ function efeitos12(t){
   c.classList.toggle('foco-num', numG);
   c.classList.toggle('foco-massa', massaG);
 
-  rotNum.classList.toggle('on', t >= FOCO12.num[0][0]);
+  rotNum.classList.toggle('on', escreveRotulo(t, FOCO12.escreveNum, numTxt) > 0);
   rotNum.classList.toggle('brilha', numG);
 
-  const e = FOCO12.escreveMassa;
-  const n = t < e.de ? 0 : Math.round(Math.min(1, (t - e.de)/(e.ate - e.de)) * e.txt.length);
-  if (massaTxt.textContent.length !== n){
-    if (n > massaTxt.textContent.length) TECLAS.bate();
-    massaTxt.textContent = e.txt.slice(0, n);
-  }
-  rotMassa.classList.toggle('on', n > 0);
+  rotMassa.classList.toggle('on', escreveRotulo(t, FOCO12.escreveMassa, massaTxt) > 0);
   rotMassa.classList.toggle('brilha', massaG);
 }
 
@@ -7179,7 +7186,7 @@ function efeitos13(t){
 
   /* os dois nomes apontavam para o card lá em cima: saem quando ele parte */
   if (rotNum){
-    rotNum.classList.toggle('on', t < de);
+    rotNum.classList.toggle('on', t < de && numTxt.textContent.length > 0);
     rotMassa.classList.toggle('on', t < de && massaTxt.textContent.length > 0);
   }
 }
