@@ -2333,7 +2333,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v12.5';
+const VERSAO = 'v12.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7376,6 +7376,7 @@ const QUIZ = {
     this.itens = embaralha(lista.slice()).slice(0, QUIZ_TOTAL);
     this.passo = 0;
     this.acertos = 0;
+    this.erros = 0;
     this.aberto = true;
     this.mostrandoNota = false;
     this.caixa().classList.remove('nota-on');
@@ -7391,6 +7392,7 @@ const QUIZ = {
     if (g !== this.geracao) return;
     const item = this.itens[this.passo];
     const cx = this.caixa();
+    this.errouAqui = false;
     cx.querySelector('.quiz-marca').textContent =
       'Questão ' + (this.passo + 1) + ' de ' + this.itens.length;
     const msg = cx.querySelector('.quiz-msg');
@@ -7426,8 +7428,25 @@ const QUIZ = {
     const certa = item.op[0], acertou = nome === certa;
     const ultima = this.passo === this.itens.length - 1;
 
-    /* a resposta certa aparece sempre — no botão e no cubo, que ganha o
-       nome de volta —, tenha o aluno acertado ou não */
+    /* O ERRO NÃO PASSA À FRENTE: a opção errada fica marcada e apagada, o
+       erro conta, e a pergunta continua até o aluno acertar. A certa não
+       se mostra — é ele quem a encontra. */
+    if (!acertou){
+      b.classList.add('errada');
+      b.disabled = true;
+      this.erros++;
+      this.errouAqui = true;
+      msg.textContent = 'Tudo bem. Tente de novo';
+      msg.className = 'quiz-msg erro';
+      tremeVermelho([cx.querySelector('.quiz-card'), this.cubo]);
+      await tocaEfeito('error');
+      if (g !== this.geracao) return;
+      this.travado = false;
+      return;
+    }
+
+    /* acertou: a certa acende — no botão e no cubo, que ganha o nome de
+       volta — e as outras saem */
     cx.querySelectorAll('.quiz-op').forEach(o => {
       if (o.textContent === certa) o.classList.add('certa');
       else if (o !== b) o.classList.add('fora');
@@ -7435,29 +7454,20 @@ const QUIZ = {
     });
     this.cubo.classList.remove('sem-nome');
 
-    if (acertou){
-      this.acertos++;
-      const voz = vozDoAcerto(ultima);
-      escreveResposta(msg, item, certa, voz.frase);
-      msg.className = 'quiz-msg ok';
-      confete();
-      /* todo acerto tem a festa inteira: fanfarra e aplausos juntos, e,
-         quando a fanfarra acaba, a voz daquela pergunta — uma diferente
-         em cada uma, para nada se repetir */
-      const fanfarra = tocaEfeito('funfare');
-      tocaEfeito('applause');                /* os aplausos continuam por baixo */
-      await fanfarra;
-      if (g !== this.geracao) return;
-      await tocaEfeito(voz.som);
-    } else {
-      b.classList.add('errada');
-      escreveResposta(msg, item, certa, null);
-      msg.className = 'quiz-msg erro';
-      tremeVermelho([cx.querySelector('.quiz-card'), this.cubo]);
-      await tocaEfeito('error');
-      if (g !== this.geracao) return;
-      await tocaEfeito('Calmanaproximaacerta');
-    }
+    /* só conta como acerto o que veio na primeira tentativa */
+    if (!this.errouAqui) this.acertos++;
+    const voz = vozDoAcerto(ultima);
+    escreveResposta(msg, item, certa, voz.frase);
+    msg.className = 'quiz-msg ok';
+    confete();
+    /* todo acerto tem a festa inteira: fanfarra e aplausos juntos, e,
+       quando a fanfarra acaba, a voz daquela pergunta — uma diferente
+       em cada uma, para nada se repetir */
+    const fanfarra = tocaEfeito('funfare');
+    tocaEfeito('applause');                /* os aplausos continuam por baixo */
+    await fanfarra;
+    if (g !== this.geracao) return;
+    await tocaEfeito(voz.som);
     if (g !== this.geracao) return;
 
     await this.devolve();
@@ -7499,7 +7509,10 @@ const QUIZ = {
     const nota = Math.max(1, Math.round(a / total * 10));
     const cx = this.caixa();
     cx.querySelector('.nota-num').textContent = nota;
-    cx.querySelector('.nota-acertos').textContent = 'Você acertou ' + a + ' de ' + total + ' perguntas.';
+    /* a nota é dos acertos de primeira; os erros contam-se à parte */
+    const e = this.erros;
+    cx.querySelector('.nota-acertos').textContent = 'Você acertou ' + a + ' de ' + total + ' de primeira' +
+      (e ? ' · ' + e + (e === 1 ? ' erro' : ' erros') : '') + '.';
     cx.querySelector('.nota-msg').textContent = mensagemDaNota(nota);
     cx.classList.remove('card-on');
     cx.classList.add('nota-on');
