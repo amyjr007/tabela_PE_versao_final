@@ -2322,7 +2322,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v12.0';
+const VERSAO = 'v12.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4631,7 +4631,7 @@ function efeitos12(t){
    feita é p³. Posição, tamanho e giro seguem a mesma curva, e tudo é
    função do tempo — pausar congela o voo, voltar o áudio atrás
    devolve o elemento ao alto. */
-const VOLTA13 = { '1.3A':11.7, '1.3B':10.5, dura:1.4 };
+const VOLTA13 = { '1.3A':11.7, '1.3B':12.0, dura:1.4 };
 
 /* ============================================================
    OS EVENTOS DA "1.3A" — os símbolos de uma letra e os de duas
@@ -4796,28 +4796,28 @@ function caixaDoLatim(o, t, x, y, meiaCubo, e){
 /* ============================================================
    OS EVENTOS DA "1.3B" — o escolhido tem símbolo de duas letras
      1 s          o símbolo do card do escolhido pulsa duas vezes
-     5,4 s        só a SEGUNDA letra dele pulsa duas vezes
-     9 s          o símbolo todo pulsa uma vez
-     10,5 s       o escolhido volta para casa (em efeitos13)
-     13 → 20 s    oito elementos cujo nome começa pelo símbolo crescem,
+     7 s          só a SEGUNDA letra dele pulsa duas vezes
+     11 s         o símbolo todo pulsa uma vez
+     12 s         o escolhido volta para casa (em efeitos13)
+     14 → 21 s    oito elementos cujo nome começa pelo símbolo crescem,
                   um a um, com luz marrom
-     21,7 s       o F gira e cresce; 22,8 s o nome pulsa 2×; 24 s volta
-     25,6 s       o Ca gira e cresce; 27 s o nome pulsa 2×; 28 s volta
-     28 s         e o O gira e cresce; 29 s o nome pulsa 2×; 32 s volta
+     23 s         o F gira e cresce; 24,6 s o nome pulsa 2×; 25 s volta
+     26,2 s       o Ca gira e cresce; 28 s o nome pulsa 2×; 29 s volta
+     29 s         e o O gira e cresce; 31 s o nome pulsa 2×; 32 s volta
    ============================================================ */
 const EV13B = {
-  pulsosSimbolo:[ { de:1.0, dura:0.9,  vezes:2, mais:0.32 },
-                  { de:9.0, dura:0.55, vezes:1, mais:0.34 } ],
-  pulsoSegunda:   { de:5.4, dura:0.9,  vezes:2, mais:0.6 },
+  pulsosSimbolo:[ { de:1.0,  dura:0.9,  vezes:2, mais:0.32 },
+                  { de:11.0, dura:0.55, vezes:1, mais:0.34 } ],
+  pulsoSegunda:   { de:7.0,  dura:0.9,  vezes:2, mais:0.6 },
   /* os oito da onda marrom: todos de duas letras, porque esta é a trilha
      dos símbolos de duas letras, e espalhados pela tabela. F, Ca e O ficam
      de fora — são eles que aparecem logo a seguir, um de cada vez. */
   oito:['He','Li','Ne','Al','Cl','Fe','Ni','Ba'],
-  iniciais:{ de:13.0, ate:20.0, largura:1.0, cresce:0.6, classe:'luz-marrom', suja:false },
+  iniciais:{ de:14.0, ate:21.0, largura:1.0, cresce:0.6, classe:'luz-marrom', suja:false },
   zooms:[
-    { sym:'F',  cresce:21.7, pulsa:22.8, volta:24.0, suja:false },
-    { sym:'Ca', cresce:25.6, pulsa:27.0, volta:28.0, suja:false },
-    { sym:'O',  cresce:28.0, pulsa:29.0, volta:32.0, suja:false }
+    { sym:'F',  cresce:23.0, pulsa:24.6, volta:25.0, suja:false },
+    { sym:'Ca', cresce:26.2, pulsa:28.0, volta:29.0, suja:false },
+    { sym:'O',  cresce:29.0, pulsa:31.0, volta:32.0, suja:false }
   ]
 };
 
@@ -7161,7 +7161,7 @@ const QUIZ_DIFERENTES = [
 const DEPOIS_DO_QUIZ = { '1.3A':'1.4', '1.3B':'1.4', '1.4':'1.jogo' };
 /* A HORA DO QUIZ, no relógio da narração: o primeiro exemplo rola para a
    frente com o fim da fala ainda a tocar */
-const QUIZ_NA_HORA = { '1.3A':42.0, '1.3B':35.5, '1.4':54.0 };
+const QUIZ_NA_HORA = { '1.3A':42.0, '1.3B':35.8, '1.4':54.0 };
 function quizNaHora(t){
   const h = QUIZ_NA_HORA[trilhaAtual];
   if (h !== undefined && t >= h) SEQ.abreQuiz(trilhaAtual);
@@ -9238,7 +9238,7 @@ function telaCheia(){
 const NAV_TOPICOS = [
   { titulo:'Visão geral da tabela', sub:'o slide desde o começo', slide:1,
     entra(){ /* o recomeço do slide já é o tópico */ } },
-  { titulo:'Quiz 1', sub:'aos 42 s da 1.3A ou aos 35,5 s da 1.3B', slide:1,
+  { titulo:'Quiz 1', sub:'aos 42 s da 1.3A ou aos 35,8 s da 1.3B', slide:1,
     variantes:[ { id:'1.3A', rotulo:'1.3A · uma letra' }, { id:'1.3B', rotulo:'1.3B · duas letras' } ],
     entra(v, g){
       const c = eleitoDaNavegacao(v === '1.3A' ? 1 : v === '1.3B' ? 2 : 0);
