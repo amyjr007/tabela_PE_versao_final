@@ -2416,7 +2416,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v14.9';
+const VERSAO = 'v15.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -9703,22 +9703,26 @@ const NAV_TOPICOS = [
   /* ---- o slide 3 · Os critérios de Organização ---- */
   { titulo:'Início', sub:'o começo do slide', slide:2,
     entra(){ /* o recomeço do slide já é o tópico */ } },
-  { titulo:'O critério 1 de organização', sub:'aos 25 s da narração 2, com a tabela já desmontada', slide:2,
+  /* o critério 1: a tela de Moseley, no instante da pausa que vem antes
+     dele (40,4 s da "2"): a pausa acontece, e a narração segue dali */
+  { titulo:'O critério 1 de organização', sub:'aos 40,4 s da narração 2, na pausa antes do critério 1', slide:2,
     entra(v, g){
       semTransicaoUmInstante();
       trilhaAtual = -1;
       carregaTrilha('2');
-      TEMPO_FORCADO = { id:'2', t:25 };
-      depoisDaMesa(g, () => tocaDesde('2', 25, g));
+      TEMPO_FORCADO = { id:'2', t:40.4 };
+      depoisDaMesa(g, () => tocaDesde('2', 40.4, g));
     } },
-  { titulo:'O critério 2 de organização', sub:'a narração 2.3, com a tabela montada até à linha 4', slide:2,
+  /* o critério 2: a "2.3" aos 4 s, quando "Critério 2:" começa a ser escrito */
+  { titulo:'O critério 2 de organização', sub:'aos 4 s da narração 2.3, com a tabela montada até à linha 4', slide:2,
     entra(v, g){
       semTransicaoUmInstante();
       trilhaAtual = -1;
       carregaTrilha('2.3');
+      TEMPO_FORCADO = { id:'2.3', t:4 };
       /* do 1 ao 36 em casa, coloridos; os outros, na desordem */
       TP.todos().filter(c => +c.dataset.z <= ENCAIXE.sozinhoAte).forEach(poeNoLugarJa);
-      depoisDaMesa(g, () => tocaDesde('2.3', 0, g));
+      depoisDaMesa(g, () => tocaDesde('2.3', 4, g));
     } },
   { titulo:'Quiz', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:2,
     entra(v, g){
