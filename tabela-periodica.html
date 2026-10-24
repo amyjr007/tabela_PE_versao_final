@@ -2440,7 +2440,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v15.9';
+const VERSAO = 'v16.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6838,6 +6838,7 @@ const FINAL = {
     this.tiraDica();
     /* o tocado salta já, sem esperar pelos outros */
     encaixaCubo(c);
+    tocaEfeito('flip');
     this.monta(c);
   },
   monta(primeiro){
@@ -6857,6 +6858,7 @@ const FINAL = {
       if (g !== this.g) return;
       if (i >= falta.length){ setTimeout(() => { if (g === this.g) this.festa(); }, 900); return; }
       encaixaCubo(falta[i++]);
+      tocaEfeito('flip');          /* do 38 em diante, um a cada card */
       setTimeout(vai, this.passo * 1000);
     };
     /* os outros vêm logo atrás do tocado, no compasso da montagem */
