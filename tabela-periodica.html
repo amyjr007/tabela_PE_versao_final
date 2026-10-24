@@ -2303,7 +2303,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v11.4';
+const VERSAO = 'v11.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3749,10 +3749,12 @@ function pausaDaCapa(){
   }, 1000);
 }
 
-/* e as da tela escura do slide 1, que ficam até o aluno tocar */
+/* e as da tela escura do slide 1, que ficam até o aluno tocar. A tela
+   escurece com a primeira (VEU_DE, na narração "1") */
+const VEU_DE = 14.8;
 const FRASES_VEU = [
-  { de:13.6, ate:15.6, txt:'A tabela é um instrumento de consulta.' },
-  { de:16.6, ate:18.0, txt:'Não foi feita pra ser memorizada!' }
+  { de:VEU_DE, ate:16.8, txt:'A tabela é um instrumento de consulta.' },
+  { de:17.9,   ate:19.3, txt:'Não foi feita pra ser memorizada!' }
 ];
 
 let DIG_CAPA = null, DIG_VEU = null, veu = null, toqueHint = null, escolhaHint = null;
@@ -4345,7 +4347,7 @@ function efeitosDoTempo(){
   /* TELA ESCURA, BOTÃO FORA. Decide-se antes de qualquer outra coisa, e
      para todos os slides: saindo do slide 1 com a tela escura, o botão
      tem de voltar — e o resto desta função nem corre fora do slide 1. */
-  stage.classList.toggle('tela-escura', atual === 1 && trilhaAtual === '1' && t >= 13.6);
+  stage.classList.toggle('tela-escura', atual === 1 && trilhaAtual === '1' && t >= VEU_DE);
   /* acabada a "1", ou fora dela, as colunas da onda soltam os cubos */
   if (COLUNAS_1.caixas && (atual !== 1 || trilhaAtual !== '1' || som.ended)) COLUNAS_1.solta();
   if (trilhaAtual === 'capa' && DIG_CAPA) DIG_CAPA.escreve(t);
@@ -4358,9 +4360,9 @@ function efeitosDoTempo(){
   if (atual === 3){ efeitos3(t); return; }
   if (atual !== 1 || !veu) return;
 
-  /* a tela escura é da trilha "1", dos 13,6 s em diante — e continua
+  /* a tela escura é da trilha "1", dos 14,8 s em diante — e continua
      depois de ela acabar, até o toque. Mudada a trilha, esmaece. */
-  veu.classList.toggle('on', trilhaAtual === '1' && t >= 13.6);
+  veu.classList.toggle('on', trilhaAtual === '1' && t >= VEU_DE);
   if (trilhaAtual === '1'){
     ondaDasFamilias(t);
     DIG_VEU.escreve(t);
