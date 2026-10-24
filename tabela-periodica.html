@@ -2384,7 +2384,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v13.2';
+const VERSAO = 'v13.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7481,6 +7481,27 @@ const QUIZ = {
     this.apresenta(g);
   },
 
+  /* o quiz de uma aula guardada (ONDE): as mesmas perguntas, na mesma, com
+     os mesmos acertos e erros — ou o cartão da nota, se já tinha acabado */
+  retoma(e){
+    const fonte = e.origem === '1.3A' ? QUIZ_UMA : e.origem === '1.3B' ? QUIZ_DUAS : QUIZ_DIFERENTES;
+    const itens = e.itens.map(z => fonte.find(p => p.z === z)).filter(Boolean);
+    if (!itens.length){ SEQ.abreQuiz(e.origem); return; }
+    SEQ.quizDa = e.origem;
+    this.origem = e.origem;
+    this.itens = itens;
+    this.passo = Math.min(e.passo || 0, itens.length - 1);
+    this.acertos = e.acertos || 0;
+    this.erros = e.erros || 0;
+    this.aberto = true;
+    this.mostrandoNota = false;
+    this.caixa().classList.remove('nota-on');
+    stage.classList.add('em-quiz');
+    const g = ++this.geracao;
+    this.caixa().classList.add('on');
+    if (e.nota) this.resultado(g); else this.apresenta(g);
+  },
+
   /* um exemplo: o cubo vem para a frente, sem o nome, e o cartão abre */
   apresenta(g){
     if (g !== this.geracao) return;
@@ -7720,8 +7741,13 @@ function baralhaMemoria(){
   return embaralha(baralho);
 }
 
-function abreMemoria(){
+/* 'ordem': as cartas na ordem de uma partida guardada (ONDE), como
+   "11:sym"; sem ela, um baralho novo */
+function abreMemoria(ordem){
   if (memAberto || atual !== 1) return;
+  const baralho = Array.isArray(ordem)
+    ? ordem.map(s => { const [z, tipo] = s.split(':'); return { d: MEM_PARES.find(d => d.z === +z), tipo }; }).filter(c => c.d)
+    : baralhaMemoria();
   const sl = slides[1];
   if (!sl) return;
   fechaNav();
@@ -7734,7 +7760,7 @@ function abreMemoria(){
     '<h2 class="mem-titulo">Jogo da memória dos elementos</h2>' +
     '<div class="mem-topo"><span><b class="pt">0</b><i>pontos</i></span>' +
     '<span><b class="pr">0</b><i>de 10 pares</i></span></div>' +
-    '<div class="mem-grade">' + baralhaMemoria().map(c => cartaDaMemoria(c.d, c.tipo)).join('') + '</div>' +
+    '<div class="mem-grade">' + baralho.map(c => cartaDaMemoria(c.d, c.tipo)).join('') + '</div>' +
     '<div class="mem-dica">Ache o símbolo e o nome do mesmo elemento</div>';
   sl.appendChild(ov);
   memAberto = ov;
@@ -10006,18 +10032,117 @@ animaCapa();
 vidaDosBlocos();
 carregaTrilha('capa');
 
-/* DESENVOLVIMENTO: a capa está pronta, e o app abre direto no slide 1 —
-   a tabela pousa, e a narração dele espera o play. Para voltar a abrir
-   na capa, 0. As fotos do carrossel (?miniaturas) começam sempre na capa. */
-const ABRE_NO_SLIDE = 1;
-if (ABRE_NO_SLIDE && !/miniaturas/.test(location.search)){
-  /* calado: a cada recarga (e o editor recarrega a página a cada arquivo
-     salvo) a abertura do capítulo começava e era cortada pela seguinte */
-  ABERTURA_SUSPENSA = true;
-  vaiDireto(ABRE_NO_SLIDE);
-  ABERTURA_SUSPENSA = false;
-  pousaTabela();
-}
+/* ============================================================
+   CONTINUAR DE ONDE PAROU
+   A cada segundo, e ao sair do app, guarda-se no aparelho onde a aula
+   está: o slide, a narração e o segundo dela, o elemento escolhido, o
+   quiz (as perguntas, em qual está, acertos e erros, o cartão da nota),
+   o jogo da memória (a ordem das cartas e os pares feitos). Ao abrir, a
+   aula volta para lá, com a narração parada naquele segundo à espera do
+   play — tudo o que anima é função do tempo dela, e a mesa aparece como
+   estava. A capa recomeça sempre do zero (é curta).
+   ============================================================ */
+const ONDE = {
+  CHAVE: 'tabela-aluno-onde',
+  restaurando: false,
+  foto(){
+    if (naMontagem() || andando) return null;
+    const t = som.currentTime || 0;
+    const o = { v:1, slide:atual, trilha:trilhaAtual, t:+t.toFixed(2),
+                fim: som.ended || (!!som.duration && t >= som.duration - 0.05) };
+    /* a capa (e a demonstração dela, que passa pelo slide 1) recomeça */
+    if (trilhaAtual === 'capa' || atual === 0) return { v:1, slide:0 };
+    if (SEQ.eleito) o.z = +SEQ.eleito.dataset.z;
+    if (QUIZ.aberto) o.quiz = { origem:QUIZ.origem, itens:QUIZ.itens.map(i => i.z), passo:QUIZ.passo,
+                                acertos:QUIZ.acertos, erros:QUIZ.erros, nota:!!QUIZ.mostrandoNota };
+    if (QUIZ3.aberto) o.quiz3 = true;
+    if (memAberto) o.jogo = { ordem:memCartas.map(c => c.dataset.z + ':' + c.dataset.tipo),
+                              casadas:[...new Set(memCartas.filter(c => c.classList.contains('casada')).map(c => +c.dataset.z))],
+                              pontos:memPontos, erros:memErros, ultimoG:memUltimoG };
+    return o;
+  },
+  guarda(){
+    if (this.restaurando) return;
+    const o = this.foto();
+    if (o) try { localStorage.setItem(this.CHAVE, JSON.stringify(o)); } catch (_) {}
+  },
+  le(){ try { return JSON.parse(localStorage.getItem(this.CHAVE) || 'null'); } catch (_) { return null; } },
+
+  /* volta para onde a aula estava; false se não havia nada a que voltar */
+  restaura(o){
+    if (!o || o.v !== 1 || !o.slide || !SLIDES[o.slide] || !TRILHAS[o.trilha]) return false;
+    this.restaurando = true;
+    let tr = o.trilha, t = o.t || 0, fim = !!o.fim;
+    /* a meio do encaixe do slide 3 o estado é do toque do aluno, e não do
+       tempo: volta-se ao fim da "2", à espera do toque que o recomeça */
+    if (o.slide === 2 && (tr === '2.1' || tr === '2.2')){ tr = '2'; t = 1e4; fim = true; }
+    /* calado: a abertura do capítulo não toca por cima da volta */
+    ABERTURA_SUSPENSA = true;
+    vaiDireto(o.slide);
+    ABERTURA_SUSPENSA = false;
+    pousaTabela();
+    SEQ.comecou = true;
+    VIDA.desliga();
+    if (o.z) SEQ.eleito = TP.todos().find(c => +c.dataset.z === o.z) || null;
+    /* o escolhido, na "1.2", está lá em cima, crescido — já, sem viagem e
+       sem pousar, para os nomes dele serem medidos com ele no lugar (o voo
+       dele não é função do tempo; na "1.3A/B" a volta já é) */
+    const c = SEQ.eleito;
+    if (c && tr === '1.2'){
+      c.classList.remove('pousando');
+      c.classList.add('eleito');
+      c.style.transition = 'none';
+      c.style.left = ((xDaColuna(8) + xDaColuna(9))/2).toFixed(1) + 'px';
+      c.style.top  = yDaLinha(2).toFixed(1) + 'px';
+      c.style.setProperty('--onda', '2.8');
+      void c.offsetWidth;
+      c.style.transition = 'transform 110ms ease-out';
+      delete c._marcas;
+    }
+    /* o quiz guardado é o que volta: a hora do quiz no relógio não abre outro */
+    if (o.quiz) SEQ.quizDa = o.quiz.origem;
+    /* o slide 3: a tabela montada como a narração em que se está a deixa */
+    if (o.slide === 2){
+      semTransicaoUmInstante();
+      if (tr === '2.3' || tr === '2.4') TP.todos().filter(c => +c.dataset.z <= ENCAIXE.sozinhoAte).forEach(poeNoLugarJa);
+      if (tr === '2.5' || tr === '2.5A'){ TP.todos().forEach(poeNoLugarJa); FINAL.feito = true; if (tr === '2.5A') LC25.liga(); }
+    }
+    trilhaAtual = -1;
+    carregaTrilha(tr);
+    TEMPO_FORCADO = { id:tr, t };
+    const vai = () => {
+      if (trilhaAtual !== tr){ this.restaurando = false; return; }
+      som.currentTime = Math.min(t, som.duration || t);
+      if (o.quiz) QUIZ.retoma(o.quiz);
+      else if (o.jogo) this.jogo(o.jogo);
+      else if (o.quiz3){ viraQuiz(true); QUIZ3.abre(); }
+      /* acabada a narração, o que vinha a seguir (o véu à espera do toque,
+         a escolha de um elemento, o botão do jogo…) */
+      else if (fim) SEQ.acabou(tr);
+      this.restaurando = false;
+    };
+    if (som.readyState >= 1) vai(); else som.addEventListener('loadedmetadata', vai, { once:true });
+    som.addEventListener('error', () => { this.restaurando = false; }, { once:true });
+    return true;
+  },
+  /* o jogo da memória com as mesmas cartas, os mesmos pares feitos */
+  jogo(j){
+    viraJogo(true);
+    abreMemoria(j.ordem);
+    if (!memAberto) return;
+    memCartas.forEach(c => { if (j.casadas.includes(+c.dataset.z)) c.classList.add('casada'); });
+    memPares = j.casadas.length; memPontos = j.pontos || 0; memErros = j.erros || 0; memUltimoG = j.ultimoG ?? null;
+    placarMemoria();
+    if (memPares === MEM_PARES.length) fimDaMemoria();
+  }
+};
+setInterval(() => ONDE.guarda(), 1000);
+document.addEventListener('visibilitychange', () => { if (document.hidden) ONDE.guarda(); });
+addEventListener('pagehide', () => ONDE.guarda());
+
+/* ao abrir: onde a aula parou; sem nada guardado, a capa. As fotos do
+   carrossel (?miniaturas) começam sempre na capa, sem nada guardado. */
+if (!/miniaturas/.test(location.search)) ONDE.restaura(ONDE.le());
 
 /* ============================================================
    O BOTÃO INSTALAR — na capa, no canto de cima à direita.
