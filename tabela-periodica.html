@@ -392,10 +392,10 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
    ============================================================ */
 #stage.abre-capa .capa :is(.marca, h1, .risco, .autor, .email, .foto){
   opacity:0;
-  transition:transform var(--tsobe,.42s) var(--e-salto), filter .42s ease, box-shadow .42s ease, opacity .6s ease}
+  transition:transform var(--tsobe,.42s) var(--e-salto), filter .8s ease, box-shadow .42s ease, opacity .6s ease}
 #stage.abre-capa .capa .ve{opacity:1}
 /* digitada, a peça acende de uma vez: quem aparece aos poucos são as letras */
-#stage.abre-capa .capa .dig{opacity:1;transition-duration:.42s,.42s,.42s,0s}
+#stage.abre-capa .capa .dig{opacity:1;transition-duration:.42s,.8s,.42s,0s}
 #stage.abre-capa .capa .dig .lt{visibility:hidden}
 #stage.abre-capa .capa .dig .lt.vis{visibility:visible}
 /* o tracinho de quem escreve: fora do fluxo, para não partir a palavra */
@@ -406,11 +406,11 @@ html.capa-escura #versao{color:rgba(242,238,230,.55)}
 .capa .autor .desenv{display:none;position:absolute;left:0;bottom:100%;margin-bottom:2px;
   font-size:17px;font-weight:400;color:rgba(242,238,230,.72)}
 #stage.abre-capa .capa .autor .desenv{display:block}
-/* a tabela no meio: as peças da capa saem pelo filtro (a opacidade é da
-   digitação) e as cartas pela opacidade */
+/* a tabela no meio: as peças da capa saem em fade out, e voltam em fade
+   in — pelo filtro (a opacidade é da digitação); as cartas, pela opacidade */
 #stage.tab-meio .capa :is(h1, .risco, .autor, .foto, .digitado){filter:opacity(0)}
-.capa .digitado{transition:filter .42s ease}
-.capa .blocos{transition:opacity .45s ease}
+#stage .capa .digitado{transition:filter .8s ease}
+.capa .blocos{transition:opacity .8s ease}
 #stage.tab-meio .capa .blocos{opacity:0}
 /* os símbolos das casas: apagados, e a narração acende-os (--sim). Sem o
    #tabela no seletor: as cópias da tabelinha (carrossel, visão geral)
@@ -1404,6 +1404,9 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
   font-family:var(--display);font-weight:600;font-size:23px;letter-spacing:.01em;
 }
 #stage .solto#som.iniciar{transform:translate(calc(-100% + 35px),-50%) scale(var(--esc,1))}
+/* a capa abre com o "Iniciar", e é aí que o layout mede o botão: a largura
+   da pílula ficava gravada nele, e o play redondo saía oval */
+#stage .solto#som:not(.iniciar){width:70px!important;height:70px!important}
 #stage .solto#som.iniciar:hover{
   transform:translate(calc(-100% + 35px),-50%) scale(var(--esc,1)) translateY(-3px)}
 
@@ -2357,7 +2360,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v10.8';
+const VERSAO = 'v10.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3671,7 +3674,7 @@ const SAIDA_FRASES = 0.4;
    Como as frases, tudo é função do segundo do áudio. */
 const DIG_PECAS = [
   { sel:'h1 .p-audio, h1 .p-inter', de: 2.3, ate: 3.2 },  /* Audiobook interativo */
-  { sel:'.autor',                   de: 5.0, ate: 5.7 },  /* Desenvolvido pelo / Prof. Amauri Junior */
+  { sel:'.autor',                   de: 4.0, ate: 5.7 },  /* Desenvolvido pelo / Prof. Amauri Junior */
   { sel:'h1 em',                    de: 7.9, ate: 9.2 }   /* Tabela Periódica Moderna */
 ];
 const CAPA_VOLTA = 50;      /* a capa inteira outra vez */
@@ -3748,13 +3751,13 @@ function efeitosCapa(t){
   if (escrevendo){ if (cursorDig.previousSibling !== escrevendo) escrevendo.after(cursorDig); }
   else cursorDig.remove();
   /* o retrato chega com o nome; o risco, com o título */
-  capa.querySelector('.foto').classList.toggle('ve', t >= 5.0);
+  capa.querySelector('.foto').classList.toggle('ve', t >= 4.0);
   capa.querySelector('.risco').classList.toggle('ve', t >= 9.2);
 
   /* a tabelinha, do fundo para o meio e de volta */
   const mov = t < MEIO.volta ? entre(t, MEIO.vai, MEIO.chega) : 1 - entre(t, MEIO.volta, MEIO.fica);
   const luz = t < MEIO.volta ? entre(t, ...MEIO.acende)       : 1 - entre(t, ...MEIO.apaga);
-  stage.classList.toggle('tab-meio', t >= MEIO.vai - 0.2 && t < MEIO.volta + 0.4);
+  stage.classList.toggle('tab-meio', t >= MEIO.vai && t < MEIO.volta + 0.4);
   if (!mov && !luz){
     if (meioBase){ meioBase = null; ['translate', 'scale', '--sim', '--celop'].forEach(p => tab.style.removeProperty(p)); }
     return;
@@ -4006,7 +4009,8 @@ function desenhaAnel(frac){
 
 function tocaOuPara(){
   /* acabada a abertura, o botão é "Iniciar": leva ao slide da tabela */
-  if (somBtn.classList.contains('iniciar')){ go(1); return; }
+  /* o "Iniciar" do começo toca a narração, como o play (segue abaixo) */
+  if (somBtn.dataset.pilula === 'comecar'){ go(1); return; }
   /* na tela escura à espera do toque, o botão também serve de toque */
   if (SEQ.aguardaToque){ SEQ.continua(); return; }
   if (SEQ.aguardaToque2){ SEQ.continua2(); return; }
@@ -4279,18 +4283,40 @@ function avisaSeNaoTocou(e){
   TP.diz('Toque no play para continuar.');
 }
 
-/* o botão "Iniciar" — o rótulo mora dentro do próprio botão da narração */
+/* os botões em pílula da capa — o rótulo mora dentro do próprio botão da
+   narração. Dois modos:
+   · 'iniciar'  o app acaba de abrir: "Iniciar" toca a narração da capa
+   · 'comecar'  a narração acabou (ou chegou aos 51 s): "Começar" leva à aula
+   false volta ao play redondo. */
 somBtn.insertAdjacentHTML('beforeend',
-  '<span class="rotulo-iniciar">Iniciar' +
+  '<span class="rotulo-iniciar"><span class="rot-txt"></span>' +
   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
   ' stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-  '<path d="M5 12h14M13 6l6 6-6 6"/></svg></span>');
-function viraIniciar(sim){
-  somBtn.classList.toggle('iniciar', sim);
-  if (sim){
-    somBtn.title = 'Iniciar a aula';
-    somBtn.setAttribute('aria-label', somBtn.title);
-  }
+  '<path/></svg></span>');
+const PILULA = {
+  iniciar: { txt:'Iniciar',  titulo:'Tocar a narração', seta:'M8 5.5v13l10.5-6.5z' },
+  comecar: { txt:'Começar',  titulo:'Começar a aula',   seta:'M5 12h14M13 6l6 6-6 6' }
+};
+function viraIniciar(modo){
+  if (modo === true) modo = 'comecar';
+  const atualModo = somBtn.dataset.pilula || false;
+  if (atualModo === (modo || false)) return;
+  somBtn.classList.toggle('iniciar', !!modo);
+  if (!modo){ delete somBtn.dataset.pilula; mostraPausa(!som.paused); return; }
+  const p = PILULA[modo];
+  somBtn.dataset.pilula = modo;
+  somBtn.querySelector('.rot-txt').textContent = p.txt;
+  const svg = somBtn.querySelector('.rotulo-iniciar svg');
+  svg.setAttribute('fill', modo === 'iniciar' ? 'currentColor' : 'none');
+  svg.querySelector('path').setAttribute('d', p.seta);
+  somBtn.title = p.titulo;
+  somBtn.setAttribute('aria-label', p.titulo);
+}
+/* na capa, o modo do botão segue o relógio da narração: parada no zero,
+   "Iniciar"; dos 51 s em diante (ou acabada), "Começar"; no meio, o play */
+function botaoDaCapa(t){
+  if (atual !== 0 || trilhaAtual !== 'capa' || !temTrilha && !som.ended) return;
+  viraIniciar(t >= 51 || som.ended ? 'comecar' : (som.paused && t < 0.05 ? 'iniciar' : false));
 }
 
 /* O BOTÃO DO JOGO: acabada a narração do jogo da memória, o botão do
@@ -4378,6 +4404,7 @@ function efeitosDoTempo(){
   if (COLUNAS_1.caixas && (atual !== 1 || trilhaAtual !== '1' || som.ended)) COLUNAS_1.solta();
   if (trilhaAtual === 'capa' && DIG_CAPA) DIG_CAPA.escreve(t);
   efeitosCapa(t);
+  botaoDaCapa(t);
   if (trilhaAtual === 'capa') DEMO.rola(t);
   /* o slide 3 tem os eventos dele */
   if (atual === 2){ efeitos2(t); return; }
@@ -7857,7 +7884,6 @@ const DEMO = {
   voltaACapa(){
     tiraMao();
     this.conduz(() => go(0));
-    viraIniciar(true);
   },
   acaba(){ tiraMao(); emDemo = false; },
 
