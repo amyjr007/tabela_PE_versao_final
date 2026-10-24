@@ -2390,7 +2390,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v13.7';
+const VERSAO = 'v13.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3652,8 +3652,8 @@ const ROTEIROS = {
   '1.jogo': [],
   /* slide 3 */
   '2':    [
-    /* aos 40 s, com a tela escura, a narração pára um segundo, e continua */
-    { t:40.0, faz(){ pausaUmSegundo('2'); } }
+    /* aos 40,4 s, com a tela escura, a narração pára um segundo, e continua */
+    { t:40.4, faz(){ pausaUmSegundo('2'); } }
   ],
   '2.1':  [],
   '2.2':  [],
@@ -3832,7 +3832,7 @@ requestAnimationFrame(function quadroDaCapa(){
 });
 /* UM SEGUNDO DE SILÊNCIO no meio de uma narração, e ela continua — se
    ainda for a mesma e ninguém a tiver mexido (na capa aos 12,7 s, com a
-   tabela no meio; na "2" aos 40 s, com a tela de Moseley) */
+   tabela no meio; na "2" aos 40,4 s, com a tela de Moseley) */
 let pausaT = 0;
 function pausaUmSegundo(id){
   clearTimeout(pausaT);
@@ -5025,7 +5025,7 @@ function efeitos13A(t){
      18 → 23 s    os cards desorganizam-se pela tela, um a um, direitos
      28,5 s       a tela escurece, e Henry Moseley entra pela borda
      29 → 31,5 s  "Henry Moseley - 1913", digitado debaixo da foto
-     40 s         a narração pára um segundo, e continua
+     40,4 s       a narração pára um segundo, e continua
      40,5 s       "Critério 1:", à direita
      42 → 45,8 s  o critério, escrito
      fim          o play sai e fica "Toque na tela para continuar"; o
@@ -5055,7 +5055,7 @@ const DESORDEM = { de:18.0, dura:0.8, fila:0.048, curva:0.35, giro:0, clarao:0, 
 const DEPOIS_DA_2 = ['2.1', '2.2', '2.3', '2.4', '2.5', '2.5A'];
 const FRASES_CRITERIO1 = [
   { de:40.5, ate:41.3, txt:'Critério 1:' },
-  { de:42.0, ate:45.8, txt:'Os elementos serão organizados em linhas,\nem ordem crescente de número atômico' }
+  { de:42.0, ate:45.8, txt:'Os elementos serão organizados em linhas,\nem ordem crescente de número atômico.' }
 ];
 /* o nome de Moseley, digitado debaixo da foto, na "2" */
 const NOME_MOSELEY = { de:29.0, ate:31.5, txt:'Henry Moseley - 1913' };
