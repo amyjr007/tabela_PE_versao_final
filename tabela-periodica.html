@@ -645,6 +645,8 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
   font-family:var(--display);font-weight:500;font-size:23px;color:var(--tinta);
 }
 .coords-el span.on{opacity:1}
+/* as duas numa linha só ("3º período · grupo 1"), escolhido no editor */
+.coords-el.uma-linha{flex-direction:row;gap:12px}
 .coords-el b{color:var(--ouro);font-weight:700}
 
 /* A CASA — o encaixe vazio onde o cubo pousa. É ela que faz a sombra
@@ -2493,7 +2495,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v17.1';
+const VERSAO = 'v17.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -9236,7 +9238,7 @@ function mostraCoord(el){
    já está escrito — a narração parada não o reescreve) */
 const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle, .quiz3.q4 .q3-q,' +
                ' .dica-escolha .txt, .toque-continuar, .rotulo-el .txt, .veu-frases .frase .txt,' +
-               ' .texto-colunas .frase .txt, .veu-moseley figcaption b, .dica-final, .entendi3';
+               ' .texto-colunas .frase .txt, .veu-moseley figcaption b, .dica-final, .entendi3, .coords-el';
 const EDICAO = {
   el:null, ultimo:null, tUlt:0, editados:new Set(),
   /* o bloco de linhas a que um texto pertence, dentro da peça */
@@ -9358,6 +9360,9 @@ const EDICAO = {
   },
   quebra(){
     if (!this.el) return;
+    /* a localização do elemento ("3º período" / "grupo 1") são duas peças:
+       quebrar é pô-las uma debaixo da outra */
+    if (this.el.classList.contains('coords-el')){ this.el.classList.remove('uma-linha'); this.acompanha(); this.poeBarra(); return; }
     this.el.focus();
     document.execCommand('insertLineBreak');
     this.semEspacoNoInicio();
@@ -9376,6 +9381,8 @@ const EDICAO = {
   junta(){
     const el = this.el;
     if (!el) return;
+    /* e juntar, pô-las lado a lado */
+    if (el.classList.contains('coords-el')){ el.classList.add('uma-linha'); this.acompanha(); this.poeBarra(); return; }
     el.querySelectorAll('br').forEach(br => br.replaceWith(' '));
     el.normalize();
     const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
