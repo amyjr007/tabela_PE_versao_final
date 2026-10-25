@@ -1299,6 +1299,10 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 /* nas questões 08 a 10 os números da tabela respondem ao toque (a cena
    por baixo não recebe o dedo; eles sim) — com uma folga em volta */
 .mesa.toca-eixos .eixo{pointer-events:auto;cursor:pointer}
+/* no Quiz 3, os números das linhas 11 px do palco mais para a esquerda,
+   longe da tabela (o 1 em 49 × 227, como o professor o deixou; os outros
+   alinhados com ele — a mesa ali está a 0,96) */
+.mesa.toca-eixos .eixo[data-periodo]{translate:-11.5px 0}
 .mesa.toca-eixos .eixo::before{content:'';position:absolute;inset:-9px;border-radius:50%}
 .eixo.errada3{background:#FF2E4C!important;border-color:#FF2E4C!important;color:#fff!important;
   animation:naoTreme .42s ease}
@@ -2558,7 +2562,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v19.1';
+const VERSAO = 'v19.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
