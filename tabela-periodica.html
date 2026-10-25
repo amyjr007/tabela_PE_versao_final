@@ -2549,7 +2549,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v18.8';
+const VERSAO = 'v18.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6261,7 +6261,9 @@ const QUIZ4 = {
   cabe(cx, texto){
     const q = cx.querySelector('.q3-q'), antes = q.innerHTML;
     q.style.fontSize = '';
-    q.textContent = String(texto).replace(/<[^>]+>/g, '');
+    /* com quebra, mede-se a linha mais comprida */
+    const linhas = String(texto).split(/<br\s*\/?>/i);
+    q.textContent = linhas.map(l => l.replace(/<[^>]+>/g, '')).sort((a, b) => b.length - a.length)[0];
     const w = q.scrollWidth, d = q.clientWidth;
     if (d && w > d) q.style.fontSize = Math.max(15, Math.floor(parseFloat(getComputedStyle(q).fontSize) * d / w * 10) / 10) + 'px';
     q.innerHTML = antes;
@@ -6663,7 +6665,12 @@ const QUIZ4 = {
     this.sub = 0;
     this.eixosPoe(true);
   },
-  textoEixos(z){ return 'Toque no período e família do elemento <b>' + SIMBOLOS[z-1] + '</b> (' + NOMES[z-1] + ').'; },
+  /* o comando, em duas linhas: o elemento (com o número atômico), e depois
+     o período e a família */
+  textoEixos(z){
+    return 'Toque no elemento <b>' + SIMBOLOS[z-1] + '</b> (' + NOMES[z-1] + ', número atômico ' + z + '),' +
+           '<br>depois no período e na família dele na tabela.';
+  },
   eixosPoe(primeira){
     const z = EIXOS_Q8[this.sub], txt = this.textoEixos(z);
     const rot = 'Questão ' + String(8 + this.sub).padStart(2, '0');
@@ -6689,8 +6696,10 @@ const QUIZ4 = {
   digitaPergunta(cx, html){
     if (!cx) { this.aceita = true; return; }
     const q = cx.querySelector('.q3-q'), tmp = document.createElement('div');
-    tmp.innerHTML = html;
+    /* as quebras (<br>) viram \n, e a letra 'pre' respeita-as enquanto escreve */
+    tmp.innerHTML = html.replace(/<br\s*\/?>/gi, '\n');
     const plano = tmp.textContent, g = this.g, sub = this.sub;
+    q.style.whiteSpace = 'pre';
     this.aceita = false;
     cx.classList.add('digitando');
     q.textContent = '';
