@@ -1444,6 +1444,8 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 .slide.quiz-escuro .mesa .eixo[data-grupo]{color:#F3A062}
 .slide.quiz-escuro .mesa .eixo[data-periodo].acesa{color:#fff;background:var(--cor-linha);border-color:var(--cor-linha)}
 .slide.quiz-escuro .mesa .eixo[data-grupo].acesa{color:#fff;background:var(--cor-coluna);border-color:var(--cor-coluna)}
+/* nas bolinhas cheias (o Quiz 3, a tabela aberta), o número em branco */
+.slide.quiz-escuro .mesa .eixo.prof[data-periodo], .slide.quiz-escuro .mesa .eixo.prof[data-grupo]{color:#fff}
 .slide.quiz-escuro .eixo.prof{color:var(--ouro-luz);border-color:rgba(226,162,43,.75);background:rgba(226,162,43,.14)}
 .slide.quiz-escuro .casa.serie{color:rgba(243,240,251,.6)}
 @keyframes naoTreme{0%,100%{translate:0 0} 25%{translate:-6px 0} 75%{translate:6px 0}}
@@ -2543,7 +2545,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v18.3';
+const VERSAO = 'v18.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6657,17 +6659,45 @@ const QUIZ4 = {
     this.tropecos = 0;
     this.feito = { p:false, g:false };
     const cx = this.caixa();
-    if (primeira || !cx) this.caixaNova(rot, txt);
-    else {
-      /* só o elemento muda: o quadro fica, e o novo elemento dá um pulo */
-      cx.querySelector('.q3-marca').textContent = rot;
-      cx.querySelector('.q3-q').innerHTML = txt;
-      this.cabe(cx, txt);
-      const ms = cx.querySelector('.q3-msg');
-      ms.textContent = ''; ms.className = 'q3-msg';
-      cx.classList.remove('troca'); void cx.offsetWidth; cx.classList.add('troca');
+    if (primeira || !cx){
+      /* a primeira (a questão 08) é digitada, letra a letra, com o cursor;
+         o toque só vale com ela escrita */
+      this.caixaNova(rot, txt);
+      this.digitaPergunta(this.caixa(), txt);
+      return;
     }
+    /* só o elemento muda: o quadro fica, e o novo elemento dá um pulo */
+    cx.querySelector('.q3-marca').textContent = rot;
+    cx.querySelector('.q3-q').innerHTML = txt;
+    this.cabe(cx, txt);
+    const ms = cx.querySelector('.q3-msg');
+    ms.textContent = ''; ms.className = 'q3-msg';
+    cx.classList.remove('troca'); void cx.offsetWidth; cx.classList.add('troca');
     this.aceita = true;
+  },
+  /* a pergunta escrita letra a letra (o texto, sem as marcas), e no fim
+     com o símbolo em destaque; pronta, o toque vale */
+  digitaPergunta(cx, html){
+    if (!cx) { this.aceita = true; return; }
+    const q = cx.querySelector('.q3-q'), tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    const plano = tmp.textContent, g = this.g, sub = this.sub;
+    this.aceita = false;
+    cx.classList.add('digitando');
+    q.textContent = '';
+    let n = 0;
+    clearInterval(this.digT);
+    this.digT = setInterval(() => {
+      if (g !== this.g || sub !== this.sub){ clearInterval(this.digT); return; }
+      q.textContent = plano.slice(0, ++n);
+      TECLAS.bate();
+      if (n >= plano.length){
+        clearInterval(this.digT);
+        q.innerHTML = html;
+        cx.classList.remove('digitando');
+        this.aceita = true;
+      }
+    }, 45);
   },
   /* o toque num número: o do período ou o da família */
   tocaEixo(e){
