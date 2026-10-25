@@ -654,6 +654,16 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 .coords-el span.on{opacity:1}
 /* as duas numa linha só ("3º período · grupo 1"), escolhido no editor */
 .coords-el.uma-linha{flex-direction:row;gap:12px}
+/* NO SLIDE 4, o arranjo que o professor deixou na montagem (em px da mesa,
+   que lá anda 3 e 14 px e está a 0,97): o símbolo centrado em 411 × 224, e
+   a localização numa linha só — "3º período, grupo 1." —, centrada em
+   616 × 242,5, a 1,27 */
+.mesa[data-slide="3"] .ficha{left:411px!important;top:224px!important}
+/* (presa pela borda esquerda, em 474, e não pelo meio: digitada, a linha
+   cresce para a direita sem andar) */
+.mesa[data-slide="3"] .coords-el{left:474px!important;top:242.5px!important;
+  transform:translateY(-50%) scale(1.27);transform-origin:0 50%;flex-direction:row;gap:.28em}
+.mesa[data-slide="3"] .coords-el.duas-linhas{flex-direction:column;gap:9px}
 .coords-el b{color:var(--ouro);font-weight:700}
 /* o número do período na cor das linhas, o do grupo na cor das colunas */
 .coords-el .per b{color:var(--cor-linha)}
@@ -2505,7 +2515,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v17.3';
+const VERSAO = 'v17.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5868,12 +5878,14 @@ const EV3 = {
     };
     const sp = m.querySelector('.coords-el .per'), sg = m.querySelector('.coords-el .grp');
     if (!sp || !sg) return;
-    escreve(sp, [{ t:c.dataset.periodo + 'º', b:true }, { t:' período' }], dePer);
+    /* "3º período, grupo 1." — o texto que o professor deixou no editor */
+    escreve(sp, [{ t:c.dataset.periodo + 'º', b:true }, { t:' período,' }], dePer);
+    const grupo = [{ t:'grupo ' }, { t:String(c.dataset.grupo), b:true }, { t:'.' }];
     if (deNum > deGrp){
       /* a palavra primeiro, o número depois (na "3.1" e na "3.2") */
-      escreve(sg, t < deNum ? [{ t:'grupo' }] : [{ t:'grupo ' }, { t:String(c.dataset.grupo), b:true }],
+      escreve(sg, t < deNum ? [{ t:'grupo' }] : grupo,
               t < deNum ? deGrp : deNum - 'grupo '.length * ritmo);
-    } else escreve(sg, [{ t:'grupo ' }, { t:String(c.dataset.grupo), b:true }], deGrp);
+    } else escreve(sg, grupo, deGrp);
   },
   /* aos 15,6 s: um segundo de silêncio, e a narração continua */
   pausa(){
@@ -9393,7 +9405,7 @@ const EDICAO = {
     if (!this.el) return;
     /* a localização do elemento ("3º período" / "grupo 1") são duas peças:
        quebrar é pô-las uma debaixo da outra */
-    if (this.el.classList.contains('coords-el')){ this.el.classList.remove('uma-linha'); this.acompanha(); this.poeBarra(); return; }
+    if (this.el.classList.contains('coords-el')){ this.el.classList.remove('uma-linha'); this.el.classList.add('duas-linhas'); this.acompanha(); this.poeBarra(); return; }
     this.el.focus();
     document.execCommand('insertLineBreak');
     this.semEspacoNoInicio();
@@ -9413,7 +9425,7 @@ const EDICAO = {
     const el = this.el;
     if (!el) return;
     /* e juntar, pô-las lado a lado */
-    if (el.classList.contains('coords-el')){ el.classList.add('uma-linha'); this.acompanha(); this.poeBarra(); return; }
+    if (el.classList.contains('coords-el')){ el.classList.add('uma-linha'); el.classList.remove('duas-linhas'); this.acompanha(); this.poeBarra(); return; }
     el.querySelectorAll('br').forEach(br => br.replaceWith(' '));
     el.normalize();
     const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
