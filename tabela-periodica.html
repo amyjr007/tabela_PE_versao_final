@@ -1213,6 +1213,13 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
 .tira .letra.some{opacity:0;transform:translateY(-16px) scale(.6)}
 .tira .letra.nasce{opacity:0;transform:translateY(16px) scale(.6)}
 .quiz3.q4 .q3-q{font-size:23px;white-space:nowrap}
+/* só o texto, sem a caixa branca por trás: as perguntas ficam direto
+   sobre a tela escura do quiz, em letra clara (e as respostas também) */
+.quiz3.q4{background:none;border:0;box-shadow:none}
+.quiz3.q4 .q3-q{color:#F3F0FB;text-shadow:0 2px 12px rgba(0,0,0,.7)}
+.quiz3.q4 .q3-msg.ok{color:#5BE39A}
+.quiz3.q4 .q3-msg.erro{color:#FF7A90}
+.quiz3.q4 .q3-msg.dica{color:var(--ouro-luz)}
 /* sem resposta escrita, sem a linha dela: o quadro fica baixo, e não
    encosta na caixa do carrossel da questão 04 */
 .quiz3.q4 .q3-msg:empty{display:none}
@@ -2440,7 +2447,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v16.1';
+const VERSAO = 'v16.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
