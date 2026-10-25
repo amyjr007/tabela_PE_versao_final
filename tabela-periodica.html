@@ -2545,7 +2545,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v18.4';
+const VERSAO = 'v18.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6303,7 +6303,9 @@ const QUIZ4 = {
   /* as questões 01 a 03: o toque num card */
   tocaCarta(c){
     const it = this.itens[this.passo];
-    if (!it || it.carrossel || it.eixos || !this.aceita || this.travado) return;
+    /* nas questões 08 a 10, o toque no elemento vem antes dos números */
+    if (it && it.eixos){ if (this.aceita && !this.travado) this.tocaElEixos(c); return; }
+    if (!it || it.carrossel || !this.aceita || this.travado) return;
     const z = +c.dataset.z;
     /* o escolhido gira, acende (verde no acerto, vermelho no erro), e a
        linha e a coluna dele acendem na tabela */
@@ -6615,6 +6617,8 @@ const QUIZ4 = {
     /* os toques, só a andar para a frente (o som e os confetes não se
        repetem ao voltar atrás); a faixa segue sempre o relógio */
     const avanca = (bit) => (k & bit) && !(antes & bit);
+    /* a mão chega ao Ti e toca-o: o "yes" (o primeiro passo é o elemento) */
+    if (avanca(2)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('yes'); }, 450));
     if (avanca(4)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('right'); }, 450));
     if (avanca(8)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('right'); }, 450));
     if (avanca(32)){
@@ -6657,7 +6661,7 @@ const QUIZ4 = {
     const z = EIXOS_Q8[this.sub], txt = this.textoEixos(z);
     const rot = 'Questão ' + String(8 + this.sub).padStart(2, '0');
     this.tropecos = 0;
-    this.feito = { p:false, g:false };
+    this.feito = { el:false, p:false, g:false };
     const cx = this.caixa();
     if (primeira || !cx){
       /* a primeira (a questão 08) é digitada, letra a letra, com o cursor;
@@ -6699,11 +6703,44 @@ const QUIZ4 = {
       }
     }, 45);
   },
+  /* PRIMEIRO O ELEMENTO: o aluno toca no elemento pedido, e ele acende
+     (verde, uma volta e o "yes"); só então os números valem. O elemento
+     errado conta como erro, com a dica de qual procurar. */
+  tocaElEixos(c){
+    const z = EIXOS_Q8[this.sub], alvo = this.carta(z), msg = this.msg();
+    if (this.feito.el) return;
+    if (c !== alvo){
+      this.erros++; this.tropecos++;
+      c.classList.remove('errada3'); void c.offsetWidth; c.classList.add('errada3');
+      clearTimeout(c._erroT); c._erroT = setTimeout(() => c.classList.remove('errada3'), 700);
+      let dica = 'Esse é o ' + NOMES[+c.dataset.z - 1] + '. Procure o ' + SIMBOLOS[z-1] + ' na tabela.';
+      if (this.tropecos >= 2){ alvo.classList.add('pista3'); dica += ' Olhe: ele está piscando.'; }
+      if (msg){ msg.innerHTML = dica; msg.className = 'q3-msg dica'; }
+      tremeVermelho();
+      tocaEfeito('error');
+      return;
+    }
+    this.feito.el = true;
+    this.tropecos = 0;
+    alvo.classList.remove('pista3');
+    alvo.classList.add('verde');
+    TP.gira(alvo, { eixo:'y', graus:360, dur:800 });
+    tocaEfeito('yes');
+    if (msg){ msg.innerHTML = 'Agora toque no período e na família do <b>' + SIMBOLOS[z-1] + '</b>.'; msg.className = 'q3-msg ok'; }
+  },
   /* o toque num número: o do período ou o da família */
   tocaEixo(e){
     const it = this.itens[this.passo];
     if (!it || !it.eixos || !this.aceita || this.travado) return;
     const z = EIXOS_Q8[this.sub], c = this.carta(z), sym = SIMBOLOS[z-1];
+    /* antes do elemento, os números não valem: só o lembrete */
+    if (!this.feito.el){
+      const msg = this.msg();
+      e.classList.remove('errada3'); void e.offsetWidth; e.classList.add('errada3');
+      clearTimeout(e._erroT); e._erroT = setTimeout(() => e.classList.remove('errada3'), 700);
+      if (msg){ msg.innerHTML = 'Primeiro toque no elemento <b>' + sym + '</b> na tabela.'; msg.className = 'q3-msg dica'; }
+      return;
+    }
     const ehP = e.dataset.periodo !== undefined;
     if (ehP ? this.feito.p : this.feito.g) return;
     const certo = ehP ? +e.dataset.periodo === +c.dataset.periodo : +e.dataset.grupo === +c.dataset.grupo;
@@ -6755,6 +6792,7 @@ const QUIZ4 = {
   },
   eixosSeguinte(){
     const m = this.mesa();
+    this.carta(EIXOS_Q8[this.sub]).classList.remove('verde', 'pista3');
     EV3.poeCruz(m, this.carta(EIXOS_Q8[this.sub]), false, false);
     this.sub++;
     if (this.sub < EIXOS_Q8.length){
