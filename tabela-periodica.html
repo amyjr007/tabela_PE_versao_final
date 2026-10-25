@@ -578,6 +578,13 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 /* o número aceso da cruz fica por cima dos cards: o elemento em destaque,
    crescido, não o tapa (o Na, na coluna 1, ficava por cima do seu 3) */
 .mesa .eixo.acesa{z-index:15}
+/* NO EDITOR os números são peças soltas: medidos sem o crescer do
+   destaque (senão a largura guardada já vinha crescida), sempre redondos
+   (a largura vem da medida e a altura acompanha — com a altura fixa de
+   19 px eles ficavam achatados), e o destaque cresce pela escala da peça */
+.mesa .eixo.medindo{transform:translate(-50%,-50%)!important;transition:none!important}
+.mesa .eixo.solto, body.montagem .mesa .eixo.solto{height:auto!important;aspect-ratio:1;border-radius:50%}
+.mesa .eixo.solto.acesa{--luz:1.28}
 .pc.escolhido .cubo{--sc:1.18}
 .pc.escolhido .face{box-shadow:0 0 0 2px rgba(226,162,43,.9), 0 10px 24px rgba(80,40,0,.34)}
 
@@ -648,6 +655,9 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 /* as duas numa linha só ("3º período · grupo 1"), escolhido no editor */
 .coords-el.uma-linha{flex-direction:row;gap:12px}
 .coords-el b{color:var(--ouro);font-weight:700}
+/* o número do período na cor das linhas, o do grupo na cor das colunas */
+.coords-el .per b{color:var(--cor-linha)}
+.coords-el .grp b{color:var(--cor-coluna)}
 
 /* A CASA — o encaixe vazio onde o cubo pousa. É ela que faz a sombra
    do cubo: um cubo sem chão flutua, e a tabela deixa de ser uma mesa. */
@@ -2495,7 +2505,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v17.2';
+const VERSAO = 'v17.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5776,6 +5786,8 @@ const EV3 = {
       this.naK = k;
       this.poeNa(m, na, k);
     }
+    /* "3º período" e "grupo 1", digitados */
+    if (t >= n.de) this.digitaCoords(m, na, t, n.periodo, n.grupo, n.grupo);
     this.suja = true;
   },
   /* UM EXEMPLO (a "3.1", a "3.2"): o elemento acende a girar; o período com
@@ -5792,15 +5804,8 @@ const EV3 = {
       if (cruz !== this.cruz){ this.cruz = cruz; this.poeCruz(m, c, linha, coluna); }
       this.suja = true;
     }
-    /* na "3.2" a palavra e o número são digitados */
-    if (e.digita && (k & 4)){
-      const pal = 'grupo', num = String(c.dataset.grupo);
-      const np = Math.round(entre01((t - e.grupo) / 0.5) * pal.length);
-      const nn = Math.round(entre01((t - e.numero) / 0.3) * num.length);
-      const html = pal.slice(0, np) + (nn ? ' <b>' + num.slice(0, nn) + '</b>' : '');
-      const sg = m.querySelector('.coords-el .grp');
-      if (sg.dataset.html !== html){ sg.dataset.html = html; sg.innerHTML = html; }
-    }
+    /* a localização, digitada */
+    this.digitaCoords(m, c, t, e.periodo, e.grupo, e.numero);
   },
   poeCruz(m, c, linha, coluna){
     const lin = +c.dataset.linha, col = +c.dataset.col;
@@ -5838,11 +5843,37 @@ const EV3 = {
     f.querySelector('b').textContent = c.dataset.sym;
     f.classList.toggle('on', on);
     const sp = r.querySelector('.per'), sg = r.querySelector('.grp');
-    sp.innerHTML = '<b>' + c.dataset.periodo + 'º</b> período';
-    /* o número do grupo pode chegar depois da palavra (na "3.1") */
-    sg.innerHTML = 'grupo' + (num === false ? '' : ' <b>' + c.dataset.grupo + '</b>');
+    /* (o texto é digitado no relógio: digitaCoords) */
     sp.classList.toggle('on', !!(k & 2));
     sg.classList.toggle('on', !!(k & 4));
+  },
+  /* A LOCALIZAÇÃO DIGITADA: "3º período" a partir de dePer, "grupo" a
+     partir de deGrp e o número dele a partir de deNum, letra a letra (com
+     o som das teclas). O "3º" vai na cor das linhas e o "1" na das colunas
+     (ver .coords-el b). Pausar congela; voltar o áudio des-escreve. */
+  digitaCoords(m, c, t, dePer, deGrp, deNum){
+    const ritmo = 0.06;
+    const escreve = (el, partes, de) => {
+      const total = partes.reduce((s, p) => s + p.t.length, 0);
+      let n = t < de ? 0 : Math.min(total, Math.floor((t - de) / ritmo) + 1);
+      let html = '';
+      partes.forEach(p => {
+        const q = Math.max(0, Math.min(p.t.length, n)); n -= q;
+        if (q) html += p.b ? '<b>' + esc(p.t.slice(0, q)) + '</b>' : esc(p.t.slice(0, q));
+      });
+      if (el.dataset.html !== html){
+        if (html.length > (el.dataset.html || '').length) TECLAS.bate();
+        el.dataset.html = html; el.innerHTML = html;
+      }
+    };
+    const sp = m.querySelector('.coords-el .per'), sg = m.querySelector('.coords-el .grp');
+    if (!sp || !sg) return;
+    escreve(sp, [{ t:c.dataset.periodo + 'º', b:true }, { t:' período' }], dePer);
+    if (deNum > deGrp){
+      /* a palavra primeiro, o número depois (na "3.1" e na "3.2") */
+      escreve(sg, t < deNum ? [{ t:'grupo' }] : [{ t:'grupo ' }, { t:String(c.dataset.grupo), b:true }],
+              t < deNum ? deGrp : deNum - 'grupo '.length * ritmo);
+    } else escreve(sg, [{ t:'grupo ' }, { t:String(c.dataset.grupo), b:true }], deGrp);
   },
   /* aos 15,6 s: um segundo de silêncio, e a narração continua */
   pausa(){
