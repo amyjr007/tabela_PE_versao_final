@@ -1513,6 +1513,16 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 /* e muda de cor, cheio de verde, a pulsar: pede para ser apertado */
 #som.jogo, #som.jogo.parado{background:#1F9D55;border-color:#1F9D55;color:#fff;
   animation:jogoChama 1.6s ease-in-out infinite}
+/* O "SAQUEI" (slide 4): o play, redondo como sempre, verde e a pulsar,
+   com a palavra no lugar do ícone; tocado, acende */
+#som .rotulo-saquei{display:none}
+#stage.com-saquei #som-dica{display:none}
+#som.saquei .anel, #som.saquei .icone{display:none}
+#som.saquei .rotulo-saquei{display:block;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.01em}
+#som.saquei, #som.saquei.parado, #som.saquei.tocando{background:#1F9D55;border-color:#1F9D55;color:#fff;
+  animation:jogoChama 1.6s ease-in-out infinite}
+#som.saquei.saquei-tocado{background:#27C46B;animation:none;transform:scale(1.08)}
+#stage .solto#som.saquei.saquei-tocado{transform:translate(-50%,-50%) scale(calc(var(--esc,1) * 1.08))}
 /* no meio da tabela, grande: o lugar que o professor deixou na montagem
    (o centro em 549 × 264, a 2,03). Só o botão do jogo: o play não sai do
    canto. A legenda "Jogo da memória" sai: no meio da tabela ela caía por
@@ -2482,7 +2492,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v16.9';
+const VERSAO = 'v17.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4153,6 +4163,8 @@ function tocaOuPara(){
   if (naMontagem() || SEQ.escolhendo) return;
   /* acabada a abertura, o botão é "Iniciar": leva ao slide da tabela */
   if (somBtn.dataset.pilula === 'comecar'){ go(1); return; }
+  /* no slide 4, o "Saquei" passa à narração seguinte */
+  if (somBtn.classList.contains('saquei')){ EV3.saquei(); return; }
   /* o "Iniciar" do começo pede o nome; é o pop-up que toca a narração */
   if (somBtn.dataset.pilula === 'iniciar'){ NOME.pede(); return; }
   /* na tela escura à espera do toque, o botão também serve de toque */
@@ -4433,6 +4445,7 @@ function avisaSeNaoTocou(e){
    · 'iniciar'  o app acaba de abrir: "Iniciar" toca a narração da capa
    · 'comecar'  a narração acabou (ou chegou aos 51 s): "Começar" leva à aula
    false volta ao play redondo. */
+somBtn.insertAdjacentHTML('beforeend', '<span class="rotulo-saquei">Saquei</span>');
 somBtn.insertAdjacentHTML('beforeend',
   '<span class="rotulo-iniciar"><span class="rot-txt"></span>' +
   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
@@ -5633,12 +5646,12 @@ const LC25 = {
      18,4 s        fecha, e o texto sai em fade
      18,8 s        abre-se em colunas; 19,2 → 20,4 s "grupos ou famílias"
      22,8 s        o texto sai e a tabela fecha
-     24,9 s        o Na gira em 3D, cresce e acende (como o Fe), e o
+     24,2 s        o Na gira em 3D, cresce e acende (como o Fe), e o
                    símbolo dele vai para o vazio da tabela
-     28 s          "3º período", ao lado do símbolo, e a faixa da linha
-     29,2 s        "grupo 1", embaixo, e a faixa da coluna
-   No fim, o botão "Entendi", à direita do símbolo: tocado, acende, toca
-   o "right" e passa à narração "3.1":
+     27 s          "3º período", ao lado do símbolo, e a faixa da linha
+     28,5 s        "grupo 1", embaixo, e a faixa da coluna
+   No fim, o play vira o "Saquei", verde: tocado, toca o "right" e passa
+   à narração "3.1":
      1 s           o Mn gira em 3D, cresce e acende, e o símbolo dele vai
                    para o vazio da tabela
      3,3 s         "4º período", e a faixa da linha
@@ -5669,7 +5682,7 @@ const EV3 = {
   fe:{ z:26, de:8.5, linha:10.5, coluna:11.3, ate:12.5 },
   linhas:{ de:14.5, ate:18.4 },
   colunas:{ de:18.8, ate:22.8 },
-  na:{ z:11, de:24.9, periodo:28.0, grupo:29.2 },
+  na:{ z:11, de:24.2, periodo:27.0, grupo:28.5 },
   /* os exemplos: o elemento, e as coordenadas dele — a palavra "grupo"
      antes do número; na "3.2" os dois são digitados */
   exemplos:{
@@ -5832,13 +5845,29 @@ const EV3 = {
       if (atual === 3 && trilhaAtual === '3' && som.paused) som.play().catch(avisaSeNaoTocou);
     }, 1000);
   },
-  /* o botão Entendi (e, com ele, o play sai de cena) */
+  /* O "SAQUEI": acabada a narração, o próprio play vira um botão verde,
+     redondo como ele, escrito "Saquei"; tocado, toca o "right" e passa à
+     narração seguinte (ver tocaOuPara). O antigo botão Entendi, na mesa,
+     já não aparece. */
   entendi(sim){
     this.prepara();
-    if (!this.botao) return;
-    this.botao.classList.toggle('on', sim);
-    if (!sim) this.botao.classList.remove('tocado');
-    stage.classList.toggle('em-entendi', sim);
+    somBtn.classList.toggle('saquei', sim);
+    somBtn.classList.remove('saquei-tocado');
+    stage.classList.toggle('com-saquei', sim);   /* sem o "Tocar a narração" ao lado */
+    if (sim){
+      somBtn.title = 'Saquei — seguir';
+      somBtn.setAttribute('aria-label', somBtn.title);
+    } else mostraPausa(!som.paused);
+  },
+  /* o toque no "Saquei" */
+  saquei(){
+    if (somBtn.classList.contains('saquei-tocado')) return;
+    somBtn.classList.add('saquei-tocado');
+    tocaEfeito('right').then(() => {
+      const seguinte = { '3':'3.1', '3.1':'3.2', '3.2':'3.3' }[trilhaAtual];
+      this.entendi(false);
+      if (atual === 3 && seguinte) tocaTrilha(seguinte);
+    });
   },
   zera(){
     this.entendi(false);
