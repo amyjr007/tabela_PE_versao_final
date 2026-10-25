@@ -505,6 +505,10 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
   /* --abre: o encolher da tabela aberta em linhas ou em colunas (LC25) */
   transform:translate(var(--px,0px),var(--py,0px)) scale(calc(var(--zoom,1) * var(--abre,1)));
 }
+/* a mesa do slide 4 (As coordenadas periódicas), no lugar e no tamanho
+   que o professor deixou na montagem: 3 px para a direita, 14 px para
+   baixo, a 0,97. Fora do celular, que tem a medida dele (AJUSTE). */
+html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 /* A TABELA ABERTA (LC25): as cartas andam para as linhas ou para as
    colunas, os números vão junto, e a mesa encolhe um fio para caber */
 /* "São 7 linhas" / "São 18 colunas", na tabela aberta pelo toque (LC25.conta) */
@@ -2472,7 +2476,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v16.5';
+const VERSAO = 'v16.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2917,6 +2921,7 @@ function montaTabela(i){
                  + (i === 6 || i === 7 || i === 9 ? ' grupos' : '') + (i === 7 ? ' series8' : '')
                  + (comSeries ? ' natureza' : '') + (i === 9 ? ' valencia' : '')
                  + (i === 10 ? ' blocos' : '');   /* o slide 11: os blocos s, p, d e f */
+  mesa.dataset.slide = i;      /* o CSS de um slide só pega na mesa por aqui */
   mesa.style.setProperty('--L', LADO + 'px');
   mesa.style.setProperty('--H', (LADO/2) + 'px');
   mesa.style.setProperty('--k', (LADO/LADO_BASE).toFixed(3));
