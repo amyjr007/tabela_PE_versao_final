@@ -1357,6 +1357,15 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
   font-family:var(--display);font-size:15px;font-weight:500;color:rgba(32,28,66,.4);
   transition:color .2s, font-size .2s}
 .rd-v.atual{color:var(--indigo);font-size:21px;font-weight:700}
+/* as cores das coordenadas, as mesmas da tabela: o período (a 1.ª roda)
+   em azul, o grupo (a 2.ª) em laranja — no nome, nos números e na borda */
+.rd-col:nth-child(1){--cor-rd:var(--cor-linha);--cor-rd-luz:rgba(47,127,209,.3)}
+.rd-col:nth-child(2){--cor-rd:var(--cor-coluna);--cor-rd-luz:rgba(224,120,43,.3)}
+.rd-col .rd-tit{color:var(--cor-rd);font-weight:600}
+.rd-col .rd-roda{border-color:var(--cor-rd-luz)}
+.rd-col .rd-roda:focus, .rd-col .rd-roda:focus-visible{border-color:var(--cor-rd);box-shadow:0 0 0 2px var(--cor-rd-luz)}
+.rd-col .rd-v{color:color-mix(in srgb, var(--cor-rd) 45%, transparent)}
+.rd-col .rd-v.atual{color:var(--cor-rd)}
 .rd-msg{max-width:190px;font-family:var(--display);font-size:13px;font-weight:600;line-height:1.3;text-align:center}
 .rd-msg:empty{display:none}
 .rd-msg.ok{color:#1F9D55}
@@ -2524,7 +2533,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v17.8';
+const VERSAO = 'v17.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
