@@ -2515,7 +2515,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v17.4';
+const VERSAO = 'v17.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5460,6 +5460,11 @@ const LC25 = {
        bilhetes das séries (57–71, 89–103) andam com a coluna 3 */
     m.classList.toggle('aberta25', modo !== 'junta');
     this.series(m, modo);
+    /* no slide 4 a bolinha colorida dos números é só da tabela aberta:
+       juntada, eles voltam ao normal, como no começo do tópico (e só os da
+       linha e da coluna em destaque se acendem, pela cruz) */
+    if (modo === 'junta' && m.dataset.slide === '3')
+      m.querySelectorAll('.eixo.prof').forEach(e => e.classList.remove('prof'));
     TP.todos().forEach(c => {
       const a = this.pos(+c.dataset.z, modo);
       c.style.left = a.x.toFixed(1) + 'px';
