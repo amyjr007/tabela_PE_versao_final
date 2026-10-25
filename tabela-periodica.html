@@ -2524,7 +2524,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v17.7';
+const VERSAO = 'v17.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5942,11 +5942,14 @@ const EV3 = {
   saquei(){
     if (somBtn.classList.contains('saquei-tocado')) return;
     somBtn.classList.add('saquei-tocado');
-    tocaEfeito('right').then(() => {
-      const seguinte = { '3':'3.1', '3.1':'3.2', '3.2':'3.3' }[trilhaAtual];
+    /* o "right" toca, e a narração seguinte começa logo atrás dele (0,25 s),
+       sem esperar que ele acabe — esperar era um vazio grande depois do toque */
+    tocaEfeito('right');
+    const seguinte = { '3':'3.1', '3.1':'3.2', '3.2':'3.3' }[trilhaAtual];
+    setTimeout(() => {
       this.entendi(false);
       if (atual === 3 && seguinte) tocaTrilha(seguinte);
-    });
+    }, 250);
   },
   zera(){
     this.entendi(false);
@@ -6018,10 +6021,12 @@ function breuNoSlide(sl, sim){
   if (t){
     if (sim){
       if (t.dataset.orig === undefined) t.dataset.orig = t.textContent;
-      transformaLetras(t, 'Quiz');
+      t.dataset.parte = QUIZ4.nomeDaParte(trilhaAtual);
+      transformaLetras(t, t.dataset.parte);
     } else if (t.dataset.orig !== undefined){
       const orig = t.dataset.orig;
       delete t.dataset.orig;
+      delete t.dataset.parte;
       transformaLetras(t, orig);
     }
   }
@@ -6158,10 +6163,20 @@ const QUIZ4 = {
   },
   /* acabada a narração da pergunta, o play sai do canto */
   semPlay(){ if (this.ativo) stage.classList.add('em-quiz'); },
+  /* O QUIZ EM TRÊS PARTES: o Quiz 1 são as questões 01 a 03 (da "3.3" à
+     "3.5"), o Quiz 2 a questão 04 (o carrossel, na "3.6") e o Quiz 3 as
+     dos números da tabela (na "3.7"). O título do slide diz em qual se está. */
+  nomeDaParte(id){ return id === '3.6' ? 'Quiz 2' : id === '3.7' ? 'Quiz 3' : 'Quiz 1'; },
   /* a pergunta i: a da "3.3" entra no relógio (digitada); as outras, já */
   poe(i){
     this.passo = i; this.tropecos = 0; this.aceita = false; this.sub = 0;
     const it = this.itens[i];
+    /* mudada a parte, o título transforma-se: "Quiz 1" → "Quiz 2" → "Quiz 3" */
+    const tit = this.sl().querySelector('.tira .title'), nome = this.nomeDaParte(it.id);
+    if (tit && tit.dataset.orig !== undefined && tit.dataset.parte !== nome){
+      transformaLetras(tit, nome);
+      tit.dataset.parte = nome;
+    }
     /* a pergunta digitada entra no relógio (digita); a da questão 04, só no
        fim do áudio (coordsComeca). A anterior sai já, e a tabela gira. */
     if (it.digita || it.carrossel || it.eixos){ if (this.despede()) this.giraTabela(); return; }
@@ -10037,8 +10052,14 @@ const NAV_TOPICOS = [
   /* ---- o slide 4 · As coordenadas periódicas ---- */
   { titulo:'Início', sub:'o começo do slide', slide:3,
     entra(){ /* o recomeço do slide já é o tópico */ } },
-  { titulo:'Quiz', sub:'o começo da 3.3: as perguntas', slide:3,
+  /* o quiz em três partes: as questões 01 a 03, a 04 (o carrossel), e as
+     dos números da tabela */
+  { titulo:'Quiz 1', sub:'o começo da 3.3: as questões 01 a 03', slide:3,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('3.3', 0, g)); } },
+  { titulo:'Quiz 2', sub:'o começo da 3.6: a questão 04, o carrossel', slide:3,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('3.6', 0, g)); } },
+  { titulo:'Quiz 3', sub:'o começo da 3.7: os números da tabela', slide:3,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('3.7', 0, g)); } },
   /* ---- o slide 5 · Os tipos de elementos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:4,
     entra(){ /* o recomeço do slide já é o tópico */ } },
@@ -10197,7 +10218,8 @@ function topicoAtual(){
   if (atual === 10) return NAV_TOPICOS.findIndex(t => t.slide === 10);
   if (atual === 3){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 3);
-    return base + (QUIZ4.ativo || QUIZ4.trilhas.includes(trilhaAtual) ? 1 : 0);
+    if (!QUIZ4.ativo && !QUIZ4.trilhas.includes(trilhaAtual)) return base;
+    return base + ({ 'Quiz 1':1, 'Quiz 2':2, 'Quiz 3':3 }[QUIZ4.nomeDaParte(trilhaAtual)]);
   }
   if (atual === 2){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 2);
