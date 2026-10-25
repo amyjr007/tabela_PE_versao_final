@@ -658,12 +658,17 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
    que lá anda 3 e 14 px e está a 0,97): o símbolo centrado em 411 × 224, e
    a localização numa linha só — "3º período, grupo 1." —, centrada em
    616 × 242,5, a 1,27 */
-.mesa[data-slide="3"] .ficha{left:411px!important;top:224px!important}
+/* Um lugar por exemplo (data-ex, posto por EV3): o Na, o Mn e o Pb; por
+   agora os três no lugar do Na. Sem !important: no editor, a peça solta
+   escreve o lugar dela por cima. */
+.mesa[data-slide="3"] .ficha{left:411px;top:224px}
 /* (presa pela borda esquerda, em 474, e não pelo meio: digitada, a linha
    cresce para a direita sem andar) */
-.mesa[data-slide="3"] .coords-el{left:474px!important;top:242.5px!important;
+.mesa[data-slide="3"] .coords-el{left:474px;top:242.5px;
   transform:translateY(-50%) scale(1.27);transform-origin:0 50%;flex-direction:row;gap:.28em}
 .mesa[data-slide="3"] .coords-el.duas-linhas{flex-direction:column;gap:9px}
+/* solta no editor, ela cresce em volta do meio, como as outras peças */
+.mesa[data-slide="3"] .coords-el.solto{transform-origin:50% 50%}
 .coords-el b{color:var(--ouro);font-weight:700}
 /* o número do período na cor das linhas, o do grupo na cor das colunas */
 .coords-el .per b{color:var(--cor-linha)}
@@ -2515,7 +2520,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v17.5';
+const VERSAO = 'v17.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3006,12 +3011,16 @@ function montaTabela(i){
     '<div class="coords-el"><span class="per"></span><span class="grp"></span></div>');
   /* o vazio acima dos metais de transição: dez colunas por três linhas
      de papel, e é ali que a ficha cabe sem tapar elemento nenhum */
-  const f = mesa.querySelector('.ficha');
-  f.style.left = xDaColuna(6) + 'px';
-  f.style.top  = yDaLinha(2)  + 'px';
-  const r = mesa.querySelector('.coords-el');
-  r.style.left = (xDaColuna(6) + 62) + 'px';
-  r.style.top  = yDaLinha(2) + 'px';
+  /* (no slide 4 o lugar vem do CSS, um por exemplo — o Na, o Mn, o Pb —, e
+     não daqui: um lugar escrito no elemento não deixaria o editor movê-lo) */
+  if (i !== 3){
+    const f = mesa.querySelector('.ficha');
+    f.style.left = xDaColuna(6) + 'px';
+    f.style.top  = yDaLinha(2)  + 'px';
+    const r = mesa.querySelector('.coords-el');
+    r.style.left = (xDaColuna(6) + 62) + 'px';
+    r.style.top  = yDaLinha(2) + 'px';
+  }
 
   /* --- as casas: o encaixe de cada cubo, e a sombra dele --- */
   for (let z = 1; z <= 118; z++){
@@ -5769,6 +5778,17 @@ const EV3 = {
     /* mudada a trilha, a cena da anterior sai toda */
     if (trilhaAtual !== this.trilha){ if (this.suja) this.zera(); this.trilha = trilhaAtual; }
     const ex = this.exemplos[trilhaAtual];
+    /* o exemplo em cena: é por ele que o CSS dá o lugar do símbolo e da
+       localização, e que o editor nomeia as peças */
+    const qual = { '3':'Na', '3.1':'Mn', '3.2':'Pb' }[trilhaAtual] || '';
+    if (m.dataset.ex !== qual){
+      m.dataset.ex = qual;
+      /* trocado o exemplo, o lugar que o editor tinha dado ao anterior sai */
+      m.querySelectorAll('.ficha.solto, .coords-el.solto').forEach(p => {
+        p.classList.remove('solto', 'pego'); MEDIDAS.delete(p);
+        ['left','top','width','height'].forEach(v => p.style.removeProperty(v)); p.style.removeProperty('--esc');
+      });
+    }
     if (ex){ this.tickEx(m, t, ex); return; }
     if (QUIZ4.trilhas.includes(trilhaAtual)){ QUIZ4.tick(t); return; }
     if (trilhaAtual !== '3') return;
@@ -9073,11 +9093,17 @@ function soltaSlide(sl){
   });
   const medidas = alvos.map(el => {
     const r = el.getBoundingClientRect();
+    /* a peça que já vinha com uma escala do CSS (a localização do slide 4,
+       a 1,27; a frase das colunas, a 0,88) entra no editor com ela: a
+       caixa sem escala e a escala à parte — senão, solta, ela perdia a
+       escala e a letra encolhia */
+    const tf = getComputedStyle(el).transform, mt = tf && tf !== 'none' ? new DOMMatrix(tf) : null;
+    const s = mt ? Math.hypot(mt.a, mt.b) : 1, k = Math.abs(s - 1) > .01 ? s : 1;
     return { el,
       cx:(r.left + r.width/2  - rs.left)/fitScale,
       cy:(r.top  + r.height/2 - rs.top )/fitScale,
-      w: r.width /fitScale,
-      h: r.height/fitScale, esc:1 };
+      w: r.width /fitScale/k,
+      h: r.height/fitScale/k, esc:k };
   });
   alvos.forEach(el => el.classList.remove('medindo','encolhe'));
   /* peça sem caixa não se solta: congelá-la agora prendia-a em largura
@@ -9728,8 +9754,10 @@ function nomeDe(el){
   if (c.contains('texto-colunas'))   return 'quadro-de-frases';
   if (c.contains('entendi3'))        return 'botao-entendi';
   if (c.contains('dica-final'))      return 'dica-final';
-  if (c.contains('ficha'))           return 'simbolo-do-elemento';
-  if (c.contains('coords-el'))       return 'localizacao-do-elemento';
+  /* no slide 4, com o exemplo em que se está (Na, Mn ou Pb) */
+  const ex = (c.contains('ficha') || c.contains('coords-el')) && el.closest('.mesa') && el.closest('.mesa').dataset.ex;
+  if (c.contains('ficha'))           return 'simbolo-do-elemento' + (ex ? ' (' + ex + ')' : '');
+  if (c.contains('coords-el'))       return 'localizacao-do-elemento' + (ex ? ' (' + ex + ')' : '');
   if (c.contains('marca')) return 'marca';
   if (c.contains('risco')) return 'risco';
   if (c.contains('autor')) return 'autor';
