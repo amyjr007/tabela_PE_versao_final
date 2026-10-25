@@ -613,6 +613,18 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 .eixo[data-grupo].acesa{background:var(--cor-coluna);border-color:var(--cor-coluna);color:#fff}
 .banda-linha{background:rgba(47,127,209,.16);border-color:rgba(47,127,209,.55)}
 .banda-col{background:rgba(224,120,43,.16);border-color:rgba(224,120,43,.55)}
+/* os números em bolinha (o modelo do professor): sem contorno, o círculo
+   todo na cor — azul nas linhas, laranja nas colunas —, e o número em
+   branco; também no escuro do quiz */
+.mesa .eixo.prof, .slide.quiz-escuro .mesa .eixo.prof{border-color:transparent;color:#fff}
+.mesa .eixo.prof[data-periodo], .slide.quiz-escuro .mesa .eixo.prof[data-periodo]{background:var(--cor-linha)}
+.mesa .eixo.prof[data-grupo],   .slide.quiz-escuro .mesa .eixo.prof[data-grupo]{background:var(--cor-coluna)}
+/* os textos do slide 4 na cor da faixa deles: "séries ou períodos" da
+   linha, "grupos ou famílias" da coluna */
+.texto-colunas.texto3 .frase:nth-child(1){color:var(--cor-linha)}
+.texto-colunas.texto3 .frase:nth-child(2){color:var(--cor-coluna)}
+.texto-colunas.texto3 .frase:nth-child(1) .cursor{background:var(--cor-linha)}
+.texto-colunas.texto3 .frase:nth-child(2) .cursor{background:var(--cor-coluna)}
 
 /* a ficha do escolhido, no vazio que a tabela tem acima dos metais de
    transição — o mesmo lugar onde ela mora na aula do professor */
@@ -2476,7 +2488,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v16.6';
+const VERSAO = 'v16.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
