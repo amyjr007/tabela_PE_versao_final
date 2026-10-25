@@ -2159,7 +2159,8 @@ body.montagem .solto{
 body.montagem .solto img{-webkit-user-drag:none;pointer-events:none}
 /* os textos que normalmente deixam o toque passar: na montagem, à vista,
    pegam-se com a mão (escondidos, continuam a deixá-lo passar) */
-body.montagem .solto:is(.dica-escolha, .toque-continuar, .rotulo-el, .entendi3, .dica-final).on,
+body.montagem .solto:is(.dica-escolha, .toque-continuar, .rotulo-el, .entendi3, .dica-final, .ficha).on,
+body.montagem .solto.coords-el:has(span.on),
 body.montagem .solto.texto-colunas:has(.frase.on:not(.saindo)),
 body.montagem #som-dica.solto:not(.fora){pointer-events:auto}
 body.montagem .solto:hover{outline:1px solid var(--ouro);background:rgba(226,162,43,.07)}
@@ -2492,7 +2493,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v17.0';
+const VERSAO = 'v17.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3518,12 +3519,16 @@ const VIDA = {
     this.marcaCruz(5200);
   },
   desliga(){
+    /* a cruz só é apagada se era dela (a vida estava ligada): a da
+       narração — o símbolo e as coordenadas do Na — fica (abrir o editor
+       desliga a vida, e apagava-os) */
+    const era = this.ligada;
     this.ligada = false;
     clearTimeout(this.tCubo);
     clearTimeout(this.tFam);
     clearTimeout(this.tCruz);
     this.ocupadas.clear();
-    TP.semCoordenadas();
+    if (era) TP.semCoordenadas();
   },
 
   /* ---- o compasso dos cubos ---- */
@@ -8972,7 +8977,7 @@ CAR.el.querySelector('.car-fecha').addEventListener('click', () => CAR.fecha());
    telas escuras, os rótulos, os quadros de frases, o Entendi: também são
    peças (nomeDe dá-lhes o nome) */
 const TEXTOS_SOLTOS = '.dica-escolha, .toque-continuar, .veu-frases, .rotulo-el,' +
-                      ' .texto-colunas, .entendi3, .dica-final';
+                      ' .texto-colunas, .entendi3, .dica-final, .ficha, .coords-el';
 const MOVEIS = '.capa .marca, .capa h1, .capa .risco, .capa .autor,' +
                ' .capa .email, .capa .foto, [data-mont], ' + TEXTOS_SOLTOS;
 /* quem encolhe até o conteúdo antes de ser medido — o texto.
@@ -9668,6 +9673,8 @@ function nomeDe(el){
   if (c.contains('texto-colunas'))   return 'quadro-de-frases';
   if (c.contains('entendi3'))        return 'botao-entendi';
   if (c.contains('dica-final'))      return 'dica-final';
+  if (c.contains('ficha'))           return 'simbolo-do-elemento';
+  if (c.contains('coords-el'))       return 'localizacao-do-elemento';
   if (c.contains('marca')) return 'marca';
   if (c.contains('risco')) return 'risco';
   if (c.contains('autor')) return 'autor';
