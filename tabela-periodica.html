@@ -2549,7 +2549,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v18.7';
+const VERSAO = 'v18.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6364,7 +6364,9 @@ const QUIZ4 = {
     const msg = this.msg();
     if (msg && frase){ msg.textContent = voz.frase + ' ' + frase; msg.className = 'q3-msg ok'; }
     confete();
-    const fanfarra = tocaEfeito('funfare');
+    /* no Quiz 3 (os números da tabela), o "yes" no lugar da fanfarra */
+    const it = this.itens[this.passo];
+    const fanfarra = tocaEfeito(it && it.eixos ? 'yes' : 'funfare');
     tocaEfeito('applause');
     await fanfarra;
     if (g !== this.g) return;
@@ -6621,13 +6623,13 @@ const QUIZ4 = {
     /* os toques, só a andar para a frente (o som e os confetes não se
        repetem ao voltar atrás); a faixa segue sempre o relógio */
     const avanca = (bit) => (k & bit) && !(antes & bit);
-    /* a mão chega ao Ti e toca-o: o "yes" (o primeiro passo é o elemento) */
-    if (avanca(2)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('yes'); }, 450));
+    /* a mão chega ao Ti e toca-o: o "right" (o primeiro passo é o elemento) */
+    if (avanca(2)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('right'); }, 450));
     /* o período e a família: o mesmo som do toque no elemento */
-    if (avanca(4)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('yes'); }, 450));
-    if (avanca(8)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('yes'); }, 450));
+    if (avanca(4)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('right'); }, 450));
+    if (avanca(8)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('right'); }, 450));
     if (avanca(32)){
-      bateMao(); tocaEfeito('right'); confete();
+      bateMao(); tocaEfeito('yes'); confete();     /* o Confirmar: o "yes", como nas perguntas */
       somBtn.classList.add('saquei-tocado');
       c.classList.add('certa3'); QUIZ3.cresce(c);
     }
@@ -6728,7 +6730,7 @@ const QUIZ4 = {
     alvo.classList.remove('pista3');
     alvo.classList.add('verde');
     TP.gira(alvo, { eixo:'y', graus:360, dur:800 });
-    tocaEfeito('yes');
+    tocaEfeito('right');
     if (msg){ msg.innerHTML = 'Agora toque no período e na família do <b>' + SIMBOLOS[z-1] + '</b>.'; msg.className = 'q3-msg ok'; }
   },
   /* o toque num número: o do período ou o da família */
@@ -6772,7 +6774,7 @@ const QUIZ4 = {
     /* a faixa do que já acertou acende */
     EV3.poeCruz(this.mesa(), c, this.feito.p, this.feito.g);
     if (!(this.feito.p && this.feito.g)){
-      tocaEfeito('yes');            /* o mesmo som do toque no elemento */
+      tocaEfeito('right');          /* o mesmo som do toque no elemento */
       if (msg){
         msg.innerHTML = ehP ? '<b>' + c.dataset.periodo + 'º</b> período. Agora a família.'
                             : 'Família <b>' + c.dataset.grupo + '</b>. Agora o período.';
@@ -6782,7 +6784,7 @@ const QUIZ4 = {
     }
     /* os dois certos: como na demonstração, o play vira o "Confirmar", e
        só o toque nele dá o acerto (com os confetes e a festa) */
-    tocaEfeito('yes');
+    tocaEfeito('right');
     this.aceita = false;
     if (msg){ msg.innerHTML = 'Agora toque em <b>Confirmar</b>.'; msg.className = 'q3-msg ok'; }
     const ultimo = this.sub === EIXOS_Q8.length - 1, g = this.g, sub = this.sub;
