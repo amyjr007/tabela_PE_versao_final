@@ -1437,19 +1437,6 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 .slide.quiz-escuro .regua button{transition:color .5s ease, background .5s ease, border-color .5s ease}
 /* os números da tabela, no escuro: o índigo não se lê, passam a âmbar */
 .slide.quiz-escuro .eixo{color:rgba(243,240,251,.6)}
-/* no escuro, os números também nas cores das coordenadas, um tom mais
-   claro para se lerem no preto: os períodos em azul, os grupos em laranja
-   (acesos, o círculo cheio na cor de sempre e o número em branco) */
-.slide.quiz-escuro .mesa .eixo[data-periodo]{color:#6FAEF0}
-.slide.quiz-escuro .mesa .eixo[data-grupo]{color:#F3A062}
-.slide.quiz-escuro .mesa .eixo[data-periodo].acesa{color:#fff;background:var(--cor-linha);border-color:var(--cor-linha)}
-.slide.quiz-escuro .mesa .eixo[data-grupo].acesa{color:#fff;background:var(--cor-coluna);border-color:var(--cor-coluna)}
-/* no quiz do slide 4, todos os números nas bolinhas cheias, na cor deles e
-   sem contorno; o aceso (a resposta) ganha um anel claro à volta */
-.slide.quiz4-aberto .mesa .eixo{color:#fff;border-color:transparent;font-family:var(--display);font-weight:600}
-.slide.quiz4-aberto .mesa .eixo[data-periodo]{background:var(--cor-linha)}
-.slide.quiz4-aberto .mesa .eixo[data-grupo]{background:var(--cor-coluna)}
-.slide.quiz4-aberto .mesa .eixo.acesa{box-shadow:0 0 0 3px rgba(255,255,255,.9), 0 0 18px 4px rgba(255,255,255,.35)}
 .slide.quiz-escuro .eixo.prof{color:var(--ouro-luz);border-color:rgba(226,162,43,.75);background:rgba(226,162,43,.14)}
 .slide.quiz-escuro .casa.serie{color:rgba(243,240,251,.6)}
 @keyframes naoTreme{0%,100%{translate:0 0} 25%{translate:-6px 0} 75%{translate:6px 0}}
@@ -2546,7 +2533,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v18.0';
+const VERSAO = 'v18.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
