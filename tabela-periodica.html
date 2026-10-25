@@ -1446,6 +1446,10 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 .slide.quiz-escuro .mesa .eixo[data-grupo].acesa{color:#fff;background:var(--cor-coluna);border-color:var(--cor-coluna)}
 /* nas bolinhas cheias (o Quiz 3, a tabela aberta), o número em branco */
 .slide.quiz-escuro .mesa .eixo.prof[data-periodo], .slide.quiz-escuro .mesa .eixo.prof[data-grupo]{color:#fff}
+/* e a bolinha acertada destaca-se das outras: maior, com um anel branco e
+   uma luz à volta, por cima das vizinhas */
+.slide.quiz-escuro .mesa .eixo.prof.acesa{z-index:16;transform:translate(-50%,-50%) scale(1.4);
+  box-shadow:0 0 0 3px #fff, 0 0 20px 6px rgba(255,255,255,.45)}
 .slide.quiz-escuro .eixo.prof{color:var(--ouro-luz);border-color:rgba(226,162,43,.75);background:rgba(226,162,43,.14)}
 .slide.quiz-escuro .casa.serie{color:rgba(243,240,251,.6)}
 @keyframes naoTreme{0%,100%{translate:0 0} 25%{translate:-6px 0} 75%{translate:6px 0}}
@@ -2545,7 +2549,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v18.6';
+const VERSAO = 'v18.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6619,8 +6623,9 @@ const QUIZ4 = {
     const avanca = (bit) => (k & bit) && !(antes & bit);
     /* a mão chega ao Ti e toca-o: o "yes" (o primeiro passo é o elemento) */
     if (avanca(2)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('yes'); }, 450));
-    if (avanca(4)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('right'); }, 450));
-    if (avanca(8)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('right'); }, 450));
+    /* o período e a família: o mesmo som do toque no elemento */
+    if (avanca(4)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('yes'); }, 450));
+    if (avanca(8)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('yes'); }, 450));
     if (avanca(32)){
       bateMao(); tocaEfeito('right'); confete();
       somBtn.classList.add('saquei-tocado');
@@ -6767,7 +6772,7 @@ const QUIZ4 = {
     /* a faixa do que já acertou acende */
     EV3.poeCruz(this.mesa(), c, this.feito.p, this.feito.g);
     if (!(this.feito.p && this.feito.g)){
-      tocaEfeito('right');
+      tocaEfeito('yes');            /* o mesmo som do toque no elemento */
       if (msg){
         msg.innerHTML = ehP ? '<b>' + c.dataset.periodo + 'º</b> período. Agora a família.'
                             : 'Família <b>' + c.dataset.grupo + '</b>. Agora o período.';
@@ -6777,7 +6782,7 @@ const QUIZ4 = {
     }
     /* os dois certos: como na demonstração, o play vira o "Confirmar", e
        só o toque nele dá o acerto (com os confetes e a festa) */
-    tocaEfeito('right');
+    tocaEfeito('yes');
     this.aceita = false;
     if (msg){ msg.innerHTML = 'Agora toque em <b>Confirmar</b>.'; msg.className = 'q3-msg ok'; }
     const ultimo = this.sub === EIXOS_Q8.length - 1, g = this.g, sub = this.sub;
