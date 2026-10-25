@@ -864,6 +864,9 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 /* à frente dos vizinhos ao crescer e também ao voltar (verde-sai, durante
    o encolher) */
 .pc.verde, .pc.verde-sai{z-index:9}
+/* o Na da narração "3" (slide 4) cresce menos: na coluna 1, crescido a
+   1,4 ele passava muito dos vizinhos */
+.mesa[data-slide="3"] .pc.verde[data-z="11"] .cubo{--sc:1.22}
 .pc.verde .cubo{--sc:1.4;--dz:12px;--dur:.3s}
 .pc.verde .face{box-shadow:0 0 0 2px #3EE08A, 0 0 26px 7px rgba(46,204,113,.78)}
 
@@ -2479,7 +2482,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v16.8';
+const VERSAO = 'v16.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
