@@ -1312,6 +1312,9 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 .q3-q .sym-z i{position:absolute;left:50%;bottom:88%;transform:translateX(-50%);white-space:nowrap;
   font-style:normal;font-size:.5em;font-weight:600;line-height:1;color:var(--ouro-luz)}
 .quiz3.q4 .q3-q:has(.sym-z){margin-top:12px}
+/* o quadro das perguntas do Quiz 3, no lugar e no tamanho da montagem: o
+   centro em 641 × 139, a 1,18, largo para o comando caber numa linha */
+.quiz3.q4.q-eixos{left:241.5px;width:799px;top:86.5px}
 .quiz3.q4.digitando .q3-q::after{content:'';display:inline-block;width:3px;height:.9em;margin-left:5px;
   vertical-align:-.1em;background:var(--ouro);animation:piscaCursor 1.05s steps(1) infinite}
 /* A CAIXA DO CARROSSEL (questão 04), com o uso da do app de referência:
@@ -2555,7 +2558,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v19.0';
+const VERSAO = 'v19.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6140,9 +6143,11 @@ function sorteiaQ4(){
   const fora = new Set([26, 17, 88]);
   const pool = [];
   for (let z = 1; z <= 118; z++) if (naMesa(z) && !fora.has(z)) pool.push(z);
-  const sete = embaralha(pool).slice(0, CARROSSEL_Q4.length + 3);
-  CARROSSEL_Q4.forEach((q, i) => { q.z = sete[i]; });
-  EIXOS_Q8 = sete.slice(CARROSSEL_Q4.length);
+  const quatro = embaralha(pool).slice(0, CARROSSEL_Q4.length);
+  CARROSSEL_Q4.forEach((q, i) => { q.z = quatro[i]; });
+  /* as do Quiz 3 (08 a 10): nunca da família 1 (o H e os alcalinos), a
+     pedido do professor */
+  EIXOS_Q8 = embaralha(pool.filter(z => !quatro.includes(z) && posDe(z).col !== 1)).slice(0, 3);
 }
 const QUIZ4 = {
   trilhas:['3.3', '3.4', '3.5', '3.6', '3.7'],
@@ -6676,7 +6681,7 @@ const QUIZ4 = {
   textoEixos(z){
     /* só o símbolo, com o número atômico pequeno em cima dele */
     return 'Toque no elemento <span class="sym-z"><i>' + z + '</i><b>' + SIMBOLOS[z-1] + '</b></span>,' +
-           '<br>depois no período e na família dele na tabela.';
+           ' depois no período e na família dele na tabela.';
   },
   eixosPoe(primeira){
     const z = EIXOS_Q8[this.sub], txt = this.textoEixos(z);
@@ -6688,7 +6693,9 @@ const QUIZ4 = {
       /* a primeira (a questão 08) é digitada, letra a letra, com o cursor;
          o toque só vale com ela escrita */
       this.caixaNova(rot, txt);
-      this.digitaPergunta(this.caixa(), txt);
+      const nova = this.caixa();
+      if (nova){ nova.classList.add('q-eixos'); this.cabe(nova, txt); }
+      this.digitaPergunta(nova, txt);
       return;
     }
     /* as seguintes: o quadro fica, e a pergunta nova é digitada também */
