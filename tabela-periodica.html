@@ -1437,6 +1437,13 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 .slide.quiz-escuro .regua button{transition:color .5s ease, background .5s ease, border-color .5s ease}
 /* os números da tabela, no escuro: o índigo não se lê, passam a âmbar */
 .slide.quiz-escuro .eixo{color:rgba(243,240,251,.6)}
+/* no escuro, só a cor da letra: os períodos em azul e os grupos em
+   laranja, num tom mais claro para se lerem no preto (sem bolinha); aceso
+   (a resposta), o círculo cheio na cor dele e o número em branco */
+.slide.quiz-escuro .mesa .eixo[data-periodo]{color:#6FAEF0}
+.slide.quiz-escuro .mesa .eixo[data-grupo]{color:#F3A062}
+.slide.quiz-escuro .mesa .eixo[data-periodo].acesa{color:#fff;background:var(--cor-linha);border-color:var(--cor-linha)}
+.slide.quiz-escuro .mesa .eixo[data-grupo].acesa{color:#fff;background:var(--cor-coluna);border-color:var(--cor-coluna)}
 .slide.quiz-escuro .eixo.prof{color:var(--ouro-luz);border-color:rgba(226,162,43,.75);background:rgba(226,162,43,.14)}
 .slide.quiz-escuro .casa.serie{color:rgba(243,240,251,.6)}
 @keyframes naoTreme{0%,100%{translate:0 0} 25%{translate:-6px 0} 75%{translate:6px 0}}
@@ -2533,7 +2540,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v18.1';
+const VERSAO = 'v18.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
