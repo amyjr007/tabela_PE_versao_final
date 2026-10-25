@@ -97,12 +97,10 @@ body{
 }
 
 /* a grade da tabela como papel de fundo: células, não milimetrado */
+/* (a grade do papel saiu a pedido do professor: o fundo é liso, só com
+   as duas luzes de baixo) */
 #stage::before{
   content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background-image:
-    linear-gradient(rgba(76,63,191,.07) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(76,63,191,.07) 1px,transparent 1px);
-  background-size:52px 58px;
 }
 /* duas luzes, uma fria e uma quente, para o papel não ficar chapado */
 #stage::after{
@@ -121,17 +119,13 @@ body{
    Chromebooks e computadores nunca entram aqui. */
 html.palco-largo #viewport{
   background-color:var(--fundo);
+  /* (sem a grade, como no palco) */
   background-image:
-    linear-gradient(rgba(76,63,191,.07) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(76,63,191,.07) 1px,transparent 1px),
     radial-gradient(115% 85% at 82% 6%,rgba(76,63,191,.09),transparent 58%),
     radial-gradient(85% 75% at 4% 100%,rgba(226,162,43,.14),transparent 62%),
     linear-gradient(160deg,var(--fundo-alto),var(--fundo) 52%,var(--fundo-2));
-  background-size:calc(52px * var(--fit,1)) calc(58px * var(--fit,1)),
-                  calc(52px * var(--fit,1)) calc(58px * var(--fit,1)),
-                  100% 100%, 100% 100%, 100% 100%;
-  background-position:var(--gx,0) var(--gy,0), var(--gx,0) var(--gy,0), 0 0, 0 0, 0 0;
-  background-repeat:repeat, repeat, no-repeat, no-repeat, no-repeat;
+  background-size:100% 100%, 100% 100%, 100% 100%;
+  background-repeat:no-repeat;
 }
 html.palco-largo #stage{background:transparent;box-shadow:none;overflow:visible}
 html.palco-largo #stage::before, html.palco-largo #stage::after{display:none}
@@ -2013,11 +2007,8 @@ html.palco-largo #carrossel{left:calc(-1 * var(--folga));right:calc(-1 * var(--f
   border-radius:30px;
   transition:transform .6s var(--e-capa);
 }
-/* o papel quadriculado e as duas luzes, as mesmas do palco */
-.car-cartao::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
-  background-image:linear-gradient(rgba(76,63,191,.07) 1px,transparent 1px),
-                   linear-gradient(90deg,rgba(76,63,191,.07) 1px,transparent 1px);
-  background-size:52px 58px;background-position:var(--folga,0px) 0}
+/* o papel liso (sem a grade, como o palco) e as duas luzes */
+.car-cartao::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:0}
 .car-cartao::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
   background:radial-gradient(115% 85% at 82% 6%,rgba(76,63,191,.09),transparent 58%),
              radial-gradient(85% 75% at 4% 100%,rgba(226,162,43,.14),transparent 62%)}
@@ -2488,7 +2479,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v16.7';
+const VERSAO = 'v16.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
