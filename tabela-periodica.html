@@ -1566,6 +1566,9 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 #stage.com-saquei #som-dica{display:none}
 #som.saquei .anel, #som.saquei .icone{display:none}
 #som.saquei .rotulo-saquei{display:block;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.01em}
+#som.saquei.longo .rotulo-saquei{font-size:12px}     /* "Confirmar" cabe no círculo */
+/* no quiz o play sai de cena, mas o botão verde fica: é ele que confirma */
+#stage.em-quiz #som.saquei, #stage.em-toque #som.saquei, #stage.tela-escura #som.saquei{display:grid!important}
 #som.saquei, #som.saquei.parado, #som.saquei.tocando{background:#1F9D55;border-color:#1F9D55;color:#fff;
   animation:jogoChama 1.6s ease-in-out infinite}
 #som.saquei.saquei-tocado{background:#27C46B;animation:none;transform:scale(1.08)}
@@ -2540,7 +2543,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v18.2';
+const VERSAO = 'v18.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4220,7 +4223,8 @@ function tocaOuPara(){
   /* acabada a abertura, o botão é "Iniciar": leva ao slide da tabela */
   if (somBtn.dataset.pilula === 'comecar'){ go(1); return; }
   /* no slide 4, o "Saquei" passa à narração seguinte */
-  if (somBtn.classList.contains('saquei')){ EV3.saquei(); return; }
+  /* o botão verde ("Saquei", "Confirmar") faz o que lhe foi dado */
+  if (somBtn.classList.contains('saquei')){ if (BOTAO_VERDE.fn) BOTAO_VERDE.fn(); return; }
   /* o "Iniciar" do começo pede o nome; é o pop-up que toca a narração */
   if (somBtn.dataset.pilula === 'iniciar'){ NOME.pede(); return; }
   /* na tela escura à espera do toque, o botão também serve de toque */
@@ -4502,6 +4506,23 @@ function avisaSeNaoTocou(e){
    · 'comecar'  a narração acabou (ou chegou aos 51 s): "Começar" leva à aula
    false volta ao play redondo. */
 somBtn.insertAdjacentHTML('beforeend', '<span class="rotulo-saquei">Saquei</span>');
+/* O BOTÃO VERDE: o play, redondo como sempre, verde e a pulsar, com uma
+   palavra no lugar do ícone — "Saquei" (no fim das narrações 3, 3.1 e
+   3.2) ou "Confirmar" (no Quiz 3). Tocado, faz o que lhe foi dado.
+   null volta ao play. */
+var BOTAO_VERDE = { txt:null, fn:null };
+function botaoVerde(txt, fn){
+  BOTAO_VERDE = { txt, fn: txt ? fn : null };
+  somBtn.classList.toggle('saquei', !!txt);
+  somBtn.classList.remove('saquei-tocado');
+  somBtn.classList.toggle('longo', !!txt && txt.length > 7);
+  stage.classList.toggle('com-saquei', !!txt);   /* sem o "Tocar a narração" ao lado */
+  if (txt){
+    somBtn.querySelector('.rotulo-saquei').textContent = txt;
+    somBtn.title = txt;
+    somBtn.setAttribute('aria-label', txt);
+  } else mostraPausa(!som.paused);
+}
 somBtn.insertAdjacentHTML('beforeend',
   '<span class="rotulo-iniciar"><span class="rot-txt"></span>' +
   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
@@ -5946,13 +5967,7 @@ const EV3 = {
      já não aparece. */
   entendi(sim){
     this.prepara();
-    somBtn.classList.toggle('saquei', sim);
-    somBtn.classList.remove('saquei-tocado');
-    stage.classList.toggle('com-saquei', sim);   /* sem o "Tocar a narração" ao lado */
-    if (sim){
-      somBtn.title = 'Saquei — seguir';
-      somBtn.setAttribute('aria-label', somBtn.title);
-    } else mostraPausa(!som.paused);
+    botaoVerde(sim ? 'Saquei' : null, () => this.saquei());
   },
   /* o toque no "Saquei" */
   saquei(){
@@ -6148,8 +6163,12 @@ const QUIZ4 = {
     if (i > this.passo) this.poe(i);
     const it = this.itens[this.passo];
     if (it && it.digita && trilhaAtual === it.id) this.digita(it, t);
-    /* na "3.7", o exemplo do Ti com a mãozinha (demo37) */
-    if (trilhaAtual === '3.7') this.demo37(t); else if (this.k37) this.limpa37();
+    /* na "3.7", o exemplo do Ti com a mãozinha (demo37); voltada a tabela
+       ao normal, a primeira pergunta entra já e o toque vale */
+    if (trilhaAtual === '3.7'){
+      if (t >= this.ex37.normal + 0.2) this.eixosComeca();
+      else this.demo37(t);
+    } else if (this.k37) this.limpa37();
     /* na "3.6", dos 2 aos 6 s: elementos ao acaso crescem e giram */
     this.brilhos(trilhaAtual === '3.6' ? t : -1);
   },
@@ -6172,7 +6191,7 @@ const QUIZ4 = {
   },
   /* começadas as perguntas: a sala escurece */
   abre(){
-    this.ativo = true; this.passo = -1; this.erros = 0; this.g++;
+    this.ativo = true; this.passo = -1; this.erros = 0; this.g++; this.eixosAbertos = false;
     /* os elementos das questões 04 a 10: um sorteio novo a cada abertura */
     sorteiaQ4();
     breuNoSlide(this.sl(), true);
@@ -6562,35 +6581,47 @@ const QUIZ4 = {
                que cobriria a voz)
      Voltando o áudio atrás, a cena volta com ele; acabada a narração, ela
      sai e entram as perguntas de verdade. */
-  k37:0, ex37:{ z:22, ficha:2.5, verde:4.0, periodo:6.0, grupo:7.0 },
+  /*   8,5 s   o play vira o "Confirmar" verde, e a mão vai até ele
+       9 s     e toca-o: só aqui o acerto — o Ti cresce de certo, os
+               confetes e o "right"
+       10 s    a tabela toda volta ao normal (a mão sai, o play volta) */
+  k37:0, ex37:{ z:22, ficha:2.5, verde:4.0, periodo:6.0, grupo:7.0, confirma:8.5, clica:9.0, normal:10.0 },
   demo37(t){
     const e = this.ex37, m = this.mesa(), c = this.carta(e.z);
     if (!m || !c) return;
-    const k = (t >= e.ficha ? 1 : 0) | (t >= e.verde ? 2 : 0) | (t >= e.periodo ? 4 : 0) | (t >= e.grupo ? 8 : 0);
+    const k = (t >= e.ficha ? 1 : 0) | (t >= e.verde ? 2 : 0) | (t >= e.periodo ? 4 : 0) | (t >= e.grupo ? 8 : 0)
+            | (t >= e.confirma ? 16 : 0) | (t >= e.clica ? 32 : 0) | (t >= e.normal ? 64 : 0);
     if (k === this.k37) return;
     const antes = this.k37;
     this.k37 = k;
+    const fim = !!(k & 64);
     const f = m.querySelector('.ficha');
     f.querySelector('span').textContent = c.dataset.z;
     f.querySelector('b').textContent = c.dataset.sym;
-    f.classList.toggle('on', !!(k & 1));
-    c.classList.toggle('verde', !!(k & 2) && !(k & 8));
+    f.classList.toggle('on', !!(k & 1) && !fim);
+    c.classList.toggle('verde', !!(k & 2) && !(k & 32));
     const ep = m.querySelector('.eixo[data-periodo="' + c.dataset.periodo + '"]'),
           eg = m.querySelector('.eixo[data-grupo="' + c.dataset.grupo + '"]');
-    /* a mão: no Ti, depois no período, depois na família */
+    /* o "Confirmar" no lugar do play, dos 8,5 aos 10 s (é mímica: o toque
+       de verdade não faz nada aqui) */
+    const comBotao = !!(k & 16) && !fim;
+    if (comBotao !== (BOTAO_VERDE.txt === 'Confirmar')) botaoVerde(comBotao ? 'Confirmar' : null, () => {});
+    /* a mão: no Ti, no período, na família, e no Confirmar */
     limpaMao();
-    if (!(k & 2)) tiraMao();
-    else levaMao(k & 8 ? eg : k & 4 ? ep : c);
+    if (!(k & 2) || fim) tiraMao();
+    else levaMao(k & 16 ? somBtn : k & 8 ? eg : k & 4 ? ep : c);
     /* os toques, só a andar para a frente (o som e os confetes não se
        repetem ao voltar atrás); a faixa segue sempre o relógio */
     const avanca = (bit) => (k & bit) && !(antes & bit);
     if (avanca(4)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('right'); }, 450));
-    if (avanca(8)) maoT.push(setTimeout(() => {
+    if (avanca(8)) maoT.push(setTimeout(() => { bateMao(); tocaEfeito('right'); }, 450));
+    if (avanca(32)){
       bateMao(); tocaEfeito('right'); confete();
+      somBtn.classList.add('saquei-tocado');
       c.classList.add('certa3'); QUIZ3.cresce(c);
-    }, 450));
-    EV3.poeCruz(m, c, !!(k & 4), !!(k & 8));
-    if (!(k & 8) && c.classList.contains('certa3')){
+    }
+    EV3.poeCruz(m, c, !!(k & 4) && !fim, !!(k & 8) && !fim);
+    if ((!(k & 32) || fim) && c.classList.contains('certa3')){
       c.classList.remove('certa3', 'frente3');
       c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe');
     }
@@ -6600,6 +6631,7 @@ const QUIZ4 = {
     this.k37 = 0;
     const m = this.mesa(), c = m && this.carta(this.ex37.z);
     limpaMao(); tiraMao();
+    if (BOTAO_VERDE.txt === 'Confirmar') botaoVerde(null);
     if (!m || !c) return;
     m.querySelector('.ficha').classList.remove('on');
     c.classList.remove('verde', 'certa3', 'frente3');
@@ -6607,7 +6639,8 @@ const QUIZ4 = {
     EV3.poeCruz(m, c, false, false);
   },
   eixosComeca(){
-    if (!this.ativo) return;
+    if (!this.ativo || this.eixosAbertos) return;
+    this.eixosAbertos = true;
     this.limpa37();       /* o exemplo sai: agora é a vez do aluno */
     stage.classList.add('em-quiz');
     const m = this.mesa();
@@ -6677,9 +6710,18 @@ const QUIZ4 = {
       }
       return;
     }
-    const ultimo = this.sub === EIXOS_Q8.length - 1;
-    this.acerta(c, 'O ' + sym + ' está no ' + c.dataset.periodo + 'º período, família ' + c.dataset.grupo + '.',
-                ultimo, () => this.eixosSeguinte());
+    /* os dois certos: como na demonstração, o play vira o "Confirmar", e
+       só o toque nele dá o acerto (com os confetes e a festa) */
+    tocaEfeito('right');
+    this.aceita = false;
+    if (msg){ msg.innerHTML = 'Agora toque em <b>Confirmar</b>.'; msg.className = 'q3-msg ok'; }
+    const ultimo = this.sub === EIXOS_Q8.length - 1, g = this.g, sub = this.sub;
+    botaoVerde('Confirmar', () => {
+      if (g !== this.g || sub !== this.sub) return;
+      botaoVerde(null);
+      this.acerta(c, 'O ' + sym + ' está no ' + c.dataset.periodo + 'º período, família ' + c.dataset.grupo + '.',
+                  ultimo, () => this.eixosSeguinte());
+    });
   },
   eixosSeguinte(){
     const m = this.mesa();
@@ -6710,6 +6752,7 @@ const QUIZ4 = {
     const sl = this.sl();
     if (!sl) return;
     this.limpa37();
+    if (BOTAO_VERDE.txt === 'Confirmar') botaoVerde(null);
     if (this.ativo) stage.classList.remove('em-quiz');
     this.g++;
     this.ativo = false; this.passo = -1; this.aceita = false; this.travado = false; this.sub = 0;
