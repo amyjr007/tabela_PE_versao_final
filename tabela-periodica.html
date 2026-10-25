@@ -591,6 +591,15 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
              width .3s ease,height .3s ease,opacity .45s ease;
 }
 .banda.on{opacity:1}
+/* A ENTRADA DAS FAIXAS: a da linha corre da direita para a esquerda, e a
+   da coluna de baixo para cima — e o número do período (à esquerda) e o do
+   grupo (em cima) só acendem quando a faixa chega a eles (o atraso de
+   .eixo.acesa, abaixo, é a duração da faixa) */
+.banda-linha.on{animation:faixaLinha .6s cubic-bezier(.4,0,.6,1) both}
+.banda-col.on  {animation:faixaColuna .6s cubic-bezier(.4,0,.6,1) both}
+@keyframes faixaLinha {from{clip-path:inset(0 0 0 100% round 10px)} to{clip-path:inset(0 0 0 0 round 10px)}}
+@keyframes faixaColuna{from{clip-path:inset(100% 0 0 0 round 10px)} to{clip-path:inset(0 0 0 0 round 10px)}}
+.mesa:has(.banda.on) .eixo.acesa{transition-delay:.55s}
 
 /* a ficha do escolhido, no vazio que a tabela tem acima dos metais de
    transição — o mesmo lugar onde ela mora na aula do professor */
@@ -1166,6 +1175,9 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
 /* no slide 4 o quadro é mais estreito: com a tabela aberta em linhas
    ou em colunas ele cabe entre a coluna 2 e a 13, sem tapar ninguém */
 .texto-colunas.texto3{left:232px;width:578px}
+/* no slide 4, só o texto digitado, sem o quadro branco por trás */
+.texto-colunas.texto3{background:none;border:0;box-shadow:none;
+  text-shadow:0 0 10px rgba(255,255,255,.95), 0 0 3px rgba(255,255,255,.9)}
 /* no slide 3 ("Dentro de uma mesma coluna / todos são semelhantes"): o
    lugar e o tamanho que o professor deixou na montagem — o centro em
    x 486, y 277, a 0,88, e a frase em duas linhas: só quebra onde o texto
@@ -2451,7 +2463,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v16.3';
+const VERSAO = 'v16.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
