@@ -2545,7 +2545,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v18.5';
+const VERSAO = 'v18.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6670,14 +6670,12 @@ const QUIZ4 = {
       this.digitaPergunta(this.caixa(), txt);
       return;
     }
-    /* só o elemento muda: o quadro fica, e o novo elemento dá um pulo */
+    /* as seguintes: o quadro fica, e a pergunta nova é digitada também */
     cx.querySelector('.q3-marca').textContent = rot;
-    cx.querySelector('.q3-q').innerHTML = txt;
     this.cabe(cx, txt);
     const ms = cx.querySelector('.q3-msg');
     ms.textContent = ''; ms.className = 'q3-msg';
-    cx.classList.remove('troca'); void cx.offsetWidth; cx.classList.add('troca');
-    this.aceita = true;
+    this.digitaPergunta(cx, txt);
   },
   /* a pergunta escrita letra a letra (o texto, sem as marcas), e no fim
      com o símbolo em destaque; pronta, o toque vale */
