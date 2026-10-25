@@ -1459,10 +1459,18 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 .slide.quiz-escuro .mesa .eixo[data-grupo].acesa{color:#fff;background:var(--cor-coluna);border-color:var(--cor-coluna)}
 /* nas bolinhas cheias (o Quiz 3, a tabela aberta), o número em branco */
 .slide.quiz-escuro .mesa .eixo.prof[data-periodo], .slide.quiz-escuro .mesa .eixo.prof[data-grupo]{color:#fff}
-/* e a bolinha acertada destaca-se das outras: maior, com um anel branco e
-   uma luz à volta, por cima das vizinhas */
-.slide.quiz-escuro .mesa .eixo.prof.acesa{z-index:16;transform:translate(-50%,-50%) scale(1.4);
-  box-shadow:0 0 0 3px #fff, 0 0 20px 6px rgba(255,255,255,.45)}
+/* e a bolinha acertada (ou escolhida, no Quiz 3) destaca-se das outras:
+   maior, com um anel branco e uma luz à volta, por cima das vizinhas */
+.slide.quiz-escuro .mesa .eixo.prof.acesa, .slide.quiz-escuro .mesa .eixo.prof.escolha3{z-index:16;
+  transform:translate(-50%,-50%) scale(1.4);box-shadow:0 0 0 3px #fff, 0 0 20px 6px rgba(255,255,255,.45)}
+/* a escolhida que estava errada: vermelha enquanto balança */
+.slide.quiz-escuro .mesa .eixo.prof.escolha3.errada3{background:#E5394F;box-shadow:0 0 0 3px #fff, 0 0 20px 6px rgba(229,57,79,.6)}
+/* depois do segundo erro, as certas apontadas: pulsam em dourado */
+.slide.quiz-escuro .mesa .eixo.prof.aponta3{z-index:15;animation:aponta3 .9s ease-in-out infinite}
+@keyframes aponta3{
+  0%,100%{box-shadow:0 0 0 2px var(--ouro-luz), 0 0 10px 2px rgba(226,162,43,.5)}
+  50%    {box-shadow:0 0 0 5px var(--ouro-luz), 0 0 26px 10px rgba(226,162,43,.85)}
+}
 .slide.quiz-escuro .eixo.prof{color:var(--ouro-luz);border-color:rgba(226,162,43,.75);background:rgba(226,162,43,.14)}
 .slide.quiz-escuro .casa.serie{color:rgba(243,240,251,.6)}
 @keyframes naoTreme{0%,100%{translate:0 0} 25%{translate:-6px 0} 75%{translate:6px 0}}
@@ -2562,7 +2570,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v19.2';
+const VERSAO = 'v19.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6775,58 +6783,70 @@ const QUIZ4 = {
       if (msg){ msg.innerHTML = 'Primeiro toque no elemento <b>' + sym + '</b> na tabela.'; msg.className = 'q3-msg dica'; }
       return;
     }
-    const ehP = e.dataset.periodo !== undefined;
-    if (ehP ? this.feito.p : this.feito.g) return;
-    const certo = ehP ? +e.dataset.periodo === +c.dataset.periodo : +e.dataset.grupo === +c.dataset.grupo;
-    const msg = this.msg();
-    if (!certo){
-      /* o erro: o número balança em vermelho, e a dica para tentar de novo
-         (no segundo, o elemento pisca; a partir do terceiro, a linha e a
-         coluna dele acendem) */
-      this.erros++; this.tropecos++;
-      e.classList.remove('errada3'); void e.offsetWidth; e.classList.add('errada3');
-      clearTimeout(e._erroT);
-      e._erroT = setTimeout(() => e.classList.remove('errada3'), 700);
-      let dica = ehP ? 'Esse não é o período do ' + sym + '. O período é o número da linha dele, à esquerda da tabela.'
-                     : 'Essa não é a família do ' + sym + '. A família é o número da coluna dele, em cima da tabela.';
-      if (this.tropecos >= 2){ c.classList.add('pista3'); dica += ' Olhe: ele está piscando na tabela.'; }
-      if (this.tropecos >= 3) EV3.poeCruz(this.mesa(), c, true, true);
-      if (msg){ msg.innerHTML = dica; msg.className = 'q3-msg dica'; }
-      tremeVermelho();
-      const g = this.g, sub = this.sub, som1 = tocaEfeito('error');
-      if (this.tropecos === 1) som1.then(() => {
-        if (g === this.g && this.ativo && !this.travado && this.sub === sub) tocaEfeito('Calmanaproximaacerta');
-      });
-      return;
-    }
-    if (ehP) this.feito.p = true; else this.feito.g = true;
-    /* a faixa do que já acertou acende */
-    EV3.poeCruz(this.mesa(), c, this.feito.p, this.feito.g);
-    if (!(this.feito.p && this.feito.g)){
-      tocaEfeito('right');          /* o mesmo som do toque no elemento */
-      if (msg){
-        msg.innerHTML = ehP ? '<b>' + c.dataset.periodo + 'º</b> período. Agora a família.'
-                            : 'Família <b>' + c.dataset.grupo + '</b>. Agora o período.';
-        msg.className = 'q3-msg ok';
-      }
-      return;
-    }
-    /* os dois certos: como na demonstração, o play vira o "Confirmar", e
-       só o toque nele dá o acerto (com os confetes e a festa) */
+    /* A ESCOLHA: o aluno marca um período e uma família — certos ou não,
+       e pode trocar —; o certo e o errado só se dizem no Confirmar */
+    const ehP = e.dataset.periodo !== undefined, m = this.mesa(), msg = this.msg();
+    m.querySelectorAll(ehP ? '.eixo[data-periodo].escolha3' : '.eixo[data-grupo].escolha3')
+     .forEach(x => x.classList.remove('escolha3'));
+    e.classList.add('escolha3');
+    if (ehP) this.feito.p = +e.dataset.periodo; else this.feito.g = +e.dataset.grupo;
     tocaEfeito('right');
-    this.aceita = false;
+    if (!(this.feito.p && this.feito.g)){
+      if (msg){ msg.innerHTML = ehP ? 'Agora a família.' : 'Agora o período.'; msg.className = 'q3-msg ok'; }
+      return;
+    }
+    /* os dois marcados: o play vira o "Confirmar" (e continua a dar para
+       trocar a escolha até ao toque nele) */
     if (msg){ msg.innerHTML = 'Agora toque em <b>Confirmar</b>.'; msg.className = 'q3-msg ok'; }
-    const ultimo = this.sub === EIXOS_Q8.length - 1, g = this.g, sub = this.sub;
-    botaoVerde('Confirmar', () => {
-      if (g !== this.g || sub !== this.sub) return;
-      botaoVerde(null);
-      this.acerta(c, 'O ' + sym + ' está no ' + c.dataset.periodo + 'º período, família ' + c.dataset.grupo + '.',
-                  ultimo, () => this.eixosSeguinte());
+    const g = this.g, sub = this.sub;
+    if (BOTAO_VERDE.txt !== 'Confirmar') botaoVerde('Confirmar', () => {
+      if (g === this.g && sub === this.sub) this.confirmaEixos();
     });
+  },
+  /* O CONFIRMAR do Quiz 3: certo, a festa; errado, a escolha desfaz-se, o
+     quadro treme em vermelho, o som do erro, e o aluno escolhe de novo — e,
+     no segundo erro da mesma pergunta, o período e a família certos
+     acendem a pulsar, apontados */
+  confirmaEixos(){
+    const z = EIXOS_Q8[this.sub], c = this.carta(z), sym = SIMBOLOS[z-1], m = this.mesa(), msg = this.msg();
+    const pOk = this.feito.p === +c.dataset.periodo, gOk = this.feito.g === +c.dataset.grupo;
+    botaoVerde(null);
+    if (pOk && gOk){
+      this.aceita = false;
+      m.querySelectorAll('.eixo.escolha3, .eixo.aponta3').forEach(x => x.classList.remove('escolha3', 'aponta3'));
+      EV3.poeCruz(m, c, true, true);
+      this.acerta(c, 'O ' + sym + ' está no ' + c.dataset.periodo + 'º período, família ' + c.dataset.grupo + '.',
+                  this.sub === EIXOS_Q8.length - 1, () => this.eixosSeguinte());
+      return;
+    }
+    this.erros++; this.tropecos++;
+    const marcadas = [...m.querySelectorAll('.eixo.escolha3')];
+    marcadas.forEach(x => { x.classList.remove('errada3'); void x.offsetWidth; x.classList.add('errada3'); });
+    tremeVermelho();
+    const g = this.g, sub = this.sub, som1 = tocaEfeito('error');
+    if (this.tropecos === 1) som1.then(() => {
+      if (g === this.g && this.ativo && !this.travado && this.sub === sub) tocaEfeito('Calmanaproximaacerta');
+    });
+    const errou = !pOk && !gOk ? 'o período e a família' : !pOk ? 'o período' : 'a família';
+    let dica = 'Ainda não: confira ' + errou + ' do ' + sym + ' e escolha de novo.';
+    /* no segundo erro, os certos apontados */
+    if (this.tropecos >= 2){
+      m.querySelector('.eixo[data-periodo="' + c.dataset.periodo + '"]').classList.add('aponta3');
+      m.querySelector('.eixo[data-grupo="' + c.dataset.grupo + '"]').classList.add('aponta3');
+      dica = 'Olhe: o período e a família do ' + sym + ' estão piscando. Toque neles e confirme.';
+    }
+    if (msg){ msg.innerHTML = dica; msg.className = 'q3-msg dica'; }
+    /* desmarcados depois do balanço vermelho, para escolher de novo */
+    setTimeout(() => {
+      if (g !== this.g || sub !== this.sub) return;
+      marcadas.forEach(x => x.classList.remove('escolha3', 'errada3'));
+      this.feito.p = this.feito.g = false;
+    }, 700);
   },
   eixosSeguinte(){
     const m = this.mesa();
     this.carta(EIXOS_Q8[this.sub]).classList.remove('verde', 'pista3');
+    m.querySelectorAll('.eixo.escolha3, .eixo.aponta3').forEach(x => x.classList.remove('escolha3', 'aponta3'));
     EV3.poeCruz(m, this.carta(EIXOS_Q8[this.sub]), false, false);
     this.sub++;
     if (this.sub < EIXOS_Q8.length){
@@ -6848,7 +6868,9 @@ const QUIZ4 = {
     const n = 3 + CARROSSEL_Q4.length + EIXOS_Q8.length, e = this.erros;
     cartaoDoResultado(Math.round(Math.max(0, n - e) / n * 100) / 10,
       n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
-      this.sl(), () => { this.fecha(); tocaTrilha('3.3'); }, () => { this.fecha(); go(4); }, null);
+      /* depois do "statistics", a fala do fim (3.7B); o Refazer volta ao Quiz 1 */
+      this.sl(), () => { this.fecha(); tocaTrilha('3.3'); }, () => { this.fecha(); go(4); },
+      'Audios/audio_tabela_3.7B.mp3');
   },
   fecha(){
     const sl = this.sl();

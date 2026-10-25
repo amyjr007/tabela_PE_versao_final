@@ -50,6 +50,7 @@ const CASCA = [
   './Audios/vfx/excelente.mp3',
   './Audios/vfx/próximo.mp3',
   './Audios/vfx/flip.mp3',
+  './Audios/audio_tabela_3.7B.mp3',
   './Audios/vfx/agoraesse.mp3',
   './Audios/vfx/electron_jumping.mp3',
   './Audios/vfx/maisessa.mp3',
