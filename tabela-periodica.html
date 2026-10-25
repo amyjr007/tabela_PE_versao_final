@@ -1178,7 +1178,11 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
    3), no vazio da tabela do slide 4; na primeira, o cursor da digitação */
 /* a caixa da pergunta, no alto (o lugar que o professor deixou na
    montagem: o centro em x 629, y 69 do palco) */
-.quiz3.q4{left:292px;width:640px;top:45px}     /* o centro em x 612, y 87 */
+/* (o lugar e o tamanho que o professor deixou na montagem para a pergunta:
+   o centro em x 643, y 115, a 1,18 — o alto do quadro em 66, e é por ele
+   que a escala se ancora, para o quadro crescer para baixo quando a
+   resposta é escrita; vale para todas as perguntas) */
+.quiz3.q4{left:323px;width:640px;top:66px;transform:scale(1.18);transform-origin:50% 0}
 /* A MESA NO QUIZ do slide 4 (o arranjo da montagem do professor): ela
    desce 12 px e anda 4 px; os números ficam do tamanho do "1" de cima
    (39 px), e os das colunas sobem cada um até ao topo da sua coluna, em
@@ -2447,7 +2451,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v16.2';
+const VERSAO = 'v16.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
