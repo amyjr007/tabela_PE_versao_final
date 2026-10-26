@@ -2722,7 +2722,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v21.3';
+const VERSAO = 'v21.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6506,7 +6506,7 @@ function breuNoSlide(sl, sim){
 }
 /* O CABEÇALHO DO QUIZ: as peças da faixa deslizam para o arranjo do quiz
    (classe 'cls': quiz4-aberto no capítulo 3, que também arruma a mesa;
-   quiz-cabeca no capítulo 2, só o cabeçalho), e o título vira 'nome' */
+   também no capítulo 2), e o título vira 'nome' */
 function cabecaDoQuiz(sl, sim, nome, cls){
   if (sl.classList.contains(cls) === !!sim) return;
   const t = sl.querySelector('.tira .title');
@@ -7506,9 +7506,14 @@ const QUIZ3 = {
     }
     sl.classList.toggle('quiz-escuro', sim);
     if (v) v.classList.toggle('on', sim);
-    /* o cabeçalho, como no quiz do capítulo 3: as peças deslizam, e o
-       título transforma-se em "Quiz" (e volta ao fechar) */
-    cabecaDoQuiz(sl, sim, 'Quiz', 'quiz-cabeca');
+    /* O MESMO DESENHO DO QUIZ DO CAPÍTULO 3 (os cards ficam nas cores das
+       famílias): os números das linhas e colunas simples, sem as bolinhas
+       da tabela aberta */
+    const m = sl.querySelector('.mesa');
+    if (m && sim) m.querySelectorAll('.eixo').forEach(e => e.classList.remove('prof', 'some25', 'oculto25'));
+    /* o cabeçalho e a mesa no arranjo do quiz do capítulo 3: as peças
+       deslizam, e o título transforma-se em "Quiz" (e volta ao fechar) */
+    cabecaDoQuiz(sl, sim, 'Quiz', 'quiz4-aberto');
   },
   /* a volta da tabela, na onda diagonal (a mesma do professor) */
   giraTabela(){
@@ -7555,11 +7560,13 @@ const QUIZ3 = {
     /* a tabela gira só na TROCA: a primeira questão não substitui ninguém */
     if (this.despede()) this.giraTabela();
     const cx = document.createElement('div');
-    cx.className = 'quiz3';
+    /* o quadro do quiz do capítulo 3: só o texto, no alto, sem a caixa */
+    cx.className = 'quiz3 q4';
     cx.setAttribute('aria-live', 'polite');
     cx.innerHTML = '<div class="q3-marca"></div><div class="q3-q"></div><div class="q3-msg"></div>';
-    cx.querySelector('.q3-marca').textContent = 'Questão ' + (this.passo + 1) + ' de ' + this.itens.length;
+    cx.querySelector('.q3-marca').textContent = 'Questão ' + String(this.passo + 1).padStart(2, '0');
     slides[2].appendChild(cx);
+    QUIZ4.cabe(cx, p.q);             /* a pergunta numa linha só */
     cx.getBoundingClientRect();        /* nasce fora da tela, à esquerda */
     cx.classList.add('on');
     /* a pergunta é digitada, letra a letra, com o cursor; o toque na
