@@ -60,6 +60,8 @@ const CASCA = [
   './Audios/vfx/rupture.mp3',
   './Audios/vfx/somaisuma.mp3',
   './Audios/vfx/yes.mp3',
+  './Audios/vfx/calmavaidenovo.mp3',
+  './Audios/vfx/pera.mp3',
   './Audios/audio_tabela_1.4.mp3',
   './Audios/audio_tabela_1_jogo_memória.mp3',
   './Audios/audio_tabela_1_jogo_memória1.mp3',

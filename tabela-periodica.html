@@ -2740,7 +2740,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v22.1';
+const VERSAO = 'v22.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6844,7 +6844,7 @@ const QUIZ4 = {
     /* a voz de ânimo, só se a mesma pergunta ainda estiver por responder
        (acertada logo a seguir, ela tocaria por cima da festa) */
     if (this.tropecos === 1) e.then(() => {
-      if (g === this.g && this.ativo && !this.travado && this.passo === passo && this.sub === sub) tocaEfeito('Calmanaproximaacerta');
+      if (g === this.g && this.ativo && !this.travado && this.passo === passo && this.sub === sub) tocaEfeito(vozDoErro());
     });
   },
   /* O ACERTO: o card cresce, à frente, e acende; confetes, fanfarra,
@@ -7051,7 +7051,7 @@ const QUIZ4 = {
       tremeVermelho();
       const gg = this.g, sub = this.sub, e = tocaEfeito('error');
       if (this.tropecos === 1) e.then(() => {
-        if (gg === this.g && this.ativo && !this.travado && this.sub === sub) tocaEfeito('Calmanaproximaacerta');
+        if (gg === this.g && this.ativo && !this.travado && this.sub === sub) tocaEfeito(vozDoErro());
       });
       return;
     }
@@ -7301,7 +7301,7 @@ const QUIZ4 = {
     tremeVermelho();
     const g = this.g, sub = this.sub, som1 = tocaEfeito('error');
     if (this.tropecos === 1) som1.then(() => {
-      if (g === this.g && this.ativo && !this.travado && this.sub === sub) tocaEfeito('Calmanaproximaacerta');
+      if (g === this.g && this.ativo && !this.travado && this.sub === sub) tocaEfeito(vozDoErro());
     });
     const errou = !pOk && !gOk ? 'o período e a família' : !pOk ? 'o período' : 'a família';
     let dica = 'Ainda não: confira ' + errou + ' do ' + sym + ' e escolha de novo.';
@@ -7393,7 +7393,7 @@ const QUIZ4 = {
      8  o último elemento da coluna de X                      (nova)
    Os sons são os do quiz do slide 2: no acerto, confetes, fanfarra e
    aplausos e a voz (exato! e muitobem alternados, perfeito na última);
-   no erro, a tela treme em vermelho, error e Calmanaproximaacerta — e a
+   no erro, a tela treme em vermelho, error e a voz de ânimo (vozDoErro) — e a
    resposta certa acende. A pergunta seguinte entra com eesseaqui e
    próximo alternados (sómaisesse antes da última).
    ============================================================ */
@@ -7630,7 +7630,7 @@ const QUIZ3 = {
       tremeVermelho();
       const erro = tocaEfeito('error');
       /* a voz de ânimo, só no primeiro erro de cada questão */
-      if (this.tropecos === 1) erro.then(() => { if (g === this.g && this.aberto) tocaEfeito('Calmanaproximaacerta'); });
+      if (this.tropecos === 1) erro.then(() => { if (g === this.g && this.aberto) tocaEfeito(vozDoErro()); });
       return;
     }
     this.travado = true;
@@ -8288,7 +8288,7 @@ function efeitos13(t){
                           "exato!" e "muitobem" alternados, "perfeito"
                           na última
      erro em qualquer uma a tela treme em vermelho e toca "error", e
-                          depois "Calmanaproximaacerta"
+                          depois a voz de ânimo (vozDoErro)
 
    Depois de cada resposta o cubo volta para casa, rápido e a girar, e o
    exemplo seguinte rola para a frente AO MESMO TEMPO que toca o som da
@@ -8612,6 +8612,11 @@ function vozDoAcerto(ultima){
   }
   return (VOZ_ANTERIOR = BARALHO_VOZES.shift());
 }
+/* A VOZ DE ÂNIMO DO ERRO (depois do "error", no primeiro erro de cada
+   questão, em todos os quizzes): as três, uma de cada vez, em revezamento */
+const VOZES_DO_ERRO = ['Calmanaproximaacerta', 'calmavaidenovo', 'pera'];
+let vozErroVez = 0;
+function vozDoErro(){ return VOZES_DO_ERRO[vozErroVez++ % VOZES_DO_ERRO.length]; }
 
 /* O SOM DA ENTRADA — toca ao mesmo tempo que o exemplo novo rola para a
    frente: "eesseaqui" e "próximo" alternados, e "sómaisesse" na entrada
