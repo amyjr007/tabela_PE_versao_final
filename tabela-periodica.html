@@ -2647,7 +2647,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v20.0';
+const VERSAO = 'v20.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6599,6 +6599,9 @@ const QUIZ4 = {
       const i = Math.max(0, Math.min(vs.length - 1, Math.round(r.scrollTop / H)));
       if (r._alvo !== undefined && r._alvo !== null && i === r._alvo) r._alvo = null;
       if (r._i === i) return;
+      /* cada número que passa pelo meio dá um "tique" na mão, como a roda
+         de um relógio (a primeira marca, ao montar a roda, não) */
+      if (r._i !== undefined) vibra([5]);
       r._i = i;
       if (r._alvo === undefined || r._alvo === null) vs.forEach((v, k) => v.classList.toggle('atual', k === i));
     };
@@ -8026,7 +8029,7 @@ function vibra(padrao){
   /* muitos seguidos (os flips da arrumação) não viram um zumbido */
   const agora = performance.now();
   if (padrao.length === 1 && agora < vibraAte) return;
-  vibraAte = agora + 60;
+  vibraAte = agora + (padrao.length === 1 && padrao[0] <= 5 ? 30 : 60);   /* o tique da roda é mais miúdo */
   try { navigator.vibrate(padrao); } catch (_) {}
 }
 /* o clique curtinho dos toques do aluno: botões e cards */
