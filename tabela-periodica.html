@@ -2647,7 +2647,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v20.1';
+const VERSAO = 'v20.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6512,7 +6512,10 @@ const QUIZ4 = {
     const it = this.itens[this.passo];
     const fanfarra = tocaEfeito(it && it.eixos ? 'yes' : 'funfare');
     tocaEfeito('applause');
-    await fanfarra;
+    /* o "yes" dura 3,4 s: esperar por ele inteiro deixava um vazio grande
+       antes da pergunta seguinte. No Quiz 3 a voz entra 0,9 s depois dele,
+       por cima da cauda; nos outros, depois da fanfarra (2 s) */
+    await (it && it.eixos ? espera(900) : fanfarra);
     if (g !== this.g) return;
     await tocaEfeito(voz.som);
     if (g !== this.g) return;
