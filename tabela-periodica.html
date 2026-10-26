@@ -2722,7 +2722,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v21.1';
+const VERSAO = 'v21.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5870,6 +5870,9 @@ const LC25 = {
     m.querySelectorAll('.eixo[data-grupo]').forEach(e => {
       if (modo === 'colunas') e.classList.add('prof');
       const g = +e.dataset.grupo, prof = e.classList.contains('prof');
+      /* aberta em linhas, só os números das linhas: os das colunas saem
+         (como os das linhas saem nas colunas) */
+      e.classList.toggle('some25', modo === 'linhas');
       e.style.setProperty('--atraso', (g - 1) * 26 + 'ms');
       e.style.left = (xDaColuna(g) + (g - 9.5) * vC).toFixed(1) + 'px';
       e.style.top  = (yDaLinha(1) - 3 * vL - LADO/2 - (prof ? 22 : 15)).toFixed(1) + 'px';
@@ -6104,8 +6107,10 @@ const LC25 = {
     }
     this._eixo25 = '';
   },
-  /* "Toque de novo pra ver as colunas", digitado no vazio debaixo do "São
-     7 linhas", com a mãozinha a bater ao lado dele */
+  /* "Toque de novo pra ver as colunas", no vazio debaixo do "São 7
+     linhas", com a mãozinha no fim dele. Num ciclo: os dois aparecem, a
+     mão pulsa 3 vezes, os dois esmaecem, e 3 s depois tudo de novo — até
+     o toque */
   pedeColunas(){
     const m = this.mesa();
     if (!m || this.modo !== 'linhas') return;
@@ -6113,37 +6118,32 @@ const LC25 = {
     if (!p){
       p = document.createElement('div');
       p.className = 'pede-lc25';
-      p.innerHTML = '<span class="alvo"></span><span class="txt"></span>';
+      p.innerHTML = '<span class="alvo"></span><span class="txt">Toque de novo pra ver as colunas</span>';
       m.appendChild(p);
     }
     const x3 = xDaColuna(3), x12 = xDaColuna(12);
     p.style.left = ((x3 + x12) / 2).toFixed(1) + 'px';
     p.style.top  = (yDaLinha(3) - this.vao).toFixed(1) + 'px';
-    p.classList.add('on');
-    /* o que falta digitar fica lá, invisível: a frase já ocupa o lugar
-       todo, e a mão, no fim dela, não tem de correr atrás do texto */
-    const el = p.querySelector('.txt'), txt = 'Toque de novo pra ver as colunas';
-    const poe = n => { el.innerHTML = esc(txt.slice(0, n)) + '<span style="opacity:0">' + esc(txt.slice(n)) + '</span>'; };
-    poe(0);
-    const g = this._seqG;
-    let n = 0;
-    clearInterval(this._pedeDig);
-    this._pedeDig = setInterval(() => {
-      if (g !== this._seqG){ clearInterval(this._pedeDig); return; }
-      poe(++n);
-      TECLAS.bate();
-      if (n >= txt.length) clearInterval(this._pedeDig);
-    }, 45);
-    /* a mão encosta à esquerda do texto e bate de tempos a tempos */
-    limpaMao();
-    levaMao(p.querySelector('.alvo'));
-    this._pedeMao = true;
-    bateMao();
-    clearInterval(this._pedeBate);
-    this._pedeBate = setInterval(() => { if (g === this._seqG) bateMao(); }, 1400);
+    const g = this._seqG, T = this._pedeT = [];
+    const vale = () => g === this._seqG && this.modo === 'linhas';
+    const ciclo = () => {
+      if (!vale()) return;
+      p.classList.add('on');
+      limpaMao();
+      levaMao(p.querySelector('.alvo'));
+      this._pedeMao = true;
+      [300, 1000, 1700].forEach(ms => T.push(setTimeout(() => { if (vale()) bateMao(); }, ms)));
+      T.push(setTimeout(() => {
+        if (!vale()) return;
+        p.classList.remove('on');
+        tiraMao(); this._pedeMao = false;
+      }, 2500));
+      T.push(setTimeout(ciclo, 2500 + 400 + 3000));
+    };
+    ciclo();
   },
   tiraPedido(){
-    clearInterval(this._pedeDig); clearInterval(this._pedeBate);
+    (this._pedeT || []).forEach(clearTimeout); this._pedeT = [];
     const m = this.mesa(), p = m && m.querySelector('.pede-lc25');
     if (p) p.classList.remove('on');
     if (this._pedeMao){ this._pedeMao = false; tiraMao(); }
