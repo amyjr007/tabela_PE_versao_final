@@ -2647,7 +2647,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v19.9';
+const VERSAO = 'v20.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8007,7 +8007,36 @@ function quizNaHora(t){
    espera cada um antes de dar o passo seguinte. Um arquivo que não
    carregue não prende a aula: conta como acabado. */
 const EFEITOS = new Set();
+/* A VIBRAÇÃO (celular e tablet Android; o iPhone e o iPad não deixam a
+   página vibrar). Vai junto com os sons que pedem um toque na mão: o erro
+   treme forte, o acerto dá um toque firme, a festa um "tum-tum-tum", e o
+   card que vira ou encaixa um toque leve. E os toques do aluno nos botões
+   e nos cards dão um clique curtinho. Nunca na montagem. */
+const VIBRA = {
+  error:[70, 50, 70],                 /* errou: duas batidas */
+  right:[25], yes:[35],               /* acertou */
+  funfare:[30, 60, 30, 60, 60],       /* a festa do acerto */
+  statistics:[20, 80, 40],            /* o cartão da nota */
+  flip:[8], flipcard:[10],            /* o card que vira ou encaixa */
+  transition_cube:[12]                /* a troca de slide */
+};
+let vibraAte = 0;
+function vibra(padrao){
+  if (!navigator.vibrate || naMontagem() || document.hidden) return;
+  /* muitos seguidos (os flips da arrumação) não viram um zumbido */
+  const agora = performance.now();
+  if (padrao.length === 1 && agora < vibraAte) return;
+  vibraAte = agora + 60;
+  try { navigator.vibrate(padrao); } catch (_) {}
+}
+/* o clique curtinho dos toques do aluno: botões e cards */
+addEventListener('pointerdown', ev => {
+  if (ev.pointerType === 'mouse') return;
+  const alvo = ev.target.closest && ev.target.closest('button, .pc, .mem-carta, .quiz-op, .eixo, .rd-v, [role="button"]');
+  if (alvo) vibra([6]);
+}, true);
 function tocaEfeito(nome){
+  if (VIBRA[nome]) vibra(VIBRA[nome]);
   return new Promise(pronto => {
     /* um nome é um efeito da pasta vfx; com barra, é o caminho do arquivo */
     const a = new Audio(encodeURI(nome.includes('/') ? nome : 'Audios/vfx/' + nome + '.mp3'));
