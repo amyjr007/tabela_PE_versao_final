@@ -550,12 +550,15 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
    tamanho da mesa, que não pega o dedo — os cubos dentro pegam */
 .coluna-onda{position:absolute;inset:0;pointer-events:none;
   transition:transform 90ms linear;will-change:transform}
-.mesa.lc25{transition:transform .55s cubic-bezier(.3,.85,.3,1)}
-.mesa.lc25 .pc{transition:left .55s cubic-bezier(.3,.85,.3,1), top .55s cubic-bezier(.3,.85,.3,1),
+/* --t25: o tempo de abrir e fechar. Depois da "2.5A", no toque do aluno
+   (rapido25), vai ao dobro da velocidade */
+.mesa.lc25{--t25:.55s;transition:transform var(--t25) cubic-bezier(.3,.85,.3,1)}
+.mesa.lc25.rapido25{--t25:.275s}
+.mesa.lc25 .pc{transition:left var(--t25) cubic-bezier(.3,.85,.3,1), top var(--t25) cubic-bezier(.3,.85,.3,1),
   transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease, opacity .45s ease}
-.mesa.lc25 .casa{transition:left .55s cubic-bezier(.3,.85,.3,1), top .55s cubic-bezier(.3,.85,.3,1), opacity .3s ease}
+.mesa.lc25 .casa{transition:left var(--t25) cubic-bezier(.3,.85,.3,1), top var(--t25) cubic-bezier(.3,.85,.3,1), opacity .3s ease}
 .mesa.aberta25 .casa:not(.serie){opacity:0}
-.mesa.lc25 .eixo{transition:left .55s cubic-bezier(.3,.85,.3,1), top .55s cubic-bezier(.3,.85,.3,1),
+.mesa.lc25 .eixo{transition:left var(--t25) cubic-bezier(.3,.85,.3,1), top var(--t25) cubic-bezier(.3,.85,.3,1),
   opacity .3s, color .25s, background .25s, border-color .25s, transform .25s}
 /* o número no modelo do professor: a bolinha índigo, com o aro; entra
    em cascata — as linhas pela esquerda, as colunas caindo de cima */
@@ -2710,7 +2713,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v20.9';
+const VERSAO = 'v21.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4494,7 +4497,6 @@ function estouraBolha(el, cor){
   if (!el) return;
   const r = el.getBoundingClientRect(), rs = stage.getBoundingClientRect();
   if (!r.width) return;
-  tocaEfeito('rupture');   /* o estouro se ouve */
   const b = document.createElement('div');
   b.className = 'bolha';
   b.style.left = ((r.left + r.width/2 - rs.left) / fitScale).toFixed(1) + 'px';
@@ -5962,6 +5964,8 @@ const LC25 = {
      quantas linhas ou colunas tem */
   alterna(){
     this.paraSeq();               /* o toque interrompe o brilho a meio */
+    const m = this.mesa();
+    if (m) m.classList.add('rapido25');   /* no toque, abre e fecha ao dobro da velocidade */
     this.poe({ junta:'linhas', linhas:'colunas', colunas:'junta' }[this.modo]);
     this.conta(this.modo);
     if (this.modo !== 'junta') this.seq(this.modo);
@@ -6076,7 +6080,7 @@ const LC25 = {
     this.conta('junta');
     const m = this.mesa();
     if (m && m.classList.contains('lc25')){
-      m.classList.remove('lc25', 'aberta25');
+      m.classList.remove('lc25', 'aberta25', 'rapido25');
       this.series(m, 'junta');
       m.style.removeProperty('--abre');
       m.querySelectorAll('.eixo').forEach(e => {
