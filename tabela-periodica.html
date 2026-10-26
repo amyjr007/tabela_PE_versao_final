@@ -664,6 +664,11 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
   0 0 0 2px rgba(243,160,98,var(--verde,1)), 0 0 20px 5px rgba(224,120,43,calc(.6 * var(--verde,1)))}
 .pc.luz-linha25 .cubo, .pc.luz-coluna25 .cubo{--sc:calc(1 + .06 * var(--verde,1))}
 /* "São 7 linhas" em azul, "São 18 colunas" em laranja */
+/* a segunda linha (nos toques depois da 2.5A), menor, centrada */
+.conta-lc25{text-align:center}
+.conta-lc25 .l2{font-size:.58em;font-weight:600}
+/* os números das linhas (ou colunas) ainda não alcançados pelo brilho */
+.mesa .eixo.oculto25{opacity:0!important}
 .conta-lc25[data-vez="linhas"]{color:var(--cor-linha)}
 .conta-lc25[data-vez="colunas"]{color:var(--cor-coluna)}
 .conta-lc25[data-vez="linhas"] .cursor{background:var(--cor-linha)}
@@ -2680,7 +2685,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v20.5';
+const VERSAO = 'v20.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5722,7 +5727,7 @@ const LC25 = {
     if (modo === 'junta' && m.dataset.slide === '3')
       m.querySelectorAll('.eixo.prof').forEach(e => e.classList.remove('prof'));
     /* juntada, "São 7 linhas" / "São 18 colunas" sai (também ao abrir o quiz) */
-    if (modo === 'junta'){ clearInterval(this._dig); const r = m.querySelector('.conta-lc25'); if (r) r.classList.remove('on'); }
+    if (modo === 'junta'){ clearInterval(this._dig); this.paraSeq(); const r = m.querySelector('.conta-lc25'); if (r) r.classList.remove('on'); }
     TP.todos().forEach(c => {
       const a = this.pos(+c.dataset.z, modo);
       c.style.left = a.x.toFixed(1) + 'px';
@@ -5846,8 +5851,10 @@ const LC25 = {
   /* junta → linhas → colunas → junta; aberta pelo toque, a tabela diz
      quantas linhas ou colunas tem */
   alterna(){
+    this.paraSeq();               /* o toque interrompe o brilho a meio */
     this.poe({ junta:'linhas', linhas:'colunas', colunas:'junta' }[this.modo]);
     this.conta(this.modo);
+    if (this.modo !== 'junta') this.seq(this.modo);
   },
   /* "São 7 linhas" / "São 18 colunas", digitado no vazio acima dos metais
      de transição (dentro da mesa: anda e encolhe com ela), com a barrinha
@@ -5891,26 +5898,70 @@ const LC25 = {
     const n = escreveRotulo(t, { de, ate: de + txt.length*0.055, txt }, el);
     r.querySelector('.cursor').classList.toggle('pisca', n >= txt.length);
   },
+  /* nos toques depois da 2.5A, o texto leva uma segunda linha, menor */
+  TXT_TOQUE:{ linhas:'São 7 linhas\nOrdem crescente de número atômico',
+              colunas:'São 18 colunas\nNuma mesma coluna são quimicamente semelhantes' },
   conta(modo){
     const r = this.caixaConta(modo);
     if (!r) return;
     clearInterval(this._dig);
-    const txt = this.TXT_CONTA[modo] || '';
+    const txt = this.TXT_TOQUE[modo] || '';
     r.classList.toggle('on', !!txt);
     if (!txt) return;
     r.dataset.vez = modo;
     const el = r.querySelector('.txt'), cur = r.querySelector('.cursor');
     el.textContent = '';
     cur.classList.remove('pisca');
+    /* escreve a parte já digitada, com a quebra e a segunda linha menor */
+    const poe = s => {
+      const [l1, l2] = s.split('\n');
+      el.innerHTML = esc(l1) + (l2 !== undefined ? '<br><span class="l2">' + esc(l2) + '</span>' : '');
+    };
     let n = 0;
     this._dig = setInterval(() => {
-      el.textContent = txt.slice(0, ++n);
+      poe(txt.slice(0, ++n));
       TECLAS.bate();
       if (n >= txt.length){ clearInterval(this._dig); cur.classList.add('pisca'); }
-    }, 55);
+    }, 45);
+  },
+  /* O BRILHO EM SEQUÊNCIA, nos toques depois da 2.5A: um elemento de cada
+     vez (3 por segundo) cresce 10% e acende na cor da leitura — azul nas
+     linhas, na ordem do número atômico; laranja nas colunas, de cima para
+     baixo, coluna a coluna —, e o anterior volta ao normal. Cada linha (ou
+     coluna) nova que o brilho alcança faz aparecer a bolinha do número
+     dela. Um toque novo interrompe. */
+  seq(modo){
+    this.paraSeq();
+    const m = this.mesa();
+    if (!m) return;
+    const linhas = modo === 'linhas';
+    const ordem = linhas ? this.ordemLinhas() : this.ordemColunas();
+    const nums = linhas ? '.eixo[data-periodo]' : '.eixo[data-grupo]';
+    m.querySelectorAll(nums).forEach(e => e.classList.add('oculto25'));
+    const g = ++this._seqG;
+    let i = 0, ant = null;
+    this._seqT = setInterval(() => {
+      if (g !== this._seqG) return;
+      if (ant) this.brilha(ant, 0);
+      if (i >= ordem.length){ clearInterval(this._seqT); this._seqT = 0; return; }
+      const c = ant = ordem[i++];
+      this.brilha(c, 1);
+      const e = m.querySelector(linhas ? '.eixo[data-periodo="' + c.dataset.linha + '"]'
+                                       : '.eixo[data-grupo="' + c.dataset.col + '"]');
+      if (e) e.classList.remove('oculto25');
+    }, 333);
+  },
+  paraSeq(){
+    this._seqG = (this._seqG || 0) + 1;
+    if (!this._seqT) return;
+    clearInterval(this._seqT); this._seqT = 0;
+    TP.todos().forEach(c => { if (c._b25) this.brilha(c, 0); });
+    const m = this.mesa();
+    if (m) m.querySelectorAll('.eixo.oculto25').forEach(e => e.classList.remove('oculto25'));
   },
   zera(){
     this.livre = false;
+    this.paraSeq();
     this.apaga();
     this.conta('junta');
     const m = this.mesa();
