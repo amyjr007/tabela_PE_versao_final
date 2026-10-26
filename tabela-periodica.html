@@ -621,8 +621,20 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 /* na 2.5, o número da linha (ou da coluna) por onde o brilho passa: cresce
    e acende em verde, junto com os cards */
 .mesa .eixo.brilha25{z-index:16;transform:translate(-50%,-50%) scale(1.3);
-  box-shadow:0 0 0 2px rgba(62,224,138,.9), 0 0 16px 5px rgba(46,204,113,.6);
   transition:transform .15s ease, box-shadow .15s ease}
+.mesa .eixo.brilha25[data-periodo]{box-shadow:0 0 0 2px rgba(111,174,240,.95), 0 0 16px 5px rgba(47,127,209,.65)}
+.mesa .eixo.brilha25[data-grupo]{box-shadow:0 0 0 2px rgba(243,160,98,.95), 0 0 16px 5px rgba(224,120,43,.65)}
+/* os cards da onda da 2.5: azul nas linhas, laranja nas colunas */
+.pc.luz-linha25 .face{box-shadow:inset 0 0 0 60px rgba(47,127,209,calc(.3 * var(--verde,1))),
+  0 0 0 2px rgba(111,174,240,var(--verde,1)), 0 0 20px 5px rgba(47,127,209,calc(.6 * var(--verde,1)))}
+.pc.luz-coluna25 .face{box-shadow:inset 0 0 0 60px rgba(224,120,43,calc(.3 * var(--verde,1))),
+  0 0 0 2px rgba(243,160,98,var(--verde,1)), 0 0 20px 5px rgba(224,120,43,calc(.6 * var(--verde,1)))}
+.pc.luz-linha25 .cubo, .pc.luz-coluna25 .cubo{--sc:calc(1 + .06 * var(--verde,1))}
+/* "São 7 linhas" em azul, "São 18 colunas" em laranja */
+.conta-lc25[data-vez="linhas"]{color:var(--cor-linha)}
+.conta-lc25[data-vez="colunas"]{color:var(--cor-coluna)}
+.conta-lc25[data-vez="linhas"] .cursor{background:var(--cor-linha)}
+.conta-lc25[data-vez="colunas"] .cursor{background:var(--cor-coluna)}
 .mesa .eixo.prof[data-periodo], .slide.quiz-escuro .mesa .eixo.prof[data-periodo]{background:var(--cor-linha)}
 .mesa .eixo.prof[data-grupo],   .slide.quiz-escuro .mesa .eixo.prof[data-grupo]{background:var(--cor-coluna)}
 /* os textos do slide 4 na cor da faixa deles: "séries ou períodos" da
@@ -1067,6 +1079,7 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 #stage.em-toque #som, #stage.em-toque #som-dica,
 #stage.em-jogo #som, #stage.em-jogo #som-dica,
 #stage.em-escolha #som, #stage.em-escolha #som-dica,
+#stage.espera-37 #som, #stage.espera-37 #som-dica, #stage.espera-37 #vel,
 #stage.em-entendi #vel, #stage.em-quiz #vel, #stage.em-toque #vel, #stage.em-jogo #vel,
 #stage.em-escolha #vel{display:none!important}
 /* e com a tela escura também: ali o que faz a aula seguir é o toque na tela */
@@ -1277,13 +1290,14 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
   height .85s cubic-bezier(.3,.85,.3,1), font-size .85s cubic-bezier(.3,.85,.3,1)}
 /* e o cabeçalho do slide durante o quiz (breuNoSlide): os lugares, em px
    do palco, contam a partir da faixa, que está em 80, 10 */
-.slide.quiz4-aberto .tira > .regua,
-.slide.quiz4-aberto .tira > .num,
-.slide.quiz4-aberto .tira > .title{position:absolute;transform:translate(-50%,-50%);white-space:nowrap}
-.slide.quiz4-aberto .tira > .regua{left:1069px;top:42px}      /* x 1149, y 52 */
-.slide.quiz4-aberto .tira > .num  {left:-13px;top:33px}       /* x   67, y 43 */
-.slide.quiz4-aberto .tira > .title{left:61px;top:34px}        /* x  141, y 44: "Quiz" */
-.slide.quiz4-aberto .tira > .subtitle{opacity:0;visibility:hidden}
+/* (o mesmo cabeçalho no quiz do capítulo 2: .quiz-cabeca) */
+.slide:is(.quiz4-aberto, .quiz-cabeca) .tira > .regua,
+.slide:is(.quiz4-aberto, .quiz-cabeca) .tira > .num,
+.slide:is(.quiz4-aberto, .quiz-cabeca) .tira > .title{position:absolute;transform:translate(-50%,-50%);white-space:nowrap}
+.slide:is(.quiz4-aberto, .quiz-cabeca) .tira > .regua{left:1069px;top:42px}      /* x 1149, y 52 */
+.slide:is(.quiz4-aberto, .quiz-cabeca) .tira > .num  {left:-13px;top:33px}       /* x   67, y 43 */
+.slide:is(.quiz4-aberto, .quiz-cabeca) .tira > .title{left:61px;top:34px}        /* x  141, y 44: "Quiz" */
+.slide:is(.quiz4-aberto, .quiz-cabeca) .tira > .subtitle{opacity:0;visibility:hidden}
 /* as letras do título a transformarem-se (transformaLetras) */
 .tira .letra{display:inline-block;white-space:pre;transition:opacity .24s ease, transform .24s cubic-bezier(.3,1.4,.5,1)}
 .tira .letra.some{opacity:0;transform:translateY(-16px) scale(.6)}
@@ -1326,7 +1340,7 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 /* o quadro das perguntas do Quiz 3, no lugar e no tamanho da montagem: o
    centro em 641 × 139, a 1,18, largo para o comando caber numa linha */
 .quiz3.q4.q-eixos{left:241.5px;width:799px;top:86.5px}
-.quiz3.q4.digitando .q3-q::after{content:'';display:inline-block;width:3px;height:.9em;margin-left:5px;
+.quiz3.digitando .q3-q::after{content:'';display:inline-block;width:3px;height:.9em;margin-left:5px;
   vertical-align:-.1em;background:var(--ouro);animation:piscaCursor 1.05s steps(1) infinite}
 /* A CAIXA DO CARROSSEL (questão 04), com o uso da do app de referência:
    pequena, centrada no meio da altura da tabela, do lado oposto ao do
@@ -1635,7 +1649,7 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 #som.botao-quiz #ic-play,#som.botao-quiz #ic-pause,#som.botao-quiz .anel{display:none}
 /* (a interrogação saiu: o botão do quiz é verde, a pulsar de leve, com a
    palavra "Quiz" — como o "Saquei") */
-#som.botao-quiz #ic-quiz{display:none}
+#som.botao-quiz #ic-quiz, #som.botao-quiz .icone{display:none}   /* (o ícone vazio empurrava a palavra para baixo) */
 #som.botao-quiz .rotulo-saquei{display:block;font-family:var(--display);font-weight:700;font-size:17px}
 #som.botao-quiz, #som.botao-quiz.parado{background:#1F9D55;border-color:#1F9D55;color:#fff;
   animation:jogoChama 1.6s ease-in-out infinite}
@@ -2264,7 +2278,7 @@ body.montagem .solto{
 body.montagem .solto img{-webkit-user-drag:none;pointer-events:none}
 /* os textos que normalmente deixam o toque passar: na montagem, à vista,
    pegam-se com a mão (escondidos, continuam a deixá-lo passar) */
-body.montagem .solto:is(.dica-escolha, .toque-continuar, .rotulo-el, .entendi3, .dica-final, .ficha).on,
+body.montagem .solto:is(.dica-escolha, .toque-continuar, .rotulo-el, .entendi3, .dica-final, .ficha, .conta-lc25).on,
 body.montagem .solto.coords-el:has(span.on),
 body.montagem .solto.texto-colunas:has(.frase.on:not(.saindo)),
 body.montagem #som-dica.solto:not(.fora){pointer-events:auto}
@@ -2598,7 +2612,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v19.4';
+const VERSAO = 'v19.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4505,7 +4519,7 @@ const SEQ = {
   deixa2(){
     this.aguardaToque2 = false;
     if (atual === 2){ ENCAIXE.zera(); FINAL.zera(); QUIZ3.fecha(); LC25.zera(); }
-    stage.classList.remove('em-toque');
+    stage.classList.remove('em-toque', 'espera-37');
   },
   /* o toque na tela escura: ela desfaz-se, e a narração segue */
   continua(){
@@ -5574,6 +5588,8 @@ const LC25 = {
        linha e da coluna em destaque se acendem, pela cruz) */
     if (modo === 'junta' && m.dataset.slide === '3')
       m.querySelectorAll('.eixo.prof').forEach(e => e.classList.remove('prof'));
+    /* juntada, "São 7 linhas" / "São 18 colunas" sai (também ao abrir o quiz) */
+    if (modo === 'junta'){ clearInterval(this._dig); const r = m.querySelector('.conta-lc25'); if (r) r.classList.remove('on'); }
     TP.todos().forEach(c => {
       const a = this.pos(+c.dataset.z, modo);
       c.style.left = a.x.toFixed(1) + 'px';
@@ -5646,9 +5662,13 @@ const LC25 = {
     }
     this.suja = true;
   },
+  /* o brilho na cor da leitura: azul nas linhas, laranja nas colunas (as
+     cores dos números delas) */
   brilha(c, b){
     c._b25 = b;
-    c.classList.toggle('luz-verde', b > 0);
+    const cls = this.modo === 'colunas' ? 'luz-coluna25' : 'luz-linha25';
+    c.classList.remove('luz-verde', 'luz-linha25', 'luz-coluna25');
+    if (b > 0) c.classList.add(cls);
     if (b > 0){
       c.style.setProperty('--verde', b.toFixed(3));
       c.style.setProperty('--onda', (1 + this.cresce * b).toFixed(3));
@@ -6109,7 +6129,13 @@ function breuNoSlide(sl, sim){
      o número no canto, "Quiz" ao lado dele, a régua à direita e o
      subtítulo fora — ver o CSS de .slide.quiz4-aberto. Fechado o quiz,
      o título de sempre volta. */
-  if (sl.classList.contains('quiz4-aberto') === !!sim) return;
+  cabecaDoQuiz(sl, sim, QUIZ4.nomeDaParte(trilhaAtual), 'quiz4-aberto');
+}
+/* O CABEÇALHO DO QUIZ: as peças da faixa deslizam para o arranjo do quiz
+   (classe 'cls': quiz4-aberto no capítulo 3, que também arruma a mesa;
+   quiz-cabeca no capítulo 2, só o cabeçalho), e o título vira 'nome' */
+function cabecaDoQuiz(sl, sim, nome, cls){
+  if (sl.classList.contains(cls) === !!sim) return;
   const t = sl.querySelector('.tira .title');
   const pecas = [...sl.querySelectorAll('.tira > .regua, .tira > .num, .tira > .title, .tira > .subtitle')];
   /* TUDO EM CENA, À VISTA: cada peça desliza do lugar antigo para o novo
@@ -6120,11 +6146,11 @@ function breuNoSlide(sl, sim){
   sl.classList.add('quiz4-anima');
   clearTimeout(sl._animaT);
   sl._animaT = setTimeout(() => sl.classList.remove('quiz4-anima'), 950);
-  deslizaEntre(pecas, () => sl.classList.toggle('quiz4-aberto', sim));
+  deslizaEntre(pecas, () => sl.classList.toggle(cls, sim));
   if (t){
     if (sim){
       if (t.dataset.orig === undefined) t.dataset.orig = t.textContent;
-      t.dataset.parte = QUIZ4.nomeDaParte(trilhaAtual);
+      t.dataset.parte = nome;
       transformaLetras(t, t.dataset.parte);
     } else if (t.dataset.orig !== undefined){
       const orig = t.dataset.orig;
@@ -7093,6 +7119,9 @@ const QUIZ3 = {
     }
     sl.classList.toggle('quiz-escuro', sim);
     if (v) v.classList.toggle('on', sim);
+    /* o cabeçalho, como no quiz do capítulo 3: as peças deslizam, e o
+       título transforma-se em "Quiz" (e volta ao fechar) */
+    cabecaDoQuiz(sl, sim, 'Quiz', 'quiz-cabeca');
   },
   /* a volta da tabela, na onda diagonal (a mesma do professor) */
   giraTabela(){
@@ -7143,11 +7172,22 @@ const QUIZ3 = {
     cx.setAttribute('aria-live', 'polite');
     cx.innerHTML = '<div class="q3-marca"></div><div class="q3-q"></div><div class="q3-msg"></div>';
     cx.querySelector('.q3-marca').textContent = 'Questão ' + (this.passo + 1) + ' de ' + this.itens.length;
-    cx.querySelector('.q3-q').textContent = p.q;
     slides[2].appendChild(cx);
     cx.getBoundingClientRect();        /* nasce fora da tela, à esquerda */
     cx.classList.add('on');
-    this.travado = false;
+    /* a pergunta é digitada, letra a letra, com o cursor; o toque na
+       tabela só vale com ela escrita */
+    const q = cx.querySelector('.q3-q'), passo = this.passo;
+    this.travado = true;
+    cx.classList.add('digitando');
+    let n = 0;
+    clearInterval(this.digT);
+    this.digT = setInterval(() => {
+      if (g !== this.g || passo !== this.passo){ clearInterval(this.digT); return; }
+      q.textContent = p.q.slice(0, ++n);
+      TECLAS.bate();
+      if (n >= p.q.length){ clearInterval(this.digT); cx.classList.remove('digitando'); this.travado = false; }
+    }, 40);
   },
   /* a resposta: o toque num card da tabela */
   async toca(c){
@@ -7236,6 +7276,8 @@ const FINAL = {
      quem o procura é o aluno */
   chama(){
     this.esperando = true;
+    /* sem o play: o que faz a aula seguir é o toque no 37 */
+    stage.classList.add('espera-37');
   },
   /* a pergunta do toque errado, no vazio da tabela */
   dica(){
@@ -7266,6 +7308,7 @@ const FINAL = {
       return;
     }
     this.esperando = false;
+    stage.classList.remove('espera-37');
     this.tiraDica();
     /* o tocado salta já, sem esperar pelos outros */
     encaixaCubo(c);
@@ -7309,6 +7352,7 @@ const FINAL = {
   },
   zera(){
     this.esperando = false; this.ativo = false; this.feito = false; this.g++;
+    stage.classList.remove('espera-37');
     this.tiraDica();
     const m = slides[2] && slides[2].querySelector('.mesa');
     if (m) m.classList.remove('brilho-final');
@@ -9316,7 +9360,7 @@ CAR.el.querySelector('.car-fecha').addEventListener('click', () => CAR.fecha());
    telas escuras, os rótulos, os quadros de frases, o Entendi: também são
    peças (nomeDe dá-lhes o nome) */
 const TEXTOS_SOLTOS = '.dica-escolha, .toque-continuar, .veu-frases, .rotulo-el,' +
-                      ' .texto-colunas, .entendi3, .dica-final, .ficha, .coords-el';
+                      ' .texto-colunas, .entendi3, .dica-final, .ficha, .coords-el, .conta-lc25';
 const MOVEIS = '.capa .marca, .capa h1, .capa .risco, .capa .autor,' +
                ' .capa .email, .capa .foto, [data-mont], ' + TEXTOS_SOLTOS;
 /* quem encolhe até o conteúdo antes de ser medido — o texto.
@@ -9581,7 +9625,8 @@ function mostraCoord(el){
    já está escrito — a narração parada não o reescreve) */
 const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle, .quiz3.q4 .q3-q,' +
                ' .dica-escolha .txt, .toque-continuar, .rotulo-el .txt, .veu-frases .frase .txt,' +
-               ' .texto-colunas .frase .txt, .veu-moseley figcaption b, .dica-final, .entendi3, .coords-el';
+               ' .texto-colunas .frase .txt, .veu-moseley figcaption b, .dica-final, .entendi3, .coords-el,' +
+               ' .conta-lc25 .txt';
 const EDICAO = {
   el:null, ultimo:null, tUlt:0, editados:new Set(),
   /* o bloco de linhas a que um texto pertence, dentro da peça */
@@ -10023,6 +10068,7 @@ function nomeDe(el){
   if (c.contains('texto-colunas'))   return 'quadro-de-frases';
   if (c.contains('entendi3'))        return 'botao-entendi';
   if (c.contains('dica-final'))      return 'dica-final';
+  if (c.contains('conta-lc25'))      return el.dataset.vez === 'colunas' ? 'sao-18-colunas' : 'sao-7-linhas';
   /* no slide 4, com o exemplo em que se está (Na, Mn ou Pb) */
   const ex = (c.contains('ficha') || c.contains('coords-el')) && el.closest('.mesa') && el.closest('.mesa').dataset.ex;
   if (c.contains('ficha'))           return 'simbolo-do-elemento' + (ex ? ' (' + ex + ')' : '');
