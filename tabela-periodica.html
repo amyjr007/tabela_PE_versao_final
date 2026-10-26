@@ -1388,8 +1388,9 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 /* (o número fica por cima, fora da linha: o símbolo segue na linha do texto) */
 .q3-q .sym-z{position:relative;display:inline-block}
 .q3-q .sym-z i{position:absolute;left:-.12em;bottom:88%;white-space:nowrap;
-  font-style:normal;font-size:.5em;font-weight:600;line-height:1;color:#C3BCF5}
-.q3-q .sym-z b{color:var(--ouro)}
+  font-style:normal;font-size:.5em;font-weight:600;line-height:1;color:var(--ouro)}
+/* o número em dourado; o símbolo, da cor do texto */
+.q3-q .sym-z b, .quiz3.q4 .q3-q .sym-z b{color:inherit}
 .quiz3.q4 .q3-q:has(.sym-z){margin-top:12px}
 /* o quadro das perguntas do Quiz 3, no lugar e no tamanho da montagem: o
    centro em 641 × 139, a 1,18, largo para o comando caber numa linha */
@@ -2738,7 +2739,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v21.9';
+const VERSAO = 'v22.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
