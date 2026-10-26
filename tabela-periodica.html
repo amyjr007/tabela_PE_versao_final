@@ -2154,6 +2154,8 @@ html.palco-largo #carrossel{left:calc(-1 * var(--folga));right:calc(-1 * var(--f
 #carrossel.aberto .car-item.centro .car-cartao{box-shadow:0 0 0 6px var(--ouro-luz),0 18px 40px rgba(0,0,0,.45)}
 .car-deck{position:absolute;inset:0;z-index:1;pointer-events:none}
 .car-deck .slide{opacity:1;visibility:visible}
+/* no cartão fica só o número: o título já vai escrito em cima dele */
+.car-deck .tira .title, .car-deck .tira .subtitle{visibility:hidden!important}
 /* na cópia nada se mexe: ela é uma fotografia do slide, já no fim de
    cada animação, e não no começo */
 .car-deck *{animation-delay:-100s!important;animation-play-state:paused!important;transition:none!important}
@@ -2613,7 +2615,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v19.6';
+const VERSAO = 'v19.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o

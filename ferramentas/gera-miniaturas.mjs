@@ -78,7 +78,11 @@ for (const [nome, metr] of Object.entries(JOGOS)){
     await espera(3200);
     /* só o slide: os botões do palco não entram na foto */
     await js(`['som','som-dica','vel','versao','ver-slides','progress','puxador','nav-alca','aviso','coord']
-      .forEach(id => { const e = document.getElementById(id); if (e) e.style.visibility = 'hidden'; }); 1`);
+      .forEach(id => { const e = document.getElementById(id); if (e) e.style.visibility = 'hidden'; });
+      /* nem o título e o subtítulo do slide: o carrossel já os escreve em
+         cima do cartão (fica só o número) */
+      document.querySelectorAll('.slide.is-active .tira .title, .slide.is-active .tira .subtitle')
+        .forEach(e => e.style.visibility = 'hidden'); 1`);
     const r = await js(`(() => { const r = stage.getBoundingClientRect();
       return { x:r.left, y:r.top, w:r.width, h:r.height, fit:fitScale }; })()`);
     const margem = nome === 'cel' ? MARGEM_CEL * r.fit : 0;
@@ -87,7 +91,8 @@ for (const [nome, metr] of Object.entries(JOGOS)){
     const arq = path.join(DESTINO, nome + '-' + String(i).padStart(2, '0') + '.webp');
     fs.writeFileSync(arq, Buffer.from(shot.result.data, 'base64'));
     await js(`['som','som-dica','vel','versao','ver-slides','progress','puxador','nav-alca','aviso','coord']
-      .forEach(id => { const e = document.getElementById(id); if (e) e.style.visibility = ''; }); 1`);
+      .forEach(id => { const e = document.getElementById(id); if (e) e.style.visibility = ''; });
+      document.querySelectorAll('.tira .title, .tira .subtitle').forEach(e => e.style.visibility = ''); 1`);
     console.log(path.relative(RAIZ, arq), Math.round(fs.statSync(arq).size / 1024) + ' KB');
     feitas++;
   }
