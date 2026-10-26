@@ -2737,7 +2737,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v21.7';
+const VERSAO = 'v21.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7038,9 +7038,9 @@ const QUIZ4 = {
          segundo erro o elemento pisca na tabela; a partir do terceiro, a
          linha e a coluna dele acendem */
       const okP = p === +c.dataset.periodo, okG = g === +c.dataset.grupo;
-      let dica = !okP && !okG ? 'Ache o ' + sym + ' na tabela. O período é o número da linha dele (à esquerda); o grupo, o da coluna (em cima).'
-               : !okP ? 'O grupo está certo. Confira o período: o número da linha do ' + sym + ', à esquerda.'
-                      : 'O período está certo. Confira o grupo: o número da coluna do ' + sym + ', em cima.';
+      let dica = !okP && !okG ? 'Ache o ' + sym + ' na tabela. O período é o nº da linha dele (à esquerda); o grupo, o da coluna (em cima).'
+               : !okP ? 'O grupo está certo. Confira o período: o nº da linha do ' + sym + ', à esquerda.'
+                      : 'O período está certo. Confira o grupo: o nº da coluna do ' + sym + ', em cima.';
       if (this.tropecos >= 2){ c.classList.add('pista3'); dica += ' Olhe: ele está piscando na tabela.'; }
       if (this.tropecos >= 3) EV3.poeCruz(this.mesa(), c, true, true);
       const msg = this.msg();
@@ -7416,12 +7416,12 @@ function perguntasDoCriterio(){
   const perg = [];
   /* 1 · achar pelo número atômico */
   const z1 = sorteia3(todos.filter(z => z > 2));
-  perg.push({ q:'Toque no elemento cujo número atômico é ' + z1 + '.', ok:z => z === z1,
-              explica:'O número atômico ' + z1 + ' é o ' + oEl(z1) + '.' });
+  perg.push({ q:'Toque no elemento cujo nº atômico é ' + z1 + '.', ok:z => z === z1,
+              explica:'O nº atômico ' + z1 + ' é o ' + oEl(z1) + '.' });
   /* 2 · o vizinho de numeração, para um lado ou para o outro */
   const z2 = sorteia3(todos.filter(z => z > 3 && z < 118 && naMesa(z - 1) && naMesa(z + 1)));
   const adiante = Math.random() < .5, a2 = adiante ? z2 + 1 : z2 - 1;
-  perg.push({ q:'Toque no elemento imediatamente ' + (adiante ? 'posterior' : 'anterior') + ' ao número atômico ' + z2 + '.',
+  perg.push({ q:'Toque no elemento imediatamente ' + (adiante ? 'posterior' : 'anterior') + ' ao nº atômico ' + z2 + '.',
               ok:z => z === a2,
               explica:'O ' + (adiante ? 'posterior' : 'anterior') + ' ao ' + z2 + ' é o ' + a2 + ', o ' + oEl(a2) + '.' });
   /* 3 e 4 · as duas pontas de duas linhas diferentes */
@@ -7458,7 +7458,7 @@ function perguntasDoCriterio(){
   /* a dica de cada questão, para o erro (as cinco primeiras são as do
      professor; as três últimas, das questões novas) */
   const dicas = [
-    'O número atômico é o número que fica em cima do símbolo.<br>Os elementos estão em ordem crescente, da esquerda para a direita.',
+    'O nº atômico é o nº que fica em cima do símbolo.<br>Os elementos estão em ordem crescente, da esquerda para a direita.',
     'O elemento ' + (adiante ? 'posterior' : 'anterior') + ' ao ' + z2 + ' é o ' + a2 + '.<br>Os números crescem da esquerda para a direita, linha a linha.',
     'As linhas são horizontais, da esquerda para a direita.<br>Ache a linha ' + duas[0] + ' e toque no primeiro elemento dela.',
     'As linhas são horizontais, da esquerda para a direita.<br>Ache a linha ' + duas[1] + ' e toque no último elemento dela.',
