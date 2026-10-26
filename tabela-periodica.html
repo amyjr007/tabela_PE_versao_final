@@ -2036,6 +2036,28 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
 .nav-vel-txt{flex:1;font-size:17px;font-weight:700}
 .nav-vel-v{flex:none;min-width:3.4ch;padding:4px 10px;border-radius:10px;text-align:center;
   font-size:17px;font-weight:800;color:var(--ouro);background:#fff;font-variant-numeric:tabular-nums}
+/* AS LEGENDAS, logo abaixo da velocidade: o mesmo feitio, em índigo.
+   Desligadas, o botão fica claro, com a chave à esquerda */
+.nav-leg{display:flex;align-items:center;gap:10px;width:100%;margin-top:10px;padding:12px 16px;
+  border:2px solid var(--indigo);border-radius:14px;cursor:pointer;font:inherit;text-align:left;
+  color:var(--indigo);background:#fff;transition:transform .15s ease, box-shadow .15s ease, background .2s ease}
+.nav-leg:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(32,28,66,.18)}
+.nav-leg:active{transform:scale(.97)}
+.nav-leg svg{flex:none;width:26px;height:26px}
+.nav-leg-txt{flex:1;font-size:17px;font-weight:700}
+.nav-leg-chave{flex:none;position:relative;width:46px;height:26px;border-radius:13px;
+  background:rgba(32,28,66,.22);transition:background .2s ease}
+.nav-leg-chave::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
+  background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s ease}
+.nav-leg.ligada{color:#fff;background:var(--indigo);box-shadow:0 8px 20px rgba(32,28,66,.3)}
+.nav-leg.ligada .nav-leg-chave{background:var(--ouro-luz)}
+.nav-leg.ligada .nav-leg-chave::after{transform:translateX(20px)}
+/* a faixa da legenda, embaixo no palco; não pega o toque */
+#legenda{position:absolute;left:50%;bottom:22px;z-index:70;transform:translateX(-50%);
+  max-width:920px;width:max-content;padding:8px 18px;border-radius:12px;pointer-events:none;
+  background:rgba(20,17,40,.84);color:#fff;font-size:26px;font-weight:600;line-height:1.3;
+  text-align:center;opacity:0;transition:opacity .15s ease}
+#legenda.on{opacity:1}
 /* (o botão da velocidade saiu da tela: mora no sumário) */
 #stage #vel{display:none!important}
 .nav-fecha{position:absolute;top:18px;right:14px;width:34px;height:34px;border:0;border-radius:9px;
@@ -2545,6 +2567,7 @@ body.montagem #versao{color:var(--ouro)}
     </button>
 
     <div id="aviso" role="status" aria-live="polite"></div>
+    <div id="legenda" aria-hidden="true"></div>
     <div id="versao" aria-label="Versão do app"></div>
     <!-- o nome do aluno: pedido no Iniciar da capa, usado no cartão da nota -->
     <div id="nome-pop" hidden role="dialog" aria-modal="true" aria-labelledby="nome-tit">
@@ -2623,6 +2646,8 @@ body.montagem #versao{color:var(--ouro)}
   </div>
 </div>
 
+<!-- o texto das narrações, para as legendas (ferramentas/gera-legendas.mjs) -->
+<script src="legendas.js"></script>
 <script>
 /* ============================================================
    OS SLIDES
@@ -2685,7 +2710,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v20.8';
+const VERSAO = 'v20.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4304,6 +4329,90 @@ const Velocidade = {
 };
 Velocidade.aplicar(som);
 Velocidade.botao();
+
+/* AS LEGENDAS. O texto de cada narração vem de legendas.js (feito por
+   ferramentas/gera-legendas.mjs), com o tempo de cada frase. Toda fala
+   que toca — a trilha, a abertura do capítulo, as falas do jogo e dos
+   quizzes — passa pelo play, e é ali que a legenda fica sabendo dela.
+   Ligar e desligar é no sumário; a escolha fica guardada no aparelho. */
+const LEGENDA = {
+  CHAVE: 'tabela-aluno-legendas',
+  liga: (() => { try { return localStorage.getItem('tabela-aluno-legendas') === '1'; } catch (_) { return false; } })(),
+  el: document.getElementById('legenda'),
+  falas: new Set(),
+  /* O QUE JÁ ESTÁ ESCRITO NA TELA não ganha legenda: o título do capítulo
+     nas aberturas, os critérios digitados e as perguntas do Quiz 1 do
+     tópico 3. Por fala: a frase que casar com o padrão fica sem legenda */
+  NA_TELA: [
+    [/^audio_tabela_\d+\.0$/, /./],
+    [/^audio_tabela_1$/, /instrumento de|consulta e não foi feita/],
+    [/^audio_tabela_2$/, /Critério 1|organizados em linhas|^em ordem crescente/],
+    [/^audio_tabela_2\.3$/, /Critério 2/],
+    [/^audio_tabela_3\.[345]$/, /Toque no elemento/]
+  ],
+  naTela(chave, txt){ return this.NA_TELA.some(([a, f]) => a.test(chave) && f.test(txt)); },
+  texto: '',
+  /* o nome do arquivo, sem a pasta e sem o .mp3: é a chave em LEGENDAS */
+  chave(a){
+    if (a._legSrc !== a.src){
+      a._legSrc = a.src;
+      try { a._legChave = decodeURIComponent(new URL(a.src, location.href).pathname.split('/').pop()).replace(/\.mp3$/i, ''); }
+      catch (_) { a._legChave = ''; }
+    }
+    return a._legChave;
+  },
+  ve(a){
+    if (typeof LEGENDAS === 'undefined' || !LEGENDAS[this.chave(a)]) return;
+    this.falas.add(a);
+    if (this.liga) this.anda();
+  },
+  trocar(){
+    this.liga = !this.liga;
+    try { localStorage.setItem(this.CHAVE, this.liga ? '1' : '0'); } catch (_) {}
+    this.botao();
+    if (this.liga) this.anda(); else this.mostra('');
+  },
+  botao(){
+    const b = window.navGaveta && navGaveta.querySelector('.nav-leg');
+    if (!b) return;
+    b.classList.toggle('ligada', this.liga);
+    b.setAttribute('aria-pressed', String(this.liga));
+    b.setAttribute('aria-label', 'Legendas ' + (this.liga ? 'ligadas. Toque para desligar' : 'desligadas. Toque para ligar'));
+  },
+  mostra(t){
+    if (t === this.texto) return;
+    this.texto = t;
+    if (t) this.el.textContent = t;
+    this.el.classList.toggle('on', !!t);
+  },
+  /* a cada quadro: a fala que está tocando (a última que começou), e a
+     frase dela neste segundo. Com a trilha pausada, a frase fica */
+  anda(){
+    if (this._quadro) return;
+    const passo = () => {
+      this._quadro = 0;
+      if (!this.liga){ this.mostra(''); return; }
+      let a = null;
+      for (const f of this.falas){
+        if (!f.paused && !f.ended) a = f;
+        else if (f !== som) this.falas.delete(f);
+      }
+      if (!a && this.falas.has(som) && !som.ended && som.currentTime > 0) a = som;
+      let t = '';
+      if (a){
+        const k = this.chave(a), cs = LEGENDAS[k] || [], s = a.currentTime;
+        for (const c of cs) if (s >= c[0] && s < c[1]){ t = this.naTela(k, c[2]) ? '' : c[2]; break; }
+      }
+      this.mostra(t);
+      if (a || this.falas.size) this._quadro = requestAnimationFrame(passo);
+    };
+    this._quadro = requestAnimationFrame(passo);
+  }
+};
+{
+  const toca = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = function(){ LEGENDA.ve(this); return toca.apply(this, arguments); };
+}
 /* na montagem o botão é peça a arrastar: o toque não troca a velocidade */
 velBtn.addEventListener('click', () => { if (!naMontagem()) Velocidade.trocar(); });
 somBtn.style.setProperty('--volta', VOLTA.toFixed(1));
@@ -4385,6 +4494,7 @@ function estouraBolha(el, cor){
   if (!el) return;
   const r = el.getBoundingClientRect(), rs = stage.getBoundingClientRect();
   if (!r.width) return;
+  tocaEfeito('rupture');   /* o estouro se ouve */
   const b = document.createElement('div');
   b.className = 'bolha';
   b.style.left = ((r.left + r.width/2 - rs.left) / fitScale).toFixed(1) + 'px';
@@ -6594,12 +6704,19 @@ const QUIZ4 = {
     const z = +c.dataset.z;
     /* o escolhido gira, acende (verde no acerto, vermelho no erro), e a
        linha e a coluna dele acendem na tabela */
+    clearTimeout(this.cruzT);
     TP.gira(c, { eixo:'y', graus:360, dur:800 });
     EV3.poeCruz(this.mesa(), c, true, true);
     if (z !== it.z){
       const alvo = this.carta(it.z);
       this.erra(c, 'Ache a linha ' + alvo.dataset.periodo + ' e siga pela coluna ' + alvo.dataset.grupo +
                    ':<br>o elemento está no cruzamento das duas.');
+      /* passado o tremor e o som do erro, a linha e a coluna do errado se
+         apagam: a tabela volta ao que era, para tentar de novo */
+      const g = this.g, passo = this.passo;
+      this.cruzT = setTimeout(() => {
+        if (g === this.g && passo === this.passo && !this.travado) EV3.poeCruz(this.mesa(), c, false, false);
+      }, 1100);
       return;
     }
     this.acerta(c, 'É o ' + NOMES[z-1] + ' (' + SIMBOLOS[z-1] + ').', false, () => this.seguinte());
@@ -10780,6 +10897,11 @@ function montaNav(){
     ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 16a8 8 0 1 1 15 0"/><path d="M12 13l4-4"/>' +
     '<circle cx="12" cy="13" r="1.2" fill="currentColor"/></svg><span class="nav-vel-txt">Velocidade da fala</span>' +
     '<b class="nav-vel-v">1×</b></button>' +
+    /* e as legendas, com o ícone da surdez (a orelha riscada) */
+    '<button type="button" class="nav-leg" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"' +
+    ' stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M6.5 9a5.5 5.5 0 0 1 11 0c0 3.2-2.8 4.2-2.8 7a3.2 3.2 0 0 1-5.9 1.7"/><path d="M9.6 9a2.4 2.4 0 0 1 4.8 0"/>' +
+    '<path d="M3.5 3.5l17 17"/></svg><span class="nav-leg-txt">Legendas</span><span class="nav-leg-chave"></span></button>' +
     '<button class="nav-fecha" type="button" aria-label="Fechar o sumário">' +
     '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"' +
     ' stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>' +
@@ -10789,6 +10911,8 @@ function montaNav(){
   navGaveta.querySelector('.nav-fecha').addEventListener('click', fechaNav);
   navGaveta.querySelector('.nav-vel').addEventListener('click', () => Velocidade.trocar());
   Velocidade.botao();
+  navGaveta.querySelector('.nav-leg').addEventListener('click', () => LEGENDA.trocar());
+  LEGENDA.botao();
   const lista = navGaveta.querySelector('.nav-lista');
   /* O SUMÁRIO: um capítulo por slide, com o número dele ("1. A Tabela
      Periódica"), e debaixo os subtópicos, por letra (a, b, c…). O

@@ -21,6 +21,7 @@ const CASCA = [
   './',
   './index.html',
   './tabela-periodica.html',
+  './legendas.js',
   './manifest.webmanifest',
   './icones/app-32.png?v=4',
   './icones/app-180.png?v=4',
