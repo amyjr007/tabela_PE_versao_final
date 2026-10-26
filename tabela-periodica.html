@@ -1390,6 +1390,11 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 /* o quadro das perguntas do Quiz 3, no lugar e no tamanho da montagem: o
    centro em 641 × 139, a 1,18, largo para o comando caber numa linha */
 .quiz3.q4.q-eixos{left:241.5px;width:799px;top:86.5px}
+/* o quiz do capítulo 2: as perguntas, mais compridas, todas na letra da
+   questão 01 — no quadro largo do Quiz 3, e a que não couber numa linha
+   quebra em duas (em vez de encolher) */
+.quiz3.q4.q2{left:241.5px;width:799px}
+.quiz3.q4.q2 .q3-q{white-space:normal}
 .quiz3.digitando .q3-q::after{content:'';display:inline-block;width:3px;height:.9em;margin-left:5px;
   vertical-align:-.1em;background:var(--ouro);animation:piscaCursor 1.05s steps(1) infinite}
 /* A CAIXA DO CARROSSEL (questão 04), com o uso da do app de referência:
@@ -2724,7 +2729,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v21.5';
+const VERSAO = 'v21.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7563,12 +7568,13 @@ const QUIZ3 = {
     if (this.despede()) this.giraTabela();
     const cx = document.createElement('div');
     /* o quadro do quiz do capítulo 3: só o texto, no alto, sem a caixa */
-    cx.className = 'quiz3 q4';
+    /* (q2: mais largo, e a letra sempre do mesmo tamanho) */
+    cx.className = 'quiz3 q4 q2';
+    cx.dataset.mont = 'pergunta-quiz-2';  /* na montagem, peça: move e cresce */
     cx.setAttribute('aria-live', 'polite');
     cx.innerHTML = '<div class="q3-marca"></div><div class="q3-q"></div><div class="q3-msg"></div>';
     cx.querySelector('.q3-marca').textContent = 'Questão ' + String(this.passo + 1).padStart(2, '0');
     slides[2].appendChild(cx);
-    QUIZ4.cabe(cx, p.q);             /* a pergunta numa linha só */
     cx.getBoundingClientRect();        /* nasce fora da tela, à esquerda */
     cx.classList.add('on');
     /* a pergunta é digitada, letra a letra, com o cursor; o toque na
