@@ -668,6 +668,15 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 .pc.luz-linha25 .cubo, .pc.luz-coluna25 .cubo{--sc:calc(1 + .06 * var(--verde,1))}
 /* "São 7 linhas" em azul, "São 18 colunas" em laranja */
 /* a segunda linha (nos toques depois da 2.5A), menor, centrada */
+/* "Toque de novo pra ver as colunas": debaixo do "São 7 linhas", com a
+   mãozinha a bater no fim dele (no .alvo) */
+.pede-lc25{position:absolute;z-index:30;transform:translate(-50%,-50%);white-space:nowrap;
+  pointer-events:none;display:flex;align-items:center;gap:10px;font-family:var(--display);
+  font-weight:600;font-size:22px;color:var(--indigo);text-shadow:0 0 10px rgba(255,255,255,.95);
+  opacity:0;transition:opacity .3s ease}
+.pede-lc25.on{opacity:1}
+.pede-lc25 .txt{order:1}
+.pede-lc25 .alvo{order:2;width:26px;height:26px}
 .conta-lc25{text-align:center}
 .conta-lc25 .l2{font-size:.58em;font-weight:600}
 /* os números das linhas (ou colunas) ainda não alcançados pelo brilho */
@@ -2713,7 +2722,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v21.0';
+const VERSAO = 'v21.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6038,40 +6047,106 @@ const LC25 = {
       if (n >= txt.length){ clearInterval(this._dig); cur.classList.add('pisca'); }
     }, 45);
   },
-  /* O BRILHO EM SEQUÊNCIA, nos toques depois da 2.5A: um elemento de cada
-     vez (3 por segundo) cresce 10% e acende na cor da leitura — azul nas
-     linhas, na ordem do número atômico; laranja nas colunas, de cima para
-     baixo, coluna a coluna —, e o anterior volta ao normal. Cada linha (ou
-     coluna) nova que o brilho alcança faz aparecer a bolinha do número
-     dela. Um toque novo interrompe. */
+  /* O BRILHO, nos toques depois da 2.5A: a mesma onda da "2.5", na mesma
+     velocidade (do 1 ao 118 em 2 s nas linhas; coluna a coluna, de cima
+     para baixo, em 4 s), forte na frente e a apagar-se atrás, azul nas
+     linhas e laranja nas colunas. Cada linha (ou coluna) que a frente
+     alcança faz aparecer a bolinha do número dela. Acabada a das linhas,
+     a mãozinha pede o toque seguinte. Um toque novo interrompe. */
   seq(modo){
     this.paraSeq();
     const m = this.mesa();
     if (!m) return;
     const linhas = modo === 'linhas';
     const ordem = linhas ? this.ordemLinhas() : this.ordemColunas();
+    const o = linhas ? this.linhas.onda : this.colunas.onda, dura = (o.ate - o.de) * 1000;
     const nums = linhas ? '.eixo[data-periodo]' : '.eixo[data-grupo]';
     m.querySelectorAll(nums).forEach(e => e.classList.add('oculto25'));
-    const g = ++this._seqG;
-    let i = 0, ant = null;
-    this._seqT = setInterval(() => {
+    const g = ++this._seqG, t0 = performance.now();
+    const passo = agora => {
       if (g !== this._seqG) return;
-      if (ant) this.brilha(ant, 0);
-      if (i >= ordem.length){ clearInterval(this._seqT); this._seqT = 0; return; }
-      const c = ant = ordem[i++];
-      this.brilha(c, 1);
-      const e = m.querySelector(linhas ? '.eixo[data-periodo="' + c.dataset.linha + '"]'
-                                       : '.eixo[data-grupo="' + c.dataset.col + '"]');
-      if (e) e.classList.remove('oculto25');
-    }, 333);
+      const frente = (agora - t0) / dura * (ordem.length - 1);
+      ordem.forEach((c, k) => {
+        const d = frente - k;
+        let b = d < -1 ? 0 : d < 0 ? d + 1 : Math.max(0, 1 - d / this.cauda);
+        if (b < .02) b = 0;
+        if (Math.abs(b - (c._b25 || 0)) >= .01) this.brilha(c, b);
+      });
+      const fr = ordem[Math.max(0, Math.min(ordem.length - 1, Math.round(frente)))];
+      const sel = frente <= ordem.length - 1 ? (linhas ? '.eixo[data-periodo="' + fr.dataset.linha + '"]'
+                                                        : '.eixo[data-grupo="' + fr.dataset.col + '"]') : '';
+      if (this._eixo25 !== sel){
+        this._eixo25 = sel;
+        m.querySelectorAll('.eixo.brilha25').forEach(e => e.classList.remove('brilha25'));
+        if (sel){ const e = m.querySelector(sel); if (e){ e.classList.remove('oculto25'); e.classList.add('brilha25'); } }
+      }
+      /* a onda passou e o rastro apagou-se: acabou */
+      if (frente - (ordem.length - 1) > this.cauda){
+        this._seqT = 0;
+        m.querySelectorAll(nums).forEach(e => e.classList.remove('oculto25'));
+        if (linhas) this.pedeColunas();
+        return;
+      }
+      this._seqT = requestAnimationFrame(passo);
+    };
+    this._seqT = requestAnimationFrame(passo);
   },
   paraSeq(){
     this._seqG = (this._seqG || 0) + 1;
+    this.tiraPedido();
     if (!this._seqT) return;
-    clearInterval(this._seqT); this._seqT = 0;
+    cancelAnimationFrame(this._seqT); this._seqT = 0;
     TP.todos().forEach(c => { if (c._b25) this.brilha(c, 0); });
     const m = this.mesa();
-    if (m) m.querySelectorAll('.eixo.oculto25').forEach(e => e.classList.remove('oculto25'));
+    if (m){
+      m.querySelectorAll('.eixo.oculto25').forEach(e => e.classList.remove('oculto25'));
+      m.querySelectorAll('.eixo.brilha25').forEach(e => e.classList.remove('brilha25'));
+    }
+    this._eixo25 = '';
+  },
+  /* "Toque de novo pra ver as colunas", digitado no vazio debaixo do "São
+     7 linhas", com a mãozinha a bater ao lado dele */
+  pedeColunas(){
+    const m = this.mesa();
+    if (!m || this.modo !== 'linhas') return;
+    let p = m.querySelector('.pede-lc25');
+    if (!p){
+      p = document.createElement('div');
+      p.className = 'pede-lc25';
+      p.innerHTML = '<span class="alvo"></span><span class="txt"></span>';
+      m.appendChild(p);
+    }
+    const x3 = xDaColuna(3), x12 = xDaColuna(12);
+    p.style.left = ((x3 + x12) / 2).toFixed(1) + 'px';
+    p.style.top  = (yDaLinha(3) - this.vao).toFixed(1) + 'px';
+    p.classList.add('on');
+    /* o que falta digitar fica lá, invisível: a frase já ocupa o lugar
+       todo, e a mão, no fim dela, não tem de correr atrás do texto */
+    const el = p.querySelector('.txt'), txt = 'Toque de novo pra ver as colunas';
+    const poe = n => { el.innerHTML = esc(txt.slice(0, n)) + '<span style="opacity:0">' + esc(txt.slice(n)) + '</span>'; };
+    poe(0);
+    const g = this._seqG;
+    let n = 0;
+    clearInterval(this._pedeDig);
+    this._pedeDig = setInterval(() => {
+      if (g !== this._seqG){ clearInterval(this._pedeDig); return; }
+      poe(++n);
+      TECLAS.bate();
+      if (n >= txt.length) clearInterval(this._pedeDig);
+    }, 45);
+    /* a mão encosta à esquerda do texto e bate de tempos a tempos */
+    limpaMao();
+    levaMao(p.querySelector('.alvo'));
+    this._pedeMao = true;
+    bateMao();
+    clearInterval(this._pedeBate);
+    this._pedeBate = setInterval(() => { if (g === this._seqG) bateMao(); }, 1400);
+  },
+  tiraPedido(){
+    clearInterval(this._pedeDig); clearInterval(this._pedeBate);
+    const m = this.mesa(), p = m && m.querySelector('.pede-lc25');
+    if (p) p.classList.remove('on');
+    if (this._pedeMao){ this._pedeMao = false; tiraMao(); }
   },
   zera(){
     this.livre = false;
