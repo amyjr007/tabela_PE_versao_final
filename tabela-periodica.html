@@ -2680,7 +2680,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v20.4';
+const VERSAO = 'v20.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5594,6 +5594,9 @@ function colunas24(t){
   const o = COLUNAS_24;
   if (FINAL.ativo || FINAL.feito) return;
   const na24 = trilhaAtual === '2.4';
+  /* o 36 pisca só na pausa da arrumação (o fim da 2.3): começada a 2.4,
+     com as colunas a abrirem, ele pára */
+  if (na24){ const k = TP.cubo(ENCAIXE.sozinhoAte); if (k && k.classList.contains('espera-encaixe')) k.classList.remove('espera-encaixe'); }
   /* o ciclo da pausa acaba quando a narração segue (ou sai da "2.4") */
   if (o.ciclo && (!na24 || !som.paused)) o.ciclo = 0;
   if (!na24){
