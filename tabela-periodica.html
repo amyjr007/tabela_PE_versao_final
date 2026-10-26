@@ -147,6 +147,38 @@ html.palco-largo #versao{translate:calc(-1 * var(--folga)) 0}
 html.palco-largo #progress{left:calc(-1 * var(--folga));right:calc(-1 * var(--folga));width:auto!important;
   transform-origin:left center;transform:scaleX(var(--prog,0));transition:transform .45s cubic-bezier(.4,0,.2,1)}
 
+/* ---- O TABLET: o palco até às bordas de cima e de baixo (ver ajustaPalco) ----
+   O mesmo do celular deitado, mas na vertical: o papel na tela inteira,
+   as camadas que cobrem a cena cobrem também as faixas, o cabeçalho e os
+   botões do alto sobem, o play e a versão descem, e a tabela cresce um
+   pouco (--cresce-alto) no espaço que ficou. */
+html.palco-alto #viewport{
+  background-color:var(--fundo);
+  background-image:
+    radial-gradient(115% 85% at 82% 6%,rgba(76,63,191,.09),transparent 58%),
+    radial-gradient(85% 75% at 4% 100%,rgba(226,162,43,.14),transparent 62%),
+    linear-gradient(160deg,var(--fundo-alto),var(--fundo) 52%,var(--fundo-2));
+  background-size:100% 100%, 100% 100%, 100% 100%;
+  background-repeat:no-repeat;
+}
+html.palco-alto.capa-escura #viewport{background:#14131B}
+html.palco-alto #stage{background:transparent;box-shadow:none;overflow:visible}
+html.palco-alto #stage::before, html.palco-alto #stage::after{display:none}
+html.palco-alto .veu     {box-shadow:0 0 0 var(--folgav) rgba(12,10,32,.87)}
+html.palco-alto .quiz    {box-shadow:0 0 0 var(--folgav) rgba(12,10,32,.55)}
+html.palco-alto .memoria {box-shadow:0 0 0 var(--folgav) rgba(7,6,22,.995)}
+html.palco-alto .breu-quiz{box-shadow:0 0 0 var(--folgav) #000}
+html.palco-alto #flash-erro{box-shadow:0 0 0 var(--folgav) rgba(220,38,60,.55)}
+/* o alto: o cabeçalho, o progresso, o carrossel e a velocidade */
+html.palco-alto .tira, html.palco-alto #ver-slides, html.palco-alto #vel{translate:0 calc(-1 * var(--folgav))}
+html.palco-alto #progress{top:calc(-1 * var(--folgav))}
+/* o baixo: o play e a versão */
+html.palco-alto #som, html.palco-alto #som-dica, html.palco-alto #versao{translate:0 var(--folgav)}
+/* soltos na montagem, já foram medidos no lugar novo */
+html.palco-alto :is(#som, #som-dica, #vel, #ver-slides).solto{translate:none}
+/* a tabela cresce um fio, a partir do meio */
+html.palco-alto .slide:not(.capa) .cena{scale:var(--cresce-alto,1)}
+
 /* barra de progresso da apresentação */
 #progress{position:absolute;top:0;left:0;height:3px;background:var(--ouro-luz);z-index:6;
   width:0;transition:width .45s cubic-bezier(.4,0,.2,1)}
@@ -2615,7 +2647,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v19.7';
+const VERSAO = 'v19.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -2690,6 +2722,18 @@ function ajustaPalco(){
   const largo = folga > 1;
   document.documentElement.classList.toggle('palco-largo', largo);
   stage.style.setProperty('--folga', (largo ? folga : 0).toFixed(1) + 'px');
+  /* O TABLET (16:10, como o Galaxy Tab S9+): a tela é mais alta do que
+     16:9, e a cena, medida pela largura, deixava duas faixas em cima e
+     embaixo. Ali o papel vai até às bordas, o cabeçalho sobe para o alto
+     da tela, os botões descem para os cantos, e a tabela cresce um fio no
+     espaço que sobrou. Tablet: tela de toque (o dedo é o ponteiro), sem
+     ser celular — o Chromebook, com o touchpad, fica como está. */
+  const tablet = !celular && matchMedia('(pointer: coarse)').matches;
+  const folgaV = tablet ? Math.max(0, (H/fitScale - 720) / 2) : 0;
+  const alto = folgaV > 1;
+  document.documentElement.classList.toggle('palco-alto', alto);
+  stage.style.setProperty('--folgav', (alto ? folgaV : 0).toFixed(1) + 'px');
+  stage.style.setProperty('--cresce-alto', (alto ? Math.min(1.06, 1 + folgaV * 1.2 / 720) : 1).toFixed(3));
   /* o papel da tela inteira, com a grade no mesmo passo e no mesmo
      sítio da grade do palco */
   const vp = document.getElementById('viewport');
