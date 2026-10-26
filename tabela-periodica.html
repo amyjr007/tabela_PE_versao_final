@@ -1616,14 +1616,15 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 .pc.errada3{animation:naoTreme .42s ease}
 /* o certo, crescido, à frente dos outros — na ida e na volta */
 .mesa .pc.frente3{z-index:30}
-/* a pista do segundo erro: a resposta pulsa em âmbar */
+/* a pista do segundo erro: a resposta pulsa em vermelho */
 .pc.pista3{z-index:19}
 /* o brilho fica mesmo sem a animação (movimento reduzido) */
-.pc.pista3 .face{box-shadow:0 0 0 3px var(--ouro-luz), 0 0 22px 6px rgba(226,162,43,.75);
+/* (no vermelho das dicas do erro: o dos halogênios, #C13757) */
+.pc.pista3 .face{box-shadow:0 0 0 3px var(--cat-halogenios), 0 0 22px 6px rgba(193,55,87,.75);
   animation:pista3 1s ease-in-out infinite}
 @keyframes pista3{
-  0%,100%{box-shadow:0 0 0 3px var(--ouro-luz), 0 0 16px 4px rgba(226,162,43,.55)}
-  50%    {box-shadow:0 0 0 3px var(--ouro-luz), 0 0 30px 10px rgba(226,162,43,.9)}
+  0%,100%{box-shadow:0 0 0 3px var(--cat-halogenios), 0 0 16px 4px rgba(193,55,87,.55)}
+  50%    {box-shadow:0 0 0 3px var(--cat-halogenios), 0 0 30px 10px rgba(193,55,87,.9)}
 }
 /* a resposta na tabela: verde a certa, vermelho a errada */
 .pc.certa3, .pc.errada3{z-index:20}
@@ -2739,7 +2740,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v22.0';
+const VERSAO = 'v22.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
