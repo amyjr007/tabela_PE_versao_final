@@ -618,6 +618,11 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
    todo na cor — azul nas linhas, laranja nas colunas —, e o número em
    branco; também no escuro do quiz */
 .mesa .eixo.prof, .slide.quiz-escuro .mesa .eixo.prof{border-color:transparent;color:#fff}
+/* na 2.5, o número da linha (ou da coluna) por onde o brilho passa: cresce
+   e acende em verde, junto com os cards */
+.mesa .eixo.brilha25{z-index:16;transform:translate(-50%,-50%) scale(1.3);
+  box-shadow:0 0 0 2px rgba(62,224,138,.9), 0 0 16px 5px rgba(46,204,113,.6);
+  transition:transform .15s ease, box-shadow .15s ease}
 .mesa .eixo.prof[data-periodo], .slide.quiz-escuro .mesa .eixo.prof[data-periodo]{background:var(--cor-linha)}
 .mesa .eixo.prof[data-grupo],   .slide.quiz-escuro .mesa .eixo.prof[data-grupo]{background:var(--cor-coluna)}
 /* os textos do slide 4 na cor da faixa deles: "séries ou períodos" da
@@ -981,6 +986,8 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
   box-shadow:0 0 0 4px rgba(226,162,43,.18), 0 12px 30px rgba(80,40,0,.22), 0 0 34px rgba(226,162,43,.45);
   transition:transform 80ms linear, opacity 80ms linear}
 .latim.on{display:block}
+/* as letras do símbolo, sublinhadas */
+.latim .quiz-latim b{font-weight:800;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:6px}
 /* o cursor, só enquanto a palavra está a ser escrita */
 .latim.digitando::after{content:'';display:inline-block;width:3px;height:.8em;margin-left:4px;
   background:currentColor;vertical-align:-.05em}
@@ -1409,6 +1416,15 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 /* o card que volta para casa voa por cima dos espalhados, e depois de
    pousar continua acima deles: a tabela que se forma não fica tapada */
 .pc.no-lugar{z-index:8}
+/* o encaixe confirmado: um brilho verde discreto, uma vez */
+.pc.encaixou .face{animation:encaixou .7s ease-out}
+@keyframes encaixou{
+  0%  {box-shadow:0 0 0 0 rgba(46,204,113,0)}
+  35% {box-shadow:0 0 0 2px rgba(62,224,138,.85), 0 0 14px 3px rgba(46,204,113,.55)}
+  100%{box-shadow:0 0 0 0 rgba(46,204,113,0)}
+}
+/* e o 36, à espera da arrumação seguinte, repete-o devagar */
+.pc.espera-encaixe .face{animation:encaixou 1.6s ease-in-out infinite}
 .pc.no-lugar.encaixando{z-index:30}
 /* o toque fora de ordem: um tremor curto */
 .pc.nao{animation:naoTreme .35s ease}
@@ -1617,7 +1633,13 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
    .quiz é a caixa do quiz do slide 1) */
 #som #ic-quiz{display:none}
 #som.botao-quiz #ic-play,#som.botao-quiz #ic-pause,#som.botao-quiz .anel{display:none}
-#som.botao-quiz #ic-quiz{display:block}
+/* (a interrogação saiu: o botão do quiz é verde, a pulsar de leve, com a
+   palavra "Quiz" — como o "Saquei") */
+#som.botao-quiz #ic-quiz{display:none}
+#som.botao-quiz .rotulo-saquei{display:block;font-family:var(--display);font-weight:700;font-size:17px}
+#som.botao-quiz, #som.botao-quiz.parado{background:#1F9D55;border-color:#1F9D55;color:#fff;
+  animation:jogoChama 1.6s ease-in-out infinite}
+#stage:has(#som.botao-quiz) #som-dica{display:none}
 
 /* ---- o botão vira "Iniciar" quando a abertura acaba ----
    Cresce para a esquerda, a partir do canto onde estava: o lado direito
@@ -1870,6 +1892,12 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
 .quiz-cartao button:active{transform:scale(.95)}
 .quiz-cartao button.forte{background:var(--indigo);color:#fff}
 .quiz-cartao button.forte:hover{background:var(--tinta)}
+/* o botão que a fala aponta: duas pulsadas, com uma luz dourada */
+.quiz-cartao button.pulsa2{animation:pulsa2 .5s ease-in-out 2}
+@keyframes pulsa2{
+  0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(226,162,43,0)}
+  50%    {transform:scale(1.14);box-shadow:0 0 0 4px rgba(226,162,43,.55), 0 0 18px 4px rgba(226,162,43,.45)}
+}
 
 /* ---------- o ajuste da tabela (temporário, só no celular) ----------
    Uma ferramenta de medida: ligado, a tabela do slide 1 fica travada e
@@ -2570,7 +2598,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v19.3';
+const VERSAO = 'v19.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4455,7 +4483,7 @@ const SEQ = {
       c._vooG = (c._vooG || 0) + 1;
       c._voo = 0;
       c._noLugar = false;
-      c.classList.remove('no-lugar', 'encaixando', 'chama', 'nao');
+      c.classList.remove('no-lugar', 'encaixando', 'chama', 'nao', 'encaixou', 'espera-encaixe');
       c.style.removeProperty('--vx');
       c.style.removeProperty('--vy');
     });
@@ -4617,6 +4645,7 @@ function botaoDaCapa(t){
 function viraQuiz(sim){
   somBtn.classList.toggle('botao-quiz', sim);
   if (sim){
+    somBtn.querySelector('.rotulo-saquei').textContent = 'Quiz';
     somBtn.title = 'Abrir o quiz';
     somBtn.setAttribute('aria-label', somBtn.title);
   }
@@ -5158,7 +5187,10 @@ function caixaDoLatim(o, t, x, y, meiaCubo, e){
   const txt = L.texto.slice(0, n);
   if (b.textContent !== txt){
     if (txt.length > b.textContent.length) TECLAS.bate();
-    b.textContent = txt;
+    /* as letras que viraram o símbolo, sublinhadas já ao serem escritas
+       (Na-trium, Pl-um-b-um: as de palavraLatina) */
+    b.textContent = '';
+    b.appendChild(palavraLatina(txt, o.sym));
   }
   b.classList.toggle('digitando', n < L.texto.length);
   /* na volta, 'e' desce de 1 a 0: a caixa gira uma volta e encolhe */
@@ -5602,6 +5634,16 @@ const LC25 = {
       if (Math.abs(b - (c._b25 || 0)) < .01) return;
       this.brilha(c, b);
     });
+    /* e o número da linha (ou da coluna) em que a frente está brilha junto */
+    const m = this.mesa(), naOnda = t >= o.de && t <= o.ate;
+    const fr = naOnda ? ordem[Math.max(0, Math.min(ordem.length - 1, Math.round(frente)))] : null;
+    const sel = fr ? (nasLinhas ? '.eixo[data-periodo="' + fr.dataset.periodo + '"]'
+                                : '.eixo[data-grupo="' + fr.dataset.col + '"]') : '';
+    if (m && this._eixo25 !== sel){
+      this._eixo25 = sel;
+      m.querySelectorAll('.eixo.brilha25').forEach(e => e.classList.remove('brilha25'));
+      if (sel){ const e = m.querySelector(sel); if (e) e.classList.add('brilha25'); }
+    }
     this.suja = true;
   },
   brilha(c, b){
@@ -5615,6 +5657,9 @@ const LC25 = {
   },
   apaga(){
     TP.todos().forEach(c => { if (c._b25) this.brilha(c, 0); });
+    const m = this.mesa();
+    if (m) m.querySelectorAll('.eixo.brilha25').forEach(e => e.classList.remove('brilha25'));
+    this._eixo25 = '';
     this.suja = false;
   },
   /* acabada a "2.5": junta, a "2.5A" e o toque livre */
@@ -7231,7 +7276,7 @@ const FINAL = {
     this.ativo = true;
     const g = ++this.g;
     const cubos = TP.todos();
-    cubos.forEach(c => c.classList.remove('chama'));
+    cubos.forEach(c => c.classList.remove('chama', 'espera-encaixe'));
     /* as colunas juntam-se e o H volta ao lugar */
     cubos.filter(c => c._noLugar && c !== primeiro).forEach(c => {
       limpaColuna(c, true);
@@ -7505,6 +7550,12 @@ function encaixaCubo(c){
     if (!c._noLugar) return;
     c.classList.remove('encaixando');
     c.style.removeProperty('transition');
+    /* pousado na casa: um brilho verde discreto, de confirmação */
+    c.classList.remove('encaixou'); void c.offsetWidth; c.classList.add('encaixou');
+    clearTimeout(c._encT); c._encT = setTimeout(() => c.classList.remove('encaixou'), 700);
+    /* o último da arrumação sozinha (o 36) fica a piscar de leve esse
+       brilho, à espera de a arrumação recomeçar (o toque no 37) */
+    if (+c.dataset.z === ENCAIXE.sozinhoAte) c.classList.add('espera-encaixe');
   });
   /* a cor chega no instante em que ele assenta */
   setTimeout(() => { if (c._noLugar) neutro(c, false); }, Math.round(SALTO * 820));
@@ -7700,7 +7751,8 @@ function cena2(t){
 const EV14 = {
   /* Na, Pb e Cu ficam de fora: são eles que aparecem logo a seguir */
   oito:['P','K','Ag','Sn','Sb','W','Au','Hg'],
-  onda:{ de:1.0, ate:8.0, largura:1.0, cresce:0.6, classe:'luz-vinho', suja:false },
+  /* (com o nome por cima de cada um, como na onda marrom da 1.3A/B) */
+  onda:{ de:1.0, ate:8.0, largura:1.0, cresce:0.6, classe:'luz-vinho', nomes:true, suja:false },
   zooms:[
     /* o Na: o nome pulsa aos 14,8 e aos 17 s, o símbolo aos 16,5 s */
     { sym:'Na', cresce:10.0, pulsa:[14.8, 17.0], pulsaSym:[16.5], volta:24.0, esconde:true,
@@ -7906,18 +7958,18 @@ function tocaAbertura(i){
   const fim = () => { EFEITOS.delete(a); if (ABERTURA === a) ABERTURA = null; };
   a.addEventListener('ended', fim);
   a.addEventListener('error', fim);
-  /* no capítulo 3, acabada a abertura, a narração "3" começa sozinha,
-     1 s depois — se o aluno ainda estiver ali, à espera do play */
+  /* acabada a abertura, a narração do capítulo começa sozinha, 1,5 s
+     depois — se o aluno ainda estiver ali, à espera do play */
   if (SEGUE_ABERTURA[i]) a.addEventListener('ended', () => setTimeout(() => {
     const id = SEGUE_ABERTURA[i];
     if (atual === i && trilhaAtual === id && som.paused && (som.currentTime || 0) < 0.1 && !naMontagem())
       som.play().catch(avisaSeNaoTocou);
-  }, 1000));
+  }, 1500));
   a.play().catch(fim);
   animaTituloNaAbertura(i, a);
 }
 /* os capítulos em que a narração segue a abertura sem esperar o play */
-const SEGUE_ABERTURA = { 3:'3' };
+const SEGUE_ABERTURA = { 1:'1', 2:'2', 3:'3' };
 som.addEventListener('play', calaAbertura);
 
 /* O TÍTULO NA ABERTURA DO CAPÍTULO, no relógio do áudio N.0:
@@ -8555,6 +8607,9 @@ function calaFalaDoFim(){
 }
 const RECADOS_BONS   = ['Você está aprendendo bem!', 'Ótimo resultado!', 'Muito bem! Continue assim!'];
 const RECADOS_FRACOS = ['Continue praticando!', 'Quase lá, não desista!', 'Pratique mais um pouco!'];
+const PULSOS_DA_FALA = {
+  'Audios/audio_tabela_3.7B.mp3': [ { t:3.5, botao:'.refaz' }, { t:6.5, botao:'.segue' } ]
+};
 function cartaoDoResultado(nota, contaHTML, onde, refazer, seguir, fala){
   if (!onde) return;
   const bom = nota >= 5;
@@ -8594,6 +8649,18 @@ function cartaoDoResultado(nota, contaHTML, onde, refazer, seguir, fala){
     EFEITOS.add(a);
     Velocidade.aplicar(a);
     a.addEventListener('ended', () => { EFEITOS.delete(a); if (FALA_FIM === a) FALA_FIM = null; });
+    /* os botões que a fala aponta pulsam duas vezes, no relógio dela
+       (PULSOS_DA_FALA: na 3.7B, o Refazer aos 3,5 s e o Continuar aos 6,5 s) */
+    const pulsos = (PULSOS_DA_FALA[fala] || []).map(p => Object.assign({ feito:false }, p));
+    if (pulsos.length) a.addEventListener('timeupdate', () => {
+      pulsos.forEach(p => {
+        if (p.feito || a.currentTime < p.t) return;
+        p.feito = true;
+        const b = c.querySelector(p.botao);
+        if (!b) return;
+        b.classList.remove('pulsa2'); void b.offsetWidth; b.classList.add('pulsa2');
+      });
+    });
     a.play().catch(() => {});
   });
   /* o anel só se enche depois de o cartão entrar */
