@@ -1,6 +1,6 @@
 {
-  "name": "Tabela Interativa",
-  "short_name": "Tabela Interativa",
+  "name": "Tabela interativa",
+  "short_name": "Tabela interativa",
   "description": "O audiobook interativo da Tabela Periódica do Prof. Amauri Junior: a aula guiada por áudio, com os 118 elementos em cubos que giram.",
   "lang": "pt-BR",
   "dir": "ltr",
@@ -21,10 +21,10 @@
     "science"
   ],
   "icons": [
-    { "src": "icones/app-192.png?v=2", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icones/app-512.png?v=2", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icones/app-1024.png?v=2", "sizes": "1024x1024", "type": "image/png", "purpose": "any" },
-    { "src": "icones/app-maskable-192.png?v=2", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
-    { "src": "icones/app-maskable-512.png?v=2", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "icones/app-192.png?v=3", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icones/app-512.png?v=3", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icones/app-1024.png?v=3", "sizes": "1024x1024", "type": "image/png", "purpose": "any" },
+    { "src": "icones/app-maskable-192.png?v=3", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icones/app-maskable-512.png?v=3", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }
