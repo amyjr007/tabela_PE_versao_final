@@ -1787,6 +1787,26 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
 }
 #som-dica.fora{opacity:0}
 
+/* A BOLHA QUE ESTOURA (estouraBolha): um anel que cresce e se apaga, e
+   dez gotinhas que saltam para os lados */
+.bolha{position:absolute;z-index:95;width:0;height:0;pointer-events:none}
+.bolha::before{content:'';position:absolute;left:0;top:0;width:var(--d,70px);height:var(--d,70px);
+  margin:calc(var(--d,70px) / -2) 0 0 calc(var(--d,70px) / -2);border-radius:50%;
+  border:3px solid var(--cor-bolha,#3EE08A);animation:bolhaAnel .5s ease-out forwards}
+.bolha i{position:absolute;left:-5px;top:-5px;width:10px;height:10px;border-radius:50%;
+  background:var(--cor-bolha,#3EE08A);animation:bolhaGota .6s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes bolhaAnel{from{transform:scale(.7);opacity:1} to{transform:scale(1.7);opacity:0}}
+@keyframes bolhaGota{
+  0%  {transform:rotate(var(--a)) translateX(calc(var(--d,70px) * .35)) scale(1);opacity:1}
+  60% {opacity:1}
+  100%{transform:rotate(var(--a)) translateX(calc(var(--d,70px) * 1.05)) scale(.3);opacity:0}
+}
+/* a peça que estourou some de uma vez (só a bolha fica) */
+.estourou{opacity:0!important;transition:none!important;animation:none!important}
+/* o play, depois do estouro, volta em fade 1 s depois */
+#stage.play-espera #som, #stage.play-espera #som-dica{opacity:0!important;pointer-events:none}
+#stage #som{transition:opacity .5s ease, transform .25s var(--e-salto), box-shadow .25s, color .2s, border-color .2s}
+
 /* ============================================================
    O JOGO DA MEMÓRIA — o do slide 2 do app do professor
    Vinte cartas viradas para baixo, dez pares: de um lado o símbolo,
@@ -2660,7 +2680,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v20.3';
+const VERSAO = 'v20.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4352,6 +4372,44 @@ function desenhaAnel(frac){
   somBtn.style.setProperty('--falta', (VOLTA*(1-frac)).toFixed(1));
 }
 
+/* A SAÍDA EM BOLHA: o botão (ou o pedido de toque) que leva ao passo
+   seguinte estoura como uma bolha — um anel que cresce e se apaga, e
+   gotinhas para os lados —, e o play só volta 1 s depois, em fade, com o
+   anel do tempo do áudio que começou. 'el' é a peça que estoura. */
+function estouraBolha(el, cor){
+  if (!el) return;
+  const r = el.getBoundingClientRect(), rs = stage.getBoundingClientRect();
+  if (!r.width) return;
+  const b = document.createElement('div');
+  b.className = 'bolha';
+  b.style.left = ((r.left + r.width/2 - rs.left) / fitScale).toFixed(1) + 'px';
+  b.style.top  = ((r.top + r.height/2 - rs.top) / fitScale).toFixed(1) + 'px';
+  b.style.setProperty('--d', (Math.max(r.width, r.height) / fitScale).toFixed(0) + 'px');
+  if (cor) b.style.setProperty('--cor-bolha', cor);
+  for (let k = 0; k < 10; k++){
+    const g = document.createElement('i');
+    g.style.setProperty('--a', (k * 36 + Math.random() * 14) + 'deg');
+    b.appendChild(g);
+  }
+  stage.appendChild(b);
+  setTimeout(() => b.remove(), 700);
+  /* a peça some no instante do estouro */
+  el.classList.add('estourou');
+  setTimeout(() => el.classList.remove('estourou'), 650);
+}
+let playVoltaT = 0;
+function playDepois(){
+  clearTimeout(playVoltaT);
+  stage.classList.add('play-espera');
+  playVoltaT = setTimeout(() => stage.classList.remove('play-espera'), 1000);
+}
+/* o botão do canto estoura e faz o seu passo */
+function estouraEsegue(fn, cor){
+  estouraBolha(somBtn, cor || '#3EE08A');
+  playDepois();
+  fn();
+}
+
 function tocaOuPara(){
   /* na montagem o play é peça a arrastar: o toque não toca nada; e à
      espera da escolha de um elemento, quem faz a aula seguir é a escolha */
@@ -4359,17 +4417,17 @@ function tocaOuPara(){
   /* acabada a abertura, o botão é "Iniciar": leva ao slide da tabela */
   if (somBtn.dataset.pilula === 'comecar'){ go(1); return; }
   /* no slide 4, o "Saquei" passa à narração seguinte */
-  /* o botão verde ("Saquei", "Confirmar") faz o que lhe foi dado */
-  if (somBtn.classList.contains('saquei')){ if (BOTAO_VERDE.fn) BOTAO_VERDE.fn(); return; }
+  /* o botão verde ("Saquei", "Confirmar") faz o que lhe foi dado — e estoura */
+  if (somBtn.classList.contains('saquei')){ if (BOTAO_VERDE.fn) estouraEsegue(BOTAO_VERDE.fn); return; }
   /* o "Iniciar" do começo pede o nome; é o pop-up que toca a narração */
   if (somBtn.dataset.pilula === 'iniciar'){ NOME.pede(); return; }
   /* na tela escura à espera do toque, o botão também serve de toque */
   if (SEQ.aguardaToque){ SEQ.continua(); return; }
   if (SEQ.aguardaToque2){ SEQ.continua2(); return; }
   /* o botão do jogo abre o jogo, e a fala das regras toca por cima */
-  if (somBtn.classList.contains('jogo')){ entraNoJogo(); return; }
+  if (somBtn.classList.contains('jogo')){ estouraEsegue(entraNoJogo); return; }
   /* e o do quiz, o quiz do slide 3 */
-  if (somBtn.classList.contains('botao-quiz')){ QUIZ3.abre(); return; }
+  if (somBtn.classList.contains('botao-quiz')){ estouraEsegue(() => QUIZ3.abre()); return; }
   /* no quiz — e no cartão da nota, que segue pelos botões dele — e no
      jogo, nada toca, nem pela barra de espaço */
   if (QUIZ.aberto || memAberto || QUIZ3.aberto) return;
@@ -4537,6 +4595,9 @@ const SEQ = {
     const de = this.aguardaToque2;
     if (!de) return;
     this.aguardaToque2 = false;
+    /* o "Toque na tela" estoura, e o play volta 1 s depois */
+    estouraBolha(toque2, '#F4F2F8');
+    playDepois();
     veu2.classList.remove('pede-toque');
     toque2.classList.remove('on');
     stage.classList.remove('em-toque');
@@ -4592,6 +4653,8 @@ const SEQ = {
   continua(){
     if (!this.aguardaToque) return;
     this.aguardaToque = false;
+    estouraBolha(toqueHint, '#F4F2F8');
+    playDepois();
     veu.classList.remove('pede-toque');
     toqueHint.classList.remove('on');
     tocaTrilha('1.1');       /* e o véu esmaece sozinho: já não é a trilha "1" */
