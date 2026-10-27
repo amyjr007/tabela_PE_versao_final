@@ -922,6 +922,32 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
 .classes4.escolha .frase[data-classe="nobres"]{animation-delay:.6s}
 @keyframes chamaClasse{0%,100%{text-shadow:none} 50%{text-shadow:0 0 14px color-mix(in srgb,currentColor 55%,transparent)}}
 #stage.em-classes #som, #stage.em-classes #som-dica, #stage.em-classes #vel{display:none!important}
+/* A "4A" (EV4.cena4A): só os metais ficam — os outros somem de todo, com
+   os números dos eixos, as casas das séries e os textos —, e os metais
+   saltam até a grade da esquerda. O relógio escreve o lugar de 60 em 60 ms:
+   a transição curta alisa o caminho */
+.classes4{transition:opacity .7s ease}
+.mesa.tipos.arruma4 .pc:not([data-tipo="metais"]){opacity:0;pointer-events:none}
+.mesa.tipos.arruma4[data-luz] .eixo,.mesa.tipos.arruma4 .casa,.mesa.tipos.arruma4 .classes4{opacity:0}
+.mesa.tipos .pc.anda4{transition:left 90ms linear, top 90ms linear, transform 90ms linear, opacity .7s ease}
+.pc.no-ar4{z-index:12}
+.pc.hg4{z-index:40}
+/* no fim da narração o tempo pára: a volta do Hg à grade é uma transição */
+.mesa.tipos .pc.anda4.volta4{transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1),
+  transform .9s cubic-bezier(.4,0,.2,1), opacity .7s ease}
+.pc.hg4 .face{box-shadow:0 0 0 1px rgba(255,255,255,.9), 0 6px 14px rgba(0,0,0,.4), 0 0 14px 3px rgba(210,220,232,.55)}
+/* a grade inteira de metal: o brilho passa uma vez só (64 a correr sem
+   parar pesariam no celular) */
+.mat.quieto .brilho{animation-iteration-count:1}
+/* "Metal líquido", debaixo do Hg crescido */
+.liq4{position:absolute;z-index:25;pointer-events:none;transition:opacity .6s ease}
+.liq4.fim{opacity:0}
+.liq4 .frase,.liq4 .mede4{margin:0;white-space:nowrap;font-family:var(--display);font-weight:700;font-size:36px;line-height:1}
+.liq4 .mede4{position:absolute;visibility:hidden}
+.liq4 .frase{display:none;color:#E6ECF2;text-shadow:0 0 14px rgba(200,214,230,.55), 0 2px 4px rgba(0,0,0,.5)}
+.liq4 .frase.on{display:block}
+.liq4 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
+.liq4 .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
 
 /* OS DESTAQUES AO ACASO (antes do play e nos primeiros 10 s da "4"): a
    carta cresce e vira o material do elemento — metal escovado, gás dentro
@@ -2933,7 +2959,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v22.4';
+const VERSAO = 'v22.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6716,6 +6742,8 @@ const FRASES_4 = [
   { de:22.5, ate:23.2, txt:'Não Metais' },
   { de:25.5, ate:26.2, txt:'Gases Nobres' }
 ];
+/* na "4A", debaixo do Hg crescido */
+const FRASES_4A = [ { de:29.0, ate:29.9, txt:'Metal líquido' } ];
 /* a narração de cada classe, tocada a escolha (as outras ainda por gravar) */
 const TRILHA_DA_CLASSE = { metais:'4A' };
 /* os gases, na cor deles: os incolores numa névoa clara, o flúor amarelo-
@@ -6825,8 +6853,11 @@ const EV4 = {
       if (l) luz = l.luz;
       escolha = t >= this.escolhaDe;
     }
-    /* a "4A" fala dos metais: eles ficam acesos; acabada, volta a escolha */
-    else if (tr === '4A'){ if (acabou) escolha = true; else luz = 'metais'; }
+    /* a "4A" fala dos metais: eles ficam acesos, e a cena dela (cena4A)
+       fica de pé depois do fim */
+    else if (tr === '4A') luz = 'metais';
+    if (tr === '4A') this.cena4A(m, t, acabou);
+    else if (this.suja4A) this.desfaz4A(m);
     if (!escolha) this.escolhida = null;
     else if (this.escolhida) luz = this.escolhida;
     this.emEscolha = escolha;
@@ -6880,6 +6911,17 @@ const EV4 = {
   },
   poeRealce(c, agora){
     const z = +c.dataset.z, tipo = this.materialDe(c);
+    c._realce4 = (c._realce4 || 0) + 1;
+    c.classList.add('realce4');
+    const el = this.veste(c, tipo);
+    this.real = { c, el, tipo, fim: agora + this.dura };
+    this.recentes.push(z);
+    if (this.recentes.length > 6) this.recentes.shift();
+  },
+  /* VESTE a carta com o material (a textura vai na face da frente, por
+     cima da cor e por baixo da letra); devolve a camada, para tirá-la */
+  veste(c, tipo){
+    const z = +c.dataset.z;
     const el = document.createElement('div');
     if (tipo === 'metal'){
       const [mc, mm, me] = METAL_4[z] || METAL_4.prata;
@@ -6903,12 +6945,15 @@ const EV4 = {
       /* na pedra clara (o enxofre) a letra escurece */
       c.classList.toggle('claro', /^#/.test(s) && claridade(s) > .6);
     }
-    c._realce4 = (c._realce4 || 0) + 1;
-    c.classList.add('realce4', 'mat-' + tipo);
+    c.classList.add('mat-' + tipo);
     c.querySelector('.f1').appendChild(el);
-    this.real = { c, el, tipo, fim: agora + this.dura };
-    this.recentes.push(z);
-    if (this.recentes.length > 6) this.recentes.shift();
+    return el;
+  },
+  /* e despe: a camada sai e a letra volta à cor dela */
+  despe(c, el, tipo){
+    el.remove();
+    c.classList.remove('mat-' + tipo, 'claro');
+    ['--mc', '--mm', '--me', '--gas', '--s'].forEach(v => c.style.removeProperty(v));
   },
   soltaRealce(){
     const r = this.real;
@@ -6918,11 +6963,114 @@ const EV4 = {
     r.el.classList.add('sai');
     const g = r.c._realce4;
     setTimeout(() => {
-      r.el.remove();
-      if (r.c._realce4 !== g) return;     /* destacada outra vez nesse meio-tempo */
-      r.c.classList.remove('mat-' + r.tipo, 'claro');
-      ['--mc', '--mm', '--me', '--gas', '--s'].forEach(v => r.c.style.removeProperty(v));
+      if (r.c._realce4 !== g){ r.el.remove(); return; }   /* destacada outra vez nesse meio-tempo */
+      this.despe(r.c, r.el, r.tipo);
     }, 650);
+  },
+
+  /* ---- A "4A": OS METAIS ----
+     4 → 14 s   os outros somem (os textos também), e os metais saltam um a
+                um, por número atômico, até uma grade homogênea do lado
+                esquerdo — 8 por linha, um pouco menores, para caberem nas
+                sete alturas da tabela
+     20 s       ficam sólidos (o metal escovado), numa onda pela grade; o Hg
+                fica líquido
+     23 s       o Hg vai para o vazio da direita, e cresce
+     29 s       "Metal líquido", digitado debaixo dele
+     fim        o Hg volta para a casa dele na grade, e o texto sai
+     Tudo função do relógio da narração; só a volta do fim (o tempo já não
+     anda) é uma transição. */
+  A4:{ de:4, ate:14, salto:1.0, solido:20, onda:0.02, hg:23, hgDur:0.9,
+       cols:8, passo:57, esc:0.86, hgX:866, hgY:356, escHg:3 },
+  metais4:null, suja4A:false, dig4A:null, liq4:null,
+  /* a vaga k da grade, na mesa */
+  vaga4(k){
+    const A = this.A4, meia = LADO * A.esc / 2;
+    return { x: TAB_ESQ + meia + (k % A.cols) * A.passo, y: TAB_TOPO + meia + Math.floor(k / A.cols) * A.passo };
+  },
+  cena4A(m, t, acabou){
+    const A = this.A4;
+    if (!this.metais4) this.metais4 = this.cartas(m).filter(c => c.dataset.tipo === 'metais')
+                                         .sort((a, b) => a.dataset.z - b.dataset.z);
+    m.classList.toggle('arruma4', t >= A.de);
+    const n = this.metais4.length, fila = (A.ate - A.de - A.salto) / Math.max(1, n - 1);
+    const suave = p => p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
+    const entre = (a, b, f) => a + (b - a) * f;
+    this.metais4.forEach((c, k) => {
+      const casa = alvoDe(+c.dataset.z), vaga = this.vaga4(k);
+      /* o salto: um arco da casa até a vaga, mais alto quanto mais longe */
+      const p = Math.max(0, Math.min(1, (t - A.de - k * fila) / A.salto)), e = suave(p);
+      let x = entre(casa.x, vaga.x, e), y = entre(casa.y, vaga.y, e), esc = entre(1, A.esc, e);
+      const alto = Math.min(150, 50 + 0.12 * Math.hypot(vaga.x - casa.x, vaga.y - casa.y));
+      const sobe = -Math.sin(Math.PI * p) * alto;
+      /* o Hg: para a direita, e cresce; no fim, volta para a vaga */
+      if (+c.dataset.z === 80){
+        const f = acabou ? 0 : suave(Math.max(0, Math.min(1, (t - A.hg) / A.hgDur)));
+        x = entre(x, A.hgX, f); y = entre(y, A.hgY, f); esc = entre(esc, A.escHg, f);
+        c.classList.toggle('hg4', f > 0 || acabou);
+        c.classList.toggle('volta4', acabou);
+      }
+      c.classList.add('anda4');
+      c.classList.toggle('no-ar4', p > 0 && p < 1);
+      const chave = x.toFixed(1) + ',' + y.toFixed(1) + ',' + esc.toFixed(3) + ',' + sobe.toFixed(1);
+      if (c._k4 !== chave){
+        c._k4 = chave;
+        c.style.left = x.toFixed(1) + 'px';
+        c.style.top  = y.toFixed(1) + 'px';
+        c.style.setProperty('--onda', esc.toFixed(3));
+        c.style.setProperty('--sobe', sobe.toFixed(1) + 'px');
+      }
+      /* sólidos aos 20 s, numa onda pela grade; o Hg, líquido */
+      const solido = t >= A.solido + k * A.onda;
+      if (solido && !c._mat4){
+        const tipo = +c.dataset.z === 80 ? 'hg' : 'metal';
+        c._mat4 = { tipo, el: this.veste(c, tipo) };
+        c._mat4.el.classList.add('quieto');
+      } else if (!solido && c._mat4){ this.despe(c, c._mat4.el, c._mat4.tipo); c._mat4 = null; }
+    });
+    /* "Metal líquido": digitado; no fim, sai junto com a volta do Hg */
+    this.prepara4A(m);
+    this.dig4A.escreve(t);
+    this.liq4.classList.toggle('fim', acabou);
+    this.suja4A = true;
+  },
+  prepara4A(m){
+    if (this.dig4A) return;
+    const cx = document.createElement('div');
+    cx.className = 'liq4';
+    cx.setAttribute('aria-live', 'polite');
+    m.appendChild(cx);
+    this.dig4A = criaDigitacao(cx, FRASES_4A);
+    this.liq4 = cx;
+    const poe = () => {
+      const s = document.createElement('span');
+      s.className = 'mede4';
+      s.textContent = FRASES_4A[0].txt;
+      cx.appendChild(s);
+      const w = s.offsetWidth;
+      s.remove();
+      /* centrado debaixo do Hg crescido */
+      cx.style.left = (this.A4.hgX - w / 2).toFixed(1) + 'px';
+      cx.style.top  = (this.A4.hgY + LADO * this.A4.escHg / 2 + 40).toFixed(1) + 'px';
+    };
+    poe();
+    if (document.fonts) document.fonts.ready.then(poe);
+  },
+  /* fora da "4A" (outra trilha, ou o slide recomeçado): tudo volta */
+  desfaz4A(m){
+    m.classList.remove('arruma4');
+    (this.metais4 || []).forEach(c => {
+      c.classList.remove('anda4', 'no-ar4', 'hg4', 'volta4');
+      const casa = alvoDe(+c.dataset.z);
+      c.style.left = casa.x.toFixed(1) + 'px';
+      c.style.top  = casa.y.toFixed(1) + 'px';
+      c.style.removeProperty('--onda');
+      c.style.removeProperty('--sobe');
+      delete c._k4;
+      if (c._mat4){ this.despe(c, c._mat4.el, c._mat4.tipo); c._mat4 = null; }
+    });
+    if (this.dig4A){ this.dig4A.limpa(); this.liq4.classList.remove('fim'); }
+    this.suja4A = false;
   },
 
   /* ---- a escolha de uma classe ---- */
@@ -6958,6 +7106,7 @@ const EV4 = {
     stage.classList.remove('em-classes');
     const m = this.mesa();
     if (!m) return;
+    if (this.suja4A) this.desfaz4A(m);
     m.querySelectorAll('.mat').forEach(e => e.remove());
     m.querySelectorAll('.pc.realce4, .pc.mat-metal, .pc.mat-gas, .pc.mat-hg, .pc.mat-br, .pc.mat-solido').forEach(c => {
       c.classList.remove('realce4', 'mat-metal', 'mat-gas', 'mat-hg', 'mat-br', 'mat-solido', 'claro');

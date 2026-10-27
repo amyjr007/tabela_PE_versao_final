@@ -225,7 +225,12 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4` · 24 s | só os **gases nobres**; 25,5 s "Gases Nobres", no violeta, acima da coluna 18 (no celular em duas linhas, à direita do botão do carrossel) |
 | `4` · 30 s | apaga tudo; 32,5 s o **H** acende, com o brilho verde |
 | `4` · 40 s | tudo volta (em fade), e o toque numa classe — numa carta dela ou no nome, que passa a chamar — a escolhe: a classe acende, toca o `right`, e os **metais** tocam a **`4A`** (`Audios/audio_tabela_4A.mp3`); as outras, por enquanto, avisam que a narração ainda vai ser gravada. O H só dá a volta dele. Acabada a `4`, o play sai |
-| `4A` | os metais acesos, o resto apagado; no fim, a escolha volta |
+| `4A` · 0 → 4 s | os metais acesos, o resto apagado |
+| `4A` · 4 → 14 s | os outros somem de todo (com os números dos eixos, as casas das séries e os textos), e os 64 metais saltam um a um, em arco e por número atômico, até uma grade de 8 × 8 do lado esquerdo, um pouco menores (86%) para caberem nas sete alturas da tabela |
+| `4A` · 20 s | ficam sólidos — o metal escovado, numa onda pela grade (o ouro, o cobre e o césio na cor deles) —, e o **Hg** fica líquido |
+| `4A` · 23 s | o Hg vai para o vazio da direita e cresce 3× |
+| `4A` · 29 s | "Metal líquido", digitado debaixo dele |
+| fim da `4A` | o Hg volta para a casa dele na grade, e o texto sai; a cena fica (a escolha das classes não volta) |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
 os nomes ganham o tom claro do próprio bloco. Nas fotos do
