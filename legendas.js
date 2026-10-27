@@ -266,18 +266,19 @@ var LEGENDAS = {
     [17.12,20.62,"Esse metal é um excelente condutor de eletricidade."]
   ],
   "audio_tabela_4D": [
-    [0,3.88,"As duas últimas propriedades marcantes dos metais são mecânicas."],
-    [3.88,7.26,"São a ductilidade e a maleabilidade."],
-    [7.26,10.14,"Primeiro, vamos falar da ductilidade."],
-    [10.14,13.4,"A ductilidade é a facilidade com que um metal"],
-    [13.4,17.94,"pode ser esticado até se transformar em fios finos."],
-    [17.94,22.98,"Tá, você já viu a fiação fina dentro de um cabo de eletrodoméstico?"],
-    [22.98,27.56,"Pois é, como é que um metal consegue produzir aqueles fios tão finos?"],
-    [27.56,29.94,"É aí que entra a ductilidade."],
-    [30,36.12,"Na prática, o metal é forçado a passar sob tração por uma peça chamada fieira"],
-    [36.12,40.9,"e o metal vai afinando conforme é puxado sem se romper com facilidade."],
-    [40.9,41.66,"Quer ver?"],
-    [41.66,47.24,"Puxe o metal pela tela através da fieira para observar a ductilidade na prática."]
+    [0,3.92,"As duas últimas propriedades marcantes dos metais são mecânicas."],
+    [3.92,7.16,"São a ductilidade e a maleabilidade."],
+    [7.16,10.46,"Primeiro, vamos falar da ductilidade."],
+    [10.46,13.66,"A ductilidade é a facilidade com que um metal"],
+    [13.66,17.86,"pode ser esticado até se transformar em fios finos."],
+    [17.86,22.56,"Tá, você já viu a fiação fina dentro de um cabo de eletrodoméstico?"],
+    [22.56,27.24,"Pois é, como é que um metal consegue produzir aqueles fios tão finos?"],
+    [27.24,29.74,"É aí que entra a ductilidade."],
+    [30.64,34.66,"Na prática, usamos uma trefiladeira. É uma máquina igual a essa."],
+    [34.66,41.08,"Colocamos o metal aqui e ele é forçado a passar sob tração por uma peça chamada fieira"],
+    [41.08,45.6,"e o metal vai afinando conforme é puxado, sem se romper com facilidade."],
+    [45.6,46.54,"Quer ver?"],
+    [46.54,53.22,"Puxe lentamente o metal pela tela através da fieira para observar a ductilidade na prática."]
   ],
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]

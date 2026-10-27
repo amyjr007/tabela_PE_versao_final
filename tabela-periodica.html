@@ -1088,6 +1088,7 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 .fieira4 svg{display:block;width:100%;height:100%}
 .fieira4 .fr-nome{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;fill:rgba(226,222,240,.5)}
 .fieira4 .fr-conta{font-family:var(--display);font-weight:600;font-size:17px;fill:#F4F2F8}
+.fieira4 .fr-conta.alerta{fill:#FFD43B}
 .fieira4 .fr-garra{cursor:grab}
 .fieira4.pegando .fr-garra{cursor:grabbing}
 /* o anel que chama, na garra, até ao primeiro puxão */
@@ -3152,7 +3153,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v23.6';
+const VERSAO = 'v23.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7414,7 +7415,7 @@ const EV4 = {
      estouraEsegue, no tocaOuPara), toca o "right", e a narração seguinte
      logo atrás dele. No fim da "4A" ele só vem depois de o aluno tocar no
      mercúrio; no da "4C", depois do curto no fio. */
-  SEGUINTE4:{ '4A':'4B', '4B':'4C', '4C':'4D' },
+  SEGUINTE4:{ '4A':'4B', '4B':'4C', '4C':'4D', '4D':'4E' },
   saquei4(sim){ botaoVerde(sim ? 'Saquei' : null, () => this.saqueiSegue()); },
   saqueiSegue(){
     if (somBtn.classList.contains('saquei-tocado')) return;
@@ -7716,6 +7717,10 @@ const EV4 = {
     this.cubo4C.querySelector('.gira4').insertAdjacentHTML('beforeend',
       '<div class="face4C tras"><div class="fieira4">' + fieiraSVG() + '</div></div>');
     FIEIRA4.prepara(this.cubo4C.querySelector('.fieira4'));
+    /* a folha dos confetes, que o slide 5 ainda não tinha (a festa do fio
+       puxado até ao fim) */
+    if (!slides[4].querySelector('.confete'))
+      slides[4].insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
   },
   desfaz4D(m){
     if (this.dig4D){
@@ -8272,8 +8277,10 @@ function fieiraSVG(){
     '<rect class="fr-barra" x="' + F.barra0 + '" y="' + (cy - F.R) + '" width="' + (F.entra - F.barra0) + '" height="' + 2*F.R + '" fill="url(#fr4-cobre)"/>' +
     '<ellipse class="fr-topo" cx="' + F.barra0 + '" cy="' + cy + '" rx="7" ry="' + F.R + '" fill="url(#fr4-topo)"/>' +
     '<polygon points="' + (F.entra - 2) + ',' + (cy - F.R) + ' ' + F.sai + ',' + (cy - F.r) + ' ' + F.sai + ',' + (cy + F.r) + ' ' + (F.entra - 2) + ',' + (cy + F.R) + '" fill="url(#fr4-cobre)"/>' +
-    /* o fio que sai */
-    '<rect class="fr-fio" x="' + (F.sai - 2) + '" y="' + (cy - F.r) + '" width="' + (F.ponta0 - F.sai + 2) + '" height="' + 2*F.r + '" fill="url(#fr4-cobre)"/>' +
+    /* o fio que sai (um caminho: puxado depressa, afina no meio), e o
+       pedaço que cai quando ele rompe */
+    '<path class="fr-fio" fill="url(#fr4-cobre)"/>' +
+    '<g class="fr-cai"><path class="fr-pedaco" fill="url(#fr4-cobre)"/></g>' +
     /* a fieira em corte: dois blocos de aço com o cone entre eles */
     '<g>' +
       '<polygon points="' + bloco(-1) + '" fill="url(#fr4-aco)"/>' +
@@ -8296,8 +8303,13 @@ function fieiraSVG(){
     '<text x="220" y="' + (cy + F.H + 70) + '" text-anchor="middle" class="fr-conta"></text>' +
   '</svg>';
 }
+/* A VELOCIDADE DO PUXÃO (em unidades da face por segundo, medida nos
+   últimos 160 ms): até LENTO o fio estica liso; daí até ROMPE ele afina
+   no meio e avermelha (a tensão); passado o ROMPE, rompe */
+const PUXA4 = { janela:160, lento:110, rompe:240, volta:1200 };
 const FIEIRA4 = {
   el:null, ponta:FR4.ponta0, pega:null, vivo:false, puxou:false,
+  amostras:[], tensao:0, rompido:0, completo:false, raf:0,
   prepara(el){
     this.el = el;
     const ponto = ev => {
@@ -8305,13 +8317,14 @@ const FIEIRA4 = {
       return { x:(ev.clientX - r.left) / r.width * 440, y:(ev.clientY - r.top) / r.height * 440 };
     };
     el.addEventListener('pointerdown', ev => {
-      if (!this.vivo) return;
+      if (!this.vivo || this.rompido || this.completo) return;
       ev.preventDefault(); ev.stopPropagation();
       const p = ponto(ev);
       /* só na garra (com folga para o dedo) */
       if (Math.hypot(p.x - (this.ponta + 16), p.y - FR4.cy) > 52) return;
       try { el.setPointerCapture(ev.pointerId); } catch (_) {}
       this.pega = this.ponta - p.x;
+      this.amostras = [{ t:performance.now(), x:this.ponta }];
       el.classList.add('pegando');
     });
     el.addEventListener('pointermove', ev => {
@@ -8320,12 +8333,41 @@ const FIEIRA4 = {
       const x = Math.min(FR4.pontaMax, Math.max(this.ponta, ponto(ev).x + this.pega));
       if (x > this.ponta + .5){ this.puxou = true; el.classList.add('puxou'); }
       this.ponta = x;
+      /* a velocidade: o caminho feito nos últimos 160 ms */
+      const agora = performance.now();
+      this.amostras.push({ t:agora, x });
+      while (this.amostras.length > 2 && agora - this.amostras[0].t > PUXA4.janela) this.amostras.shift();
+      const a = this.amostras[0], dt = (agora - a.t) / 1000;
+      const v = dt > .03 ? (x - a.x) / dt : 0;
+      this.tensao = Math.max(0, Math.min(1, (v - PUXA4.lento) / (PUXA4.rompe - PUXA4.lento)));
+      /* depressa demais: rompe (só depois de uma janela de verdade, para
+         um tremido do dedo não romper sozinho) */
+      if (v > PUXA4.rompe && agora - a.t >= 80){ this.rompe(); return; }
       this.desenha();
+      if (this.ponta >= FR4.pontaMax - .5) this.chegou();
     });
-    const larga = () => { this.pega = null; el.classList.remove('pegando'); };
+    const larga = () => {
+      this.pega = null; el.classList.remove('pegando');
+      if (this.tensao && !this.rompido){ this.tensao = 0; this.desenha(); }
+    };
     ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => el.addEventListener(n, larga));
     el.addEventListener('click', ev => ev.stopPropagation());
     this.desenha();
+  },
+  /* o caminho do fio, de x0 a x1: liso, ou com o pescoço no meio (a
+     tensão afina até 30% da espessura); 'ponta' afila uma das pontas,
+     a do lado em que ele rompeu */
+  fioPath(x0, x1, tensao, ponta){
+    const cy = FR4.cy, r = FR4.r, xm = (x0 + x1) / 2, w = Math.max(6, (x1 - x0) * .22);
+    const rp = r * (1 - .7 * tensao);
+    const ty = y => (cy + y).toFixed(2);
+    if (ponta === 'dir') return 'M' + x0 + ',' + ty(-r) + ' L' + (x1 - 7) + ',' + ty(-r) + ' Q' + x1 + ',' + ty(-r*.4) + ' ' + x1 + ',' + ty(0) +
+                               ' Q' + x1 + ',' + ty(r*.4) + ' ' + (x1 - 7) + ',' + ty(r) + ' L' + x0 + ',' + ty(r) + ' Z';
+    if (ponta === 'esq') return 'M' + x1 + ',' + ty(-r) + ' L' + (x0 + 7) + ',' + ty(-r) + ' Q' + x0 + ',' + ty(-r*.4) + ' ' + x0 + ',' + ty(0) +
+                               ' Q' + x0 + ',' + ty(r*.4) + ' ' + (x0 + 7) + ',' + ty(r) + ' L' + x1 + ',' + ty(r) + ' Z';
+    return 'M' + x0 + ',' + ty(-r) + ' L' + (xm - w).toFixed(2) + ',' + ty(-r) + ' Q' + xm.toFixed(2) + ',' + ty(-rp) + ' ' + (xm + w).toFixed(2) + ',' + ty(-r) +
+           ' L' + x1 + ',' + ty(-r) + ' L' + x1 + ',' + ty(r) + ' L' + (xm + w).toFixed(2) + ',' + ty(r) +
+           ' Q' + xm.toFixed(2) + ',' + ty(rp) + ' ' + (xm - w).toFixed(2) + ',' + ty(r) + ' L' + x0 + ',' + ty(r) + ' Z';
   },
   /* o volume: o que o fio ganha, a barra perde, na razão das áreas */
   desenha(){
@@ -8337,15 +8379,76 @@ const FIEIRA4 = {
     b.setAttribute('x', xb.toFixed(2));
     b.setAttribute('width', (F.entra - xb).toFixed(2));
     s.querySelector('.fr-topo').setAttribute('cx', xb.toFixed(2));
-    s.querySelector('.fr-fio').setAttribute('width', (this.ponta - F.sai + 2).toFixed(2));
-    s.querySelector('.fr-garra').setAttribute('transform', 'translate(' + this.ponta.toFixed(1) + ' ' + F.cy + ')');
+    const fio = s.querySelector('.fr-fio');
+    if (!this.rompido){
+      fio.setAttribute('d', this.fioPath(F.sai - 2, this.ponta, this.tensao));
+      s.querySelector('.fr-pedaco').setAttribute('d', '');
+      s.querySelector('.fr-cai').removeAttribute('transform');
+      s.querySelector('.fr-cai').style.opacity = 1;
+      s.querySelector('.fr-garra').setAttribute('transform', 'translate(' + this.ponta.toFixed(1) + ' ' + F.cy + ')');
+      s.querySelector('.fr-garra').style.opacity = 1;
+    }
+    /* a tensão avermelha o fio */
+    fio.style.filter = this.tensao ? 'drop-shadow(0 0 ' + (2 + 6 * this.tensao).toFixed(1) + 'px rgba(255,60,30,' + (.9 * this.tensao).toFixed(2) + '))' : '';
     const cm = v => (v / F.pxCm).toFixed(2).replace('.', ',');
-    s.querySelector('.fr-conta').textContent = this.puxou
-      ? 'Fio puxado: ' + cm(puxado) + ' cm  ·  a barra encurtou ' + cm(recua) + ' cm'
-      : 'Puxe a ponta do fio';
+    const conta = s.querySelector('.fr-conta');
+    conta.classList.toggle('alerta', !!this.rompido || this.tensao > .35);
+    conta.textContent = this.rompido ? 'O fio rompeu! Puxe mais devagar.'
+      : this.tensao > .35 ? 'Devagar! O fio está afinando…'
+      : this.puxou ? 'Fio puxado: ' + cm(puxado) + ' cm  ·  a barra encurtou ' + cm(recua) + ' cm'
+      : 'Puxe a ponta do fio lentamente';
+  },
+  /* ROMPEU: o fio parte no meio — o toco fica preso na fieira, o pedaço
+     com a garra salta para a direita e cai, a esmaecer —, toca o
+     "rupture", e depois de um tempo tudo volta ao começo */
+  rompe(){
+    const F = FR4, s = this.el.querySelector('svg'), xm = (F.sai + this.ponta) / 2, x1 = this.ponta;
+    this.rompido = performance.now();
+    this.pega = null; this.tensao = 0; this.amostras = [];
+    this.el.classList.remove('pegando');
+    tocaEfeito('rupture');
+    s.querySelector('.fr-fio').setAttribute('d', this.fioPath(F.sai - 2, xm - 2, 0, 'dir'));
+    s.querySelector('.fr-pedaco').setAttribute('d', this.fioPath(xm + 2, x1, 0, 'esq'));
+    this.desenha();
+    const cai = s.querySelector('.fr-cai'), garra = s.querySelector('.fr-garra');
+    const anda = () => {
+      const p = Math.min(1, (performance.now() - this.rompido) / 900);
+      const dx = 30 * Math.sin(p * Math.PI / 2), dy = 120 * p * p, ang = 25 * p;
+      const tf = 'translate(' + dx.toFixed(1) + ' ' + dy.toFixed(1) + ') rotate(' + ang.toFixed(1) + ' ' + xm.toFixed(1) + ' ' + F.cy + ')';
+      cai.setAttribute('transform', tf);
+      garra.setAttribute('transform', tf + ' translate(' + x1.toFixed(1) + ' ' + F.cy + ')');
+      cai.style.opacity = garra.style.opacity = (1 - p).toFixed(2);
+      if (p < 1) this.raf = requestAnimationFrame(anda);
+    };
+    anda();
+    clearTimeout(this.voltaT);
+    this.voltaT = setTimeout(() => {
+      if (!this.rompido) return;
+      /* tudo de novo: o fio no começo, a instrução e o anel que chama */
+      this.rompido = 0;
+      this.ponta = F.ponta0;
+      this.puxou = false;
+      this.el.classList.remove('puxou');
+      this.desenha();
+    }, PUXA4.volta);
+  },
+  /* PUXADO ATÉ AO FIM: a fanfarra, os confetes e o Saquei */
+  chegou(){
+    if (this.completo) return;
+    this.completo = true;
+    this.pega = null; this.tensao = 0;
+    this.el.classList.remove('pegando');
+    this.desenha();
+    tocaEfeito('funfare');
+    confete();
+    EV4.saquei4(true);
   },
   zera(){
+    cancelAnimationFrame(this.raf);
+    clearTimeout(this.voltaT);
+    if (this.completo) EV4.saquei4(false);
     this.ponta = FR4.ponta0; this.pega = null; this.vivo = false; this.puxou = false;
+    this.tensao = 0; this.rompido = 0; this.completo = false; this.amostras = [];
     if (this.el) this.el.classList.remove('pegando', 'puxou');
     this.desenha();
   }
