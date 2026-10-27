@@ -258,6 +258,13 @@ var LEGENDAS = {
     [17.18,20.06,"ou dourada, como é o caso do ouro aqui"],
     [20.06,22.96,"e do césio, que é levemente dourado."]
   ],
+  "audio_tabela_4C": [
+    [0,3.63,"Outra característica fácil de perceber na prática,"],
+    [3.63,7.46,"os metais são excelentes condutores de calor e eletricidade."],
+    [7.46,12.46,"É exatamente por isso que nossas panelas são feitas de metal e o cabo não."],
+    [12.46,17.12,"E é por isso também que usamos cobre nos fios elétricos em nossas casas."],
+    [17.12,20.62,"Esse metal é um excelente condutor de eletricidade."]
+  ],
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]
   ],

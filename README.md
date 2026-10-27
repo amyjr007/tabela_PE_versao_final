@@ -213,7 +213,7 @@ verde, gases nobres no violeta, e o hidrogênio — um ametal — no verde
 Te são ametais; Ge e Sb, metais. Chega-se a ele pelo Continuar do cartão da
 nota do slide 4 (ou pela navegação: "Início", "A escolha da classe" — aos
 40 s da `4` —, "Os metais" — o começo da `4A` — e "O brilho metálico" — o
-começo da `4B`), com o play à espera da
+começo da `4B` — e "Calor e eletricidade" — o começo da `4C`), com o play à espera da
 narração `4` (`Audios/audio_tabela_4.mp3`). Aqui a vida solta não entra: no
 lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 
@@ -235,7 +235,7 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4A` · 23 s | o Hg salta para o vazio da direita, debaixo das propriedades, e ao longo do caminho vira uma **poça de mercúrio** (`POCA4`, a do slide 4 do app do professor: o filtro "goo", a borda escura, sete gotas com mola), sem corte: o card arredonda, a letra dele apaga e ele esmaece enquanto a poça nasce no mesmo lugar e do mesmo tamanho (`--morf`). Já líquido, "Toque no metal" pisca em amarelo acima dele, até ao primeiro toque. O dedo (ou o mouse) empurra e gira as gotas, a poça abre-se ao meio, e largada volta a fundir-se |
 | `4A` · 23,5 s | embaixo da propriedade, um pouco para dentro, "Exceto o mercúrio", digitado |
 | `4A` · 29 s | "Metal líquido", digitado debaixo dele |
-| fim da `4A` | a poça fica, para mexer; o play vira o **Saquei** (verde); tocado, o `right` e a **`4B`** (`Audios/audio_tabela_4B.mp3`) |
+| fim da `4A` | a poça fica, para mexer; o play vira o **Saquei** (verde) só depois de o aluno tocar no mercúrio; tocado, ele espoca (a bolha), o `right` e a **`4B`** (`Audios/audio_tabela_4B.mp3`) |
 | `4B` · 0 s | o inverso: a poça encolhe e esmaece a caminho da casa do Hg na grade, e o card dele refaz-se lá aos poucos (os cantos e a letra voltam); "Metal líquido", "1. Os metais são sólidos" e "Exceto o mercúrio" saem em fade |
 | `4B` · 4 s | no lugar deles, "2. Os metais têm um brilho característico", digitado |
 | `4B` · 7 s | um brilho corre pela grade na diagonal, carta a carta |
@@ -243,7 +243,13 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4B` · 16 s | o **Cu** cresce, com o halo cor de cobre |
 | `4B` · 18 s | o Cu volta, e cresce o **Au** |
 | `4B` · 21 s | cresce também o **Cs** (o césio, levemente dourado); vizinhos na diagonal da grade, os dois ficam em 1,7× para caberem lado a lado |
-| fim da `4B` + 1 s | o Au e o Cs voltam |
+| fim da `4B` + 1 s | o Au e o Cs voltam; o **Saquei** (espoca) leva à **`4C`** (`Audios/audio_tabela_4C.mp3`) |
+| `4C` · 0 s | as cenas da `4A` e da `4B` ficam paradas; "2. Os metais têm um brilho característico" sai em fade |
+| `4C` · 3 → 7 s | "3. Os metais são bons condutores / de calor e eletricidade", digitado em duas linhas — **calor** incandescente (o degradê de uma brasa a correr, o halo a tremer como chama), **eletricidade** a faiscar (azul-branco, aos solavancos) |
+| `4C` · 9,5 s | no lado direito, numa face de cubo, a **panela** de aço inox com cabo de madeira: as faixas de reflexo, o escovado, o fundo em anéis, o lábio, o veio da madeira, a virola e os rebites, e um brilho que passa |
+| `4C` · 12,9 s | a narração pára 1 s, e continua |
+| `4C` · 14,5 s | a panela vira como a face de um cubo (um quarto de volta), e a face nova é a do **choque** (a face 3 do slide 4 do app do professor): o cabo com o cobre nu — sete pernas de cobre trançado, com as pontas à vista nas bocas da capa — e a barra de aço que o dedo arrasta; encostada no cobre, o arco estala, as fagulhas saltam, o clarão azul e o cubo sacode. Virada, a face fica plana (no 3D o toque atravessava) |
+| fim da `4C` | "Toque o metal no fio", a piscar em amarelo, até ao curto; feito o curto, o **Saquei** (a `4D`, ainda por gravar, avisa que falta) |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
 os nomes ganham o tom claro do próprio bloco. Nas fotos do
