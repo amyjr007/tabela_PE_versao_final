@@ -235,7 +235,7 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4A` · 23 s | o Hg salta para o vazio da direita, debaixo das propriedades, e a meio do caminho vira uma **poça de mercúrio** (`POCA4`, a do slide 4 do app do professor: o filtro "goo", a borda escura, sete gotas com mola). O dedo (ou o mouse) empurra e gira as gotas, a poça abre-se ao meio, e largada volta a fundir-se |
 | `4A` · 23,5 s | embaixo da propriedade, um pouco para dentro, "Exceto o mercúrio", digitado |
 | `4A` · 29 s | "Metal líquido", digitado debaixo dele |
-| fim da `4A` | a poça fica, para mexer; o play vira o **Saquei** (verde); tocado, o `right` e a **`4B`** (`Audios/audio_tabela_4B.mp3`) |
+| fim da `4A` | a mãozinha da capa chega à poça, encosta à esquerda e passa o dedo por ela até à direita (o mesmo dedo do aluno: as gotas abrem-se), sai, e o mercúrio junta-se outra vez (`POCA4.mostra`; o toque do aluno corta a demonstração). A poça fica, para mexer; o play vira o **Saquei** (verde); tocado, o `right` e a **`4B`** (`Audios/audio_tabela_4B.mp3`) |
 | `4B` · 0 s | o inverso: a poça encolhe e esmaece a caminho da casa do Hg na grade, e o card dele volta lá; "Metal líquido", "1. Os metais são sólidos" e "Exceto o mercúrio" saem em fade |
 | `4B` · 4 s | no lugar deles, "2. Os metais têm um brilho característico", digitado |
 | `4B` · 7 s | um brilho corre pela grade na diagonal, carta a carta |

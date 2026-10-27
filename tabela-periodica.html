@@ -3023,7 +3023,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v23.0';
+const VERSAO = 'v23.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5018,8 +5018,9 @@ const SEQ = {
     else if (id === '3.6') QUIZ4.coordsComeca();
     /* o fim da "3.7": as questões 08 a 10 */
     else if (id === '3.7') QUIZ4.eixosComeca();
-    /* o fim da "4A": o "Saquei", que leva à "4B" */
-    else if (id === '4A') EV4.saquei4(true);
+    /* o fim da "4A": o "Saquei", que leva à "4B"; e a mão mostra que o
+       mercúrio se pode mexer */
+    else if (id === '4A'){ EV4.saquei4(true); if (atual === 4) POCA4.mostra(); }
   },
   /* o quiz de cada trilha abre uma vez só */
   abreQuiz(id){
@@ -7148,6 +7149,7 @@ const EV4 = {
     const el = POCA4.cria(m);
     if (emB){
       if (el.classList.contains('on')){
+        POCA4.paraMao();
         el.classList.remove('on');
         el.classList.add('volta');
         el.style.left = vaga.x.toFixed(1) + 'px';
@@ -7475,6 +7477,8 @@ const POCA4 = {
     el.addEventListener('pointerdown', ev => {
       if (!el.classList.contains('on')) return;
       ev.preventDefault(); ev.stopPropagation();
+      /* o aluno pôs o dedo: a mão da demonstração sai */
+      this.paraMao();
       try { el.setPointerCapture(ev.pointerId); } catch (_) {}
       this.dedo = ponto(ev);
     });
@@ -7524,7 +7528,68 @@ const POCA4 = {
     this.raf = requestAnimationFrame(() => this.quadro());
   },
   liga(){ if (!this.raf) this.quadro(); },
-  desliga(){ cancelAnimationFrame(this.raf); this.raf = 0; this.dedo = null; }
+  desliga(){ cancelAnimationFrame(this.raf); this.raf = 0; this.dedo = null; this.paraMao(); },
+
+  /* A MÃO QUE MOSTRA (no fim da "4A"): a mãozinha da capa chega à poça,
+     encosta à esquerda e passa o dedo por ela até à direita — as gotas
+     abrem-se como com o dedo do aluno, porque é o mesmo dedo (this.dedo)
+     —, sai, e as molas juntam o mercúrio outra vez. A narração já acabou
+     e o tempo dela não anda: o relógio aqui é o de verdade. */
+  maoT:[], maoRaf:0, mostrando:false,
+  /* um ponto do desenho, na tela */
+  naTela(x, y){
+    const svg = this.el.querySelector('svg'), p = svg.createSVGPoint();
+    p.x = x; p.y = y;
+    const q = p.matrixTransform(svg.getScreenCTM());
+    return { x:q.x, y:q.y };
+  },
+  /* a ponta do dedo da mão fica a (22, 7) do canto dela */
+  poeMao(x, y){
+    const q = this.naTela(x, y);
+    mao.style.left = (q.x - 22).toFixed(1) + 'px';
+    mao.style.top  = (q.y - 7).toFixed(1) + 'px';
+  },
+  mostra(){
+    if (!this.el || !this.el.classList.contains('on') || this.dedo) return;
+    this.paraMao();
+    this.mostrando = true;
+    const passo = (ms, fn) => this.maoT.push(setTimeout(() => { if (this.mostrando) fn(); }, ms));
+    /* aparece embaixo, à esquerda, e desliza até à beira da poça */
+    mao.style.transition = 'none';
+    mao.hidden = false;
+    this.poeMao(40, 160);
+    void mao.offsetWidth;
+    mao.style.transition = '';
+    mao.classList.add('on');
+    passo(80, () => this.poeMao(70, POCA_CY));
+    /* encosta, e arrasta de um lado ao outro */
+    passo(800, () => {
+      bateMao();
+      mao.style.transition = 'opacity .3s ease';
+      const de = performance.now(), dura = 1400;
+      const anda = () => {
+        if (!this.mostrando) return;
+        const p = Math.min(1, (performance.now() - de) / dura);
+        const e = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
+        const x = 70 + 200 * e, y = POCA_CY + Math.sin(p * Math.PI) * 6;
+        this.dedo = { x, y };
+        this.poeMao(x, y);
+        if (p < 1) this.maoRaf = requestAnimationFrame(anda);
+        else passo(250, () => this.paraMao());
+      };
+      anda();
+    });
+  },
+  /* larga: a mão sai, e as molas juntam a poça */
+  paraMao(){
+    this.maoT.forEach(clearTimeout); this.maoT = [];
+    cancelAnimationFrame(this.maoRaf);
+    if (!this.mostrando) return;
+    this.mostrando = false;
+    this.dedo = null;
+    mao.style.transition = '';
+    tiraMao();
+  }
 };
 
 /* o quanto uma cor (#rrggbb) é clara, de 0 a 1 */
