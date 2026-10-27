@@ -961,13 +961,22 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
              linear-gradient(0deg,transparent 46%,#fff 50%,transparent 54%),
              linear-gradient(90deg,transparent 46%,#fff 50%,transparent 54%)}
 .titulo4A.on::after{animation:faisca 1s 1.5s ease-out 1}
-/* "Metal líquido", debaixo do Hg crescido */
-.liq4{position:absolute;z-index:25;pointer-events:none;transition:opacity .6s ease}
-.liq4.fim{opacity:0}
-.liq4 .frase,.liq4 .mede4{margin:0;white-space:nowrap;font-family:var(--display);font-weight:700;font-size:36px;line-height:1}
-.liq4 .mede4{position:absolute;visibility:hidden}
-.liq4 .frase{display:none;color:#E6ECF2;text-shadow:0 0 14px rgba(200,214,230,.55), 0 2px 4px rgba(0,0,0,.5)}
+/* os textos da "4A" (EV4.prepara4A dá o lugar de cada um): as
+   propriedades no alto do lado direito — o título no dourado, a
+   propriedade clara, a exceção prateada e um pouco para dentro — e
+   "Metal líquido" debaixo do Hg crescido, que sai no fim */
+.liq4{position:absolute;inset:0;z-index:25;pointer-events:none}
+.liq4 .frase,.liq4 .mede4{position:absolute;margin:0;white-space:nowrap;font-family:var(--display);line-height:1}
+.liq4 .mede4{visibility:hidden}
+.liq4 .frase{display:none;transform:translateY(-50%);transition:opacity .6s ease;
+  text-shadow:0 2px 4px rgba(0,0,0,.5)}
 .liq4 .frase.on{display:block}
+.liq4 .frase.fim{opacity:0}
+.liq4 .frase:nth-child(1){font-weight:700;font-size:34px;color:var(--ouro-luz)}
+.liq4 .frase:nth-child(2){font-weight:600;font-size:28px;color:#F4F2F8}
+.liq4 .frase:nth-child(3){font-weight:600;font-size:26px;color:#C9D2DC}
+.liq4 .frase:nth-child(4),.liq4 .mede4{font-weight:700;font-size:36px;color:#E6ECF2;
+  text-shadow:0 0 14px rgba(200,214,230,.55), 0 2px 4px rgba(0,0,0,.5)}
 .liq4 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
 .liq4 .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
 
@@ -2981,7 +2990,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v22.6';
+const VERSAO = 'v22.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6758,14 +6767,21 @@ function efeitos3(t){ EV3.tick(t); }
    ao acaso têm relógio próprio, porque começam antes do play.
    ============================================================ */
 const FRASES_4 = [
-  { de:12.0, ate:13.0, txt:'São 3 classes de elementos:' },
+  /* sai em fade no fim da narração (ela acaba aos 46 s) */
+  { de:12.0, ate:13.0, some:45.4, txt:'São 3 classes de elementos:' },
   { de:18.0, ate:18.5, txt:'Metais' },
   { de:20.6, ate:21.1, txt:'Ametais' },
   { de:22.5, ate:23.2, txt:'Não Metais' },
   { de:25.5, ate:26.2, txt:'Gases Nobres' }
 ];
-/* na "4A", debaixo do Hg crescido */
-const FRASES_4A = [ { de:29.0, ate:29.9, txt:'Metal líquido' } ];
+/* na "4A": as propriedades, no alto do lado direito (uma debaixo da
+   outra), e "Metal líquido", debaixo do Hg crescido */
+const FRASES_4A = [
+  { de:11.5, ate:12.8, txt:'Propriedades dos metais' },
+  { de:18.5, ate:19.8, txt:'1. Os metais são sólidos' },
+  { de:23.5, ate:24.5, txt:'Exceto o mercúrio' },
+  { de:29.0, ate:29.9, txt:'Metal líquido' }
+];
 /* a narração de cada classe, tocada a escolha (as outras ainda por gravar) */
 const TRILHA_DA_CLASSE = { metais:'4A' };
 /* os gases, na cor deles: os incolores numa névoa clara, o flúor amarelo-
@@ -7006,7 +7022,9 @@ const EV4 = {
        /* esc 0,76 e passo 58: a face da frente sai ~5% maior do que o lado
           (a perspectiva do cubo, --plano), e com 0,86 e 57 elas colavam;
           assim sobram ~8 px entre elas, e a grade ainda cabe nas sete alturas */
-       cols:8, passo:58, esc:0.76, hgX:866, hgY:356, escHg:3 },
+       /* o Hg crescido fica debaixo das propriedades (textoX, textoY: o
+          começo delas, no alto do lado direito) */
+       cols:8, passo:58, esc:0.76, hgX:866, hgY:410, escHg:3, textoX:600, textoY:174 },
   metais4:null, suja4A:false, dig4A:null, liq4:null, tit4A:null,
   /* a vaga k da grade, na mesa */
   vaga4(k){
@@ -7053,12 +7071,13 @@ const EV4 = {
         c._mat4.el.classList.add('quieto');
       } else if (!solido && c._mat4){ this.despe(c, c._mat4.el, c._mat4.tipo); c._mat4 = null; }
     });
-    /* "Metal líquido": digitado; no fim, sai junto com a volta do Hg */
     this.prepara4A(m);
     /* "Metais", quando o último pousa (aos 14 s) */
     this.tit4A.classList.toggle('on', t >= A.ate);
+    /* as propriedades e "Metal líquido", digitados; no fim, "Metal
+       líquido" sai junto com a volta do Hg (as propriedades ficam) */
     this.dig4A.escreve(t);
-    this.liq4.classList.toggle('fim', acabou);
+    this.liq4.lastElementChild.classList.toggle('fim', acabou);
     this.suja4A = true;
   },
   prepara4A(m){
@@ -7078,16 +7097,22 @@ const EV4 = {
     tit.style.top  = (TAB_TOPO - 38) + 'px';
     m.appendChild(tit);
     this.tit4A = tit;
+    const A = this.A4, f = [...cx.querySelectorAll('.frase')];
     const poe = () => {
+      const lugar = (el, x, y) => { el.style.left = x.toFixed(1) + 'px'; el.style.top = y.toFixed(1) + 'px'; };
+      /* as propriedades: no alto do lado direito, uma debaixo da outra; a
+         exceção, um pouco para dentro */
+      lugar(f[0], A.textoX, A.textoY);
+      lugar(f[1], A.textoX, A.textoY + 48);
+      lugar(f[2], A.textoX + 28, A.textoY + 88);
+      /* "Metal líquido", centrado debaixo do Hg crescido */
       const s = document.createElement('span');
       s.className = 'mede4';
-      s.textContent = FRASES_4A[0].txt;
+      s.textContent = FRASES_4A[3].txt;
       cx.appendChild(s);
       const w = s.offsetWidth;
       s.remove();
-      /* centrado debaixo do Hg crescido */
-      cx.style.left = (this.A4.hgX - w / 2).toFixed(1) + 'px';
-      cx.style.top  = (this.A4.hgY + LADO * this.A4.escHg / 2 + 40).toFixed(1) + 'px';
+      lugar(f[3], A.hgX - w / 2, A.hgY + LADO * A.escHg / 2 + 40);
     };
     poe();
     if (document.fonts) document.fonts.ready.then(poe);
@@ -7105,7 +7130,7 @@ const EV4 = {
       delete c._k4;
       if (c._mat4){ this.despe(c, c._mat4.el, c._mat4.tipo); c._mat4 = null; }
     });
-    if (this.dig4A){ this.dig4A.limpa(); this.liq4.classList.remove('fim'); this.tit4A.classList.remove('on'); }
+    if (this.dig4A){ this.dig4A.limpa(); this.liq4.lastElementChild.classList.remove('fim'); this.tit4A.classList.remove('on'); }
     this.suja4A = false;
   },
 

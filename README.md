@@ -219,7 +219,7 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | Narração · tempo | O que acontece |
 |---|---|
 | antes do play e até `4` · 10 s | de 3 em 3 s uma carta cresce e vira o **material** do elemento, e a anterior volta no mesmo instante: **metal** escovado, com um brilho que passa (o ouro, o cobre e o césio na cor deles; os outros prata); **gás** num vidro escuro, a fumaça a girar na cor dele (os incolores numa névoa clara, o cloro amarelo-esverdeado; os nobres na cor da descarga, a brilhar); **líquido** a balançar num vidro — o **mercúrio** um espelho, com gotinhas a cair nele, o **bromo** vermelho-escuro com vapor castanho por cima; e os ametais **sólidos** em cristal, na cor da pedra. O 1.º é um metal, o 2.º um gás, o **3.º sempre o Hg**; depois, um saco baralhado de materiais. Os do 100 em diante ficam de fora |
-| `4` · 12 → 13 s | "São 3 classes de elementos:", digitado, solto (só o texto), na linha 1 acima dos metais de transição; com a sala escura ele fica claro |
+| `4` · 12 → 13 s | "São 3 classes de elementos:", digitado, solto (só o texto), na linha 1 acima dos metais de transição; com a sala escura ele fica claro; no fim da `4` (45,4 s) sai em fade |
 | `4` · 17 s | a sala escurece (em fade) e só os **metais** ficam acesos; 18 s "Metais", no azul do bloco, acima dos de transição |
 | `4` · 19,7 s | só os **ametais**; 20,6 s "Ametais" e 22,5 s, ao lado, "Não Metais", no verde, acima do bloco deles (linha 1) |
 | `4` · 24 s | só os **gases nobres**; 25,5 s "Gases Nobres", no violeta, acima da coluna 18 (no celular em duas linhas, à direita do botão do carrossel) |
@@ -228,10 +228,13 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4A` · 0 → 4 s | os metais acesos, o resto apagado |
 | `4A` · 4 → 14 s | os outros somem de todo (com os números dos eixos, as casas das séries e os textos), e os 64 metais saltam um a um, em arco e por número atômico, até uma grade de 8 × 8 do lado esquerdo, menores (76%), com um respiro de ~8 px entre eles, para caberem nas sete alturas da tabela |
 | `4A` · 14 s | o último pousa, e "Metais" aparece acima da grade, em letras de metal cromado: entra de um desfoque, um reflexo corre por elas e uma faísca pisca no fim |
+| `4A` · 11,5 s | no alto do lado direito, "Propriedades dos metais", digitado no dourado |
+| `4A` · 18,5 s | embaixo, "1. Os metais são sólidos", digitado |
 | `4A` · 20 s | ficam sólidos — o metal escovado, numa onda pela grade (o ouro, o cobre e o césio na cor deles) —, e o **Hg** fica líquido |
-| `4A` · 23 s | o Hg vai para o vazio da direita e cresce 3× |
+| `4A` · 23 s | o Hg vai para o vazio da direita, debaixo das propriedades, e cresce 3× |
+| `4A` · 23,5 s | embaixo da propriedade, um pouco para dentro, "Exceto o mercúrio", digitado |
 | `4A` · 29 s | "Metal líquido", digitado debaixo dele |
-| fim da `4A` | o Hg volta para a casa dele na grade, e o texto sai; a cena fica (a escolha das classes não volta) |
+| fim da `4A` | o Hg volta para a casa dele na grade, e "Metal líquido" sai (as propriedades ficam); a cena fica (a escolha das classes não volta) |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
 os nomes ganham o tom claro do próprio bloco. Nas fotos do
