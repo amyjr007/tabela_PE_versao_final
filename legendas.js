@@ -265,6 +265,20 @@ var LEGENDAS = {
     [12.46,17.12,"E é por isso também que usamos cobre nos fios elétricos em nossas casas."],
     [17.12,20.62,"Esse metal é um excelente condutor de eletricidade."]
   ],
+  "audio_tabela_4D": [
+    [0,3.88,"As duas últimas propriedades marcantes dos metais são mecânicas."],
+    [3.88,7.26,"São a ductilidade e a maleabilidade."],
+    [7.26,10.14,"Primeiro, vamos falar da ductilidade."],
+    [10.14,13.4,"A ductilidade é a facilidade com que um metal"],
+    [13.4,17.94,"pode ser esticado até se transformar em fios finos."],
+    [17.94,22.98,"Tá, você já viu a fiação fina dentro de um cabo de eletrodoméstico?"],
+    [22.98,27.56,"Pois é, como é que um metal consegue produzir aqueles fios tão finos?"],
+    [27.56,29.94,"É aí que entra a ductilidade."],
+    [30,36.12,"Na prática, o metal é forçado a passar sob tração por uma peça chamada fieira"],
+    [36.12,40.9,"e o metal vai afinando conforme é puxado sem se romper com facilidade."],
+    [40.9,41.66,"Quer ver?"],
+    [41.66,47.24,"Puxe o metal pela tela através da fieira para observar a ductilidade na prática."]
+  ],
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]
   ],

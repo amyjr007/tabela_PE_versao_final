@@ -1067,6 +1067,43 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 .cubo4C.virou .gira4{transform:none!important;transform-style:flat}
 .cubo4C.virou .face4C.frente{display:none}
 .cubo4C.virou .face4C.lado{transform:none}
+.cubo4C.virou .face4C.tras{display:none}
+/* o segundo giro (a "4D"): virada outra vez, só a fieira, plana */
+.cubo4C.virou2 .gira4{transform:none!important;transform-style:flat}
+.cubo4C.virou2 .face4C:not(.tras){display:none}
+.cubo4C.virou2 .face4C.tras{transform:none}
+.face4C.tras{transform:rotateY(180deg) translateZ(220px)}
+/* A "4D": o choque esvazia (7,6 s), e o fio desencapado vem (20 s) */
+.choque4{transition:opacity .6s ease}
+.cubo4C.apaga4D .choque4{opacity:0;pointer-events:none!important}
+.fiod4{position:absolute;inset:0;opacity:0;transition:opacity .9s ease;pointer-events:none}
+.fiod4 svg{display:block;width:100%;height:100%}
+.cubo4C.fio4D .fiod4{opacity:1}
+/* a fieira: só pega o dedo virada */
+.fieira4{position:absolute;inset:0;touch-action:none}
+.cubo4C.virou2 .fieira4{pointer-events:auto}
+.fieira4 svg{display:block;width:100%;height:100%}
+.fieira4 .fr-nome{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;fill:rgba(226,222,240,.5)}
+.fieira4 .fr-conta{font-family:var(--display);font-weight:600;font-size:17px;fill:#F4F2F8}
+.fieira4 .fr-garra{cursor:grab}
+.fieira4.pegando .fr-garra{cursor:grabbing}
+/* o anel que chama, na garra, até ao primeiro puxão */
+.fieira4 .fr-chama{animation:chamaGarra 1.2s ease-in-out infinite;transform-origin:16px 0;transform-box:view-box}
+.fieira4.puxou .fr-chama{display:none}
+@keyframes chamaGarra{0%,100%{opacity:.9} 50%{opacity:.15}}
+/* os textos da "4D" */
+.prop4C{transition:opacity .6s ease}
+.prop4C.fim{opacity:0}
+.prop4D{position:absolute;inset:0;z-index:25;pointer-events:none}
+.prop4D .frase{position:absolute;display:none;margin:0;white-space:nowrap;line-height:1;
+  font-family:var(--display);font-weight:600;font-size:28px;color:#F4F2F8;text-shadow:0 2px 4px rgba(0,0,0,.5);
+  transform:translateY(-50%);transform-origin:left center;transition:opacity .4s ease, transform .5s var(--e-salto)}
+.prop4D .frase.on{display:block}
+.prop4D .frase.saindo{opacity:0}
+.prop4D .frase:nth-child(2){font-weight:700;font-size:34px;color:var(--ouro-luz)}
+.prop4D .frase.cresce{transform:translateY(-50%) scale(1.35)}
+.prop4D .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
+.prop4D .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
 /* o choque: a face só pega o dedo depois de virada */
 .choque4{position:absolute;inset:0;touch-action:none}
 .cubo4C.virou .choque4{pointer-events:auto}
@@ -3112,7 +3149,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v23.3';
+const VERSAO = 'v23.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4341,6 +4378,7 @@ const TRILHAS = {
   '4A':   'Audios/audio_tabela_4A.mp3',    /* escolhidos os metais */
   '4B':   'Audios/audio_tabela_4B.mp3',    /* depois do Saquei: o brilho metálico */
   '4C':   'Audios/audio_tabela_4C.mp3',    /* depois do Saquei: o calor e a eletricidade */
+  '4D':   'Audios/audio_tabela_4D.mp3',    /* depois do Saquei: a ductilidade e a fieira */
   '5':    'Audios/audio_tabela_5.mp3',     /* o slide 6: as principais famílias (ainda por gravar) */
   '6':    'Audios/audio_tabela_6.mp3',     /* o slide 7: os grupos A e B (ainda por gravar) */
   '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
@@ -4435,6 +4473,7 @@ const ROTEIROS = {
     /* aos 12,9 s a narração pára um segundo, e continua */
     { t:12.9, faz(){ EV4.pausa4C(); } }
   ],
+  '4D':   [],
   '5':    [],
   '6':    [],
   '7':    [],   /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
@@ -6915,6 +6954,13 @@ const FRASES_4A = [
   { de:23.5, ate:24.5, txt:'Exceto o mercúrio' },
   { de:29.0, ate:29.9, txt:'Metal líquido' }
 ];
+/* na "4D": a frase dos dúcteis (sai aos 7,6 s, no "apaga tudo"), e a
+   ductilidade, no lugar do título e da propriedade */
+const FRASES_4D = [
+  { de:4.2, ate:6.0, some:7.6, txt:'Metais são dúcteis e maleáveis' },
+  { de:9.0, ate:9.8, txt:'Ductilidade:' },
+  { de:12.5, ate:16.0, txt:'É a facilidade de formar fios' }
+];
 /* na "4B", no lugar da propriedade 1 (que sai no começo dela) */
 const FRASES_4B = [ { de:4.0, ate:5.6, txt:'2. Os metais têm um brilho característico' } ];
 /* a narração de cada classe, tocada a escolha (as outras ainda por gravar) */
@@ -7028,26 +7074,31 @@ const EV4 = {
     }
     /* a "4A" fala dos metais: eles ficam acesos, e a cena dela (cena4A)
        fica de pé depois do fim */
-    else if (tr === '4A' || tr === '4B' || tr === '4C') luz = 'metais';
+    else if (['4A', '4B', '4C', '4D'].includes(tr)) luz = 'metais';
+    /* a "4C" e a "4D" mantêm as cenas de antes paradas no fim delas */
+    const depoisB = tr === '4C' || tr === '4D';
     /* na "4B" a cena da "4A" fica como ela a deixou (o fim dela), e a da
        "4B" corre por cima: o que ela faz crescer vem em this.mult4. Na "4C"
        as duas ficam paradas no fim, e a propriedade 2 sai em fade */
-    if (tr === '4B' || tr === '4C'){
+    if (tr === '4B' || depoisB){
       this.mult4 = tr === '4B' ? this.cena4B(m, t, acabou) : null;
       this.cena4A(m, 1e3, true, true);
-      if (tr === '4C'){
+      if (depoisB){
         this.prepara4B(m);
         this.dig4B.escreve(1e3);
         (this.metais4 || []).forEach(c => c.classList.remove('brilha4B', 'reluz4'));
         this.suja4B = true;
       }
-      this.prop4B.querySelector('.frase').classList.toggle('fim', tr === '4C');
+      this.prop4B.querySelector('.frase').classList.toggle('fim', depoisB);
     }
     else { this.mult4 = null; if (this.suja4B) this.desfaz4B(m); }
     if (tr === '4A') this.cena4A(m, t, acabou);
-    else if (tr !== '4B' && tr !== '4C' && this.suja4A) this.desfaz4A(m);
+    else if (tr !== '4B' && !depoisB && this.suja4A) this.desfaz4A(m);
     if (tr === '4C') this.cena4C(m, t, acabou);
+    else if (tr === '4D') this.cena4C(m, 1e3, true, true);
     else if (this.suja4C) this.desfaz4C(m);
+    if (tr === '4D') this.cena4D(m, t, acabou);
+    else if (this.suja4D) this.desfaz4D(m);
     if (!escolha) this.escolhida = null;
     else if (this.escolhida) luz = this.escolhida;
     this.emEscolha = escolha;
@@ -7501,7 +7552,9 @@ const EV4 = {
   /* o texto, em partes: as duas palavras com o efeito delas */
   PARTES_4C:[ { t:'3. Os metais são bons condutores' }, { br:true }, { t:'de ' },
               { t:'calor', c:'calor4' }, { t:' e ' }, { t:'eletricidade', c:'eletrico4' } ],
-  cena4C(m, t, acabou){
+  /* emD: na "4D" (o texto fica escrito; o giro, o choque, o aviso e o
+     Saquei passam a ser da cena4D) */
+  cena4C(m, t, acabou, emD){
     const C = this.C4;
     this.prepara4C(m);
     /* a escrita: tantas letras quanto o tempo pede (pausar congela, voltar
@@ -7522,6 +7575,12 @@ const EV4 = {
     }
     const cur = this.prop4C.querySelector('.cursor');
     if (cur) cur.classList.toggle('pisca', t >= C.ate);
+    this.suja4C = true;
+    if (emD){
+      this.alerta4C.classList.remove('on');
+      if (this.verde4C){ this.verde4C = false; this.saquei4(false); }
+      return;
+    }
     /* a panela, e o giro do cubo */
     this.cubo4C.classList.toggle('on', t >= C.panela);
     const p = Math.max(0, Math.min(1, (t - C.gira) / C.giraDura));
@@ -7589,6 +7648,75 @@ const EV4 = {
     this.curto4 = false;
     if (this.verde4C){ this.verde4C = false; this.saquei4(false); }
     this.suja4C = false;
+  },
+
+  /* ---- A "4D": A DUCTILIDADE ----
+     0 s          a propriedade 3 sai em fade
+     4,2 → 6 s    "Metais são dúcteis e maleáveis", digitado
+     7,6 s        apaga tudo: o título, essa frase e o choque da face
+     9 s          "Ductilidade:", no lugar do título; 12,5 → 16 s, embaixo,
+                  "É a facilidade de formar fios"
+     20 s         na face vazia, um fio elétrico com a ponta desencapada
+     29 → 31 s    "Ductilidade:" cresce, e volta
+     31,5 s       o cubo vira outra vez, e a face nova é a FIEIRA: a barra
+                  de cobre à esquerda, a fieira no meio e a ponta do fio à
+                  direita; o dedo puxa o fio, e a barra recua só o que o
+                  volume manda (FIEIRA4)
+     Tudo função do relógio da narração, menos o puxar. */
+  D4:{ gira:31.5, giraDura:0.9, apaga:7.6, fio:20, cresce:29, volta:31 },
+  suja4D:false, dig4D:null, prop4D:null,
+  cena4D(m, t, acabou){
+    const D = this.D4, cb = this.cubo4C;
+    this.prepara4D(m);
+    cb.classList.add('on');
+    /* a propriedade 3 sai; aos 7,6 s, o título também */
+    this.prop4C.classList.add('fim');
+    this.liq4.querySelector('.frase').classList.toggle('fim', t >= D.apaga);
+    this.dig4D.escreve(t);
+    this.prop4D.querySelectorAll('.frase')[1].classList.toggle('cresce', t >= D.cresce && t < D.volta);
+    /* o choque: vivo até ao apagar; depois a face esvazia, e o fio vem */
+    cb.classList.toggle('apaga4D', t >= D.apaga);
+    cb.classList.toggle('fio4D', t >= D.fio);
+    /* os dois giros: o primeiro já foi (na "4C"); o segundo, aqui */
+    const p = Math.max(0, Math.min(1, (t - D.gira) / D.giraDura));
+    const g = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
+    cb.classList.toggle('virou', p <= 0);
+    cb.classList.toggle('virou2', p >= 1);
+    cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 - 90 * g).toFixed(2) + 'deg)';
+    if (p <= 0 && t < D.apaga) this.ligaEletro(); else if (this.E4.raf) this.paraEletro();
+    FIEIRA4.vivo = p >= 1;
+    this.suja4D = true;
+  },
+  prepara4D(m){
+    if (this.dig4D) return;
+    const A = this.A4;
+    const cx = document.createElement('div');
+    cx.className = 'prop4D';
+    cx.setAttribute('aria-live', 'polite');
+    m.appendChild(cx);
+    this.dig4D = criaDigitacao(cx, FRASES_4D);
+    const f = cx.querySelectorAll('.frase');
+    [[A.textoY + 48], [A.textoY], [A.textoY + 48]].forEach(([y], i) => {
+      f[i].style.left = A.textoX + 'px';
+      f[i].style.top  = y + 'px';
+    });
+    this.prop4D = cx;
+    /* o fio desencapado, na face do choque; e a fieira, na face de trás */
+    this.cubo4C.querySelector('.face4C.lado').insertAdjacentHTML('beforeend', '<div class="fiod4">' + fioDescascadoSVG() + '</div>');
+    this.cubo4C.querySelector('.gira4').insertAdjacentHTML('beforeend',
+      '<div class="face4C tras"><div class="fieira4">' + fieiraSVG() + '</div></div>');
+    FIEIRA4.prepara(this.cubo4C.querySelector('.fieira4'));
+  },
+  desfaz4D(m){
+    if (this.dig4D){
+      this.dig4D.limpa();
+      this.prop4D.querySelectorAll('.frase.cresce').forEach(f => f.classList.remove('cresce'));
+      this.prop4C.classList.remove('fim');
+      this.liq4.querySelector('.frase').classList.remove('fim');
+      this.cubo4C.classList.remove('apaga4D', 'fio4D', 'virou2');
+      FIEIRA4.zera();
+    }
+    this.suja4D = false;
   },
 
   /* ---- O CHOQUE (a face 3 do app do professor) ----
@@ -7720,6 +7848,7 @@ const EV4 = {
     stage.classList.remove('em-classes');
     const m = this.mesa();
     if (!m) return;
+    if (this.suja4D) this.desfaz4D(m);
     if (this.suja4C) this.desfaz4C(m);
     if (this.suja4B) this.desfaz4B(m);
     if (this.suja4A) this.desfaz4A(m);
@@ -8071,6 +8200,142 @@ function arco4HTML(x, y, yBarra){
   }
   return s;
 }
+
+/* O FIO DESENCAPADO (a "4D", aos 20 s): o cabo de um eletrodoméstico,
+   cortado, com as pernas finas de cobre a abrirem-se na ponta */
+function fioDescascadoSVG(){
+  let pernas = '';
+  for (let i = 0; i < 11; i++){
+    const y0 = 241 + i * 1.8, a = (i - 5) / 5;
+    const x1 = 368 + Math.cos(i * 1.7) * 14, y1 = 250 + a * 26 + Math.sin(i * 2.3) * 3;
+    const d = 'M272,' + y0.toFixed(1) + ' Q' + (322 + a * 6).toFixed(1) + ',' + (y0 + a * 6).toFixed(1) + ' ' + x1.toFixed(1) + ',' + y1.toFixed(1);
+    pernas += '<path d="' + d + '" stroke="#B9642C" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
+              '<path d="' + d + '" stroke="#FFD3A8" stroke-width=".8" fill="none" stroke-linecap="round" opacity=".75" transform="translate(0 -.7)"/>' +
+              '<circle cx="' + x1.toFixed(1) + '" cy="' + y1.toFixed(1) + '" r="1.5" fill="#E89A5E"/>';
+  }
+  return '<svg viewBox="0 0 440 440" aria-label="Fio elétrico com a ponta desencapada" role="img">' +
+    '<defs><linearGradient id="fd4-capa" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#5A6075"/><stop offset=".35" stop-color="#2A2F42"/>' +
+      '<stop offset=".7" stop-color="#151925"/><stop offset="1" stop-color="#0A0C14"/></linearGradient>' +
+    '<filter id="fd4-borra"><feGaussianBlur stdDeviation="6"/></filter></defs>' +
+    '<ellipse cx="220" cy="300" rx="170" ry="10" fill="#000" opacity=".45" filter="url(#fd4-borra)"/>' +
+    '<g transform="rotate(-6 220 250)">' +
+      '<rect x="10" y="236" width="264" height="28" rx="14" fill="url(#fd4-capa)"/>' +
+      '<rect x="18" y="240" width="250" height="4" rx="2" fill="#fff" fill-opacity=".14"/>' +
+      pernas +
+      '<ellipse cx="273" cy="250" rx="4" ry="14" fill="#0B0D15"/>' +
+    '</g>' +
+  '</svg>';
+}
+
+/* A FIEIRA (a "4D", aos 31,5 s), em corte: a barra grossa de cobre entra
+   pela esquerda, afina no cone da fieira e sai fio do outro lado. O dedo
+   puxa a ponta do fio (só para a direita: o fio não volta para dentro),
+   e A BARRA RECUA SÓ O QUE O VOLUME MANDA — o que sai em fio é o que a
+   barra perde, e com áreas na razão (7/44)² puxar 6,7 cm de fio encurta
+   a barra uns 0,17 cm. Encurtar 1:1 faria o metal desaparecer. */
+/* (pontaMax: a garra, com o anel, cabe inteira na face; a fieira mais à
+   esquerda deixa ~6,8 cm de fio para puxar) */
+const FR4 = { cy:200, R:22, r:3.5, entra:122, sai:150, barra0:20, ponta0:176, pontaMax:380, pxCm:30 };
+function fieiraSVG(){
+  const F = FR4, cy = F.cy, e = F.entra, s = F.sai, b0 = e - 8, b1 = s + 14;
+  const bloco = sinal => b0 + ',' + (cy + sinal*72) + ' ' + b1 + ',' + (cy + sinal*72) + ' ' + b1 + ',' + (cy + sinal*6) + ' ' +
+                         s + ',' + (cy + sinal*4.6) + ' ' + (e - 2) + ',' + (cy + sinal*24) + ' ' + b0 + ',' + (cy + sinal*24);
+  return '<svg viewBox="0 0 440 440" aria-label="Fieira: puxe o fio" role="img">' +
+    '<defs>' +
+      '<linearGradient id="fr4-cobre" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#4A1C06"/><stop offset=".2" stop-color="#9A4A1C"/>' +
+        '<stop offset=".4" stop-color="#F2A66A"/><stop offset=".5" stop-color="#FFE3C4"/>' +
+        '<stop offset=".64" stop-color="#D27B3E"/><stop offset="1" stop-color="#4E1E07"/></linearGradient>' +
+      '<radialGradient id="fr4-topo" cx=".45" cy=".4" r=".7">' +
+        '<stop offset="0" stop-color="#F0A266"/><stop offset=".6" stop-color="#B05A24"/><stop offset="1" stop-color="#5A2408"/></radialGradient>' +
+      '<linearGradient id="fr4-aco" x1="0" y1="0" x2="1" y2="1">' +
+        '<stop offset="0" stop-color="#C9D2DB"/><stop offset=".45" stop-color="#7C8792"/><stop offset="1" stop-color="#39414A"/></linearGradient>' +
+      '<pattern id="fr4-corte" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+        '<rect width="1.2" height="7" fill="#1E242B" fill-opacity=".35"/></pattern>' +
+      '<filter id="fr4-borra"><feGaussianBlur stdDeviation="6"/></filter>' +
+    '</defs>' +
+    '<ellipse cx="220" cy="' + (cy + 88) + '" rx="190" ry="9" fill="#000" opacity=".4" filter="url(#fr4-borra)"/>' +
+    /* a barra e o cone dentro da fieira */
+    '<rect class="fr-barra" x="' + F.barra0 + '" y="' + (cy - F.R) + '" width="' + (F.entra - F.barra0) + '" height="' + 2*F.R + '" fill="url(#fr4-cobre)"/>' +
+    '<ellipse class="fr-topo" cx="' + F.barra0 + '" cy="' + cy + '" rx="7" ry="' + F.R + '" fill="url(#fr4-topo)"/>' +
+    '<polygon points="' + (F.entra - 2) + ',' + (cy - F.R) + ' ' + F.sai + ',' + (cy - F.r) + ' ' + F.sai + ',' + (cy + F.r) + ' ' + (F.entra - 2) + ',' + (cy + F.R) + '" fill="url(#fr4-cobre)"/>' +
+    /* o fio que sai */
+    '<rect class="fr-fio" x="' + (F.sai - 2) + '" y="' + (cy - F.r) + '" width="' + (F.ponta0 - F.sai + 2) + '" height="' + 2*F.r + '" fill="url(#fr4-cobre)"/>' +
+    /* a fieira em corte: dois blocos de aço com o cone entre eles */
+    '<g>' +
+      '<polygon points="' + bloco(-1) + '" fill="url(#fr4-aco)"/>' +
+      '<polygon points="' + bloco(1) + '" fill="url(#fr4-aco)"/>' +
+      '<polygon points="' + bloco(-1) + '" fill="url(#fr4-corte)"/>' +
+      '<polygon points="' + bloco(1) + '" fill="url(#fr4-corte)"/>' +
+      '<path d="M' + b0 + ',' + (cy - 72) + ' H' + b1 + ' M' + b0 + ',' + (cy + 72) + ' H' + b1 + '" stroke="#E9EEF3" stroke-opacity=".6" stroke-width="1.2"/>' +
+      '<rect x="' + (b0 - 14) + '" y="' + (cy + 72) + '" width="' + (b1 - b0 + 28) + '" height="12" rx="3" fill="#3A424B"/>' +
+    '</g>' +
+    '<text x="' + ((b0 + b1) / 2) + '" y="' + (cy + 104) + '" text-anchor="middle" class="fr-nome">fieira</text>' +
+    /* a garra na ponta do fio, por onde o dedo puxa */
+    '<g class="fr-garra" transform="translate(' + F.ponta0 + ' ' + cy + ')">' +
+      '<circle class="fr-chama" r="30" fill="none" stroke="#FFD43B" stroke-width="2.5"/>' +
+      '<rect x="-4" y="-11" width="26" height="22" rx="5" fill="url(#fr4-aco)"/>' +
+      '<path d="M2,-11 V11 M8,-11 V11 M14,-11 V11" stroke="#2A3138" stroke-opacity=".55" stroke-width="1.4"/>' +
+      '<circle cx="36" cy="0" r="12" fill="none" stroke="url(#fr4-aco)" stroke-width="6"/>' +
+    '</g>' +
+    '<text x="220" y="' + (cy + 150) + '" text-anchor="middle" class="fr-conta"></text>' +
+  '</svg>';
+}
+const FIEIRA4 = {
+  el:null, ponta:FR4.ponta0, pega:null, vivo:false, puxou:false,
+  prepara(el){
+    this.el = el;
+    const ponto = ev => {
+      const r = el.getBoundingClientRect();
+      return { x:(ev.clientX - r.left) / r.width * 440, y:(ev.clientY - r.top) / r.height * 440 };
+    };
+    el.addEventListener('pointerdown', ev => {
+      if (!this.vivo) return;
+      ev.preventDefault(); ev.stopPropagation();
+      const p = ponto(ev);
+      /* só na garra (com folga para o dedo) */
+      if (Math.hypot(p.x - (this.ponta + 16), p.y - FR4.cy) > 52) return;
+      try { el.setPointerCapture(ev.pointerId); } catch (_) {}
+      this.pega = this.ponta - p.x;
+      el.classList.add('pegando');
+    });
+    el.addEventListener('pointermove', ev => {
+      if (this.pega === null) return;
+      /* só para a direita: o fio puxado não volta para dentro da fieira */
+      const x = Math.min(FR4.pontaMax, Math.max(this.ponta, ponto(ev).x + this.pega));
+      if (x > this.ponta + .5){ this.puxou = true; el.classList.add('puxou'); }
+      this.ponta = x;
+      this.desenha();
+    });
+    const larga = () => { this.pega = null; el.classList.remove('pegando'); };
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => el.addEventListener(n, larga));
+    el.addEventListener('click', ev => ev.stopPropagation());
+    this.desenha();
+  },
+  /* o volume: o que o fio ganha, a barra perde, na razão das áreas */
+  desenha(){
+    if (!this.el) return;
+    const F = FR4, puxado = this.ponta - F.ponta0, razao = (F.r / F.R) ** 2;
+    const recua = puxado * razao, xb = F.barra0 + recua;
+    const s = this.el.querySelector('svg');
+    const b = s.querySelector('.fr-barra');
+    b.setAttribute('x', xb.toFixed(2));
+    b.setAttribute('width', (F.entra - xb).toFixed(2));
+    s.querySelector('.fr-topo').setAttribute('cx', xb.toFixed(2));
+    s.querySelector('.fr-fio').setAttribute('width', (this.ponta - F.sai + 2).toFixed(2));
+    s.querySelector('.fr-garra').setAttribute('transform', 'translate(' + this.ponta.toFixed(1) + ' ' + F.cy + ')');
+    const cm = v => (v / F.pxCm).toFixed(2).replace('.', ',');
+    s.querySelector('.fr-conta').textContent = this.puxou
+      ? 'Fio puxado: ' + cm(puxado) + ' cm  ·  a barra encurtou ' + cm(recua) + ' cm'
+      : 'Puxe a ponta do fio';
+  },
+  zera(){
+    this.ponta = FR4.ponta0; this.pega = null; this.vivo = false; this.puxou = false;
+    if (this.el) this.el.classList.remove('pegando', 'puxou');
+    this.desenha();
+  }
+};
 
 /* o quanto uma cor (#rrggbb) é clara, de 0 a 1 */
 function claridade(hex){
@@ -12414,6 +12679,8 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4B', 0, g)); } },
   { titulo:'Calor e eletricidade', sub:'o começo da 4C', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4C', 0, g)); } },
+  { titulo:'Ductilidade', sub:'o começo da 4D: a fieira', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4D', 0, g)); } },
   /* ---- o slide 6 · As principais famílias ---- */
   { titulo:'Início', sub:'o começo do slide', slide:5,
     entra(){ /* o recomeço do slide já é o tópico */ } },
@@ -12562,6 +12829,7 @@ function tocaDesde(id, t, g){
 function topicoAtual(){
   if (atual === 4){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 4);
+    if (trilhaAtual === '4D') return base + 5;
     if (trilhaAtual === '4C') return base + 4;
     if (trilhaAtual === '4B') return base + 3;
     if (trilhaAtual === '4A') return base + 2;
