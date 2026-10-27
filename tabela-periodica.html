@@ -939,6 +939,19 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
 /* a grade inteira de metal: o brilho passa uma vez só (64 a correr sem
    parar pesariam no celular) */
 .mat.quieto .brilho{animation-iteration-count:1}
+/* o Hg que virou poça: o card some (e volta na "4B", com a transição dele) */
+.mesa.tipos .pc.anda4.some4{opacity:0}
+/* A POÇA DE MERCÚRIO (POCA4): segue o Hg pelo relógio (a transição curta
+   alisa), e na "4B" volta para a vaga dele, a encolher e a esmaecer */
+.poca4{position:absolute;left:0;top:0;width:340px;height:180px;z-index:41;
+  opacity:0;pointer-events:none;touch-action:none;
+  transform:translate(-50%,-50%) scale(var(--s,1));
+  transition:left 90ms linear, top 90ms linear, transform 90ms linear, opacity .45s ease}
+.poca4.on{opacity:1;pointer-events:auto;cursor:grab}
+.poca4.on:active{cursor:grabbing}
+.poca4.volta{opacity:0;transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1),
+  transform .9s cubic-bezier(.4,0,.2,1), opacity .6s ease .3s}
+.poca4 svg{display:block;width:100%;height:100%;overflow:visible}
 /* "Metais", acima da grade, quando o último pousa: as letras de metal
    cromado (o gradiente recortado na letra), que entram de um desfoque, um
    reflexo que corre por elas, e uma faísca no fim */
@@ -3010,7 +3023,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v22.9';
+const VERSAO = 'v23.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7054,7 +7067,11 @@ const EV4 = {
           assim sobram ~8 px entre elas, e a grade ainda cabe nas sete alturas */
        /* o Hg crescido fica debaixo das propriedades (textoX, textoY: o
           começo delas, no alto do lado direito) */
-       cols:8, passo:58, esc:0.76, hgX:866, hgY:410, escHg:3, textoX:600, textoY:174 },
+       cols:8, passo:58, esc:0.76, hgX:866, hgY:410, escHg:3, textoX:600, textoY:174,
+       /* a poça no tamanho final: o desenho tem 340 × 180, mas o mercúrio
+          ocupa só o terço do meio — a 1,6 ele fica do tamanho do card que
+          ele substitui */
+       escPoca:1.6 },
   metais4:null, suja4A:false, dig4A:null, liq4:null, tit4A:null,
   /* a vaga k da grade, na mesa */
   vaga4(k){
@@ -7077,12 +7094,16 @@ const EV4 = {
       let x = entre(casa.x, vaga.x, e), y = entre(casa.y, vaga.y, e), esc = entre(1, A.esc, e);
       const alto = Math.min(150, 50 + 0.12 * Math.hypot(vaga.x - casa.x, vaga.y - casa.y));
       const sobe = -Math.sin(Math.PI * p) * alto;
-      /* o Hg: para a direita, e cresce; no fim, volta para a vaga */
+      /* o Hg: salta para a direita e cresce, e a meio do caminho vira a
+         poça de mercúrio (POCA4), que se pode tocar; fica assim depois do
+         fim, e só no Saquei (na "4B") faz o inverso e volta para a vaga */
       if (+c.dataset.z === 80){
-        const f = acabou ? 0 : suave(Math.max(0, Math.min(1, (t - A.hg) / A.hgDur)));
+        const bruto = emB ? 0 : Math.max(0, Math.min(1, (t - A.hg) / A.hgDur)), f = suave(bruto);
         x = entre(x, A.hgX, f); y = entre(y, A.hgY, f); esc = entre(esc, A.escHg, f);
-        c.classList.toggle('hg4', f > 0 || acabou);
-        c.classList.toggle('volta4', acabou);
+        c.classList.toggle('hg4', f > 0 || !!emB);
+        c.classList.toggle('volta4', !!emB);
+        c.classList.toggle('some4', !emB && bruto >= .5);
+        this.pocaSegue(m, x, y, bruto, emB, vaga);
       }
       /* o que a "4B" faz crescer */
       const mult = this.mult4 && this.mult4.get(+c.dataset.z);
@@ -7112,11 +7133,40 @@ const EV4 = {
        líquido" sai junto com a volta do Hg (as propriedades ficam) */
     this.dig4A.escreve(t);
     const fr = this.liq4.querySelectorAll('.frase');
-    fr[3].classList.toggle('fim', acabou);
+    /* "Metal líquido" fica com a poça, e sai com ela no Saquei */
+    fr[3].classList.toggle('fim', !!emB);
     /* na "4B", a propriedade 1 e a exceção dela saem em fade */
     fr[1].classList.toggle('fim', !!emB);
     fr[2].classList.toggle('fim', !!emB);
     this.suja4A = true;
+  },
+  /* A POÇA SEGUE O HG: aparece a meio do salto (bruto 0,4), no mesmo
+     lugar do card, e cresce com ele; as gotas nascem juntas no meio e
+     espalham-se até ao descanso. Na "4B", o inverso: encolhe e esmaece a
+     caminho da vaga do Hg, enquanto o card volta a aparecer. */
+  pocaSegue(m, x, y, bruto, emB, vaga){
+    const el = POCA4.cria(m);
+    if (emB){
+      if (el.classList.contains('on')){
+        el.classList.remove('on');
+        el.classList.add('volta');
+        el.style.left = vaga.x.toFixed(1) + 'px';
+        el.style.top  = vaga.y.toFixed(1) + 'px';
+        el.style.setProperty('--s', '.12');
+        POCA4.espalha = .25;
+        clearTimeout(this.pocaT);
+        this.pocaT = setTimeout(() => { if (!el.classList.contains('on')) POCA4.desliga(); }, 1100);
+      }
+      return;
+    }
+    el.classList.remove('volta');
+    const on = bruto >= .4;
+    el.classList.toggle('on', on);
+    if (on) POCA4.liga(); else POCA4.desliga();
+    POCA4.espalha = Math.max(.25, Math.min(1, (bruto - .4) / .6));
+    el.style.left = x.toFixed(1) + 'px';
+    el.style.top  = y.toFixed(1) + 'px';
+    el.style.setProperty('--s', (.25 + (this.A4.escPoca - .25) * bruto).toFixed(3));
   },
   prepara4A(m){
     if (this.dig4A) return;
@@ -7158,8 +7208,9 @@ const EV4 = {
   /* fora da "4A" (outra trilha, ou o slide recomeçado): tudo volta */
   desfaz4A(m){
     m.classList.remove('arruma4');
+    if (POCA4.el){ POCA4.el.classList.remove('on', 'volta'); POCA4.desliga(); }
     (this.metais4 || []).forEach(c => {
-      c.classList.remove('anda4', 'no-ar4', 'hg4', 'volta4');
+      c.classList.remove('anda4', 'no-ar4', 'hg4', 'volta4', 'some4');
       const casa = alvoDe(+c.dataset.z);
       c.style.left = casa.x.toFixed(1) + 'px';
       c.style.top  = casa.y.toFixed(1) + 'px';
@@ -7341,6 +7392,141 @@ const EV4 = {
     if (this.dig) this.dig.limpa();
   }
 };
+/* ============================================================
+   A POÇA DE MERCÚRIO (a da "4A") — a do app do professor (slide 4,
+   mercurioSVG e acordaMercurio), trazida para cá.
+   O líquido se funde pelo filtro "goo": borra-se o desenho e espreme-se
+   o canal alfa, e duas gotas que se aproximam ganham um pescoço entre
+   elas. A borda escura (o anel tirado da própria silhueta) é o que faz
+   aquilo ser mercúrio e não uma pérola. Cada gota tem uma mola que a
+   puxa para o descanso, e o dedo EMPURRA e GIRA — as gotas contornam o
+   dedo por lados diferentes e a poça abre-se em duas; largado o dedo,
+   as molas trazem tudo de volta e o goo funde outra vez.
+   ============================================================ */
+const POCA_N = 7, POCA_CX = 170, POCA_CY = 92;
+function pocaSVG(){
+  let gotas = '', luzes = '';
+  for (let i = 0; i < POCA_N; i++){
+    gotas += '<ellipse class="gota" fill="url(#poca4-corpo)"></ellipse>';
+    luzes += '<ellipse class="luz" fill="#FFFFFF"></ellipse>';
+  }
+  return '<svg viewBox="0 0 340 180">' +
+    '<defs>' +
+      '<filter id="poca4-goo" x="-40%" y="-40%" width="180%" height="180%">' +
+        '<feGaussianBlur in="SourceGraphic" stdDeviation="9" result="borrao"/>' +
+        '<feColorMatrix in="borrao" mode="matrix" result="goo" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10"/>' +
+        '<feComposite in="SourceGraphic" in2="goo" operator="atop" result="corpo"/>' +
+        '<feMorphology in="goo" operator="erode" radius="3" result="dentro"/>' +
+        '<feComposite in="goo" in2="dentro" operator="out" result="anel"/>' +
+        '<feFlood flood-color="#161C23" flood-opacity=".78" result="tinta"/>' +
+        '<feComposite in="tinta" in2="anel" operator="in" result="borda"/>' +
+        '<feMerge><feMergeNode in="corpo"/><feMergeNode in="borda"/></feMerge>' +
+      '</filter>' +
+      /* o sombreado é da poça, e não de cada gota (userSpaceOnUse): onde
+         duas se sobrepõem não há emenda; claro no alto, quase preto na
+         barriga, e o fio aceso embaixo — a luz que volta do chão */
+      '<linearGradient id="poca4-corpo" gradientUnits="userSpaceOnUse" x1="0" y1="36" x2="0" y2="146">' +
+        '<stop offset="0" stop-color="#FFFFFF"/><stop offset=".14" stop-color="#EDF3F9"/>' +
+        '<stop offset=".30" stop-color="#B3BFCA"/><stop offset=".47" stop-color="#6F7A85"/>' +
+        '<stop offset=".64" stop-color="#39424B"/><stop offset=".79" stop-color="#1E242B"/>' +
+        '<stop offset=".87" stop-color="#93A0AC"/><stop offset="1" stop-color="#3E4750"/>' +
+      '</linearGradient>' +
+      '<radialGradient id="poca4-sombra" cx=".5" cy=".5" r=".5">' +
+        '<stop offset="0" stop-color="rgba(0,0,0,.5)"/><stop offset="1" stop-color="rgba(0,0,0,0)"/>' +
+      '</radialGradient>' +
+    '</defs>' +
+    '<ellipse cx="' + POCA_CX + '" cy="152" rx="112" ry="13" fill="url(#poca4-sombra)"/>' +
+    '<g filter="url(#poca4-goo)">' + gotas + '</g>' +
+    /* os brilhos fora do filtro: borrados não diriam "molhado" */
+    '<g opacity=".82">' + luzes + '</g>' +
+  '</svg>';
+}
+const POCA4 = {
+  el:null, est:null, dedo:null, raf:0, espalha:1,
+  /* cria-a na mesa (uma vez) e liga o dedo */
+  cria(m){
+    if (this.el) return this.el;
+    const el = document.createElement('div');
+    el.className = 'poca4';
+    el.setAttribute('aria-label', 'Mercúrio: toque e arraste');
+    el.innerHTML = pocaSVG();
+    m.appendChild(el);
+    this.el = el;
+    const svg = el.querySelector('svg');
+    const gotas = [...svg.querySelectorAll('.gota')], luzes = [...svg.querySelectorAll('.luz')];
+    /* a mãe é grande e pesada; as outras, um cacho apertado e deitado
+       que cabe inteiro dentro dela (poça parada não tem calombo) */
+    this.est = gotas.map((g, i) => {
+      const a = (i / (POCA_N - 1)) * Math.PI * 2, r = i === 0 ? 0 : 10 + (i % 3) * 5;
+      const px = POCA_CX + Math.cos(a) * r * 1.5, py = POCA_CY + Math.sin(a) * r * .45;
+      const raio = i === 0 ? 42 : 25 - (i % 3) * 4;
+      return { el:g, luz:luzes[i], mae:i === 0, massa:i === 0 ? 2.6 : 1, giro:i % 2 ? 1 : -1,
+               rx0:i === 0 ? raio * 1.28 : raio, ry0:i === 0 ? raio * .86 : raio * .94,
+               px, py, x:px, y:py, vx:0, vy:0 };
+    });
+    /* o dedo chega em coordenada da tela; o desenho, em coordenada dele:
+       o getScreenCTM desfaz a mesa, o encaixe do palco e a escala da poça */
+    const ponto = ev => {
+      const p = svg.createSVGPoint();
+      p.x = ev.clientX; p.y = ev.clientY;
+      const q = p.matrixTransform(svg.getScreenCTM().inverse());
+      return { x:q.x, y:q.y };
+    };
+    el.addEventListener('pointerdown', ev => {
+      if (!el.classList.contains('on')) return;
+      ev.preventDefault(); ev.stopPropagation();
+      try { el.setPointerCapture(ev.pointerId); } catch (_) {}
+      this.dedo = ponto(ev);
+    });
+    el.addEventListener('pointermove', ev => { if (this.dedo) this.dedo = ponto(ev); });
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => el.addEventListener(n, () => { this.dedo = null; }));
+    el.addEventListener('click', ev => ev.stopPropagation());
+    return el;
+  },
+  /* AS CONSTANTES, as do professor: o empurrão é fraco e a mola forte —
+     as gotas não chegam à parede, e largar o dedo traz tudo de volta */
+  quadro(){
+    const MOLA = .08, ATRITO = .87, EMPURRA = 110, ALCANCE = 96, GIRO = .9, e = this.espalha;
+    const mae = this.est[0];
+    this.est.forEach(g => {
+      /* o descanso, encolhido para o meio enquanto a poça se forma */
+      const rx = POCA_CX + (g.px - POCA_CX) * e, ry = POCA_CY + (g.py - POCA_CY) * e;
+      let ax = (rx - g.x) * MOLA, ay = (ry - g.y) * MOLA;
+      if (this.dedo){
+        const dx = g.x - this.dedo.x, dy = g.y - this.dedo.y, d = Math.hypot(dx, dy) || .01;
+        if (d < ALCANCE){
+          const f = EMPURRA * (1 - d / ALCANCE) / (d * g.massa);
+          ax += dx * f;                 ay += dy * f;
+          ax += -dy * f * GIRO * g.giro; ay += dx * f * GIRO * g.giro;
+        }
+      }
+      g.vx = (g.vx + ax) * ATRITO; g.vy = (g.vy + ay) * ATRITO;
+      g.x += g.vx; g.y += g.vy;
+      /* fica no prato, e na faixa da poça: o degradê é partilhado, e uma
+         gota que subisse sairia pálida */
+      g.x = Math.max(g.rx0 + 4, Math.min(340 - g.rx0 - 4, g.x));
+      g.y = Math.max(POCA_CY - 8, Math.min(POCA_CY + 40, g.y));
+      /* a gota que corre estica-se na direção da corrida */
+      const v = Math.hypot(g.vx, g.vy), s = Math.min(.34, v * .035);
+      const ang = v > .2 ? Math.atan2(g.vy, g.vx) * 180 / Math.PI : 0;
+      const arx = g.rx0 * (1 + s), ary = g.ry0 * (1 - s * .8);
+      g.el.setAttribute('cx', g.x.toFixed(1)); g.el.setAttribute('cy', g.y.toFixed(1));
+      g.el.setAttribute('rx', arx.toFixed(1)); g.el.setAttribute('ry', ary.toFixed(1));
+      g.el.setAttribute('transform', 'rotate(' + ang.toFixed(1) + ' ' + g.x.toFixed(1) + ' ' + g.y.toFixed(1) + ')');
+      g.luz.setAttribute('cx', (g.x - arx * .3).toFixed(1)); g.luz.setAttribute('cy', (g.y - ary * .44).toFixed(1));
+      g.luz.setAttribute('rx', (arx * .26).toFixed(1)); g.luz.setAttribute('ry', (ary * .2).toFixed(1));
+      /* o brilho só existe enquanto a gota é uma gota (longe da mãe) */
+      if (!g.mae){
+        const d = Math.hypot(g.x - mae.x, g.y - mae.y);
+        g.luz.setAttribute('opacity', Math.max(0, Math.min(1, (d - mae.rx0 * .62) / 38)).toFixed(2));
+      }
+    });
+    this.raf = requestAnimationFrame(() => this.quadro());
+  },
+  liga(){ if (!this.raf) this.quadro(); },
+  desliga(){ cancelAnimationFrame(this.raf); this.raf = 0; this.dedo = null; }
+};
+
 /* o quanto uma cor (#rrggbb) é clara, de 0 a 1 */
 function claridade(hex){
   const n = parseInt(hex.slice(1), 16);

@@ -232,11 +232,11 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4A` · 11,5 s | no alto do lado direito, "Propriedades dos metais", digitado no dourado |
 | `4A` · 18,5 s | embaixo, "1. Os metais são sólidos", digitado |
 | `4A` · 20 s | ficam sólidos — o metal escovado, numa onda pela grade (o ouro, o cobre e o césio na cor deles) —, e o **Hg** fica líquido |
-| `4A` · 23 s | o Hg vai para o vazio da direita, debaixo das propriedades, e cresce 3× |
+| `4A` · 23 s | o Hg salta para o vazio da direita, debaixo das propriedades, e a meio do caminho vira uma **poça de mercúrio** (`POCA4`, a do slide 4 do app do professor: o filtro "goo", a borda escura, sete gotas com mola). O dedo (ou o mouse) empurra e gira as gotas, a poça abre-se ao meio, e largada volta a fundir-se |
 | `4A` · 23,5 s | embaixo da propriedade, um pouco para dentro, "Exceto o mercúrio", digitado |
 | `4A` · 29 s | "Metal líquido", digitado debaixo dele |
-| fim da `4A` | o Hg volta para a casa dele na grade, e "Metal líquido" sai (as propriedades ficam); a cena fica, e o play vira o **Saquei** (verde); tocado, o `right` e a **`4B`** (`Audios/audio_tabela_4B.mp3`) |
-| `4B` · 0 s | a cena da `4A` fica como ela a deixou; "1. Os metais são sólidos" e "Exceto o mercúrio" saem em fade |
+| fim da `4A` | a poça fica, para mexer; o play vira o **Saquei** (verde); tocado, o `right` e a **`4B`** (`Audios/audio_tabela_4B.mp3`) |
+| `4B` · 0 s | o inverso: a poça encolhe e esmaece a caminho da casa do Hg na grade, e o card dele volta lá; "Metal líquido", "1. Os metais são sólidos" e "Exceto o mercúrio" saem em fade |
 | `4B` · 4 s | no lugar deles, "2. Os metais têm um brilho característico", digitado |
 | `4B` · 7 s | um brilho corre pela grade na diagonal, carta a carta |
 | `4B` · 10 → 16 s | cartas ao acaso (menos o Au e o Cu) crescem e brilham, de meio em meio segundo, duas ou três ao mesmo tempo — numa ordem fixa: o mesmo segundo dá sempre as mesmas |
