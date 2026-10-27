@@ -3149,7 +3149,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v23.4';
+const VERSAO = 'v23.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7621,8 +7621,10 @@ const EV4 = {
     const al = document.createElement('div');
     al.className = 'toque4 alerta4C';
     al.textContent = 'Toque o metal no fio';
-    al.style.left = C.cx + 'px';
-    al.style.top  = (C.cy - 220 * C.esc - 22) + 'px';
+    /* logo acima do cobre nu: o ponto (meio do descascado, 40 acima do fio)
+       da face de 440, levado à mesa pela escala do cubo */
+    al.style.left = (C.cx + ((NU4_X1 + NU4_X2) / 2 - 220) * C.esc).toFixed(1) + 'px';
+    al.style.top  = (C.cy + (FIO4_Y - 40 - 220) * C.esc).toFixed(1) + 'px';
     m.appendChild(al);
     this.alerta4C = al;
     this.preparaEletro();
@@ -7653,7 +7655,8 @@ const EV4 = {
   /* ---- A "4D": A DUCTILIDADE ----
      0 s          a propriedade 3 sai em fade
      4,2 → 6 s    "Metais são dúcteis e maleáveis", digitado
-     7,6 s        apaga tudo: o título, essa frase e o choque da face
+     (o choque da face sai em fade logo no começo)
+     7,6 s        apaga tudo: o título e essa frase
      9 s          "Ductilidade:", no lugar do título; 12,5 → 16 s, embaixo,
                   "É a facilidade de formar fios"
      20 s         na face vazia, um fio elétrico com a ponta desencapada
@@ -7674,8 +7677,8 @@ const EV4 = {
     this.liq4.querySelector('.frase').classList.toggle('fim', t >= D.apaga);
     this.dig4D.escreve(t);
     this.prop4D.querySelectorAll('.frase')[1].classList.toggle('cresce', t >= D.cresce && t < D.volta);
-    /* o choque: vivo até ao apagar; depois a face esvazia, e o fio vem */
-    cb.classList.toggle('apaga4D', t >= D.apaga);
+    /* o choque sai em fade logo no começo da "4D"; e aos 20 s o fio vem */
+    cb.classList.add('apaga4D');
     cb.classList.toggle('fio4D', t >= D.fio);
     /* os dois giros: o primeiro já foi (na "4C"); o segundo, aqui */
     const p = Math.max(0, Math.min(1, (t - D.gira) / D.giraDura));
@@ -7683,7 +7686,7 @@ const EV4 = {
     cb.classList.toggle('virou', p <= 0);
     cb.classList.toggle('virou2', p >= 1);
     cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 - 90 * g).toFixed(2) + 'deg)';
-    if (p <= 0 && t < D.apaga) this.ligaEletro(); else if (this.E4.raf) this.paraEletro();
+    if (this.E4.raf) this.paraEletro();
     FIEIRA4.vivo = p >= 1;
     this.suja4D = true;
   },
