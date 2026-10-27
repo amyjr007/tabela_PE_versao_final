@@ -3010,7 +3010,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v22.8';
+const VERSAO = 'v22.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7198,10 +7198,13 @@ const EV4 = {
      10 → 16 s  cartas ao acaso (menos o Au e o Cu) crescem e brilham,
                 de meio em meio segundo, duas ou três ao mesmo tempo
      16 s       o Cu cresce; 18 s ele volta, e cresce o Au
-     fim + 1 s  o Au volta
+     21 s       cresce também o Cs
+     fim + 1 s  o Au e o Cs voltam
      Devolve o quanto cada carta cresce (z → fator), que a cena4A aplica. */
   B4:{ onda:7, ondaPasso:0.08, ondaDura:0.5, de:10, ate:16, passo:0.5, dura:1.1, cresce:1.5,
-       cu:16, au:18, sobe:0.5, grande:2.2, espera:1000 },
+       /* 'juntos': o Au e o Cs são vizinhos na diagonal da grade; com os
+          dois crescidos a 2,2 um tapava o outro, e a 1,7 cabem lado a lado */
+       cu:16, au:18, cs:21, sobe:0.5, grande:2.2, juntos:1.7, espera:1000 },
   suja4B:false, dig4B:null, prop4B:null, ordem4B:null, fimB:0,
   cena4B(m, t, acabou){
     const B = this.B4, mult = new Map();
@@ -7241,18 +7244,26 @@ const EV4 = {
         mult.set(+c.dataset.z, 1 + (B.cresce - 1) * Math.sin(Math.PI * q));
       }
     }
-    /* o Cu, depois o Au; o Au volta 1 s depois do fim (aí o tempo já não
-       anda: a volta é no relógio de verdade) */
-    const cu = this.carta(m, 29), au = this.carta(m, 79);
+    /* o Cu, depois o Au, e o Cs (o césio, levemente dourado) junto dele;
+       os dois voltam 1 s depois do fim (aí o tempo já não anda: a volta é
+       no relógio de verdade) */
+    const cu = this.carta(m, 29);
     if (t >= B.cu){ mult.set(29, fat(B.cu, B.au)); if (t < B.au + B.sobe) brilham.add(cu); }
+    /* o Au cresce até 'grande'; entrando o Cs, os dois ficam em 'juntos' */
+    const comCs = suave(Math.max(0, Math.min(1, (t - B.cs) / B.sobe)));
+    const dourados = [];
+    if (t >= B.au) dourados.push([79, fat(B.au) - (B.grande - B.juntos) * comCs]);
+    if (t >= B.cs) dourados.push([55, 1 + (B.juntos - 1) * comCs]);
     if (acabou){
       if (!this.fimB) this.fimB = performance.now();
-      const p = Math.max(0, Math.min(1, (performance.now() - this.fimB - B.espera) / (B.sobe * 1000)));
-      mult.set(79, 1 + (B.grande - 1) * (1 - suave(p)));
-      if (p < 1) brilham.add(au);
+      const p = suave(Math.max(0, Math.min(1, (performance.now() - this.fimB - B.espera) / (B.sobe * 1000))));
+      dourados.forEach(([z, f]) => {
+        mult.set(z, f + (1 - f) * p);
+        if (p < 1) brilham.add(this.carta(m, z));
+      });
     } else {
       this.fimB = 0;
-      if (t >= B.au){ mult.set(79, fat(B.au)); brilham.add(au); }
+      dourados.forEach(([z, f]) => { mult.set(z, f); brilham.add(this.carta(m, z)); });
     }
     this.metais4.forEach(c => {
       c.classList.toggle('brilha4B', brilham.has(c));

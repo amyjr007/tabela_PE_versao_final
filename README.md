@@ -242,7 +242,8 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4B` · 10 → 16 s | cartas ao acaso (menos o Au e o Cu) crescem e brilham, de meio em meio segundo, duas ou três ao mesmo tempo — numa ordem fixa: o mesmo segundo dá sempre as mesmas |
 | `4B` · 16 s | o **Cu** cresce, com o halo cor de cobre |
 | `4B` · 18 s | o Cu volta, e cresce o **Au** |
-| fim da `4B` + 1 s | o Au volta |
+| `4B` · 21 s | cresce também o **Cs** (o césio, levemente dourado); vizinhos na diagonal da grade, os dois ficam em 1,7× para caberem lado a lado |
+| fim da `4B` + 1 s | o Au e o Cs voltam |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
 os nomes ganham o tom claro do próprio bloco. Nas fotos do

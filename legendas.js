@@ -250,12 +250,13 @@ var LEGENDAS = {
     [26.38,31.24,"Aliás, parece estranha a expressão metal líquido, mas é isso mesmo."]
   ],
   "audio_tabela_4B": [
-    [0,3.49,"Outra característica facilmente reconhecível dos metais"],
-    [3.49,5.78,"é o que chamamos de brilho metálico."],
-    [5.78,9.12,"Todo metal tem esse brilho bonito e reluzente."],
-    [9.12,11.88,"Geralmente o brilho metálico é prateado,"],
-    [11.88,16.92,"mas também pode aparecer nas cores vermelha, como é o caso do cobre aqui,"],
-    [16.92,19.94,"ou dourada, como é o caso do ouro."]
+    [0,3.55,"Outra característica facilmente reconhecível dos metais"],
+    [3.55,5.88,"é o que chamamos de brilho metálico."],
+    [5.88,9.34,"Todo metal tem esse brilho bonito e reluzente."],
+    [9.34,12.17,"Geralmente, o brilho metálico é prateado,"],
+    [12.17,17.18,"mas também pode aparecer nas cores vermelha, como é o caso do cobre aqui,"],
+    [17.18,20.06,"ou dourada, como é o caso do ouro aqui"],
+    [20.06,22.96,"e do césio, que é levemente dourado."]
   ],
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]
