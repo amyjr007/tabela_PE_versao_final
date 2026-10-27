@@ -939,15 +939,35 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
 /* a grade inteira de metal: o brilho passa uma vez só (64 a correr sem
    parar pesariam no celular) */
 .mat.quieto .brilho{animation-iteration-count:1}
-/* o Hg que virou poça: o card some (e volta na "4B", com a transição dele) */
-.mesa.tipos .pc.anda4.some4{opacity:0}
-/* A POÇA DE MERCÚRIO (POCA4): segue o Hg pelo relógio (a transição curta
-   alisa), e na "4B" volta para a vaga dele, a encolher e a esmaecer */
+/* O HG QUE VIRA POÇA (--morf, de 0 a 1, escrito pelo relógio): o card
+   arredonda até ser uma gota, a letra dele apaga e ele esmaece, enquanto
+   a poça nasce por cima. Registrada, a --morf também transiciona: na "4B"
+   (volta4) o card refaz-se aos poucos */
+@property --morf{syntax:'<number>';inherits:true;initial-value:0}
+/* (a opacidade do card vai no estilo dele, escrita com o --morf: a regra
+   dos metais acesos, mais forte, ganharia de uma regra daqui) */
+.pc.hg4 .face{border-radius:calc(var(--morf) * 50%)}
+.pc.hg4 .face :is(i,b,u,em){opacity:calc(1 - var(--morf) * 1.8)}
+.mesa.tipos .pc.anda4.hg4:not(.volta4){transition:left 90ms linear, top 90ms linear, transform 90ms linear,
+  opacity 90ms linear, --morf 90ms linear}
+.mesa.tipos .pc.anda4.hg4.volta4{transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1),
+  transform .9s cubic-bezier(.4,0,.2,1), opacity .9s ease, --morf .9s ease}
+/* A POÇA DE MERCÚRIO (POCA4): segue o Hg pelo relógio, com a opacidade do
+   --morf (a transição curta alisa), e na "4B" volta para a vaga dele, a
+   encolher e a esmaecer */
 .poca4{position:absolute;left:0;top:0;width:340px;height:180px;z-index:41;
   opacity:0;pointer-events:none;touch-action:none;
   transform:translate(-50%,-50%) scale(var(--s,1));
-  transition:left 90ms linear, top 90ms linear, transform 90ms linear, opacity .45s ease}
-.poca4.on{opacity:1;pointer-events:auto;cursor:grab}
+  transition:left 90ms linear, top 90ms linear, transform 90ms linear, opacity 90ms linear}
+.poca4.on{pointer-events:auto;cursor:grab}
+/* "Toque no metal": o alerta, amarelo e a piscar, acima da poça */
+.toque4{position:absolute;z-index:42;pointer-events:none;white-space:nowrap;
+  transform:translate(-50%,-50%);font-family:var(--display);font-weight:700;font-size:26px;
+  letter-spacing:.02em;color:#FFD43B;opacity:0;transition:opacity .4s ease;
+  text-shadow:0 0 12px rgba(255,212,59,.65), 0 2px 4px rgba(0,0,0,.6)}
+.toque4.on{animation:alerta4 .9s ease-in-out infinite}
+@keyframes alerta4{0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  50%{opacity:.25;transform:translate(-50%,-50%) scale(.96)}}
 .poca4.on:active{cursor:grabbing}
 .poca4.volta{opacity:0;transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1),
   transform .9s cubic-bezier(.4,0,.2,1), opacity .6s ease .3s}
@@ -3023,7 +3043,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v23.1';
+const VERSAO = 'v23.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5018,9 +5038,8 @@ const SEQ = {
     else if (id === '3.6') QUIZ4.coordsComeca();
     /* o fim da "3.7": as questões 08 a 10 */
     else if (id === '3.7') QUIZ4.eixosComeca();
-    /* o fim da "4A": o "Saquei", que leva à "4B"; e a mão mostra que o
-       mercúrio se pode mexer */
-    else if (id === '4A'){ EV4.saquei4(true); if (atual === 4) POCA4.mostra(); }
+    /* o fim da "4A": o "Saquei", que leva à "4B" */
+    else if (id === '4A') EV4.saquei4(true);
   },
   /* o quiz de cada trilha abre uma vez só */
   abreQuiz(id){
@@ -7068,12 +7087,8 @@ const EV4 = {
           assim sobram ~8 px entre elas, e a grade ainda cabe nas sete alturas */
        /* o Hg crescido fica debaixo das propriedades (textoX, textoY: o
           começo delas, no alto do lado direito) */
-       cols:8, passo:58, esc:0.76, hgX:866, hgY:410, escHg:3, textoX:600, textoY:174,
-       /* a poça no tamanho final: o desenho tem 340 × 180, mas o mercúrio
-          ocupa só o terço do meio — a 1,6 ele fica do tamanho do card que
-          ele substitui */
-       escPoca:1.6 },
-  metais4:null, suja4A:false, dig4A:null, liq4:null, tit4A:null,
+       cols:8, passo:58, esc:0.76, hgX:866, hgY:410, escHg:3, textoX:600, textoY:174 },
+  metais4:null, suja4A:false, dig4A:null, liq4:null, tit4A:null, toque4:null,
   /* a vaga k da grade, na mesa */
   vaga4(k){
     const A = this.A4, meia = LADO * A.esc / 2;
@@ -7103,8 +7118,16 @@ const EV4 = {
         x = entre(x, A.hgX, f); y = entre(y, A.hgY, f); esc = entre(esc, A.escHg, f);
         c.classList.toggle('hg4', f > 0 || !!emB);
         c.classList.toggle('volta4', !!emB);
-        c.classList.toggle('some4', !emB && bruto >= .5);
-        this.pocaSegue(m, x, y, bruto, emB, vaga);
+        /* A TRANSFORMAÇÃO, contínua: de 30% a 90% do salto o card arredonda,
+           a letra dele apaga e ele esmaece, enquanto a poça nasce no mesmo
+           lugar e do mesmo tamanho — os dois cruzam-se (--morf, de 0 a 1) */
+        const morf = emB ? 0 : suave(Math.max(0, Math.min(1, (bruto - .3) / .6)));
+        c.style.setProperty('--morf', morf.toFixed(3));
+        c.style.opacity = (1 - morf).toFixed(3);
+        this.pocaSegue(m, x, y, morf, emB, vaga, esc);
+        /* "Toque no metal", quando ele já é líquido, até ao primeiro toque */
+        this.prepara4A(m);
+        this.toque4.classList.toggle('on', !emB && morf >= 1 && !POCA4.tocou);
       }
       /* o que a "4B" faz crescer */
       const mult = this.mult4 && this.mult4.get(+c.dataset.z);
@@ -7141,20 +7164,21 @@ const EV4 = {
     fr[2].classList.toggle('fim', !!emB);
     this.suja4A = true;
   },
-  /* A POÇA SEGUE O HG: aparece a meio do salto (bruto 0,4), no mesmo
-     lugar do card, e cresce com ele; as gotas nascem juntas no meio e
-     espalham-se até ao descanso. Na "4B", o inverso: encolhe e esmaece a
-     caminho da vaga do Hg, enquanto o card volta a aparecer. */
-  pocaSegue(m, x, y, bruto, emB, vaga){
-    const el = POCA4.cria(m);
+  /* A POÇA SEGUE O HG: no mesmo lugar do card e do tamanho dele (o corpo
+     do mercúrio, com as gotas juntas, tem ~110 do desenho de largura: a
+     escala é a do card × 62/110), e a opacidade é a do morf; as gotas
+     começam juntas no meio e espalham-se com ele. Na "4B", o inverso: ela
+     encolhe e esmaece a caminho da vaga do Hg, e o card volta a aparecer. */
+  pocaSegue(m, x, y, morf, emB, vaga, esc){
+    const el = POCA4.cria(m), cabe = LADO / 110;
     if (emB){
       if (el.classList.contains('on')){
-        POCA4.paraMao();
         el.classList.remove('on');
         el.classList.add('volta');
+        el.style.opacity = '0';
         el.style.left = vaga.x.toFixed(1) + 'px';
         el.style.top  = vaga.y.toFixed(1) + 'px';
-        el.style.setProperty('--s', '.12');
+        el.style.setProperty('--s', (this.A4.esc * cabe).toFixed(3));
         POCA4.espalha = .25;
         clearTimeout(this.pocaT);
         this.pocaT = setTimeout(() => { if (!el.classList.contains('on')) POCA4.desliga(); }, 1100);
@@ -7162,16 +7186,25 @@ const EV4 = {
       return;
     }
     el.classList.remove('volta');
-    const on = bruto >= .4;
+    const on = morf > 0;
     el.classList.toggle('on', on);
     if (on) POCA4.liga(); else POCA4.desliga();
-    POCA4.espalha = Math.max(.25, Math.min(1, (bruto - .4) / .6));
+    POCA4.espalha = .25 + .75 * morf;
+    el.style.opacity = morf.toFixed(3);
     el.style.left = x.toFixed(1) + 'px';
     el.style.top  = y.toFixed(1) + 'px';
-    el.style.setProperty('--s', (.25 + (this.A4.escPoca - .25) * bruto).toFixed(3));
+    el.style.setProperty('--s', (esc * cabe).toFixed(3));
   },
   prepara4A(m){
     if (this.dig4A) return;
+    /* "Toque no metal", acima da poça */
+    const tq = document.createElement('div');
+    tq.className = 'toque4';
+    tq.textContent = 'Toque no metal';
+    tq.style.left = this.A4.hgX + 'px';
+    tq.style.top  = (this.A4.hgY - 96) + 'px';
+    m.appendChild(tq);
+    this.toque4 = tq;
     const cx = document.createElement('div');
     cx.className = 'liq4';
     cx.setAttribute('aria-live', 'polite');
@@ -7210,9 +7243,13 @@ const EV4 = {
   /* fora da "4A" (outra trilha, ou o slide recomeçado): tudo volta */
   desfaz4A(m){
     m.classList.remove('arruma4');
-    if (POCA4.el){ POCA4.el.classList.remove('on', 'volta'); POCA4.desliga(); }
+    if (POCA4.el){ POCA4.el.classList.remove('on', 'volta'); POCA4.el.style.opacity = '0'; POCA4.desliga(); }
+    POCA4.tocou = false;
+    if (this.toque4) this.toque4.classList.remove('on');
     (this.metais4 || []).forEach(c => {
-      c.classList.remove('anda4', 'no-ar4', 'hg4', 'volta4', 'some4');
+      c.classList.remove('anda4', 'no-ar4', 'hg4', 'volta4');
+      c.style.removeProperty('--morf');
+      c.style.removeProperty('opacity');
       const casa = alvoDe(+c.dataset.z);
       c.style.left = casa.x.toFixed(1) + 'px';
       c.style.top  = casa.y.toFixed(1) + 'px';
@@ -7477,8 +7514,8 @@ const POCA4 = {
     el.addEventListener('pointerdown', ev => {
       if (!el.classList.contains('on')) return;
       ev.preventDefault(); ev.stopPropagation();
-      /* o aluno pôs o dedo: a mão da demonstração sai */
-      this.paraMao();
+      /* o aluno tocou: o convite sai */
+      this.tocou = true;
       try { el.setPointerCapture(ev.pointerId); } catch (_) {}
       this.dedo = ponto(ev);
     });
@@ -7528,68 +7565,9 @@ const POCA4 = {
     this.raf = requestAnimationFrame(() => this.quadro());
   },
   liga(){ if (!this.raf) this.quadro(); },
-  desliga(){ cancelAnimationFrame(this.raf); this.raf = 0; this.dedo = null; this.paraMao(); },
-
-  /* A MÃO QUE MOSTRA (no fim da "4A"): a mãozinha da capa chega à poça,
-     encosta à esquerda e passa o dedo por ela até à direita — as gotas
-     abrem-se como com o dedo do aluno, porque é o mesmo dedo (this.dedo)
-     —, sai, e as molas juntam o mercúrio outra vez. A narração já acabou
-     e o tempo dela não anda: o relógio aqui é o de verdade. */
-  maoT:[], maoRaf:0, mostrando:false,
-  /* um ponto do desenho, na tela */
-  naTela(x, y){
-    const svg = this.el.querySelector('svg'), p = svg.createSVGPoint();
-    p.x = x; p.y = y;
-    const q = p.matrixTransform(svg.getScreenCTM());
-    return { x:q.x, y:q.y };
-  },
-  /* a ponta do dedo da mão fica a (22, 7) do canto dela */
-  poeMao(x, y){
-    const q = this.naTela(x, y);
-    mao.style.left = (q.x - 22).toFixed(1) + 'px';
-    mao.style.top  = (q.y - 7).toFixed(1) + 'px';
-  },
-  mostra(){
-    if (!this.el || !this.el.classList.contains('on') || this.dedo) return;
-    this.paraMao();
-    this.mostrando = true;
-    const passo = (ms, fn) => this.maoT.push(setTimeout(() => { if (this.mostrando) fn(); }, ms));
-    /* aparece embaixo, à esquerda, e desliza até à beira da poça */
-    mao.style.transition = 'none';
-    mao.hidden = false;
-    this.poeMao(40, 160);
-    void mao.offsetWidth;
-    mao.style.transition = '';
-    mao.classList.add('on');
-    passo(80, () => this.poeMao(70, POCA_CY));
-    /* encosta, e arrasta de um lado ao outro */
-    passo(800, () => {
-      bateMao();
-      mao.style.transition = 'opacity .3s ease';
-      const de = performance.now(), dura = 1400;
-      const anda = () => {
-        if (!this.mostrando) return;
-        const p = Math.min(1, (performance.now() - de) / dura);
-        const e = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
-        const x = 70 + 200 * e, y = POCA_CY + Math.sin(p * Math.PI) * 6;
-        this.dedo = { x, y };
-        this.poeMao(x, y);
-        if (p < 1) this.maoRaf = requestAnimationFrame(anda);
-        else passo(250, () => this.paraMao());
-      };
-      anda();
-    });
-  },
-  /* larga: a mão sai, e as molas juntam a poça */
-  paraMao(){
-    this.maoT.forEach(clearTimeout); this.maoT = [];
-    cancelAnimationFrame(this.maoRaf);
-    if (!this.mostrando) return;
-    this.mostrando = false;
-    this.dedo = null;
-    mao.style.transition = '';
-    tiraMao();
-  }
+  desliga(){ cancelAnimationFrame(this.raf); this.raf = 0; this.dedo = null; },
+  /* o aluno já tocou no metal: o "Toque no metal" não volta */
+  tocou:false
 };
 
 /* o quanto uma cor (#rrggbb) é clara, de 0 a 1 */
