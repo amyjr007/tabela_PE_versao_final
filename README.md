@@ -226,7 +226,8 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4` · 30 s | apaga tudo; 32,5 s o **H** acende, com o brilho verde |
 | `4` · 40 s | tudo volta (em fade), e o toque numa classe — numa carta dela ou no nome, que passa a chamar — a escolhe: a classe acende, toca o `right`, e os **metais** tocam a **`4A`** (`Audios/audio_tabela_4A.mp3`); as outras, por enquanto, avisam que a narração ainda vai ser gravada. O H só dá a volta dele. Acabada a `4`, o play sai |
 | `4A` · 0 → 4 s | os metais acesos, o resto apagado |
-| `4A` · 4 → 14 s | os outros somem de todo (com os números dos eixos, as casas das séries e os textos), e os 64 metais saltam um a um, em arco e por número atômico, até uma grade de 8 × 8 do lado esquerdo, um pouco menores (86%) para caberem nas sete alturas da tabela |
+| `4A` · 4 → 14 s | os outros somem de todo (com os números dos eixos, as casas das séries e os textos), e os 64 metais saltam um a um, em arco e por número atômico, até uma grade de 8 × 8 do lado esquerdo, menores (76%), com um respiro de ~8 px entre eles, para caberem nas sete alturas da tabela |
+| `4A` · 14 s | o último pousa, e "Metais" aparece acima da grade, em letras de metal cromado: entra de um desfoque, um reflexo corre por elas e uma faísca pisca no fim |
 | `4A` · 20 s | ficam sólidos — o metal escovado, numa onda pela grade (o ouro, o cobre e o césio na cor deles) —, e o **Hg** fica líquido |
 | `4A` · 23 s | o Hg vai para o vazio da direita e cresce 3× |
 | `4A` · 29 s | "Metal líquido", digitado debaixo dele |
