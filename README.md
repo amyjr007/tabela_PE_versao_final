@@ -249,14 +249,14 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4C` · 9,5 s | no lado direito, numa face de cubo, a **panela** de aço inox com cabo de madeira: as faixas de reflexo, o escovado, o fundo em anéis, o lábio, o veio da madeira, a virola e os rebites, e um brilho que passa |
 | `4C` · 12,9 s | a narração pára 1 s, e continua |
 | `4C` · 14,5 s | a panela vira como a face de um cubo (um quarto de volta), e a face nova é a do **choque** (a face 3 do slide 4 do app do professor): o cabo com o cobre nu — sete pernas de cobre trançado, com as pontas à vista nas bocas da capa — e a barra de aço que o dedo arrasta; encostada no cobre, o arco estala, as fagulhas saltam, o clarão azul e o cubo sacode. Virada, a face fica plana (no 3D o toque atravessava) |
-| fim da `4C` | "Toque o metal no fio", a piscar em amarelo logo acima do cobre nu, até ao curto; feito o curto, o **Saquei** (espoca), que leva à **`4D`** (`Audios/audio_tabela_4D.mp3`) |
-| `4D` · 0 s | a propriedade 3 sai em fade, e a interação do choque também (a face fica vazia) |
+| fim da `4C` | "Toque o metal no fio", a piscar em amarelo logo acima do cobre nu, até ao curto (na montagem é peça, `aviso-toque-o-metal-no-fio`, e texto editável); feito o curto, o **Saquei** (espoca), que leva à **`4D`** (`Audios/audio_tabela_4D.mp3`) |
+| `4D` · 0 s | a propriedade 3 sai em fade, e o cubo inteiro também (a interação do choque e o quadro) |
 | `4D` · 4,2 → 6 s | "Metais são dúcteis e maleáveis", digitado |
 | `4D` · 7,6 s | apaga tudo: o título "Propriedades dos metais" e essa frase (a grade, o "Metais" e o cubo ficam) |
 | `4D` · 9 s | "Ductilidade:", no lugar do título; 12,5 → 16 s, embaixo, "É a facilidade de formar fios" |
-| `4D` · 20 s | na face vazia, em fade, um fio elétrico com a ponta desencapada (as pernas de cobre abertas) |
+| `4D` · 20 s | o cubo volta, em fade, com um fio elétrico de ponta desencapada (as pernas de cobre abertas) |
 | `4D` · 29 → 31 s | "Ductilidade:" cresce, e volta |
-| `4D` · 31,5 s | o cubo vira outra vez, e a face nova é a **fieira**, em corte: a barra de cobre à esquerda, o cone da fieira, e a ponta do fio com uma garra à direita. O dedo puxa a garra (só para a direita: o fio não volta para dentro) e o fio estica; **a barra recua só o que o volume manda** — com diâmetros 44 e 7, a razão das áreas é (7/44)² ≈ 2,5%: puxar 6,8 cm de fio encurta a barra 0,17 cm (`FIEIRA4`). Embaixo, a conta: "Fio puxado: … cm · a barra encurtou … cm" |
+| `4D` · 31,5 s | o cubo vira outra vez, e a face nova é a **fieira**, em corte: a barra de cobre à esquerda, o cone da fieira, e a ponta do fio com uma garra à direita. O dedo puxa a garra (só para a direita: o fio não volta para dentro) e o fio estica; **a barra recua só o que o volume manda** — com diâmetros 44 e 7, a razão das áreas é (7/44)² ≈ 2,5%: puxar 6,3 cm de fio encurta a barra 0,16 cm (`FIEIRA4`). A fieira é grande: um bloco de 90 × 200 na face de 440, com o cone comprido. Embaixo, a conta: "Fio puxado: … cm · a barra encurtou … cm" |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
 os nomes ganham o tom claro do próprio bloco. Nas fotos do

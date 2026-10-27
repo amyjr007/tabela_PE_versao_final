@@ -965,9 +965,12 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
   transform:translate(-50%,-50%);font-family:var(--display);font-weight:700;font-size:26px;
   letter-spacing:.02em;color:#FFD43B;opacity:0;transition:opacity .4s ease;
   text-shadow:0 0 12px rgba(255,212,59,.65), 0 2px 4px rgba(0,0,0,.6)}
+/* o piscar mexe na opacidade e no 'scale', e não no transform: solto na
+   montagem, o transform é o do lugar e da escala que ela lhe deu */
 .toque4.on{animation:alerta4 .9s ease-in-out infinite}
-@keyframes alerta4{0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}
-  50%{opacity:.25;transform:translate(-50%,-50%) scale(.96)}}
+@keyframes alerta4{0%,100%{opacity:1;scale:1} 50%{opacity:.25;scale:.96}}
+/* na montagem, o aviso do fio fica à vista para ser pego e editado */
+body.montagem .alerta4C{opacity:1!important;animation:none!important;pointer-events:auto}
 .poca4.on:active{cursor:grabbing}
 .poca4.volta{opacity:0;transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1),
   transform .9s cubic-bezier(.4,0,.2,1), opacity .6s ease .3s}
@@ -3149,7 +3152,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v23.5';
+const VERSAO = 'v23.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7620,6 +7623,7 @@ const EV4 = {
     this.cubo4C = cb;
     const al = document.createElement('div');
     al.className = 'toque4 alerta4C';
+    al.dataset.mont = 'aviso-toque-o-metal-no-fio';   /* peça da montagem (G), e texto editável */
     al.textContent = 'Toque o metal no fio';
     /* logo acima do cobre nu: o ponto (meio do descascado, 40 acima do fio)
        da face de 440, levado à mesa pela escala do cubo */
@@ -7655,11 +7659,12 @@ const EV4 = {
   /* ---- A "4D": A DUCTILIDADE ----
      0 s          a propriedade 3 sai em fade
      4,2 → 6 s    "Metais são dúcteis e maleáveis", digitado
-     (o choque da face sai em fade logo no começo)
+     (o cubo inteiro, com o choque e o quadro, sai em fade logo no começo)
      7,6 s        apaga tudo: o título e essa frase
      9 s          "Ductilidade:", no lugar do título; 12,5 → 16 s, embaixo,
                   "É a facilidade de formar fios"
-     20 s         na face vazia, um fio elétrico com a ponta desencapada
+     20 s         o cubo volta, e na face vazia um fio elétrico com a ponta
+                  desencapada
      29 → 31 s    "Ductilidade:" cresce, e volta
      31,5 s       o cubo vira outra vez, e a face nova é a FIEIRA: a barra
                   de cobre à esquerda, a fieira no meio e a ponta do fio à
@@ -7671,7 +7676,9 @@ const EV4 = {
   cena4D(m, t, acabou){
     const D = this.D4, cb = this.cubo4C;
     this.prepara4D(m);
-    cb.classList.add('on');
+    /* o cubo inteiro (a face e o quadro) sai em fade no começo, e volta
+       aos 20 s com o fio desencapado */
+    cb.classList.toggle('on', t >= D.fio);
     /* a propriedade 3 sai; aos 7,6 s, o título também */
     this.prop4C.classList.add('fim');
     this.liq4.querySelector('.frase').classList.toggle('fim', t >= D.apaga);
@@ -8239,10 +8246,12 @@ function fioDescascadoSVG(){
    a barra uns 0,17 cm. Encurtar 1:1 faria o metal desaparecer. */
 /* (pontaMax: a garra, com o anel, cabe inteira na face; a fieira mais à
    esquerda deixa ~6,8 cm de fio para puxar) */
-const FR4 = { cy:200, R:22, r:3.5, entra:122, sai:150, barra0:20, ponta0:176, pontaMax:380, pxCm:30 };
+/* a fieira grande: o bloco com 90 de largura e 200 de altura, e o cone
+   comprido (de 'entra' a 'sai') */
+const FR4 = { cy:190, R:22, r:3.5, entra:104, sai:166, barra0:14, ponta0:192, pontaMax:380, pxCm:30, H:100 };
 function fieiraSVG(){
-  const F = FR4, cy = F.cy, e = F.entra, s = F.sai, b0 = e - 8, b1 = s + 14;
-  const bloco = sinal => b0 + ',' + (cy + sinal*72) + ' ' + b1 + ',' + (cy + sinal*72) + ' ' + b1 + ',' + (cy + sinal*6) + ' ' +
+  const F = FR4, cy = F.cy, e = F.entra, s = F.sai, b0 = e - 10, b1 = s + 18;
+  const bloco = sinal => b0 + ',' + (cy + sinal*F.H) + ' ' + b1 + ',' + (cy + sinal*F.H) + ' ' + b1 + ',' + (cy + sinal*6) + ' ' +
                          s + ',' + (cy + sinal*4.6) + ' ' + (e - 2) + ',' + (cy + sinal*24) + ' ' + b0 + ',' + (cy + sinal*24);
   return '<svg viewBox="0 0 440 440" aria-label="Fieira: puxe o fio" role="img">' +
     '<defs>' +
@@ -8258,7 +8267,7 @@ function fieiraSVG(){
         '<rect width="1.2" height="7" fill="#1E242B" fill-opacity=".35"/></pattern>' +
       '<filter id="fr4-borra"><feGaussianBlur stdDeviation="6"/></filter>' +
     '</defs>' +
-    '<ellipse cx="220" cy="' + (cy + 88) + '" rx="190" ry="9" fill="#000" opacity=".4" filter="url(#fr4-borra)"/>' +
+    '<ellipse cx="220" cy="' + (cy + F.H + 16) + '" rx="190" ry="9" fill="#000" opacity=".4" filter="url(#fr4-borra)"/>' +
     /* a barra e o cone dentro da fieira */
     '<rect class="fr-barra" x="' + F.barra0 + '" y="' + (cy - F.R) + '" width="' + (F.entra - F.barra0) + '" height="' + 2*F.R + '" fill="url(#fr4-cobre)"/>' +
     '<ellipse class="fr-topo" cx="' + F.barra0 + '" cy="' + cy + '" rx="7" ry="' + F.R + '" fill="url(#fr4-topo)"/>' +
@@ -8271,10 +8280,12 @@ function fieiraSVG(){
       '<polygon points="' + bloco(1) + '" fill="url(#fr4-aco)"/>' +
       '<polygon points="' + bloco(-1) + '" fill="url(#fr4-corte)"/>' +
       '<polygon points="' + bloco(1) + '" fill="url(#fr4-corte)"/>' +
-      '<path d="M' + b0 + ',' + (cy - 72) + ' H' + b1 + ' M' + b0 + ',' + (cy + 72) + ' H' + b1 + '" stroke="#E9EEF3" stroke-opacity=".6" stroke-width="1.2"/>' +
-      '<rect x="' + (b0 - 14) + '" y="' + (cy + 72) + '" width="' + (b1 - b0 + 28) + '" height="12" rx="3" fill="#3A424B"/>' +
+      '<path d="M' + b0 + ',' + (cy - F.H) + ' H' + b1 + ' M' + b0 + ',' + (cy + F.H) + ' H' + b1 + '" stroke="#E9EEF3" stroke-opacity=".6" stroke-width="1.2"/>' +
+      /* a quina da esquerda, só no aço (não atravessa a barra) */
+      '<path d="M' + b0 + ',' + (cy - F.H) + ' V' + (cy - 24) + ' M' + b0 + ',' + (cy + 24) + ' V' + (cy + F.H) + '" stroke="#E9EEF3" stroke-opacity=".35" stroke-width="1"/>' +
+      '<rect x="' + (b0 - 16) + '" y="' + (cy + F.H) + '" width="' + (b1 - b0 + 32) + '" height="14" rx="3" fill="#3A424B"/>' +
     '</g>' +
-    '<text x="' + ((b0 + b1) / 2) + '" y="' + (cy + 104) + '" text-anchor="middle" class="fr-nome">fieira</text>' +
+    '<text x="' + ((b0 + b1) / 2) + '" y="' + (cy + F.H + 34) + '" text-anchor="middle" class="fr-nome">fieira</text>' +
     /* a garra na ponta do fio, por onde o dedo puxa */
     '<g class="fr-garra" transform="translate(' + F.ponta0 + ' ' + cy + ')">' +
       '<circle class="fr-chama" r="30" fill="none" stroke="#FFD43B" stroke-width="2.5"/>' +
@@ -8282,7 +8293,7 @@ function fieiraSVG(){
       '<path d="M2,-11 V11 M8,-11 V11 M14,-11 V11" stroke="#2A3138" stroke-opacity=".55" stroke-width="1.4"/>' +
       '<circle cx="36" cy="0" r="12" fill="none" stroke="url(#fr4-aco)" stroke-width="6"/>' +
     '</g>' +
-    '<text x="220" y="' + (cy + 150) + '" text-anchor="middle" class="fr-conta"></text>' +
+    '<text x="220" y="' + (cy + F.H + 70) + '" text-anchor="middle" class="fr-conta"></text>' +
   '</svg>';
 }
 const FIEIRA4 = {
@@ -11941,7 +11952,7 @@ function mostraCoord(el){
 const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle, .quiz3.q4 .q3-q,' +
                ' .dica-escolha .txt, .toque-continuar, .rotulo-el .txt, .veu-frases .frase .txt,' +
                ' .texto-colunas .frase .txt, .veu-moseley figcaption b, .dica-final, .entendi3, .coords-el,' +
-               ' .conta-lc25 .txt';
+               ' .conta-lc25 .txt, .alerta4C';
 const EDICAO = {
   el:null, ultimo:null, tUlt:0, editados:new Set(),
   /* o bloco de linhas a que um texto pertence, dentro da peça */
