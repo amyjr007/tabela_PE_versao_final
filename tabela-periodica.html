@@ -878,24 +878,35 @@ html.palco-alto  .breu4{box-shadow:0 0 0 var(--folgav) rgba(12,10,32,.84)}
 .mesa.tipos[data-luz="ametais"] .pc[data-tipo="ametais"],
 .mesa.tipos[data-luz="nobres"]  .pc[data-tipo="nobres"],
 .mesa.tipos[data-luz="h"]       .pc[data-z="1"]{opacity:1}
-/* "São 3 classes de elementos:" e as três, cada uma na cor do bloco dela,
-   num quadro claro no vazio acima dos metais de transição (o lugar vem de
-   EV4.prepara, e anda com a mesa) */
-.classes4{position:absolute;z-index:25;pointer-events:none;
-  padding:12px 22px 14px;border-radius:18px;background:rgba(255,255,255,.95);
-  border:1px solid var(--indigo-dim);box-shadow:0 16px 40px rgba(32,28,66,.18);
-  opacity:0;transition:opacity .4s ease}
-.classes4:has(.frase.on){opacity:1}
-.classes4 .frase{display:none;margin:0;font-family:var(--display);font-weight:700;
-  font-size:27px;line-height:1.28;transition:opacity .5s ease}
+/* "São 3 classes de elementos:" solto, em cima, só o texto; e cada classe
+   escrita acima do bloco dela, na cor dele: "Metais" acima dos de
+   transição, "Ametais | Não Metais" acima dos ametais, "Gases Nobres"
+   acima da coluna 18. Os lugares vêm de EV4.posiciona (medidos, para a
+   escrita crescer da esquerda sem saltar), na mesa: andam com ela */
+.classes4{position:absolute;inset:0;z-index:25;pointer-events:none}
+.classes4 .frase,.classes4 .mede4{position:absolute;margin:0;white-space:nowrap;
+  font-family:var(--display);font-weight:700;font-size:27px;line-height:1}
+.classes4 .frase{display:none;transform:translateY(-50%);transition:opacity .5s ease, color .7s ease}
 .classes4 .frase.on{display:block}
-.classes4 .frase:first-child{font-weight:600;font-size:29px;color:var(--indigo);margin-bottom:2px}
-/* "Ametais" e, do lado, "Não Metais" — na mesma linha, com um fio entre eles */
-.classes4 .frase:nth-child(3).on,.classes4 .frase:nth-child(4).on{display:inline-block}
-.classes4 .frase:nth-child(4){margin-left:14px;padding-left:14px;border-left:2px solid rgba(46,148,80,.35)}
+.classes4 .mede4{visibility:hidden}
+.classes4 .frase:first-child,.classes4 .mede4.titulo{font-weight:600;font-size:30px}
+.classes4 .frase:first-child{color:var(--indigo)}
+/* no celular a mesa sobe e o botão do carrossel fica logo acima das
+   colunas 17 e 18: "Gases Nobres" vai em duas linhas, menor, na folga
+   à direita dele */
+html.celular .classes4 .nobres4{font-size:21px;line-height:1.08}
+html.celular .classes4 .frase.nobres4{white-space:normal}
+/* "Não Metais", do lado de "Ametais", com um fio entre eles */
+.classes4 .frase:nth-child(4){padding-left:14px;border-left:2px solid currentColor;border-left-color:color-mix(in srgb,currentColor 40%,transparent)}
 .classes4 .frase[data-classe="metais"] {color:var(--cat-transicao)}
 .classes4 .frase[data-classe="ametais"]{color:var(--cat-ametais)}
 .classes4 .frase[data-classe="nobres"] {color:var(--cat-nobres)}
+/* com a sala escura, o título vira claro, e os nomes ganham o tom claro do
+   próprio bloco (o da carta acesa), senão sumiam no escuro */
+.mesa.tipos:not([data-luz=""])[data-luz] .classes4 .frase:first-child{color:#F4F2F8}
+.mesa.tipos:not([data-luz=""])[data-luz] .classes4 .frase[data-classe="metais"] {color:color-mix(in srgb,var(--cat-transicao) 72%,#fff)}
+.mesa.tipos:not([data-luz=""])[data-luz] .classes4 .frase[data-classe="ametais"]{color:color-mix(in srgb,var(--cat-ametais) 72%,#fff)}
+.mesa.tipos:not([data-luz=""])[data-luz] .classes4 .frase[data-classe="nobres"] {color:color-mix(in srgb,var(--cat-nobres) 66%,#fff)}
 .classes4 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;
   vertical-align:-.1em;background:var(--ouro)}
 .classes4 .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
@@ -2922,7 +2933,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v22.3';
+const VERSAO = 'v22.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6745,11 +6756,6 @@ const EV4 = {
     const cx = document.createElement('div');
     cx.className = 'classes4';
     cx.setAttribute('aria-live', 'polite');
-    /* no vazio acima dos metais de transição: das colunas 3 a 12, das
-       linhas 1 a 3 */
-    cx.style.left  = (xDaColuna(3) - LADO/2 + 6) + 'px';
-    cx.style.top   = (yDaLinha(1) - LADO/2 + 2) + 'px';
-    cx.style.width = (xDaColuna(12) - xDaColuna(3) + LADO - 12) + 'px';
     m.appendChild(cx);
     this.dig = criaDigitacao(cx, FRASES_4);
     ['', 'metais', 'ametais', 'ametais', 'nobres'].forEach((k, i) => { if (k) cx.children[i].dataset.classe = k; });
@@ -6758,6 +6764,54 @@ const EV4 = {
       if (f) this.escolhe(f.dataset.classe);
     });
     this.caixa = cx;
+    this.posiciona();
+    /* a medida depende da fonte: chegada ela, mede-se outra vez */
+    if (document.fonts) document.fonts.ready.then(() => this.posiciona());
+  },
+  /* O LUGAR DE CADA FRASE, na mesa. Cada uma começa à esquerda, no ponto
+     medido para o texto inteiro ficar onde deve (centrado acima do bloco,
+     ou encostado à direita da tabela): assim a escrita cresce para a
+     direita e nada salta quando a última letra chega */
+  posiciona(){
+    const cx = this.caixa, f = [...cx.querySelectorAll('.frase')];
+    const mede = (txt, classe) => {
+      const s = document.createElement('span');
+      s.className = 'mede4' + (classe ? ' ' + classe : '');
+      s.textContent = txt;
+      cx.appendChild(s);
+      const w = s.offsetWidth;
+      s.remove();
+      return w;
+    };
+    const poe = (el, x, y) => { el.style.left = x.toFixed(1) + 'px'; el.style.top = y.toFixed(1) + 'px'; };
+    const meio = (a, b) => (xDaColuna(a) + xDaColuna(b)) / 2;
+    /* o título, em cima, no vazio acima dos metais de transição (linha 1,
+       a partir da coluna 3) */
+    poe(f[0], xDaColuna(3) - LADO/2, yDaLinha(1));
+    /* "Metais", centrado acima dos de transição (no vazio da linha 3) */
+    poe(f[1], meio(3, 12) - mede(FRASES_4[1].txt) / 2, yDaLinha(3));
+    /* "Ametais | Não Metais", o par centrado acima dos ametais (linha 1,
+       colunas 13 a 17); o fio e o respiro do lado são 30 px */
+    const wa = mede(FRASES_4[2].txt), wn = mede(FRASES_4[3].txt);
+    const xa = meio(13, 17) - (wa + 30 + wn) / 2;
+    poe(f[2], xa, yDaLinha(1));
+    poe(f[3], xa + wa + 14, yDaLinha(1));
+    /* "Gases Nobres", acima da coluna 18 (o hélio já ocupa a linha 1):
+       acima dos números dos grupos, encostado à direita da tabela; no
+       celular, em duas linhas (a largura é a de "Nobres") */
+    const dir = xDaColuna(18) + LADO/2;
+    f[4].classList.add('nobres4');
+    if (document.documentElement.classList.contains('celular')){
+      /* o texto acaba na borda da tabela, à direita do botão; os 14 px a
+         mais, para o tracinho da digitação caber na linha de "Nobres",
+         sobram para fora da borda */
+      const w = mede('Nobres', 'nobres4');
+      f[4].style.width = (w + 14) + 'px';
+      poe(f[4], dir - w - 2, TAB_TOPO - 52);
+    } else {
+      f[4].style.removeProperty('width');
+      poe(f[4], dir - mede(FRASES_4[4].txt), TAB_TOPO - 38);
+    }
   },
   tick(t){
     const m = this.mesa();
