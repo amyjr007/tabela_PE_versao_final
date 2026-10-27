@@ -213,7 +213,7 @@ verde, gases nobres no violeta, e o hidrogênio — um ametal — no verde
 Te são ametais; Ge e Sb, metais. Chega-se a ele pelo Continuar do cartão da
 nota do slide 4 (ou pela navegação: "Início", "A escolha da classe" — aos
 40 s da `4` —, "Os metais" — o começo da `4A` — e "O brilho metálico" — o
-começo da `4B` — "Calor e eletricidade" — o começo da `4C` — e "Ductilidade" — o começo da `4D`), com o play à espera da
+começo da `4B` — "Calor e eletricidade" — o começo da `4C` — "Ductilidade" — o começo da `4D` — e "Maleabilidade" — o começo da `4E`), com o play à espera da
 narração `4` (`Audios/audio_tabela_4.mp3`). Aqui a vida solta não entra: no
 lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 
@@ -258,7 +258,15 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4D` · 29 → 31 s | "Ductilidade:" cresce, e volta |
 | `4D` · 32 → 36 s | o cubo vira outra vez, e a face nova é a **trefiladeira**, por partes: logo o nome "Trefiladeira" (embaixo, onde estava "fieira"); aos 34 s a máquina, sem metal; aos 36 s o metal, a garra e a instrução — só então o fio se deixa puxar. A fieira, em corte: a barra de cobre à esquerda, o cone da fieira, e a ponta do fio com uma garra à direita. O dedo puxa a garra (só para a direita: o fio não volta para dentro) e o fio estica; **a barra recua só o que o volume manda** — com diâmetros 44 e 7, a razão das áreas é (7/44)² ≈ 2,5%: puxar 6,3 cm de fio encurta a barra 0,16 cm (`FIEIRA4`). A fieira é grande: um bloco de 90 × 200 na face de 440, com o cone comprido. Embaixo, a instrução "Puxe a ponta do fio lentamente" e, puxando, a conta: "Fio puxado: … cm · a barra encurtou … cm" |
 | o puxão | a velocidade é medida nos últimos 160 ms (`PUXA4`, em unidades da face por segundo): até 110 o fio estica liso; daí até 240 ele afina no meio, avermelha e avisa "Devagar! O fio está afinando…"; passado 240, **rompe** no meio — o toco fica na fieira, o pedaço com a garra salta e cai a esmaecer, toca o `rupture`, "O fio rompeu! Puxe mais devagar." — e 1,2 s depois tudo volta ao começo |
-| puxado até ao fim | `funfare`, confetes e o **Saquei** (espoca; a `4E`, ainda por gravar, avisa que falta) |
+| puxado até ao fim | `funfare`, confetes e o **Saquei** (espoca), que leva à **`4E`** (`Audios/audio_tabela_4E.mp3`) |
+| `4E` · 0 s | os textos da ductilidade e o cubo da trefiladeira saem em fade (a grade e o "Metais" ficam) |
+| `4E` · 2 / 5 → 12,5 s | "Maleabilidade:", e embaixo, em duas linhas, "É a capacidade do metal de se deformar até formar lâminas ultrafinas, sem se quebrar" |
+| `4E` · 14,5 s | um cubo novo, com a **folha de papel alumínio**: o rolo deitado e a folha desenrolada, amassada com luz de verdade sobre um relevo de ruído (`aluminioSVG`) |
+| `4E` · 21 s | o cubo vira, e a face nova é o **laminador** (`LAM4`): a barra na mesa da esquerda, os dois rolos, a mesa da saída e a bobina; o botão **Ligar** (vermelho, a chamar) liga a máquina — os rolos giram, a barra entra e sai a folha finíssima, que se enrola na bobina (que cresce). O volume vale: a barra tem 36 de espessura e a folha 3, cada unidade de barra vira 12 de folha |
+| fim da `4E` | "Ligue a máquina", a piscar no alto do quadro (peça da montagem, `aviso-ligue-a-maquina`), até ser ligada; laminada a barra e acabada a narração, toca a **`4E1`** (`Audios/audio_tabela_4E1.mp3`) |
+| `4E1` · 11,5 → 13 s | a gaveta do sumário abre, a mãozinha desce pelas propriedades dos metais (Os metais, O brilho metálico, Calor e eletricidade, Ductilidade, Maleabilidade), e a gaveta fecha |
+| `4E1` · 14 s | o texto e o cubo saem, e a tabela volta, andando, ao estado do começo — os metais num verde claro, cada um com o ✓ de visto (e "Metais ✓" no nome da classe) |
+| fim da `4E1` | o play sai, e tocar numa classe escolhe-a, como no fim da `4`: os ametais e os gases nobres avisam que a narração ainda vai ser gravada; os metais recomeçam a `4A` |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
 os nomes ganham o tom claro do próprio bloco. Nas fotos do

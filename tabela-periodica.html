@@ -1098,6 +1098,46 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 .fieira4 .fr-chama{animation:chamaGarra 1.2s ease-in-out infinite;transform-origin:16px 0;transform-box:view-box}
 .fieira4.puxou .fr-chama{display:none}
 @keyframes chamaGarra{0%,100%{opacity:.9} 50%{opacity:.15}}
+/* um cubo apagado não pega o dedo em nada de dentro dele */
+.cubo4C:not(.on) *{pointer-events:none!important}
+/* A "4E": a maleabilidade (a definição quebra em duas linhas), o laminador */
+.prop4D{transition:opacity .6s ease}
+.prop4D.fim{opacity:0}
+.prop4E{position:absolute;inset:0;z-index:25;pointer-events:none;transition:opacity .6s ease}
+.prop4E.fim{opacity:0}
+.prop4E .frase{position:absolute;display:none;margin:0;line-height:1.28;
+  font-family:var(--display);font-weight:600;font-size:25px;color:#F4F2F8;text-shadow:0 2px 4px rgba(0,0,0,.5)}
+.prop4E .frase.on{display:block}
+.prop4E .frase:first-child{font-weight:700;font-size:34px;color:var(--ouro-luz);white-space:nowrap;transform:translateY(-50%)}
+.prop4E .frase:nth-child(2){width:630px}
+.prop4E .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
+.prop4E .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+.face4C svg{display:block;width:100%;height:100%}
+.lam4{position:absolute;inset:0}
+.cubo4E.virou .lam4{pointer-events:auto}
+.lam4 .lm-bt{cursor:pointer}
+.lam4.rodando .lm-bt,.lam4.feito .lm-bt{cursor:default}
+.lam4 .lm-bt-txt{font-family:var(--mono);font-weight:700;font-size:11px;letter-spacing:.14em;fill:#E6ECF2}
+.lam4 .lm-nome{font-family:var(--display);font-weight:600;font-size:24px;fill:#F4F2F8}
+/* o botão chama, até ser ligado */
+.lam4:not(.rodando):not(.feito) .lm-bt-luz{animation:chamaBotao 1.1s ease-in-out infinite}
+@keyframes chamaBotao{0%,100%{opacity:1} 50%{opacity:.55}}
+/* ligada, a máquina treme um fio */
+.cubo4E:has(.lam4.rodando){animation:vibra4 .12s linear infinite}
+@keyframes vibra4{0%,100%{translate:0 0} 25%{translate:.8px -.6px} 50%{translate:-.7px .5px} 75%{translate:.5px .7px}}
+body.montagem .alerta4E{opacity:1!important;animation:none!important;pointer-events:auto}
+/* A "4E1": a tabela volta ao lugar andando, e os metais, vistos, ficam
+   verdes com o ✓ */
+.mesa.tipos.reorganiza .pc{transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1),
+  transform .9s cubic-bezier(.4,0,.2,1), opacity .7s ease}
+/* (um verde claro e vivo: o dos ametais, #2E9450, é escuro, e as duas
+   classes não se confundem) */
+.mesa.tipos.metais-ok .pc[data-tipo="metais"]{--cor:#3FCB72!important}
+.mesa.tipos.metais-ok .pc[data-tipo="metais"]::after{content:'✓';position:absolute;right:-5px;top:-6px;
+  width:17px;height:17px;border-radius:50%;background:#fff;color:#1F9D55;font:700 12px/17px var(--display);
+  text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.35);pointer-events:none;animation:check4 .5s var(--e-salto) both}
+@keyframes check4{from{transform:scale(0)} to{transform:scale(1)}}
+.mesa.tipos.metais-ok .classes4 .frase[data-classe="metais"] .txt::after{content:' ✓'}
 /* os textos da "4D" */
 .prop4C{transition:opacity .6s ease}
 .prop4C.fim{opacity:0}
@@ -3156,7 +3196,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v23.8';
+const VERSAO = 'v23.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4386,6 +4426,8 @@ const TRILHAS = {
   '4B':   'Audios/audio_tabela_4B.mp3',    /* depois do Saquei: o brilho metálico */
   '4C':   'Audios/audio_tabela_4C.mp3',    /* depois do Saquei: o calor e a eletricidade */
   '4D':   'Audios/audio_tabela_4D.mp3',    /* depois do Saquei: a ductilidade e a fieira */
+  '4E':   'Audios/audio_tabela_4E.mp3',    /* depois do Saquei: a maleabilidade e o laminador */
+  '4E1':  'Audios/audio_tabela_4E1.mp3',   /* laminada a barra: o fim dos metais */
   '5':    'Audios/audio_tabela_5.mp3',     /* o slide 6: as principais famílias (ainda por gravar) */
   '6':    'Audios/audio_tabela_6.mp3',     /* o slide 7: os grupos A e B (ainda por gravar) */
   '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
@@ -4481,6 +4523,18 @@ const ROTEIROS = {
     { t:12.9, faz(){ EV4.pausa4C(); } }
   ],
   '4D':   [],
+  '4E':   [],
+  /* a gaveta do sumário abre, a mão desce pelas propriedades dos metais,
+     e a gaveta fecha */
+  '4E1':  [
+    { t:11.5,  faz(){ EV4.gaveta4E1(true); } },
+    { t:11.85, faz(){ EV4.maoNoTopico(0); } },
+    { t:12.1,  faz(){ EV4.maoNoTopico(1); } },
+    { t:12.35, faz(){ EV4.maoNoTopico(2); } },
+    { t:12.6,  faz(){ EV4.maoNoTopico(3); } },
+    { t:12.85, faz(){ EV4.maoNoTopico(4); } },
+    { t:13.0,  faz(){ EV4.gaveta4E1(false); } }
+  ],
   '5':    [],
   '6':    [],
   '7':    [],   /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
@@ -5162,6 +5216,8 @@ const SEQ = {
        mercúrio); o da "4B", à "4C" (o da "4C" vem do curto: EV4.cena4C) */
     else if (id === '4A') EV4.fim4A();
     else if (id === '4B') EV4.saquei4(true);
+    /* o fim da "4E": a "4E1", se a barra já foi laminada */
+    else if (id === '4E') EV4.fim4E();
   },
   /* o quiz de cada trilha abre uma vez só */
   abreQuiz(id){
@@ -6968,6 +7024,11 @@ const FRASES_4D = [
   { de:9.0, ate:9.8, txt:'Ductilidade:' },
   { de:12.5, ate:16.0, txt:'É a facilidade de formar fios' }
 ];
+/* na "4E": a maleabilidade, no lugar da ductilidade */
+const FRASES_4E = [
+  { de:2.0, ate:2.8, txt:'Maleabilidade:' },
+  { de:5.0, ate:12.5, txt:'É a capacidade do metal de se deformar até formar lâminas ultrafinas, sem se quebrar' }
+];
 /* na "4B", no lugar da propriedade 1 (que sai no começo dela) */
 const FRASES_4B = [ { de:4.0, ate:5.6, txt:'2. Os metais têm um brilho característico' } ];
 /* a narração de cada classe, tocada a escolha (as outras ainda por gravar) */
@@ -7081,9 +7142,14 @@ const EV4 = {
     }
     /* a "4A" fala dos metais: eles ficam acesos, e a cena dela (cena4A)
        fica de pé depois do fim */
-    else if (['4A', '4B', '4C', '4D'].includes(tr)) luz = 'metais';
+    /* a "4E" (e a "4E1", até à reorganização) segura as cenas de antes
+       paradas no fim, apagadas; depois dela, a tabela volta, e no fim da
+       "4E1" a escolha das classes também */
+    const segura = tr === '4E' || (tr === '4E1' && t < this.E4E.reorg);
+    if (['4A', '4B', '4C', '4D'].includes(tr) || segura) luz = 'metais';
+    else if (tr === '4E1') escolha = acabou;
     /* a "4C" e a "4D" mantêm as cenas de antes paradas no fim delas */
-    const depoisB = tr === '4C' || tr === '4D';
+    const depoisB = tr === '4C' || tr === '4D' || segura;
     /* na "4B" a cena da "4A" fica como ela a deixou (o fim dela), e a da
        "4B" corre por cima: o que ela faz crescer vem em this.mult4. Na "4C"
        as duas ficam paradas no fim, e a propriedade 2 sai em fade */
@@ -7102,10 +7168,23 @@ const EV4 = {
     if (tr === '4A') this.cena4A(m, t, acabou);
     else if (tr !== '4B' && !depoisB && this.suja4A) this.desfaz4A(m);
     if (tr === '4C') this.cena4C(m, t, acabou);
-    else if (tr === '4D') this.cena4C(m, 1e3, true, true);
+    else if (tr === '4D' || segura) this.cena4C(m, 1e3, true, true);
     else if (this.suja4C) this.desfaz4C(m);
     if (tr === '4D') this.cena4D(m, t, acabou);
+    else if (segura){
+      /* o fim da "4D", apagado: os textos e o cubo da trefiladeira saem */
+      this.cena4D(m, 1e3, true);
+      this.prop4D.classList.add('fim');
+      this.cubo4C.classList.remove('on');
+      FIEIRA4.vivo = false;
+    }
     else if (this.suja4D) this.desfaz4D(m);
+    if (tr === '4E' || tr === '4E1') this.cena4E(m, t, acabou, tr);
+    else if (this.suja4E) this.desfaz4E(m);
+    /* a volta da tabela anda (e não salta); e os metais, vistos, verdes */
+    m.classList.toggle('reorganiza', tr === '4E1');
+    if (tr === '4E1' && !segura) this.metaisOk = true;
+    m.classList.toggle('metais-ok', this.metaisOk);
     if (!escolha) this.escolhida = null;
     else if (this.escolhida) luz = this.escolhida;
     this.emEscolha = escolha;
@@ -7122,7 +7201,9 @@ const EV4 = {
     /* à espera da escolha, com a narração acabada, o play sai: quem faz a
        aula seguir é o toque numa classe */
     stage.classList.toggle('em-classes', escolha && acabou);
-    this.dig.escreve(tr === '4' ? t : tr === '4A' ? 1e3 : -1);
+    /* (nas narrações dos metais as classes estão escritas, mas escondidas
+       pela grade; na volta da tabela, na "4E1", reaparecem) */
+    this.dig.escreve(tr === '4' ? t : /^4[A-E]/.test(tr) ? 1e3 : -1);
     if (tr === '4' && t < this.ate && !acabou && !this.miniaturas) this.destaques(m);
     else this.soltaRealce();
   },
@@ -7735,12 +7816,121 @@ const EV4 = {
     if (this.dig4D){
       this.dig4D.limpa();
       this.prop4D.querySelectorAll('.frase.cresce').forEach(f => f.classList.remove('cresce'));
+      this.prop4D.classList.remove('fim');
       this.prop4C.classList.remove('fim');
       this.liq4.querySelector('.frase').classList.remove('fim');
       this.cubo4C.classList.remove('apaga4D', 'fio4D', 'virou2');
       FIEIRA4.zera();
     }
     this.suja4D = false;
+  },
+
+  /* ---- A "4E": A MALEABILIDADE, e a "4E1": o fim dos metais ----
+     4E · 0 s       os textos da ductilidade e o cubo da trefiladeira saem
+                    em fade (a grade e o "Metais" ficam)
+     4E · 2 s       "Maleabilidade:"; 5 → 12,5 s, embaixo, a definição
+     4E · 14,5 s    um cubo novo, com a folha de papel alumínio
+     4E · 21 s      ele vira, e a face nova é o LAMINADOR (LAM4): ligado,
+                    os rolos esmagam a barra e sai a folha finíssima
+     fim da 4E      "Ligue a máquina", até ser ligada; laminada a barra (e
+                    acabada a narração), toca a "4E1"
+     4E1 · 11,5 s   a gaveta do sumário abre, e a mão percorre as
+                    propriedades dos metais; 13 s fecha (marcas do roteiro)
+     4E1 · 14 s     tudo sai, e a tabela volta ao estado de começo — os
+                    metais verdes, com o ✓ de vistos
+     fim da 4E1     tocar numa classe escolhe-a (como no fim da "4") */
+  E4E:{ titulo:2, texto:5, cubo:14.5, gira:21, giraDura:0.9, reorg:14 },
+  NAV4E1:[ 'Os metais', 'O brilho metálico', 'Calor e eletricidade', 'Ductilidade', 'Maleabilidade' ],
+  suja4E:false, dig4E:null, prop4E:null, cubo4E:null, alerta4E:null, metaisOk:false,
+  cena4E(m, t, acabou, tr){
+    const E = this.E4E;
+    this.prepara4E(m);
+    const cb = this.cubo4E;
+    if (tr === '4E'){
+      this.dig4E.escreve(t);
+      this.prop4E.classList.remove('fim');
+      cb.classList.toggle('on', t >= E.cubo);
+      const p = Math.max(0, Math.min(1, (t - E.gira) / E.giraDura));
+      const g = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
+      cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 * g).toFixed(2) + 'deg)';
+      cb.classList.toggle('virou', p >= 1);
+      this.alerta4E.classList.toggle('on', acabou && !LAM4.feito && !LAM4.rodando);
+    } else {
+      /* a "4E1": a máquina já laminou; aos 14 s, tudo sai */
+      LAM4.mostraFeito();
+      this.dig4E.escreve(1e3);
+      const sai = t >= E.reorg;
+      this.prop4E.classList.toggle('fim', sai);
+      cb.classList.toggle('on', !sai);
+      cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(-90deg)';
+      cb.classList.add('virou');
+      this.alerta4E.classList.remove('on');
+    }
+    this.suja4E = true;
+  },
+  prepara4E(m){
+    if (this.dig4E) return;
+    const A = this.A4, C = this.C4;
+    const cx = document.createElement('div');
+    cx.className = 'prop4E';
+    cx.setAttribute('aria-live', 'polite');
+    m.appendChild(cx);
+    this.dig4E = criaDigitacao(cx, FRASES_4E);
+    const f = cx.querySelectorAll('.frase');
+    f[0].style.left = f[1].style.left = A.textoX + 'px';
+    f[0].style.top = A.textoY + 'px';
+    f[1].style.top = (A.textoY + 30) + 'px';
+    this.prop4E = cx;
+    const cb = document.createElement('div');
+    cb.className = 'cubo4C cubo4E';
+    cb.style.left = (C.cx - 220) + 'px';
+    cb.style.top  = (C.cy - 220) + 'px';
+    cb.style.setProperty('--esc', C.esc);
+    cb.innerHTML = '<div class="gira4">' +
+      '<div class="face4C frente">' + aluminioSVG() + '</div>' +
+      '<div class="face4C lado"><div class="lam4">' + laminadorSVG() + '</div></div></div>';
+    m.appendChild(cb);
+    this.cubo4E = cb;
+    LAM4.prepara(cb.querySelector('.lam4'));
+    const al = document.createElement('div');
+    al.className = 'toque4 alerta4E';
+    al.dataset.mont = 'aviso-ligue-a-maquina';
+    al.textContent = 'Ligue a máquina';
+    /* no alto do quadro, acima da máquina (220, 50 na face de 440) */
+    al.style.left = C.cx + 'px';
+    al.style.top  = (C.cy + (50 - 220) * C.esc).toFixed(1) + 'px';
+    m.appendChild(al);
+    this.alerta4E = al;
+  },
+  /* a barra laminada: a "4E1", se a narração da "4E" já acabou (senão,
+     quando ela acabar: SEQ.acabou) */
+  laminou(){
+    this.alerta4E.classList.remove('on');
+    if (atual === 4 && trilhaAtual === '4E' && (som.ended || (som.duration && som.currentTime >= som.duration - .05)))
+      setTimeout(() => { if (atual === 4 && trilhaAtual === '4E') tocaTrilha('4E1'); }, 700);
+  },
+  fim4E(){ if (LAM4.feito) tocaTrilha('4E1'); },
+  /* a gaveta do sumário e a mão, nas marcas da "4E1" */
+  gaveta4E1(abre){
+    if (atual !== 4) return;
+    if (abre) abreNav(); else { fechaNav(); tiraMao(); }
+  },
+  maoNoTopico(k){
+    if (!navGaveta || !navGaveta.classList.contains('aberta')) return;
+    const i = NAV_TOPICOS.findIndex(o => o.slide === 4 && o.titulo === this.NAV4E1[k]);
+    const b = navGaveta.querySelector('.nav-item[data-topico="' + i + '"]');
+    if (b) levaMao(b, { fx:.35 });
+  },
+  desfaz4E(m){
+    if (this.dig4E){
+      this.dig4E.limpa();
+      this.prop4E.classList.remove('fim');
+      this.cubo4E.classList.remove('on', 'virou');
+      this.cubo4E.querySelector('.gira4').style.transform = '';
+      this.alerta4E.classList.remove('on');
+      LAM4.zera();
+    }
+    this.suja4E = false;
   },
 
   /* ---- O CHOQUE (a face 3 do app do professor) ----
@@ -7872,9 +8062,12 @@ const EV4 = {
     stage.classList.remove('em-classes');
     const m = this.mesa();
     if (!m) return;
+    if (this.suja4E) this.desfaz4E(m);
     if (this.suja4D) this.desfaz4D(m);
     if (this.suja4C) this.desfaz4C(m);
     if (this.suja4B) this.desfaz4B(m);
+    this.metaisOk = false;
+    m.classList.remove('metais-ok', 'reorganiza');
     if (this.suja4A) this.desfaz4A(m);
     this.saquei4(false);
     m.querySelectorAll('.mat').forEach(e => e.remove());
@@ -8466,6 +8659,189 @@ const FIEIRA4 = {
     this.ponta = FR4.ponta0; this.pega = null; this.vivo = false; this.puxou = false;
     this.tensao = 0; this.rompido = 0; this.completo = false; this.amostras = [];
     if (this.el) this.el.classList.remove('pegando', 'puxou', 'maquina', 'metal');
+    this.desenha();
+  }
+};
+
+/* A FOLHA DE PAPEL ALUMÍNIO (a "4E", aos 14,5 s): o rolo deitado e a folha
+   que se desenrola. O amassado é luz de verdade sobre um relevo de ruído
+   (feDiffuseLighting e feSpecularLighting): cada vinco tem o lado claro
+   e o escuro, como no alumínio da cozinha */
+function aluminioSVG(){
+  return '<svg viewBox="0 0 440 440" role="img" aria-label="Folha de papel alumínio">' +
+    '<defs>' +
+      '<filter id="al4-amassa" x="0" y="0" width="100%" height="100%">' +
+        '<feTurbulence type="fractalNoise" baseFrequency=".02 .045" numOctaves="4" seed="3" result="n"/>' +
+        '<feDiffuseLighting in="n" surfaceScale="4" diffuseConstant="1.05" lighting-color="#DDE3EA" result="d">' +
+          '<feDistantLight azimuth="225" elevation="50"/></feDiffuseLighting>' +
+        '<feSpecularLighting in="n" surfaceScale="4" specularConstant="1" specularExponent="26" lighting-color="#FFFFFF" result="s">' +
+          '<feDistantLight azimuth="225" elevation="38"/></feSpecularLighting>' +
+        '<feComposite in="d" in2="SourceGraphic" operator="in" result="dd"/>' +
+        '<feComposite in="s" in2="SourceGraphic" operator="in" result="ss"/>' +
+        '<feBlend in="ss" in2="dd" mode="screen"/></filter>' +
+      '<linearGradient id="al4-rolo" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#7E8892"/><stop offset=".22" stop-color="#F4F7FA"/>' +
+        '<stop offset=".45" stop-color="#B9C2CB"/><stop offset=".7" stop-color="#6B7580"/><stop offset="1" stop-color="#3C444C"/></linearGradient>' +
+      '<radialGradient id="al4-tubo" cx=".5" cy=".5" r=".5">' +
+        '<stop offset=".55" stop-color="#5A3A1C"/><stop offset=".62" stop-color="#B98A55"/><stop offset="1" stop-color="#8A6235"/></radialGradient>' +
+      '<filter id="al4-borra"><feGaussianBlur stdDeviation="7"/></filter>' +
+    '</defs>' +
+    '<ellipse cx="220" cy="356" rx="180" ry="14" fill="#000" opacity=".45" filter="url(#al4-borra)"/>' +
+    /* a folha desenrolada, a cair do rolo e a deitar-se na mesa */
+    '<path d="M86,150 L330,150 C350,220 372,280 404,338 L118,350 C104,290 96,220 86,150 Z" fill="#C9D0D7" filter="url(#al4-amassa)"/>' +
+    '<path d="M118,350 L404,338" stroke="#F4F7FA" stroke-opacity=".7" stroke-width="1.4"/>' +
+    /* o rolo, deitado, com o tubo de papelão à vista na ponta */
+    '<rect x="70" y="118" width="276" height="44" rx="8" fill="url(#al4-rolo)"/>' +
+    '<rect x="70" y="118" width="276" height="44" rx="8" fill="#fff" filter="url(#al4-amassa)" opacity=".22"/>' +
+    '<ellipse cx="346" cy="140" rx="9" ry="22" fill="#A7B0B9"/>' +
+    '<ellipse cx="346" cy="140" rx="5" ry="12" fill="url(#al4-tubo)"/>' +
+  '</svg>';
+}
+
+/* O LAMINADOR (a "4E", aos 21 s), visto de lado: a barra grossa na mesa
+   da esquerda, os dois rolos que a esmagam, e a folha que sai do outro
+   lado e se enrola na bobina. O VOLUME VALE AQUI TAMBÉM: a barra tem 36 de
+   espessura e a folha 3 — cada unidade de barra que entra vira 12 de
+   folha (LAM4). */
+const LM4 = { cx:220, cyA:170, cyB:290, R:58, gap:230, T:36, t:3, xs0:40, morde:168, sai:214,
+              bx:392, nucleo:12, dura:5500 };
+function laminadorSVG(){
+  const L = LM4, g = L.gap;
+  const rolo = (cy, cls) => '<g class="' + cls + '">' +
+      '<circle cx="' + L.cx + '" cy="' + cy + '" r="' + L.R + '" fill="url(#lm4-rolo)"/>' +
+      '<circle cx="' + L.cx + '" cy="' + cy + '" r="' + L.R + '" fill="none" stroke="#1C2228" stroke-width="2"/>' +
+      '<circle cx="' + L.cx + '" cy="' + cy + '" r="' + (L.R - 7) + '" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="1.5"/>' +
+      /* as marcas que mostram o giro: o cubo do eixo, a chaveta e os parafusos */
+      '<circle cx="' + L.cx + '" cy="' + cy + '" r="17" fill="url(#lm4-cubo)"/>' +
+      '<rect x="' + (L.cx - 3) + '" y="' + (cy - 17) + '" width="6" height="8" fill="#1C2228"/>' +
+      [0, 1, 2, 3].map(k => { const a = k * Math.PI / 2 + .4;
+        return '<circle cx="' + (L.cx + Math.cos(a) * 32).toFixed(1) + '" cy="' + (cy + Math.sin(a) * 32).toFixed(1) + '" r="3.2" fill="#2A3138"/>'; }).join('') +
+    '</g>';
+  return '<svg viewBox="0 0 440 440" role="img" aria-label="Laminador: ligue a máquina">' +
+    '<defs>' +
+      '<radialGradient id="lm4-rolo" cx=".38" cy=".32" r=".75">' +
+        '<stop offset="0" stop-color="#F2F6F9"/><stop offset=".35" stop-color="#A9B3BD"/>' +
+        '<stop offset=".75" stop-color="#58626C"/><stop offset="1" stop-color="#2A3138"/></radialGradient>' +
+      '<radialGradient id="lm4-cubo" cx=".35" cy=".3" r=".8">' +
+        '<stop offset="0" stop-color="#DDE3E9"/><stop offset="1" stop-color="#3C444C"/></radialGradient>' +
+      '<linearGradient id="lm4-barra" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#6E7882"/><stop offset=".2" stop-color="#E8EDF2"/>' +
+        '<stop offset=".45" stop-color="#AEB8C1"/><stop offset=".75" stop-color="#6A747F"/><stop offset="1" stop-color="#39414A"/></linearGradient>' +
+      '<linearGradient id="lm4-folha" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#9AA4AE"/></linearGradient>' +
+      '<radialGradient id="lm4-bob" cx=".4" cy=".35" r=".7">' +
+        '<stop offset="0" stop-color="#F6F9FB"/><stop offset=".6" stop-color="#B4BDC6"/><stop offset="1" stop-color="#6A747F"/></radialGradient>' +
+      '<linearGradient id="lm4-aco" x1="0" y1="0" x2="1" y2="1">' +
+        '<stop offset="0" stop-color="#4E5864"/><stop offset="1" stop-color="#1E242B"/></linearGradient>' +
+      '<filter id="lm4-borra"><feGaussianBlur stdDeviation="6"/></filter>' +
+      '<filter id="lm4-luz" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="b"/>' +
+        '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' +
+    '</defs>' +
+    '<ellipse cx="220" cy="384" rx="196" ry="10" fill="#000" opacity=".45" filter="url(#lm4-borra)"/>' +
+    /* a carcaça, atrás de tudo, e a base */
+    '<rect x="140" y="88" width="160" height="284" rx="10" fill="url(#lm4-aco)"/>' +
+    '<rect x="154" y="102" width="132" height="256" rx="6" fill="#141922"/>' +
+    '<rect x="20" y="370" width="400" height="12" rx="3" fill="#3A424B"/>' +
+    /* as mesas: a da entrada e a da saída */
+    '<rect x="22" y="' + (g + L.T/2) + '" width="146" height="8" rx="2" fill="#4A535D"/>' +
+    '<rect x="30" y="' + (g + L.T/2 + 8) + '" width="8" height="' + (370 - g - L.T/2 - 8) + '" fill="#3A424B"/>' +
+    '<rect x="276" y="' + (g + L.t/2) + '" width="98" height="6" rx="2" fill="#4A535D"/>' +
+    /* a barra, e o trecho que afina entre os rolos */
+    '<rect class="lm-barra" y="' + (g - L.T/2) + '" height="' + L.T + '" fill="url(#lm4-barra)"/>' +
+    '<polygon points="' + L.morde + ',' + (g - L.T/2) + ' ' + L.sai + ',' + (g - L.t/2) + ' ' + L.sai + ',' + (g + L.t/2) + ' ' +
+      L.morde + ',' + (g + L.T/2) + '" fill="url(#lm4-barra)" class="lm-cunha"/>' +
+    /* a folha, e a bobina que a enrola */
+    '<rect class="lm-folha" x="' + L.sai + '" y="' + (g - L.t/2) + '" height="' + L.t + '" fill="url(#lm4-folha)"/>' +
+    '<g class="lm-bobina"><circle class="lm-bob" cx="' + L.bx + '" fill="url(#lm4-bob)"/>' +
+      '<circle class="lm-nucleo" cx="' + L.bx + '" r="' + L.nucleo + '" fill="#5A3A1C" stroke="#B98A55" stroke-width="2"/>' +
+      '<line class="lm-risco" stroke="#fff" stroke-opacity=".5" stroke-width="1.5"/></g>' +
+    rolo(L.cyA, 'lm-rolo-a') + rolo(L.cyB, 'lm-rolo-b') +
+    /* a caixa de comando, com o botão */
+    '<rect x="26" y="292" width="92" height="66" rx="8" fill="url(#lm4-aco)" stroke="#5D6772" stroke-width="1"/>' +
+    '<g class="lm-bt" role="button" aria-label="Ligar a máquina">' +
+      '<circle class="lm-bt-luz" cx="72" cy="318" r="16" fill="#D62B2B" filter="url(#lm4-luz)"/>' +
+      '<circle cx="72" cy="318" r="16" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2"/>' +
+      '<circle cx="68" cy="313" r="5" fill="#fff" opacity=".35"/>' +
+      '<text class="lm-bt-txt" x="72" y="350" text-anchor="middle">LIGAR</text></g>' +
+    '<text x="250" y="420" text-anchor="middle" class="lm-nome">Laminador</text>' +
+  '</svg>';
+}
+const LAM4 = {
+  el:null, raf:0, rodando:false, feito:false, avanco:0, angulo:0, de:0,
+  prepara(el){
+    this.el = el;
+    el.querySelector('.lm-bt').addEventListener('click', ev => {
+      ev.stopPropagation();
+      if (!el.closest('.cubo4E').classList.contains('virou')) return;
+      this.liga();
+    });
+    el.addEventListener('pointerdown', ev => ev.stopPropagation());
+    this.desenha();
+  },
+  liga(){
+    if (this.rodando || this.feito) return;
+    this.rodando = true;
+    this.de = performance.now();
+    this.el.classList.add('rodando');
+    tocaEfeito('right');
+    const passo = () => {
+      const L = LM4, p = Math.min(1, (performance.now() - this.de) / L.dura);
+      /* a velocidade sobe no começo e cai no fim, como um motor */
+      const e = p < .12 ? (p / .12) ** 2 * .06 : p > .9 ? 1 - ((1 - p) / .1) ** 2 * .05 : .06 + (p - .12) / .78 * .89;
+      const antes = this.avanco;
+      this.avanco = (L.morde - L.xs0) * Math.min(1, e);
+      /* os rolos giram na velocidade da folha que sai (12 vezes a da barra) */
+      this.angulo += (this.avanco - antes) * (L.T / L.t) / L.R * 180 / Math.PI;
+      this.desenha();
+      if (p < 1){ this.raf = requestAnimationFrame(passo); return; }
+      this.rodando = false;
+      this.feito = true;
+      this.el.classList.remove('rodando');
+      this.el.classList.add('feito');
+      EV4.laminou();
+    };
+    passo();
+  },
+  /* a barra recua o que entrou; a folha cresce 12 vezes isso, corre até à
+     bobina e enrola-se nela (a área enrolada faz a bobina crescer) */
+  desenha(){
+    if (!this.el) return;
+    const L = LM4, s = this.el, xs = L.xs0 + this.avanco;
+    const barra = s.querySelector('.lm-barra');
+    barra.setAttribute('x', xs.toFixed(2));
+    barra.setAttribute('width', Math.max(0, L.morde - xs).toFixed(2));
+    s.querySelector('.lm-cunha').style.opacity = xs < L.morde - .5 ? 1 : 0;
+    const folha = this.avanco * L.T / L.t, ate = L.bx - L.sai;
+    const enrolado = Math.max(0, folha - ate);
+    const R = Math.sqrt(L.nucleo * L.nucleo + enrolado * L.t / Math.PI);
+    const f = s.querySelector('.lm-folha');
+    f.setAttribute('width', Math.min(folha, ate).toFixed(2));
+    const cyb = L.gap + L.t/2 - R;
+    s.querySelector('.lm-bob').setAttribute('cy', cyb.toFixed(2));
+    s.querySelector('.lm-bob').setAttribute('r', (enrolado > 0 ? R : 0).toFixed(2));
+    s.querySelector('.lm-nucleo').setAttribute('cy', cyb.toFixed(2));
+    const ab = enrolado / Math.max(R, 1) * 180 / Math.PI;
+    const ri = s.querySelector('.lm-risco');
+    ri.setAttribute('x1', L.bx); ri.setAttribute('y1', cyb.toFixed(2));
+    ri.setAttribute('x2', (L.bx + Math.cos(ab * Math.PI / 180) * R * .92).toFixed(2));
+    ri.setAttribute('y2', (cyb + Math.sin(ab * Math.PI / 180) * R * .92).toFixed(2));
+    s.querySelector('.lm-rolo-a').setAttribute('transform', 'rotate(' + (-this.angulo).toFixed(2) + ' ' + L.cx + ' ' + L.cyA + ')');
+    s.querySelector('.lm-rolo-b').setAttribute('transform', 'rotate(' + this.angulo.toFixed(2) + ' ' + L.cx + ' ' + L.cyB + ')');
+    s.querySelector('.lm-bt-luz').setAttribute('fill', this.rodando ? '#2BD66B' : this.feito ? '#6B7480' : '#D62B2B');
+    s.querySelector('.lm-bt-txt').textContent = this.rodando ? 'LIGADO' : this.feito ? 'PRONTO' : 'LIGAR';
+  },
+  /* já laminado (a "4E1", ou a volta do app): a barra toda em folha */
+  mostraFeito(){
+    if (this.feito || this.rodando) return;
+    this.feito = true;
+    this.avanco = LM4.morde - LM4.xs0;
+    if (this.el) this.el.classList.add('feito');
+    this.desenha();
+  },
+  zera(){
+    cancelAnimationFrame(this.raf);
+    this.rodando = this.feito = false; this.avanco = 0; this.angulo = 0;
+    if (this.el) this.el.classList.remove('rodando', 'feito');
     this.desenha();
   }
 };
@@ -12071,7 +12447,7 @@ function mostraCoord(el){
 const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle, .quiz3.q4 .q3-q,' +
                ' .dica-escolha .txt, .toque-continuar, .rotulo-el .txt, .veu-frases .frase .txt,' +
                ' .texto-colunas .frase .txt, .veu-moseley figcaption b, .dica-final, .entendi3, .coords-el,' +
-               ' .conta-lc25 .txt, .alerta4C';
+               ' .conta-lc25 .txt, .alerta4C, .alerta4E';
 const EDICAO = {
   el:null, ultimo:null, tUlt:0, editados:new Set(),
   /* o bloco de linhas a que um texto pertence, dentro da peça */
@@ -12814,6 +13190,8 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4C', 0, g)); } },
   { titulo:'Ductilidade', sub:'o começo da 4D: a fieira', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4D', 0, g)); } },
+  { titulo:'Maleabilidade', sub:'o começo da 4E: o laminador', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4E', 0, g)); } },
   /* ---- o slide 6 · As principais famílias ---- */
   { titulo:'Início', sub:'o começo do slide', slide:5,
     entra(){ /* o recomeço do slide já é o tópico */ } },
@@ -12962,6 +13340,7 @@ function tocaDesde(id, t, g){
 function topicoAtual(){
   if (atual === 4){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 4);
+    if (trilhaAtual === '4E' || trilhaAtual === '4E1') return base + 6;
     if (trilhaAtual === '4D') return base + 5;
     if (trilhaAtual === '4C') return base + 4;
     if (trilhaAtual === '4B') return base + 3;

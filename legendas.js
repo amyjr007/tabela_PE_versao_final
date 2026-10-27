@@ -280,6 +280,24 @@ var LEGENDAS = {
     [45.6,46.54,"Quer ver?"],
     [46.54,53.22,"Puxe lentamente o metal pela tela através da fieira para observar a ductilidade na prática."]
   ],
+  "audio_tabela_4E": [
+    [0,3.14,"Pronto, agora vamos pra maleabilidade."],
+    [3.14,9.78,"A maleabilidade é a capacidade do metal de ser prensado, martelado ou deformado"],
+    [9.78,13.2,"até formar lâminas ultrafinas sem se quebrar."],
+    [13.2,16.44,"Já viram uma folha de papel alumínio em sua casa?"],
+    [16.44,17.4,"Pois é!"],
+    [17.4,21.8,"O papel alumínio pode ser obtido num laminador igual a esse aqui."],
+    [21.8,27.5,"Bem aqui, colocamos a barra de metal que será prensada entre rolos com força contínua"],
+    [27.5,30.32,"até sair uma folha finíssima do outro lado."],
+    [30.32,33.54,"Quer ver? Ligue a máquina ali pra entender esse processo."]
+  ],
+  "audio_tabela_4E1": [
+    [0,3.9,"Muito bem, isso só é possível graças à maleabilidade."],
+    [3.9,8.72,"Tá, sobre as propriedades da classe de elementos metais, é isso."],
+    [8.72,13.54,"Se quiser rever alguma propriedade, basta ir no sumário, navegar direto pra ela."],
+    [13.54,18.08,"Ou escolha outra classe de elementos aí pra gente se aprofundar."],
+    [18.08,19.1,"A escolha é sua."]
+  ],
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]
   ],
