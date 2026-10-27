@@ -212,7 +212,8 @@ verde, gases nobres no violeta, e o hidrogênio — um ametal — no verde
 (`.mesa.tipos`, `tipoDe`). O sistema é o moderno, sem semimetais: B, Si, As e
 Te são ametais; Ge e Sb, metais. Chega-se a ele pelo Continuar do cartão da
 nota do slide 4 (ou pela navegação: "Início", "A escolha da classe" — aos
-40 s da `4` — e "Os metais" — o começo da `4A`), com o play à espera da
+40 s da `4` —, "Os metais" — o começo da `4A` — e "O brilho metálico" — o
+começo da `4B`), com o play à espera da
 narração `4` (`Audios/audio_tabela_4.mp3`). Aqui a vida solta não entra: no
 lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 
@@ -234,7 +235,14 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4A` · 23 s | o Hg vai para o vazio da direita, debaixo das propriedades, e cresce 3× |
 | `4A` · 23,5 s | embaixo da propriedade, um pouco para dentro, "Exceto o mercúrio", digitado |
 | `4A` · 29 s | "Metal líquido", digitado debaixo dele |
-| fim da `4A` | o Hg volta para a casa dele na grade, e "Metal líquido" sai (as propriedades ficam); a cena fica (a escolha das classes não volta) |
+| fim da `4A` | o Hg volta para a casa dele na grade, e "Metal líquido" sai (as propriedades ficam); a cena fica, e o play vira o **Saquei** (verde); tocado, o `right` e a **`4B`** (`Audios/audio_tabela_4B.mp3`) |
+| `4B` · 0 s | a cena da `4A` fica como ela a deixou; "1. Os metais são sólidos" e "Exceto o mercúrio" saem em fade |
+| `4B` · 4 s | no lugar deles, "2. Os metais têm um brilho característico", digitado |
+| `4B` · 7 s | um brilho corre pela grade na diagonal, carta a carta |
+| `4B` · 10 → 16 s | cartas ao acaso (menos o Au e o Cu) crescem e brilham, de meio em meio segundo, duas ou três ao mesmo tempo — numa ordem fixa: o mesmo segundo dá sempre as mesmas |
+| `4B` · 16 s | o **Cu** cresce, com o halo cor de cobre |
+| `4B` · 18 s | o Cu volta, e cresce o **Au** |
+| fim da `4B` + 1 s | o Au volta |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
 os nomes ganham o tom claro do próprio bloco. Nas fotos do
