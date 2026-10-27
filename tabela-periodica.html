@@ -859,6 +859,188 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 .mesa.tipos .pc[data-tipo="ametais"]    {--cor:var(--cat-ametais)!important}
 .mesa.tipos .pc[data-tipo="nobres"]     {--cor:var(--cat-nobres)!important}
 .mesa.tipos .pc[data-tipo="hidrogenio"] {--cor:var(--cat-ametais)!important}
+/* AS CLASSES ACESAS (a narração "4", EV4): a sala escurece (o breu, atrás
+   da mesa) e só a classe da vez fica inteira; as outras cartas esmaecem.
+   Tudo em fade, na ida e na volta. */
+.breu4{position:absolute;inset:0;z-index:3;background:rgba(12,10,32,.84);
+  opacity:0;pointer-events:none;transition:opacity .7s ease}
+.breu4.on{opacity:1}
+html.palco-largo .breu4{box-shadow:0 0 0 var(--folga) rgba(12,10,32,.84)}
+html.palco-alto  .breu4{box-shadow:0 0 0 var(--folgav) rgba(12,10,32,.84)}
+.mesa.tipos .pc{transition:transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease, opacity .7s ease}
+.mesa.tipos .eixo,.mesa.tipos .casa{transition:opacity .7s ease}
+.mesa.tipos:not([data-luz=""])[data-luz] .pc{opacity:.13}
+.mesa.tipos:not([data-luz=""])[data-luz] .eixo{opacity:.2}
+/* as casas das duas séries (57–71, 89–103) são metais, mas não são cartas:
+   acendem com os metais e apagam com o resto */
+.mesa.tipos:not([data-luz=""]):not([data-luz="metais"])[data-luz] .casa{opacity:.13}
+.mesa.tipos[data-luz="metais"]  .pc[data-tipo="metais"],
+.mesa.tipos[data-luz="ametais"] .pc[data-tipo="ametais"],
+.mesa.tipos[data-luz="nobres"]  .pc[data-tipo="nobres"],
+.mesa.tipos[data-luz="h"]       .pc[data-z="1"]{opacity:1}
+/* "São 3 classes de elementos:" e as três, cada uma na cor do bloco dela,
+   num quadro claro no vazio acima dos metais de transição (o lugar vem de
+   EV4.prepara, e anda com a mesa) */
+.classes4{position:absolute;z-index:25;pointer-events:none;
+  padding:12px 22px 14px;border-radius:18px;background:rgba(255,255,255,.95);
+  border:1px solid var(--indigo-dim);box-shadow:0 16px 40px rgba(32,28,66,.18);
+  opacity:0;transition:opacity .4s ease}
+.classes4:has(.frase.on){opacity:1}
+.classes4 .frase{display:none;margin:0;font-family:var(--display);font-weight:700;
+  font-size:27px;line-height:1.28;transition:opacity .5s ease}
+.classes4 .frase.on{display:block}
+.classes4 .frase:first-child{font-weight:600;font-size:29px;color:var(--indigo);margin-bottom:2px}
+/* "Ametais" e, do lado, "Não Metais" — na mesma linha, com um fio entre eles */
+.classes4 .frase:nth-child(3).on,.classes4 .frase:nth-child(4).on{display:inline-block}
+.classes4 .frase:nth-child(4){margin-left:14px;padding-left:14px;border-left:2px solid rgba(46,148,80,.35)}
+.classes4 .frase[data-classe="metais"] {color:var(--cat-transicao)}
+.classes4 .frase[data-classe="ametais"]{color:var(--cat-ametais)}
+.classes4 .frase[data-classe="nobres"] {color:var(--cat-nobres)}
+.classes4 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;
+  vertical-align:-.1em;background:var(--ouro)}
+.classes4 .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+/* com uma classe acesa, os nomes das outras recuam também */
+.classes4:not([data-luz=""])[data-luz] .frase[data-classe]{opacity:.32}
+.classes4:not([data-luz=""])[data-luz="metais"]  .frase[data-classe="metais"],
+.classes4:not([data-luz=""])[data-luz="ametais"] .frase[data-classe="ametais"],
+.classes4:not([data-luz=""])[data-luz="nobres"]  .frase[data-classe="nobres"]{opacity:1}
+/* a escolha: os nomes viram botões, e chamam */
+.classes4.escolha .cursor{display:none}
+.classes4.escolha .frase[data-classe]{pointer-events:auto;cursor:pointer;animation:chamaClasse 1.8s ease-in-out infinite}
+.classes4.escolha .frase[data-classe="ametais"]{animation-delay:.3s}
+.classes4.escolha .frase[data-classe="nobres"]{animation-delay:.6s}
+@keyframes chamaClasse{0%,100%{text-shadow:none} 50%{text-shadow:0 0 14px color-mix(in srgb,currentColor 55%,transparent)}}
+#stage.em-classes #som, #stage.em-classes #som-dica, #stage.em-classes #vel{display:none!important}
+
+/* OS DESTAQUES AO ACASO (antes do play e nos primeiros 10 s da "4"): a
+   carta cresce e vira o material do elemento — metal escovado, gás dentro
+   de um vidro, mercúrio líquido, bromo líquido, ou um sólido cristalino.
+   A textura vai só na face da frente (.f1), por cima da cor e por baixo
+   da letra; é uma carta de cada vez, e por isso pode ser cara. */
+.pc.realce4{z-index:30}
+.pc.realce4 .cubo{--sc:1.55;--dz:14px;--dur:.6s}
+.mesa.tipos .face :is(i,b,u,em){transition:color .45s ease, text-shadow .45s ease, transform .35s var(--e-salto)}
+.mat{position:absolute;inset:-1px;z-index:2;pointer-events:none;overflow:hidden;
+  opacity:0;animation:matEntra .55s ease forwards}
+.mat.sai{animation:matSai .6s ease forwards}
+@keyframes matEntra{to{opacity:1}}
+@keyframes matSai{from{opacity:1} to{opacity:0}}
+/* as camadas são div, e não i: o .face i é o número atômico, e as estragaria */
+.mat div{position:absolute}
+
+/* -- o METAL: escovado (o ruído esticado na horizontal), as faixas de
+   reflexo de um metal polido, o bisel nas bordas e um brilho que passa -- */
+.mat.metal{
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85 .012' numOctaves='3' seed='4'/%3E%3CfeColorMatrix values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 .7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
+    linear-gradient(168deg,var(--mc) 0%,var(--mm) 20%,var(--me) 37%,var(--mc) 51%,var(--mm) 64%,var(--me) 83%,var(--mm) 100%);
+  background-size:160px 160px,100% 100%;
+  background-blend-mode:overlay,normal;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.95), inset 1px 0 0 rgba(255,255,255,.5),
+             inset 0 -2px 3px rgba(0,0,0,.4), inset -1px 0 2px rgba(0,0,0,.25);
+}
+.mat.metal .brilho{inset:-50%;
+  background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.0) 44%,rgba(255,255,255,.9) 50%,rgba(255,255,255,0) 56%,transparent 58%);
+  transform:translateX(-60%);animation:brilhoPassa 2.2s .3s cubic-bezier(.45,.05,.3,1) infinite}
+@keyframes brilhoPassa{0%{transform:translateX(-60%)} 55%,100%{transform:translateX(60%)}}
+.pc.mat-metal .f1 :is(i,b,u,em){color:#1B2027;text-shadow:0 1px 0 rgba(255,255,255,.7)}
+.pc.realce4.mat-metal .face{box-shadow:0 0 0 1.5px rgba(255,255,255,.9), 0 12px 26px rgba(0,0,0,.38),
+  0 0 24px 5px color-mix(in srgb,var(--mm) 70%,transparent)}
+
+/* -- o GÁS: um vidro escuro e, dentro dele, fumaça que gira devagar (três
+   camadas de ruído, cada uma num sentido); os gases nobres brilham na cor
+   da descarga deles, como num letreiro -- */
+.mat.gas{background:radial-gradient(120% 90% at 50% 62%,color-mix(in srgb,var(--gas) 30%,#0C1024),#05070F 78%)}
+.mat.gas .fumo{inset:-60%;background:var(--gas);opacity:.75;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.018' numOctaves='5' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.4 0 0 0 -1.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E") center/100% 100%;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.018' numOctaves='5' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3.4 0 0 0 -1.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E") center/100% 100%;
+  filter:blur(1px);animation:fumoGira 9s linear infinite}
+.mat.gas .fumo.b{opacity:.5;animation:fumoGira 13s linear infinite reverse;transform-origin:40% 60%}
+.mat.gas .fumo.c{opacity:.35;inset:-80%;animation:fumoSobe 6s ease-in-out infinite alternate}
+@keyframes fumoGira{from{transform:rotate(0) scale(1.05)} 50%{transform:rotate(180deg) scale(1.2)} to{transform:rotate(360deg) scale(1.05)}}
+@keyframes fumoSobe{from{transform:translate(-8%,10%) rotate(-12deg)} to{transform:translate(8%,-12%) rotate(14deg)}}
+/* o vidro: o reflexo inclinado e as bordas */
+.mat .vidro{inset:0;
+  background:linear-gradient(102deg,transparent 18%,rgba(255,255,255,.26) 24%,rgba(255,255,255,.05) 31%,transparent 36%),
+             linear-gradient(180deg,rgba(255,255,255,.18),transparent 22%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.38), inset 0 0 12px rgba(255,255,255,.14)}
+.mat.gas.emite::after{content:'';position:absolute;inset:0;
+  background:radial-gradient(46% 38% at 50% 55%,color-mix(in srgb,var(--gas) 38%,transparent),transparent 72%);
+  animation:plasma 1.9s ease-in-out infinite}
+@keyframes plasma{0%,100%{opacity:.55} 45%{opacity:1} 52%{opacity:.75} 60%{opacity:.95}}
+.pc.mat-gas .f1 :is(i,b,u,em){color:#fff;text-shadow:0 0 6px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.8)}
+.pc.realce4.mat-gas .face{box-shadow:0 0 0 1.5px rgba(255,255,255,.55), 0 12px 26px rgba(0,0,0,.4),
+  0 0 26px 6px color-mix(in srgb,var(--gas) 60%,transparent)}
+
+/* -- o LÍQUIDO: um vidro, e dentro dele o líquido a balançar — a onda
+   corre (o dobro da largura, deslizando meia), uma segunda onda atrás, a
+   crista com o reflexo, e o nível inteiro a pender de um lado para o outro.
+   O sombreado do líquido é só na vertical: a onda anda e ele não salta -- */
+.mat.liquido{background:var(--vidro)}
+.mat.liquido .nivel{left:-25%;right:-25%;bottom:-20%;top:var(--topo,38%);
+  transform-origin:50% 100%;animation:pende 2.6s ease-in-out infinite alternate}
+@keyframes pende{from{transform:rotate(-5deg)} to{transform:rotate(5deg)}}
+.mat.liquido .onda{left:0;top:0;bottom:0;width:200%;background:var(--liq);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0 10Q25 0 50 10T100 10V20H0Z'/%3E%3C/svg%3E") 0 0/25% 12px repeat-x,
+               linear-gradient(#000,#000) 0 11px/100% 100% no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0 10Q25 0 50 10T100 10V20H0Z'/%3E%3C/svg%3E") 0 0/25% 12px repeat-x,
+               linear-gradient(#000,#000) 0 11px/100% 100% no-repeat;
+  animation:ondaCorre 1.6s linear infinite}
+.mat.liquido .onda.atras{top:-4px;filter:brightness(.55);opacity:.8;animation-duration:2.3s;animation-direction:reverse}
+.mat.liquido .crista{left:0;top:0;height:12px;width:200%;background:var(--crista);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0 10Q25 0 50 10T100 10' fill='none' stroke='%23000' stroke-width='2.4'/%3E%3C/svg%3E") 0 0/25% 12px repeat-x;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0 10Q25 0 50 10T100 10' fill='none' stroke='%23000' stroke-width='2.4'/%3E%3C/svg%3E") 0 0/25% 12px repeat-x;
+  filter:blur(.4px);animation:ondaCorre 1.6s linear infinite}
+@keyframes ondaCorre{from{transform:translateX(0)} to{transform:translateX(-50%)}}
+/* o MERCÚRIO: um espelho líquido — o reflexo do horizonte de um cromado —
+   num vidro claro, e duas gotinhas que escorrem pelo vidro e caem nele */
+.mat.liquido.hg{--topo:42%;--vidro:linear-gradient(160deg,#D9DFE7,#9AA6B4);
+  --liq:linear-gradient(180deg,#4E5762 0%,#F2F5F8 7%,#C4CBD3 15%,#7D8792 26%,#2F363E 40%,#545D69 47%,#D2D8DF 56%,#FAFBFC 62%,#A3ACB6 76%,#555E68 92%,#2D343B 100%);
+  --crista:rgba(255,255,255,.95)}
+.mat.liquido.hg .gota{width:7px;height:7px;border-radius:50%;left:24%;top:-12%;
+  background:radial-gradient(circle at 34% 30%,#fff 0 16%,#C8D0D8 32%,#5B646E 70%,#252B31);
+  box-shadow:0 1px 1.5px rgba(0,0,0,.35);animation:gotaCai 2.4s .5s cubic-bezier(.55,0,.8,.6) infinite}
+.mat.liquido.hg .gota.b{width:5px;height:5px;left:70%;animation-delay:1.5s;animation-duration:2.9s}
+@keyframes gotaCai{0%{transform:translateY(0) scaleY(1);opacity:0} 8%{opacity:1}
+  70%{transform:translateY(400%) scaleY(1.15);opacity:1} 78%,100%{transform:translateY(460%) scale(.2);opacity:0}}
+.pc.mat-hg .f1 :is(i,b,u,em){color:#141A22;text-shadow:0 0 3px rgba(255,255,255,.95),0 0 8px rgba(255,255,255,.75)}
+.pc.realce4.mat-hg .face{box-shadow:0 0 0 1.5px rgba(255,255,255,.95), 0 12px 26px rgba(0,0,0,.4), 0 0 28px 6px rgba(210,220,232,.75)}
+/* o BROMO: o líquido vermelho-escuro, quase opaco, e o vapor castanho que
+   ele solta por cima */
+.mat.liquido.br{--topo:52%;--vidro:linear-gradient(180deg,#3A1A12,#1C0A07);
+  --liq:linear-gradient(180deg,rgba(196,68,34,.96) 0%,rgba(140,30,12,.97) 22%,rgba(78,12,5,.98) 60%,#2A0402 100%);
+  --crista:rgba(255,190,150,.75)}
+.mat.liquido.br .fumo{inset:-60% -60% 20% -60%;background:#B0482A;opacity:.55;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.02' numOctaves='4' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 2.4 0 0 0 -.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E") center/100% 100%;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.02' numOctaves='4' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 2.4 0 0 0 -.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E") center/100% 100%;
+  filter:blur(1.5px);animation:fumoSobe 5s ease-in-out infinite alternate}
+.pc.mat-br .f1 :is(i,b,u,em){color:#fff;text-shadow:0 0 5px rgba(0,0,0,.7),0 1px 2px rgba(0,0,0,.8)}
+.pc.realce4.mat-br .face{box-shadow:0 0 0 1.5px rgba(255,200,170,.6), 0 12px 26px rgba(0,0,0,.4), 0 0 26px 6px rgba(176,60,30,.6)}
+
+/* -- o SÓLIDO (os ametais sólidos): um cristal, as facetas na cor do
+   próprio elemento (o enxofre amarelo, o iodo violeta, o carbono grafite…),
+   o grão da pedra e três brilhos que piscam -- */
+.mat.solido{
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2' seed='2'/%3E%3CfeColorMatrix values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 .5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
+    conic-gradient(from 200deg at 70% 72%,rgba(255,255,255,.22) 0 70deg,rgba(0,0,0,.28) 70deg 160deg,transparent 160deg 250deg,rgba(255,255,255,.14) 250deg),
+    conic-gradient(from 25deg at 36% 40%,color-mix(in srgb,var(--s) 62%,#fff) 0 62deg,var(--s) 62deg 138deg,
+      color-mix(in srgb,var(--s) 66%,#000) 138deg 214deg,color-mix(in srgb,var(--s) 84%,#fff) 214deg 292deg,
+      color-mix(in srgb,var(--s) 78%,#000) 292deg);
+  background-size:120px 120px,100% 100%,100% 100%;
+  background-blend-mode:overlay,normal,normal;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6), inset 0 -2px 3px rgba(0,0,0,.35)}
+.mat.solido .faisca{width:12px;height:12px;left:22%;top:24%;
+  background:radial-gradient(circle,#fff 0 12%,transparent 13%),
+             linear-gradient(0deg,transparent 46%,#fff 50%,transparent 54%),
+             linear-gradient(90deg,transparent 46%,#fff 50%,transparent 54%);
+  opacity:0;animation:faisca 1.8s ease-in-out infinite}
+.mat.solido .faisca.b{left:68%;top:58%;width:9px;height:9px;animation-delay:.6s}
+.mat.solido .faisca.c{left:46%;top:76%;width:7px;height:7px;animation-delay:1.2s}
+@keyframes faisca{0%,100%{opacity:0;transform:scale(.3) rotate(0)} 40%{opacity:1;transform:scale(1) rotate(45deg)} 60%{opacity:0;transform:scale(.4) rotate(90deg)}}
+.pc.mat-solido.claro .f1 :is(i,b,u,em){color:#2A2410;text-shadow:0 1px 0 rgba(255,255,255,.55)}
+.pc.realce4.mat-solido .face{box-shadow:0 0 0 1.5px rgba(255,255,255,.7), 0 12px 26px rgba(0,0,0,.38),
+  0 0 24px 5px color-mix(in srgb,var(--s) 60%,transparent)}
 /* O SLIDE 7 PINTA POR GRUPO A E B: os elementos principais (grupos 1, 2
    e 13 a 18, o hidrogênio junto) no dourado; os de transição (grupos 3
    a 12) no vermelho, e as casas das séries com eles. Só os números das
@@ -2740,7 +2922,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v22.2';
+const VERSAO = 'v22.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -3093,7 +3275,7 @@ function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
 function recomecaMesa(i, semPouso){
   if (i === 1) SEQ.reinicia();
   else if (temMesa(i)){ SEQ.comecou = false; if (i === 2) SEQ.reinicia2(); if (i === 3) EV3.zera();
-                        if (i === 7) SERIES8.zera(); }
+                        if (i === 4) EV4.zera(); if (i === 7) SERIES8.zera(); }
   else return;
   if (semPouso) TP.reinicia(); else pousaTabela();
   setTimeout(() => VIDA.liga(), 1500);
@@ -3283,6 +3465,8 @@ function montaTabela(i){
       if (i === 2 && QUIZ3.aberto){ QUIZ3.toca(c); return; }
       /* no slide 4, nas perguntas, responde-se tocando na tabela */
       if (i === 3 && QUIZ4.ativo){ QUIZ4.tocaCarta(c); return; }
+      /* no slide 5, à espera da escolha, o toque escolhe a classe */
+      if (i === 4 && EV4.toca(c)) return;
       /* no slide 8, a carta de uma série que já desceu dá a volta dela
          (elas ficam fora do TP.todos(), e o TP.gira(z) não as acharia) */
       if (i === 7 && ehDaSerie(z)){ if (!c._voo) TP.gira(c); return; }
@@ -3774,6 +3958,9 @@ const VIDA = {
     if (this.ligada || !temMesa(atual) || (!forca && window.SEQ && window.SEQ.comecou)) return;
     /* no slide 3, depois da narração "2", também não */
     if (atual === 2 && DEPOIS_DA_2.includes(trilhaAtual)) return;
+    /* no slide 5 quem anima a mesa à espera do play são os destaques ao
+       acaso (EV4): a vida solta não entra */
+    if (atual === 4) return;
     /* nem durante o ajuste da tabela: travada é travada */
     if (window.AJUSTE && AJUSTE.ligado) return;
     this.ligada = true;
@@ -3960,7 +4147,8 @@ const TRILHAS = {
   '3.5':  'Audios/audio_tabela_3.5.mp3',   /* questão 03: o 7.º período, grupo 2 */
   '3.6':  'Audios/audio_tabela_3.6.mp3',   /* questão 04: o carrossel */
   '3.7':  'Audios/audio_tabela_3.7.mp3',   /* as questões 08 a 10: tocar no período e na família */
-  '4':    'Audios/audio_tabela_4.mp3',     /* o slide 5: os tipos (ainda por gravar) */
+  '4':    'Audios/audio_tabela_4.mp3',     /* o slide 5: os tipos — as três classes */
+  '4A':   'Audios/audio_tabela_4A.mp3',    /* escolhidos os metais */
   '5':    'Audios/audio_tabela_5.mp3',     /* o slide 6: as principais famílias (ainda por gravar) */
   '6':    'Audios/audio_tabela_6.mp3',     /* o slide 7: os grupos A e B (ainda por gravar) */
   '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
@@ -4048,7 +4236,8 @@ const ROTEIROS = {
   '3.5':  [],
   '3.6':  [],
   '3.7':  [],
-  '4':    [],
+  '4':    [],   /* o slide 5: tudo função do tempo, em EV4 */
+  '4A':   [],
   '5':    [],
   '6':    [],
   '7':    [],   /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
@@ -5039,10 +5228,14 @@ function efeitosDoTempo(){
   if (atual === 0 || stage.classList.contains('abre-capa')) efeitosCapa(t);
   botaoDaCapa(t);
   if (trilhaAtual === 'capa') DEMO.rola(t);
+  /* fora do slide 5, o play que a escolha das classes tirou volta */
+  if (atual !== 4) EV4.fora();
   /* o slide 3 tem os eventos dele */
   if (atual === 2){ efeitos2(t); return; }
   /* o slide 4 tem os eventos dele (a narração "3") */
   if (atual === 3){ efeitos3(t); return; }
+  /* e o slide 5 (a narração "4") */
+  if (atual === 4){ efeitos4(t); return; }
   if (atual !== 1 || !veu) return;
 
   /* a tela escura é da trilha "1", dos 14,8 s em diante — e continua
@@ -6488,6 +6681,248 @@ const EV3 = {
   }
 };
 function efeitos3(t){ EV3.tick(t); }
+
+/* ============================================================
+   O SLIDE 5 · OS TIPOS DE ELEMENTOS — a narração "4"
+     antes do play e até aos 10 s   destaques ao acaso: de 3 em 3 s uma
+                  carta cresce e vira o material do elemento (metal, gás,
+                  líquido, sólido); a anterior volta no mesmo instante. O
+                  terceiro é sempre o mercúrio, o metal líquido
+     12 → 13 s    "São 3 classes de elementos:", digitado
+     17 s         a sala escurece e só os metais ficam acesos; 18 s "Metais"
+     19,7 s       só os ametais; 20,6 s "Ametais", e 22,5 s "Não Metais" ao lado
+     24 s         só os gases nobres; 25,5 s "Gases Nobres"
+     30 s         apaga tudo; 32,5 s o H acende, com o brilho verde
+     40 s         tudo volta, e o toque numa classe (na carta ou no nome
+                  dela) escolhe-a: os metais tocam a "4A"
+   As luzes e a escrita são função do relógio da narração; só os destaques
+   ao acaso têm relógio próprio, porque começam antes do play.
+   ============================================================ */
+const FRASES_4 = [
+  { de:12.0, ate:13.0, txt:'São 3 classes de elementos:' },
+  { de:18.0, ate:18.5, txt:'Metais' },
+  { de:20.6, ate:21.1, txt:'Ametais' },
+  { de:22.5, ate:23.2, txt:'Não Metais' },
+  { de:25.5, ate:26.2, txt:'Gases Nobres' }
+];
+/* a narração de cada classe, tocada a escolha (as outras ainda por gravar) */
+const TRILHA_DA_CLASSE = { metais:'4A' };
+/* os gases, na cor deles: os incolores numa névoa clara, o flúor amarelo-
+   pálido, o cloro amarelo-esverdeado — e os nobres na cor da descarga
+   (o hélio pêssego, o neônio laranja, o argônio lilás…), que brilha */
+const GASES_4 = { 1:'#DCE6FF', 2:'#FFB48C', 7:'#DCE6FF', 8:'#CFE0FF', 9:'#F2E98A', 10:'#FF5A2A',
+                  17:'#C6E24A', 18:'#B57CFF', 36:'#EAF0FF', 54:'#7FB2FF', 86:'#FF7088' };
+const NOBRES_4 = [2, 10, 18, 36, 54, 86];
+/* o metal: claro, meio e escuro dos reflexos; prata para quase todos, e o
+   ouro, o cobre e o césio na cor deles */
+const METAL_4 = { prata:['#F4F6F9','#AEB6BF','#5E6772'], 79:['#FFF2B8','#E0B03A','#875A0C'],
+                  29:['#FFD9C2','#C8784A','#6A3016'], 55:['#FBF0CF','#D7BE7C','#7E6838'] };
+/* os ametais sólidos, na cor da pedra deles (os outros, no verde do bloco) */
+const SOLIDO_4 = { 5:'#5B4B3C', 6:'#3A3D42', 14:'#6D7B8E', 15:'#C9443C', 16:'#E6CF33',
+                   33:'#7B8089', 34:'#6C6F77', 52:'#9AA0A7', 53:'#4A2C69' };
+const EV4 = {
+  ate:10,                  /* os destaques ao acaso param aqui */
+  dura:3000,               /* cada destaque, em ms */
+  escolhaDe:40,
+  luzes:[ { de:17.0, ate:19.7, luz:'metais' }, { de:19.7, ate:24.0, luz:'ametais' },
+          { de:24.0, ate:30.0, luz:'nobres' }, { de:30.0, ate:32.5, luz:'nada' },
+          { de:32.5, ate:40.0, luz:'h' } ],
+  /* nas fotos do carrossel a mesa fica parada */
+  miniaturas: /miniaturas/.test(location.search),
+  dig:null, caixa:null, breu:null, real:null, conta:0, saco:[], recentes:[], desde:0,
+  escolhida:null, emEscolha:false, hOn:false,
+  mesa(){ return slides[4] && slides[4].querySelector('.mesa'); },
+  cartas(m){ return [...m.querySelectorAll('.pc:not(.serie-oculta)')]; },
+  carta(m, z){ return m.querySelector('.pc[data-z="' + z + '"]'); },
+  /* o breu, atrás da mesa, e o quadro das classes, criados uma vez */
+  prepara(){
+    if (this.dig || !slides[4]) return;
+    const m = this.mesa();
+    if (!m) return;
+    this.breu = document.createElement('div');
+    this.breu.className = 'breu4';
+    slides[4].appendChild(this.breu);
+    const cx = document.createElement('div');
+    cx.className = 'classes4';
+    cx.setAttribute('aria-live', 'polite');
+    /* no vazio acima dos metais de transição: das colunas 3 a 12, das
+       linhas 1 a 3 */
+    cx.style.left  = (xDaColuna(3) - LADO/2 + 6) + 'px';
+    cx.style.top   = (yDaLinha(1) - LADO/2 + 2) + 'px';
+    cx.style.width = (xDaColuna(12) - xDaColuna(3) + LADO - 12) + 'px';
+    m.appendChild(cx);
+    this.dig = criaDigitacao(cx, FRASES_4);
+    ['', 'metais', 'ametais', 'ametais', 'nobres'].forEach((k, i) => { if (k) cx.children[i].dataset.classe = k; });
+    cx.addEventListener('click', ev => {
+      const f = ev.target.closest && ev.target.closest('.frase[data-classe]');
+      if (f) this.escolhe(f.dataset.classe);
+    });
+    this.caixa = cx;
+  },
+  tick(t){
+    const m = this.mesa();
+    if (!m) return;
+    this.prepara();
+    const tr = trilhaAtual, d = som.duration || 0;
+    const acabou = som.ended || (d > 0 && t >= d - 0.05);
+    let luz = '', escolha = false;
+    if (tr === '4'){
+      const l = this.luzes.find(x => t >= x.de && t < x.ate);
+      if (l) luz = l.luz;
+      escolha = t >= this.escolhaDe;
+    }
+    /* a "4A" fala dos metais: eles ficam acesos; acabada, volta a escolha */
+    else if (tr === '4A'){ if (acabou) escolha = true; else luz = 'metais'; }
+    if (!escolha) this.escolhida = null;
+    else if (this.escolhida) luz = this.escolhida;
+    this.emEscolha = escolha;
+    if (m.dataset.luz !== luz){ m.dataset.luz = luz; this.caixa.dataset.luz = luz; }
+    this.breu.classList.toggle('on', !!luz);
+    /* o hidrogênio, à parte: o brilho verde */
+    const hOn = luz === 'h';
+    if (hOn !== this.hOn){
+      this.hOn = hOn;
+      const h = this.carta(m, 1);
+      if (h) h.classList.toggle('verde', hOn);
+    }
+    this.caixa.classList.toggle('escolha', escolha);
+    /* à espera da escolha, com a narração acabada, o play sai: quem faz a
+       aula seguir é o toque numa classe */
+    stage.classList.toggle('em-classes', escolha && acabou);
+    this.dig.escreve(tr === '4' ? t : tr === '4A' ? 1e3 : -1);
+    if (tr === '4' && t < this.ate && !acabou && !this.miniaturas) this.destaques(m);
+    else this.soltaRealce();
+  },
+
+  /* ---- os destaques ao acaso ---- */
+  destaques(m){
+    const agora = performance.now();
+    if (agora < this.desde || (this.real && agora < this.real.fim)) return;
+    /* o que estava volta ao normal no mesmo instante em que o outro cresce */
+    this.soltaRealce();
+    const c = this.sorteia(m);
+    if (c) this.poeRealce(c, agora);
+  },
+  materialDe(c){
+    const z = +c.dataset.z;
+    if (z === 80) return 'hg';
+    if (z === 35) return 'br';
+    if (z in GASES_4) return 'gas';
+    return c.dataset.tipo === 'metais' ? 'metal' : 'solido';
+  },
+  /* um metal, um gás, o mercúrio; e depois um saco baralhado, para todos
+     os materiais passarem (ao acaso puro, quase só sairiam metais) */
+  sorteia(m){
+    this.conta++;
+    if (this.conta === 3) return this.carta(m, 80);
+    if (!this.saco.length) this.saco = embaralha(['metal', 'gas', 'metal', 'liquido', 'gas', 'solido']);
+    const tipo = this.conta === 1 ? 'metal' : this.conta === 2 ? 'gas' : this.saco.shift();
+    const serve = c => tipo === 'liquido' ? ['hg', 'br'].includes(this.materialDe(c)) : this.materialDe(c) === tipo;
+    /* os sintéticos (do 100 em diante) ninguém viu: ficam de fora */
+    const todos = this.cartas(m).filter(c => +c.dataset.z < 100 && serve(c));
+    const novos = todos.filter(c => !this.recentes.includes(+c.dataset.z));
+    const pool = novos.length ? novos : todos;
+    return pool[Math.floor(Math.random() * pool.length)];
+  },
+  poeRealce(c, agora){
+    const z = +c.dataset.z, tipo = this.materialDe(c);
+    const el = document.createElement('div');
+    if (tipo === 'metal'){
+      const [mc, mm, me] = METAL_4[z] || METAL_4.prata;
+      c.style.setProperty('--mc', mc); c.style.setProperty('--mm', mm); c.style.setProperty('--me', me);
+      el.className = 'mat metal';
+      el.innerHTML = '<div class="brilho"></div>';
+    } else if (tipo === 'gas'){
+      c.style.setProperty('--gas', GASES_4[z]);
+      el.className = 'mat gas' + (NOBRES_4.includes(z) ? ' emite' : '');
+      el.innerHTML = '<div class="fumo"></div><div class="fumo b"></div><div class="fumo c"></div><div class="vidro"></div>';
+    } else if (tipo === 'hg' || tipo === 'br'){
+      el.className = 'mat liquido ' + tipo;
+      el.innerHTML = (tipo === 'br' ? '<div class="fumo"></div>' : '') +
+        '<div class="nivel"><div class="onda atras"></div><div class="onda"></div><div class="crista"></div></div>' +
+        (tipo === 'hg' ? '<div class="gota"></div><div class="gota b"></div>' : '') + '<div class="vidro"></div>';
+    } else {
+      const s = SOLIDO_4[z] || getComputedStyle(c).getPropertyValue('--cor').trim() || '#2E9450';
+      c.style.setProperty('--s', s);
+      el.className = 'mat solido';
+      el.innerHTML = '<div class="faisca"></div><div class="faisca b"></div><div class="faisca c"></div>';
+      /* na pedra clara (o enxofre) a letra escurece */
+      c.classList.toggle('claro', /^#/.test(s) && claridade(s) > .6);
+    }
+    c._realce4 = (c._realce4 || 0) + 1;
+    c.classList.add('realce4', 'mat-' + tipo);
+    c.querySelector('.f1').appendChild(el);
+    this.real = { c, el, tipo, fim: agora + this.dura };
+    this.recentes.push(z);
+    if (this.recentes.length > 6) this.recentes.shift();
+  },
+  soltaRealce(){
+    const r = this.real;
+    if (!r) return;
+    this.real = null;
+    r.c.classList.remove('realce4');
+    r.el.classList.add('sai');
+    const g = r.c._realce4;
+    setTimeout(() => {
+      r.el.remove();
+      if (r.c._realce4 !== g) return;     /* destacada outra vez nesse meio-tempo */
+      r.c.classList.remove('mat-' + r.tipo, 'claro');
+      ['--mc', '--mm', '--me', '--gas', '--s'].forEach(v => r.c.style.removeProperty(v));
+    }, 650);
+  },
+
+  /* ---- a escolha de uma classe ---- */
+  /* o toque numa carta: à espera da escolha, escolhe a classe dela (o H,
+     que é à parte, só dá a volta dele); fora dela, não é nada daqui */
+  toca(c){
+    if (!this.emEscolha) return false;
+    const k = c.dataset.tipo;
+    if (k === 'hidrogenio') TP.gira(c);
+    else this.escolhe(k);
+    return true;
+  },
+  escolhe(k){
+    if (!this.emEscolha || atual !== 4) return;
+    this.escolhida = k;
+    tocaEfeito('right');
+    const tr = TRILHA_DA_CLASSE[k];
+    if (!tr){ TP.diz('A narração dessa classe ainda vai ser gravada.'); return; }
+    som.pause();
+    /* a narração da classe começa logo atrás do "right", como no Saquei */
+    setTimeout(() => { if (atual === 4 && this.escolhida === k) tocaTrilha(tr); }, 250);
+  },
+  /* fora do slide, o play volta */
+  fora(){
+    if (this.real) this.soltaRealce();
+    stage.classList.remove('em-classes');
+  },
+  zera(){
+    this.real = null; this.conta = 0; this.saco = []; this.recentes = [];
+    this.escolhida = null; this.emEscolha = false; this.hOn = false;
+    /* o primeiro destaque espera a mesa pousar */
+    this.desde = performance.now() + 1600;
+    stage.classList.remove('em-classes');
+    const m = this.mesa();
+    if (!m) return;
+    m.querySelectorAll('.mat').forEach(e => e.remove());
+    m.querySelectorAll('.pc.realce4, .pc.mat-metal, .pc.mat-gas, .pc.mat-hg, .pc.mat-br, .pc.mat-solido').forEach(c => {
+      c.classList.remove('realce4', 'mat-metal', 'mat-gas', 'mat-hg', 'mat-br', 'mat-solido', 'claro');
+      ['--mc', '--mm', '--me', '--gas', '--s'].forEach(v => c.style.removeProperty(v));
+    });
+    const h = this.carta(m, 1);
+    if (h) h.classList.remove('verde');
+    m.dataset.luz = '';
+    if (this.caixa){ this.caixa.dataset.luz = ''; this.caixa.classList.remove('escolha'); }
+    if (this.breu) this.breu.classList.remove('on');
+    if (this.dig) this.dig.limpa();
+  }
+};
+/* o quanto uma cor (#rrggbb) é clara, de 0 a 1 */
+function claridade(hex){
+  const n = parseInt(hex.slice(1), 16);
+  return (0.299 * (n >> 16 & 255) + 0.587 * (n >> 8 & 255) + 0.114 * (n & 255)) / 255;
+}
+function efeitos4(t){ EV4.tick(t); }
 
 /* ============================================================
    O QUIZ DO SLIDE 4 — as perguntas das coordenadas, da "3.3" à "3.6"
@@ -10816,6 +11251,10 @@ const NAV_TOPICOS = [
   /* ---- o slide 5 · Os tipos de elementos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:4,
     entra(){ /* o recomeço do slide já é o tópico */ } },
+  { titulo:'A escolha da classe', sub:'aos 40 s da narração 4: tocar numa classe', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4', 40, g)); } },
+  { titulo:'Os metais', sub:'o começo da 4A', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4A', 0, g)); } },
   /* ---- o slide 6 · As principais famílias ---- */
   { titulo:'Início', sub:'o começo do slide', slide:5,
     entra(){ /* o recomeço do slide já é o tópico */ } },
@@ -10962,7 +11401,11 @@ function tocaDesde(id, t, g){
 
 /* em que tópico a aula está agora — é o que a gaveta acende */
 function topicoAtual(){
-  if (atual === 4) return NAV_TOPICOS.findIndex(t => t.slide === 4);
+  if (atual === 4){
+    const base = NAV_TOPICOS.findIndex(t => t.slide === 4);
+    if (trilhaAtual === '4A') return base + 2;
+    return base + (trilhaAtual === '4' && (som.currentTime || 0) >= EV4.escolhaDe ? 1 : 0);
+  }
   if (atual === 5) return NAV_TOPICOS.findIndex(t => t.slide === 5);
   if (atual === 6) return NAV_TOPICOS.findIndex(t => t.slide === 6);
   if (atual === 7) return NAV_TOPICOS.findIndex(t => t.slide === 7);

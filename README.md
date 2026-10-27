@@ -211,9 +211,24 @@ as cores do app do professor: metais no azul (o dos de transição), ametais no
 verde, gases nobres no violeta, e o hidrogênio — um ametal — no verde
 (`.mesa.tipos`, `tipoDe`). O sistema é o moderno, sem semimetais: B, Si, As e
 Te são ametais; Ge e Sb, metais. Chega-se a ele pelo Continuar do cartão da
-nota do slide 4 (ou pela navegação, "1. Início"), com o play à espera da
-narração `4` (`Audios/audio_tabela_4.mp3`, ainda por gravar) e a mesa a
-respirar até ele ser tocado.
+nota do slide 4 (ou pela navegação: "Início", "A escolha da classe" — aos
+40 s da `4` — e "Os metais" — o começo da `4A`), com o play à espera da
+narração `4` (`Audios/audio_tabela_4.mp3`). Aqui a vida solta não entra: no
+lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
+
+| Narração · tempo | O que acontece |
+|---|---|
+| antes do play e até `4` · 10 s | de 3 em 3 s uma carta cresce e vira o **material** do elemento, e a anterior volta no mesmo instante: **metal** escovado, com um brilho que passa (o ouro, o cobre e o césio na cor deles; os outros prata); **gás** num vidro escuro, a fumaça a girar na cor dele (os incolores numa névoa clara, o cloro amarelo-esverdeado; os nobres na cor da descarga, a brilhar); **líquido** a balançar num vidro — o **mercúrio** um espelho, com gotinhas a cair nele, o **bromo** vermelho-escuro com vapor castanho por cima; e os ametais **sólidos** em cristal, na cor da pedra. O 1.º é um metal, o 2.º um gás, o **3.º sempre o Hg**; depois, um saco baralhado de materiais. Os do 100 em diante ficam de fora |
+| `4` · 12 → 13 s | no vazio acima dos metais de transição, num quadro claro: "São 3 classes de elementos:", digitado |
+| `4` · 17 s | a sala escurece (em fade) e só os **metais** ficam acesos; 18 s "Metais", no azul do bloco |
+| `4` · 19,7 s | só os **ametais**; 20,6 s "Ametais" e 22,5 s, ao lado, "Não Metais", no verde |
+| `4` · 24 s | só os **gases nobres**; 25,5 s "Gases Nobres", no violeta |
+| `4` · 30 s | apaga tudo; 32,5 s o **H** acende, com o brilho verde |
+| `4` · 40 s | tudo volta (em fade), e o toque numa classe — numa carta dela ou no nome, que passa a chamar — a escolhe: a classe acende, toca o `right`, e os **metais** tocam a **`4A`** (`Audios/audio_tabela_4A.mp3`); as outras, por enquanto, avisam que a narração ainda vai ser gravada. O H só dá a volta dele. Acabada a `4`, o play sai |
+| `4A` | os metais acesos, o resto apagado; no fim, a escolha volta |
+
+Com uma classe acesa, os nomes das outras no quadro recuam também. Nas fotos do
+carrossel (`?miniaturas`) os destaques não entram.
 
 ### Slide 6 · As principais famílias — Os Alcalinos, Alcalinos-Terrosos, Calcogênios e Halogênios
 

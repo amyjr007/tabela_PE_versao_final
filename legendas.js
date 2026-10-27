@@ -223,6 +223,32 @@ var LEGENDAS = {
   "audio_tabela_4.0": [
     [0,2.7,"Tópico 4. Os tipos de elementos."]
   ],
+  "audio_tabela_4": [
+    [0,4.14,"Você sabia que só de olhar a posição de um elemento na tabela periódica"],
+    [4.14,7.34,"já dá pra saber que classe ou tipo de elemento ele é?"],
+    [7.34,13.58,"Então, de maneira geral, os elementos químicos se dividem em três grandes classes"],
+    [13.58,16.42,"e assim estão organizados na tabela periódica."],
+    [16.42,18.64,"Bem aqui estão os metais."],
+    [18.64,23.48,"Bem aqui os ametais, também chamados de não-metais."],
+    [23.48,26.36,"E aqui na ponta estão os gases nobres."],
+    [26.36,29.78,"Ah, e não podemos esquecer do hidrogênio."],
+    [30.2,31.24,"Ele é um caso à parte."],
+    [31.24,36.38,"Posicionado bem no topo, é muito difícil classificá-lo em qualquer um desses grupos"],
+    [36.38,39.06,"por ter características totalmente exclusivas."],
+    [39.06,40.6,"Perfeito!"],
+    [40.6,42.41,"Então escolha uma das classes aí"],
+    [42.41,45.68,"pra conhecermos melhor as propriedades dos seus elementos."]
+  ],
+  "audio_tabela_4A": [
+    [0,3.32,"Excelente escolha! Vamos desvendar os metais."],
+    [3.32,8.54,"Os metais formam a maior parte dos elementos da tabela periódica"],
+    [8.54,11.38,"e são facilmente reconhecidos por um conjunto"],
+    [11.38,14.48,"de propriedades físicas e químicas bem marcantes."],
+    [14.48,18.32,"Por exemplo, nas condições padrão de temperatura e pressão,"],
+    [18.32,22.85,"os metais são todos sólidos, com uma única e famosa exceção,"],
+    [22.85,25.56,"o mercúrio, que é um metal líquido."],
+    [26.38,31.24,"Aliás, parece estranha a expressão metal líquido, mas é isso mesmo."]
+  ],
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]
   ],
