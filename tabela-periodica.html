@@ -1194,6 +1194,20 @@ body.montagem .alerta4E{opacity:1!important;animation:none!important;pointer-eve
    a mesma, com o arrumaAm a mais) */
 .mesa.tipos.arrumaAm:not([data-luz=""]):not([data-luz="metais"])[data-luz] .casa{opacity:0}
 .pc.realceAm{z-index:30}
+/* na vez de um estado físico, os outros ametais apagam (a transição de
+   opacidade do anda4 faz o fade, na ida e na volta) */
+.mesa.tipos[data-luz] .pc.apagaAm{opacity:.25}
+/* "Ametais", acima da grade, quando o último pousa: entra de um desfoque,
+   como o "Metais" — mas fosco, no verde claro do bloco, sem o reflexo
+   que corre pelas letras de metal */
+.tituloAm{position:absolute;z-index:25;pointer-events:none;white-space:nowrap;
+  font-family:var(--display);font-weight:700;font-size:46px;line-height:1;letter-spacing:.03em;
+  background:linear-gradient(180deg,#B7EBC6 0%,#7FD49A 45%,#3FA866 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.55));
+  transform:translate(-50%,-50%);opacity:0;transition:opacity .4s ease}
+html.celular .tituloAm{font-size:36px}
+.tituloAm.on{animation:metalEntra 1s cubic-bezier(.2,.8,.2,1) forwards}
 /* os textos dos ametais, à esquerda, nas cores dos dos metais: o título
    no dourado, a propriedade clara, os itens prateados e para dentro */
 .propAm{position:absolute;inset:0;z-index:25;pointer-events:none}
@@ -3229,7 +3243,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v24.2';
+const VERSAO = 'v24.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5253,8 +5267,8 @@ const SEQ = {
        mercúrio); o da "4A1", à "4A2" (o da "4A2" vem do curto: EV4.cena4C) */
     else if (id === '4A') EV4.fim4A();
     else if (id === '4A1') EV4.saquei4(true);
-    /* o fim da "4B" (os ametais): o Saquei */
-    else if (id === '4B') EV4.saquei4(true);
+    /* o fim da "4B" (os ametais) e o da "4B1": o Saquei */
+    else if (id === '4B' || id === '4B1') EV4.saquei4(true);
     /* o fim da "4A4": a "4A5", se a barra já foi laminada */
     else if (id === '4A4') EV4.fim4E();
   },
@@ -7081,7 +7095,7 @@ const FRASES_AM = [
 ];
 /* na "4B1": os itens da 4B saem (o título fica), e a propriedade 2 vem
    no lugar da 1 */
-const FRASES_AM1 = [ { de:6.0, ate:10.0, txt:'2. Os ametais puros são opacos foscos' } ];
+const FRASES_AM1 = [ { de:6.0, ate:10.0, txt:'2. Os ametais puros são opacos e foscos' } ];
 /* a narração de cada classe, tocada a escolha (as outras ainda por gravar) */
 const TRILHA_DA_CLASSE = { metais:'4A', ametais:'4B' };
 /* os gases, na cor deles: os incolores numa névoa clara, o flúor amarelo-
@@ -7553,17 +7567,17 @@ const EV4 = {
     this.suja4A = false;
   },
 
-  /* ---- O "SAQUEI" do fim da "4A", da "4A1" e da "4A2" ----
+  /* ---- O "SAQUEI" do fim da "4A", da "4A1", da "4A2", da "4B" e da "4B1" ----
      O play vira o botão verde (o do slide 4); tocado, ele espoca (a bolha:
-     estouraEsegue, no tocaOuPara), toca o "right", e a narração seguinte
-     logo atrás dele. No fim da "4A" ele só vem depois de o aluno tocar no
-     mercúrio; no da "4A2", depois do curto no fio. */
+     estouraEsegue, no tocaOuPara), sem som nenhum, e a narração seguinte
+     vem logo atrás (o da "4B1" ainda não tem seguinte: só some). No fim da
+     "4A" ele só vem depois de o aluno tocar no mercúrio; no da "4A2",
+     depois do curto no fio. */
   SEGUINTE4:{ '4A':'4A1', '4A1':'4A2', '4A2':'4A3', '4A3':'4A4', '4B':'4B1' },
   saquei4(sim){ botaoVerde(sim ? 'Saquei' : null, () => this.saqueiSegue()); },
   saqueiSegue(){
     if (somBtn.classList.contains('saquei-tocado')) return;
     somBtn.classList.add('saquei-tocado');
-    tocaEfeito('right');
     const prox = this.SEGUINTE4[trilhaAtual];
     setTimeout(() => {
       this.saquei4(false);
@@ -8070,6 +8084,10 @@ const EV4 = {
       else mult = 1 + (A.grande - 1) * sobeDesce(A.br) * (1 - fimP);
       esc *= mult;
       c.classList.toggle('realceAm', mult > 1.01);
+      /* na vez dos gasosos, dos sólidos e do Br, os outros apagam (em
+         fade); acabada a narração, todos acendem */
+      const vez = t >= A.br ? 'br' : t >= A.solido ? 'solido' : t >= A.gas ? 'gas' : '';
+      c.classList.toggle('apagaAm', !!vez && !acabou && !em1 && vez !== tipo);
       c.classList.add('anda4');
       c.classList.toggle('no-ar4', p > 0 && p < 1);
       const chave = x.toFixed(1) + ',' + y.toFixed(1) + ',' + esc.toFixed(3) + ',' + sobe.toFixed(1);
@@ -8081,6 +8099,8 @@ const EV4 = {
         c.style.setProperty('--sobe', sobe.toFixed(1) + 'px');
       }
     });
+    /* "Ametais", acima da grade, quando o último pousa */
+    this.titAm.classList.toggle('on', t >= A.ate);
     this.digAm.escreve(t);
     /* na "4B1", tudo o que está escrito sai em fade, menos o título */
     [...this.propAm.children].forEach((f, i) => f.classList.toggle('fim', !!em1 && i > 0));
@@ -8158,12 +8178,20 @@ const EV4 = {
       f.style.top  = (A.textoY + dy) + 'px';
     });
     this.propAm = cx;
+    /* "Ametais", centrado acima da grade (como o "Metais" da "4A") */
+    const tit = document.createElement('div');
+    tit.className = 'tituloAm';
+    tit.textContent = 'Ametais';
+    tit.style.left = (A.x0 + (A.cols - 1) * A.passo / 2).toFixed(1) + 'px';
+    tit.style.top  = (A.y0 - LADO * A.esc / 2 - 38).toFixed(1) + 'px';
+    m.appendChild(tit);
+    this.titAm = tit;
   },
   /* fora da "4B": os ametais voltam para casa, sem material */
   desfazAm(m){
     m.classList.remove('arrumaAm');
     (this.ametais4 || []).forEach(c => {
-      c.classList.remove('anda4', 'no-ar4', 'realceAm');
+      c.classList.remove('anda4', 'no-ar4', 'realceAm', 'apagaAm');
       const casa = alvoDe(+c.dataset.z);
       c.style.left = casa.x.toFixed(1) + 'px';
       c.style.top  = casa.y.toFixed(1) + 'px';
@@ -8174,6 +8202,7 @@ const EV4 = {
     });
     if (this.digAm){
       this.digAm.limpa();
+      this.titAm.classList.remove('on');
       this.propAm.querySelectorAll('.frase.fim').forEach(f => f.classList.remove('fim'));
     }
     this.fimAm = 0;

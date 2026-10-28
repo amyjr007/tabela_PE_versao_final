@@ -235,7 +235,7 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4A` · 23 s | o Hg salta para o vazio da direita, debaixo das propriedades, e ao longo do caminho vira uma **poça de mercúrio** (`POCA4`, a do slide 4 do app do professor: o filtro "goo", a borda escura, sete gotas com mola), sem corte: o card arredonda, a letra dele apaga e ele esmaece enquanto a poça nasce no mesmo lugar e do mesmo tamanho (`--morf`). Já líquido, "Toque no metal" pisca em amarelo acima dele, até ao primeiro toque. O dedo (ou o mouse) empurra e gira as gotas, a poça abre-se ao meio, e largada volta a fundir-se |
 | `4A` · 23,5 s | embaixo da propriedade, um pouco para dentro, "Exceto o mercúrio", digitado |
 | `4A` · 29 s | "Metal líquido", digitado debaixo dele |
-| fim da `4A` | a poça fica, para mexer; o play vira o **Saquei** (verde) só depois de o aluno tocar no mercúrio; tocado, ele espoca (a bolha), o `right` e a **`4A1`** (`Audios/audio_tabela_4A1.mp3`) |
+| fim da `4A` | a poça fica, para mexer; o play vira o **Saquei** (verde) só depois de o aluno tocar no mercúrio; tocado, ele espoca (a bolha, sem som) e vem a **`4A1`** (`Audios/audio_tabela_4A1.mp3`) |
 | `4A1` · 0 s | o inverso: a poça encolhe e esmaece a caminho da casa do Hg na grade, e o card dele refaz-se lá aos poucos (os cantos e a letra voltam); "Metal líquido", "1. Os metais são sólidos" e "Exceto o mercúrio" saem em fade |
 | `4A1` · 4 s | no lugar deles, "2. Os metais têm um brilho característico", digitado |
 | `4A1` · 7 s | um brilho corre pela grade na diagonal, carta a carta |
@@ -269,18 +269,19 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | fim da `4A5` | o play sai, e tocar numa classe escolhe-a, como no fim da `4`: os ametais tocam a `4B`, os gases nobres avisam que a narração ainda vai ser gravada; os metais recomeçam a `4A` |
 | `4B` · 0 s | escolhidos os ametais (`Audios/audio_tabela_4B.mp3`): eles acesos, o resto da tabela apagado |
 | `4B` · 12 → 14,7 s | o bloco inteiro cresce (1,22×), como um só — as cartas afastam-se do meio do bloco, no pé dele, para o Ts não chegar ao play —, e volta |
-| `4B` · 15,4 → 23 s | os outros somem de todo (com os eixos, as casas das séries e os textos), e os 16 ametais saltam um a um, em arco e por número atômico, até uma grade de 4 × 4 do lado direito, maiores (1,25×) — o salto dos metais na `4A` |
+| `4B` · 15,4 → 23 s | os outros somem de todo (com os eixos, as casas das séries e os textos), e os 16 ametais saltam um a um, em arco e por número atômico, até uma grade de 4 × 4 do lado direito, maiores (1,25×) — o salto dos metais na `4A`; pousado o último, "Ametais" acima da grade, no verde claro do bloco e fosco (entra de um desfoque, como o "Metais", mas sem o reflexo) |
 | `4B` · 24 → 27 s | no lado esquerdo, "Propriedades gerais dos ametais", digitado no dourado (as cores dos textos dos metais) |
 | `4B` · 28 → 33 s | embaixo, claro, "1. São encontrados nos 3 estados físicos." |
-| `4B` · 35 s | os gasosos (N, O, F, Cl) viram **gás** e crescem um pouco (1,15×), com o halo na cor deles; "a) Alguns são gasosos.", prateado e um pouco para dentro |
+| `4B` · 35 s | os gasosos (N, O, F, Cl) viram **gás** e crescem um pouco (1,15×), com o halo na cor deles, e os outros ametais apagam (em fade; e acendem outra vez no fim da narração); "a) Alguns são gasosos.", prateado e um pouco para dentro |
 | `4B` · 40 s | os sólidos viram **sólido** (o cristal na cor da pedra, fosco: sem as faíscas) e crescem, e os gasosos voltam; "b) A maioria é sólido" |
 | `4B` · 44,5 s | o **Br** vira **líquido** e cresce (1,4×), e os sólidos voltam; "c) Somente o bromo é líquido." |
 | fim da `4B` | o Br volta ao tamanho dos outros (os materiais ficam), e o play vira o **Saquei**, que leva à **`4B1`** (`Audios/audio_tabela_4B1.mp3`) |
 | `4B1` · 0 s | a grade fica como a `4B` a deixou; os itens saem em fade, e só o título "Propriedades gerais dos ametais" fica |
-| `4B1` · 6 → 10 s | no lugar da propriedade 1, "2. Os ametais puros são opacos foscos" |
+| `4B1` · 6 → 10 s | no lugar da propriedade 1, "2. Os ametais puros são opacos e foscos" |
 | `4B1` · 15 s | à esquerda, embaixo do texto, um cubo, em fade, com o **pó de enxofre** (`poSVG`): um montinho numa bancada escura — luz de verdade sobre um relevo de ruído fino (o grão) e largo (os torrões), a borda esfarelada (dois `feDisplacementMap`), o cone claro na encosta da esquerda e escuro na da direita, grãos claros e escuros ao acaso, os grãos soltos e a poeira assentada no pé, a sombra de contato. Fosco: sem brilho especular |
 | `4B1` · 18,5 s | o cubo vira (um quarto de volta), e a face nova é o **fósforo vermelho** |
 | `4B1` · 21 s | vira outra vez: o **pó de grafite**, preto acinzentado |
+| fim da `4B1` | o play vira o **Saquei**; tocado, espoca e some (a narração seguinte ainda vai ser gravada) |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
 os nomes ganham o tom claro do próprio bloco. Nas fotos do
