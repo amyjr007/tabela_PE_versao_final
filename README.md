@@ -273,9 +273,14 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4B` · 24 → 27 s | no lado esquerdo, "Propriedades gerais dos ametais", digitado no dourado (as cores dos textos dos metais) |
 | `4B` · 28 → 33 s | embaixo, claro, "1. São encontrados nos 3 estados físicos." |
 | `4B` · 35 s | os gasosos (N, O, F, Cl) viram **gás** e crescem um pouco (1,15×), com o halo na cor deles; "a) Alguns são gasosos.", prateado e um pouco para dentro |
-| `4B` · 40 s | os sólidos viram **sólido** (o cristal na cor da pedra) e crescem, e os gasosos voltam; "b) Podem ser sólidos." |
-| `4B` · 44,5 s | o **Br** vira **líquido** e cresce (1,4×), e os sólidos voltam |
-| fim da `4B` | o Br volta ao tamanho dos outros (os materiais ficam), e o play vira o **Saquei**; a narração seguinte (`4B1`) ainda vai ser gravada |
+| `4B` · 40 s | os sólidos viram **sólido** (o cristal na cor da pedra, fosco: sem as faíscas) e crescem, e os gasosos voltam; "b) A maioria é sólido" |
+| `4B` · 44,5 s | o **Br** vira **líquido** e cresce (1,4×), e os sólidos voltam; "c) Somente o bromo é líquido." |
+| fim da `4B` | o Br volta ao tamanho dos outros (os materiais ficam), e o play vira o **Saquei**, que leva à **`4B1`** (`Audios/audio_tabela_4B1.mp3`) |
+| `4B1` · 0 s | a grade fica como a `4B` a deixou; os itens saem em fade, e só o título "Propriedades gerais dos ametais" fica |
+| `4B1` · 6 → 10 s | no lugar da propriedade 1, "2. Os ametais puros são opacos foscos" |
+| `4B1` · 15 s | à esquerda, embaixo do texto, um cubo, em fade, com o **pó de enxofre** (`poSVG`): um montinho numa bancada escura — luz de verdade sobre um relevo de ruído fino (o grão) e largo (os torrões), a borda esfarelada (dois `feDisplacementMap`), o cone claro na encosta da esquerda e escuro na da direita, grãos claros e escuros ao acaso, os grãos soltos e a poeira assentada no pé, a sombra de contato. Fosco: sem brilho especular |
+| `4B1` · 18,5 s | o cubo vira (um quarto de volta), e a face nova é o **fósforo vermelho** |
+| `4B1` · 21 s | vira outra vez: o **pó de grafite**, preto acinzentado |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
 os nomes ganham o tom claro do próprio bloco. Nas fotos do

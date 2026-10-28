@@ -312,6 +312,15 @@ var LEGENDAS = {
     [38.92,43.32,"Podem ser sólidos, como o carvão de carbono e o enxofre amarelo."],
     [43.32,49.18,"E temos até um ametal líquido, o bromo, com sua cor castanho-avermelhada marcante."]
   ],
+  "audio_tabela_4B1": [
+    [0,1.64,"Sobre os aspectos visuais."],
+    [1.64,5.62,"Se os metais chamam a atenção pelo reflexo reluzente,"],
+    [5.62,10.94,"os ametais puros são, como regra geral, opacos e sem brilho metálico."],
+    [10.94,14.34,"Eles não espelham a luz da mesma forma que os metais."],
+    [14.34,17.76,"O pó de enxofre, por exemplo, é amarelo fosco."],
+    [17.76,24.08,"O fósforo vermelho não reluz e o carbono grafite tem um tom preto acinzentado."],
+    [24.08,28.1,"São, portanto, visualmente mais discretos que os metais."]
+  ],
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]
   ],

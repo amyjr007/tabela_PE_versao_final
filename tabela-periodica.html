@@ -1205,6 +1205,19 @@ body.montagem .alerta4E{opacity:1!important;animation:none!important;pointer-eve
 .propAm .frase:nth-child(n+3){font-weight:600;font-size:26px;color:#C9D2DC}
 .propAm .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
 .propAm .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+/* os sólidos dos ametais, foscos: sem as faíscas */
+.mat.solido.fosco .faisca{display:none}
+/* A "4B1": os itens da 4B saem em fade, e a propriedade 2, clara, vem no
+   lugar da 1; o cubo dos pós à esquerda, embaixo do texto */
+.propAm .frase{transition:opacity .6s ease}
+.propAm .frase.fim{opacity:0}
+.propAm1{position:absolute;inset:0;z-index:25;pointer-events:none}
+.propAm1 .frase{position:absolute;display:none;margin:0;white-space:nowrap;line-height:1;transform:translateY(-50%);
+  font-family:var(--display);font-weight:600;font-size:28px;color:#F4F2F8;text-shadow:0 2px 4px rgba(0,0,0,.5)}
+.propAm1 .frase.on{display:block}
+.propAm1 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
+.propAm1 .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+.po4 .po-nome{font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:.02em;fill:#F4F2F8}
 
 /* OS DESTAQUES AO ACASO (antes do play e nos primeiros 10 s da "4"): a
    carta cresce e vira o material do elemento — metal escovado, gás dentro
@@ -3216,7 +3229,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v24.1';
+const VERSAO = 'v24.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4449,6 +4462,7 @@ const TRILHAS = {
   '4A4':   'Audios/audio_tabela_4A4.mp3',    /* depois do Saquei: a maleabilidade e o laminador */
   '4A5':  'Audios/audio_tabela_4A5.mp3',   /* laminada a barra: o fim dos metais */
   '4B':   'Audios/audio_tabela_4B.mp3',    /* escolhidos os ametais */
+  '4B1':  'Audios/audio_tabela_4B1.mp3',   /* depois do Saquei: opacos e foscos */
   '5':    'Audios/audio_tabela_5.mp3',     /* o slide 6: as principais famílias (ainda por gravar) */
   '6':    'Audios/audio_tabela_6.mp3',     /* o slide 7: os grupos A e B (ainda por gravar) */
   '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
@@ -4557,6 +4571,7 @@ const ROTEIROS = {
     { t:13.0,  faz(){ EV4.gaveta4E1(false); } }
   ],
   '4B':   [],   /* os ametais: tudo função do tempo, em EV4.cenaAm */
+  '4B1':  [],   /* e em EV4.cenaAm1 */
   '5':    [],
   '6':    [],
   '7':    [],   /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
@@ -7061,8 +7076,12 @@ const FRASES_AM = [
   { de:24.0, ate:27.0, txt:'Propriedades gerais dos ametais' },
   { de:28.0, ate:33.0, txt:'1. São encontrados nos 3 estados físicos.' },
   { de:35.0, ate:36.6, txt:'a) Alguns são gasosos.' },
-  { de:40.0, ate:41.5, txt:'b) Podem ser sólidos.' }
+  { de:40.0, ate:41.5, txt:'b) A maioria é sólido' },
+  { de:44.5, ate:46.5, txt:'c) Somente o bromo é líquido.' }
 ];
+/* na "4B1": os itens da 4B saem (o título fica), e a propriedade 2 vem
+   no lugar da 1 */
+const FRASES_AM1 = [ { de:6.0, ate:10.0, txt:'2. Os ametais puros são opacos foscos' } ];
 /* a narração de cada classe, tocada a escolha (as outras ainda por gravar) */
 const TRILHA_DA_CLASSE = { metais:'4A', ametais:'4B' };
 /* os gases, na cor deles: os incolores numa névoa clara, o flúor amarelo-
@@ -7180,10 +7199,14 @@ const EV4 = {
     const segura = tr === '4A4' || (tr === '4A5' && t < this.E4E.reorg);
     if (['4A', '4A1', '4A2', '4A3'].includes(tr) || segura) luz = 'metais';
     else if (tr === '4A5') escolha = acabou;
-    /* a "4B" fala dos ametais: eles ficam acesos */
-    else if (tr === '4B') luz = 'ametais';
+    /* a "4B" e a "4B1" falam dos ametais: eles ficam acesos; na "4B1" a
+       cena da "4B" fica parada no fim dela */
+    else if (tr === '4B' || tr === '4B1') luz = 'ametais';
     if (tr === '4B') this.cenaAm(m, t, acabou);
+    else if (tr === '4B1') this.cenaAm(m, 1e3, true, true);
     else if (this.sujaAm) this.desfazAm(m);
+    if (tr === '4B1') this.cenaAm1(m, t);
+    else if (this.sujaAm1) this.desfazAm1(m);
     /* a "4A2" e a "4A3" mantêm as cenas de antes paradas no fim delas */
     const depoisB = tr === '4A2' || tr === '4A3' || segura;
     /* na "4A1" a cena da "4A" fica como ela a deixou (o fim dela), e a da
@@ -7535,7 +7558,6 @@ const EV4 = {
      estouraEsegue, no tocaOuPara), toca o "right", e a narração seguinte
      logo atrás dele. No fim da "4A" ele só vem depois de o aluno tocar no
      mercúrio; no da "4A2", depois do curto no fio. */
-  /* (a dos ametais, depois da "4B", ainda por gravar) */
   SEGUINTE4:{ '4A':'4A1', '4A1':'4A2', '4A2':'4A3', '4A3':'4A4', '4B':'4B1' },
   saquei4(sim){ botaoVerde(sim ? 'Saquei' : null, () => this.saqueiSegue()); },
   saqueiSegue(){
@@ -7997,7 +8019,8 @@ const EV4 = {
     const A = this.AM4;
     return { x: A.x0 + (k % A.cols) * A.passo, y: A.y0 + Math.floor(k / A.cols) * A.passo };
   },
-  cenaAm(m, t, acabou){
+  /* em1: na "4B1" (a cena fica parada no fim, e os itens saem) */
+  cenaAm(m, t, acabou, em1){
     const A = this.AM4;
     if (!this.ametais4) this.ametais4 = this.cartas(m).filter(c => c.dataset.tipo === 'ametais')
                                            .sort((a, b) => a.dataset.z - b.dataset.z);
@@ -8019,7 +8042,7 @@ const EV4 = {
     /* a volta do Br, no fim: no relógio de verdade */
     if (acabou){ if (!this.fimAm) this.fimAm = performance.now(); }
     else this.fimAm = 0;
-    const fimP = acabou ? suave(Math.max(0, Math.min(1, (performance.now() - this.fimAm) / (A.sobe * 1000)))) : 0;
+    const fimP = em1 ? 1 : acabou ? suave(Math.max(0, Math.min(1, (performance.now() - this.fimAm) / (A.sobe * 1000)))) : 0;
     const n = this.ametais4.length, fila = (A.ate - A.de - A.salto) / Math.max(1, n - 1);
     let ig = 0, is = 0;
     this.ametais4.forEach((c, k) => {
@@ -8035,7 +8058,11 @@ const EV4 = {
       const tipo = z === 35 ? 'br' : this.GASES_AM.includes(z) ? 'gas' : 'solido';
       const de = tipo === 'br' ? A.br : tipo === 'gas' ? A.gas + (ig++) * A.onda : A.solido + (is++) * A.onda;
       const veste = t >= de;
-      if (veste && !c._matAm) c._matAm = { tipo, el: this.veste(c, tipo) };
+      if (veste && !c._matAm){
+        c._matAm = { tipo, el: this.veste(c, tipo) };
+        /* os sólidos dos ametais são foscos: sem as faíscas */
+        if (tipo === 'solido') c._matAm.el.classList.add('fosco');
+      }
       else if (!veste && c._matAm){ this.despe(c, c._matAm.el, c._matAm.tipo); c._matAm = null; }
       let mult = 1;
       if (tipo === 'gas') mult = 1 + (A.um - 1) * sobeDesce(A.gas, A.solido);
@@ -8055,7 +8082,66 @@ const EV4 = {
       }
     });
     this.digAm.escreve(t);
+    /* na "4B1", tudo o que está escrito sai em fade, menos o título */
+    [...this.propAm.children].forEach((f, i) => f.classList.toggle('fim', !!em1 && i > 0));
     this.sujaAm = true;
+  },
+
+  /* ---- A "4B1": O ASPECTO DOS AMETAIS ----
+     0 s          os itens da 4B saem em fade (o título e a grade ficam)
+     6 → 10 s     "2. Os ametais puros são opacos foscos", no lugar da 1
+     15 s         à esquerda, embaixo do texto, um cubo com o pó de enxofre,
+                  em fade
+     18,5 s       ele vira, e a face nova é o fósforo vermelho
+     21 s         vira outra vez: o pó de grafite
+     Tudo função do relógio da narração. */
+  AM1:{ cubo:15, gira:18.5, gira2:21, giraDura:0.9, cx:330, cy:470, esc:0.68 },
+  sujaAm1:false, digAm1:null, propAm1:null, cuboAm:null,
+  cenaAm1(m, t){
+    const X = this.AM1;
+    this.preparaAm1(m);
+    this.digAm1.escreve(t);
+    const cb = this.cuboAm;
+    cb.classList.toggle('on', t >= X.cubo);
+    const giro = de => { const p = Math.max(0, Math.min(1, (t - de) / X.giraDura)); return [p, p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2]; };
+    const [p1, g1] = giro(X.gira), [p2, g2] = giro(X.gira2);
+    cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 * g1 - 90 * g2).toFixed(2) + 'deg)';
+    /* parada, a face fica plana (a mesma imagem, sem o 3D) */
+    cb.classList.toggle('virou', p1 >= 1 && p2 <= 0);
+    cb.classList.toggle('virou2', p2 >= 1);
+    this.sujaAm1 = true;
+  },
+  preparaAm1(m){
+    if (this.digAm1) return;
+    const A = this.AM4, X = this.AM1;
+    const cx = document.createElement('div');
+    cx.className = 'propAm1';
+    cx.setAttribute('aria-live', 'polite');
+    m.appendChild(cx);
+    this.digAm1 = criaDigitacao(cx, FRASES_AM1);
+    const f = cx.querySelector('.frase');
+    f.style.left = A.textoX + 'px';
+    f.style.top  = (A.textoY + 48) + 'px';
+    this.propAm1 = cx;
+    const cb = document.createElement('div');
+    cb.className = 'cubo4C cuboAm';
+    cb.style.left = (X.cx - 220) + 'px';
+    cb.style.top  = (X.cy - 220) + 'px';
+    cb.style.setProperty('--esc', X.esc);
+    cb.innerHTML = '<div class="gira4">' +
+      '<div class="face4C frente">' + poSVG('enxofre') + '</div>' +
+      '<div class="face4C lado">' + poSVG('fosforo') + '</div>' +
+      '<div class="face4C tras">' + poSVG('grafite') + '</div></div>';
+    m.appendChild(cb);
+    this.cuboAm = cb;
+  },
+  desfazAm1(m){
+    if (this.digAm1){
+      this.digAm1.limpa();
+      this.cuboAm.classList.remove('on', 'virou', 'virou2');
+      this.cuboAm.querySelector('.gira4').style.transform = '';
+    }
+    this.sujaAm1 = false;
   },
   preparaAm(m){
     if (this.digAm) return;
@@ -8066,7 +8152,7 @@ const EV4 = {
     m.appendChild(cx);
     this.digAm = criaDigitacao(cx, FRASES_AM);
     /* uma debaixo da outra; os itens, um pouco para dentro */
-    [[0, 0], [0, 48], [28, 88], [28, 128]].forEach(([dx, dy], i) => {
+    [[0, 0], [0, 48], [28, 88], [28, 128], [28, 168]].forEach(([dx, dy], i) => {
       const f = cx.children[i];
       f.style.left = (A.textoX + dx) + 'px';
       f.style.top  = (A.textoY + dy) + 'px';
@@ -8086,7 +8172,10 @@ const EV4 = {
       delete c._kAm;
       if (c._matAm){ this.despe(c, c._matAm.el, c._matAm.tipo); c._matAm = null; }
     });
-    if (this.digAm) this.digAm.limpa();
+    if (this.digAm){
+      this.digAm.limpa();
+      this.propAm.querySelectorAll('.frase.fim').forEach(f => f.classList.remove('fim'));
+    }
     this.fimAm = 0;
     this.sujaAm = false;
   },
@@ -8220,6 +8309,7 @@ const EV4 = {
     stage.classList.remove('em-classes');
     const m = this.mesa();
     if (!m) return;
+    if (this.sujaAm1) this.desfazAm1(m);
     if (this.sujaAm) this.desfazAm(m);
     if (this.suja4E) this.desfaz4E(m);
     if (this.suja4D) this.desfaz4D(m);
@@ -8854,6 +8944,94 @@ function aluminioSVG(){
     '<rect x="70" y="118" width="276" height="44" rx="8" fill="#fff" filter="url(#al4-amassa)" opacity=".22"/>' +
     '<ellipse cx="346" cy="140" rx="9" ry="22" fill="#A7B0B9"/>' +
     '<ellipse cx="346" cy="140" rx="5" ry="12" fill="url(#al4-tubo)"/>' +
+  '</svg>';
+}
+
+/* OS PÓS DOS AMETAIS (a "4B1", aos 15, 18,5 e 21 s): um montinho de pó
+   numa bancada escura, e os grãos soltos em volta. O pó é luz de verdade
+   sobre um relevo de ruído fino (feDiffuseLighting): cada grão tem o lado
+   claro e o escuro, e o todo é fosco — sem o brilho especular dos metais.
+   A borda do monte desfaz-se em grão (dois feDisplacementMap: o contorno
+   irregular, e o esfarelado dele); a cor do monte vem de um degradê de
+   volume (a luz de cima à esquerda) e da sombra de contato no pé */
+const POS_AM = {
+  enxofre:{ nome:'Enxofre em pó', claro:'#FFF3A0', meio:'#E9C92C', escuro:'#8F6A08', grao:'#F2D640', seed:5 },
+  fosforo:{ nome:'Fósforo vermelho', claro:'#D9695A', meio:'#9A2B24', escuro:'#3E0A08', grao:'#A8342B', seed:11 },
+  grafite:{ nome:'Grafite em pó', claro:'#8C9097', meio:'#45484E', escuro:'#111214', grao:'#5A5E65', seed:17 }
+};
+function poSVG(tipo){
+  const P = POS_AM[tipo], id = 'po4-' + tipo;
+  /* os grãos soltos: sempre os mesmos (a sorte com semente) */
+  let s = P.seed * 7919, graos = '';
+  const sorte = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  /* ao longo do pé, mais juntos perto dele, e mais soltos (e menores) longe */
+  for (let i = 0; i < 170; i++){
+    const d = Math.pow(sorte(), 2);
+    const x = 34 + sorte() * 372, y = 328 + (sorte() - .42) * (8 + d * 44);
+    const r = .5 + sorte() * (d < .3 ? 2.1 : 1.2);
+    graos += '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="' + r.toFixed(2) + '" fill="' +
+      (sorte() < .6 ? P.grao : sorte() < .25 ? P.claro : P.escuro) + '" opacity="' + (.45 + .4 * sorte()).toFixed(2) + '"/>';
+  }
+  /* a cor de um ponto do pó, em frações, para a matriz que o pinta */
+  const rgb = h => [1, 3, 5].map(i => (parseInt(h.substr(i, 2), 16) / 255).toFixed(3));
+  const pontos = (cor, seed, corte, nome) => {
+    const [r, g, b] = rgb(cor);
+    return '<feTurbulence type="fractalNoise" baseFrequency="1.35" numOctaves="1" seed="' + seed + '" result="t' + nome + '"/>' +
+      '<feColorMatrix in="t' + nome + '" values="0 0 0 0 ' + r + '  0 0 0 0 ' + g + '  0 0 0 0 ' + b + '  ' + corte + '" result="c' + nome + '"/>' +
+      '<feComposite in="c' + nome + '" in2="borda" operator="in" result="' + nome + '"/>';
+  };
+  return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="' + P.nome + '">' +
+    '<defs>' +
+      /* a bancada: um escuro fosco, com o grão dela */
+      '<filter id="' + id + '-mesa" x="0" y="0" width="100%" height="100%">' +
+        '<feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="' + (P.seed + 1) + '" result="n"/>' +
+        '<feColorMatrix in="n" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .035 0" result="g"/>' +
+        '<feComposite in="g" in2="SourceGraphic" operator="in" result="gg"/>' +
+        '<feBlend in="gg" in2="SourceGraphic" mode="screen"/></filter>' +
+      '<radialGradient id="' + id + '-foco" cx=".5" cy=".7" r=".7">' +
+        '<stop offset="0" stop-color="#24232B"/><stop offset=".55" stop-color="#121117"/><stop offset="1" stop-color="#07060A"/></radialGradient>' +
+      /* o volume do monte, um cone iluminado de cima à esquerda: o cume e a
+         encosta da esquerda claros, a da direita no escuro */
+      '<radialGradient id="' + id + '-vol" cx=".38" cy=".02" r="1.05" fx=".36" fy="0">' +
+        '<stop offset="0" stop-color="' + P.claro + '"/><stop offset=".38" stop-color="' + P.meio + '"/>' +
+        '<stop offset="1" stop-color="' + P.escuro + '"/></radialGradient>' +
+      '<linearGradient id="' + id + '-flanco" x1=".42" y1="0" x2="1" y2=".3">' +
+        '<stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".42"/></linearGradient>' +
+      '<linearGradient id="' + id + '-pe" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient>' +
+      /* O PÓ: o contorno irregular, a borda esfarelada, e o grão iluminado */
+      '<filter id="' + id + '-po" x="-10%" y="-25%" width="120%" height="140%">' +
+        '<feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="' + P.seed + '" result="largo"/>' +
+        '<feDisplacementMap in="SourceGraphic" in2="largo" scale="22" xChannelSelector="R" yChannelSelector="G" result="forma"/>' +
+        '<feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="' + (P.seed + 2) + '" result="fino"/>' +
+        '<feDisplacementMap in="forma" in2="fino" scale="7" xChannelSelector="R" yChannelSelector="G" result="borda"/>' +
+        /* o relevo: o grão fino, e os torrões por baixo dele */
+        '<feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="3" seed="' + (P.seed + 3) + '" result="grao"/>' +
+        '<feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="3" seed="' + (P.seed + 4) + '" result="torrao"/>' +
+        '<feComposite in="grao" in2="torrao" operator="arithmetic" k1="0" k2=".8" k3=".5" k4="0" result="relevo"/>' +
+        '<feDiffuseLighting in="relevo" surfaceScale="4.2" diffuseConstant="1.2" lighting-color="#FFFFFF" result="luz">' +
+          '<feDistantLight azimuth="230" elevation="48"/></feDiffuseLighting>' +
+        '<feComposite in="borda" in2="luz" operator="arithmetic" k1="1.22" k2="0" k3="0" k4="0" result="cor0"/>' +
+        '<feComposite in="cor0" in2="borda" operator="in" result="cor"/>' +
+        /* os grãos que pegam a luz, e os que ficam na sombra: soltos, ao acaso */
+        /* (os claros, poucos e apagados: o pó é fosco, não purpurina) */
+        pontos(P.claro, P.seed + 6, '7 0 0 0 -4.95', 'claros') +
+        pontos(P.escuro, P.seed + 7, '12 0 0 0 -7.6', 'escuros') +
+        '<feMerge><feMergeNode in="cor"/><feMergeNode in="escuros"/><feMergeNode in="claros"/></feMerge></filter>' +
+      '<filter id="' + id + '-borra" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>' +
+    '</defs>' +
+    '<rect width="440" height="440" fill="url(#' + id + '-foco)" filter="url(#' + id + '-mesa)"/>' +
+    /* a sombra de contato, debaixo do monte */
+    '<ellipse cx="226" cy="330" rx="168" ry="18" fill="#000" opacity=".7" filter="url(#' + id + '-borra)"/>' +
+    /* a poeira assentada em volta do pé, na cor do pó */
+    '<ellipse cx="222" cy="330" rx="196" ry="15" fill="' + P.meio + '" opacity=".22" filter="url(#' + id + '-borra)"/>' +
+    /* o monte (o volume, o flanco da direita e o pé mais escuros), com o pó
+       por cima de tudo */
+    '<g filter="url(#' + id + '-po)">' +
+      ['vol', 'flanco', 'pe'].map(k => '<path d="M62,326 C92,312 112,282 140,258 C162,238 182,214 214,206 C246,200 268,222 290,244 C316,268 340,300 380,322 C300,340 140,342 62,326 Z" fill="url(#' + id + '-' + k + ')"/>').join('') +
+    '</g>' +
+    graos +
+    '<text class="po-nome" x="220" y="76" text-anchor="middle">' + P.nome + '</text>' +
   '</svg>';
 }
 
@@ -13353,6 +13531,8 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4A4', 0, g)); } },
   { titulo:'Os ametais', sub:'o começo da 4B', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4B', 0, g)); } },
+  { titulo:'Opacos e foscos', sub:'o começo da 4B1: os pós', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4B1', 0, g)); } },
   /* ---- o slide 6 · As principais famílias ---- */
   { titulo:'Início', sub:'o começo do slide', slide:5,
     entra(){ /* o recomeço do slide já é o tópico */ } },
@@ -13501,6 +13681,7 @@ function tocaDesde(id, t, g){
 function topicoAtual(){
   if (atual === 4){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 4);
+    if (trilhaAtual === '4B1') return base + 8;
     if (trilhaAtual === '4B') return base + 7;
     if (trilhaAtual === '4A4' || trilhaAtual === '4A5') return base + 6;
     if (trilhaAtual === '4A3') return base + 5;
