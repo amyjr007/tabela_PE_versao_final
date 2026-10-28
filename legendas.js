@@ -249,7 +249,7 @@ var LEGENDAS = {
     [22.85,25.56,"o mercúrio, que é um metal líquido."],
     [26.38,31.24,"Aliás, parece estranha a expressão metal líquido, mas é isso mesmo."]
   ],
-  "audio_tabela_4B": [
+  "audio_tabela_4A1": [
     [0,3.55,"Outra característica facilmente reconhecível dos metais"],
     [3.55,5.88,"é o que chamamos de brilho metálico."],
     [5.88,9.34,"Todo metal tem esse brilho bonito e reluzente."],
@@ -258,14 +258,14 @@ var LEGENDAS = {
     [17.18,20.06,"ou dourada, como é o caso do ouro aqui"],
     [20.06,22.96,"e do césio, que é levemente dourado."]
   ],
-  "audio_tabela_4C": [
+  "audio_tabela_4A2": [
     [0,3.63,"Outra característica fácil de perceber na prática,"],
     [3.63,7.46,"os metais são excelentes condutores de calor e eletricidade."],
     [7.46,12.46,"É exatamente por isso que nossas panelas são feitas de metal e o cabo não."],
     [12.46,17.12,"E é por isso também que usamos cobre nos fios elétricos em nossas casas."],
     [17.12,20.62,"Esse metal é um excelente condutor de eletricidade."]
   ],
-  "audio_tabela_4D": [
+  "audio_tabela_4A3": [
     [0,3.92,"As duas últimas propriedades marcantes dos metais são mecânicas."],
     [3.92,7.16,"São a ductilidade e a maleabilidade."],
     [7.16,10.46,"Primeiro, vamos falar da ductilidade."],
@@ -280,7 +280,7 @@ var LEGENDAS = {
     [45.6,46.54,"Quer ver?"],
     [46.54,53.22,"Puxe lentamente o metal pela tela através da fieira para observar a ductilidade na prática."]
   ],
-  "audio_tabela_4E": [
+  "audio_tabela_4A4": [
     [0,3.14,"Pronto, agora vamos pra maleabilidade."],
     [3.14,9.78,"A maleabilidade é a capacidade do metal de ser prensado, martelado ou deformado"],
     [9.78,13.2,"até formar lâminas ultrafinas sem se quebrar."],
@@ -291,7 +291,7 @@ var LEGENDAS = {
     [27.5,30.32,"até sair uma folha finíssima do outro lado."],
     [30.32,33.54,"Quer ver? Ligue a máquina ali pra entender esse processo."]
   ],
-  "audio_tabela_4E1": [
+  "audio_tabela_4A5": [
     [0,3.9,"Muito bem, isso só é possível graças à maleabilidade."],
     [3.9,8.72,"Tá, sobre as propriedades da classe de elementos metais, é isso."],
     [8.72,13.54,"Se quiser rever alguma propriedade, basta ir no sumário, navegar direto pra ela."],

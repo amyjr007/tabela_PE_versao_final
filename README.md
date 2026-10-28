@@ -235,7 +235,7 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4A` · 23 s | o Hg salta para o vazio da direita, debaixo das propriedades, e ao longo do caminho vira uma **poça de mercúrio** (`POCA4`, a do slide 4 do app do professor: o filtro "goo", a borda escura, sete gotas com mola), sem corte: o card arredonda, a letra dele apaga e ele esmaece enquanto a poça nasce no mesmo lugar e do mesmo tamanho (`--morf`). Já líquido, "Toque no metal" pisca em amarelo acima dele, até ao primeiro toque. O dedo (ou o mouse) empurra e gira as gotas, a poça abre-se ao meio, e largada volta a fundir-se |
 | `4A` · 23,5 s | embaixo da propriedade, um pouco para dentro, "Exceto o mercúrio", digitado |
 | `4A` · 29 s | "Metal líquido", digitado debaixo dele |
-| fim da `4A` | a poça fica, para mexer; o play vira o **Saquei** (verde) só depois de o aluno tocar no mercúrio; tocado, ele espoca (a bolha), o `right` e a **`4B`** (`Audios/audio_tabela_4B.mp3`) |
+| fim da `4A` | a poça fica, para mexer; o play vira o **Saquei** (verde) só depois de o aluno tocar no mercúrio; tocado, ele espoca (a bolha), o `right` e a **`4B`** (`Audios/audio_tabela_4A1.mp3`) |
 | `4B` · 0 s | o inverso: a poça encolhe e esmaece a caminho da casa do Hg na grade, e o card dele refaz-se lá aos poucos (os cantos e a letra voltam); "Metal líquido", "1. Os metais são sólidos" e "Exceto o mercúrio" saem em fade |
 | `4B` · 4 s | no lugar deles, "2. Os metais têm um brilho característico", digitado |
 | `4B` · 7 s | um brilho corre pela grade na diagonal, carta a carta |
@@ -243,13 +243,13 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4B` · 16 s | o **Cu** cresce, com o halo cor de cobre |
 | `4B` · 18 s | o Cu volta, e cresce o **Au** |
 | `4B` · 21 s | cresce também o **Cs** (o césio, levemente dourado); vizinhos na diagonal da grade, os dois ficam em 1,7× para caberem lado a lado |
-| fim da `4B` + 1 s | o Au e o Cs voltam; o **Saquei** (espoca) leva à **`4C`** (`Audios/audio_tabela_4C.mp3`) |
+| fim da `4B` + 1 s | o Au e o Cs voltam; o **Saquei** (espoca) leva à **`4C`** (`Audios/audio_tabela_4A2.mp3`) |
 | `4C` · 0 s | as cenas da `4A` e da `4B` ficam paradas; "2. Os metais têm um brilho característico" sai em fade |
 | `4C` · 3 → 7 s | "3. Os metais são bons condutores / de calor e eletricidade", digitado em duas linhas — **calor** incandescente (o degradê de uma brasa a correr, o halo a tremer como chama), **eletricidade** a faiscar (azul-branco, aos solavancos) |
 | `4C` · 9,5 s | no lado direito, numa face de cubo, a **panela** de aço inox com cabo de madeira: as faixas de reflexo, o escovado, o fundo em anéis, o lábio, o veio da madeira, a virola e os rebites, e um brilho que passa |
 | `4C` · 12,9 s | a narração pára 1 s, e continua |
 | `4C` · 14,5 s | a panela vira como a face de um cubo (um quarto de volta), e a face nova é a do **choque** (a face 3 do slide 4 do app do professor): o cabo com o cobre nu — sete pernas de cobre trançado, com as pontas à vista nas bocas da capa — e a barra de aço que o dedo arrasta; encostada no cobre, o arco estala, as fagulhas saltam, o clarão azul e o cubo sacode. Virada, a face fica plana (no 3D o toque atravessava) |
-| fim da `4C` | "Toque o metal no fio", a piscar em amarelo logo acima do cobre nu, até ao curto (na montagem é peça, `aviso-toque-o-metal-no-fio`, e texto editável); feito o curto, o **Saquei** (espoca), que leva à **`4D`** (`Audios/audio_tabela_4D.mp3`) |
+| fim da `4C` | "Toque o metal no fio", a piscar em amarelo logo acima do cobre nu, até ao curto (na montagem é peça, `aviso-toque-o-metal-no-fio`, e texto editável); feito o curto, o **Saquei** (espoca), que leva à **`4D`** (`Audios/audio_tabela_4A3.mp3`) |
 | `4D` · 0 s | a propriedade 3 sai em fade, e o cubo inteiro também (a interação do choque e o quadro) |
 | `4D` · 4,2 → 6 s | "Metais são dúcteis e maleáveis", digitado |
 | `4D` · 7,6 s | apaga tudo: o título "Propriedades dos metais" e essa frase (a grade, o "Metais" e o cubo ficam) |
@@ -258,12 +258,12 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4D` · 29 → 31 s | "Ductilidade:" cresce, e volta |
 | `4D` · 32 → 36 s | o cubo vira outra vez, e a face nova é a **trefiladeira**, por partes: logo o nome "Trefiladeira" (embaixo, onde estava "fieira"); aos 34 s a máquina, sem metal; aos 36 s o metal, a garra e a instrução — só então o fio se deixa puxar. A fieira, em corte: a barra de cobre à esquerda, o cone da fieira, e a ponta do fio com uma garra à direita. O dedo puxa a garra (só para a direita: o fio não volta para dentro) e o fio estica; **a barra recua só o que o volume manda** — com diâmetros 44 e 7, a razão das áreas é (7/44)² ≈ 2,5%: puxar 6,3 cm de fio encurta a barra 0,16 cm (`FIEIRA4`). A fieira é grande: um bloco de 90 × 200 na face de 440, com o cone comprido. Embaixo, a instrução "Puxe a ponta do fio lentamente" e, puxando, a conta: "Fio puxado: … cm · a barra encurtou … cm" |
 | o puxão | a velocidade é medida nos últimos 160 ms (`PUXA4`, em unidades da face por segundo): até 110 o fio estica liso; daí até 240 ele afina no meio, avermelha e avisa "Devagar! O fio está afinando…"; passado 240, **rompe** no meio — o toco fica na fieira, o pedaço com a garra salta e cai a esmaecer, toca o `rupture`, "O fio rompeu! Puxe mais devagar." — e 1,2 s depois tudo volta ao começo |
-| puxado até ao fim | `funfare`, confetes e o **Saquei** (espoca), que leva à **`4E`** (`Audios/audio_tabela_4E.mp3`) |
+| puxado até ao fim | `funfare`, confetes e o **Saquei** (espoca), que leva à **`4E`** (`Audios/audio_tabela_4A4.mp3`) |
 | `4E` · 0 s | os textos da ductilidade e o cubo da trefiladeira saem em fade (a grade e o "Metais" ficam) |
 | `4E` · 2 / 5 → 12,5 s | "Maleabilidade:", e embaixo, em duas linhas, "É a capacidade do metal de se deformar até formar lâminas ultrafinas, sem se quebrar" |
 | `4E` · 14,5 s | um cubo novo, com a **folha de papel alumínio**: o rolo deitado e a folha desenrolada, amassada com luz de verdade sobre um relevo de ruído (`aluminioSVG`) |
 | `4E` · 21 s | o cubo vira, e a face nova é o **laminador** (`LAM4`): a barra na mesa da esquerda, os dois rolos, a mesa da saída e a bobina; o botão **Ligar** (vermelho, a chamar) liga a máquina — os rolos giram, a barra entra e sai a folha finíssima, que se enrola na bobina (que cresce). O volume vale: a barra tem 36 de espessura e a folha 3, cada unidade de barra vira 12 de folha |
-| fim da `4E` | "Ligue a máquina", a piscar no alto do quadro (peça da montagem, `aviso-ligue-a-maquina`), até ser ligada; laminada a barra e acabada a narração, toca a **`4E1`** (`Audios/audio_tabela_4E1.mp3`) |
+| fim da `4E` | "Ligue a máquina", a piscar no alto do quadro (peça da montagem, `aviso-ligue-a-maquina`), até ser ligada; laminada a barra e acabada a narração, toca a **`4E1`** (`Audios/audio_tabela_4A5.mp3`) |
 | `4E1` · 11,5 → 13 s | a gaveta do sumário abre, a mãozinha desce pelas propriedades dos metais (Os metais, O brilho metálico, Calor e eletricidade, Ductilidade, Maleabilidade), e a gaveta fecha |
 | `4E1` · 14 s | o texto e o cubo saem, e a tabela volta, andando, ao estado do começo — os metais num verde claro, cada um com o ✓ de visto (e "Metais ✓" no nome da classe) |
 | fim da `4E1` | o play sai, e tocar numa classe escolhe-a, como no fim da `4`: os ametais e os gases nobres avisam que a narração ainda vai ser gravada; os metais recomeçam a `4A` |
