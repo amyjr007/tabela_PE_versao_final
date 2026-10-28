@@ -298,6 +298,20 @@ var LEGENDAS = {
     [13.54,18.08,"Ou escolha outra classe de elementos aí pra gente se aprofundar."],
     [18.08,19.1,"A escolha é sua."]
   ],
+  "audio_tabela_4B": [
+    [0,5.04,"Certo, vamos discutir os ametais, que também são chamados de não-metais."],
+    [5.04,8.68,"Enquanto os metais são a grande maioria da tabela,"],
+    [8.68,11.4,"os ametais ocupam uma faixa bem menor,"],
+    [11.4,14.64,"concentrada aqui, no canto superior direito da tabela."],
+    [14.64,18.94,"Mesmo sendo poucos, vários deles são fundamentais"],
+    [18.94,23.3,"porque formam a base das moléculas orgânicas e de toda a vida na Terra."],
+    [23.3,27.78,"Porém, ao contrário dos metais, que são quase todos sólidos,"],
+    [28.2,31.2,"os ametais são encontrados nos três estados físicos"],
+    [31.2,33.84,"nas condições padrão de temperatura e pressão."],
+    [33.84,38.92,"Podem ser gasosos, como o oxigênio que respiramos e o nitrogênio do ar."],
+    [38.92,43.32,"Podem ser sólidos, como o carvão de carbono e o enxofre amarelo."],
+    [43.32,49.18,"E temos até um ametal líquido, o bromo, com sua cor castanho-avermelhada marcante."]
+  ],
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]
   ],

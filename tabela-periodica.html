@@ -941,7 +941,7 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
 .mat.quieto .brilho{animation-iteration-count:1}
 /* O HG QUE VIRA POÇA (--morf, de 0 a 1, escrito pelo relógio): o card
    arredonda até ser uma gota, a letra dele apaga e ele esmaece, enquanto
-   a poça nasce por cima. Registrada, a --morf também transiciona: na "4B"
+   a poça nasce por cima. Registrada, a --morf também transiciona: na "4A1"
    (volta4) o card refaz-se aos poucos */
 @property --morf{syntax:'<number>';inherits:true;initial-value:0}
 /* (a opacidade do card vai no estilo dele, escrita com o --morf: a regra
@@ -953,7 +953,7 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
 .mesa.tipos .pc.anda4.hg4.volta4{transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1),
   transform .9s cubic-bezier(.4,0,.2,1), opacity .9s ease, --morf .9s ease}
 /* A POÇA DE MERCÚRIO (POCA4): segue o Hg pelo relógio, com a opacidade do
-   --morf (a transição curta alisa), e na "4B" volta para a vaga dele, a
+   --morf (a transição curta alisa), e na "4A1" volta para a vaga dele, a
    encolher e a esmaecer */
 .poca4{position:absolute;left:0;top:0;width:340px;height:180px;z-index:41;
   opacity:0;pointer-events:none;touch-action:none;
@@ -997,7 +997,7 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
              linear-gradient(0deg,transparent 46%,#fff 50%,transparent 54%),
              linear-gradient(90deg,transparent 46%,#fff 50%,transparent 54%)}
 .titulo4A.on::after{animation:faisca 1s 1.5s ease-out 1}
-/* A "4B" (EV4.cena4B): a onda de brilho pela grade (reluz4) e as cartas em
+/* A "4A1" (EV4.cena4B): a onda de brilho pela grade (reluz4) e as cartas em
    destaque (brilha4B) — o reflexo corre outra vez pela carta (outro nome de
    animação, para recomeçar), e um halo na cor do metal dela */
 .pc.reluz4{filter:brightness(1.3)}
@@ -1017,7 +1017,7 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 .prop4B .frase.on{display:block}
 .prop4B .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
 .prop4B .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
-/* A "4C" (EV4.cena4C): a propriedade 2 sai em fade, e a 3 vem digitada */
+/* A "4A2" (EV4.cena4C): a propriedade 2 sai em fade, e a 3 vem digitada */
 .prop4B .frase{transition:opacity .6s ease}
 .prop4B .frase.fim{opacity:0}
 .prop4C{position:absolute;z-index:25;pointer-events:none;margin:0;white-space:nowrap;
@@ -1071,12 +1071,12 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 .cubo4C.virou .face4C.frente{display:none}
 .cubo4C.virou .face4C.lado{transform:none}
 .cubo4C.virou .face4C.tras{display:none}
-/* o segundo giro (a "4D"): virada outra vez, só a fieira, plana */
+/* o segundo giro (a "4A3"): virada outra vez, só a fieira, plana */
 .cubo4C.virou2 .gira4{transform:none!important;transform-style:flat}
 .cubo4C.virou2 .face4C:not(.tras){display:none}
 .cubo4C.virou2 .face4C.tras{transform:none}
 .face4C.tras{transform:rotateY(180deg) translateZ(220px)}
-/* A "4D": o choque esvazia (7,6 s), e o fio desencapado vem (20 s) */
+/* A "4A3": o choque esvazia (7,6 s), e o fio desencapado vem (20 s) */
 .choque4{transition:opacity .6s ease}
 .cubo4C.apaga4D .choque4{opacity:0;pointer-events:none!important}
 .fiod4{position:absolute;inset:0;opacity:0;transition:opacity .9s ease;pointer-events:none}
@@ -1100,7 +1100,7 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 @keyframes chamaGarra{0%,100%{opacity:.9} 50%{opacity:.15}}
 /* um cubo apagado não pega o dedo em nada de dentro dele */
 .cubo4C:not(.on) *{pointer-events:none!important}
-/* A "4E": a maleabilidade (a definição quebra em duas linhas), o laminador */
+/* A "4A4": a maleabilidade (a definição quebra em duas linhas), o laminador */
 .prop4D{transition:opacity .6s ease}
 .prop4D.fim{opacity:0}
 .prop4E{position:absolute;inset:0;z-index:25;pointer-events:none;transition:opacity .6s ease}
@@ -1126,7 +1126,7 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 .cubo4E:has(.lam4.rodando){animation:vibra4 .12s linear infinite}
 @keyframes vibra4{0%,100%{translate:0 0} 25%{translate:.8px -.6px} 50%{translate:-.7px .5px} 75%{translate:.5px .7px}}
 body.montagem .alerta4E{opacity:1!important;animation:none!important;pointer-events:auto}
-/* A "4E1": a tabela volta ao lugar andando, e os metais, vistos, ficam
+/* A "4A5": a tabela volta ao lugar andando, e os metais, vistos, ficam
    verdes com o ✓ */
 .mesa.tipos.reorganiza .pc{transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1),
   transform .9s cubic-bezier(.4,0,.2,1), opacity .7s ease}
@@ -1138,7 +1138,7 @@ body.montagem .alerta4E{opacity:1!important;animation:none!important;pointer-eve
   text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.35);pointer-events:none;animation:check4 .5s var(--e-salto) both}
 @keyframes check4{from{transform:scale(0)} to{transform:scale(1)}}
 .mesa.tipos.metais-ok .classes4 .frase[data-classe="metais"] .txt::after{content:' ✓'}
-/* os textos da "4D" */
+/* os textos da "4A3" */
 .prop4C{transition:opacity .6s ease}
 .prop4C.fim{opacity:0}
 .prop4D{position:absolute;inset:0;z-index:25;pointer-events:none}
@@ -1185,6 +1185,26 @@ body.montagem .alerta4E{opacity:1!important;animation:none!important;pointer-eve
   text-shadow:0 0 14px rgba(200,214,230,.55), 0 2px 4px rgba(0,0,0,.5)}
 .liq4 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
 .liq4 .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+/* A "4B" (EV4.cenaAm): aos 15,4 s só os ametais ficam — os outros somem
+   de todo, com os eixos, as casas e os textos —, e saltam até a grade da
+   direita, como os metais na "4A" */
+.mesa.tipos.arrumaAm .pc:not([data-tipo="ametais"]){opacity:0;pointer-events:none}
+.mesa.tipos.arrumaAm[data-luz] .eixo,.mesa.tipos.arrumaAm .classes4{opacity:0}
+/* (as casas das séries apagam com a regra das classes acesas, mais forte:
+   a mesma, com o arrumaAm a mais) */
+.mesa.tipos.arrumaAm:not([data-luz=""]):not([data-luz="metais"])[data-luz] .casa{opacity:0}
+.pc.realceAm{z-index:30}
+/* os textos dos ametais, à esquerda, nas cores dos dos metais: o título
+   no dourado, a propriedade clara, os itens prateados e para dentro */
+.propAm{position:absolute;inset:0;z-index:25;pointer-events:none}
+.propAm .frase{position:absolute;display:none;margin:0;white-space:nowrap;font-family:var(--display);line-height:1;
+  transform:translateY(-50%);text-shadow:0 2px 4px rgba(0,0,0,.5)}
+.propAm .frase.on{display:block}
+.propAm .frase:nth-child(1){font-weight:700;font-size:34px;color:var(--ouro-luz)}
+.propAm .frase:nth-child(2){font-weight:600;font-size:28px;color:#F4F2F8}
+.propAm .frase:nth-child(n+3){font-weight:600;font-size:26px;color:#C9D2DC}
+.propAm .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
+.propAm .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
 
 /* OS DESTAQUES AO ACASO (antes do play e nos primeiros 10 s da "4"): a
    carta cresce e vira o material do elemento — metal escovado, gás dentro
@@ -1243,7 +1263,7 @@ body.montagem .alerta4E{opacity:1!important;animation:none!important;pointer-eve
   animation:plasma 1.9s ease-in-out infinite}
 @keyframes plasma{0%,100%{opacity:.55} 45%{opacity:1} 52%{opacity:.75} 60%{opacity:.95}}
 .pc.mat-gas .f1 :is(i,b,u,em){color:#fff;text-shadow:0 0 6px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.8)}
-.pc.realce4.mat-gas .face{box-shadow:0 0 0 1.5px rgba(255,255,255,.55), 0 12px 26px rgba(0,0,0,.4),
+.pc:is(.realce4,.realceAm).mat-gas .face{box-shadow:0 0 0 1.5px rgba(255,255,255,.55), 0 12px 26px rgba(0,0,0,.4),
   0 0 26px 6px color-mix(in srgb,var(--gas) 60%,transparent)}
 
 /* -- o LÍQUIDO: um vidro, e dentro dele o líquido a balançar — a onda
@@ -1289,7 +1309,7 @@ body.montagem .alerta4E{opacity:1!important;animation:none!important;pointer-eve
           mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.02' numOctaves='4' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 2.4 0 0 0 -.95'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E") center/100% 100%;
   filter:blur(1.5px);animation:fumoSobe 5s ease-in-out infinite alternate}
 .pc.mat-br .f1 :is(i,b,u,em){color:#fff;text-shadow:0 0 5px rgba(0,0,0,.7),0 1px 2px rgba(0,0,0,.8)}
-.pc.realce4.mat-br .face{box-shadow:0 0 0 1.5px rgba(255,200,170,.6), 0 12px 26px rgba(0,0,0,.4), 0 0 26px 6px rgba(176,60,30,.6)}
+.pc:is(.realce4,.realceAm).mat-br .face{box-shadow:0 0 0 1.5px rgba(255,200,170,.6), 0 12px 26px rgba(0,0,0,.4), 0 0 26px 6px rgba(176,60,30,.6)}
 
 /* -- o SÓLIDO (os ametais sólidos): um cristal, as facetas na cor do
    próprio elemento (o enxofre amarelo, o iodo violeta, o carbono grafite…),
@@ -1313,7 +1333,7 @@ body.montagem .alerta4E{opacity:1!important;animation:none!important;pointer-eve
 .mat.solido .faisca.c{left:46%;top:76%;width:7px;height:7px;animation-delay:1.2s}
 @keyframes faisca{0%,100%{opacity:0;transform:scale(.3) rotate(0)} 40%{opacity:1;transform:scale(1) rotate(45deg)} 60%{opacity:0;transform:scale(.4) rotate(90deg)}}
 .pc.mat-solido.claro .f1 :is(i,b,u,em){color:#2A2410;text-shadow:0 1px 0 rgba(255,255,255,.55)}
-.pc.realce4.mat-solido .face{box-shadow:0 0 0 1.5px rgba(255,255,255,.7), 0 12px 26px rgba(0,0,0,.38),
+.pc:is(.realce4,.realceAm).mat-solido .face{box-shadow:0 0 0 1.5px rgba(255,255,255,.7), 0 12px 26px rgba(0,0,0,.38),
   0 0 24px 5px color-mix(in srgb,var(--s) 60%,transparent)}
 /* O SLIDE 7 PINTA POR GRUPO A E B: os elementos principais (grupos 1, 2
    e 13 a 18, o hidrogênio junto) no dourado; os de transição (grupos 3
@@ -3196,7 +3216,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v24.0';
+const VERSAO = 'v24.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4423,11 +4443,12 @@ const TRILHAS = {
   '3.7':  'Audios/audio_tabela_3.7.mp3',   /* as questões 08 a 10: tocar no período e na família */
   '4':    'Audios/audio_tabela_4.mp3',     /* o slide 5: os tipos — as três classes */
   '4A':   'Audios/audio_tabela_4A.mp3',    /* escolhidos os metais */
-  '4B':   'Audios/audio_tabela_4A1.mp3',    /* depois do Saquei: o brilho metálico */
-  '4C':   'Audios/audio_tabela_4A2.mp3',    /* depois do Saquei: o calor e a eletricidade */
-  '4D':   'Audios/audio_tabela_4A3.mp3',    /* depois do Saquei: a ductilidade e a fieira */
-  '4E':   'Audios/audio_tabela_4A4.mp3',    /* depois do Saquei: a maleabilidade e o laminador */
-  '4E1':  'Audios/audio_tabela_4A5.mp3',   /* laminada a barra: o fim dos metais */
+  '4A1':   'Audios/audio_tabela_4A1.mp3',    /* depois do Saquei: o brilho metálico */
+  '4A2':   'Audios/audio_tabela_4A2.mp3',    /* depois do Saquei: o calor e a eletricidade */
+  '4A3':   'Audios/audio_tabela_4A3.mp3',    /* depois do Saquei: a ductilidade e a fieira */
+  '4A4':   'Audios/audio_tabela_4A4.mp3',    /* depois do Saquei: a maleabilidade e o laminador */
+  '4A5':  'Audios/audio_tabela_4A5.mp3',   /* laminada a barra: o fim dos metais */
+  '4B':   'Audios/audio_tabela_4B.mp3',    /* escolhidos os ametais */
   '5':    'Audios/audio_tabela_5.mp3',     /* o slide 6: as principais famílias (ainda por gravar) */
   '6':    'Audios/audio_tabela_6.mp3',     /* o slide 7: os grupos A e B (ainda por gravar) */
   '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
@@ -4517,16 +4538,16 @@ const ROTEIROS = {
   '3.7':  [],
   '4':    [],   /* o slide 5: tudo função do tempo, em EV4 */
   '4A':   [],
-  '4B':   [],
-  '4C':   [
+  '4A1':   [],
+  '4A2':   [
     /* aos 12,9 s a narração pára um segundo, e continua */
     { t:12.9, faz(){ EV4.pausa4C(); } }
   ],
-  '4D':   [],
-  '4E':   [],
+  '4A3':   [],
+  '4A4':   [],
   /* a gaveta do sumário abre, a mão desce pelas propriedades dos metais,
      e a gaveta fecha */
-  '4E1':  [
+  '4A5':  [
     { t:11.5,  faz(){ EV4.gaveta4E1(true); } },
     { t:11.85, faz(){ EV4.maoNoTopico(0); } },
     { t:12.1,  faz(){ EV4.maoNoTopico(1); } },
@@ -4535,6 +4556,7 @@ const ROTEIROS = {
     { t:12.85, faz(){ EV4.maoNoTopico(4); } },
     { t:13.0,  faz(){ EV4.gaveta4E1(false); } }
   ],
+  '4B':   [],   /* os ametais: tudo função do tempo, em EV4.cenaAm */
   '5':    [],
   '6':    [],
   '7':    [],   /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
@@ -5212,12 +5234,14 @@ const SEQ = {
     else if (id === '3.6') QUIZ4.coordsComeca();
     /* o fim da "3.7": as questões 08 a 10 */
     else if (id === '3.7') QUIZ4.eixosComeca();
-    /* o fim da "4A": o "Saquei", que leva à "4B" (só depois do toque no
-       mercúrio); o da "4B", à "4C" (o da "4C" vem do curto: EV4.cena4C) */
+    /* o fim da "4A": o "Saquei", que leva à "4A1" (só depois do toque no
+       mercúrio); o da "4A1", à "4A2" (o da "4A2" vem do curto: EV4.cena4C) */
     else if (id === '4A') EV4.fim4A();
+    else if (id === '4A1') EV4.saquei4(true);
+    /* o fim da "4B" (os ametais): o Saquei */
     else if (id === '4B') EV4.saquei4(true);
-    /* o fim da "4E": a "4E1", se a barra já foi laminada */
-    else if (id === '4E') EV4.fim4E();
+    /* o fim da "4A4": a "4A5", se a barra já foi laminada */
+    else if (id === '4A4') EV4.fim4E();
   },
   /* o quiz de cada trilha abre uma vez só */
   abreQuiz(id){
@@ -7017,22 +7041,30 @@ const FRASES_4A = [
   { de:23.5, ate:24.5, txt:'Exceto o mercúrio' },
   { de:29.0, ate:29.9, txt:'Metal líquido' }
 ];
-/* na "4D": a frase dos dúcteis (sai aos 7,6 s, no "apaga tudo"), e a
+/* na "4A3": a frase dos dúcteis (sai aos 7,6 s, no "apaga tudo"), e a
    ductilidade, no lugar do título e da propriedade */
 const FRASES_4D = [
   { de:4.2, ate:6.0, some:7.6, txt:'Metais são dúcteis e maleáveis' },
   { de:9.0, ate:9.8, txt:'Ductilidade:' },
   { de:12.5, ate:16.0, txt:'É a facilidade de formar fios' }
 ];
-/* na "4E": a maleabilidade, no lugar da ductilidade */
+/* na "4A4": a maleabilidade, no lugar da ductilidade */
 const FRASES_4E = [
   { de:2.0, ate:2.8, txt:'Maleabilidade:' },
   { de:5.0, ate:12.5, txt:'É a capacidade do metal de se deformar até formar lâminas ultrafinas, sem se quebrar' }
 ];
-/* na "4B", no lugar da propriedade 1 (que sai no começo dela) */
+/* na "4A1", no lugar da propriedade 1 (que sai no começo dela) */
 const FRASES_4B = [ { de:4.0, ate:5.6, txt:'2. Os metais têm um brilho característico' } ];
+/* na "4B" (os ametais): as propriedades, no lado esquerdo, nas cores das
+   dos metais — o título dourado, a propriedade clara, os itens prateados */
+const FRASES_AM = [
+  { de:24.0, ate:27.0, txt:'Propriedades gerais dos ametais' },
+  { de:28.0, ate:33.0, txt:'1. São encontrados nos 3 estados físicos.' },
+  { de:35.0, ate:36.6, txt:'a) Alguns são gasosos.' },
+  { de:40.0, ate:41.5, txt:'b) Podem ser sólidos.' }
+];
 /* a narração de cada classe, tocada a escolha (as outras ainda por gravar) */
-const TRILHA_DA_CLASSE = { metais:'4A' };
+const TRILHA_DA_CLASSE = { metais:'4A', ametais:'4B' };
 /* os gases, na cor deles: os incolores numa névoa clara, o flúor amarelo-
    pálido, o cloro amarelo-esverdeado — e os nobres na cor da descarga
    (o hélio pêssego, o neônio laranja, o argônio lilás…), que brilha */
@@ -7142,19 +7174,23 @@ const EV4 = {
     }
     /* a "4A" fala dos metais: eles ficam acesos, e a cena dela (cena4A)
        fica de pé depois do fim */
-    /* a "4E" (e a "4E1", até à reorganização) segura as cenas de antes
+    /* a "4A4" (e a "4A5", até à reorganização) segura as cenas de antes
        paradas no fim, apagadas; depois dela, a tabela volta, e no fim da
-       "4E1" a escolha das classes também */
-    const segura = tr === '4E' || (tr === '4E1' && t < this.E4E.reorg);
-    if (['4A', '4B', '4C', '4D'].includes(tr) || segura) luz = 'metais';
-    else if (tr === '4E1') escolha = acabou;
-    /* a "4C" e a "4D" mantêm as cenas de antes paradas no fim delas */
-    const depoisB = tr === '4C' || tr === '4D' || segura;
-    /* na "4B" a cena da "4A" fica como ela a deixou (o fim dela), e a da
-       "4B" corre por cima: o que ela faz crescer vem em this.mult4. Na "4C"
+       "4A5" a escolha das classes também */
+    const segura = tr === '4A4' || (tr === '4A5' && t < this.E4E.reorg);
+    if (['4A', '4A1', '4A2', '4A3'].includes(tr) || segura) luz = 'metais';
+    else if (tr === '4A5') escolha = acabou;
+    /* a "4B" fala dos ametais: eles ficam acesos */
+    else if (tr === '4B') luz = 'ametais';
+    if (tr === '4B') this.cenaAm(m, t, acabou);
+    else if (this.sujaAm) this.desfazAm(m);
+    /* a "4A2" e a "4A3" mantêm as cenas de antes paradas no fim delas */
+    const depoisB = tr === '4A2' || tr === '4A3' || segura;
+    /* na "4A1" a cena da "4A" fica como ela a deixou (o fim dela), e a da
+       "4A1" corre por cima: o que ela faz crescer vem em this.mult4. Na "4A2"
        as duas ficam paradas no fim, e a propriedade 2 sai em fade */
-    if (tr === '4B' || depoisB){
-      this.mult4 = tr === '4B' ? this.cena4B(m, t, acabou) : null;
+    if (tr === '4A1' || depoisB){
+      this.mult4 = tr === '4A1' ? this.cena4B(m, t, acabou) : null;
       this.cena4A(m, 1e3, true, true);
       if (depoisB){
         this.prepara4B(m);
@@ -7166,24 +7202,24 @@ const EV4 = {
     }
     else { this.mult4 = null; if (this.suja4B) this.desfaz4B(m); }
     if (tr === '4A') this.cena4A(m, t, acabou);
-    else if (tr !== '4B' && !depoisB && this.suja4A) this.desfaz4A(m);
-    if (tr === '4C') this.cena4C(m, t, acabou);
-    else if (tr === '4D' || segura) this.cena4C(m, 1e3, true, true);
+    else if (tr !== '4A1' && !depoisB && this.suja4A) this.desfaz4A(m);
+    if (tr === '4A2') this.cena4C(m, t, acabou);
+    else if (tr === '4A3' || segura) this.cena4C(m, 1e3, true, true);
     else if (this.suja4C) this.desfaz4C(m);
-    if (tr === '4D') this.cena4D(m, t, acabou);
+    if (tr === '4A3') this.cena4D(m, t, acabou);
     else if (segura){
-      /* o fim da "4D", apagado: os textos e o cubo da trefiladeira saem */
+      /* o fim da "4A3", apagado: os textos e o cubo da trefiladeira saem */
       this.cena4D(m, 1e3, true);
       this.prop4D.classList.add('fim');
       this.cubo4C.classList.remove('on');
       FIEIRA4.vivo = false;
     }
     else if (this.suja4D) this.desfaz4D(m);
-    if (tr === '4E' || tr === '4E1') this.cena4E(m, t, acabou, tr);
+    if (tr === '4A4' || tr === '4A5') this.cena4E(m, t, acabou, tr);
     else if (this.suja4E) this.desfaz4E(m);
     /* a volta da tabela anda (e não salta); e os metais, vistos, verdes */
-    m.classList.toggle('reorganiza', tr === '4E1');
-    if (tr === '4E1' && !segura) this.metaisOk = true;
+    m.classList.toggle('reorganiza', tr === '4A5');
+    if (tr === '4A5' && !segura) this.metaisOk = true;
     m.classList.toggle('metais-ok', this.metaisOk);
     if (!escolha) this.escolhida = null;
     else if (this.escolhida) luz = this.escolhida;
@@ -7202,7 +7238,7 @@ const EV4 = {
        aula seguir é o toque numa classe */
     stage.classList.toggle('em-classes', escolha && acabou);
     /* (nas narrações dos metais as classes estão escritas, mas escondidas
-       pela grade; na volta da tabela, na "4E1", reaparecem) */
+       pela grade; na volta da tabela, na "4A5", reaparecem) */
     this.dig.escreve(tr === '4' ? t : /^4[A-E]/.test(tr) ? 1e3 : -1);
     if (tr === '4' && t < this.ate && !acabou && !this.miniaturas) this.destaques(m);
     else this.soltaRealce();
@@ -7322,7 +7358,7 @@ const EV4 = {
     const A = this.A4, meia = LADO * A.esc / 2;
     return { x: TAB_ESQ + meia + (k % A.cols) * A.passo, y: TAB_TOPO + meia + Math.floor(k / A.cols) * A.passo };
   },
-  /* emB: na "4B" (a propriedade 1 e a exceção saem) */
+  /* emB: na "4A1" (a propriedade 1 e a exceção saem) */
   cena4A(m, t, acabou, emB){
     const A = this.A4;
     if (!this.metais4) this.metais4 = this.cartas(m).filter(c => c.dataset.tipo === 'metais')
@@ -7340,7 +7376,7 @@ const EV4 = {
       const sobe = -Math.sin(Math.PI * p) * alto;
       /* o Hg: salta para a direita e cresce, e a meio do caminho vira a
          poça de mercúrio (POCA4), que se pode tocar; fica assim depois do
-         fim, e só no Saquei (na "4B") faz o inverso e volta para a vaga */
+         fim, e só no Saquei (na "4A1") faz o inverso e volta para a vaga */
       if (+c.dataset.z === 80){
         const bruto = emB ? 0 : Math.max(0, Math.min(1, (t - A.hg) / A.hgDur)), f = suave(bruto);
         x = entre(x, A.hgX, f); y = entre(y, A.hgY, f); esc = entre(esc, A.escHg, f);
@@ -7357,7 +7393,7 @@ const EV4 = {
         this.prepara4A(m);
         this.toque4.classList.toggle('on', !emB && morf >= 1 && !POCA4.tocou);
       }
-      /* o que a "4B" faz crescer */
+      /* o que a "4A1" faz crescer */
       const mult = this.mult4 && this.mult4.get(+c.dataset.z);
       if (mult) esc *= mult;
       c.classList.add('anda4');
@@ -7387,7 +7423,7 @@ const EV4 = {
     const fr = this.liq4.querySelectorAll('.frase');
     /* "Metal líquido" fica com a poça, e sai com ela no Saquei */
     fr[3].classList.toggle('fim', !!emB);
-    /* na "4B", a propriedade 1 e a exceção dela saem em fade */
+    /* na "4A1", a propriedade 1 e a exceção dela saem em fade */
     fr[1].classList.toggle('fim', !!emB);
     fr[2].classList.toggle('fim', !!emB);
     this.suja4A = true;
@@ -7395,7 +7431,7 @@ const EV4 = {
   /* A POÇA SEGUE O HG: no mesmo lugar do card e do tamanho dele (o corpo
      do mercúrio, com as gotas juntas, tem ~110 do desenho de largura: a
      escala é a do card × 62/110), e a opacidade é a do morf; as gotas
-     começam juntas no meio e espalham-se com ele. Na "4B", o inverso: ela
+     começam juntas no meio e espalham-se com ele. Na "4A1", o inverso: ela
      encolhe e esmaece a caminho da vaga do Hg, e o card volta a aparecer. */
   pocaSegue(m, x, y, morf, emB, vaga, esc){
     const el = POCA4.cria(m), cabe = LADO / 110;
@@ -7494,12 +7530,13 @@ const EV4 = {
     this.suja4A = false;
   },
 
-  /* ---- O "SAQUEI" do fim da "4A", da "4B" e da "4C" ----
+  /* ---- O "SAQUEI" do fim da "4A", da "4A1" e da "4A2" ----
      O play vira o botão verde (o do slide 4); tocado, ele espoca (a bolha:
      estouraEsegue, no tocaOuPara), toca o "right", e a narração seguinte
      logo atrás dele. No fim da "4A" ele só vem depois de o aluno tocar no
-     mercúrio; no da "4C", depois do curto no fio. */
-  SEGUINTE4:{ '4A':'4B', '4B':'4C', '4C':'4D', '4D':'4E' },
+     mercúrio; no da "4A2", depois do curto no fio. */
+  /* (a dos ametais, depois da "4B", ainda por gravar) */
+  SEGUINTE4:{ '4A':'4A1', '4A1':'4A2', '4A2':'4A3', '4A3':'4A4', '4B':'4B1' },
   saquei4(sim){ botaoVerde(sim ? 'Saquei' : null, () => this.saqueiSegue()); },
   saqueiSegue(){
     if (somBtn.classList.contains('saquei-tocado')) return;
@@ -7519,7 +7556,7 @@ const EV4 = {
   /* a "4A" acabou? (também quando o app reabre parado no fim dela) */
   acabou4A(){ return trilhaAtual === '4A' && (som.ended || (!!som.duration && som.currentTime >= som.duration - .05)); },
 
-  /* ---- A "4B": O BRILHO METÁLICO ----
+  /* ---- A "4A1": O BRILHO METÁLICO ----
      0 s        a propriedade 1 (e a exceção dela) sai em fade
      4 s        "2. Os metais têm um brilho característico", digitado no
                 lugar dela
@@ -7621,7 +7658,7 @@ const EV4 = {
     this.suja4B = false;
   },
 
-  /* ---- A "4C": O CALOR E A ELETRICIDADE ----
+  /* ---- A "4A2": O CALOR E A ELETRICIDADE ----
      0 s          a propriedade 2 sai em fade
      3 → 7 s      "3. Os metais são bons condutores / de calor e
                   eletricidade", digitado — "calor" incandescente,
@@ -7640,7 +7677,7 @@ const EV4 = {
   /* o texto, em partes: as duas palavras com o efeito delas */
   PARTES_4C:[ { t:'3. Os metais são bons condutores' }, { br:true }, { t:'de ' },
               { t:'calor', c:'calor4' }, { t:' e ' }, { t:'eletricidade', c:'eletrico4' } ],
-  /* emD: na "4D" (o texto fica escrito; o giro, o choque, o aviso e o
+  /* emD: na "4A3" (o texto fica escrito; o giro, o choque, o aviso e o
      Saquei passam a ser da cena4D) */
   cena4C(m, t, acabou, emD){
     const C = this.C4;
@@ -7723,7 +7760,7 @@ const EV4 = {
     clearTimeout(this.pausaT4);
     som.pause();
     this.pausaT4 = setTimeout(() => {
-      if (atual === 4 && trilhaAtual === '4C' && som.paused) som.play().catch(avisaSeNaoTocou);
+      if (atual === 4 && trilhaAtual === '4A2' && som.paused) som.play().catch(avisaSeNaoTocou);
     }, 1000);
   },
   desfaz4C(m){
@@ -7741,7 +7778,7 @@ const EV4 = {
     this.suja4C = false;
   },
 
-  /* ---- A "4D": A DUCTILIDADE ----
+  /* ---- A "4A3": A DUCTILIDADE ----
      0 s          a propriedade 3 sai em fade
      4,2 → 6 s    "Metais são dúcteis e maleáveis", digitado
      (o cubo inteiro, com o choque e o quadro, sai em fade logo no começo)
@@ -7770,10 +7807,10 @@ const EV4 = {
     this.liq4.querySelector('.frase').classList.toggle('fim', t >= D.apaga);
     this.dig4D.escreve(t);
     this.prop4D.querySelectorAll('.frase')[1].classList.toggle('cresce', t >= D.cresce && t < D.volta);
-    /* o choque sai em fade logo no começo da "4D"; e aos 20 s o fio vem */
+    /* o choque sai em fade logo no começo da "4A3"; e aos 20 s o fio vem */
     cb.classList.add('apaga4D');
     cb.classList.toggle('fio4D', t >= D.fio);
-    /* os dois giros: o primeiro já foi (na "4C"); o segundo, aqui */
+    /* os dois giros: o primeiro já foi (na "4A2"); o segundo, aqui */
     const p = Math.max(0, Math.min(1, (t - D.gira) / D.giraDura));
     const g = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
     cb.classList.toggle('virou', p <= 0);
@@ -7825,20 +7862,20 @@ const EV4 = {
     this.suja4D = false;
   },
 
-  /* ---- A "4E": A MALEABILIDADE, e a "4E1": o fim dos metais ----
-     4E · 0 s       os textos da ductilidade e o cubo da trefiladeira saem
+  /* ---- A "4A4": A MALEABILIDADE, e a "4A5": o fim dos metais ----
+     4A4 · 0 s       os textos da ductilidade e o cubo da trefiladeira saem
                     em fade (a grade e o "Metais" ficam)
-     4E · 2 s       "Maleabilidade:"; 5 → 12,5 s, embaixo, a definição
-     4E · 14,5 s    um cubo novo, com a folha de papel alumínio
-     4E · 21 s      ele vira, e a face nova é o LAMINADOR (LAM4): ligado,
+     4A4 · 2 s       "Maleabilidade:"; 5 → 12,5 s, embaixo, a definição
+     4A4 · 14,5 s    um cubo novo, com a folha de papel alumínio
+     4A4 · 21 s      ele vira, e a face nova é o LAMINADOR (LAM4): ligado,
                     os rolos esmagam a barra e sai a folha finíssima
-     fim da 4E      "Ligue a máquina", até ser ligada; laminada a barra (e
-                    acabada a narração), toca a "4E1"
-     4E1 · 11,5 s   a gaveta do sumário abre, e a mão percorre as
+     fim da 4A4     "Ligue a máquina", até ser ligada; laminada a barra (e
+                    acabada a narração), toca a "4A5"
+     4A5 · 11,5 s   a gaveta do sumário abre, e a mão percorre as
                     propriedades dos metais; 13 s fecha (marcas do roteiro)
-     4E1 · 14 s     tudo sai, e a tabela volta ao estado de começo — os
+     4A5 · 14 s     tudo sai, e a tabela volta ao estado de começo — os
                     metais verdes, com o ✓ de vistos
-     fim da 4E1     tocar numa classe escolhe-a (como no fim da "4") */
+     fim da 4A5     tocar numa classe escolhe-a (como no fim da "4") */
   E4E:{ titulo:2, texto:5, cubo:14.5, gira:21, giraDura:0.9, reorg:14 },
   NAV4E1:[ 'Os metais', 'O brilho metálico', 'Calor e eletricidade', 'Ductilidade', 'Maleabilidade' ],
   suja4E:false, dig4E:null, prop4E:null, cubo4E:null, alerta4E:null, metaisOk:false,
@@ -7846,7 +7883,7 @@ const EV4 = {
     const E = this.E4E;
     this.prepara4E(m);
     const cb = this.cubo4E;
-    if (tr === '4E'){
+    if (tr === '4A4'){
       this.dig4E.escreve(t);
       this.prop4E.classList.remove('fim');
       cb.classList.toggle('on', t >= E.cubo);
@@ -7856,7 +7893,7 @@ const EV4 = {
       cb.classList.toggle('virou', p >= 1);
       this.alerta4E.classList.toggle('on', acabou && !LAM4.feito && !LAM4.rodando);
     } else {
-      /* a "4E1": a máquina já laminou; aos 14 s, tudo sai */
+      /* a "4A5": a máquina já laminou; aos 14 s, tudo sai */
       LAM4.mostraFeito();
       this.dig4E.escreve(1e3);
       const sai = t >= E.reorg;
@@ -7902,15 +7939,15 @@ const EV4 = {
     m.appendChild(al);
     this.alerta4E = al;
   },
-  /* a barra laminada: a "4E1", se a narração da "4E" já acabou (senão,
+  /* a barra laminada: a "4A5", se a narração da "4A4" já acabou (senão,
      quando ela acabar: SEQ.acabou) */
   laminou(){
     this.alerta4E.classList.remove('on');
-    if (atual === 4 && trilhaAtual === '4E' && (som.ended || (som.duration && som.currentTime >= som.duration - .05)))
-      setTimeout(() => { if (atual === 4 && trilhaAtual === '4E') tocaTrilha('4E1'); }, 700);
+    if (atual === 4 && trilhaAtual === '4A4' && (som.ended || (som.duration && som.currentTime >= som.duration - .05)))
+      setTimeout(() => { if (atual === 4 && trilhaAtual === '4A4') tocaTrilha('4A5'); }, 700);
   },
-  fim4E(){ if (LAM4.feito) tocaTrilha('4E1'); },
-  /* a gaveta do sumário e a mão, nas marcas da "4E1" */
+  fim4E(){ if (LAM4.feito) tocaTrilha('4A5'); },
+  /* a gaveta do sumário e a mão, nas marcas da "4A5" */
   gaveta4E1(abre){
     if (atual !== 4) return;
     if (abre) abreNav(); else { fechaNav(); tiraMao(); }
@@ -7931,6 +7968,127 @@ const EV4 = {
       LAM4.zera();
     }
     this.suja4E = false;
+  },
+
+  /* ---- A "4B": OS AMETAIS ----
+     0 s          a escolha: os ametais acesos, o resto da tabela escuro
+     12 → 14,7 s  o bloco inteiro cresce, como um só, e volta
+     15,4 → 23 s  os outros somem (os textos também), e os ametais saltam
+                  um a um, por número atômico, até uma grade do lado direito
+                  (o mesmo salto dos metais na "4A")
+     24 → 27 s    "Propriedades gerais dos ametais", no lado esquerdo;
+                  28 → 33 s, embaixo, a propriedade 1
+     35 s         os gasosos viram gás e crescem um pouco; "a) Alguns são
+                  gasosos."
+     40 s         os sólidos viram sólido e crescem, os gasosos voltam;
+                  "b) Podem ser sólidos."
+     44,5 s       o Br vira líquido e cresce, os sólidos voltam
+     fim          o Br volta (os materiais ficam), e o play vira o Saquei
+     Tudo função do relógio da narração; só a volta do Br no fim (o tempo
+     já não anda) vai no relógio de verdade. */
+  AM4:{ cresce:12, volta:14.7, bloco:1.22, de:15.4, ate:23, salto:1.0,
+        gas:35, solido:40, br:44.5, sobe:0.5, onda:0.05, um:1.15, grande:1.4,
+        /* a grade: 4 por linha, à direita (x0, y0: o centro da primeira
+           vaga); o texto, à esquerda, na altura do dos metais */
+        cols:4, passo:96, esc:1.25, x0:816, y0:276, textoX:64, textoY:174 },
+  GASES_AM:[7, 8, 9, 17],
+  ametais4:null, sujaAm:false, digAm:null, propAm:null, fimAm:0,
+  vagaAm(k){
+    const A = this.AM4;
+    return { x: A.x0 + (k % A.cols) * A.passo, y: A.y0 + Math.floor(k / A.cols) * A.passo };
+  },
+  cenaAm(m, t, acabou){
+    const A = this.AM4;
+    if (!this.ametais4) this.ametais4 = this.cartas(m).filter(c => c.dataset.tipo === 'ametais')
+                                           .sort((a, b) => a.dataset.z - b.dataset.z);
+    this.preparaAm(m);
+    m.classList.toggle('arrumaAm', t >= A.de);
+    const suave = p => p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
+    const entre = (a, b, f) => a + (b - a) * f;
+    const sobeDesce = (de, ate) => {   /* sobe em 'sobe' s a partir de 'de', e desce a partir de 'ate' */
+      const sob = suave(Math.max(0, Math.min(1, (t - de) / A.sobe)));
+      const des = ate === undefined ? 0 : suave(Math.max(0, Math.min(1, (t - ate) / A.sobe)));
+      return sob * (1 - des);
+    };
+    /* o bloco cresce como um só: as cartas afastam-se do ponto fixo na
+       mesma proporção em que crescem. O ponto é o meio do bloco em x
+       (coluna 15) e o pé dele em y (entre as linhas 6 e 7): cresce para
+       cima, e o Ts não chega ao play */
+    const bloco = 1 + (A.bloco - 1) * sobeDesce(A.cresce, A.volta - A.sobe);
+    const bx = xDaColuna(15), by = (yDaLinha(6) + yDaLinha(7)) / 2;
+    /* a volta do Br, no fim: no relógio de verdade */
+    if (acabou){ if (!this.fimAm) this.fimAm = performance.now(); }
+    else this.fimAm = 0;
+    const fimP = acabou ? suave(Math.max(0, Math.min(1, (performance.now() - this.fimAm) / (A.sobe * 1000)))) : 0;
+    const n = this.ametais4.length, fila = (A.ate - A.de - A.salto) / Math.max(1, n - 1);
+    let ig = 0, is = 0;
+    this.ametais4.forEach((c, k) => {
+      const z = +c.dataset.z, casa = alvoDe(z), vaga = this.vagaAm(k);
+      const x0 = bx + (casa.x - bx) * bloco, y0 = by + (casa.y - by) * bloco;
+      /* o salto: um arco da casa até a vaga, mais alto quanto mais longe */
+      const p = Math.max(0, Math.min(1, (t - A.de - k * fila) / A.salto)), e = suave(p);
+      const x = entre(x0, vaga.x, e), y = entre(y0, vaga.y, e);
+      let esc = entre(bloco, A.esc, e);
+      const alto = Math.min(150, 50 + 0.12 * Math.hypot(vaga.x - casa.x, vaga.y - casa.y));
+      const sobe = -Math.sin(Math.PI * p) * alto;
+      /* o material de cada um, na vez dele (numa onda curta), e o crescer */
+      const tipo = z === 35 ? 'br' : this.GASES_AM.includes(z) ? 'gas' : 'solido';
+      const de = tipo === 'br' ? A.br : tipo === 'gas' ? A.gas + (ig++) * A.onda : A.solido + (is++) * A.onda;
+      const veste = t >= de;
+      if (veste && !c._matAm) c._matAm = { tipo, el: this.veste(c, tipo) };
+      else if (!veste && c._matAm){ this.despe(c, c._matAm.el, c._matAm.tipo); c._matAm = null; }
+      let mult = 1;
+      if (tipo === 'gas') mult = 1 + (A.um - 1) * sobeDesce(A.gas, A.solido);
+      else if (tipo === 'solido') mult = 1 + (A.um - 1) * sobeDesce(A.solido, A.br);
+      else mult = 1 + (A.grande - 1) * sobeDesce(A.br) * (1 - fimP);
+      esc *= mult;
+      c.classList.toggle('realceAm', mult > 1.01);
+      c.classList.add('anda4');
+      c.classList.toggle('no-ar4', p > 0 && p < 1);
+      const chave = x.toFixed(1) + ',' + y.toFixed(1) + ',' + esc.toFixed(3) + ',' + sobe.toFixed(1);
+      if (c._kAm !== chave){
+        c._kAm = chave;
+        c.style.left = x.toFixed(1) + 'px';
+        c.style.top  = y.toFixed(1) + 'px';
+        c.style.setProperty('--onda', esc.toFixed(3));
+        c.style.setProperty('--sobe', sobe.toFixed(1) + 'px');
+      }
+    });
+    this.digAm.escreve(t);
+    this.sujaAm = true;
+  },
+  preparaAm(m){
+    if (this.digAm) return;
+    const A = this.AM4;
+    const cx = document.createElement('div');
+    cx.className = 'propAm';
+    cx.setAttribute('aria-live', 'polite');
+    m.appendChild(cx);
+    this.digAm = criaDigitacao(cx, FRASES_AM);
+    /* uma debaixo da outra; os itens, um pouco para dentro */
+    [[0, 0], [0, 48], [28, 88], [28, 128]].forEach(([dx, dy], i) => {
+      const f = cx.children[i];
+      f.style.left = (A.textoX + dx) + 'px';
+      f.style.top  = (A.textoY + dy) + 'px';
+    });
+    this.propAm = cx;
+  },
+  /* fora da "4B": os ametais voltam para casa, sem material */
+  desfazAm(m){
+    m.classList.remove('arrumaAm');
+    (this.ametais4 || []).forEach(c => {
+      c.classList.remove('anda4', 'no-ar4', 'realceAm');
+      const casa = alvoDe(+c.dataset.z);
+      c.style.left = casa.x.toFixed(1) + 'px';
+      c.style.top  = casa.y.toFixed(1) + 'px';
+      c.style.removeProperty('--onda');
+      c.style.removeProperty('--sobe');
+      delete c._kAm;
+      if (c._matAm){ this.despe(c, c._matAm.el, c._matAm.tipo); c._matAm = null; }
+    });
+    if (this.digAm) this.digAm.limpa();
+    this.fimAm = 0;
+    this.sujaAm = false;
   },
 
   /* ---- O CHOQUE (a face 3 do app do professor) ----
@@ -8062,6 +8220,7 @@ const EV4 = {
     stage.classList.remove('em-classes');
     const m = this.mesa();
     if (!m) return;
+    if (this.sujaAm) this.desfazAm(m);
     if (this.suja4E) this.desfaz4E(m);
     if (this.suja4D) this.desfaz4D(m);
     if (this.suja4C) this.desfaz4C(m);
@@ -8226,7 +8385,7 @@ const POCA4 = {
 };
 
 /* ============================================================
-   A PANELA (a "4C", aos 9,5 s): aço inox visto de três quartos, numa
+   A PANELA (a "4A2", aos 9,5 s): aço inox visto de três quartos, numa
    face de 440 × 440. A parede tem as faixas de reflexo de um metal polido
    (o degradê horizontal) e o sombreado de cima para baixo; o fundo de
    dentro, o escovado em anéis (um degradê radial que se repete); a borda,
@@ -8418,7 +8577,7 @@ function arco4HTML(x, y, yBarra){
   return s;
 }
 
-/* O FIO DESENCAPADO (a "4D", aos 20 s): o cabo de um eletrodoméstico,
+/* O FIO DESENCAPADO (a "4A3", aos 20 s): o cabo de um eletrodoméstico,
    cortado, com as pernas finas de cobre a abrirem-se na ponta */
 function fioDescascadoSVG(){
   let pernas = '';
@@ -8445,7 +8604,7 @@ function fioDescascadoSVG(){
   '</svg>';
 }
 
-/* A FIEIRA (a "4D", aos 31,5 s), em corte: a barra grossa de cobre entra
+/* A FIEIRA (a "4A3", aos 31,5 s), em corte: a barra grossa de cobre entra
    pela esquerda, afina no cone da fieira e sai fio do outro lado. O dedo
    puxa a ponta do fio (só para a direita: o fio não volta para dentro),
    e A BARRA RECUA SÓ O QUE O VOLUME MANDA — o que sai em fio é o que a
@@ -8474,7 +8633,7 @@ function fieiraSVG(){
         '<rect width="1.2" height="7" fill="#1E242B" fill-opacity=".35"/></pattern>' +
       '<filter id="fr4-borra"><feGaussianBlur stdDeviation="6"/></filter>' +
     '</defs>' +
-    /* POR PARTES (a "4D"): a máquina (fr-maq) aos 34 s, o metal e o resto
+    /* POR PARTES (a "4A3"): a máquina (fr-maq) aos 34 s, o metal e o resto
        (fr-met) aos 36 s; o nome, desde a virada. O metal fica por baixo
        do aço: daí as duas camadas de cada um */
     '<g class="fr-maq"><ellipse cx="220" cy="' + (cy + F.H + 16) + '" rx="190" ry="9" fill="#000" opacity=".4" filter="url(#fr4-borra)"/></g>' +
@@ -8663,7 +8822,7 @@ const FIEIRA4 = {
   }
 };
 
-/* A FOLHA DE PAPEL ALUMÍNIO (a "4E", aos 14,5 s): o rolo deitado e a folha
+/* A FOLHA DE PAPEL ALUMÍNIO (a "4A4", aos 14,5 s): o rolo deitado e a folha
    que se desenrola. O amassado é luz de verdade sobre um relevo de ruído
    (feDiffuseLighting e feSpecularLighting): cada vinco tem o lado claro
    e o escuro, como no alumínio da cozinha */
@@ -8698,7 +8857,7 @@ function aluminioSVG(){
   '</svg>';
 }
 
-/* O LAMINADOR (a "4E", aos 21 s), visto de lado: a barra grossa na mesa
+/* O LAMINADOR (a "4A4", aos 21 s), visto de lado: a barra grossa na mesa
    da esquerda, os dois rolos que a esmagam, e a folha que sai do outro
    lado e se enrola na bobina. O VOLUME VALE AQUI TAMBÉM: a barra tem 36 de
    espessura e a folha 3 — cada unidade de barra que entra vira 12 de
@@ -8830,7 +8989,7 @@ const LAM4 = {
     s.querySelector('.lm-bt-luz').setAttribute('fill', this.rodando ? '#2BD66B' : this.feito ? '#6B7480' : '#D62B2B');
     s.querySelector('.lm-bt-txt').textContent = this.rodando ? 'LIGADO' : this.feito ? 'PRONTO' : 'LIGAR';
   },
-  /* já laminado (a "4E1", ou a volta do app): a barra toda em folha */
+  /* já laminado (a "4A5", ou a volta do app): a barra toda em folha */
   mostraFeito(){
     if (this.feito || this.rodando) return;
     this.feito = true;
@@ -13184,14 +13343,16 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4', 40, g)); } },
   { titulo:'Os metais', sub:'o começo da 4A', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4A', 0, g)); } },
-  { titulo:'O brilho metálico', sub:'o começo da 4B', slide:4,
+  { titulo:'O brilho metálico', sub:'o começo da 4A1', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4A1', 0, g)); } },
+  { titulo:'Calor e eletricidade', sub:'o começo da 4A2', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4A2', 0, g)); } },
+  { titulo:'Ductilidade', sub:'o começo da 4A3: a fieira', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4A3', 0, g)); } },
+  { titulo:'Maleabilidade', sub:'o começo da 4A4: o laminador', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4A4', 0, g)); } },
+  { titulo:'Os ametais', sub:'o começo da 4B', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4B', 0, g)); } },
-  { titulo:'Calor e eletricidade', sub:'o começo da 4C', slide:4,
-    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4C', 0, g)); } },
-  { titulo:'Ductilidade', sub:'o começo da 4D: a fieira', slide:4,
-    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4D', 0, g)); } },
-  { titulo:'Maleabilidade', sub:'o começo da 4E: o laminador', slide:4,
-    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4E', 0, g)); } },
   /* ---- o slide 6 · As principais famílias ---- */
   { titulo:'Início', sub:'o começo do slide', slide:5,
     entra(){ /* o recomeço do slide já é o tópico */ } },
@@ -13340,10 +13501,11 @@ function tocaDesde(id, t, g){
 function topicoAtual(){
   if (atual === 4){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 4);
-    if (trilhaAtual === '4E' || trilhaAtual === '4E1') return base + 6;
-    if (trilhaAtual === '4D') return base + 5;
-    if (trilhaAtual === '4C') return base + 4;
-    if (trilhaAtual === '4B') return base + 3;
+    if (trilhaAtual === '4B') return base + 7;
+    if (trilhaAtual === '4A4' || trilhaAtual === '4A5') return base + 6;
+    if (trilhaAtual === '4A3') return base + 5;
+    if (trilhaAtual === '4A2') return base + 4;
+    if (trilhaAtual === '4A1') return base + 3;
     if (trilhaAtual === '4A') return base + 2;
     return base + (trilhaAtual === '4' && (som.currentTime || 0) >= EV4.escolhaDe ? 1 : 0);
   }
