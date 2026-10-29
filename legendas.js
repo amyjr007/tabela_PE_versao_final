@@ -300,18 +300,19 @@ var LEGENDAS = {
     [22.2,26.2,"No mais, vamos pra outra classe de elementos. Escolha outra aí."]
   ],
   "audio_tabela_4B": [
-    [0,5.04,"Certo, vamos discutir os ametais, que também são chamados de não-metais."],
-    [5.04,8.68,"Enquanto os metais são a grande maioria da tabela,"],
-    [8.68,11.4,"os ametais ocupam uma faixa bem menor,"],
-    [11.4,14.64,"concentrada aqui, no canto superior direito da tabela."],
-    [14.64,18.94,"Mesmo sendo poucos, vários deles são fundamentais"],
-    [18.94,23.3,"porque formam a base das moléculas orgânicas e de toda a vida na Terra."],
-    [23.3,27.78,"Porém, ao contrário dos metais, que são quase todos sólidos,"],
-    [28.2,31.2,"os ametais são encontrados nos três estados físicos"],
-    [31.2,33.84,"nas condições padrão de temperatura e pressão."],
-    [33.84,38.92,"Podem ser gasosos, como o oxigênio que respiramos e o nitrogênio do ar."],
-    [38.92,43.32,"Podem ser sólidos, como o carvão de carbono e o enxofre amarelo."],
-    [43.32,49.18,"E temos até um ametal líquido, o bromo, com sua cor castanho-avermelhada marcante."]
+    [0,5.06,"Certo, vamos discutir os ametais, que também chamados de não-metais."],
+    [5.06,8.8,"Enquanto os metais são a grande maioria da tabela,"],
+    [8.8,11.6,"os ametais ocupam uma faixa bem menor,"],
+    [11.6,14.9,"concentrada aqui, no canto superior direito da tabela."],
+    [14.9,19.12,"Mesmo sendo poucos, vários deles são fundamentais"],
+    [19.12,23.36,"porque formam a base das moléculas orgânicas e de toda a vida na Terra."],
+    [23.36,27.84,"Porém, ao contrário dos metais, que são quase todos sólidos,"],
+    [28.22,31.26,"os ametais são encontrados nos três estados físicos"],
+    [31.26,33.92,"nas condições padrão de temperatura e pressão."],
+    [33.92,38.98,"Podem ser gasosos, como o oxigênio que respiramos e o nitrogênio do ar."],
+    [38.98,43.46,"Podem ser sólidos, como o carvão de carbono e o enxofre amarelo."],
+    [43.46,49.34,"E temos até um ametal líquido, o bromo, com sua cor castanho-avermelhada marcante."],
+    [49.34,53.66,"Se quiser ver com mais detalhes, use os botões ali ao lado do texto."]
   ],
   "audio_tabela_4B1": [
     [0,1.64,"Sobre os aspectos visuais."],
