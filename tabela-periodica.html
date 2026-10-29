@@ -915,6 +915,13 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
 .classes4:not([data-luz=""])[data-luz="metais"]  .frase[data-classe="metais"],
 .classes4:not([data-luz=""])[data-luz="ametais"] .frase[data-classe="ametais"],
 .classes4:not([data-luz=""])[data-luz="nobres"]  .frase[data-classe="nobres"]{opacity:1}
+/* na "4B": "Ametais" cresce para a esquerda e "Não Metais" para a direita
+   (o fio entre eles fica no lugar), e os dois sobem com o bloco crescido */
+.classes4 .frase[data-classe="ametais"]{transition:opacity .5s ease, color .7s ease, transform .5s cubic-bezier(.4,0,.2,1)}
+.classes4 .frase:nth-child(3){transform-origin:right center}
+.classes4 .frase:nth-child(4){transform-origin:left center}
+.classes4 .frase.cresceAm{transform:translateY(-50%) scale(1.35)}
+.classes4 .frase.sobeAm{transform:translateY(calc(-50% - 36px))}
 /* a escolha: os nomes viram botões, e chamam */
 .classes4.escolha .cursor{display:none}
 .classes4.escolha .frase[data-classe]{pointer-events:auto;cursor:pointer;animation:chamaClasse 1.8s ease-in-out infinite}
@@ -3260,7 +3267,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v24.5';
+const VERSAO = 'v24.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8074,7 +8081,9 @@ const EV4 = {
      fim          o Br volta (os materiais ficam), e o play vira o Saquei
      Tudo função do relógio da narração; só a volta do Br no fim (o tempo
      já não anda) vai no relógio de verdade. */
-  AM4:{ cresce:12, volta:14.7, bloco:1.22, de:15.4, ate:23, salto:1.0,
+  /* nomeA, nomeN: "Ametais" cresce de 1,5 a 4 s, e "Não Metais" de 4 a 6 s;
+     com o bloco crescido, os dois sobem (para não ficarem atrás dele) */
+  AM4:{ nomeA:1.5, nomeN:4, nomeFim:6, cresce:12, volta:14.7, bloco:1.1, de:15.4, ate:23, salto:1.0,
         gas:35, solido:40, br:44.5, sobe:0.5, onda:0.05, um:1.15, grande:1.4,
         /* a grade: 4 por linha, à direita (x0, y0: o centro da primeira
            vaga); o texto, à esquerda, na altura do dos metais */
@@ -8153,6 +8162,14 @@ const EV4 = {
     });
     /* "Ametais", acima da grade, quando o último pousa */
     this.titAm.classList.toggle('on', t >= A.ate);
+    /* os nomes da classe, no alto do bloco: um cresce, depois o outro; e
+       sobem enquanto o bloco está crescido */
+    const [nA, nN] = [this.caixa.children[2], this.caixa.children[3]];
+    nA.classList.toggle('cresceAm', !em1 && t >= A.nomeA && t < A.nomeN);
+    nN.classList.toggle('cresceAm', !em1 && t >= A.nomeN && t < A.nomeFim);
+    const sobe = !em1 && t >= A.cresce && t < A.volta - A.sobe / 2;
+    nA.classList.toggle('sobeAm', sobe);
+    nN.classList.toggle('sobeAm', sobe);
     this.digAm.escreve(t);
     /* na "4B1", tudo o que está escrito sai em fade, menos o título */
     [...this.propAm.children].forEach((f, i) => f.classList.toggle('fim', !!em1 && i > 0));
@@ -8192,6 +8209,7 @@ const EV4 = {
     m.appendChild(cx);
     this.digAm1 = criaDigitacao(cx, FRASES_AM1);
     const f = cx.querySelector('.frase');
+    f.dataset.mont = 'ametais-propriedade-2';   /* peça da montagem (G), e texto editável */
     f.style.left = A.textoX + 'px';
     f.style.top  = (A.textoY + 48) + 'px';
     this.propAm1 = cx;
@@ -8223,9 +8241,12 @@ const EV4 = {
     cx.setAttribute('aria-live', 'polite');
     m.appendChild(cx);
     this.digAm = criaDigitacao(cx, FRASES_AM);
-    /* uma debaixo da outra; os itens, um pouco para dentro */
+    /* uma debaixo da outra; os itens, um pouco para dentro. Na montagem (G)
+       cada frase é peça: anda, cresce, e o texto edita */
+    const nomes = ['ametais-titulo', 'ametais-propriedade-1', 'ametais-item-a', 'ametais-item-b', 'ametais-item-c'];
     [[0, 0], [0, 48], [28, 88], [28, 128], [28, 168]].forEach(([dx, dy], i) => {
       const f = cx.children[i];
+      f.dataset.mont = nomes[i];
       f.style.left = (A.textoX + dx) + 'px';
       f.style.top  = (A.textoY + dy) + 'px';
     });
@@ -8252,6 +8273,7 @@ const EV4 = {
       delete c._kAm;
       if (c._matAm){ this.despe(c, c._matAm.el, c._matAm.tipo); c._matAm = null; }
     });
+    if (this.caixa) this.caixa.querySelectorAll('.cresceAm, .sobeAm').forEach(f => f.classList.remove('cresceAm', 'sobeAm'));
     if (this.digAm){
       this.digAm.limpa();
       this.titAm.classList.remove('on');
@@ -12951,7 +12973,7 @@ function mostraCoord(el){
 const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle, .quiz3.q4 .q3-q,' +
                ' .dica-escolha .txt, .toque-continuar, .rotulo-el .txt, .veu-frases .frase .txt,' +
                ' .texto-colunas .frase .txt, .veu-moseley figcaption b, .dica-final, .entendi3, .coords-el,' +
-               ' .conta-lc25 .txt, .alerta4C, .alerta4E';
+               ' .conta-lc25 .txt, .alerta4C, .alerta4E, .propAm .frase .txt, .propAm1 .frase .txt';
 const EDICAO = {
   el:null, ultimo:null, tUlt:0, editados:new Set(),
   /* o bloco de linhas a que um texto pertence, dentro da peça */

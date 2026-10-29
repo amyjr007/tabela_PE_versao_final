@@ -270,9 +270,10 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4A5` · 23,5 s | o texto e o cubo saem, e a tabela volta, andando, ao estado do começo — os metais num verde claro, de vistos (sem ✓) |
 | fim da `4A5` | o play sai, e tocar numa classe escolhe-a, como no fim da `4`: os ametais tocam a `4B`, os gases nobres avisam que a narração ainda vai ser gravada; os metais recomeçam a `4A` |
 | `4B` · 0 s | escolhidos os ametais (`Audios/audio_tabela_4B.mp3`): eles acesos, o resto da tabela apagado |
-| `4B` · 12 → 14,7 s | o bloco inteiro cresce (1,22×), como um só — as cartas afastam-se do meio do bloco, no pé dele, para o Ts não chegar ao play —, e volta |
+| `4B` · 1,5 → 6 s | o nome "Ametais", acima do bloco, cresce (1,35×, para a esquerda); aos 4 s volta, e cresce "Não Metais" (para a direita), que volta aos 6 s |
+| `4B` · 12 → 14,7 s | o bloco inteiro cresce (1,1×), como um só — as cartas afastam-se do meio do bloco, no pé dele, para o Ts não chegar ao play —, e volta; enquanto isso, "Ametais | Não Metais" sobem 36 px, para não ficarem atrás dele |
 | `4B` · 15,4 → 23 s | os outros somem de todo (com os eixos, as casas das séries e os textos), e os 16 ametais saltam um a um, em arco e por número atômico, até uma grade de 4 × 4 do lado direito, maiores (1,25×) — o salto dos metais na `4A`; pousado o último, "Ametais" acima da grade, no verde claro do bloco e fosco (entra de um desfoque, como o "Metais", mas sem o reflexo) |
-| `4B` · 24 → 27 s | no lado esquerdo, "Propriedades gerais dos ametais", digitado no dourado (as cores dos textos dos metais) |
+| `4B` · 24 → 27 s | no lado esquerdo, "Propriedades gerais dos ametais", digitado no dourado (as cores dos textos dos metais). Na montagem (G) cada frase dos ametais é peça e texto editável (`ametais-titulo`, `ametais-propriedade-1`, `ametais-item-a` a `-c`, e `ametais-propriedade-2` na `4B1`) |
 | `4B` · 28 → 33 s | embaixo, claro, "1. São encontrados nos 3 estados físicos." |
 | `4B` · 35 s | os gasosos (N, O, F, Cl) viram **gás** e crescem um pouco (1,15×), com o halo na cor deles, e os outros ametais apagam (em fade; e acendem outra vez no fim da narração); "a) Alguns são gasosos.", prateado e um pouco para dentro |
 | `4B` · 40 s | os sólidos viram **sólido** (o cristal na cor da pedra, fosco: sem as faíscas) e crescem, e os gasosos voltam; "b) A maioria é sólido" |
