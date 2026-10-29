@@ -339,6 +339,20 @@ var LEGENDAS = {
     [0,5.1,"Perfeito! Viu como o carbono é um ótimo condutor elétrico, apesar de ser um ametal?"],
     [5.1,11.04,"Guarde bem essa exceção na sua cabeça. Ela é extremamente importante na química."]
   ],
+  "audio_tabela_4B3": [
+    [0,5.9,"Já sobre as propriedades mecânicas, esqueça a ductilidade e a maleabilidade dos metais."],
+    [5.9,10.24,"Os ametais sólidos não formam fios e nem viram lâminas."],
+    [10.24,14.54,"Eles são quebradiços e frágeis sob impacto mecânico."],
+    [14.54,18.14,"Se você bater ou tentar deformar um ametal,"],
+    [18.14,21.74,"o material se despedaça em pedacinhos com extrema facilidade."],
+    [21.74,25.22,"Já reparou que a ponta do seu lápis quebra com facilidade?"],
+    [26.24,29.8,"Tá, pra demonstrar essa fragilidade, clique nesse pedaço de fósforo vermelho"],
+    [29.8,34.42,"e veja como são quebradiços e sensíveis a impactos."]
+  ],
+  "audio_tabela_4B4": [
+    [0,3.72,"Então, amigos, sobre os ametais é basicamente isso."],
+    [3.72,6.78,"Agora, escolha a próxima classe de elementos."]
+  ],
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]
   ],

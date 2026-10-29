@@ -294,7 +294,14 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4B2` · 21 s | à esquerda, um cubo com o **lápis** (`lapisSVG`): o corpo sextavado amarelo, a virola, a borracha, a madeira apontada e a **ponta de grafite** em destaque — um anel dourado que pulsa em volta dela e o nome "Grafite" |
 | `4B2` · 26 s | o cubo vira, e a face nova é o **fio desencapado** da `4A2` (o mesmo choque: `fio4SVG`, com ids próprios), com uma **barra de grafite** (`barraGrafiteSVG`: o cinza-chumbo acetinado, o grão e "GRAFITE" escrito) no lugar da de metal. Arrastada até ao cobre nu, fecha o circuito: o arco estala, as fagulhas saltam, o clarão azul e o cubo sacode |
 | fim da `4B2` | "Toque o grafite no fio", a piscar logo acima do cobre nu (peça `aviso-toque-o-grafite-no-fio`), até ao curto; feito o curto (e acabada a narração), toca a **`4B2.1`** (`Audios/audio_tabela_4B2.1.mp3`), sem Saquei |
-| `4B2.1` | o cubo fica, com o choque vivo; no fim, o **Saquei**, que leva à `4B3` (ainda por gravar: por enquanto, o aviso) |
+| `4B2.1` | o cubo fica, com o choque vivo; no fim, o **Saquei**, que leva à **`4B3`** (`Audios/audio_tabela_4B3.mp3`) |
+| `4B3` · 0 s | o texto e o cubo da `4B2` saem em fade (o título fica) |
+| `4B3` · 6,5 → 14 s | "1. Os ametais sólidos não formam fios nem viram lâminas. São quebradiços e sensíveis a impacto.", claro, em três linhas (peça `ametais-mecanicas`) |
+| `4B3` · 22,3 s | à esquerda, em fade, um cubo com o **lápis de ponta quebrada** (`lapisSVG(true)`): o toco de grafite em serra, o pedaço da ponta caído na mesa e o destaque "Ponta quebrada" |
+| `4B3` · 27 s | o cubo vira, e a face nova é um pedaço de **fósforo vermelho** numa bancada (`FRAG4`). Cada toque é uma pancada (o `rupture` e um estalo): o caco tocado parte-se em dois por uma linha que passa pelo ponto, os dois saltam, giram e caem na bancada; os cacos pequenos demais viram pó |
+| fim da `4B3` | "Bata no fósforo", a piscar (peça `aviso-bata-no-fosforo`); uma pancada, depois do fim, traz o **Saquei**, que leva à **`4B4`** (`Audios/audio_tabela_4B4.mp3`) |
+| `4B4` · 4 s | tudo sai, e a tabela volta, andando, ao estado do começo |
+| fim da `4B4` | o play sai, e tocar numa classe escolhe-a, como no fim da `4` |
 | fim da `4B1` | o play vira o **Saquei**; tocado, espoca e vem a **`4B2`** (`Audios/audio_tabela_4B2.mp3`) |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
