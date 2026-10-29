@@ -1237,6 +1237,21 @@ html.celular .tituloAm{font-size:36px}
 .propAm .frase:nth-child(n+3){font-weight:600;font-size:26px;color:#C9D2DC}
 .propAm .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
 .propAm .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+/* o botão "Ver" à direita dos itens a), b) e c) (o tracinho da digitação
+   fica entre o texto e ele): verde ligado, vermelho desligado; aparece com
+   o item escrito, e só se deixa tocar acabada a narração */
+.propAm .frase.on{display:flex;align-items:center}
+.propAm .frase .cursor{order:1}
+.verAm{order:2;margin-left:14px;padding:3px 12px 4px;border:0;border-radius:999px;
+  font:700 15px/1 var(--display);letter-spacing:.02em;color:#fff;background:#D9443C;
+  box-shadow:0 2px 6px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25);
+  opacity:0;scale:.6;pointer-events:none;transition:opacity .3s ease, scale .35s var(--e-salto), background .25s ease}
+.verAm.on{background:#27C46B}
+.propAm .frase.comVer .verAm{opacity:1;scale:1}
+.propAm .frase.comVer .verAm.livre{pointer-events:auto;cursor:pointer}
+.propAm .frase.comVer .verAm.livre:active{scale:.92}
+/* na montagem, as frases dos ametais pegam o dedo: andam e editam */
+body.montagem .propAm .frase,body.montagem .propAm1 .frase{pointer-events:auto}
 /* os sólidos dos ametais, foscos: sem as faíscas */
 .mat.solido.fosco .faisca{display:none}
 /* A "4B1": os itens da 4B saem em fade, e a propriedade 2, clara, vem no
@@ -3267,7 +3282,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v24.6';
+const VERSAO = 'v24.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8089,6 +8104,12 @@ const EV4 = {
            vaga); o texto, à esquerda, na altura do dos metais */
         cols:4, passo:96, esc:1.25, x0:816, y0:276, textoX:64, textoY:174 },
   GASES_AM:[7, 8, 9, 17],
+  /* os botões "Ver" dos itens a), b) e c): ligado (verde) acende os cards
+     daquele estado físico, desligado (vermelho) apaga. Começam assim — o
+     dos gasosos ligado — e mudam com o toque, acabada a narração */
+  VER_AM:['gas', 'solido', 'br'],
+  VER_AM0:{ gas:true, solido:false, br:false },
+  verAm:null, verLivre:false,
   ametais4:null, sujaAm:false, digAm:null, propAm:null, fimAm:0,
   vagaAm(k){
     const A = this.AM4;
@@ -8100,6 +8121,10 @@ const EV4 = {
     if (!this.ametais4) this.ametais4 = this.cartas(m).filter(c => c.dataset.tipo === 'ametais')
                                            .sort((a, b) => a.dataset.z - b.dataset.z);
     this.preparaAm(m);
+    if (!this.verAm) this.verAm = Object.assign({}, this.VER_AM0);
+    /* acabada a narração, os botões "Ver" mandam nos cards */
+    const livre = acabou && !em1;
+    this.verLivre = livre;
     m.classList.toggle('arrumaAm', t >= A.de);
     const suave = p => p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
     const entre = (a, b, f) => a + (b - a) * f;
@@ -8146,9 +8171,9 @@ const EV4 = {
       esc *= mult;
       c.classList.toggle('realceAm', mult > 1.01);
       /* na vez dos gasosos, dos sólidos e do Br, os outros apagam (em
-         fade); acabada a narração, todos acendem */
+         fade); acabada a narração, acendem os que têm o "Ver" ligado */
       const vez = t >= A.br ? 'br' : t >= A.solido ? 'solido' : t >= A.gas ? 'gas' : '';
-      c.classList.toggle('apagaAm', !!vez && !acabou && !em1 && vez !== tipo);
+      c.classList.toggle('apagaAm', livre ? !this.verAm[tipo] : !!vez && !acabou && !em1 && vez !== tipo);
       c.classList.add('anda4');
       c.classList.toggle('no-ar4', p > 0 && p < 1);
       const chave = x.toFixed(1) + ',' + y.toFixed(1) + ',' + esc.toFixed(3) + ',' + sobe.toFixed(1);
@@ -8171,6 +8196,13 @@ const EV4 = {
     nA.classList.toggle('sobeAm', sobe);
     nN.classList.toggle('sobeAm', sobe);
     this.digAm.escreve(t);
+    /* o botão de cada item, quando ele acaba de ser escrito: verde ou
+       vermelho, e só se deixa tocar acabada a narração */
+    this.propAm.querySelectorAll('.verAm').forEach((b, k) => {
+      b.parentNode.classList.toggle('comVer', t >= FRASES_AM[k + 2].ate);
+      b.classList.toggle('on', !!this.verAm[b.dataset.tipo]);
+      b.classList.toggle('livre', livre);
+    });
     /* na "4B1", tudo o que está escrito sai em fade, menos o título */
     [...this.propAm.children].forEach((f, i) => f.classList.toggle('fim', !!em1 && i > 0));
     this.sujaAm = true;
@@ -8247,6 +8279,21 @@ const EV4 = {
     [[0, 0], [0, 48], [28, 88], [28, 128], [28, 168]].forEach(([dx, dy], i) => {
       const f = cx.children[i];
       f.dataset.mont = nomes[i];
+      /* os itens a), b) e c) levam o botão "Ver" do estado físico deles */
+      if (i >= 2){
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'verAm';
+        b.dataset.tipo = this.VER_AM[i - 2];
+        b.textContent = 'Ver';
+        b.addEventListener('pointerdown', ev => ev.stopPropagation());
+        b.addEventListener('click', ev => {
+          ev.stopPropagation();
+          if (!this.verLivre || naMontagem()) return;
+          this.verAm[b.dataset.tipo] = !this.verAm[b.dataset.tipo];
+        });
+        f.appendChild(b);
+      }
       f.style.left = (A.textoX + dx) + 'px';
       f.style.top  = (A.textoY + dy) + 'px';
     });
@@ -8274,6 +8321,7 @@ const EV4 = {
       if (c._matAm){ this.despe(c, c._matAm.el, c._matAm.tipo); c._matAm = null; }
     });
     if (this.caixa) this.caixa.querySelectorAll('.cresceAm, .sobeAm').forEach(f => f.classList.remove('cresceAm', 'sobeAm'));
+    this.verAm = null; this.verLivre = false;
     if (this.digAm){
       this.digAm.limpa();
       this.titAm.classList.remove('on');
