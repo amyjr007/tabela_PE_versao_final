@@ -278,8 +278,10 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4B` · 35 s | os gasosos (N, O, F, Cl) viram **gás** e crescem um pouco (1,15×), com o halo na cor deles, e os outros ametais apagam (em fade; e acendem outra vez no fim da narração); "a) Alguns são gasosos.", prateado e um pouco para dentro |
 | `4B` · 40 s | os sólidos viram **sólido** (o cristal na cor da pedra, fosco: sem as faíscas) e crescem, e os gasosos voltam; "b) A maioria é sólido" |
 | `4B` · 44,5 s | o **Br** vira **líquido** e cresce (1,4×), e os sólidos voltam; "c) Somente o bromo é líquido." |
-| itens a), b), c) | cada um, acabado de escrever, ganha à direita o botão **Ver** — o do a) verde (ligado), os outros vermelhos |
-| fim da `4B` | o Br volta ao tamanho dos outros (os materiais ficam), e os botões **Ver** passam a ligar e desligar: verde acende os cards daquele estado físico, vermelho apaga (em fade; de começo, só os gasosos acesos); e o play vira o **Saquei**, que leva à **`4B1`** (`Audios/audio_tabela_4B1.mp3`) |
+| itens a), b), c) | cada um, acabado de escrever, ganha à direita o botão **Ver** — os três em coluna, logo depois do fim do c) (o item mais comprido); o do a) verde (ligado: saltado, com o halo verde e a luzinha acesa), os outros vermelhos (desligados: afundados, a luzinha apagada) |
+| `4B` · 50 s | o Br volta ao tamanho dos outros, todos os botões desligam e todos os cards apagam; a mãozinha vem ao **Ver** do a) |
+| `4B` · 52,2 s | a mão aperta: o a) liga e os gasosos acendem; 1 s depois a mão sai |
+| fim da `4B` | os botões **Ver** passam a ligar e desligar: verde acende os cards daquele estado físico, vermelho apaga (em fade; de começo, só os gasosos acesos); e o play vira o **Saquei**, que leva à **`4B1`** (`Audios/audio_tabela_4B1.mp3`) |
 | `4B1` · 0 s | a grade fica como a `4B` a deixou; os itens saem em fade, e só o título "Propriedades gerais dos ametais" fica |
 | `4B1` · 6 → 10 s | no lugar da propriedade 1, "2. Os ametais puros são opacos e foscos" |
 | `4B1` · 15 s | à esquerda, embaixo do texto, um cubo, em fade, com o **pó de enxofre** (`poSVG`): um montinho numa bancada escura — luz de verdade sobre um relevo de ruído fino (o grão) e largo (os torrões), a borda esfarelada (dois `feDisplacementMap`), o cone claro na encosta da esquerda e escuro na da direita, grãos claros e escuros ao acaso, os grãos soltos e a poeira assentada no pé, a sombra de contato. Fosco: sem brilho especular |

@@ -1237,19 +1237,27 @@ html.celular .tituloAm{font-size:36px}
 .propAm .frase:nth-child(n+3){font-weight:600;font-size:26px;color:#C9D2DC}
 .propAm .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
 .propAm .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
-/* o botão "Ver" à direita dos itens a), b) e c) (o tracinho da digitação
-   fica entre o texto e ele): verde ligado, vermelho desligado; aparece com
-   o item escrito, e só se deixa tocar acabada a narração */
-.propAm .frase.on{display:flex;align-items:center}
-.propAm .frase .cursor{order:1}
-.verAm{order:2;margin-left:14px;padding:3px 12px 4px;border:0;border-radius:999px;
-  font:700 15px/1 var(--display);letter-spacing:.02em;color:#fff;background:#D9443C;
-  box-shadow:0 2px 6px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25);
-  opacity:0;scale:.6;pointer-events:none;transition:opacity .3s ease, scale .35s var(--e-salto), background .25s ease}
-.verAm.on{background:#27C46B}
+/* o botão "Ver" à direita dos itens a), b) e c), os três numa coluna logo
+   depois do fim do c) (EV4.alinhaVer dá o left); aparece com o item
+   escrito, e só se deixa tocar acabada a narração. DESLIGADO: vermelho
+   escuro, afundado, com a luzinha apagada. LIGADO: verde vivo, saltado, com
+   o halo verde e a luzinha acesa */
+.verAm{position:absolute;top:50%;left:0;translate:0 -50%;display:flex;align-items:center;gap:7px;
+  padding:5px 13px 5px 9px;border:2px solid #B33A32;border-radius:999px;
+  font:700 15px/1 var(--display);letter-spacing:.03em;color:#F6CFCB;background:#7E241F;
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.5);
+  opacity:0;scale:.6;pointer-events:none;
+  transition:opacity .3s ease, scale .35s var(--e-salto), background .25s ease, border-color .25s ease,
+             box-shadow .3s ease, color .25s ease}
+.verAm::before{content:'';width:9px;height:9px;border-radius:50%;background:#3E0F0C;
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.7);transition:background .25s ease, box-shadow .25s ease}
+.verAm.on{color:#fff;background:#1FB85C;border-color:#8DF5B4;
+  box-shadow:0 0 0 3px rgba(39,196,107,.28), 0 0 18px 4px rgba(39,196,107,.6), inset 0 1px 0 rgba(255,255,255,.4)}
+.verAm.on::before{background:#F2FFF6;box-shadow:0 0 6px 2px rgba(214,255,228,.95)}
 .propAm .frase.comVer .verAm{opacity:1;scale:1}
 .propAm .frase.comVer .verAm.livre{pointer-events:auto;cursor:pointer}
 .propAm .frase.comVer .verAm.livre:active{scale:.92}
+.propAm .frase.comVer .verAm.on{scale:1.06}
 /* na montagem, as frases dos ametais pegam o dedo: andam e editam */
 body.montagem .propAm .frase,body.montagem .propAm1 .frase{pointer-events:auto}
 /* os sólidos dos ametais, foscos: sem as faíscas */
@@ -3282,7 +3290,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v24.8';
+const VERSAO = 'v24.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4624,7 +4632,13 @@ const ROTEIROS = {
     { t:22.65, faz(){ EV4.puxaAba(false); } },
     { t:23.0,  faz(){ tiraMao(); } }
   ],
-  '4B':   [],   /* os ametais: tudo função do tempo, em EV4.cenaAm */
+  /* os ametais: tudo função do tempo, em EV4.cenaAm; aqui só a mão, que
+     vem ao botão "Ver" do a) e o aperta */
+  '4B':   [
+    { t:50.0,  faz(){ EV4.maoNoVer(); } },
+    { t:52.2,  faz(){ bateMao(); } },
+    { t:53.2,  faz(){ tiraMao(); } }
+  ],
   '4B1':  [],   /* e em EV4.cenaAm1 */
   '5':    [],
   '6':    [],
@@ -8093,24 +8107,27 @@ const EV4 = {
      40 s         os sólidos viram sólido e crescem, os gasosos voltam;
                   "b) Podem ser sólidos."
      44,5 s       o Br vira líquido e cresce, os sólidos voltam
-     fim          o Br volta (os materiais ficam), e o play vira o Saquei
-     Tudo função do relógio da narração; só a volta do Br no fim (o tempo
-     já não anda) vai no relógio de verdade. */
+     50 s         o Br volta, todos os botões "Ver" desligam e todos os cards
+                  apagam; a mão vem para o botão do a)
+     52,2 s       a mão aperta: o a) liga, e os gasosos acendem; a mão sai
+     fim          os botões ligam e desligam ao toque; o play vira o Saquei
+     Tudo função do relógio da narração (a mão, marcas do roteiro). */
   /* nomeA, nomeN: "Ametais" cresce de 1,5 a 4 s, e "Não Metais" de 4 a 6 s;
      com o bloco crescido, os dois sobem (para não ficarem atrás dele) */
   AM4:{ nomeA:1.5, nomeN:4, nomeFim:6, cresce:12, volta:14.7, bloco:1.1, de:15.4, ate:23, salto:1.0,
-        gas:35, solido:40, br:44.5, sobe:0.5, onda:0.05, um:1.15, grande:1.4,
+        gas:35, solido:40, br:44.5, apaga:50, liga:52.2, sobe:0.5, onda:0.05, um:1.15, grande:1.4,
         /* a grade: 4 por linha, à direita (x0, y0: o centro da primeira
            vaga); o texto, à esquerda, na altura do dos metais */
         cols:4, passo:96, esc:1.25, x0:816, y0:276, textoX:64, textoY:174 },
   GASES_AM:[7, 8, 9, 17],
   /* os botões "Ver" dos itens a), b) e c): ligado (verde) acende os cards
-     daquele estado físico, desligado (vermelho) apaga. Começam assim — o
-     dos gasosos ligado — e mudam com o toque, acabada a narração */
+     daquele estado físico, desligado (vermelho) apaga. Até aos 50 s o do a)
+     aparece verde; aos 50 s todos desligam, aos 52,2 s a mão liga o do a)
+     (VER_AM0), e acabada a narração eles mudam com o toque */
   VER_AM:['gas', 'solido', 'br'],
   VER_AM0:{ gas:true, solido:false, br:false },
   verAm:null, verLivre:false,
-  ametais4:null, sujaAm:false, digAm:null, propAm:null, fimAm:0,
+  ametais4:null, sujaAm:false, digAm:null, propAm:null,
   vagaAm(k){
     const A = this.AM4;
     return { x: A.x0 + (k % A.cols) * A.passo, y: A.y0 + Math.floor(k / A.cols) * A.passo };
@@ -8121,8 +8138,12 @@ const EV4 = {
     if (!this.ametais4) this.ametais4 = this.cartas(m).filter(c => c.dataset.tipo === 'ametais')
                                            .sort((a, b) => a.dataset.z - b.dataset.z);
     this.preparaAm(m);
-    if (!this.verAm) this.verAm = Object.assign({}, this.VER_AM0);
-    /* acabada a narração, os botões "Ver" mandam nos cards */
+    /* os botões: antes do toque da mão, o estado do começo (voltar o áudio
+       desfaz o que o aluno tocou); aos 50 s todos desligados; depois, o que
+       o aluno escolher — e só acabada a narração eles se deixam tocar */
+    if (!this.verAm || t < A.liga) this.verAm = Object.assign({}, this.VER_AM0);
+    const estado = t < A.apaga ? this.VER_AM0 : t < A.liga ? {} : this.verAm;
+    const pelosBotoes = !em1 && t >= A.apaga;
     const livre = acabou && !em1;
     this.verLivre = livre;
     m.classList.toggle('arrumaAm', t >= A.de);
@@ -8139,11 +8160,7 @@ const EV4 = {
        cima, e o Ts não chega ao play */
     const bloco = 1 + (A.bloco - 1) * sobeDesce(A.cresce, A.volta - A.sobe);
     const bx = xDaColuna(15), by = (yDaLinha(6) + yDaLinha(7)) / 2;
-    /* a volta do Br, no fim: no relógio de verdade */
-    if (acabou){ if (!this.fimAm) this.fimAm = performance.now(); }
-    else this.fimAm = 0;
-    const fimP = em1 ? 1 : acabou ? suave(Math.max(0, Math.min(1, (performance.now() - this.fimAm) / (A.sobe * 1000)))) : 0;
-    const n = this.ametais4.length, fila = (A.ate - A.de - A.salto) / Math.max(1, n - 1);
+    const n =this.ametais4.length, fila = (A.ate - A.de - A.salto) / Math.max(1, n - 1);
     let ig = 0, is = 0;
     this.ametais4.forEach((c, k) => {
       const z = +c.dataset.z, casa = alvoDe(z), vaga = this.vagaAm(k);
@@ -8167,13 +8184,13 @@ const EV4 = {
       let mult = 1;
       if (tipo === 'gas') mult = 1 + (A.um - 1) * sobeDesce(A.gas, A.solido);
       else if (tipo === 'solido') mult = 1 + (A.um - 1) * sobeDesce(A.solido, A.br);
-      else mult = 1 + (A.grande - 1) * sobeDesce(A.br) * (1 - fimP);
+      else mult = 1 + (A.grande - 1) * sobeDesce(A.br, A.apaga);
       esc *= mult;
       c.classList.toggle('realceAm', mult > 1.01);
       /* na vez dos gasosos, dos sólidos e do Br, os outros apagam (em
-         fade); acabada a narração, acendem os que têm o "Ver" ligado */
+         fade); dos 50 s em diante, acendem só os que têm o "Ver" ligado */
       const vez = t >= A.br ? 'br' : t >= A.solido ? 'solido' : t >= A.gas ? 'gas' : '';
-      c.classList.toggle('apagaAm', livre ? !this.verAm[tipo] : !!vez && !acabou && !em1 && vez !== tipo);
+      c.classList.toggle('apagaAm', pelosBotoes ? !estado[tipo] : !!vez && !em1 && vez !== tipo);
       c.classList.add('anda4');
       c.classList.toggle('no-ar4', p > 0 && p < 1);
       const chave = x.toFixed(1) + ',' + y.toFixed(1) + ',' + esc.toFixed(3) + ',' + sobe.toFixed(1);
@@ -8200,7 +8217,7 @@ const EV4 = {
        vermelho, e só se deixa tocar acabada a narração */
     this.propAm.querySelectorAll('.verAm').forEach((b, k) => {
       b.parentNode.classList.toggle('comVer', t >= FRASES_AM[k + 2].ate);
-      b.classList.toggle('on', !!this.verAm[b.dataset.tipo]);
+      b.classList.toggle('on', !!estado[b.dataset.tipo]);
       b.classList.toggle('livre', livre);
     });
     /* na "4B1", tudo o que está escrito sai em fade, menos o título */
@@ -8298,6 +8315,8 @@ const EV4 = {
       f.style.top  = (A.textoY + dy) + 'px';
     });
     this.propAm = cx;
+    this.alinhaVer();
+    if (document.fonts) document.fonts.ready.then(() => this.alinhaVer());
     /* "Ametais", centrado acima da grade (como o "Metais" da "4A") */
     const tit = document.createElement('div');
     tit.className = 'tituloAm';
@@ -8306,6 +8325,20 @@ const EV4 = {
     tit.style.top  = (A.y0 - LADO * A.esc / 2 - 38).toFixed(1) + 'px';
     m.appendChild(tit);
     this.titAm = tit;
+  },
+  /* a mão, no botão "Ver" do a) (marca da "4B") */
+  maoNoVer(){
+    const b = this.propAm && this.propAm.querySelector('.verAm[data-tipo="gas"]');
+    if (atual === 4 && b) levaMao(b, { fx:.45, fy:.55 });
+  },
+  /* os botões "Ver" em coluna, todos logo depois do fim do item mais
+     comprido (o c): medido na letra dele, e outra vez chegada a fonte */
+  alinhaVer(){
+    const fr = this.propAm.children, cs = getComputedStyle(fr[4]);
+    const ctx = (this._regua || (this._regua = document.createElement('canvas'))).getContext('2d');
+    ctx.font = cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+    const w = ctx.measureText(FRASES_AM[4].txt).width;
+    this.propAm.querySelectorAll('.verAm').forEach(b => { b.style.left = (w + 22).toFixed(1) + 'px'; });
   },
   /* fora da "4B": os ametais voltam para casa, sem material */
   desfazAm(m){
@@ -8327,7 +8360,6 @@ const EV4 = {
       this.titAm.classList.remove('on');
       this.propAm.querySelectorAll('.frase.fim').forEach(f => f.classList.remove('fim'));
     }
-    this.fimAm = 0;
     this.sujaAm = false;
   },
 
