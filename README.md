@@ -264,8 +264,10 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4A4` · 14,5 s | um cubo novo, com a **folha de papel alumínio**: o rolo deitado e a folha desenrolada, amassada com luz de verdade sobre um relevo de ruído (`aluminioSVG`) |
 | `4A4` · 21 s | o cubo vira, e a face nova é o **laminador** (`LAM4`), vazio — só a máquina; aos 22,4 s entra o metal, em fade (antes dele o botão não liga): a barra na mesa da esquerda, os dois rolos, a mesa da saída e a bobina; o botão **Ligar** (vermelho, a chamar) liga a máquina — os rolos giram, a barra entra e sai a folha finíssima, que se enrola na bobina (que cresce). O volume vale: a barra tem 36 de espessura e a folha 3, cada unidade de barra vira 12 de folha |
 | fim da `4A4` | "Ligue a máquina", a piscar no alto do quadro (peça da montagem, `aviso-ligue-a-maquina`), até ser ligada; laminada a barra e acabada a narração, toca a **`4A5`** (`Audios/audio_tabela_4A5.mp3`) |
-| `4A5` · 11,5 → 13 s | a gaveta do sumário abre, a mãozinha desce pelas propriedades dos metais (Os metais, O brilho metálico, Calor e eletricidade, Ductilidade, Maleabilidade), e a gaveta fecha |
-| `4A5` · 14 s | o texto e o cubo saem, e a tabela volta, andando, ao estado do começo — os metais num verde claro, cada um com o ✓ de visto (e "Metais ✓" no nome da classe) |
+| `4A5` · 2 s | o cubo vira (o terceiro quarto de volta), e a face nova é o **papel alumínio** pronto |
+| `4A5` · 9,5 → 11 s | vira outra vez: uma **chapa de cobre** (`chapasSVG`: grossa, vista de três quartos, com a espessura à mostra, o escovado da laminação e a faixa de reflexo); aos 10,3 s, em fade, a mesma chapa em **zinco** (as "flores" de cristal da galvanização); aos 11 s em **ferro** (a carepa azulada e fosca) |
+| `4A5` · 20 → 23 s | a mãozinha pega a aba "Sumário" e dá três puxadinhas: a gaveta espreita 64 px e volta, a cada uma |
+| `4A5` · 23,5 s | o texto e o cubo saem, e a tabela volta, andando, ao estado do começo — os metais num verde claro, de vistos (sem ✓) |
 | fim da `4A5` | o play sai, e tocar numa classe escolhe-a, como no fim da `4`: os ametais tocam a `4B`, os gases nobres avisam que a narração ainda vai ser gravada; os metais recomeçam a `4A` |
 | `4B` · 0 s | escolhidos os ametais (`Audios/audio_tabela_4B.mp3`): eles acesos, o resto da tabela apagado |
 | `4B` · 12 → 14,7 s | o bloco inteiro cresce (1,22×), como um só — as cartas afastam-se do meio do bloco, no pé dele, para o Ts não chegar ao play —, e volta |

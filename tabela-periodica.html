@@ -1076,6 +1076,17 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 .cubo4C.virou2 .face4C:not(.tras){display:none}
 .cubo4C.virou2 .face4C.tras{transform:none}
 .face4C.tras{transform:rotateY(180deg) translateZ(220px)}
+/* a quarta face (a "4A5": as chapas), e o terceiro giro, plano no fim */
+.face4C.esq{transform:rotateY(270deg) translateZ(220px)}
+.cubo4C.virou .face4C.esq{display:none}
+.cubo4C.virou3 .gira4{transform:none!important;transform-style:flat}
+.cubo4C.virou3 .face4C:not(.esq){display:none}
+.cubo4C.virou3 .face4C.esq{transform:none}
+/* as chapas: a mesma, em três metais, que se trocam em fade */
+.chapas4{position:absolute;inset:0}
+.chapas4 .ch4{opacity:0;transition:opacity .6s ease}
+.chapas4[data-metal="cobre"] .ch4-cobre,.chapas4[data-metal="zinco"] .ch4-zinco,.chapas4[data-metal="ferro"] .ch4-ferro{opacity:1}
+.chapas4 .ch-nome{font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:.02em;fill:#F4F2F8}
 /* A "4A3": o choque esvazia (7,6 s), e o fio desencapado vem (20 s) */
 .choque4{transition:opacity .6s ease}
 .cubo4C.apaga4D .choque4{opacity:0;pointer-events:none!important}
@@ -1132,17 +1143,12 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 @keyframes vibra4{0%,100%{translate:0 0} 25%{translate:.8px -.6px} 50%{translate:-.7px .5px} 75%{translate:.5px .7px}}
 body.montagem .alerta4E{opacity:1!important;animation:none!important;pointer-events:auto}
 /* A "4A5": a tabela volta ao lugar andando, e os metais, vistos, ficam
-   verdes com o ✓ */
+   verdes (sem marca de ✓: o professor pediu-os fora) */
 .mesa.tipos.reorganiza .pc{transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1),
   transform .9s cubic-bezier(.4,0,.2,1), opacity .7s ease}
 /* (um verde claro e vivo: o dos ametais, #2E9450, é escuro, e as duas
    classes não se confundem) */
 .mesa.tipos.metais-ok .pc[data-tipo="metais"]{--cor:#3FCB72!important}
-.mesa.tipos.metais-ok .pc[data-tipo="metais"]::after{content:'✓';position:absolute;right:-5px;top:-6px;
-  width:17px;height:17px;border-radius:50%;background:#fff;color:#1F9D55;font:700 12px/17px var(--display);
-  text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.35);pointer-events:none;animation:check4 .5s var(--e-salto) both}
-@keyframes check4{from{transform:scale(0)} to{transform:scale(1)}}
-.mesa.tipos.metais-ok .classes4 .frase[data-classe="metais"] .txt::after{content:' ✓'}
 /* os textos da "4A3" */
 .prop4C{transition:opacity .6s ease}
 .prop4C.fim{opacity:0}
@@ -2548,6 +2554,9 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
   font-size:10px;letter-spacing:.24em;text-transform:uppercase}
 #nav-alca:hover{color:var(--ouro);background:#fff}
 #nav-alca.fora,#nav-alca.some{transform:translate(110%,-50%);opacity:0;pointer-events:none}
+/* a puxadinha da "4A5": a mão puxa a aba, e a gaveta espreita 64 px */
+#nav-alca.espia{transform:translate(-64px,-50%)}
+#nav.espia{transform:translateX(calc(100% - 64px))}
 #nav-fundo{position:fixed;inset:0;z-index:75;background:rgba(32,28,66,.16);
   opacity:0;pointer-events:none;transition:opacity .3s}
 #nav-fundo.on{opacity:1;pointer-events:auto}
@@ -3015,11 +3024,14 @@ body.montagem .solto.pego{outline:1.5px solid var(--ouro);background:rgba(226,16
 #mao{
   position:fixed;z-index:100;width:48px;height:48px;pointer-events:none;opacity:0;
   transition:opacity .3s ease,
-             left .55s cubic-bezier(.4,0,.2,1), top .55s cubic-bezier(.4,0,.2,1);
+             left .55s cubic-bezier(.4,0,.2,1), top .55s cubic-bezier(.4,0,.2,1),
+             translate .35s var(--e-desl);
   filter:drop-shadow(0 3px 7px rgba(32,28,66,.4));
 }
 #mao[hidden]{display:none}
 #mao.on{opacity:1}
+/* puxando a aba do sumário: a mão vai com ela */
+#mao.puxa{translate:-64px 0}
 #mao svg{display:block;width:100%;height:100%;
   fill:#FFFDF8;stroke:var(--tinta);stroke-width:1.1;stroke-linejoin:round}
 /* a onda do toque nasce na ponta do dedo */
@@ -3248,7 +3260,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v24.4';
+const VERSAO = 'v24.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4578,16 +4590,17 @@ const ROTEIROS = {
   ],
   '4A3':   [],
   '4A4':   [],
-  /* a gaveta do sumário abre, a mão desce pelas propriedades dos metais,
-     e a gaveta fecha */
+  /* no "basta ir no sumário": a mão pega a aba do sumário e dá três
+     puxadinhas — a gaveta espreita um pouco e volta, a cada uma */
   '4A5':  [
-    { t:11.5,  faz(){ EV4.gaveta4E1(true); } },
-    { t:11.85, faz(){ EV4.maoNoTopico(0); } },
-    { t:12.1,  faz(){ EV4.maoNoTopico(1); } },
-    { t:12.35, faz(){ EV4.maoNoTopico(2); } },
-    { t:12.6,  faz(){ EV4.maoNoTopico(3); } },
-    { t:12.85, faz(){ EV4.maoNoTopico(4); } },
-    { t:13.0,  faz(){ EV4.gaveta4E1(false); } }
+    { t:20.0,  faz(){ EV4.maoNaAba(); } },
+    { t:20.5,  faz(){ EV4.puxaAba(true); } },
+    { t:20.95, faz(){ EV4.puxaAba(false); } },
+    { t:21.35, faz(){ EV4.puxaAba(true); } },
+    { t:21.8,  faz(){ EV4.puxaAba(false); } },
+    { t:22.2,  faz(){ EV4.puxaAba(true); } },
+    { t:22.65, faz(){ EV4.puxaAba(false); } },
+    { t:23.0,  faz(){ tiraMao(); } }
   ],
   '4B':   [],   /* os ametais: tudo função do tempo, em EV4.cenaAm */
   '4B1':  [],   /* e em EV4.cenaAm1 */
@@ -7372,7 +7385,9 @@ const EV4 = {
     r.el.classList.add('sai');
     const g = r.c._realce4;
     setTimeout(() => {
-      if (r.c._realce4 !== g){ r.el.remove(); return; }   /* destacada outra vez nesse meio-tempo */
+      /* destacada outra vez nesse meio-tempo, ou já vestida pela cena dos
+         metais ou dos ametais: só a camada do destaque sai */
+      if (r.c._realce4 !== g || r.c._mat4 || r.c._matAm){ r.el.remove(); return; }
       this.despe(r.c, r.el, r.tipo);
     }, 650);
   },
@@ -7915,13 +7930,15 @@ const EV4 = {
                     sai a folha finíssima
      fim da 4A4     "Ligue a máquina", até ser ligada; laminada a barra (e
                     acabada a narração), toca a "4A5"
-     4A5 · 11,5 s   a gaveta do sumário abre, e a mão percorre as
-                    propriedades dos metais; 13 s fecha (marcas do roteiro)
-     4A5 · 14 s     tudo sai, e a tabela volta ao estado de começo — os
+     4A5 · 2 s      o cubo vira: o papel alumínio pronto
+     4A5 · 9,5 s    vira outra vez: a chapa de cobre; 10,3 s zinco; 11 s ferro
+     4A5 · 20 s     a mão pega a aba do sumário e dá três puxadinhas (a
+                    gaveta espreita e volta; marcas do roteiro)
+     4A5 · 23,5 s   tudo sai, e a tabela volta ao estado de começo — os
                     metais verdes, com o ✓ de vistos
      fim da 4A5     tocar numa classe escolhe-a (como no fim da "4") */
-  E4E:{ titulo:2, texto:5, cubo:14.5, gira:21, giraDura:0.9, metal:22.4, reorg:14 },
-  NAV4E1:[ 'Os metais', 'O brilho metálico', 'Calor e eletricidade', 'Ductilidade', 'Maleabilidade' ],
+  E4E:{ titulo:2, texto:5, cubo:14.5, gira:21, giraDura:0.9, metal:22.4,
+        pronto:2, chapas:9.5, zinco:10.3, ferro:11, reorg:23.5 },
   suja4E:false, dig4E:null, prop4E:null, cubo4E:null, alerta4E:null, metaisOk:false,
   cena4E(m, t, acabou, tr){
     const E = this.E4E;
@@ -7939,15 +7956,23 @@ const EV4 = {
       LAM4.el.classList.toggle('metal', t >= E.metal || LAM4.feito || LAM4.rodando);
       this.alerta4E.classList.toggle('on', acabou && !LAM4.feito && !LAM4.rodando);
     } else {
-      /* a "4A5": a máquina já laminou; aos 14 s, tudo sai */
+      /* a "4A5": a máquina já laminou; aos 2 s o cubo vira para o papel
+         alumínio pronto, aos 9,5 s para as chapas (cobre; 10,3 s zinco;
+         11 s ferro); aos 23,5 s, tudo sai */
       LAM4.mostraFeito();
       LAM4.el.classList.add('metal');
       this.dig4E.escreve(1e3);
       const sai = t >= E.reorg;
       this.prop4E.classList.toggle('fim', sai);
       cb.classList.toggle('on', !sai);
-      cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(-90deg)';
-      cb.classList.add('virou');
+      const giro = de => { const p = Math.max(0, Math.min(1, (t - de) / E.giraDura)); return [p, p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2]; };
+      const [p1, g1] = giro(E.pronto), [p2, g2] = giro(E.chapas);
+      cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 - 90 * g1 - 90 * g2).toFixed(2) + 'deg)';
+      /* parada, a face fica plana: o laminador, o alumínio, ou as chapas */
+      cb.classList.toggle('virou', p1 <= 0);
+      cb.classList.toggle('virou2', p1 >= 1 && p2 <= 0);
+      cb.classList.toggle('virou3', p2 >= 1);
+      cb.querySelector('.chapas4').dataset.metal = t >= E.ferro ? 'ferro' : t >= E.zinco ? 'zinco' : 'cobre';
       this.alerta4E.classList.remove('on');
     }
     this.suja4E = true;
@@ -7970,9 +7995,13 @@ const EV4 = {
     cb.style.left = (C.cx - 220) + 'px';
     cb.style.top  = (C.cy - 220) + 'px';
     cb.style.setProperty('--esc', C.esc);
+    /* quatro faces: a folha, o laminador, o papel alumínio pronto (a "4A5"),
+       e as chapas de cobre, zinco e ferro */
     cb.innerHTML = '<div class="gira4">' +
       '<div class="face4C frente">' + aluminioSVG() + '</div>' +
-      '<div class="face4C lado"><div class="lam4">' + laminadorSVG() + '</div></div></div>';
+      '<div class="face4C lado"><div class="lam4">' + laminadorSVG() + '</div></div>' +
+      '<div class="face4C tras">' + aluminioSVG('al4b') + '</div>' +
+      '<div class="face4C esq"><div class="chapas4" data-metal="cobre">' + chapasSVG() + '</div></div></div>';
     m.appendChild(cb);
     this.cubo4E = cb;
     LAM4.prepara(cb.querySelector('.lam4'));
@@ -8001,22 +8030,27 @@ const EV4 = {
       setTimeout(() => { if (atual === 4 && trilhaAtual === '4A3') tocaTrilha('4A4'); }, 2000);
   },
   fim4A3(){ if (FIEIRA4.completo) tocaTrilha('4A4'); },
-  /* a gaveta do sumário e a mão, nas marcas da "4A5" */
-  gaveta4E1(abre){
-    if (atual !== 4) return;
-    if (abre) abreNav(); else { fechaNav(); tiraMao(); }
+  /* A PUXADA NA ABA DO SUMÁRIO (nas marcas da "4A5"): a mão pega a aba e
+     puxa um pouquinho — a gaveta espreita e volta —, três vezes */
+  maoNaAba(){
+    if (atual !== 4 || !navAlca) return;
+    levaMao(navAlca, { fx:.55, fy:.5 });
   },
-  maoNoTopico(k){
-    if (!navGaveta || !navGaveta.classList.contains('aberta')) return;
-    const i = NAV_TOPICOS.findIndex(o => o.slide === 4 && o.titulo === this.NAV4E1[k]);
-    const b = navGaveta.querySelector('.nav-item[data-topico="' + i + '"]');
-    if (b) levaMao(b, { fx:.35 });
+  puxaAba(sim){
+    if (!navGaveta) return;
+    if (sim && atual !== 4) return;
+    if (sim) bateMao();
+    navGaveta.classList.toggle('espia', sim);
+    navAlca.classList.toggle('espia', sim);
+    mao.classList.toggle('puxa', sim);
   },
   desfaz4E(m){
     if (this.dig4E){
       this.dig4E.limpa();
       this.prop4E.classList.remove('fim');
-      this.cubo4E.classList.remove('on', 'virou');
+      this.cubo4E.classList.remove('on', 'virou', 'virou2', 'virou3');
+      this.cubo4E.querySelector('.chapas4').dataset.metal = 'cobre';
+      this.puxaAba(false);
       this.cubo4E.querySelector('.gira4').style.transform = '';
       this.alerta4E.classList.remove('on');
       LAM4.zera();
@@ -8346,6 +8380,7 @@ const EV4 = {
   fora(){
     if (this.real) this.soltaRealce();
     if (this.E4.raf) this.paraEletro();
+    this.puxaAba(false);
     stage.classList.remove('em-classes');
   },
   zera(){
@@ -8964,8 +8999,10 @@ const FIEIRA4 = {
    que se desenrola. O amassado é luz de verdade sobre um relevo de ruído
    (feDiffuseLighting e feSpecularLighting): cada vinco tem o lado claro
    e o escuro, como no alumínio da cozinha */
-function aluminioSVG(){
-  return '<svg viewBox="0 0 440 440" role="img" aria-label="Folha de papel alumínio">' +
+/* (px: o prefixo dos ids — a "4A5" põe uma segunda cópia noutra face, e
+   cada uma leva os filtros dela: a face escondida não os empresta) */
+function aluminioSVG(px){
+  return ('<svg viewBox="0 0 440 440" role="img" aria-label="Folha de papel alumínio">' +
     '<defs>' +
       '<filter id="al4-amassa" x="0" y="0" width="100%" height="100%">' +
         '<feTurbulence type="fractalNoise" baseFrequency=".02 .045" numOctaves="4" seed="3" result="n"/>' +
@@ -8992,6 +9029,84 @@ function aluminioSVG(){
     '<rect x="70" y="118" width="276" height="44" rx="8" fill="#fff" filter="url(#al4-amassa)" opacity=".22"/>' +
     '<ellipse cx="346" cy="140" rx="9" ry="22" fill="#A7B0B9"/>' +
     '<ellipse cx="346" cy="140" rx="5" ry="12" fill="url(#al4-tubo)"/>' +
+  '</svg>').replace(/al4-/g, (px || 'al4') + '-');
+}
+
+/* AS CHAPAS (a "4A5", aos 9,5 s): uma chapa grossa vista de cima, de
+   três quartos, com a espessura à mostra na frente e no lado. A mesma
+   chapa em três metais, que se trocam em fade (data-metal): o COBRE
+   laminado, rosado, com o escovado do laminador e a faixa de reflexo; o
+   ZINCO, cinza-azulado, com as "flores" de cristal da galvanização
+   (manchas de bordas vivas: um ruído em degraus); e o FERRO, cinza-
+   escuro, com a carepa de laminação (o manchado azulado e fosco). O
+   escovado e o manchado são relevo de ruído com luz (feDiffuseLighting
+   e feSpecularLighting), como no alumínio. */
+const CHAPAS_4 = {
+  cobre:{ nome:'Chapa de cobre', claro:'#FFD9C2', meio:'#C8784A', escuro:'#6A3016', borda:'#8E4A28' },
+  zinco:{ nome:'Chapa de zinco', claro:'#EEF3F7', meio:'#A9B5C0', escuro:'#5D6873', borda:'#77828D' },
+  ferro:{ nome:'Chapa de ferro', claro:'#9AA1A9', meio:'#5A6067', escuro:'#24282D', borda:'#3A3F45' }
+};
+function chapasSVG(){
+  /* o tampo (um quadrilátero em perspectiva), a frente e o lado */
+  const topo = '62,236 296,186 392,256 152,318', frente = '152,318 392,256 392,270 152,334', lado = '62,236 152,318 152,334 62,250';
+  const um = (k, M) => {
+    const id = 'ch4-' + k;
+    const extra = k === 'zinco'
+      /* as flores do zinco: manchas de cristal com borda viva, umas mais
+         claras que as outras */
+      ? '<rect width="440" height="440" fill="#fff" filter="url(#' + id + '-flor)" opacity=".55" clip-path="url(#ch4-corte)"/>'
+      : k === 'ferro'
+      /* a carepa do ferro: o manchado azulado, fosco */
+      ? '<rect width="440" height="440" fill="#5E6E86" filter="url(#' + id + '-carepa)" opacity=".6" clip-path="url(#ch4-corte)"/>'
+      : '';
+    return '<g class="ch4 ch4-' + k + '">' +
+      '<defs>' +
+        '<linearGradient id="' + id + '-tampo" x1="0" y1="0" x2="1" y2=".55">' +
+          '<stop offset="0" stop-color="' + M.meio + '"/><stop offset=".34" stop-color="' + M.claro + '"/>' +
+          '<stop offset=".46" stop-color="' + M.meio + '"/><stop offset=".78" stop-color="' + M.escuro + '"/>' +
+          '<stop offset="1" stop-color="' + M.meio + '"/></linearGradient>' +
+        '<linearGradient id="' + id + '-frente" x1="0" y1="0" x2="1" y2="0">' +
+          '<stop offset="0" stop-color="' + M.escuro + '"/><stop offset=".5" stop-color="' + M.borda + '"/>' +
+          '<stop offset="1" stop-color="' + M.escuro + '"/></linearGradient>' +
+        /* o escovado: ruído esticado ao longo da laminação, com luz */
+        '<filter id="' + id + '-escova" x="0" y="0" width="100%" height="100%">' +
+          '<feTurbulence type="fractalNoise" baseFrequency="' + (k === 'ferro' ? '.02 .5' : '.006 .9') + '" numOctaves="3" seed="' + (k.length * 7) + '" result="n"/>' +
+          '<feDiffuseLighting in="n" surfaceScale="' + (k === 'ferro' ? 2.2 : 1.4) + '" diffuseConstant="1" lighting-color="#fff" result="d">' +
+            '<feDistantLight azimuth="235" elevation="55"/></feDiffuseLighting>' +
+          '<feSpecularLighting in="n" surfaceScale="1.4" specularConstant="' + (k === 'ferro' ? .25 : .9) + '" specularExponent="' + (k === 'ferro' ? 8 : 22) + '" lighting-color="#fff" result="s">' +
+            '<feDistantLight azimuth="235" elevation="40"/></feSpecularLighting>' +
+          '<feComposite in="SourceGraphic" in2="d" operator="arithmetic" k1="1.15" k2="0" k3="0" k4="0" result="cor"/>' +
+          '<feComposite in="s" in2="SourceGraphic" operator="in" result="ss"/>' +
+          '<feBlend in="ss" in2="cor" mode="screen" result="tudo"/>' +
+          '<feComposite in="tudo" in2="SourceGraphic" operator="in"/></filter>' +
+        (k === 'zinco'
+          ? '<filter id="' + id + '-flor" x="0" y="0" width="100%" height="100%">' +
+              '<feTurbulence type="fractalNoise" baseFrequency=".028" numOctaves="2" seed="21" result="n"/>' +
+              '<feComponentTransfer in="n" result="d"><feFuncR type="discrete" tableValues="0 .35 .15 .6 .25 .8 .45 1"/>' +
+                '<feFuncG type="discrete" tableValues="0 .35 .15 .6 .25 .8 .45 1"/>' +
+                '<feFuncB type="discrete" tableValues="0 .35 .15 .6 .25 .8 .45 1"/><feFuncA type="table" tableValues="1 1"/></feComponentTransfer>' +
+              '<feColorMatrix in="d" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  .9 0 0 0 -.25"/></filter>' : '') +
+        (k === 'ferro'
+          ? '<filter id="' + id + '-carepa" x="0" y="0" width="100%" height="100%">' +
+              '<feTurbulence type="fractalNoise" baseFrequency=".018 .04" numOctaves="4" seed="9" result="n"/>' +
+              '<feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  2.2 0 0 0 -1" result="m"/>' +
+              '<feComposite in="SourceGraphic" in2="m" operator="in"/></filter>' : '') +
+      '</defs>' +
+      '<polygon points="' + topo + '" fill="url(#' + id + '-tampo)" filter="url(#' + id + '-escova)"/>' +
+      extra +
+      '<polygon points="' + frente + '" fill="url(#' + id + '-frente)"/>' +
+      '<polygon points="' + lado + '" fill="' + M.escuro + '"/>' +
+      /* o fio de luz na aresta de cima, e o nome */
+      '<polyline points="62,236 152,318 392,256" fill="none" stroke="' + M.claro + '" stroke-opacity=".75" stroke-width="1.3"/>' +
+      '<text class="ch-nome" x="220" y="76" text-anchor="middle">' + M.nome + '</text>' +
+    '</g>';
+  };
+  return '<svg viewBox="0 0 440 440" role="img" aria-label="Chapas de cobre, zinco e ferro">' +
+    '<defs><clipPath id="ch4-corte"><polygon points="' + topo + '"/></clipPath>' +
+      '<filter id="ch4-borra" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="9"/></filter></defs>' +
+    /* a sombra da chapa na mesa */
+    '<ellipse cx="232" cy="318" rx="176" ry="26" fill="#000" opacity=".55" filter="url(#ch4-borra)"/>' +
+    Object.entries(CHAPAS_4).map(([k, M]) => um(k, M)).join('') +
   '</svg>';
 }
 

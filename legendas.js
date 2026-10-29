@@ -292,11 +292,12 @@ var LEGENDAS = {
     [30.32,33.54,"Quer ver? Ligue a máquina ali pra entender esse processo."]
   ],
   "audio_tabela_4A5": [
-    [0,3.9,"Muito bem, isso só é possível graças à maleabilidade."],
-    [3.9,8.72,"Tá, sobre as propriedades da classe de elementos metais, é isso."],
-    [8.72,13.54,"Se quiser rever alguma propriedade, basta ir no sumário, navegar direto pra ela."],
-    [13.54,18.08,"Ou escolha outra classe de elementos aí pra gente se aprofundar."],
-    [18.08,19.1,"A escolha é sua."]
+    [0,3.62,"Muito bem! É assim que se produz papel alumínio,"],
+    [3.62,6.8,"e isso só é possível graças à maleabilidade desse metal."],
+    [6.8,13.12,"Aliás, é assim que se faz chapas de cobre, zinco, ferro e vários outros metais."],
+    [13.12,17.3,"Tá, sobre as propriedades dos elementos metais, é isso."],
+    [17.3,22.2,"Se quiser rever alguma propriedade, basta ir no sumário e navegar direto pra ela."],
+    [22.2,26.2,"No mais, vamos pra outra classe de elementos. Escolha outra aí."]
   ],
   "audio_tabela_4B": [
     [0,5.04,"Certo, vamos discutir os ametais, que também são chamados de não-metais."],
