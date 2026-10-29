@@ -1272,11 +1272,11 @@ body.montagem .propAm .frase,body.montagem .propAm1 .frase{pointer-events:auto}
 .propAm1 .frase.on{display:block}
 .propAm1 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
 .propAm1 .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
-/* O PASSEIO pelos pós (fim da "4B1"): as setas à direita da propriedade
-   2, e o giro do cubo, agora uma transição (cada toque, um quarto de volta) */
+/* O PASSEIO pelos pós (fim da "4B1"): as setas na base das imagens, e o
+   giro do cubo, agora uma transição (cada toque, um quarto de volta) */
 .po-img{position:absolute;inset:0}
 .cuboAm.passeia .gira4{transition:transform .8s cubic-bezier(.45,0,.25,1)}
-.setasAm{position:absolute;top:50%;left:0;translate:0 -50%;display:flex;gap:6px;
+.setasAm{position:absolute;z-index:35;translate:-50% -50%;display:flex;gap:10px;
   opacity:0;scale:.6;pointer-events:none;transition:opacity .3s ease, scale .35s var(--e-salto)}
 .setasAm.on{opacity:1;scale:1;pointer-events:auto}
 .setasAm button{width:38px;height:30px;padding:0;border-radius:999px;cursor:pointer;
@@ -3306,7 +3306,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v25.0';
+const VERSAO = 'v25.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8333,7 +8333,9 @@ const EV4 = {
     this.cuboAm = cb;
     this.facesAm = [...cb.querySelectorAll('.face4C')];
     this.imgsAm = [...cb.querySelectorAll('.po-img')];
-    /* as setas, à direita da propriedade 2 (logo depois do fim do texto) */
+    /* as setas, na base das imagens: centradas embaixo, por cima do cubo
+       (na faixa vazia de baixo da face, a 396 da face de 440) — fora das
+       faces, para não girarem com elas */
     const st = document.createElement('div');
     st.className = 'setasAm';
     st.innerHTML = '<button type="button" data-d="-1" aria-label="Imagem anterior">◀</button>' +
@@ -8344,16 +8346,10 @@ const EV4 = {
       const b = ev.target.closest('button');
       if (b && !naMontagem()) this.giraAm(+b.dataset.d);
     });
-    f.appendChild(st);
+    st.style.left = X.cx + 'px';
+    st.style.top  = (X.cy + (396 - 220) * X.esc).toFixed(1) + 'px';
+    m.appendChild(st);
     this.setasAm = st;
-    const poe = () => {
-      const cs = getComputedStyle(f);
-      const ctx = (this._regua || (this._regua = document.createElement('canvas'))).getContext('2d');
-      ctx.font = cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
-      st.style.left = (ctx.measureText(FRASES_AM1[0].txt).width + 22).toFixed(1) + 'px';
-    };
-    poe();
-    if (document.fonts) document.fonts.ready.then(poe);
   },
   desfazAm1(m){
     if (this.digAm1){

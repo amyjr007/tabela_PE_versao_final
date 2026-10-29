@@ -287,7 +287,7 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4B1` · 15 s | à esquerda, embaixo do texto, um cubo, em fade, com o **pó de enxofre** (`poSVG`): um montinho numa bancada escura — luz de verdade sobre um relevo de ruído fino (o grão) e largo (os torrões), a borda esfarelada (dois `feDisplacementMap`), o cone claro na encosta da esquerda e escuro na da direita, grãos claros e escuros ao acaso, os grãos soltos e a poeira assentada no pé, a sombra de contato. Fosco: sem brilho especular |
 | `4B1` · 18,5 s | o cubo vira (um quarto de volta), e a face nova é o **fósforo vermelho** |
 | `4B1` · 21 s | vira outra vez: o **pó de grafite**, preto acinzentado |
-| fim da `4B1` (passeio) | à direita da propriedade 2, as setas ◀ ▶: cada toque gira o cubo um quarto de volta, para um lado ou para o outro, sem fim — o cubo tem quatro faces e as imagens são três, e antes de cada giro a imagem seguinte é posta na face que vai aparecer |
+| fim da `4B1` (passeio) | na base das imagens (centradas embaixo, por cima do cubo), as setas ◀ ▶: cada toque gira o cubo um quarto de volta, para um lado ou para o outro, sem fim — o cubo tem quatro faces e as imagens são três, e antes de cada giro a imagem seguinte é posta na face que vai aparecer |
 | fim da `4B1` | o play vira o **Saquei**; tocado, espoca e some (a narração seguinte ainda vai ser gravada) |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
