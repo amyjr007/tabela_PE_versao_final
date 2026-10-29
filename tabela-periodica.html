@@ -2727,6 +2727,11 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
 .sum-sub{padding:8px 12px;gap:10px}
 .sum-letra{flex:none;min-width:22px;font-family:var(--mono);font-size:13px;line-height:1.5;color:var(--ouro)}
 .sum-sub .nav-txt b{font-size:15px;font-weight:500}
+/* as seções de um capítulo ("4.1. Os metais"): o número no lugar da letra,
+   e o título mais forte; os subtópicos delas, um pouco mais para dentro */
+.sum-sub.sum-secao .sum-letra{min-width:30px;font-family:var(--display);font-size:14px;font-weight:700}
+.sum-sub.sum-secao .nav-txt b{font-weight:700}
+.sum-sub.na-secao{padding-left:34px}
 .sum-subs .nav-variantes{margin:0 0 6px 44px}
 /* no celular deitado a tela é baixa: o cabeçalho encolhe e o rodapé sai,
    e a altura fica para a lista */
@@ -3325,7 +3330,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v25.3';
+const VERSAO = 'v25.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14102,7 +14107,7 @@ const NAV_TOPICOS = [
     entra(){ /* o recomeço do slide já é o tópico */ } },
   { titulo:'A escolha da classe', sub:'aos 40 s da narração 4: tocar numa classe', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4', 40, g)); } },
-  { titulo:'Os metais', sub:'o começo da 4A', slide:4,
+  { titulo:'Os metais', secao:'4.1', sub:'o começo da 4A', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4A', 0, g)); } },
   { titulo:'O brilho metálico', sub:'o começo da 4A1', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4A1', 0, g)); } },
@@ -14112,7 +14117,7 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4A3', 0, g)); } },
   { titulo:'Maleabilidade', sub:'o começo da 4A4: o laminador', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4A4', 0, g)); } },
-  { titulo:'Os ametais', sub:'o começo da 4B', slide:4,
+  { titulo:'Os ametais', secao:'4.2', sub:'o começo da 4B', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4B', 0, g)); } },
   { titulo:'Opacos e foscos', sub:'o começo da 4B1: os pós', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4B1', 0, g)); } },
@@ -14371,14 +14376,19 @@ function montaNav(){
     if (subs.length){
       const ol = document.createElement('ol');
       ol.className = 'sum-subs';
-      subs.forEach(({ t, i }, k) => {
+      /* um tópico com 'secao' ("4.1") abre uma seção: leva o número dela no
+         lugar da letra, e as letras dos que vêm depois recomeçam do a */
+      let k = 0, naSecao = false;
+      subs.forEach(({ t, i }) => {
         const li = document.createElement('li');
         const b = document.createElement('button');
         b.type = 'button';
-        b.className = 'nav-item sum-sub';
+        b.className = 'nav-item sum-sub' + (t.secao ? ' sum-secao' : naSecao ? ' na-secao' : '');
         b.dataset.topico = i;
+        const marca = t.secao ? t.secao + '.' : letra(k++) + ' –';
+        if (t.secao){ k = 0; naSecao = true; }
         /* só o título: o 'sub' de cada tópico é nota técnica, e fica no código */
-        b.innerHTML = '<span class="sum-letra">' + letra(k) + ' –</span><span class="nav-txt"><b></b>' +
+        b.innerHTML = '<span class="sum-letra">' + marca + '</span><span class="nav-txt"><b></b>' +
           (t.engatilhado ? '<span class="nav-breve">em breve</span>' : '') + '</span>';
         b.querySelector('b').textContent = t.titulo;
         b.querySelector('b').insertAdjacentHTML('beforeend', '<span class="nav-aqui">aqui</span>');
