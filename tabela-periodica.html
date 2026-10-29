@@ -1288,6 +1288,52 @@ body.montagem .propAm .frase,body.montagem .propAm1 .frase{pointer-events:auto}
 .setasAm.on button{animation:chamaSeta 1.6s ease-in-out 3}
 .setasAm.on button + button{animation-delay:.2s}
 @keyframes chamaSeta{0%,100%{box-shadow:0 2px 8px rgba(0,0,0,.35)} 50%{box-shadow:0 0 14px 3px color-mix(in srgb,var(--ouro-luz) 60%,transparent)}}
+/* A "4B2": a propriedade 3 (duas linhas, clara) e a exceção (prateada) */
+.propAm2{position:absolute;inset:0;z-index:25;pointer-events:none}
+.propAm2 .frase{position:absolute;display:none;margin:0;font-family:var(--display);text-shadow:0 2px 4px rgba(0,0,0,.5)}
+.propAm2 .frase.on{display:block}
+.propAm2 .frase:nth-child(1){width:560px;font-weight:600;font-size:28px;line-height:1.28;color:#F4F2F8}
+.propAm2 .frase:nth-child(2){white-space:nowrap;line-height:1;transform:translateY(-50%);font-weight:600;font-size:26px;color:#C9D2DC}
+.propAm2 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
+.propAm2 .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+.propAm1 .frase{transition:opacity .6s ease}
+.propAm1 .frase.fim{opacity:0}
+body.montagem .propAm2 .frase{pointer-events:auto}
+body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-events:auto}
+.alertaAm2{font-size:21px;line-height:1.15;text-align:center;white-space:nowrap}
+/* o lápis: o anel que pulsa em volta da ponta de grafite, e o nome dela */
+.po4 .lp-destaque{transform-box:fill-box;transform-origin:center;animation:pulsaPonta 1.3s ease-in-out infinite}
+@keyframes pulsaPonta{0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.18);opacity:.55}}
+.po4 .lp-nome{font-family:var(--display);font-weight:700;font-size:22px;fill:#FFD43B}
+/* o circuito: apagado (o vão a pulsar) e aceso (a luz, os raios, a corrente) */
+.circ4{position:absolute;inset:0}
+.circ4 svg{display:block;width:100%;height:100%}
+.circ4 .c-sinal{font:700 20px var(--display);fill:#F4F2F8}
+.circ4 .c-volt{font:600 12px var(--mono);fill:#C9D2DC;letter-spacing:.06em}
+.circ4 .c-emenda{font:600 15px var(--display);fill:#FFD43B;opacity:.85;transition:opacity .4s ease}
+.circ4 :is(.c-luz,.c-vidro,.c-raios,.c-fluxo){opacity:0;transition:opacity .45s ease}
+.circ4 .c-filamento{transition:stroke .3s ease}
+.circ4 .c-vao{animation:vaoChama 1.1s ease-in-out infinite;transition:opacity .3s ease}
+@keyframes vaoChama{0%,100%{opacity:1} 50%{opacity:.35}}
+.circ4.aceso :is(.c-luz,.c-vidro,.c-raios,.c-fluxo){opacity:1}
+.circ4.aceso .c-filamento{stroke:#FFFBE6}
+.circ4.aceso :is(.c-vao,.c-emenda){opacity:0;animation:none}
+.circ4.aceso .c-fluxo{animation:corrente .6s linear infinite}
+@keyframes corrente{to{stroke-dashoffset:-16}}
+.circ4.aceso .c-raios{animation:raios 1.4s ease-in-out infinite}
+@keyframes raios{0%,100%{opacity:1} 50%{opacity:.55}}
+/* o bastão de grafite, solto na mesa, que o dedo leva até à emenda */
+.grafAm{position:absolute;z-index:36;translate:-50% -50%;padding:16px 12px;cursor:grab;touch-action:none;
+  opacity:0;pointer-events:none;transition:opacity .5s ease}
+.grafAm.on{opacity:1;pointer-events:auto}
+.grafAm.pegando{cursor:grabbing}
+.grafAm.encaixado{pointer-events:none}
+.grafAm svg{display:block;width:calc(100px * var(--esc,1));height:calc(14px * var(--esc,1));
+  filter:drop-shadow(0 3px 4px rgba(0,0,0,.55));transition:filter .2s ease}
+.grafAm.pegando svg{filter:drop-shadow(0 10px 10px rgba(0,0,0,.5))}
+.grafAm .graf-nome{position:absolute;left:50%;bottom:calc(100% - 12px);translate:-50% 0;white-space:nowrap;
+  font:600 15px var(--display);color:#E6ECF2;text-shadow:0 1px 3px rgba(0,0,0,.6);transition:opacity .3s ease}
+.grafAm.encaixado .graf-nome{opacity:0}
 .po4 .po-nome{font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:.02em;fill:#F4F2F8}
 
 /* OS DESTAQUES AO ACASO (antes do play e nos primeiros 10 s da "4"): a
@@ -3306,7 +3352,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v25.1';
+const VERSAO = 'v25.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4540,6 +4586,7 @@ const TRILHAS = {
   '4A5':  'Audios/audio_tabela_4A5.mp3',   /* laminada a barra: o fim dos metais */
   '4B':   'Audios/audio_tabela_4B.mp3',    /* escolhidos os ametais */
   '4B1':  'Audios/audio_tabela_4B1.mp3',   /* depois do Saquei: opacos e foscos */
+  '4B2':  'Audios/audio_tabela_4B2.mp3',   /* depois do Saquei: não conduzem (menos o grafite) */
   '5':    'Audios/audio_tabela_5.mp3',     /* o slide 6: as principais famílias (ainda por gravar) */
   '6':    'Audios/audio_tabela_6.mp3',     /* o slide 7: os grupos A e B (ainda por gravar) */
   '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
@@ -4656,6 +4703,7 @@ const ROTEIROS = {
     { t:53.2,  faz(){ tiraMao(); } }
   ],
   '4B1':  [],   /* e em EV4.cenaAm1 */
+  '4B2':  [],   /* e em EV4.cenaAm2 */
   '5':    [],
   '6':    [],
   '7':    [],   /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
@@ -7168,6 +7216,11 @@ const FRASES_AM = [
 /* na "4B1": os itens da 4B saem (o título fica), e a propriedade 2 vem
    no lugar da 1 */
 const FRASES_AM1 = [ { de:6.0, ate:10.0, txt:'2. Os ametais puros são opacos e foscos' } ];
+/* na "4B2": a propriedade 3 (em duas linhas) e a exceção dela */
+const FRASES_AM2 = [
+  { de:8.0, ate:10.0, txt:'3. Ametais são péssimos condutores de calor e eletricidade.' },
+  { de:15.3, ate:18.0, txt:'A exceção é o carbono grafite' }
+];
 /* a narração de cada classe, tocada a escolha (as outras ainda por gravar) */
 const TRILHA_DA_CLASSE = { metais:'4A', ametais:'4B' };
 /* os gases, na cor deles: os incolores numa névoa clara, o flúor amarelo-
@@ -7287,12 +7340,16 @@ const EV4 = {
     else if (tr === '4A5') escolha = acabou;
     /* a "4B" e a "4B1" falam dos ametais: eles ficam acesos; na "4B1" a
        cena da "4B" fica parada no fim dela */
-    else if (tr === '4B' || tr === '4B1') luz = 'ametais';
+    else if (tr === '4B' || tr === '4B1' || tr === '4B2') luz = 'ametais';
     if (tr === '4B') this.cenaAm(m, t, acabou);
-    else if (tr === '4B1') this.cenaAm(m, 1e3, true, true);
+    else if (tr === '4B1' || tr === '4B2') this.cenaAm(m, 1e3, true, true);
     else if (this.sujaAm) this.desfazAm(m);
+    /* na "4B2" a cena da "4B1" sai: o texto e o cubo dos pós, em fade */
     if (tr === '4B1') this.cenaAm1(m, t, acabou);
+    else if (tr === '4B2') this.saiAm1(m);
     else if (this.sujaAm1) this.desfazAm1(m);
+    if (tr === '4B2') this.cenaAm2(m, t, acabou);
+    else if (this.sujaAm2) this.desfazAm2(m);
     /* a "4A2" e a "4A3" mantêm as cenas de antes paradas no fim delas */
     const depoisB = tr === '4A2' || tr === '4A3' || segura;
     /* na "4A1" a cena da "4A" fica como ela a deixou (o fim dela), e a da
@@ -7647,7 +7704,7 @@ const EV4 = {
      vem logo atrás (o da "4B1" ainda não tem seguinte: só some). No fim da
      "4A" ele só vem depois de o aluno tocar no mercúrio; no da "4A2",
      depois do curto no fio. */
-  SEGUINTE4:{ '4A':'4A1', '4A1':'4A2', '4A2':'4A3', '4B':'4B1' },
+  SEGUINTE4:{ '4A':'4A1', '4A1':'4A2', '4A2':'4A3', '4B':'4B1', '4B1':'4B2' },
   saquei4(sim){ botaoVerde(sim ? 'Saquei' : null, () => this.saqueiSegue()); },
   saqueiSegue(){
     if (somBtn.classList.contains('saquei-tocado')) return;
@@ -8351,10 +8408,21 @@ const EV4 = {
     m.appendChild(st);
     this.setasAm = st;
   },
+  /* na "4B2": a propriedade 2 e o cubo dos pós saem em fade */
+  saiAm1(m){
+    this.preparaAm1(m);
+    if (this.passeiaAm) this.paraPasseio();
+    this.digAm1.escreve(1e3);
+    this.propAm1.querySelector('.frase').classList.add('fim');
+    this.cuboAm.classList.remove('on');
+    this.setasAm.classList.remove('on');
+    this.sujaAm1 = true;
+  },
   desfazAm1(m){
     if (this.digAm1){
       this.paraPasseio();
       this.setasAm.classList.remove('on');
+      this.propAm1.querySelector('.frase').classList.remove('fim');
       this.digAm1.limpa();
       this.cuboAm.classList.remove('on', 'virou', 'virou2');
       this.cuboAm.querySelector('.gira4').style.transform = '';
@@ -8404,6 +8472,164 @@ const EV4 = {
     tit.style.top  = (A.y0 - LADO * A.esc / 2 - 38).toFixed(1) + 'px';
     m.appendChild(tit);
     this.titAm = tit;
+  },
+  /* ---- A "4B2": OS AMETAIS NÃO CONDUZEM (menos o grafite) ----
+     0 s          a propriedade 2 e o cubo dos pós saem em fade (o título fica)
+     8 → 10 s     "3. Ametais são péssimos condutores de calor e
+                  eletricidade.", em duas linhas
+     15,3 → 18 s  embaixo, prateado e para dentro, "A exceção é o carbono
+                  grafite"
+     18,5 s       um cubo com o LÁPIS, a ponta de grafite em destaque
+     24 s         ele vira, e a face nova é o CIRCUITO: a pilha, a lâmpada
+                  apagada e uma emenda aberta. Virada a face, o bastão de
+                  grafite solto ao lado se deixa arrastar; encaixado na
+                  emenda, fecha o circuito e a lâmpada acende
+     fim          "Arraste o grafite até a emenda", a piscar, até ao encaixe;
+                  encaixado (e acabada a narração), o Saquei
+     O texto e o giro são função do relógio da narração; o bastão, do dedo. */
+  AM2:{ cubo:18.5, gira:24, giraDura:0.9, cx:330, cy:500, esc:0.72,
+        /* a emenda, na face de 440 (o centro), e o bastão solto, na mesa */
+        gx:260, gy:330, solX:620, solY:540, ima:42 },
+  sujaAm2:false, digAm2:null, propAm2:null, cuboAm2:null, grafAm:null, alertaAm2:null,
+  fechouAm2:false, verdeAm2:false,
+  cenaAm2(m, t, acabou){
+    const X = this.AM2;
+    this.preparaAm2(m);
+    this.digAm2.escreve(t);
+    const cb = this.cuboAm2;
+    cb.classList.toggle('on', t >= X.cubo);
+    const p = Math.max(0, Math.min(1, (t - X.gira) / X.giraDura));
+    const g = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
+    cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 * g).toFixed(2) + 'deg)';
+    const virou = p >= 1;
+    cb.classList.toggle('virou', virou);
+    /* o bastão: à vista e solto só com o circuito de frente; voltar o áudio
+       para antes disso devolve-o ao lugar, e o circuito abre */
+    if (!virou && (this.fechouAm2 || this.grafAm._mexeu)) this.soltaGrafite(true);
+    this.grafAm.classList.toggle('on', virou);
+    cb.querySelector('.circ4').classList.toggle('aceso', this.fechouAm2);
+    /* o aviso, acabada a narração, até ao encaixe; e o Saquei, depois dele */
+    this.alertaAm2.classList.toggle('on', acabou && virou && !this.fechouAm2);
+    const verde = acabou && this.fechouAm2;
+    if (verde !== this.verdeAm2){ this.verdeAm2 = verde; this.saquei4(verde); }
+    this.sujaAm2 = true;
+  },
+  /* o centro da emenda, na mesa */
+  emendaAm2(){
+    const X = this.AM2;
+    return { x: X.cx + (X.gx - 220) * X.esc, y: X.cy + (X.gy - 220) * X.esc };
+  },
+  poeGrafite(x, y){
+    const el = this.grafAm;
+    el._x = x; el._y = y;
+    el.style.left = x.toFixed(1) + 'px';
+    el.style.top  = y.toFixed(1) + 'px';
+  },
+  /* de volta ao lugar de começo, e o circuito aberto */
+  soltaGrafite(volta){
+    this.fechouAm2 = false;
+    this.grafAm.classList.remove('encaixado');
+    this.grafAm._mexeu = false;
+    if (volta) this.poeGrafite(this.AM2.solX, this.AM2.solY);
+  },
+  preparaAm2(m){
+    if (this.digAm2) return;
+    const A = this.AM4, X = this.AM2;
+    const cx = document.createElement('div');
+    cx.className = 'propAm2';
+    cx.setAttribute('aria-live', 'polite');
+    m.appendChild(cx);
+    this.digAm2 = criaDigitacao(cx, FRASES_AM2);
+    const f = cx.querySelectorAll('.frase');
+    /* a propriedade 3, em duas linhas, no lugar da 2 (a primeira linha na
+       altura dela); a exceção embaixo, um pouco para dentro */
+    f[0].dataset.mont = 'ametais-propriedade-3';
+    f[0].style.left = A.textoX + 'px';
+    f[0].style.top  = (A.textoY + 48 - 18) + 'px';
+    f[1].dataset.mont = 'ametais-excecao-grafite';
+    f[1].style.left = (A.textoX + 28) + 'px';
+    f[1].style.top  = (A.textoY + 48 + 92) + 'px';
+    this.propAm2 = cx;
+    const cb = document.createElement('div');
+    cb.className = 'cubo4C cuboAm2';
+    cb.style.left = (X.cx - 220) + 'px';
+    cb.style.top  = (X.cy - 220) + 'px';
+    cb.style.setProperty('--esc', X.esc);
+    cb.innerHTML = '<div class="gira4">' +
+      '<div class="face4C frente">' + lapisSVG() + '</div>' +
+      '<div class="face4C lado"><div class="circ4">' + circuitoSVG() + '</div></div></div>';
+    m.appendChild(cb);
+    this.cuboAm2 = cb;
+    /* o bastão de grafite, solto na mesa, do tamanho que terá na emenda */
+    const gr = document.createElement('div');
+    gr.className = 'grafAm';
+    gr.style.setProperty('--esc', X.esc);
+    gr.innerHTML = '<span class="graf-nome">Grafite</span>' + grafiteSVG();
+    m.appendChild(gr);
+    this.grafAm = gr;
+    this.poeGrafite(X.solX, X.solY);
+    this.preparaArrasteGrafite(m);
+    const al = document.createElement('div');
+    al.className = 'toque4 alertaAm2';
+    al.dataset.mont = 'aviso-arraste-o-grafite';
+    /* embaixo do bastão, no vão entre o cubo e a grade (em duas linhas) */
+    al.innerHTML = 'Arraste o grafite<br>até a emenda';
+    al.style.left = X.solX + 'px';
+    al.style.top  = (X.solY + 52) + 'px';
+    m.appendChild(al);
+    this.alertaAm2 = al;
+  },
+  /* O ARRASTE DO GRAFITE: o dedo (ou o mouse) leva o bastão pela mesa;
+     largado perto da emenda (a menos de 'ima'), ele encaixa nela, o
+     circuito fecha e a lâmpada acende. Encaixado, fica. */
+  preparaArrasteGrafite(m){
+    const el = this.grafAm, X = this.AM2;
+    let pega = null;
+    const ponto = ev => {
+      const r = m.getBoundingClientRect(), s = r.width / m.offsetWidth;
+      return { x: (ev.clientX - r.left) / s, y: (ev.clientY - r.top) / s };
+    };
+    el.addEventListener('pointerdown', ev => {
+      if (!el.classList.contains('on') || this.fechouAm2 || naMontagem()) return;
+      ev.preventDefault(); ev.stopPropagation();
+      const p = ponto(ev);
+      pega = { dx: el._x - p.x, dy: el._y - p.y };
+      try { el.setPointerCapture(ev.pointerId); } catch (_) {}
+      el.classList.add('pegando');
+    });
+    el.addEventListener('pointermove', ev => {
+      if (!pega) return;
+      const p = ponto(ev);
+      el._mexeu = true;
+      this.poeGrafite(Math.max(40, Math.min(1240, p.x + pega.dx)), Math.max(60, Math.min(680, p.y + pega.dy)));
+    });
+    const larga = () => {
+      if (!pega) return;
+      pega = null;
+      el.classList.remove('pegando');
+      const e = this.emendaAm2();
+      if (Math.hypot(el._x - e.x, el._y - e.y) < X.ima){
+        this.poeGrafite(e.x, e.y);
+        el.classList.add('encaixado');
+        this.fechouAm2 = true;
+        this.alertaAm2.classList.remove('on');
+      }
+    };
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => el.addEventListener(n, larga));
+    el.addEventListener('click', ev => ev.stopPropagation());
+  },
+  desfazAm2(m){
+    if (this.digAm2){
+      this.digAm2.limpa();
+      this.cuboAm2.classList.remove('on', 'virou');
+      this.cuboAm2.querySelector('.gira4').style.transform = '';
+      this.cuboAm2.querySelector('.circ4').classList.remove('aceso');
+      this.grafAm.classList.remove('on');
+      this.soltaGrafite(true);
+      this.alertaAm2.classList.remove('on');
+    }
+    if (this.verdeAm2){ this.verdeAm2 = false; this.saquei4(false); }
+    this.sujaAm2 = false;
   },
   /* a mão, no botão "Ver" do a) (marca da "4B") */
   maoNoVer(){
@@ -8572,6 +8798,7 @@ const EV4 = {
     stage.classList.remove('em-classes');
     const m = this.mesa();
     if (!m) return;
+    if (this.sujaAm2) this.desfazAm2(m);
     if (this.sujaAm1) this.desfazAm1(m);
     if (this.sujaAm) this.desfazAm(m);
     if (this.suja4E) this.desfaz4E(m);
@@ -9376,6 +9603,130 @@ function poSVG(tipo){
     '</g>' +
     graos +
     '<text class="po-nome" x="220" y="76" text-anchor="middle">' + P.nome + '</text>' +
+  '</svg>';
+}
+
+/* O LÁPIS (a "4B2", aos 18,5 s): deitado em diagonal, o corpo sextavado
+   amarelo (três faixas de luz, as facetas), a virola de metal com os
+   frisos, a borracha, a madeira apontada com o veio e a borda ondulada do
+   apontador, e a PONTA DE GRAFITE em destaque — um anel dourado que pulsa
+   em volta dela e o nome "Grafite" puxado por um fio */
+function lapisSVG(){
+  return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Lápis com a ponta de grafite em destaque">' +
+    '<defs>' +
+      '<linearGradient id="lp4-corpo" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#FFE68A"/><stop offset=".3" stop-color="#FFD54A"/><stop offset=".31" stop-color="#F4B81F"/>' +
+        '<stop offset=".66" stop-color="#E9A812"/><stop offset=".67" stop-color="#C3860A"/><stop offset="1" stop-color="#8F5F05"/></linearGradient>' +
+      '<linearGradient id="lp4-madeira" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#F7E2BF"/><stop offset=".55" stop-color="#E2C08E"/><stop offset="1" stop-color="#B98E5A"/></linearGradient>' +
+      '<linearGradient id="lp4-grafite" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#A9AFB7"/><stop offset=".35" stop-color="#5D636B"/><stop offset=".7" stop-color="#2E3237"/><stop offset="1" stop-color="#1A1C20"/></linearGradient>' +
+      '<linearGradient id="lp4-virola" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#F2F5F8"/><stop offset=".4" stop-color="#B9C1CA"/><stop offset=".75" stop-color="#7A848F"/><stop offset="1" stop-color="#4C555F"/></linearGradient>' +
+      '<linearGradient id="lp4-borracha" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#F7A3AB"/><stop offset=".5" stop-color="#E07882"/><stop offset="1" stop-color="#A9505A"/></linearGradient>' +
+      '<radialGradient id="lp4-halo" cx=".5" cy=".5" r=".5">' +
+        '<stop offset="0" stop-color="#FFE27A" stop-opacity=".45"/><stop offset="1" stop-color="#FFE27A" stop-opacity="0"/></radialGradient>' +
+      '<filter id="lp4-borra" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="8"/></filter>' +
+    '</defs>' +
+    '<text class="po-nome" x="220" y="62" text-anchor="middle">Lápis</text>' +
+    '<ellipse cx="226" cy="318" rx="170" ry="14" fill="#000" opacity=".55" filter="url(#lp4-borra)"/>' +
+    '<g transform="rotate(-14 220 240)">' +
+      /* a borracha e a virola */
+      '<rect x="50" y="220" width="40" height="40" rx="9" fill="url(#lp4-borracha)"/>' +
+      '<rect x="84" y="217" width="30" height="46" rx="3" fill="url(#lp4-virola)"/>' +
+      [90, 97, 104].map(x => '<rect x="' + x + '" y="217" width="2.2" height="46" fill="#5E6873" opacity=".7"/>').join('') +
+      /* o corpo sextavado: três facetas */
+      '<rect x="112" y="218" width="190" height="44" fill="url(#lp4-corpo)"/>' +
+      '<line x1="112" y1="232" x2="302" y2="232" stroke="#FFF3B8" stroke-opacity=".55" stroke-width="1"/>' +
+      '<line x1="112" y1="248" x2="302" y2="248" stroke="#7A5204" stroke-opacity=".35" stroke-width="1"/>' +
+      /* a madeira apontada: a borda ondulada do apontador e o veio */
+      '<path d="M302,218 C306,224 298,230 303,236 C308,242 298,248 303,254 C307,258 302,262 302,262 L354,247 L354,233 Z" fill="url(#lp4-madeira)"/>' +
+      '<path d="M312,226 L350,236 M310,240 L352,240 M312,254 L350,244" stroke="#A87C49" stroke-opacity=".45" stroke-width=".9"/>' +
+      /* a ponta de grafite, com o reflexo dela */
+      '<path d="M352,233.5 L382,240 L352,246.5 Z" fill="url(#lp4-grafite)"/>' +
+      '<path d="M354,235.5 L376,239.4" stroke="#E6EAEE" stroke-opacity=".7" stroke-width="1.1"/>' +
+    '</g>' +
+    /* o destaque da ponta (a ponta, girada: 366,240 → 361,205) */
+    '<circle cx="364" cy="204" r="40" fill="url(#lp4-halo)"/>' +
+    '<circle class="lp-destaque" cx="364" cy="204" r="27" fill="none" stroke="#FFD43B" stroke-width="3"/>' +
+    '<line x1="364" y1="177" x2="364" y2="134" stroke="#FFD43B" stroke-width="2" stroke-opacity=".85"/>' +
+    '<text class="lp-nome" x="364" y="124" text-anchor="middle">Grafite</text>' +
+  '</svg>';
+}
+
+/* O CIRCUITO (a "4B2", aos 24 s): a pilha à esquerda, a lâmpada no alto
+   (o bulbo de vidro, o filamento e o soquete rosqueado), os fios — o do +
+   vermelho, o do − preto — e embaixo, entre dois terminais, a EMENDA aberta
+   (260, 330 na face de 440), tracejada e a pulsar. Fechada pelo grafite
+   (.aceso), o vidro acende, o filamento brilha, a luz vaza em volta e a
+   corrente corre pelos fios. */
+function circuitoSVG(){
+  const fioA = 'M82,206 V181 H200', fioB = 'M240,181 H360 V330 H322', fioC = 'M198,330 H82 V314';
+  const bulbo = 'M200,164 C196,150 178,140 178,118 A42,42 0 1 1 262,118 C262,140 244,150 240,164 Z';
+  return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Circuito elétrico com a lâmpada e uma emenda aberta">' +
+    '<defs>' +
+      '<linearGradient id="ci4-pilha" x1="0" y1="0" x2="1" y2="0">' +
+        '<stop offset="0" stop-color="#1B1D22"/><stop offset=".35" stop-color="#4A4F58"/><stop offset=".55" stop-color="#2A2D33"/><stop offset="1" stop-color="#101114"/></linearGradient>' +
+      '<linearGradient id="ci4-faixa" x1="0" y1="0" x2="1" y2="0">' +
+        '<stop offset="0" stop-color="#8A5A0C"/><stop offset=".4" stop-color="#F2C24A"/><stop offset=".6" stop-color="#C98F1C"/><stop offset="1" stop-color="#6E4708"/></linearGradient>' +
+      '<linearGradient id="ci4-metal" x1="0" y1="0" x2="1" y2="0">' +
+        '<stop offset="0" stop-color="#6E7782"/><stop offset=".35" stop-color="#E6EBF0"/><stop offset=".6" stop-color="#A3ADB8"/><stop offset="1" stop-color="#525B65"/></linearGradient>' +
+      '<radialGradient id="ci4-aceso" cx=".45" cy=".4" r=".65">' +
+        '<stop offset="0" stop-color="#FFFFFF"/><stop offset=".35" stop-color="#FFF6C8"/><stop offset="1" stop-color="#FFC94A"/></radialGradient>' +
+      '<radialGradient id="ci4-luz" cx=".5" cy=".5" r=".5">' +
+        '<stop offset="0" stop-color="#FFE9A0" stop-opacity=".75"/><stop offset=".5" stop-color="#FFD36A" stop-opacity=".25"/><stop offset="1" stop-color="#FFD36A" stop-opacity="0"/></radialGradient>' +
+      '<filter id="ci4-brilho" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/>' +
+        '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' +
+    '</defs>' +
+    '<text class="po-nome" x="220" y="44" text-anchor="middle">Circuito elétrico</text>' +
+    /* a luz que vaza da lâmpada acesa */
+    '<circle class="c-luz" cx="220" cy="118" r="120" fill="url(#ci4-luz)"/>' +
+    /* os fios: a capa, e o cobre que aparece nas pontas */
+    '<path d="' + fioA + '" fill="none" stroke="#C0392B" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<path d="' + fioB + '" fill="none" stroke="#C0392B" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<path d="' + fioC + '" fill="none" stroke="#25282E" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>' +
+    /* a corrente, que só corre com o circuito fechado */
+    ['M82,314 V330 H198', 'M322,330 H360 V181 H240', 'M200,181 H82 V206'].map(d =>
+      '<path class="c-fluxo" d="' + d + '" fill="none" stroke="#FFE27A" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="3 13"/>').join('') +
+    /* a pilha, de pé: o corpo, a faixa, o polo de cima */
+    '<rect x="74" y="200" width="16" height="9" rx="2" fill="url(#ci4-metal)"/>' +
+    '<rect x="58" y="208" width="48" height="108" rx="7" fill="url(#ci4-pilha)"/>' +
+    '<rect x="58" y="208" width="48" height="30" rx="7" fill="url(#ci4-faixa)"/>' +
+    '<text class="c-sinal" x="82" y="230" text-anchor="middle">+</text>' +
+    '<text class="c-sinal" x="82" y="306" text-anchor="middle">−</text>' +
+    '<text class="c-volt" x="82" y="270" text-anchor="middle">1,5 V</text>' +
+    /* a lâmpada: o vidro apagado e o aceso por cima, o filamento, o soquete */
+    '<path d="' + bulbo + '" fill="#C9D3DD" fill-opacity=".16" stroke="#E6ECF2" stroke-opacity=".55" stroke-width="1.6"/>' +
+    '<path class="c-vidro" d="' + bulbo + '" fill="url(#ci4-aceso)"/>' +
+    '<path d="M186,96 C190,84 200,78 210,76" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/>' +
+    '<path d="M209,164 L211,128 M231,164 L229,128" stroke="#8C8F94" stroke-width="1.6"/>' +
+    '<path class="c-filamento" d="M211,128 q2.5,-7 5,0 q2.5,-7 5,0 q2.5,-7 5,0 q2.5,-7 3,0" fill="none" stroke="#5E5348" stroke-width="2" filter="url(#ci4-brilho)"/>' +
+    '<rect x="198" y="164" width="44" height="34" rx="4" fill="url(#ci4-metal)"/>' +
+    [170, 177, 184, 191].map(y => '<path d="M198,' + y + ' L242,' + (y + 3) + '" stroke="#4E5761" stroke-opacity=".6" stroke-width="1.4"/>').join('') +
+    /* os raios da lâmpada acesa */
+    '<g class="c-raios" stroke="#FFE27A" stroke-width="3" stroke-linecap="round">' +
+      [[-150, 0], [-120, 0], [-90, 0], [-60, 0], [-30, 0], [180, 0], [0, 0]].map(([a]) => {
+        const r = a * Math.PI / 180, x1 = 220 + Math.cos(r) * 56, y1 = 118 + Math.sin(r) * 56, x2 = 220 + Math.cos(r) * 74, y2 = 118 + Math.sin(r) * 74;
+        return '<line x1="' + x1.toFixed(1) + '" y1="' + y1.toFixed(1) + '" x2="' + x2.toFixed(1) + '" y2="' + y2.toFixed(1) + '"/>';
+      }).join('') + '</g>' +
+    /* a emenda: os dois terminais e o vão tracejado entre eles */
+    '<rect class="c-vao" x="210" y="321" width="100" height="18" rx="4" fill="#FFD43B" fill-opacity=".08" stroke="#FFD43B" stroke-width="2" stroke-dasharray="6 5"/>' +
+    '<rect x="196" y="321" width="16" height="18" rx="3" fill="url(#ci4-metal)"/>' +
+    '<rect x="308" y="321" width="16" height="18" rx="3" fill="url(#ci4-metal)"/>' +
+    '<text class="c-emenda" x="260" y="372" text-anchor="middle">emenda</text>' +
+  '</svg>';
+}
+
+/* O BASTÃO DE GRAFITE, solto na mesa (100 × 14 na face de 440, do
+   tamanho da emenda): o cinza-escuro do grafite, com o brilho acetinado
+   dele correndo ao comprido */
+function grafiteSVG(){
+  return '<svg viewBox="0 0 100 14" aria-hidden="true">' +
+    '<defs><linearGradient id="gf4" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#9DA3AB"/><stop offset=".28" stop-color="#5C626A"/><stop offset=".6" stop-color="#2E3237"/><stop offset="1" stop-color="#15171A"/></linearGradient></defs>' +
+    '<rect x="0" y="0" width="100" height="14" rx="3" fill="url(#gf4)"/>' +
+    '<rect x="3" y="2.6" width="94" height="1.6" rx=".8" fill="#E9EDF1" opacity=".55"/>' +
   '</svg>';
 }
 
@@ -13132,7 +13483,7 @@ function mostraCoord(el){
 const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle, .quiz3.q4 .q3-q,' +
                ' .dica-escolha .txt, .toque-continuar, .rotulo-el .txt, .veu-frases .frase .txt,' +
                ' .texto-colunas .frase .txt, .veu-moseley figcaption b, .dica-final, .entendi3, .coords-el,' +
-               ' .conta-lc25 .txt, .alerta4C, .alerta4E, .propAm .frase .txt, .propAm1 .frase .txt';
+               ' .conta-lc25 .txt, .alerta4C, .alerta4E, .alertaAm2, .propAm .frase .txt, .propAm1 .frase .txt, .propAm2 .frase .txt';
 const EDICAO = {
   el:null, ultimo:null, tUlt:0, editados:new Set(),
   /* o bloco de linhas a que um texto pertence, dentro da peça */
@@ -13881,6 +14232,8 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4B', 0, g)); } },
   { titulo:'Opacos e foscos', sub:'o começo da 4B1: os pós', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4B1', 0, g)); } },
+  { titulo:'Maus condutores', sub:'o começo da 4B2: o grafite no circuito', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4B2', 0, g)); } },
   /* ---- o slide 6 · As principais famílias ---- */
   { titulo:'Início', sub:'o começo do slide', slide:5,
     entra(){ /* o recomeço do slide já é o tópico */ } },
@@ -14029,6 +14382,7 @@ function tocaDesde(id, t, g){
 function topicoAtual(){
   if (atual === 4){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 4);
+    if (trilhaAtual === '4B2') return base + 9;
     if (trilhaAtual === '4B1') return base + 8;
     if (trilhaAtual === '4B') return base + 7;
     if (trilhaAtual === '4A4' || trilhaAtual === '4A5') return base + 6;

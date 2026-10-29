@@ -323,6 +323,18 @@ var LEGENDAS = {
     [17.76,24.08,"O fósforo vermelho não reluz e o carbono grafite tem um tom preto acinzentado."],
     [24.08,28.1,"São, portanto, visualmente mais discretos que os metais."]
   ],
+  "audio_tabela_4B2": [
+    [0,3.58,"Sobre a condutividade térmica e elétrica que vimos nos metais,"],
+    [3.58,6.68,"os ametais se comportam de forma oposta."],
+    [6.68,10.8,"Ou seja, não conduzem bem o calor nem a eletricidade."],
+    [10.8,11.78,"Mas atenção!"],
+    [11.78,15.04,"Existe uma famosa e clássica exceção."],
+    [15.04,17.52,"O carbono na forma de grafite."],
+    [17.52,20.4,"Sim, é o mesmo grafite do seu lápis."],
+    [20.4,22.96,"Ele é um excelente condutor elétrico."],
+    [22.96,23.58,"Quer ver?"],
+    [23.58,28.28,"Coloque aí o grafite na emenda pra fechar o circuito e veja a lâmpada acender."]
+  ],
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]
   ],

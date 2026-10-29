@@ -288,7 +288,13 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4B1` · 18,5 s | o cubo vira (um quarto de volta), e a face nova é o **fósforo vermelho** |
 | `4B1` · 21 s | vira outra vez: o **pó de grafite**, preto acinzentado |
 | fim da `4B1` (passeio) | na base das imagens (centradas embaixo, por cima do cubo), as setas ◀ ▶: cada toque gira o cubo um quarto de volta, para um lado ou para o outro, sem fim — o cubo tem quatro faces e as imagens são três, e antes de cada giro a imagem seguinte é posta na face que vai aparecer |
-| fim da `4B1` | o play vira o **Saquei**; tocado, espoca e some (a narração seguinte ainda vai ser gravada) |
+| `4B2` · 0 s | a propriedade 2 e o cubo dos pós saem em fade (o título e a grade ficam) |
+| `4B2` · 8 → 10 s | "3. Ametais são péssimos condutores de calor e eletricidade.", claro, em duas linhas (peça `ametais-propriedade-3`) |
+| `4B2` · 15,3 → 18 s | embaixo, prateado e para dentro, "A exceção é o carbono grafite" (peça `ametais-excecao-grafite`) |
+| `4B2` · 18,5 s | à esquerda, um cubo com o **lápis** (`lapisSVG`): o corpo sextavado amarelo, a virola, a borracha, a madeira apontada e a **ponta de grafite** em destaque — um anel dourado que pulsa em volta dela e o nome "Grafite" |
+| `4B2` · 24 s | o cubo vira, e a face nova é o **circuito** (`circuitoSVG`): a pilha de 1,5 V, a lâmpada apagada e, embaixo, a **emenda** aberta, tracejada e a pulsar. Ao lado, solto no vão entre o cubo e a grade, o **bastão de grafite** (`grafiteSVG`), que se deixa arrastar com o dedo; largado perto da emenda, encaixa nela, o circuito fecha e a **lâmpada acende** (o vidro, o filamento, a luz em volta, os raios, a corrente a correr pelos fios) |
+| fim da `4B2` | "Arraste o grafite até a emenda", a piscar embaixo do bastão (peça `aviso-arraste-o-grafite`), até ao encaixe; encaixado (e acabada a narração), o **Saquei** |
+| fim da `4B1` | o play vira o **Saquei**; tocado, espoca e vem a **`4B2`** (`Audios/audio_tabela_4B2.mp3`) |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
 os nomes ganham o tom claro do próprio bloco. Nas fotos do
