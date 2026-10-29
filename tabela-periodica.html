@@ -1116,6 +1116,11 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 .lam4{position:absolute;inset:0}
 .cubo4E.virou .lam4{pointer-events:auto}
 .lam4 .lm-bt{cursor:pointer}
+/* a máquina vazia, e o metal (a barra, a cunha, a folha e o rolo dela)
+   que entra em fade aos 22,4 s */
+.lam4 :is(.lm-metal,.lm-bob){opacity:0;transition:opacity .7s ease}
+.lam4.metal :is(.lm-metal,.lm-bob){opacity:1}
+.lam4:not(.metal) .lm-bt{cursor:default}
 .lam4.rodando .lm-bt,.lam4.feito .lm-bt{cursor:default}
 .lam4 .lm-bt-txt{font-family:var(--mono);font-weight:700;font-size:11px;letter-spacing:.14em;fill:#E6ECF2}
 .lam4 .lm-nome{font-family:var(--display);font-weight:600;font-size:24px;fill:#F4F2F8}
@@ -3243,7 +3248,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v24.3';
+const VERSAO = 'v24.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5269,6 +5274,8 @@ const SEQ = {
     else if (id === '4A1') EV4.saquei4(true);
     /* o fim da "4B" (os ametais) e o da "4B1": o Saquei */
     else if (id === '4B' || id === '4B1') EV4.saquei4(true);
+    /* o fim da "4A3": a "4A4", se o fio já foi puxado até ao fim */
+    else if (id === '4A3') EV4.fim4A3();
     /* o fim da "4A4": a "4A5", se a barra já foi laminada */
     else if (id === '4A4') EV4.fim4E();
   },
@@ -7573,7 +7580,7 @@ const EV4 = {
      vem logo atrás (o da "4B1" ainda não tem seguinte: só some). No fim da
      "4A" ele só vem depois de o aluno tocar no mercúrio; no da "4A2",
      depois do curto no fio. */
-  SEGUINTE4:{ '4A':'4A1', '4A1':'4A2', '4A2':'4A3', '4A3':'4A4', '4B':'4B1' },
+  SEGUINTE4:{ '4A':'4A1', '4A1':'4A2', '4A2':'4A3', '4B':'4B1' },
   saquei4(sim){ botaoVerde(sim ? 'Saquei' : null, () => this.saqueiSegue()); },
   saqueiSegue(){
     if (somBtn.classList.contains('saquei-tocado')) return;
@@ -7903,8 +7910,9 @@ const EV4 = {
                     em fade (a grade e o "Metais" ficam)
      4A4 · 2 s       "Maleabilidade:"; 5 → 12,5 s, embaixo, a definição
      4A4 · 14,5 s    um cubo novo, com a folha de papel alumínio
-     4A4 · 21 s      ele vira, e a face nova é o LAMINADOR (LAM4): ligado,
-                    os rolos esmagam a barra e sai a folha finíssima
+     4A4 · 21 s      ele vira, e a face nova é o LAMINADOR (LAM4), vazio; aos
+                    22,4 s entra o metal. Ligado, os rolos esmagam a barra e
+                    sai a folha finíssima
      fim da 4A4     "Ligue a máquina", até ser ligada; laminada a barra (e
                     acabada a narração), toca a "4A5"
      4A5 · 11,5 s   a gaveta do sumário abre, e a mão percorre as
@@ -7912,7 +7920,7 @@ const EV4 = {
      4A5 · 14 s     tudo sai, e a tabela volta ao estado de começo — os
                     metais verdes, com o ✓ de vistos
      fim da 4A5     tocar numa classe escolhe-a (como no fim da "4") */
-  E4E:{ titulo:2, texto:5, cubo:14.5, gira:21, giraDura:0.9, reorg:14 },
+  E4E:{ titulo:2, texto:5, cubo:14.5, gira:21, giraDura:0.9, metal:22.4, reorg:14 },
   NAV4E1:[ 'Os metais', 'O brilho metálico', 'Calor e eletricidade', 'Ductilidade', 'Maleabilidade' ],
   suja4E:false, dig4E:null, prop4E:null, cubo4E:null, alerta4E:null, metaisOk:false,
   cena4E(m, t, acabou, tr){
@@ -7927,10 +7935,13 @@ const EV4 = {
       const g = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
       cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 * g).toFixed(2) + 'deg)';
       cb.classList.toggle('virou', p >= 1);
+      /* virada a face, a máquina vazia; o metal entra aos 22,4 s */
+      LAM4.el.classList.toggle('metal', t >= E.metal || LAM4.feito || LAM4.rodando);
       this.alerta4E.classList.toggle('on', acabou && !LAM4.feito && !LAM4.rodando);
     } else {
       /* a "4A5": a máquina já laminou; aos 14 s, tudo sai */
       LAM4.mostraFeito();
+      LAM4.el.classList.add('metal');
       this.dig4E.escreve(1e3);
       const sai = t >= E.reorg;
       this.prop4E.classList.toggle('fim', sai);
@@ -7983,6 +7994,13 @@ const EV4 = {
       setTimeout(() => { if (atual === 4 && trilhaAtual === '4A4') tocaTrilha('4A5'); }, 700);
   },
   fim4E(){ if (LAM4.feito) tocaTrilha('4A5'); },
+  /* o fio puxado até ao fim: a "4A4", se a narração da "4A3" já acabou,
+     depois da fanfarra (2 s); senão, quando ela acabar */
+  fioPuxado(){
+    if (atual === 4 && trilhaAtual === '4A3' && (som.ended || (som.duration && som.currentTime >= som.duration - .05)))
+      setTimeout(() => { if (atual === 4 && trilhaAtual === '4A3') tocaTrilha('4A4'); }, 2000);
+  },
+  fim4A3(){ if (FIEIRA4.completo) tocaTrilha('4A4'); },
   /* a gaveta do sumário e a mão, nas marcas da "4A5" */
   gaveta4E1(abre){
     if (atual !== 4) return;
@@ -8919,7 +8937,9 @@ const FIEIRA4 = {
       this.desenha();
     }, PUXA4.volta);
   },
-  /* PUXADO ATÉ AO FIM: a fanfarra, os confetes e o Saquei */
+  /* PUXADO ATÉ AO FIM: a fanfarra, os confetes, e a "4A4" sozinha (sem
+     Saquei) — logo que a fanfarra acaba, ou, se a narração ainda falava,
+     quando ela acabar (EV4.fim4A3) */
   chegou(){
     if (this.completo) return;
     this.completo = true;
@@ -8928,12 +8948,11 @@ const FIEIRA4 = {
     this.desenha();
     tocaEfeito('funfare');
     confete();
-    EV4.saquei4(true);
+    EV4.fioPuxado();
   },
   zera(){
     cancelAnimationFrame(this.raf);
     clearTimeout(this.voltaT);
-    if (this.completo) EV4.saquei4(false);
     this.ponta = FR4.ponta0; this.pega = null; this.vivo = false; this.puxou = false;
     this.tensao = 0; this.rompido = 0; this.completo = false; this.amostras = [];
     if (this.el) this.el.classList.remove('pegando', 'puxou', 'maquina', 'metal');
@@ -9112,12 +9131,15 @@ function laminadorSVG(){
     '<rect x="22" y="' + (g + L.T/2) + '" width="146" height="8" rx="2" fill="#4A535D"/>' +
     '<rect x="30" y="' + (g + L.T/2 + 8) + '" width="8" height="' + (370 - g - L.T/2 - 8) + '" fill="#3A424B"/>' +
     '<rect x="276" y="' + (g + L.t/2) + '" width="98" height="6" rx="2" fill="#4A535D"/>' +
-    /* a barra, e o trecho que afina entre os rolos */
+    /* O METAL (que só entra aos 22,4 s da "4A4": antes, a máquina vazia):
+       a barra, o trecho que afina entre os rolos, e a folha */
+    '<g class="lm-metal">' +
     '<rect class="lm-barra" y="' + (g - L.T/2) + '" height="' + L.T + '" fill="url(#lm4-barra)"/>' +
     '<polygon points="' + L.morde + ',' + (g - L.T/2) + ' ' + L.sai + ',' + (g - L.t/2) + ' ' + L.sai + ',' + (g + L.t/2) + ' ' +
       L.morde + ',' + (g + L.T/2) + '" fill="url(#lm4-barra)" class="lm-cunha"/>' +
-    /* a folha, e a bobina que a enrola */
     '<rect class="lm-folha" x="' + L.sai + '" y="' + (g - L.t/2) + '" height="' + L.t + '" fill="url(#lm4-folha)"/>' +
+    '</g>' +
+    /* a bobina que enrola a folha */
     '<g class="lm-bobina"><circle class="lm-bob" cx="' + L.bx + '" fill="url(#lm4-bob)"/>' +
       '<circle class="lm-nucleo" cx="' + L.bx + '" r="' + L.nucleo + '" fill="#5A3A1C" stroke="#B98A55" stroke-width="2"/>' +
       '<line class="lm-risco" stroke="#fff" stroke-opacity=".5" stroke-width="1.5"/></g>' +
@@ -9138,7 +9160,8 @@ const LAM4 = {
     this.el = el;
     el.querySelector('.lm-bt').addEventListener('click', ev => {
       ev.stopPropagation();
-      if (!el.closest('.cubo4E').classList.contains('virou')) return;
+      /* virada a face, e com o metal já na mesa */
+      if (!el.closest('.cubo4E').classList.contains('virou') || !el.classList.contains('metal')) return;
       this.liga();
     });
     el.addEventListener('pointerdown', ev => ev.stopPropagation());
@@ -9207,7 +9230,7 @@ const LAM4 = {
   zera(){
     cancelAnimationFrame(this.raf);
     this.rodando = this.feito = false; this.avanco = 0; this.angulo = 0;
-    if (this.el) this.el.classList.remove('rodando', 'feito');
+    if (this.el) this.el.classList.remove('rodando', 'feito', 'metal');
     this.desenha();
   }
 };
