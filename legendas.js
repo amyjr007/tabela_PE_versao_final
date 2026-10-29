@@ -324,16 +324,20 @@ var LEGENDAS = {
     [24.08,28.1,"São, portanto, visualmente mais discretos que os metais."]
   ],
   "audio_tabela_4B2": [
-    [0,3.58,"Sobre a condutividade térmica e elétrica que vimos nos metais,"],
-    [3.58,6.68,"os ametais se comportam de forma oposta."],
-    [6.68,10.8,"Ou seja, não conduzem bem o calor nem a eletricidade."],
-    [10.8,11.78,"Mas atenção!"],
-    [11.78,15.04,"Existe uma famosa e clássica exceção."],
-    [15.04,17.52,"O carbono na forma de grafite."],
-    [17.52,20.4,"Sim, é o mesmo grafite do seu lápis."],
-    [20.4,22.96,"Ele é um excelente condutor elétrico."],
-    [22.96,23.58,"Quer ver?"],
-    [23.58,28.28,"Coloque aí o grafite na emenda pra fechar o circuito e veja a lâmpada acender."]
+    [0,3.74,"Sobre a condutividade térmica e elétrica que vimos nos metais,"],
+    [3.74,6.86,"os ametais se comportam de forma oposta,"],
+    [6.86,11,"ou seja, não conduzem bem o calor nem a eletricidade."],
+    [11,12.28,"Mas atenção!"],
+    [12.28,17.18,"Existe uma famosa e clássica exceção quanto à condutibilidade elétrica,"],
+    [17.18,19.76,"o carbono na forma de grafite."],
+    [19.76,22.66,"Sim, é o mesmo grafite do seu lápis."],
+    [22.66,25.38,"Ele é um excelente condutor elétrico, sabia?"],
+    [25.38,26.62,"Quer testar?"],
+    [26.62,29.96,"Encoste o grafite aí no fio desencapado pra você ver."]
+  ],
+  "audio_tabela_4B2.1": [
+    [0,5.1,"Perfeito! Viu como o carbono é um ótimo condutor elétrico, apesar de ser um ametal?"],
+    [5.1,11.04,"Guarde bem essa exceção na sua cabeça. Ela é extremamente importante na química."]
   ],
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]
