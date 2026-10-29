@@ -1272,6 +1272,22 @@ body.montagem .propAm .frase,body.montagem .propAm1 .frase{pointer-events:auto}
 .propAm1 .frase.on{display:block}
 .propAm1 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
 .propAm1 .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+/* O PASSEIO pelos pós (fim da "4B1"): as setas à direita da propriedade
+   2, e o giro do cubo, agora uma transição (cada toque, um quarto de volta) */
+.po-img{position:absolute;inset:0}
+.cuboAm.passeia .gira4{transition:transform .8s cubic-bezier(.45,0,.25,1)}
+.setasAm{position:absolute;top:50%;left:0;translate:0 -50%;display:flex;gap:6px;
+  opacity:0;scale:.6;pointer-events:none;transition:opacity .3s ease, scale .35s var(--e-salto)}
+.setasAm.on{opacity:1;scale:1;pointer-events:auto}
+.setasAm button{width:38px;height:30px;padding:0;border-radius:999px;cursor:pointer;
+  font:700 14px/1 var(--display);color:var(--ouro-luz);background:rgba(255,255,255,.08);
+  border:2px solid color-mix(in srgb,var(--ouro-luz) 70%,transparent);
+  box-shadow:0 2px 8px rgba(0,0,0,.35);transition:background .2s ease, scale .15s ease}
+.setasAm button:hover{background:rgba(255,255,255,.16)}
+.setasAm button:active{scale:.9}
+.setasAm.on button{animation:chamaSeta 1.6s ease-in-out 3}
+.setasAm.on button + button{animation-delay:.2s}
+@keyframes chamaSeta{0%,100%{box-shadow:0 2px 8px rgba(0,0,0,.35)} 50%{box-shadow:0 0 14px 3px color-mix(in srgb,var(--ouro-luz) 60%,transparent)}}
 .po4 .po-nome{font-family:var(--display);font-weight:600;font-size:24px;letter-spacing:.02em;fill:#F4F2F8}
 
 /* OS DESTAQUES AO ACASO (antes do play e nos primeiros 10 s da "4"): a
@@ -3290,7 +3306,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v24.9';
+const VERSAO = 'v25.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7275,7 +7291,7 @@ const EV4 = {
     if (tr === '4B') this.cenaAm(m, t, acabou);
     else if (tr === '4B1') this.cenaAm(m, 1e3, true, true);
     else if (this.sujaAm) this.desfazAm(m);
-    if (tr === '4B1') this.cenaAm1(m, t);
+    if (tr === '4B1') this.cenaAm1(m, t, acabou);
     else if (this.sujaAm1) this.desfazAm1(m);
     /* a "4A2" e a "4A3" mantêm as cenas de antes paradas no fim delas */
     const depoisB = tr === '4A2' || tr === '4A3' || segura;
@@ -8232,22 +8248,61 @@ const EV4 = {
                   em fade
      18,5 s       ele vira, e a face nova é o fósforo vermelho
      21 s         vira outra vez: o pó de grafite
-     Tudo função do relógio da narração. */
+     fim          as setas, à direita da propriedade 2: o aluno gira o cubo
+                  para um lado ou para o outro, sem fim (PASSEIO)
+     Tudo função do relógio da narração, menos o passeio. */
   AM1:{ cubo:15, gira:18.5, gira2:21, giraDura:0.9, cx:330, cy:470, esc:0.68 },
   sujaAm1:false, digAm1:null, propAm1:null, cuboAm:null,
-  cenaAm1(m, t){
+  /* O PASSEIO: o cubo tem quatro faces e as imagens são três. O passo k
+     (−90° cada) mostra a face k mod 4 com a imagem k mod 3: antes de cada
+     giro, a imagem que vem é posta na face que vai aparecer — e assim gira
+     para sempre, para os dois lados. Os passos da narração (0, 1, 2) são os
+     mesmos, com cada imagem na face de começo */
+  kAm:0, passeiaAm:false, facesAm:null, imgsAm:null, setasAm:null,
+  cenaAm1(m, t, acabou){
     const X = this.AM1;
     this.preparaAm1(m);
     this.digAm1.escreve(t);
-    const cb = this.cuboAm;
+    const cb = this.cuboAm, gira = cb.querySelector('.gira4');
     cb.classList.toggle('on', t >= X.cubo);
-    const giro = de => { const p = Math.max(0, Math.min(1, (t - de) / X.giraDura)); return [p, p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2]; };
-    const [p1, g1] = giro(X.gira), [p2, g2] = giro(X.gira2);
-    cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 * g1 - 90 * g2).toFixed(2) + 'deg)';
-    /* parada, a face fica plana (a mesma imagem, sem o 3D) */
-    cb.classList.toggle('virou', p1 >= 1 && p2 <= 0);
-    cb.classList.toggle('virou2', p2 >= 1);
+    if (acabou){
+      /* acabada a narração, o passeio: o cubo parado na face do grafite
+         (o passo 2), agora em 3D, com a transição do giro */
+      if (!this.passeiaAm){
+        this.passeiaAm = true;
+        this.kAm = 2;
+        cb.classList.remove('virou', 'virou2');
+        cb.classList.add('passeia');
+        gira.style.transform = 'translateZ(-220px) rotateY(-180deg)';
+      }
+    } else {
+      if (this.passeiaAm) this.paraPasseio();
+      const giro = de => { const p = Math.max(0, Math.min(1, (t - de) / X.giraDura)); return [p, p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2]; };
+      const [p1, g1] = giro(X.gira), [p2, g2] = giro(X.gira2);
+      gira.style.transform = 'translateZ(-220px) rotateY(' + (-90 * g1 - 90 * g2).toFixed(2) + 'deg)';
+      /* parada, a face fica plana (a mesma imagem, sem o 3D) */
+      cb.classList.toggle('virou', p1 >= 1 && p2 <= 0);
+      cb.classList.toggle('virou2', p2 >= 1);
+    }
+    this.setasAm.classList.toggle('on', acabou);
     this.sujaAm1 = true;
+  },
+  /* um passo do passeio: d = 1 (para a frente) ou −1 (para trás) */
+  giraAm(d){
+    if (!this.passeiaAm) return;
+    const k = (this.kAm += d), face = this.facesAm[((k % 4) + 4) % 4], img = this.imgsAm[((k % 3) + 3) % 3];
+    /* a imagem que vem, por cima do que estiver na face (que está de costas) */
+    if (face.lastChild !== img) face.appendChild(img);
+    this.cuboAm.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 * k) + 'deg)';
+  },
+  /* fim do passeio (o áudio voltou, ou a cena saiu): cada imagem na face
+     dela, e o cubo outra vez nas mãos do relógio */
+  paraPasseio(){
+    this.passeiaAm = false;
+    this.kAm = 0;
+    if (!this.cuboAm) return;
+    this.cuboAm.classList.remove('passeia');
+    this.imgsAm.forEach((img, i) => this.facesAm[i].appendChild(img));
   },
   preparaAm1(m){
     if (this.digAm1) return;
@@ -8267,15 +8322,43 @@ const EV4 = {
     cb.style.left = (X.cx - 220) + 'px';
     cb.style.top  = (X.cy - 220) + 'px';
     cb.style.setProperty('--esc', X.esc);
+    /* quatro faces (a quarta, vazia, serve ao passeio), e cada imagem numa
+       camada própria, que o passeio leva de uma face para outra */
     cb.innerHTML = '<div class="gira4">' +
-      '<div class="face4C frente">' + poSVG('enxofre') + '</div>' +
-      '<div class="face4C lado">' + poSVG('fosforo') + '</div>' +
-      '<div class="face4C tras">' + poSVG('grafite') + '</div></div>';
+      '<div class="face4C frente"><div class="po-img">' + poSVG('enxofre') + '</div></div>' +
+      '<div class="face4C lado"><div class="po-img">' + poSVG('fosforo') + '</div></div>' +
+      '<div class="face4C tras"><div class="po-img">' + poSVG('grafite') + '</div></div>' +
+      '<div class="face4C esq"></div></div>';
     m.appendChild(cb);
     this.cuboAm = cb;
+    this.facesAm = [...cb.querySelectorAll('.face4C')];
+    this.imgsAm = [...cb.querySelectorAll('.po-img')];
+    /* as setas, à direita da propriedade 2 (logo depois do fim do texto) */
+    const st = document.createElement('div');
+    st.className = 'setasAm';
+    st.innerHTML = '<button type="button" data-d="-1" aria-label="Imagem anterior">◀</button>' +
+                   '<button type="button" data-d="1" aria-label="Próxima imagem">▶</button>';
+    st.addEventListener('pointerdown', ev => ev.stopPropagation());
+    st.addEventListener('click', ev => {
+      ev.stopPropagation();
+      const b = ev.target.closest('button');
+      if (b && !naMontagem()) this.giraAm(+b.dataset.d);
+    });
+    f.appendChild(st);
+    this.setasAm = st;
+    const poe = () => {
+      const cs = getComputedStyle(f);
+      const ctx = (this._regua || (this._regua = document.createElement('canvas'))).getContext('2d');
+      ctx.font = cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily;
+      st.style.left = (ctx.measureText(FRASES_AM1[0].txt).width + 22).toFixed(1) + 'px';
+    };
+    poe();
+    if (document.fonts) document.fonts.ready.then(poe);
   },
   desfazAm1(m){
     if (this.digAm1){
+      this.paraPasseio();
+      this.setasAm.classList.remove('on');
       this.digAm1.limpa();
       this.cuboAm.classList.remove('on', 'virou', 'virou2');
       this.cuboAm.querySelector('.gira4').style.transform = '';
