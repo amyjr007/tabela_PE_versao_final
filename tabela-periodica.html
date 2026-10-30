@@ -3465,7 +3465,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v26.5';
+const VERSAO = 'v26.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8263,12 +8263,16 @@ const EV4 = {
       /* virada a face, a máquina vazia; o metal entra aos 22,4 s */
       LAM4.el.classList.toggle('metal', t >= E.metal || LAM4.feito || LAM4.rodando);
       this.alerta4E.classList.toggle('on', acabou && !LAM4.feito && !LAM4.rodando);
+      /* acabada a narração, o play sai: quem faz a aula seguir é a folha
+         sair toda da máquina */
+      stage.classList.toggle('espera-fio', acabou && !LAM4.feito);
     } else {
       /* a "4A5": a máquina já laminou; aos 2 s o cubo vira para o papel
          alumínio pronto, aos 9,5 s para as chapas (cobre; 10,3 s zinco;
          11 s ferro); aos 23,5 s, tudo sai */
       LAM4.mostraFeito();
       LAM4.el.classList.add('metal');
+      stage.classList.remove('espera-fio');
       this.dig4E.escreve(1e3);
       const sai = t >= E.reorg;
       this.prop4E.classList.toggle('fim', sai);
@@ -8328,7 +8332,8 @@ const EV4 = {
   laminou(){
     this.alerta4E.classList.remove('on');
     if (atual === 4 && trilhaAtual === '4A4' && (som.ended || (som.duration && som.currentTime >= som.duration - .05)))
-      setTimeout(() => { if (atual === 4 && trilhaAtual === '4A4') tocaTrilha('4A5'); }, 700);
+      /* depois da festa (a fanfarra dura 2 s) */
+      setTimeout(() => { if (atual === 4 && trilhaAtual === '4A4') tocaTrilha('4A5'); }, 2000);
   },
   fim4E(){ if (LAM4.feito) tocaTrilha('4A5'); },
   /* o fio puxado até ao fim: a "4A4", se a narração da "4A3" já acabou,
@@ -8363,6 +8368,7 @@ const EV4 = {
       this.alerta4E.classList.remove('on');
       LAM4.zera();
     }
+    stage.classList.remove('espera-fio');
     this.suja4E = false;
   },
 
@@ -9455,6 +9461,7 @@ const EV4 = {
     if (this.E5.raf) this.paraEletro(this.chGr());
     if (ESTANTE4.raf){ cancelAnimationFrame(ESTANTE4.raf); ESTANTE4.raf = 0; }
     ESTANTE4.zumbe(false);
+    LAM4.roda(false);
     this.tiraQuizNb();
     this.puxaAba(false);
     stage.classList.remove('em-classes', 'espera-bobina', 'espera-fio');
@@ -11020,7 +11027,7 @@ const ESTANTE4 = {
    espessura e a folha 3 — cada unidade de barra que entra vira 12 de
    folha (LAM4). */
 const LM4 = { cx:220, cyA:170, cyB:290, R:58, gap:230, T:36, t:3, xs0:40, morde:168, sai:214,
-              bx:392, nucleo:12, dura:5500 };
+              bx:392, nucleo:12, dura:11000 };   /* (dura: a passagem toda, devagar) */
 function laminadorSVG(){
   const L = LM4, g = L.gap;
   const rolo = (cy, cls) => '<g class="' + cls + '">' +
@@ -11105,6 +11112,7 @@ const LAM4 = {
     this.de = performance.now();
     this.el.classList.add('rodando');
     tocaEfeito('right');
+    this.roda(true);
     const passo = () => {
       const L = LM4, p = Math.min(1, (performance.now() - this.de) / L.dura);
       /* a velocidade sobe no começo e cai no fim, como um motor */
@@ -11119,6 +11127,10 @@ const LAM4 = {
       this.feito = true;
       this.el.classList.remove('rodando');
       this.el.classList.add('feito');
+      /* a folha saiu toda: a máquina cala, e a festa */
+      this.roda(false);
+      tocaEfeito('funfare');
+      confete();
       EV4.laminou();
     };
     passo();
@@ -11159,8 +11171,17 @@ const LAM4 = {
     if (this.el) this.el.classList.add('feito');
     this.desenha();
   },
+  /* O RONCO DA MÁQUINA ("maleabilidade machine"), em laço enquanto ela roda */
+  somM:null,
+  roda(on){
+    if (on && !document.hidden){
+      if (!this.somM){ this.somM = new Audio(encodeURI('Audios/vfx/maleabilidade machine.mp3')); this.somM.loop = true; }
+      if (this.somM.paused) this.somM.play().catch(() => {});
+    } else if (this.somM && !this.somM.paused) this.somM.pause();
+  },
   zera(){
     cancelAnimationFrame(this.raf);
+    this.roda(false);
     this.rodando = this.feito = false; this.avanco = 0; this.angulo = 0;
     if (this.el) this.el.classList.remove('rodando', 'feito', 'metal');
     this.desenha();
@@ -16216,7 +16237,7 @@ const ONDE = {
   }
 };
 setInterval(() => ONDE.guarda(), 1000);
-document.addEventListener('visibilitychange', () => { if (document.hidden){ ONDE.guarda(); ESTANTE4.zumbe(false); EV4.estala(EV4.E4, false); EV4.estala(EV4.E5, false); } });
+document.addEventListener('visibilitychange', () => { if (document.hidden){ ONDE.guarda(); ESTANTE4.zumbe(false); EV4.estala(EV4.E4, false); EV4.estala(EV4.E5, false); LAM4.roda(false); } });
 addEventListener('pagehide', () => ONDE.guarda());
 
 /* ao abrir: onde a aula parou; sem nada guardado, a capa. As fotos do
