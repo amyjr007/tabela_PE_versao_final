@@ -938,22 +938,23 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
    escurece) e volta, num ciclo de 2,8 s — metais, ametais, gases nobres,
    ametais, e de novo —, até o aluno tocar num deles. ('scale' e não
    'transform': o transform da carta é o do lugar dela) */
-.mesa.tipos.chamaBlocos :is(.pc[data-tipo="metais"],.casa.serie){animation:apertaM 2.8s ease-in-out infinite}
+.mesa.tipos.chamaBlocos :is(.pc[data-tipo="metais"],.casa.serie){animation:apertaM 5.6s ease-in-out infinite}
 /* os encaixes vazios, debaixo das cartas, não aparecem no slide 5 (só se
    veriam com o bloco afundado) */
 .mesa.tipos .casa:not(.serie){visibility:hidden}
-.mesa.tipos.chamaBlocos .pc[data-tipo="ametais"]{animation:apertaA 2.8s ease-in-out infinite}
-.mesa.tipos.chamaBlocos .pc[data-tipo="nobres"] {animation:apertaN 2.8s ease-in-out infinite}
-/* (o bloco encolhe para 92% em volta do meio dele: cada carta encolhe e
-   anda 8% da distância até lá — EV4.preparaBotoes) */
+.mesa.tipos.chamaBlocos :is(.pc[data-tipo="ametais"],.pc[data-z="1"]){animation:apertaA 5.6s ease-in-out infinite}
+.mesa.tipos.chamaBlocos .pc[data-tipo="nobres"] {animation:apertaN 5.6s ease-in-out infinite}
+/* (sutil: o bloco encolhe para 97% em volta do meio dele — cada carta
+   encolhe e anda 3% da distância até lá, EV4.preparaBotoes — e escurece
+   um pouco) */
 @keyframes apertaM{0%,16%,100%{scale:1;translate:0 0;filter:none}
-  7%{scale:.92;translate:calc(var(--bdx,0px) * .08) calc(var(--bdy,0px) * .08);filter:brightness(.78)}}
+  7%{scale:.97;translate:calc(var(--bdx,0px) * .03) calc(var(--bdy,0px) * .03);filter:brightness(.9)}}
 @keyframes apertaA{0%,25%,41%,75%,91%,100%{scale:1;translate:0 0;filter:none}
-  32%,82%{scale:.92;translate:calc(var(--bdx,0px) * .08) calc(var(--bdy,0px) * .08);filter:brightness(.78)}}
+  32%,82%{scale:.97;translate:calc(var(--bdx,0px) * .03) calc(var(--bdy,0px) * .03);filter:brightness(.9)}}
 @keyframes apertaN{0%,50%,66%,100%{scale:1;translate:0 0;filter:none}
-  57%{scale:.92;translate:calc(var(--bdx,0px) * .08) calc(var(--bdy,0px) * .08);filter:brightness(.78)}}
-/* tocado, o bloco inteiro afunda (88%) e brilha em verde */
-.mesa.tipos :is(.pc,.casa.serie).apertado{animation:none;scale:.88;translate:calc(var(--bdx,0px) * .12) calc(var(--bdy,0px) * .12);
+  57%{scale:.97;translate:calc(var(--bdx,0px) * .03) calc(var(--bdy,0px) * .03);filter:brightness(.9)}}
+/* tocado, o bloco inteiro afunda (95%) e brilha em verde */
+.mesa.tipos :is(.pc,.casa.serie).apertado{animation:none;scale:.95;translate:calc(var(--bdx,0px) * .05) calc(var(--bdy,0px) * .05);
   filter:brightness(1.12);transition:scale .12s ease, translate .12s ease, filter .12s ease}
 .mesa.tipos .casa.serie.apertado{box-shadow:0 0 0 2px #7DFFA8, 0 0 20px 6px rgba(61,220,120,.75)}
 .mesa.tipos .pc.apertado .face{box-shadow:0 0 0 2px #7DFFA8, 0 0 20px 6px rgba(61,220,120,.75)}
@@ -1245,7 +1246,9 @@ body.montagem .alerta4E{opacity:1!important;animation:none!important;pointer-eve
 /* A "4B" (EV4.cenaAm): aos 15,4 s só os ametais ficam — os outros somem
    de todo, com os eixos, as casas e os textos —, e saltam até a grade da
    direita, como os metais na "4A" */
-.mesa.tipos.arrumaAm .pc:not([data-tipo="ametais"]){opacity:0;pointer-events:none}
+.mesa.tipos.arrumaAm .pc:not([data-tipo="ametais"]):not([data-z="1"]){opacity:0;pointer-events:none}
+/* o H, nas narrações dos ametais, aceso com eles (e apagado com eles) */
+.mesa.tipos.comH[data-luz="ametais"] .pc[data-z="1"]:not(.apagaAm){opacity:1}
 .mesa.tipos.arrumaAm[data-luz] .eixo,.mesa.tipos.arrumaAm .classes4{opacity:0}
 /* (as casas das séries apagam com a regra das classes acesas, mais forte:
    a mesma, com o arrumaAm a mais) */
@@ -3493,7 +3496,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v27.1';
+const VERSAO = 'v27.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7538,6 +7541,8 @@ const EV4 = {
     const fimAm = tr === '4B4' && t >= this.AM3.volta;
     const ametal = ['4B', '4B1', '4B2', '4B2.1', '4B3'].includes(tr) || (tr === '4B4' && !fimAm);
     if (ametal) luz = 'ametais';
+    /* nas narrações dos ametais o H acende e anda com eles */
+    m.classList.toggle('comH', ametal);
     /* no fim da "4B4", a escolha de outra classe */
     if (tr === '4B4') escolha = acabou;
     /* a "4C" fala dos gases nobres: a tabela inteira acesa até aos 5 s, e
@@ -7656,8 +7661,11 @@ const EV4 = {
       /* (as casas das séries, 57–71 e 89–103, são metais: afundam com eles) */
       const todas = cs.slice(), pos = ps.slice();
       if (k === 'metais') m.querySelectorAll('.casa.serie').forEach(d => { todas.push(d); pos.push({ x: parseFloat(d.style.left), y: parseFloat(d.style.top) }); });
+      /* (o H afunda com os ametais, mas em volta do meio dele: está longe) */
+      if (k === 'ametais'){ const h = m.querySelector('.pc[data-z="1"]'); if (h){ const p = alvoDe(1); todas.push(h); pos.push(p); h._proprio = p; } }
       todas.forEach((c, i) => {
         const meia = (c.offsetWidth || LADO) / 2;
+        if (c._proprio){ c.style.setProperty('--bdx', -meia + 'px'); c.style.setProperty('--bdy', -meia + 'px'); return; }
         c.style.setProperty('--bdx', (bx - pos[i].x - meia).toFixed(1) + 'px');
         c.style.setProperty('--bdy', (by - pos[i].y - meia).toFixed(1) + 'px');
       });
@@ -8462,8 +8470,10 @@ const EV4 = {
         gas:35.72, solido:40.76, br:45.35, apaga:50.69, liga:52.8, sobe:0.5, onda:0.05, um:1.15, grande:1.4,
         /* a grade: 4 por linha, à direita (x0, y0: o centro da primeira
            vaga); o texto, à esquerda, na altura do dos metais */
-        cols:4, passo:96, esc:1.25, x0:816, y0:276, textoX:64, textoY:174 },
-  GASES_AM:[7, 8, 9, 17],
+        /* (5 por linha: com o H, são 17; a grade fica centrada em 960) */
+        cols:5, passo:96, esc:1.25, x0:768, y0:276, textoX:64, textoY:174 },
+  /* o H, tratado com os não-metais, é um deles: gasoso */
+  GASES_AM:[1, 7, 8, 9, 17],
   /* os botões "Ver" dos itens a), b) e c): ligado (verde) acende os cards
      daquele estado físico, desligado (vermelho) apaga. Até aos 50 s o do a)
      aparece verde; aos 50 s todos desligam, aos 52,2 s a mão liga o do a)
@@ -8479,7 +8489,8 @@ const EV4 = {
   /* em1: na "4B1" (a cena fica parada no fim, e os itens saem) */
   cenaAm(m, t, acabou, em1){
     const A = this.AM4;
-    if (!this.ametais4) this.ametais4 = this.cartas(m).filter(c => c.dataset.tipo === 'ametais')
+    /* (com o H: no app ele é tratado junto com os não-metais) */
+    if (!this.ametais4) this.ametais4 = this.cartas(m).filter(c => c.dataset.tipo === 'ametais' || c.dataset.z === '1')
                                            .sort((a, b) => a.dataset.z - b.dataset.z);
     this.preparaAm(m);
     /* os botões: antes do toque da mão, o estado do começo (voltar o áudio
@@ -8508,7 +8519,8 @@ const EV4 = {
     let ig = 0, is = 0;
     this.ametais4.forEach((c, k) => {
       const z = +c.dataset.z, casa = alvoDe(z), vaga = this.vagaAm(k);
-      const x0 = bx + (casa.x - bx) * bloco, y0 = by + (casa.y - by) * bloco;
+      /* (o H, longe do bloco, cresce no lugar dele) */
+      const x0 = z === 1 ? casa.x : bx + (casa.x - bx) * bloco, y0 = z === 1 ? casa.y : by + (casa.y - by) * bloco;
       /* o salto: um arco da casa até a vaga, mais alto quanto mais longe */
       const p = Math.max(0, Math.min(1, (t - A.de - k * fila) / A.salto)), e = suave(p);
       const x = entre(x0, vaga.x, e), y = entre(y0, vaga.y, e);
@@ -9505,9 +9517,9 @@ const EV4 = {
      que é à parte, só dá a volta dele); fora dela, não é nada daqui */
   toca(c){
     if (!this.emEscolha) return false;
-    const k = c.dataset.tipo;
-    if (k === 'hidrogenio') TP.gira(c);
-    else this.escolhe(k);
+    /* (o H é tratado com os não-metais: tocá-lo escolhe os ametais) */
+    const k = c.dataset.tipo === 'hidrogenio' ? 'ametais' : c.dataset.tipo;
+    this.escolhe(k);
     return true;
   },
   escolhe(k){
@@ -9518,7 +9530,7 @@ const EV4 = {
     const m = this.mesa();
     m.classList.remove('chamaBlocos');
     this.preparaBotoes(m);
-    m.querySelectorAll('.pc[data-tipo="' + k + '"]' + (k === 'metais' ? ', .casa.serie' : '')).forEach(c => c.classList.add('apertado'));
+    m.querySelectorAll('.pc[data-tipo="' + k + '"]' + (k === 'metais' ? ', .casa.serie' : k === 'ametais' ? ', .pc[data-z="1"]' : '')).forEach(c => c.classList.add('apertado'));
     clearTimeout(this.apertoT);
     this.apertoT = setTimeout(() => m.querySelectorAll('.apertado').forEach(c => c.classList.remove('apertado')), 650);
     const tr = TRILHA_DA_CLASSE[k];
