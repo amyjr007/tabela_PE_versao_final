@@ -316,16 +316,18 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4C2` · 0 s | os textos da `4C` saem (o título e a grade ficam) |
 | `4C2` · 1,8 → 3,8 s | "Por que são chamados de nobres?", no violeta claro; sai aos 6 s |
 | `4C2` · 6 → 7,8 s | "2. São altamente estáveis quimicamente."; 10,5 → 14 s, embaixo, "Praticamente não reagem com outros átomos."; 17 → 18,8 s "Possuem baixíssima reatividade." |
+| `4C2` · 21 → 23 s | o "Nobres" do título acima da grade cresce (para a direita), com um brilho violeta, e volta |
 | `4C2` · 34 s | os textos saem (o título fica) |
 | `4C2` · 41,3 s | um cubo, em fade: a **água** num copo e a lupa com as moléculas a tremer (`aguaSVG`); 43,5 s uma sai da lupa e cresce, com o halo; 46 s pulsam os dois H, 46,8 s o O; 50 s "H₂O" digitado acima dela |
 | `4C2` · 52 s | o cubo vira: o cilindro de **gás carbônico** e a lupa (`co2SVG`); 54 s uma molécula salta e cresce; 54,9 s pulsa o C, 55,6 s os O; 58 s "CO₂" |
 | `4C2` · 60 s | vira outra vez: o cilindro de **gases nobres**, e na lupa os átomos soltos, a flutuar (`cilindroNobresSVG`); 72 s pulsam, duas vezes |
+| `4C2` · 89 → 94 s | "Não reagem nem se combinam com outros átomos.", claro, no lugar da propriedade 2 (peça `nobres-recado`); fica até à `4C3`, e sai com o cubo |
 | fim da `4C2` | o **Saquei**, que leva à **`4C3`** (`Audios/audio_tabela_4C3.mp3`) |
 | `4C3` · 0 s | os textos e o cubo da `4C2` saem (o título e a grade ficam) |
 | `4C3` · 6,5 → 9 s | "3. Emitem um brilho característico quando submetidos a alta voltagem.", em duas linhas |
 | `4C3` · 12 s | um cubo com o **letreiro de neônio** "Jackie's Pub" numa parede de tijolos (`letreiroSVG`): o tubo em três camadas de luz, e o "PUB" a falhar aos trancos |
 | `4C3` · 17 s / 18,2 s | o cubo vira: a **lâmpada de argônio** (`lampadaArgonioSVG`); vira outra vez: o carro com os **faróis de xenônio** (`farolXenonioSVG`) |
-| `4C3` · 24 s | tudo sai — os textos (o título também), o cubo, a grade e o "Gases Nobres" —, e entra sozinha a **estante** com os cinco tubos (`ESTANTE4`, a do app do professor) |
+| `4C3` · 24 s | tudo sai — os textos, o cubo, a grade e o "Gases Nobres" —, e entra sozinha a **estante** (`ESTANTE4`), com "Propriedades gerais" centrado no alto (em fade, com ela). A estante é de **madeira** (o veio em duas escalas, o tampo claro, os furos), e os cinco são **tubos de descarga** de verdade: a tampa de metal com o terminal em cada ponta, um bulbo em cada uma e o **capilar** no meio, num encaixe de latão; o símbolo numa plaquinha de latão na frente da base. A luz, somada em camadas: o clarão largo que lava a parede, o halo do capilar, a coluna na cor do gás, o fio branco do núcleo, os bulbos difusos e a poça na madeira |
 | `4C3` · 30 s / 35 s | entra a **bobina de Tesla**; aos 35 s ela se deixa arrastar. Perto de um tubo (por baixo, ao lado ou por cima), acende-o sem lhe tocar, mais forte quanto mais perto, e as serpentinas saltam do toroide; cada tubo aceso fica marcado (o ponto na cor dele) |
 | fim da `4C3` | acesos os cinco (e acabada a narração), o **Saquei**, que leva à **`4C4`** (`Audios/audio_tabela_4C4.mp3`) |
 | `4C4` | a tabela volta, andando, ao estado do começo, e o play vira o botão **Quiz**, verde, a piscar (o quiz ainda vai ser montado: por enquanto, o aviso) |

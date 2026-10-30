@@ -1316,6 +1316,7 @@ body.montagem .propAm .frase,body.montagem .propAm1 .frase{pointer-events:auto}
 .propNb2 .frase.fim,.propNb2 .frase.saindo{opacity:0}
 .propNb2 .frase:nth-child(1){color:color-mix(in srgb,var(--cat-nobres) 55%,#fff)}
 .propNb2 .frase:nth-child(n+3){font-size:26px;color:#C9D2DC}
+.propNb2 .frase:nth-child(5){font-size:28px;color:#F4F2F8}
 .propNb2 .frase.larga{width:560px;white-space:normal;line-height:1.28;transform:none}
 .propNb3 .frase:nth-child(1){color:#F4F2F8}
 .propNb2 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
@@ -1362,7 +1363,7 @@ body.montagem .propNb2 .frase{pointer-events:auto}
 .bobina4.viva{filter:drop-shadow(0 0 16px rgba(168,196,255,.7)) drop-shadow(0 0 44px rgba(120,150,255,.45))}
 .tubo4 .luz4{transition:opacity .12s ease}
 .tubo4.aceso .luz4{animation:tremeDescarga4 .17s steps(2,end) infinite alternate}
-.tubo4-et{font-family:var(--mono);font-size:15px;font-weight:700;fill:#20242B;text-anchor:middle;letter-spacing:.04em}
+.tubo4-et{font-family:var(--mono);font-size:14px;font-weight:700;fill:#2A1C06;text-anchor:middle;letter-spacing:.04em}
 .tubo4-nome{font-family:var(--mono);font-size:10.5px;fill:rgba(226,222,240,.55);text-anchor:middle;letter-spacing:.14em;text-transform:uppercase}
 .tubo4 .visto4{opacity:0;transition:opacity .4s ease}
 .tubo4.visto .visto4{opacity:1}
@@ -1370,6 +1371,12 @@ body.montagem .propNb2 .frase{pointer-events:auto}
   font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(226,222,240,.5);
   opacity:0;transition:opacity .5s ease}
 .estante4.livre .estante4-dica{opacity:1}
+/* o título, centrado no alto, que entra com a estante */
+.estante4-titulo{position:absolute;left:640px;top:150px;translate:-50% -50%;white-space:nowrap;
+  font-family:var(--display);font-weight:700;font-size:34px;color:var(--ouro-luz);text-shadow:0 2px 4px rgba(0,0,0,.5)}
+body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
+/* os tubos acesos tremem mais forte (a descarga) */
+.tubo4.aceso .luz4{filter:saturate(1.25) brightness(1.15)}
 /* o botão do quiz, no fim da "4C4": verde, a piscar */
 #som.saquei.pisca-quiz:not(.saquei-tocado){animation:piscaQuiz 1s ease-in-out infinite}
 @keyframes piscaQuiz{0%,100%{box-shadow:0 0 0 0 rgba(39,196,107,.7)} 50%{box-shadow:0 0 0 14px rgba(39,196,107,0)}}
@@ -1387,9 +1394,15 @@ body.montagem .propNb2 .frase{pointer-events:auto}
 .inertesNb .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
 .inertesNb .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
 body.montagem .inertesNb .frase{pointer-events:auto}
-/* "Gases Nobres", acima da grade: o violeta claro do bloco */
-.tituloNb{background:linear-gradient(180deg,#E4DCFF 0%,#B4A6FF 45%,#7C69E8 100%);
-  -webkit-background-clip:text;background-clip:text}
+/* "Gases Nobres", acima da grade: o violeta claro do bloco — o degradê vai
+   em cada parte (uma parte que cresce não herdaria o recorte do pai) */
+.tituloNb{background:none}
+.tituloNb span{display:inline-block;white-space:pre;
+  background:linear-gradient(180deg,#E4DCFF 0%,#B4A6FF 45%,#7C69E8 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  transform-origin:50% 70%;transition:transform .45s var(--e-salto), filter .45s ease}
+.tituloNb .tn-b{transform-origin:0 70%}
+.tituloNb .tn-b.cresce{transform:scale(1.4);filter:drop-shadow(0 0 14px rgba(180,160,255,.8))}
 /* o item, com as três palavras que crescem (uma de cada vez) e ficam âmbar */
 .propAm .frase.nbFrase2.on{display:block}
 /* (crescida, ela abre espaço dos dois lados: não tapa as vizinhas) */
@@ -3441,7 +3454,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v25.7';
+const VERSAO = 'v25.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7343,7 +7356,9 @@ const FRASES_NB2 = [
   { de:1.8, ate:3.8, some:6.0, txt:'Por que são chamados de nobres?' },
   { de:6.0, ate:7.8, txt:'2. São altamente estáveis quimicamente.' },
   { de:10.5, ate:14.0, txt:'Praticamente não reagem com outros átomos.' },
-  { de:17.0, ate:18.8, txt:'Possuem baixíssima reatividade.' }
+  { de:17.0, ate:18.8, txt:'Possuem baixíssima reatividade.' },
+  /* o recado do fim, que fica até à "4C3" (sai com o cubo) */
+  { de:89.0, ate:94.0, txt:'Não reagem nem se combinam com outros átomos.' }
 ];
 /* na "4C3": a propriedade 3 */
 const FRASES_NB3 = [ { de:6.5, ate:9.0, txt:'3. Emitem um brilho característico quando submetidos a alta voltagem.' } ];
@@ -8921,6 +8936,7 @@ const EV4 = {
     [...this.propNb.children].forEach((f, i) => f.classList.toggle('fim', !!fase && (i > 0 || someTudo)));
     m.classList.toggle('someNb', someTudo);
     this.titNb.classList.toggle('fim', someTudo);
+    this.titNb.lastChild.classList.toggle('cresce', fase === '4C2' && ts >= 21 && ts < 23);
     this.sujaNb = true;
   },
   /* "São incolores, inodoros e insípidos": tantas letras quanto o tempo
@@ -8997,7 +9013,8 @@ const EV4 = {
     /* "Gases Nobres", acima da grade, quando o último pousa */
     const tit = document.createElement('div');
     tit.className = 'tituloAm tituloNb';
-    tit.textContent = 'Gases Nobres';
+    /* em duas partes: o "Nobres" cresce sozinho na "4C2" (aos 21 s) */
+    tit.innerHTML = '<span class="tn-a">Gases </span><span class="tn-b">Nobres</span>';
     tit.style.left = (A.x0 + (A.cols - 1) * A.passo / 2).toFixed(1) + 'px';
     tit.style.top  = (A.y0 - LADO * A.esc / 2 - 38).toFixed(1) + 'px';
     m.appendChild(tit);
@@ -9050,7 +9067,8 @@ const EV4 = {
     const X = this.NB2;
     this.preparaNb2(m);
     this.digNb2.escreve(t);
-    [...this.propNb2.children].forEach(f => f.classList.toggle('fim', t >= X.some));
+    /* (o recado do fim, o 5.º, não sai aos 34 s: ele vem depois) */
+    [...this.propNb2.children].forEach((f, i) => f.classList.toggle('fim', i < 4 && t >= X.some));
     const cb = this.cuboNb2;
     cb.classList.toggle('on', t >= X.cubo);
     const giro = de => { const p = Math.max(0, Math.min(1, (t - de) / X.giraDura)); return [p, p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2]; };
@@ -9098,7 +9116,8 @@ const EV4 = {
     this.digNb2 = criaDigitacao(cx, FRASES_NB2);
     /* a pergunta e a propriedade 2 no lugar da 1; os itens embaixo, para dentro */
     const f = cx.querySelectorAll('.frase');
-    [['nobres-pergunta', 0, 48], ['nobres-propriedade-2', 0, 48], ['nobres-item-2a', 28, 88], ['nobres-item-2b', 28, 128]].forEach(([nome, dx, dy], i) => {
+    [['nobres-pergunta', 0, 48], ['nobres-propriedade-2', 0, 48], ['nobres-item-2a', 28, 88], ['nobres-item-2b', 28, 128],
+     ['nobres-recado', 0, 48]].forEach(([nome, dx, dy], i) => {
       f[i].dataset.mont = nome;
       f[i].style.left = (A.textoX + dx) + 'px';
       f[i].style.top  = (A.textoY + dy) + 'px';
@@ -10730,25 +10749,58 @@ const ESTANTE4 = {
   prepara(m){
     if (this.el) return;
     const W = TB4.W, m2 = W / 2, T = TB4.TOPO, H = TB4.ALT, B = TB4.BASE;
-    const tubo = (t, i) => '<g class="tubo4" data-i="' + i + '">' +
-      '<g class="luz4" opacity="0" style="mix-blend-mode:screen">' +
-        '<ellipse cx="' + t.x + '" cy="' + (B + 2) + '" rx="78" ry="15" fill="' + t.gas + '" filter="url(#es4-bloom)"/>' +
-        '<rect x="' + (t.x - m2 + 9) + '" y="' + (T + 44) + '" width="' + (W - 18) + '" height="' + (H - 72) + '" rx="' + (m2 - 9) + '" fill="' + t.halo + '" filter="url(#es4-bloom)" opacity=".75"/>' +
-        '<rect x="' + (t.x - m2 + 7) + '" y="' + (T + 40) + '" width="' + (W - 14) + '" height="' + (H - 66) + '" rx="' + (m2 - 7) + '" fill="url(#es4-g' + i + ')" filter="url(#es4-halo)"/>' +
-        '<rect x="' + (t.x - m2 + 16) + '" y="' + (T + 50) + '" width="' + (W - 32) + '" height="' + (H - 88) + '" rx="' + (m2 - 16) + '" fill="' + t.core + '" opacity=".82"/>' +
-        '<ellipse cx="' + t.x + '" cy="' + (T + H - 14) + '" rx="11" ry="7" fill="' + t.core + '" filter="url(#es4-halo)"/>' +
-      '</g>' +
-      '<path d="M' + t.x + ',' + T + ' L' + (t.x + m2) + ',' + (T + 38) + ' L' + (t.x + m2) + ',' + (T + H - 16) + ' Q' + (t.x + m2) + ',' + (T + H) + ' ' + (t.x + m2 - 14) + ',' + (T + H) +
-        ' L' + (t.x - m2 + 14) + ',' + (T + H) + ' Q' + (t.x - m2) + ',' + (T + H) + ' ' + (t.x - m2) + ',' + (T + H - 16) + ' L' + (t.x - m2) + ',' + (T + 38) + ' Z"' +
-        ' fill="url(#es4-vidro)" stroke="rgba(226,240,255,.5)" stroke-width="1.3"/>' +
-      '<rect x="' + (t.x - m2 + 7) + '" y="' + (T + 44) + '" width="6" height="' + (H - 80) + '" rx="3" fill="rgba(255,255,255,.55)"/>' +
-      '<rect x="' + (t.x + m2 - 13) + '" y="' + (T + 52) + '" width="3" height="' + (H - 100) + '" rx="1.5" fill="rgba(255,255,255,.28)"/>' +
-      '<rect x="' + (t.x - 12) + '" y="' + (T + H - 9) + '" width="24" height="12" rx="3" fill="url(#es4-metal)"/>' +
-      '<rect x="' + (t.x - m2 + 3) + '" y="' + (T + 50) + '" width="' + (W - 6) + '" height="26" rx="3" fill="#F4F6F8" opacity=".93"/>' +
-      '<text x="' + t.x + '" y="' + (T + 68) + '" class="tubo4-et">' + t.s + '</text>' +
-      /* a marca de visto, embaixo do nome */
-      '<circle class="visto4" cx="' + t.x + '" cy="' + (B + 96) + '" r="5" fill="' + t.gas + '"/>' +
-    '</g>';
+    /* O TUBO DE DESCARGA, como os de espectro dos laboratórios: a tampa de
+       metal com o terminal em cima e embaixo, um bulbo em cada ponta e,
+       entre eles, o CAPILAR — fino, onde a descarga se aperta e a luz é
+       mais forte. O vidro: o corpo quase transparente, a borda clara e os
+       reflexos ao comprido. A LUZ, somada (screen), em camadas: o clarão
+       largo que lava a parede, o halo do capilar, a coluna na cor do gás,
+       o fio branco do núcleo, os bulbos difusos e a poça na madeira. */
+    const tubo = (t, i) => {
+      const x = t.x, y0 = T + 14, y1 = T + 74, y2 = T + H - 74, y3 = T + H - 14, rb = 17, rc = 5.5;
+      const vidro = 'M' + (x - rb) + ',' + (y0 + rb) + ' A' + rb + ',' + rb + ' 0 0 1 ' + (x + rb) + ',' + (y0 + rb) +
+        ' L' + (x + rb) + ',' + (y1 - 14) + ' Q' + (x + rb) + ',' + y1 + ' ' + (x + rc) + ',' + (y1 + 8) +
+        ' L' + (x + rc) + ',' + (y2 - 8) + ' Q' + (x + rb) + ',' + y2 + ' ' + (x + rb) + ',' + (y2 + 14) +
+        ' L' + (x + rb) + ',' + (y3 - rb) + ' A' + rb + ',' + rb + ' 0 0 1 ' + (x - rb) + ',' + (y3 - rb) +
+        ' L' + (x - rb) + ',' + (y2 + 14) + ' Q' + (x - rb) + ',' + y2 + ' ' + (x - rc) + ',' + (y2 - 8) +
+        ' L' + (x - rc) + ',' + (y1 + 8) + ' Q' + (x - rb) + ',' + y1 + ' ' + (x - rb) + ',' + (y1 - 14) + ' Z';
+      const tampa = (y, cima) => '<rect x="' + (x - 11) + '" y="' + y + '" width="22" height="16" rx="3" fill="url(#es4-metal)"/>' +
+        '<rect x="' + (x - 11) + '" y="' + (y + 5) + '" width="22" height="1.6" fill="#3E4855" opacity=".6"/>' +
+        '<rect x="' + (x - 11) + '" y="' + (y + 10) + '" width="22" height="1.6" fill="#3E4855" opacity=".6"/>' +
+        (cima ? '<path d="M' + x + ',' + y + ' L' + x + ',' + (y - 8) + '" stroke="url(#es4-metal)" stroke-width="3"/><circle cx="' + x + '" cy="' + (y - 11) + '" r="4" fill="none" stroke="#B9C6D4" stroke-width="2"/>' : '');
+      return '<g class="tubo4" data-i="' + i + '">' +
+        '<g class="luz4" opacity="0" style="mix-blend-mode:screen">' +
+          '<ellipse cx="' + x + '" cy="' + ((y0 + y3) / 2) + '" rx="150" ry="210" fill="' + t.gas + '" filter="url(#es4-clarao)" opacity=".55"/>' +
+          '<ellipse cx="' + x + '" cy="' + (B + 4) + '" rx="96" ry="18" fill="' + t.gas + '" filter="url(#es4-bloom)"/>' +
+          '<rect x="' + (x - 20) + '" y="' + y1 + '" width="40" height="' + (y2 - y1) + '" rx="20" fill="' + t.halo + '" filter="url(#es4-halo)"/>' +
+          '<circle cx="' + x + '" cy="' + (y0 + 30) + '" r="17" fill="' + t.gas + '" filter="url(#es4-difuso)" opacity=".85"/>' +
+          '<circle cx="' + x + '" cy="' + (y3 - 30) + '" r="17" fill="' + t.gas + '" filter="url(#es4-difuso)" opacity=".85"/>' +
+          '<rect x="' + (x - rc) + '" y="' + (y1 + 4) + '" width="' + (rc * 2) + '" height="' + (y2 - y1 - 8) + '" rx="' + rc + '" fill="url(#es4-g' + i + ')" filter="url(#es4-perto)"/>' +
+          '<rect x="' + (x - 1.8) + '" y="' + (y1 + 10) + '" width="3.6" height="' + (y2 - y1 - 20) + '" rx="1.8" fill="' + t.core + '"/>' +
+        '</g>' +
+        /* os elétrodos dentro dos bulbos */
+        '<path d="M' + x + ',' + (y0 + 2) + ' L' + x + ',' + (y0 + 34) + ' M' + x + ',' + (y3 - 2) + ' L' + x + ',' + (y3 - 34) + '" stroke="#7D8794" stroke-width="2.4" stroke-linecap="round"/>' +
+        '<path d="' + vidro + '" fill="url(#es4-vidro)" stroke="rgba(226,240,255,.62)" stroke-width="1.4"/>' +
+        /* os reflexos: o largo no bulbo, o fino no capilar, e o do outro lado */
+        '<path d="M' + (x - rb + 5) + ',' + (y0 + rb - 2) + ' L' + (x - rb + 5) + ',' + (y1 - 16) + ' M' + (x - rb + 5) + ',' + (y2 + 16) + ' L' + (x - rb + 5) + ',' + (y3 - rb + 2) + '" stroke="#fff" stroke-opacity=".6" stroke-width="3.2" stroke-linecap="round"/>' +
+        '<path d="M' + (x - 2.6) + ',' + (y1 + 12) + ' L' + (x - 2.6) + ',' + (y2 - 12) + '" stroke="#fff" stroke-opacity=".5" stroke-width="1.2"/>' +
+        '<path d="M' + (x + rb - 5) + ',' + (y0 + rb + 6) + ' L' + (x + rb - 5) + ',' + (y1 - 20) + ' M' + (x + rb - 5) + ',' + (y2 + 20) + ' L' + (x + rb - 5) + ',' + (y3 - rb - 4) + '" stroke="#fff" stroke-opacity=".22" stroke-width="1.6" stroke-linecap="round"/>' +
+        tampa(T - 2, true) + tampa(T + H - 14, false) +
+        /* o encaixe de latão, na base de madeira */
+        '<rect x="' + (x - 15) + '" y="' + (T + H + 1) + '" width="30" height="' + (B - 8 - T - H) + '" rx="3" fill="url(#es4-latao)"/>' +
+        /* a plaquinha de latão com o símbolo, na frente da base */
+        '<rect x="' + (x - 20) + '" y="' + (B + 12) + '" width="40" height="22" rx="3" fill="url(#es4-latao)" stroke="#5E4316" stroke-width="1"/>' +
+        '<text x="' + x + '" y="' + (B + 28) + '" class="tubo4-et">' + t.s + '</text>' +
+        /* a marca de visto, embaixo do nome */
+        '<circle class="visto4" cx="' + x + '" cy="' + (B + 96) + '" r="5" fill="' + t.gas + '"/>' +
+      '</g>';
+    };
+    /* a madeira: o degradê do volume e o veio (ruído esticado ao comprido,
+       em duas escalas), com a aresta de cima clara */
+    const madeira = (x, y, w, h, claro) => '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="3" fill="url(#' + (claro ? 'es4-mad-topo' : 'es4-mad') + ')"/>' +
+      '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="3" fill="#000" filter="url(#es4-veio)"/>' +
+      '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="3" fill="#000" filter="url(#es4-veio2)"/>' +
+      '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="2" fill="#F2C998" opacity=".45"/>';
     let voltas = '';
     for (let y = 384; y < 528; y += 5.6) voltas += '<rect x="' + (TB4.BX - 21) + '" y="' + y.toFixed(1) + '" width="42" height="2.6" rx="1.3" fill="url(#es4-cobre)" opacity=".95"/>';
     let prim = '';
@@ -10775,22 +10827,35 @@ const ESTANTE4 = {
       grad('es4-bmetal', [[0, '#E9F0F8'], [.35, '#93A2B2'], [.55, '#C3CFDC'], [1, '#2B333D']], 0, 1) +
       grad('es4-metal', [[0, '#E6EDF5'], [.4, '#8494A6'], [.55, '#B9C6D4'], [1, '#3E4855']], 0, 1) +
       '<filter id="es4-bloom" x="-320%" y="-160%" width="740%" height="420%"><feGaussianBlur stdDeviation="24"/></filter>' +
-      '<filter id="es4-halo" x="-200%" y="-90%" width="500%" height="280%"><feGaussianBlur stdDeviation="9"/></filter>' +
+      '<filter id="es4-halo" x="-200%" y="-90%" width="500%" height="280%"><feGaussianBlur stdDeviation="11"/></filter>' +
+      '<filter id="es4-clarao" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="46"/></filter>' +
+      '<filter id="es4-difuso" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="7"/></filter>' +
+      '<filter id="es4-perto" x="-200%" y="-20%" width="500%" height="140%"><feGaussianBlur stdDeviation="1.6"/></filter>' +
+      grad('es4-mad', [[0, '#9A6438'], [.35, '#7A4A26'], [.75, '#5C3519'], [1, '#3A200E']], 0, 1) +
+      grad('es4-mad-topo', [[0, '#C48A54'], [.5, '#A06B3C'], [1, '#7E4F2A']], 0, 1) +
+      grad('es4-latao', [[0, '#F4DA9A'], [.4, '#C9A04A'], [.7, '#8E6A22'], [1, '#5E4316']], 0, 1) +
+      '<filter id="es4-veio" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".004 .16" numOctaves="4" seed="7"/>' +
+        '<feColorMatrix values="0 0 0 0 .16  0 0 0 0 .08  0 0 0 0 .03  -2.4 0 0 0 1.45"/></filter>' +
+      '<filter id="es4-veio2" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".02 .9" numOctaves="2" seed="3"/>' +
+        '<feColorMatrix values="0 0 0 0 .1  0 0 0 0 .05  0 0 0 0 .02  -1.2 0 0 0 .75"/></filter>' +
       '<filter id="es4-faisca" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="2.6" result="b"/>' +
         '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' +
       '</defs>' +
-      '<rect x="352" y="' + B + '" width="576" height="46" rx="5" fill="url(#es4-acril)" stroke="rgba(226,240,255,.42)" stroke-width="1.2"/>' +
-      '<rect x="368" y="' + (B - 7) + '" width="544" height="9" rx="3" fill="url(#es4-metal)"/>' +
+      /* a sombra da estante na bancada, e a base de madeira (o tampo e a
+         frente), com os furos onde os tubos se encaixam */
+      '<ellipse cx="640" cy="' + (B + 52) + '" rx="320" ry="14" fill="#000" opacity=".6" filter="url(#es4-bloom)"/>' +
+      madeira(344, B - 10, 592, 12, true) + madeira(344, B, 592, 50) +
+      TUBOS4.map(t => '<ellipse cx="' + t.x + '" cy="' + (B - 4) + '" rx="17" ry="4" fill="#1A0E06"/>').join('') +
+      /* os montantes, atrás dos tubos */
+      madeira(352, 316, 16, B - 316) + madeira(912, 316, 16, B - 316) +
       '<g>' + TUBOS4.map(tubo).join('') + '</g>' +
-      '<rect x="352" y="322" width="576" height="30" rx="5" fill="url(#es4-acril)" stroke="rgba(226,240,255,.5)" stroke-width="1.2"/>' +
-      '<rect x="352" y="322" width="576" height="4" rx="2" fill="rgba(255,255,255,.4)"/>' +
-      '<rect x="352" y="322" width="14" height="' + (B - 322) + '" rx="4" fill="url(#es4-acril)"/>' +
-      '<rect x="914" y="322" width="14" height="' + (B - 322) + '" rx="4" fill="url(#es4-acril)"/>' +
+      /* a travessa de cima, por diante dos tubos: é ela que os segura */
+      madeira(344, 318, 592, 30, true) +
       TUBOS4.map(t => '<text x="' + t.x + '" y="' + (B + 74) + '" class="tubo4-nome">' + t.nome + '</text>').join('') +
       /* a bobina por diante da estante (é ela que se arrasta por baixo dos
          tubos), e as serpentinas por cima de tudo */
       bobina + '<g class="arcos4"></g>' +
-      '</svg><div class="estante4-dica"></div>';
+      '</svg><div class="estante4-titulo" data-mont="nobres-titulo-estante">Propriedades gerais</div><div class="estante4-dica"></div>';
     m.appendChild(el);
     this.el = el;
     this.svg = el.querySelector('svg');
@@ -10839,7 +10904,8 @@ const ESTANTE4 = {
       this.perto[i] = f;
       if (f > .18){ algum = true; arcos += this.serpentina(ox, oy, t.x + TB4.W / 2, cy + (Math.random() - .5) * 80, t.core); }
       if (f >= TB4.ACENDE) this.vistos.add(i);
-      this.gs[i].querySelector('.luz4').setAttribute('opacity', Math.min(1, f * 1.6).toFixed(2));
+      /* (a luz sobe depressa: já a meio caminho o tubo está quase pleno) */
+      this.gs[i].querySelector('.luz4').setAttribute('opacity', Math.min(1, f * 2.6).toFixed(2));
       this.gs[i].classList.toggle('aceso', f > .15);
       this.gs[i].classList.toggle('visto', this.vistos.has(i));
     });
