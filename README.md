@@ -224,8 +224,9 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4` · 17 s | a sala escurece (em fade) e só os **metais** ficam acesos; 18 s "Metais", no azul do bloco, acima dos de transição |
 | `4` · 19,7 s | só os **ametais**; 20,6 s "Ametais" e 22,5 s, ao lado, "Não Metais", no verde, acima do bloco deles (linha 1) |
 | `4` · 24 s | só os **gases nobres**; 25,5 s "Gases Nobres", no violeta, acima da coluna 18 (no celular em duas linhas, à direita do botão do carrossel) |
-| `4` · 30 s | apaga tudo; 32,5 s o **H** acende, com o brilho verde |
-| `4` · 40 s | tudo volta (em fade), e o toque numa classe — numa carta dela ou no nome, que passa a chamar — a escolhe: a classe acende, toca o `right`, e os **metais** tocam a **`4A`** (`Audios/audio_tabela_4A.mp3`), os **ametais** a **`4B`**; os gases nobres, por enquanto, avisam que a narração ainda vai ser gravada. O H só dá a volta dele. Acabada a `4`, o play sai |
+| `4` · 29,5 s | só o **H** aceso, com o brilho verde (o resto apagado) |
+| `4` · 47,3 s | o bloco dos **ametais** acende junto do H, em fade ("muitas classificações modernas o tratam junto com os não-metais"); o resto continua escuro |
+| `4` · 55,5 s | tudo volta (em fade), e o toque numa classe — numa carta dela ou no nome, que passa a chamar — a escolhe: a classe acende, toca o `right`, e os **metais** tocam a **`4A`** (`Audios/audio_tabela_4A.mp3`), os **ametais** a **`4B`**; os gases nobres, por enquanto, avisam que a narração ainda vai ser gravada. O H só dá a volta dele. Acabada a `4`, o play sai |
 | `4A` · 0 → 4 s | os metais acesos, o resto apagado |
 | `4A` · 4 → 14 s | os outros somem de todo (com os números dos eixos, as casas das séries e os textos), e os 64 metais saltam um a um, em arco e por número atômico, até uma grade de 8 × 8 do lado esquerdo, menores (76%), com um respiro de ~8 px entre eles, para caberem nas sete alturas da tabela |
 | `4A` · 14 s | o último pousa, e "Metais" aparece acima da grade, em letras de metal cromado: entra de um desfoque, um reflexo corre por elas e uma faísca pisca no fim |

@@ -879,7 +879,9 @@ html.palco-alto  .breu4{box-shadow:0 0 0 var(--folgav) rgba(12,10,32,.84)}
 .mesa.tipos[data-luz="metais"]  .pc[data-tipo="metais"],
 .mesa.tipos[data-luz="ametais"] .pc[data-tipo="ametais"],
 .mesa.tipos[data-luz="nobres"]  .pc[data-tipo="nobres"],
-.mesa.tipos[data-luz="h"]       .pc[data-z="1"]{opacity:1}
+.mesa.tipos[data-luz="h"]       .pc[data-z="1"],
+.mesa.tipos[data-luz="h-ametais"] .pc[data-z="1"],
+.mesa.tipos[data-luz="h-ametais"] .pc[data-tipo="ametais"]{opacity:1}
 /* "São 3 classes de elementos:" solto, em cima, só o texto; e cada classe
    escrita acima do bloco dela, na cor dele: "Metais" acima dos de
    transição, "Ametais | Não Metais" acima dos ametais, "Gases Nobres"
@@ -916,6 +918,7 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
 .classes4:not([data-luz=""])[data-luz] .frase[data-classe]{opacity:.32}
 .classes4:not([data-luz=""])[data-luz="metais"]  .frase[data-classe="metais"],
 .classes4:not([data-luz=""])[data-luz="ametais"] .frase[data-classe="ametais"],
+.classes4:not([data-luz=""])[data-luz="h-ametais"] .frase[data-classe="ametais"],
 .classes4:not([data-luz=""])[data-luz="nobres"]  .frase[data-classe="nobres"]{opacity:1}
 /* na "4B": "Ametais" cresce para a esquerda e "Não Metais" para a direita
    (o fio entre eles fica no lugar), e os dois sobem com o bloco crescido */
@@ -3467,7 +3470,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v26.8';
+const VERSAO = 'v26.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7311,7 +7314,7 @@ function efeitos3(t){ EV3.tick(t); }
    ============================================================ */
 const FRASES_4 = [
   /* sai em fade no fim da narração (ela acaba aos 46 s) */
-  { de:12.0, ate:13.0, some:45.4, txt:'São 3 classes de elementos:' },
+  { de:12.0, ate:13.0, some:60.4, txt:'São 3 classes de elementos:' },
   { de:18.0, ate:18.5, txt:'Metais' },
   { de:20.6, ate:21.1, txt:'Ametais' },
   { de:22.5, ate:23.2, txt:'Não Metais' },
@@ -7400,10 +7403,13 @@ const SOLIDO_4 = { 5:'#5B4B3C', 6:'#3A3D42', 14:'#6D7B8E', 15:'#C9443C', 16:'#E6
 const EV4 = {
   ate:10,                  /* os destaques ao acaso param aqui */
   dura:3000,               /* cada destaque, em ms */
-  escolhaDe:40,
+  /* (a "4" regravada, de 61 s: o H sozinho aos 29,5 s; aos 47,3 s o bloco
+     dos ametais acende junto dele — "o tratam junto com os não-metais";
+     e aos 55,5 s tudo volta, e começa a escolha) */
+  escolhaDe:55.5,
   luzes:[ { de:17.0, ate:19.7, luz:'metais' }, { de:19.7, ate:24.0, luz:'ametais' },
-          { de:24.0, ate:30.0, luz:'nobres' }, { de:30.0, ate:32.5, luz:'nada' },
-          { de:32.5, ate:40.0, luz:'h' } ],
+          { de:24.0, ate:29.5, luz:'nobres' }, { de:29.5, ate:47.3, luz:'h' },
+          { de:47.3, ate:55.5, luz:'h-ametais' } ],
   /* nas fotos do carrossel a mesa fica parada */
   miniaturas: /miniaturas/.test(location.search),
   dig:null, caixa:null, breu:null, real:null, conta:0, saco:[], recentes:[], desde:0,
@@ -7585,7 +7591,7 @@ const EV4 = {
     if (m.dataset.luz !== luz){ m.dataset.luz = luz; this.caixa.dataset.luz = luz; }
     this.breu.classList.toggle('on', !!luz);
     /* o hidrogênio, à parte: o brilho verde */
-    const hOn = luz === 'h';
+    const hOn = luz === 'h' || luz === 'h-ametais';
     if (hOn !== this.hOn){
       this.hOn = hOn;
       const h = this.carta(m, 1);
@@ -15526,8 +15532,8 @@ const NAV_TOPICOS = [
   /* ---- o slide 5 · Os tipos de elementos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:4,
     entra(){ /* o recomeço do slide já é o tópico */ } },
-  { titulo:'A escolha da classe', sub:'aos 40 s da narração 4: tocar numa classe', slide:4,
-    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4', 40, g)); } },
+  { titulo:'A escolha da classe', sub:'aos 55,5 s da narração 4: tocar numa classe', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4', EV4.escolhaDe, g)); } },
   { titulo:'Os metais', secao:'4.1', sub:'o começo da 4A', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4A', 0, g)); } },
   { titulo:'O brilho metálico', sub:'o começo da 4A1', slide:4,
