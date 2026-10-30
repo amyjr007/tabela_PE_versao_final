@@ -349,6 +349,17 @@ var LEGENDAS = {
     [26.24,29.8,"Tá, pra demonstrar essa fragilidade, clique nesse pedaço de fósforo vermelho"],
     [29.8,34.42,"e veja como são quebradiços e sensíveis a impactos."]
   ],
+  "audio_tabela_4C": [
+    [0,6.52,"Bela escolha! Vamos abordar agora a família mais ilustre da química, os gases nobres."],
+    [6.52,10.78,"Também chamados de gases inertes, os gases nobres formam essa coluna vertical"],
+    [10.78,15.74,"isolada bem aqui na borda direita, no grupo 18."],
+    [15.74,17.86,"É a última família da tabela."],
+    [17.86,24.3,"Tá, vamos pra primeira característica desses gases, o estado físico em que são encontrados."],
+    [24.3,31.22,"Em condições padrão de temperatura e pressão, todos eles são gasosos, como o próprio nome sugere."],
+    [31.22,38.86,"São incolores, inodoros e insípidos, ou seja, são transparentes, sem cheiro e sem gosto."],
+    [38.86,42.76,"E por serem transparentes, não é possível enxergá-los a olho nu."],
+    [42.76,46.68,"Essa névoa dentro do card é puramente ilustrativa, tá bom?"]
+  ],
   "audio_tabela_4B4": [
     [0,3.72,"Então, amigos, sobre os ametais é basicamente isso."],
     [3.72,6.78,"Agora, escolha a próxima classe de elementos."]

@@ -95,6 +95,7 @@ const CASCA = [
   './Audios/audio_tabela_4B2.1.mp3',
   './Audios/audio_tabela_4B3.mp3',
   './Audios/audio_tabela_4B4.mp3',
+  './Audios/audio_tabela_4C.mp3',
   './Audios/quiz1.mp3',
   /* as aberturas dos capítulos, uma por slide */
   './Audios/audio_tabela_1.0.mp3',

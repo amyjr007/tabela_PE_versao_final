@@ -1296,6 +1296,35 @@ body.montagem .propAm .frase,body.montagem .propAm1 .frase{pointer-events:auto}
 .propAm2 .frase:nth-child(2){white-space:nowrap;line-height:1;transform:translateY(-50%);font-weight:600;font-size:26px;color:#C9D2DC}
 .propAm2 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
 .propAm2 .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+/* A "4C" (EV4.cenaNb): aos 18,7 s só os gases nobres ficam — os outros
+   somem de todo, com os eixos, as casas e os textos —, e saltam para a
+   grade da direita */
+.mesa.tipos.arrumaNb .pc:not([data-tipo="nobres"]){opacity:0;pointer-events:none}
+.mesa.tipos.arrumaNb[data-luz] .eixo,.mesa.tipos.arrumaNb .classes4{opacity:0}
+.mesa.tipos.arrumaNb:not([data-luz=""])[data-luz] .casa{opacity:0}
+/* a coluna que brilha em verde (13 → 18,7 s) */
+.pc.brilhaNb{z-index:30;filter:brightness(1.15)}
+.pc.brilhaNb .face{box-shadow:0 0 0 2px #7DFFA8, 0 0 22px 6px rgba(61,220,120,.7), 0 8px 18px rgba(0,0,0,.4)}
+/* "Gases Inertes", ao lado da coluna, no tom claro do violeta dela */
+.inertesNb{position:absolute;inset:0;z-index:25;pointer-events:none;transition:opacity .6s ease}
+.inertesNb.fim{opacity:0}
+.inertesNb .frase{position:absolute;display:none;margin:0;white-space:nowrap;line-height:1;transform:translateY(-50%);
+  font-family:var(--display);font-weight:700;font-size:32px;color:color-mix(in srgb,var(--cat-nobres) 60%,#fff);
+  text-shadow:0 0 14px color-mix(in srgb,var(--cat-nobres) 55%,transparent), 0 2px 4px rgba(0,0,0,.5)}
+.inertesNb .frase.on{display:block}
+.inertesNb .mede{display:block;visibility:hidden}
+.inertesNb .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
+.inertesNb .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+body.montagem .inertesNb .frase{pointer-events:auto}
+/* "Gases Nobres", acima da grade: o violeta claro do bloco */
+.tituloNb{background:linear-gradient(180deg,#E4DCFF 0%,#B4A6FF 45%,#7C69E8 100%);
+  -webkit-background-clip:text;background-clip:text}
+/* o item, com as três palavras que crescem (uma de cada vez) e ficam âmbar */
+.propAm .frase.nbFrase2.on{display:block}
+/* (crescida, ela abre espaço dos dois lados: não tapa as vizinhas) */
+.nbPal{display:inline-block;transform-origin:50% 80%;margin:0;
+  transition:transform .35s var(--e-salto), margin .35s var(--e-salto), color .3s ease, text-shadow .3s ease}
+.nbPal.vez{transform:scale(1.35);margin:0 .6em;color:#FFB547;text-shadow:0 0 14px rgba(255,170,40,.75), 0 2px 4px rgba(0,0,0,.5)}
 .propAm2 .frase{transition:opacity .6s ease}
 .propAm2 .frase.fim{opacity:0}
 body.montagem .alertaAm3{opacity:1!important;animation:none!important;pointer-events:auto}
@@ -3341,7 +3370,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v25.5';
+const VERSAO = 'v25.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4579,6 +4608,7 @@ const TRILHAS = {
   '4B2.1':'Audios/audio_tabela_4B2.1.mp3', /* o grafite encostou no fio */
   '4B3':  'Audios/audio_tabela_4B3.mp3',   /* depois do Saquei: quebradiços */
   '4B4':  'Audios/audio_tabela_4B4.mp3',   /* depois do Saquei: o fim dos ametais */
+  '4C':   'Audios/audio_tabela_4C.mp3',    /* escolhidos os gases nobres */
   '5':    'Audios/audio_tabela_5.mp3',     /* o slide 6: as principais famílias (ainda por gravar) */
   '6':    'Audios/audio_tabela_6.mp3',     /* o slide 7: os grupos A e B (ainda por gravar) */
   '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
@@ -4699,6 +4729,7 @@ const ROTEIROS = {
   '4B2.1':[],
   '4B3':  [],   /* em EV4.cenaAm3 */
   '4B4':  [],
+  '4C':   [],   /* os gases nobres: em EV4.cenaNb */
   '5':    [],
   '6':    [],
   '7':    [],   /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
@@ -7222,14 +7253,25 @@ const FRASES_AM2 = [
 const FRASES_AM3 = [
   { de:6.5, ate:14.0, txt:'1. Os ametais sólidos não formam fios nem viram lâminas. São quebradiços e sensíveis a impacto.' }
 ];
-/* a narração de cada classe, tocada a escolha (as outras ainda por gravar) */
-const TRILHA_DA_CLASSE = { metais:'4A', ametais:'4B' };
+/* na "4C" (os gases nobres): o título e a propriedade 1, à esquerda (o item
+   dela, com as palavras que crescem, é escrito à parte: EV4.PARTES_NB), e
+   "Gases Inertes", ao lado da coluna 18 */
+const FRASES_NB = [
+  { de:20.0, ate:23.0, txt:'Propriedades gerais' },
+  { de:28.0, ate:29.0, txt:'1. Em condições normais, são todos gases' }
+];
+const FRASES_INERTES = [ { de:8.7, ate:10.0, txt:'Gases Inertes' } ];
+/* a narração de cada classe, tocada a escolha */
+const TRILHA_DA_CLASSE = { metais:'4A', ametais:'4B', nobres:'4C' };
 /* os gases, na cor deles: os incolores numa névoa clara, o flúor amarelo-
    pálido, o cloro amarelo-esverdeado — e os nobres na cor da descarga
    (o hélio pêssego, o neônio laranja, o argônio lilás…), que brilha */
 const GASES_4 = { 1:'#DCE6FF', 2:'#FFB48C', 7:'#DCE6FF', 8:'#CFE0FF', 9:'#F2E98A', 10:'#FF5A2A',
-                  17:'#C6E24A', 18:'#B57CFF', 36:'#EAF0FF', 54:'#7FB2FF', 86:'#FF7088' };
-const NOBRES_4 = [2, 10, 18, 36, 54, 86];
+                  17:'#C6E24A', 18:'#B57CFF', 36:'#EAF0FF', 54:'#7FB2FF', 86:'#FF7088',
+                  /* o oganessônio ninguém viu brilhar: um violeta pálido, só para
+                     a coluna não ficar com um buraco (a "4C") */
+                  118:'#D9C7FF' };
+const NOBRES_4 = [2, 10, 18, 36, 54, 86, 118];
 /* o metal: claro, meio e escuro dos reflexos; prata para quase todos, e o
    ouro, o cobre e o césio na cor deles */
 const METAL_4 = { prata:['#F4F6F9','#AEB6BF','#5E6772'], 79:['#FFF2B8','#E0B03A','#875A0C'],
@@ -7346,6 +7388,10 @@ const EV4 = {
     if (ametal) luz = 'ametais';
     /* no fim da "4B4", a escolha de outra classe */
     if (tr === '4B4') escolha = acabou;
+    /* a "4C" fala dos gases nobres: a tabela inteira acesa até aos 5 s, e
+       depois só eles */
+    if (tr === '4C'){ if (t >= this.NB4.apaga) luz = 'nobres'; this.cenaNb(m, t, acabou); }
+    else if (this.sujaNb) this.desfazNb(m);
     if (tr === '4B') this.cenaAm(m, t, acabou);
     else if (ametal) this.cenaAm(m, 1e3, true, true);
     else if (this.sujaAm) this.desfazAm(m);
@@ -8690,6 +8736,181 @@ const EV4 = {
     this.acabouAm3 = false;
     this.sujaAm3 = false;
   },
+  /* ---- A "4C": OS GASES NOBRES ----
+     0 s          a escolha: a tabela inteira ainda acesa
+     5 s          todo o resto apaga (em fade), e só os gases nobres ficam
+     8,7 → 10 s   "Gases Inertes", digitado ao lado da coluna 18
+     13 → 18,7 s  a coluna inteira brilha em verde, e os cards crescem um pouco
+     18,7 → 23 s  voltam ao tamanho, os outros somem (os textos também), e
+                  eles saltam um a um até uma grade do lado direito (o salto
+                  dos metais e dos ametais); pousado o último, "Gases Nobres"
+                  acima dela
+     20 → 23 s    "Propriedades gerais", no lado esquerdo
+     28 → 29 s    "1. Em condições normais, são todos gases"; os cards viram
+                  gás, cada um na cor da descarga dele
+     32 → 34 s    "São incolores, inodoros e insípidos"
+     36, 37, 38 s cresce e fica âmbar "incolores", depois "inodoros", depois
+                  "insípidos" (um segundo cada)
+     Tudo função do relógio da narração. */
+  NB4:{ apaga:5, cresce:13, volta:18.7, de:18.7, ate:23, salto:1.0, gas:28, sobe:0.5, um:1.12, onda:0.08,
+        palavras:[36, 37, 38], palavraDura:1,
+        /* a grade: 4 por linha, à direita; o texto, à esquerda */
+        cols:4, passo:96, esc:1.25, x0:816, y0:324, textoX:64, textoY:174 },
+  /* "São incolores, inodoros e insípidos", em partes: as três palavras
+     levam uma caixa própria, para crescerem uma de cada vez */
+  PARTES_NB:[ { t:'São ' }, { t:'incolores', c:'nbPal' }, { t:', ' }, { t:'inodoros', c:'nbPal' },
+              { t:' e ' }, { t:'insípidos', c:'nbPal' } ],
+  nobres4:null, sujaNb:false, digNb:null, propNb:null, inertesNb:null, titNb:null, frase2Nb:null,
+  vagaNb(k){
+    const A = this.NB4;
+    return { x: A.x0 + (k % A.cols) * A.passo, y: A.y0 + Math.floor(k / A.cols) * A.passo };
+  },
+  cenaNb(m, t, acabou){
+    const A = this.NB4;
+    if (!this.nobres4) this.nobres4 = this.cartas(m).filter(c => c.dataset.tipo === 'nobres')
+                                          .sort((a, b) => a.dataset.z - b.dataset.z);
+    this.preparaNb(m);
+    m.classList.toggle('arrumaNb', t >= A.de);
+    const suave = p => p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
+    const entre = (a, b, f) => a + (b - a) * f;
+    /* o crescer da coluna (13 → 18,7 s) */
+    const sob = suave(Math.max(0, Math.min(1, (t - A.cresce) / A.sobe)));
+    const des = suave(Math.max(0, Math.min(1, (t - A.volta) / A.sobe)));
+    const cresce = 1 + (A.um - 1) * sob * (1 - des);
+    const brilha = t >= A.cresce && t < A.volta;
+    const n = this.nobres4.length, fila = (A.ate - A.de - A.salto) / Math.max(1, n - 1);
+    this.nobres4.forEach((c, k) => {
+      const z = +c.dataset.z, casa = alvoDe(z), vaga = this.vagaNb(k);
+      const p = Math.max(0, Math.min(1, (t - A.de - k * fila) / A.salto)), e = suave(p);
+      const x = entre(casa.x, vaga.x, e), y = entre(casa.y, vaga.y, e);
+      const esc = entre(1, A.esc, e) * cresce;
+      const alto = Math.min(150, 50 + 0.12 * Math.hypot(vaga.x - casa.x, vaga.y - casa.y));
+      const sobe = -Math.sin(Math.PI * p) * alto;
+      c.classList.toggle('brilhaNb', brilha);
+      /* os gases, aos 28 s, numa onda curta pela grade */
+      const veste = t >= A.gas + k * A.onda;
+      if (veste && !c._matNb) c._matNb = { tipo:'gas', el: this.veste(c, 'gas') };
+      else if (!veste && c._matNb){ this.despe(c, c._matNb.el, 'gas'); c._matNb = null; }
+      c.classList.add('anda4');
+      c.classList.toggle('no-ar4', p > 0 && p < 1);
+      const chave = x.toFixed(1) + ',' + y.toFixed(1) + ',' + esc.toFixed(3) + ',' + sobe.toFixed(1);
+      if (c._kNb !== chave){
+        c._kNb = chave;
+        c.style.left = x.toFixed(1) + 'px';
+        c.style.top  = y.toFixed(1) + 'px';
+        c.style.setProperty('--onda', esc.toFixed(3));
+        c.style.setProperty('--sobe', sobe.toFixed(1) + 'px');
+      }
+    });
+    /* "Gases Inertes" sai com os outros, quando eles saltam */
+    this.digInertes.escreve(t);
+    this.inertesNb.classList.toggle('fim', t >= A.de);
+    this.titNb.classList.toggle('on', t >= A.ate);
+    this.digNb.escreve(t);
+    this.escreveFrase2Nb(t);
+    this.sujaNb = true;
+  },
+  /* "São incolores, inodoros e insípidos": tantas letras quanto o tempo
+     pede (como na "4A2"), e a palavra da vez crescida e âmbar */
+  escreveFrase2Nb(t){
+    const A = this.NB4, el = this.frase2Nb, de = 32, ate = 34;
+    const total = this.PARTES_NB.reduce((s, p) => s + p.t.length, 0);
+    let n = Math.round(Math.max(0, Math.min(1, (t - de) / (ate - de))) * total);
+    if (n !== el._n){
+      if (n > (el._n || 0)) TECLAS.bate();
+      el._n = n;
+      let html = '', k = 0;
+      this.PARTES_NB.forEach(p => {
+        const q = Math.max(0, Math.min(p.t.length, n)); n -= q;
+        if (!q) return;
+        html += p.c ? '<span class="' + p.c + '" data-k="' + (k++) + '">' + esc(p.t.slice(0, q)) + '</span>' : esc(p.t.slice(0, q));
+      });
+      if (el._n) html += '<span class="cursor"></span>';
+      el.innerHTML = html;
+      el.classList.toggle('on', el._n > 0);
+    }
+    const cur = el.querySelector('.cursor');
+    if (cur) cur.classList.toggle('pisca', t >= ate);
+    el.querySelectorAll('.nbPal').forEach(s => {
+      const k = +s.dataset.k, d = A.palavras[k];
+      s.classList.toggle('vez', t >= d && t < d + A.palavraDura);
+    });
+  },
+  preparaNb(m){
+    if (this.digNb) return;
+    const A = this.NB4;
+    const cx = document.createElement('div');
+    cx.className = 'propAm propNb';
+    cx.setAttribute('aria-live', 'polite');
+    m.appendChild(cx);
+    this.digNb = criaDigitacao(cx, FRASES_NB);
+    const fr = cx.querySelectorAll('.frase');
+    /* o título, e a propriedade 1, uma debaixo da outra, como nos ametais */
+    [['nobres-titulo', 0, 0], ['nobres-propriedade-1', 0, 48]].forEach(([nome, dx, dy], i) => {
+      fr[i].dataset.mont = nome;
+      fr[i].style.left = (A.textoX + dx) + 'px';
+      fr[i].style.top  = (A.textoY + dy) + 'px';
+    });
+    /* o item, prateado e para dentro, com as palavras que crescem */
+    const f2 = document.createElement('p');
+    f2.className = 'frase nbFrase2';
+    f2.dataset.mont = 'nobres-item-1';
+    f2.style.left = (A.textoX + 28) + 'px';
+    f2.style.top  = (A.textoY + 88) + 'px';
+    cx.appendChild(f2);
+    this.frase2Nb = f2;
+    this.propNb = cx;
+    /* "Gases Inertes", à esquerda da coluna 18, na altura da linha 4: o
+       texto acaba rente à coluna, e a escrita cresce da esquerda */
+    const ine = document.createElement('div');
+    ine.className = 'inertesNb';
+    ine.dataset.mont = 'nobres-gases-inertes';
+    m.appendChild(ine);
+    this.digInertes = criaDigitacao(ine, FRASES_INERTES);
+    const fi = ine.querySelector('.frase');
+    const poe = () => {
+      const s = document.createElement('span');
+      s.className = 'frase mede';
+      s.textContent = FRASES_INERTES[0].txt;
+      ine.appendChild(s);
+      const w = s.offsetWidth;
+      s.remove();
+      fi.style.left = (xDaColuna(18) - LADO / 2 - 18 - w).toFixed(1) + 'px';
+      fi.style.top  = yDaLinha(4).toFixed(1) + 'px';
+    };
+    poe();
+    if (document.fonts) document.fonts.ready.then(poe);
+    this.inertesNb = ine;
+    /* "Gases Nobres", acima da grade, quando o último pousa */
+    const tit = document.createElement('div');
+    tit.className = 'tituloAm tituloNb';
+    tit.textContent = 'Gases Nobres';
+    tit.style.left = (A.x0 + (A.cols - 1) * A.passo / 2).toFixed(1) + 'px';
+    tit.style.top  = (A.y0 - LADO * A.esc / 2 - 38).toFixed(1) + 'px';
+    m.appendChild(tit);
+    this.titNb = tit;
+  },
+  desfazNb(m){
+    m.classList.remove('arrumaNb');
+    (this.nobres4 || []).forEach(c => {
+      c.classList.remove('anda4', 'no-ar4', 'brilhaNb');
+      const casa = alvoDe(+c.dataset.z);
+      c.style.left = casa.x.toFixed(1) + 'px';
+      c.style.top  = casa.y.toFixed(1) + 'px';
+      c.style.removeProperty('--onda');
+      c.style.removeProperty('--sobe');
+      delete c._kNb;
+      if (c._matNb){ this.despe(c, c._matNb.el, 'gas'); c._matNb = null; }
+    });
+    if (this.digNb){
+      this.digNb.limpa();
+      this.digInertes.limpa();
+      this.inertesNb.classList.remove('fim');
+      this.titNb.classList.remove('on');
+      this.frase2Nb.innerHTML = ''; this.frase2Nb._n = 0; this.frase2Nb.classList.remove('on');
+    }
+    this.sujaNb = false;
+  },
   /* a mão, no botão "Ver" do a) (marca da "4B") */
   maoNoVer(){
     const b = this.propAm && this.propAm.querySelector('.verAm[data-tipo="gas"]');
@@ -8861,6 +9082,7 @@ const EV4 = {
     stage.classList.remove('em-classes');
     const m = this.mesa();
     if (!m) return;
+    if (this.sujaNb) this.desfazNb(m);
     if (this.sujaAm3) this.desfazAm3(m);
     if (this.sujaAm2) this.desfazAm2(m);
     if (this.sujaAm1) this.desfazAm1(m);
@@ -14421,6 +14643,8 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4B2', 0, g)); } },
   { titulo:'Quebradiços', sub:'o começo da 4B3: o fósforo que se despedaça', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4B3', 0, g)); } },
+  { titulo:'Os gases nobres', secao:'4.3', sub:'o começo da 4C', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4C', 0, g)); } },
   /* ---- o slide 6 · As principais famílias ---- */
   { titulo:'Início', sub:'o começo do slide', slide:5,
     entra(){ /* o recomeço do slide já é o tópico */ } },
@@ -14569,6 +14793,7 @@ function tocaDesde(id, t, g){
 function topicoAtual(){
   if (atual === 4){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 4);
+    if (trilhaAtual === '4C') return base + 11;
     if (trilhaAtual === '4B3' || trilhaAtual === '4B4') return base + 10;
     if (trilhaAtual === '4B2' || trilhaAtual === '4B2.1') return base + 9;
     if (trilhaAtual === '4B1') return base + 8;

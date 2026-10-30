@@ -302,6 +302,15 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | fim da `4B3` | "Bata no fósforo", a piscar (peça `aviso-bata-no-fosforo`); uma pancada, depois do fim, traz o **Saquei**, que leva à **`4B4`** (`Audios/audio_tabela_4B4.mp3`) |
 | `4B4` · 4 s | tudo sai, e a tabela volta, andando, ao estado do começo |
 | fim da `4B4` | o play sai, e tocar numa classe escolhe-a, como no fim da `4` |
+| `4C` · 0 s | escolhidos os gases nobres (`Audios/audio_tabela_4C.mp3`): a tabela inteira ainda acesa |
+| `4C` · 5 s | todo o resto apaga em fade, e só os gases nobres ficam |
+| `4C` · 8,7 → 10 s | "Gases Inertes", digitado à esquerda da coluna 18, na altura da linha 4, no violeta claro do bloco (peça `nobres-gases-inertes`) |
+| `4C` · 13 → 18,7 s | a coluna inteira brilha em verde, e os cards crescem um pouco (1,12×) |
+| `4C` · 18,7 → 23 s | voltam ao tamanho, os outros somem de todo (e "Gases Inertes" também), e os 7 saltam um a um até uma grade de 4 por linha do lado direito (o salto dos metais e dos ametais); pousado o último, "Gases Nobres" acima dela, no violeta claro |
+| `4C` · 20 → 23 s | no lado esquerdo, "Propriedades gerais", no dourado |
+| `4C` · 28 → 29 s | "1. Em condições normais, são todos gases"; os cards viram **gás**, cada um na cor da descarga dele (o hélio pêssego, o neônio laranja, o argônio lilás… e o Og num violeta pálido) |
+| `4C` · 32 → 34 s | embaixo, prateado e para dentro, "São incolores, inodoros e insípidos" |
+| `4C` · 36, 37, 38 s | cresce e fica âmbar "incolores", depois "inodoros", depois "insípidos" — um segundo cada, abrindo espaço dos lados |
 | fim da `4B1` | o play vira o **Saquei**; tocado, espoca e vem a **`4B2`** (`Audios/audio_tabela_4B2.mp3`) |
 
 Com uma classe acesa, os nomes das outras recuam também; com a sala escura,
