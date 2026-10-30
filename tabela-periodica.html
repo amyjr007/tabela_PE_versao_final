@@ -3496,7 +3496,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v27.3';
+const VERSAO = 'v27.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4853,10 +4853,10 @@ const ROTEIROS = {
   /* os ametais: tudo função do tempo, em EV4.cenaAm; aqui só a mão, que
      vem ao botão "Ver" do a) e o aperta */
   '4B':   [
-    /* (a mão chega no "use os botões", e aperta no "ali", aos 56,6 s) */
-    { t:55.5,  faz(){ EV4.maoNoVer(); } },
-    { t:56.6,  faz(){ bateMao(); } },
-    { t:57.4,  faz(){ tiraMao(); } }
+    /* (a mão chega no "use os botões", e aperta no "ali", aos 56,9 s) */
+    { t:55.83, faz(){ EV4.maoNoVer(); } },
+    { t:56.9,  faz(){ bateMao(); } },
+    { t:57.7,  faz(){ tiraMao(); } }
   ],
   '4B1':  [],   /* e em EV4.cenaAm1 */
   '4B2':  [],   /* e em EV4.cenaAm2 */
@@ -7372,11 +7372,11 @@ const FRASES_4B = [ { de:4.0, ate:5.6, txt:'2. Os metais têm um brilho caracter
 /* na "4B" (os ametais): as propriedades, no lado esquerdo, nas cores das
    dos metais — o título dourado, a propriedade clara, os itens prateados */
 const FRASES_AM = [
-  { de:24.49, ate:27.66, txt:'Propriedades gerais dos ametais' },
-  { de:28.72, ate:33.75, txt:'1. São encontrados nos 3 estados físicos.' },
-  { de:35.72, ate:37.32, txt:'a) Alguns são gasosos.' },
-  { de:40.76, ate:42.31, txt:'b) A maioria é sólido' },
-  { de:45.35, ate:47.3, txt:'c) Somente o bromo é líquido.' }
+  { de:24.22, ate:27.35, txt:'Propriedades gerais dos ametais' },
+  { de:28.39, ate:33.5, txt:'1. São encontrados nos 3 estados físicos.' },
+  { de:35.55, ate:37.17, txt:'a) Alguns são gasosos.' },
+  { de:40.61, ate:42.11, txt:'b) A maioria é sólido' },
+  { de:45.15, ate:47.21, txt:'c) Somente o bromo é líquido.' }
 ];
 /* na "4B1": os itens da 4B saem (o título fica), e a propriedade 2 vem
    no lugar da 1 */
@@ -8467,8 +8467,8 @@ const EV4 = {
      com o bloco crescido, os dois sobem (para não ficarem atrás dele) */
   /* (os tempos da 4B regravada, com o "são" a mais: cada um no mesmo ponto
      da fala de antes) */
-  AM4:{ nomeA:1.51, nomeN:4.03, nomeFim:6.05, cresce:12.18, volta:15.01, bloco:1.1, de:15.74, ate:23.46, salto:1.0,
-        gas:35.72, solido:40.76, br:45.35, apaga:50.73, liga:56.6, sobe:0.5, onda:0.05, um:1.15, grande:1.4,
+  AM4:{ nomeA:1.49, nomeN:3.98, nomeFim:6, cresce:12.01, volta:14.77, bloco:1.1, de:15.49, ate:23.19, salto:1.0,
+        gas:35.55, solido:40.61, br:45.15, apaga:50.79, liga:56.9, sobe:0.5, onda:0.05, um:1.15, grande:1.4,
         /* a grade: 4 por linha, à direita (x0, y0: o centro da primeira
            vaga); o texto, à esquerda, na altura do dos metais */
         /* (5 por linha: com o H, são 17; a grade fica centrada em 960) */
