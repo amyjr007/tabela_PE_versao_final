@@ -95,6 +95,8 @@ const CASCA = [
   './Audios/audio_tabela_4B2.1.mp3',
   './Audios/audio_tabela_4B3.mp3',
   './Audios/audio_tabela_4B4.mp3',
+  './Audios/Audio_tabela_4A5metalfinal.mp3',
+  './Audios/Audio_tabela_4B4ametalfinal.mp3',
   './Audios/audio_tabela_4C.mp3',
   './Audios/audio_tabela_4C2.mp3',
   './Audios/audio_tabela_4C3.mp3',

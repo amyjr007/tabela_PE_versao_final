@@ -354,6 +354,22 @@ var LEGENDAS = {
     [26.24,29.8,"Tá, pra demonstrar essa fragilidade, clique nesse pedaço de fósforo vermelho"],
     [29.8,34.42,"e veja como são quebradiços e sensíveis a impactos."]
   ],
+  "Audio_tabela_4A5metalfinal": [
+    [0,2.94,"Muito bem, é assim que se produz papel alumínio."],
+    [2.94,6.66,"Isso só é possível graças à maleabilidade desse metal."],
+    [6.66,12.4,"Aliás, é assim que se faz chapas de cobre, zinco, ferro e vários outros metais."],
+    [12.4,16.84,"Tá, sobre as propriedades dos elementos metais, é isso."],
+    [16.84,20.36,"Ufa, essa foi a última classe de elemento."],
+    [20.36,23.96,"Se quiser revisar alguma coisa, é só ir direto no sumário."],
+    [23.96,27.54,"Se não, vamos checar o que você aprendeu nesse pra fechar o tópico?"],
+    [27.54,29.48,"Clica ali no quiz pra gente começar."]
+  ],
+  "Audio_tabela_4B4ametalfinal": [
+    [0,2.58,"Pronto. Sobre os não metais, é isso."],
+    [2.58,6.86,"Agora que vimos algumas características gerais de cada classe de elementos,"],
+    [6.86,12.48,"tá na hora de testar o que você aprendeu sobre os tipos de elementos organizados em blocos na tabela."],
+    [12.48,13.82,"Vamos fazer um quiz?"]
+  ],
   "audio_tabela_4C": [
     [0,6.52,"Bela escolha! Vamos abordar agora a família mais ilustre da química, os gases nobres."],
     [6.52,10.78,"Também chamados de gases inertes, os gases nobres formam essa coluna vertical"],

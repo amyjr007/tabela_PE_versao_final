@@ -3496,7 +3496,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v27.5';
+const VERSAO = 'v27.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4734,6 +4734,10 @@ const TRILHAS = {
   '4B2.1':'Audios/audio_tabela_4B2.1.mp3', /* o grafite encostou no fio */
   '4B3':  'Audios/audio_tabela_4B3.mp3',   /* depois do Saquei: quebradiços */
   '4B4':  'Audios/audio_tabela_4B4.mp3',   /* depois do Saquei: o fim dos ametais */
+  /* as versões finais: no lugar da última narração da classe que fecha o
+     tópico (FINAIS_4, EV4.fimDe) */
+  '4A5f': 'Audios/Audio_tabela_4A5metalfinal.mp3',
+  '4B4f': 'Audios/Audio_tabela_4B4ametalfinal.mp3',
   '4C':   'Audios/audio_tabela_4C.mp3',    /* escolhidos os gases nobres */
   '4C2':  'Audios/audio_tabela_4C2.mp3',   /* depois do Saquei: por que nobres */
   '4C3':  'Audios/audio_tabela_4C3.mp3',   /* depois do Saquei: o brilho e a bobina */
@@ -4861,6 +4865,18 @@ const ROTEIROS = {
   '4B1':  [],   /* e em EV4.cenaAm1 */
   '4B2':  [],   /* e em EV4.cenaAm2 */
   '4B2.1':[],
+  /* a 4A5 final: a puxada na aba do sumário no "é só ir direto no sumário" */
+  '4A5f': [
+    { t:22.4,  faz(){ EV4.maoNaAba(); } },
+    { t:22.9,  faz(){ EV4.puxaAba(true); } },
+    { t:23.35, faz(){ EV4.puxaAba(false); } },
+    { t:23.75, faz(){ EV4.puxaAba(true); } },
+    { t:24.2,  faz(){ EV4.puxaAba(false); } },
+    { t:24.6,  faz(){ EV4.puxaAba(true); } },
+    { t:25.05, faz(){ EV4.puxaAba(false); } },
+    { t:25.4,  faz(){ tiraMao(); } }
+  ],
+  '4B4f': [],
   '4B3':  [],   /* em EV4.cenaAm3 */
   '4B4':  [],
   '4C':   [],   /* os gases nobres: em EV4.cenaNb */
@@ -7409,6 +7425,27 @@ const FRASES_NB2 = [
 ];
 /* na "4C3": a propriedade 3 */
 const FRASES_NB3 = [ { de:6.5, ate:9.0, txt:'3. Emitem um brilho característico quando submetidos a alta voltagem.' } ];
+/* AS VERSÕES FINAIS: tocadas no lugar da última narração da classe quando
+   ela é a última das três a ser vista. 'de': a narração de sempre, cuja cena
+   elas correm; 'mapa': o relógio da final levado ao dela (pelos começos das
+   frases iguais; a puxada na aba do sumário e a volta da tabela caem no
+   "é só ir direto no sumário"); 'quiz': quando o botão do quiz aparece (na
+   fala que o chama) */
+const ENTRE_4 = (pts) => t => {
+  for (let i = 0; i < pts.length - 1; i++){
+    const [a0, b0] = pts[i], [a1, b1] = pts[i + 1];
+    if (t <= a1) return b0 + (t - a0) * (b1 - b0) / (a1 - a0);
+  }
+  const [a, b] = pts[pts.length - 1];
+  return b + (t - a);
+};
+const FINAIS_4 = {
+  '4A5f':{ de:'4A5', quiz:27.5,
+           mapa:ENTRE_4([[0, 0], [6.66, 6.8], [12.4, 13.12], [16.84, 17.3], [22.4, 20.0], [25.9, 23.5], [29.73, 26.4]]) },
+  '4B4f':{ de:'4B4', quiz:12.48 }
+};
+/* qual é a última narração de cada classe, e a versão final dela */
+const FIM_DA_CLASSE = { metais:['4A5', '4A5f'], ametais:['4B4', '4B4f'], nobres:['4C4', '4C4f'] };
 /* a narração de cada classe, tocada a escolha */
 const TRILHA_DA_CLASSE = { metais:'4A', ametais:'4B', nobres:'4C' };
 /* os gases, na cor deles: os incolores numa névoa clara, o flúor amarelo-
@@ -7441,6 +7478,15 @@ const EV4 = {
   miniaturas: /miniaturas/.test(location.search),
   dig:null, caixa:null, breu:null, real:null, conta:0, saco:[], recentes:[], desde:0,
   escolhida:null, emEscolha:false, hOn:false,
+  /* as classes já vistas até ao fim (a ordem é do aluno) */
+  feitas:new Set(),
+  /* a última narração da classe k: a final, se as outras duas já foram
+     vistas (e se a final já foi gravada) */
+  fimDe(k){
+    const [sempre, fin] = FIM_DA_CLASSE[k];
+    const ultima = Object.keys(FIM_DA_CLASSE).filter(x => x !== k).every(x => this.feitas.has(x));
+    return ultima && TRILHAS[fin] ? fin : sempre;
+  },
   mesa(){ return slides[4] && slides[4].querySelector('.mesa'); },
   cartas(m){ return [...m.querySelectorAll('.pc:not(.serie-oculta)')]; },
   carta(m, z){ return m.querySelector('.pc[data-z="' + z + '"]'); },
@@ -7521,9 +7567,19 @@ const EV4 = {
     const m = this.mesa();
     if (!m) return;
     this.prepara();
-    const tr = trilhaAtual, d = som.duration || 0;
+    let tr = trilhaAtual;
+    const d = som.duration || 0, tReal = t;
     const acabou = som.ended || (d > 0 && t >= d - 0.05);
     let luz = '', escolha = false;
+    /* A CLASSE QUE FECHA O TÓPICO: a última narração de cada classe marca-a
+       como vista; a da última das três é a versão "final" (a "4A5f", a
+       "4B4f"), que corre a mesma cena — no relógio dela, levado ao da
+       narração de sempre — e acaba no botão do quiz, e não na escolha */
+    if (['4A5', '4A5f'].includes(tr)) this.feitas.add('metais');
+    if (['4B4', '4B4f'].includes(tr)) this.feitas.add('ametais');
+    if (['4C4', '4C4f'].includes(tr)) this.feitas.add('nobres');
+    const final = FINAIS_4[tr];
+    if (final){ tr = final.de; t = final.mapa ? final.mapa(t) : t; }
     if (tr === '4'){
       const l = this.luzes.find(x => t >= x.de && t < x.ate);
       if (l) luz = l.luz;
@@ -7536,7 +7592,7 @@ const EV4 = {
        "4A5" a escolha das classes também */
     const segura = tr === '4A4' || (tr === '4A5' && t < this.E4E.reorg);
     if (['4A', '4A1', '4A2', '4A3'].includes(tr) || segura) luz = 'metais';
-    else if (tr === '4A5') escolha = acabou;
+    else if (tr === '4A5') escolha = acabou && !final;
     /* as narrações dos ametais (da "4B" à "4B4", até à volta da tabela):
        eles ficam acesos, e cada cena fica parada no fim dela nas seguintes */
     const fimAm = tr === '4B4' && t >= this.AM3.volta;
@@ -7545,7 +7601,7 @@ const EV4 = {
     /* nas narrações dos ametais o H acende e anda com eles */
     m.classList.toggle('comH', ametal);
     /* no fim da "4B4", a escolha de outra classe */
-    if (tr === '4B4') escolha = acabou;
+    if (tr === '4B4') escolha = acabou && !final;
     /* a "4C" fala dos gases nobres: a tabela inteira acesa até aos 5 s, e
        depois só eles */
     /* a "4C2" e a "4C3" seguram a cena da "4C" parada no fim dela (os
@@ -7559,7 +7615,9 @@ const EV4 = {
     else if (this.sujaNb2) this.desfazNb2(m);
     if (tr === '4C3') this.cenaNb3(m, t, acabou);
     else if (this.sujaNb3) this.desfazNb3(m);
-    if (tr === '4C4') this.cenaNb4(t, acabou);
+    /* o botão do quiz: na "4C4" desde o começo; nas versões finais, quando
+       a fala chama o quiz */
+    if (tr === '4C4' || (final && tReal >= final.quiz)) this.cenaNb4(t, acabou);
     else if (this.quizNb) this.tiraQuizNb();
     if (tr === '4B') this.cenaAm(m, t, acabou);
     else if (ametal) this.cenaAm(m, 1e3, true, true);
@@ -7973,7 +8031,10 @@ const EV4 = {
   saqueiSegue(){
     if (somBtn.classList.contains('saquei-tocado')) return;
     somBtn.classList.add('saquei-tocado');
-    const prox = this.SEGUINTE4[trilhaAtual];
+    let prox = this.SEGUINTE4[trilhaAtual];
+    /* a última narração de uma classe: a final, se ela fecha o tópico */
+    if (prox === '4B4') prox = this.fimDe('ametais');
+    if (prox === '4C4') prox = this.fimDe('nobres');
     setTimeout(() => {
       this.saquei4(false);
       if (atual !== 4 || !prox) return;
@@ -8406,9 +8467,9 @@ const EV4 = {
     this.alerta4E.classList.remove('on');
     if (atual === 4 && trilhaAtual === '4A4' && (som.ended || (som.duration && som.currentTime >= som.duration - .05)))
       /* depois da festa (a fanfarra dura 2 s) */
-      setTimeout(() => { if (atual === 4 && trilhaAtual === '4A4') tocaTrilha('4A5'); }, 2000);
+      setTimeout(() => { if (atual === 4 && trilhaAtual === '4A4') tocaTrilha(this.fimDe('metais')); }, 2000);
   },
-  fim4E(){ if (LAM4.feito) tocaTrilha('4A5'); },
+  fim4E(){ if (LAM4.feito) tocaTrilha(this.fimDe('metais')); },
   /* o fio puxado até ao fim: a "4A4", se a narração da "4A3" já acabou,
      depois da fanfarra (2 s); senão, quando ela acabar */
   fioPuxado(){
@@ -15790,11 +15851,11 @@ function topicoAtual(){
     if (trilhaAtual === '4C3' || trilhaAtual === '4C4') return base + 13;
     if (trilhaAtual === '4C2') return base + 12;
     if (trilhaAtual === '4C') return base + 11;
-    if (trilhaAtual === '4B3' || trilhaAtual === '4B4') return base + 10;
+    if (['4B3', '4B4', '4B4f'].includes(trilhaAtual)) return base + 10;
     if (trilhaAtual === '4B2' || trilhaAtual === '4B2.1') return base + 9;
     if (trilhaAtual === '4B1') return base + 8;
     if (trilhaAtual === '4B') return base + 7;
-    if (trilhaAtual === '4A4' || trilhaAtual === '4A5') return base + 6;
+    if (['4A4', '4A5', '4A5f'].includes(trilhaAtual)) return base + 6;
     if (trilhaAtual === '4A3') return base + 5;
     if (trilhaAtual === '4A2') return base + 4;
     if (trilhaAtual === '4A1') return base + 3;
@@ -16244,6 +16305,8 @@ const ONDE = {
     /* a capa (e a demonstração dela, que passa pelo slide 1) recomeça */
     if (trilhaAtual === 'capa' || atual === 0) return { v:1, slide:0 };
     if (SEQ.eleito) o.z = +SEQ.eleito.dataset.z;
+    /* as classes do slide 5 já vistas (decidem a narração final) */
+    if (EV4.feitas.size) o.feitas = [...EV4.feitas];
     if (QUIZ.aberto) o.quiz = { origem:QUIZ.origem, itens:QUIZ.itens.map(i => i.z), passo:QUIZ.passo,
                                 acertos:QUIZ.acertos, erros:QUIZ.erros, nota:!!QUIZ.mostrandoNota };
     if (QUIZ3.aberto) o.quiz3 = true;
@@ -16275,6 +16338,7 @@ const ONDE = {
     SEQ.comecou = true;
     VIDA.desliga();
     if (o.z) SEQ.eleito = TP.todos().find(c => +c.dataset.z === o.z) || null;
+    if (o.feitas) o.feitas.forEach(k => EV4.feitas.add(k));
     /* o escolhido, na "1.2", está lá em cima, crescido — já, sem viagem e
        sem pousar, para os nomes dele serem medidos com ele no lugar (o voo
        dele não é função do tempo; na "1.3A/B" a volta já é) */
