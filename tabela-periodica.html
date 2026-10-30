@@ -932,7 +932,8 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
 /* na montagem, os nomes das classes pegam o dedo */
 body.montagem .classes4 .frase{pointer-events:auto}
 /* (e no fim da "4C3", à espera de a bobina acender os cinco tubos) */
-#stage.espera-bobina #som, #stage.espera-bobina #som-dica{display:none!important}
+#stage.espera-bobina #som, #stage.espera-bobina #som-dica,
+#stage.espera-fio #som, #stage.espera-fio #som-dica{display:none!important}
 /* A "4A" (EV4.cena4A): só os metais ficam — os outros somem de todo, com
    os números dos eixos, as casas das séries e os textos —, e os metais
    saltam até a grade da esquerda. O relógio escreve o lugar de 60 em 60 ms:
@@ -1119,6 +1120,12 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 /* o anel que chama, na garra, até ao primeiro puxão */
 .fieira4 .fr-chama{animation:chamaGarra 1.2s ease-in-out infinite;transform-origin:16px 0;transform-box:view-box}
 .fieira4.puxou .fr-chama{display:none}
+/* o círculo e a instrução só aos 47,5 s (instrui); a instrução, amarela,
+   pulsa até ao primeiro puxão */
+.fieira4:not(.instrui) .fr-chama{display:none}
+.fieira4 .fr-conta.instr{fill:#FFD43B;font-size:19px;animation:instrPulsa 1.1s ease-in-out infinite}
+.fieira4:not(.instrui) .fr-conta.instr{visibility:hidden}
+@keyframes instrPulsa{0%,100%{opacity:1} 50%{opacity:.3}}
 @keyframes chamaGarra{0%,100%{opacity:.9} 50%{opacity:.15}}
 /* um cubo apagado não pega o dedo em nada de dentro dele */
 .cubo4C:not(.on) *{pointer-events:none!important}
@@ -3458,7 +3465,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v26.2';
+const VERSAO = 'v26.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4794,7 +4801,10 @@ const ROTEIROS = {
     /* aos 12,9 s a narração pára um segundo, e continua */
     { t:12.9, faz(){ EV4.pausa4C(); } }
   ],
-  '4A3':   [],
+  '4A3':   [
+    /* aos 10,9 s a narração pára um segundo, e continua */
+    { t:10.9, faz(){ pausaUmSegundo('4A3'); } }
+  ],
   '4A4':   [],
   /* no "basta ir no sumário": a mão pega a aba do sumário e dá três
      puxadinhas — a gaveta espreita um pouco e volta, a cada uma */
@@ -8141,7 +8151,10 @@ const EV4 = {
                   com a instrução. O dedo puxa o fio, e a barra recua só o
                   que o volume manda (FIEIRA4)
      Tudo função do relógio da narração, menos o puxar. */
-  D4:{ gira:32, giraDura:0.9, apaga:7.6, fio:20, cresce:29, volta:31, maquina:34, metal:36 },
+  /* instrui: aos 47,5 s o círculo amarelo na garra e "Puxe a ponta do fio
+     lentamente", em amarelo, a pulsar até ao primeiro puxão (e de novo
+     depois de o fio romper) */
+  D4:{ gira:32, giraDura:0.9, apaga:7.6, fio:20, cresce:29, volta:31, maquina:34, metal:36, instrui:47.5 },
   suja4D:false, dig4D:null, prop4D:null,
   cena4D(m, t, acabou){
     const D = this.D4, cb = this.cubo4C;
@@ -8169,7 +8182,11 @@ const EV4 = {
     const fr = cb.querySelector('.fieira4');
     fr.classList.toggle('maquina', t >= D.maquina);
     fr.classList.toggle('metal', t >= D.metal);
+    fr.classList.toggle('instrui', t >= D.instrui);
     FIEIRA4.vivo = p >= 1 && t >= D.metal;
+    /* acabada a narração, o play sai: quem faz a aula seguir é o fio
+       puxado até ao fim */
+    stage.classList.toggle('espera-fio', trilhaAtual === '4A3' && acabou && !FIEIRA4.completo);
     this.suja4D = true;
   },
   prepara4D(m){
@@ -8206,6 +8223,7 @@ const EV4 = {
       this.cubo4C.classList.remove('apaga4D', 'fio4D', 'virou2');
       FIEIRA4.zera();
     }
+    stage.classList.remove('espera-fio');
     this.suja4D = false;
   },
 
@@ -9438,7 +9456,7 @@ const EV4 = {
     ESTANTE4.zumbe(false);
     this.tiraQuizNb();
     this.puxaAba(false);
-    stage.classList.remove('em-classes', 'espera-bobina');
+    stage.classList.remove('em-classes', 'espera-bobina', 'espera-fio');
   },
   zera(){
     this.real = null; this.conta = 0; this.saco = []; this.recentes = [];
@@ -10025,6 +10043,8 @@ const FIEIRA4 = {
     const cm = v => (v / F.pxCm).toFixed(2).replace('.', ',');
     const conta = s.querySelector('.fr-conta');
     conta.classList.toggle('alerta', !!this.rompido || this.tensao > .35);
+    /* a instrução (antes do primeiro puxão, e de novo depois de romper) */
+    conta.classList.toggle('instr', !this.rompido && this.tensao <= .35 && !this.puxou);
     conta.textContent = this.rompido ? 'O fio rompeu! Puxe mais devagar.'
       : this.tensao > .35 ? 'Devagar! O fio está afinando…'
       : this.puxou ? 'Fio puxado: ' + cm(puxado) + ' cm  ·  a barra encurtou ' + cm(recua) + ' cm'
@@ -10082,7 +10102,7 @@ const FIEIRA4 = {
     clearTimeout(this.voltaT);
     this.ponta = FR4.ponta0; this.pega = null; this.vivo = false; this.puxou = false;
     this.tensao = 0; this.rompido = 0; this.completo = false; this.amostras = [];
-    if (this.el) this.el.classList.remove('pegando', 'puxou', 'maquina', 'metal');
+    if (this.el) this.el.classList.remove('pegando', 'puxou', 'maquina', 'metal', 'instrui');
     this.desenha();
   }
 };
