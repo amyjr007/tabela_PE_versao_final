@@ -929,6 +929,8 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
 .classes4.escolha .frase[data-classe="nobres"]{animation-delay:.6s}
 @keyframes chamaClasse{0%,100%{text-shadow:none} 50%{text-shadow:0 0 14px color-mix(in srgb,currentColor 55%,transparent)}}
 #stage.em-classes #som, #stage.em-classes #som-dica, #stage.em-classes #vel{display:none!important}
+/* (e no fim da "4C3", à espera de a bobina acender os cinco tubos) */
+#stage.espera-bobina #som, #stage.espera-bobina #som-dica{display:none!important}
 /* A "4A" (EV4.cena4A): só os metais ficam — os outros somem de todo, com
    os números dos eixos, as casas das séries e os textos —, e os metais
    saltam até a grade da esquerda. O relógio escreve o lugar de 60 em 60 ms:
@@ -3454,7 +3456,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v25.8';
+const VERSAO = 'v25.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -9186,6 +9188,9 @@ const EV4 = {
     if (!sai && ESTANTE4.vistos.size) ESTANTE4.zera();
     const verde = acabou && ESTANTE4.todos();
     if (verde !== this.verdeNb3){ this.verdeNb3 = verde; this.saquei4(verde); }
+    /* acabada a narração, o play sai: quem faz a aula seguir é a bobina
+       acender os cinco tubos (aí vem o Saquei) */
+    stage.classList.toggle('espera-bobina', acabou && !verde);
     this.sujaNb3 = true;
   },
   preparaNb3(m){
@@ -9225,6 +9230,7 @@ const EV4 = {
       ESTANTE4.zera();
     }
     if (this.verdeNb3){ this.verdeNb3 = false; this.saquei4(false); }
+    stage.classList.remove('espera-bobina');
     this.sujaNb3 = false;
   },
 
@@ -9413,7 +9419,7 @@ const EV4 = {
     if (ESTANTE4.raf){ cancelAnimationFrame(ESTANTE4.raf); ESTANTE4.raf = 0; }
     this.tiraQuizNb();
     this.puxaAba(false);
-    stage.classList.remove('em-classes');
+    stage.classList.remove('em-classes', 'espera-bobina');
   },
   zera(){
     this.real = null; this.conta = 0; this.saco = []; this.recentes = [];

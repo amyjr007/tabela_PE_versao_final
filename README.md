@@ -329,7 +329,7 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4C3` · 17 s / 18,2 s | o cubo vira: a **lâmpada de argônio** (`lampadaArgonioSVG`); vira outra vez: o carro com os **faróis de xenônio** (`farolXenonioSVG`) |
 | `4C3` · 24 s | tudo sai — os textos, o cubo, a grade e o "Gases Nobres" —, e entra sozinha a **estante** (`ESTANTE4`), com "Propriedades gerais" centrado no alto (em fade, com ela). A estante é de **madeira** (o veio em duas escalas, o tampo claro, os furos), e os cinco são **tubos de descarga** de verdade: a tampa de metal com o terminal em cada ponta, um bulbo em cada uma e o **capilar** no meio, num encaixe de latão; o símbolo numa plaquinha de latão na frente da base. A luz, somada em camadas: o clarão largo que lava a parede, o halo do capilar, a coluna na cor do gás, o fio branco do núcleo, os bulbos difusos e a poça na madeira |
 | `4C3` · 30 s / 35 s | entra a **bobina de Tesla**; aos 35 s ela se deixa arrastar. Perto de um tubo (por baixo, ao lado ou por cima), acende-o sem lhe tocar, mais forte quanto mais perto, e as serpentinas saltam do toroide; cada tubo aceso fica marcado (o ponto na cor dele) |
-| fim da `4C3` | acesos os cinco (e acabada a narração), o **Saquei**, que leva à **`4C4`** (`Audios/audio_tabela_4C4.mp3`) |
+| fim da `4C3` | o play sai — quem faz a aula seguir é a bobina; acesos os cinco (e acabada a narração), o **Saquei**, que leva à **`4C4`** (`Audios/audio_tabela_4C4.mp3`) |
 | `4C4` | a tabela volta, andando, ao estado do começo, e o play vira o botão **Quiz**, verde, a piscar (o quiz ainda vai ser montado: por enquanto, o aviso) |
 | fim da `4B1` | o play vira o **Saquei**; tocado, espoca e vem a **`4B2`** (`Audios/audio_tabela_4B2.mp3`) |
 
