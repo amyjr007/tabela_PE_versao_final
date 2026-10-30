@@ -3496,7 +3496,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v27.6';
+const VERSAO = 'v27.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4738,6 +4738,7 @@ const TRILHAS = {
      tópico (FINAIS_4, EV4.fimDe) */
   '4A5f': 'Audios/Audio_tabela_4A5metalfinal.mp3',
   '4B4f': 'Audios/Audio_tabela_4B4ametalfinal.mp3',
+  '4C4f': 'Audios/Audio_tabela_4C4gasesnobresfinal.mp3',
   '4C':   'Audios/audio_tabela_4C.mp3',    /* escolhidos os gases nobres */
   '4C2':  'Audios/audio_tabela_4C2.mp3',   /* depois do Saquei: por que nobres */
   '4C3':  'Audios/audio_tabela_4C3.mp3',   /* depois do Saquei: o brilho e a bobina */
@@ -4845,14 +4846,14 @@ const ROTEIROS = {
   /* no "basta ir no sumário": a mão pega a aba do sumário e dá três
      puxadinhas — a gaveta espreita um pouco e volta, a cada uma */
   '4A5':  [
-    { t:20.0,  faz(){ EV4.maoNaAba(); } },
-    { t:20.5,  faz(){ EV4.puxaAba(true); } },
-    { t:20.95, faz(){ EV4.puxaAba(false); } },
-    { t:21.35, faz(){ EV4.puxaAba(true); } },
-    { t:21.8,  faz(){ EV4.puxaAba(false); } },
-    { t:22.2,  faz(){ EV4.puxaAba(true); } },
-    { t:22.65, faz(){ EV4.puxaAba(false); } },
-    { t:23.0,  faz(){ tiraMao(); } }
+    { t:28.81, faz(){ EV4.maoNaAba(); } },
+    { t:29.31, faz(){ EV4.puxaAba(true); } },
+    { t:29.76, faz(){ EV4.puxaAba(false); } },
+    { t:30.16, faz(){ EV4.puxaAba(true); } },
+    { t:30.61, faz(){ EV4.puxaAba(false); } },
+    { t:31.01, faz(){ EV4.puxaAba(true); } },
+    { t:31.46, faz(){ EV4.puxaAba(false); } },
+    { t:31.81, faz(){ tiraMao(); } }
   ],
   /* os ametais: tudo função do tempo, em EV4.cenaAm; aqui só a mão, que
      vem ao botão "Ver" do a) e o aperta */
@@ -4877,6 +4878,7 @@ const ROTEIROS = {
     { t:25.4,  faz(){ tiraMao(); } }
   ],
   '4B4f': [],
+  '4C4f': [],
   '4B3':  [],   /* em EV4.cenaAm3 */
   '4B4':  [],
   '4C':   [],   /* os gases nobres: em EV4.cenaNb */
@@ -7441,8 +7443,10 @@ const ENTRE_4 = (pts) => t => {
 };
 const FINAIS_4 = {
   '4A5f':{ de:'4A5', quiz:27.5,
-           mapa:ENTRE_4([[0, 0], [6.66, 6.8], [12.4, 13.12], [16.84, 17.3], [22.4, 20.0], [25.9, 23.5], [29.73, 26.4]]) },
-  '4B4f':{ de:'4B4', quiz:12.48 }
+           mapa:ENTRE_4([[0, 0], [6.66, 6.76], [9.28, 11.0], [9.78, 11.6], [10.29, 12.1], [12.4, 22.24],
+                         [22.4, 28.81], [25.9, 32.26], [29.73, 35.16]]) },
+  '4B4f':{ de:'4B4', quiz:12.48 },
+  '4C4f':{ de:'4C4', quiz:9.42 }
 };
 /* qual é a última narração de cada classe, e a versão final dela */
 const FIM_DA_CLASSE = { metais:['4A5', '4A5f'], ametais:['4B4', '4B4f'], nobres:['4C4', '4C4f'] };
@@ -7615,10 +7619,11 @@ const EV4 = {
     else if (this.sujaNb2) this.desfazNb2(m);
     if (tr === '4C3') this.cenaNb3(m, t, acabou);
     else if (this.sujaNb3) this.desfazNb3(m);
-    /* o botão do quiz: na "4C4" desde o começo; nas versões finais, quando
-       a fala chama o quiz */
-    if (tr === '4C4' || (final && tReal >= final.quiz)) this.cenaNb4(t, acabou);
+    /* o botão do quiz: nas versões finais, quando a fala chama o quiz; no
+       fim da "4C4" de sempre, a escolha de outra classe */
+    if (final && tReal >= final.quiz) this.cenaNb4(t, acabou);
     else if (this.quizNb) this.tiraQuizNb();
+    if (tr === '4C4') escolha = acabou && !final;
     if (tr === '4B') this.cenaAm(m, t, acabou);
     else if (ametal) this.cenaAm(m, 1e3, true, true);
     else if (this.sujaAm) this.desfazAm(m);
@@ -8380,7 +8385,9 @@ const EV4 = {
                     metais verdes, com o ✓ de vistos
      fim da 4A5     tocar numa classe escolhe-a (como no fim da "4") */
   E4E:{ titulo:2, texto:5, cubo:14.5, gira:21, giraDura:0.9, metal:22.4,
-        pronto:2, chapas:9.5, zinco:10.3, ferro:11, reorg:23.5 },
+        /* (a 4A5 regravada, de 35 s: as chapas no "cobre, zinco, ferro", e a
+           volta da tabela logo depois do "No mais") */
+        pronto:2, chapas:11.0, zinco:11.6, ferro:12.1, reorg:32.26 },
   suja4E:false, dig4E:null, prop4E:null, cubo4E:null, alerta4E:null, metaisOk:false,
   cena4E(m, t, acabou, tr){
     const E = this.E4E;
@@ -15848,7 +15855,7 @@ function tocaDesde(id, t, g){
 function topicoAtual(){
   if (atual === 4){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 4);
-    if (trilhaAtual === '4C3' || trilhaAtual === '4C4') return base + 13;
+    if (['4C3', '4C4', '4C4f'].includes(trilhaAtual)) return base + 13;
     if (trilhaAtual === '4C2') return base + 12;
     if (trilhaAtual === '4C') return base + 11;
     if (['4B3', '4B4', '4B4f'].includes(trilhaAtual)) return base + 10;

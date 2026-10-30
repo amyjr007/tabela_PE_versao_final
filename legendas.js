@@ -296,12 +296,15 @@ var LEGENDAS = {
     [30.32,33.54,"Quer ver? Ligue a máquina ali pra entender esse processo."]
   ],
   "audio_tabela_4A5": [
-    [0,3.62,"Muito bem! É assim que se produz papel alumínio,"],
-    [3.62,6.8,"e isso só é possível graças à maleabilidade desse metal."],
-    [6.8,13.12,"Aliás, é assim que se faz chapas de cobre, zinco, ferro e vários outros metais."],
-    [13.12,17.3,"Tá, sobre as propriedades dos elementos metais, é isso."],
-    [17.3,22.2,"Se quiser rever alguma propriedade, basta ir no sumário e navegar direto pra ela."],
-    [22.2,26.2,"No mais, vamos pra outra classe de elementos. Escolha outra aí."]
+    [0,3.08,"Muito bem! É assim que se produz papel alumínio."],
+    [3.08,6.76,"Isso só é possível graças à maleabilidade desse metal."],
+    [6.76,10.6,"Aliás, é desse mesmo jeito que a indústria produz"],
+    [10.6,14.18,"chapas de cobre, zinco, ferro e de vários outros metais,"],
+    [14.18,20.74,"comprimindo blocos de metal entre cilindros pesados até atingir a espessura exata que precisamos."],
+    [20.74,22.24,"Fascinante, né?"],
+    [22.24,26.18,"Tá, sobre as propriedades dos elementos metais, é isso."],
+    [26.18,30.96,"Se quiser rever alguma propriedade, basta ir no Sumário e navegar direto pra lá."],
+    [30.96,35.02,"No mais, vamos pra outra classe de elementos. Escolha outra aí."]
   ],
   "audio_tabela_4B": [
     [0,5.04,"Certo, vamos discutir os ametais, que também são chamados de não-metais."],
@@ -370,6 +373,12 @@ var LEGENDAS = {
     [6.86,12.48,"tá na hora de testar o que você aprendeu sobre os tipos de elementos organizados em blocos na tabela."],
     [12.48,13.82,"Vamos fazer um quiz?"]
   ],
+  "Audio_tabela_4C4gasesnobresfinal": [
+    [0,2.92,"Pronto. Sobre os gases nobres, é isso."],
+    [2.92,7.2,"Agora que vimos algumas características gerais de cada classe de elementos,"],
+    [7.2,9.42,"tá na hora de testar o que você aprendeu."],
+    [9.42,10.64,"Vamos fazer um quiz?"]
+  ],
   "audio_tabela_4C": [
     [0,6.52,"Bela escolha! Vamos abordar agora a família mais ilustre da química, os gases nobres."],
     [6.52,10.78,"Também chamados de gases inertes, os gases nobres formam essa coluna vertical"],
@@ -426,10 +435,8 @@ var LEGENDAS = {
     [38.82,42.8,"e veja você mesmo a assinatura luminosa de cada gás nobre."]
   ],
   "audio_tabela_4C4": [
-    [0,2.94,"Pronto. Sobre os gases nobres, é isso."],
-    [2.94,7.22,"Agora que vimos algumas características gerais de cada classe de elementos,"],
-    [7.22,9.5,"tá na hora de testar o que você aprendeu."],
-    [9.5,10.76,"Vamos fazer um quiz?"]
+    [0,3.22,"Pronto. Sobre os gases nobres, é isso."],
+    [3.22,5.66,"Agora, escolha a próxima classe."]
   ],
   "audio_tabela_4B4": [
     [0,3.72,"Então, amigos, sobre os ametais é basicamente isso."],
