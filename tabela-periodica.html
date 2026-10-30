@@ -929,6 +929,8 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
 .classes4.escolha .frase[data-classe="nobres"]{animation-delay:.6s}
 @keyframes chamaClasse{0%,100%{text-shadow:none} 50%{text-shadow:0 0 14px color-mix(in srgb,currentColor 55%,transparent)}}
 #stage.em-classes #som, #stage.em-classes #som-dica, #stage.em-classes #vel{display:none!important}
+/* na montagem, os nomes das classes pegam o dedo */
+body.montagem .classes4 .frase{pointer-events:auto}
 /* (e no fim da "4C3", à espera de a bobina acender os cinco tubos) */
 #stage.espera-bobina #som, #stage.espera-bobina #som-dica{display:none!important}
 /* A "4A" (EV4.cena4A): só os metais ficam — os outros somem de todo, com
@@ -3456,7 +3458,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v25.9';
+const VERSAO = 'v26.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7410,6 +7412,9 @@ const EV4 = {
     m.appendChild(cx);
     this.dig = criaDigitacao(cx, FRASES_4);
     ['', 'metais', 'ametais', 'ametais', 'nobres'].forEach((k, i) => { if (k) cx.children[i].dataset.classe = k; });
+    /* na montagem (G), cada nome é peça: anda, cresce e o texto edita */
+    ['classes-titulo', 'classe-metais', 'classe-ametais', 'classe-nao-metais', 'classe-gases-nobres']
+      .forEach((nome, i) => { cx.children[i].dataset.mont = nome; });
     cx.addEventListener('click', ev => {
       const f = ev.target.closest && ev.target.closest('.frase[data-classe]');
       if (f) this.escolhe(f.dataset.classe);
@@ -9417,6 +9422,7 @@ const EV4 = {
     if (this.E4.raf) this.paraEletro();
     if (this.E5.raf) this.paraEletro(this.chGr());
     if (ESTANTE4.raf){ cancelAnimationFrame(ESTANTE4.raf); ESTANTE4.raf = 0; }
+    ESTANTE4.zumbe(false);
     this.tiraQuizNb();
     this.puxaAba(false);
     stage.classList.remove('em-classes', 'espera-bobina');
@@ -10917,6 +10923,7 @@ const ESTANTE4 = {
     });
     this.gArcos.innerHTML = arcos;
     this.bobina.classList.toggle('viva', algum);
+    this.zumbe(algum && this.livre);
     if (this.dica) this.dica.textContent = this.todos() ? 'Você acendeu os cinco gases nobres'
       : 'Arraste a bobina até cada tubo · ' + this.vistos.size + ' de ' + TUBOS4.length;
     return algum;
@@ -10945,6 +10952,15 @@ const ESTANTE4 = {
     this.raf = requestAnimationFrame(passo);
   },
   todos(){ return this.vistos.size === TUBOS4.length; },
+  /* O ZUMBIDO DA BOBINA ("tesla_coil"), em laço, enquanto saem raios dela;
+     sem raios (ou fora da cena, ou com o app escondido), cala */
+  somT:null,
+  zumbe(on){
+    if (on && !document.hidden){
+      if (!this.somT){ this.somT = new Audio(encodeURI('Audios/vfx/tesla_coil.mp3')); this.somT.loop = true; }
+      if (this.somT.paused) this.somT.play().catch(() => {});
+    } else if (this.somT && !this.somT.paused) this.somT.pause();
+  },
   /* aparece (os tubos), a bobina entra, e o dedo é liberado */
   mostra(on, bob, livre){
     if (!this.el) return;
@@ -10952,6 +10968,7 @@ const ESTANTE4 = {
     this.el.classList.toggle('bob', bob);
     this.livre = livre;
     this.el.classList.toggle('livre', livre);
+    if (!livre) this.zumbe(false);
   },
   zera(){
     cancelAnimationFrame(this.raf); this.raf = 0;
@@ -14716,7 +14733,7 @@ function mostraCoord(el){
 const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle, .quiz3.q4 .q3-q,' +
                ' .dica-escolha .txt, .toque-continuar, .rotulo-el .txt, .veu-frases .frase .txt,' +
                ' .texto-colunas .frase .txt, .veu-moseley figcaption b, .dica-final, .entendi3, .coords-el,' +
-               ' .conta-lc25 .txt, .alerta4C, .alerta4E, .alertaAm2, .alertaAm3, .propAm .frase .txt, .propAm1 .frase .txt, .propAm2 .frase .txt';
+               ' .conta-lc25 .txt, .alerta4C, .alerta4E, .alertaAm2, .alertaAm3, .classes4 .frase .txt, .propAm .frase .txt, .propAm1 .frase .txt, .propAm2 .frase .txt';
 const EDICAO = {
   el:null, ultimo:null, tUlt:0, editados:new Set(),
   /* o bloco de linhas a que um texto pertence, dentro da peça */
@@ -16164,7 +16181,7 @@ const ONDE = {
   }
 };
 setInterval(() => ONDE.guarda(), 1000);
-document.addEventListener('visibilitychange', () => { if (document.hidden) ONDE.guarda(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden){ ONDE.guarda(); ESTANTE4.zumbe(false); } });
 addEventListener('pagehide', () => ONDE.guarda());
 
 /* ao abrir: onde a aula parou; sem nada guardado, a capa. As fotos do
