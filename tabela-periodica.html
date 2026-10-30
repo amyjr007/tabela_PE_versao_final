@@ -3496,7 +3496,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v27.2';
+const VERSAO = 'v27.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4853,9 +4853,10 @@ const ROTEIROS = {
   /* os ametais: tudo função do tempo, em EV4.cenaAm; aqui só a mão, que
      vem ao botão "Ver" do a) e o aperta */
   '4B':   [
-    { t:50.69, faz(){ EV4.maoNoVer(); } },
-    { t:52.8,  faz(){ bateMao(); } },
-    { t:53.76, faz(){ tiraMao(); } }
+    /* (a mão chega no "use os botões", e aperta no "ali", aos 56,6 s) */
+    { t:55.5,  faz(){ EV4.maoNoVer(); } },
+    { t:56.6,  faz(){ bateMao(); } },
+    { t:57.4,  faz(){ tiraMao(); } }
   ],
   '4B1':  [],   /* e em EV4.cenaAm1 */
   '4B2':  [],   /* e em EV4.cenaAm2 */
@@ -8467,7 +8468,7 @@ const EV4 = {
   /* (os tempos da 4B regravada, com o "são" a mais: cada um no mesmo ponto
      da fala de antes) */
   AM4:{ nomeA:1.51, nomeN:4.03, nomeFim:6.05, cresce:12.18, volta:15.01, bloco:1.1, de:15.74, ate:23.46, salto:1.0,
-        gas:35.72, solido:40.76, br:45.35, apaga:50.69, liga:52.8, sobe:0.5, onda:0.05, um:1.15, grande:1.4,
+        gas:35.72, solido:40.76, br:45.35, apaga:50.73, liga:56.6, sobe:0.5, onda:0.05, um:1.15, grande:1.4,
         /* a grade: 4 por linha, à direita (x0, y0: o centro da primeira
            vaga); o texto, à esquerda, na altura do dos metais */
         /* (5 por linha: com o H, são 17; a grade fica centrada em 960) */

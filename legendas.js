@@ -315,8 +315,9 @@ var LEGENDAS = {
     [32.06,34.64,"nas condições padrão de temperatura e pressão."],
     [34.64,39.7,"Podem ser gasosos, como o oxigênio que respiramos e o nitrogênio do ar."],
     [39.7,44.34,"Podem ser sólidos, como o carvão de carbono e o enxofre amarelo."],
-    [44.34,50.06,"E temos até um ametal líquido, o bromo, com sua cor castanho-avermelhada marcante."],
-    [50.06,54.2,"Se quiser ver com mais detalhes, use os botões ali do lado do texto."]
+    [44.2,50.1,"E temos até um ametal líquido, o bromo, com sua cor castanho-avermelhada marcante."],
+    [50.1,55.1,"Se quiser ver bem o estado físico de cada elemento nas condições ambientes,"],
+    [55.1,57.46,"use os botões ali do lado do texto."]
   ],
   "audio_tabela_4B1": [
     [0,1.64,"Sobre os aspectos visuais."],
