@@ -869,6 +869,8 @@ html.palco-largo .breu4{box-shadow:0 0 0 var(--folga) rgba(12,10,32,.84)}
 html.palco-alto  .breu4{box-shadow:0 0 0 var(--folgav) rgba(12,10,32,.84)}
 .mesa.tipos .pc{transition:transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease, opacity .7s ease}
 .mesa.tipos .eixo,.mesa.tipos .casa{transition:opacity .7s ease}
+/* no slide 5 a tabela fica sem os números das linhas e das colunas */
+.mesa.tipos .eixo{display:none}
 .mesa.tipos:not([data-luz=""])[data-luz] .pc{opacity:.13}
 .mesa.tipos:not([data-luz=""])[data-luz] .eixo{opacity:.2}
 /* as casas das duas séries (57–71, 89–103) são metais, mas não são cartas:
@@ -3465,7 +3467,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v26.6';
+const VERSAO = 'v26.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
