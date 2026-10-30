@@ -3467,7 +3467,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v26.7';
+const VERSAO = 'v26.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4824,9 +4824,9 @@ const ROTEIROS = {
   /* os ametais: tudo função do tempo, em EV4.cenaAm; aqui só a mão, que
      vem ao botão "Ver" do a) e o aperta */
   '4B':   [
-    { t:50.0,  faz(){ EV4.maoNoVer(); } },
-    { t:52.2,  faz(){ bateMao(); } },
-    { t:53.2,  faz(){ tiraMao(); } }
+    { t:50.69, faz(){ EV4.maoNoVer(); } },
+    { t:52.8,  faz(){ bateMao(); } },
+    { t:53.76, faz(){ tiraMao(); } }
   ],
   '4B1':  [],   /* e em EV4.cenaAm1 */
   '4B2':  [],   /* e em EV4.cenaAm2 */
@@ -7342,11 +7342,11 @@ const FRASES_4B = [ { de:4.0, ate:5.6, txt:'2. Os metais têm um brilho caracter
 /* na "4B" (os ametais): as propriedades, no lado esquerdo, nas cores das
    dos metais — o título dourado, a propriedade clara, os itens prateados */
 const FRASES_AM = [
-  { de:24.0, ate:27.0, txt:'Propriedades gerais dos ametais' },
-  { de:28.0, ate:33.0, txt:'1. São encontrados nos 3 estados físicos.' },
-  { de:35.0, ate:36.6, txt:'a) Alguns são gasosos.' },
-  { de:40.0, ate:41.5, txt:'b) A maioria é sólido' },
-  { de:44.5, ate:46.5, txt:'c) Somente o bromo é líquido.' }
+  { de:24.49, ate:27.66, txt:'Propriedades gerais dos ametais' },
+  { de:28.72, ate:33.75, txt:'1. São encontrados nos 3 estados físicos.' },
+  { de:35.72, ate:37.32, txt:'a) Alguns são gasosos.' },
+  { de:40.76, ate:42.31, txt:'b) A maioria é sólido' },
+  { de:45.35, ate:47.3, txt:'c) Somente o bromo é líquido.' }
 ];
 /* na "4B1": os itens da 4B saem (o título fica), e a propriedade 2 vem
    no lugar da 1 */
@@ -8394,8 +8394,10 @@ const EV4 = {
      Tudo função do relógio da narração (a mão, marcas do roteiro). */
   /* nomeA, nomeN: "Ametais" cresce de 1,5 a 4 s, e "Não Metais" de 4 a 6 s;
      com o bloco crescido, os dois sobem (para não ficarem atrás dele) */
-  AM4:{ nomeA:1.5, nomeN:4, nomeFim:6, cresce:12, volta:14.7, bloco:1.1, de:15.4, ate:23, salto:1.0,
-        gas:35, solido:40, br:44.5, apaga:50, liga:52.2, sobe:0.5, onda:0.05, um:1.15, grande:1.4,
+  /* (os tempos da 4B regravada, com o "são" a mais: cada um no mesmo ponto
+     da fala de antes) */
+  AM4:{ nomeA:1.51, nomeN:4.03, nomeFim:6.05, cresce:12.18, volta:15.01, bloco:1.1, de:15.74, ate:23.46, salto:1.0,
+        gas:35.72, solido:40.76, br:45.35, apaga:50.69, liga:52.8, sobe:0.5, onda:0.05, um:1.15, grande:1.4,
         /* a grade: 4 por linha, à direita (x0, y0: o centro da primeira
            vaga); o texto, à esquerda, na altura do dos metais */
         cols:4, passo:96, esc:1.25, x0:816, y0:276, textoX:64, textoY:174 },
