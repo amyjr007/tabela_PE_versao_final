@@ -3465,7 +3465,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v26.4';
+const VERSAO = 'v26.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -11075,13 +11075,14 @@ function laminadorSVG(){
       '<circle class="lm-nucleo" cx="' + L.bx + '" r="' + L.nucleo + '" fill="#5A3A1C" stroke="#B98A55" stroke-width="2"/>' +
       '<line class="lm-risco" stroke="#fff" stroke-opacity=".5" stroke-width="1.5"/></g>' +
     rolo(L.cyA, 'lm-rolo-a') + rolo(L.cyB, 'lm-rolo-b') +
-    /* a caixa de comando, com o botão */
-    '<rect x="26" y="292" width="92" height="66" rx="8" fill="url(#lm4-aco)" stroke="#5D6772" stroke-width="1"/>' +
+    /* a caixa de comando, com o botão, à direita da máquina (embaixo da
+       mesa da saída) */
+    '<rect x="322" y="292" width="92" height="66" rx="8" fill="url(#lm4-aco)" stroke="#5D6772" stroke-width="1"/>' +
     '<g class="lm-bt" role="button" aria-label="Ligar a máquina">' +
-      '<circle class="lm-bt-luz" cx="72" cy="318" r="16" fill="#D62B2B" filter="url(#lm4-luz)"/>' +
-      '<circle cx="72" cy="318" r="16" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2"/>' +
-      '<circle cx="68" cy="313" r="5" fill="#fff" opacity=".35"/>' +
-      '<text class="lm-bt-txt" x="72" y="350" text-anchor="middle">LIGAR</text></g>' +
+      '<circle class="lm-bt-luz" cx="368" cy="318" r="16" fill="#D62B2B" filter="url(#lm4-luz)"/>' +
+      '<circle cx="368" cy="318" r="16" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2"/>' +
+      '<circle cx="364" cy="313" r="5" fill="#fff" opacity=".35"/>' +
+      '<text class="lm-bt-txt" x="368" y="350" text-anchor="middle">LIGAR</text></g>' +
     '<text x="250" y="420" text-anchor="middle" class="lm-nome">Laminador</text>' +
   '</svg>';
 }
