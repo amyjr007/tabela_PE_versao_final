@@ -3465,7 +3465,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v26.3';
+const VERSAO = 'v26.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4802,8 +4802,9 @@ const ROTEIROS = {
     { t:12.9, faz(){ EV4.pausa4C(); } }
   ],
   '4A3':   [
-    /* aos 10,9 s a narração pára um segundo, e continua */
-    { t:10.9, faz(){ pausaUmSegundo('4A3'); } }
+    /* aos 10,9 s e aos 27,2 s a narração pára um segundo, e continua */
+    { t:10.9, faz(){ pausaUmSegundo('4A3'); } },
+    { t:27.2, faz(){ pausaUmSegundo('4A3'); } }
   ],
   '4A4':   [],
   /* no "basta ir no sumário": a mão pega a aba do sumário e dá três
