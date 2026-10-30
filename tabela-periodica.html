@@ -3458,7 +3458,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v26.1';
+const VERSAO = 'v26.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -9353,6 +9353,7 @@ const EV4 = {
     const passo = () => {
       E.quadros++;
       const toca = encosta();
+      this.estala(E, toca);
       cx.classList.toggle('chocando', toca);
       barra.classList.toggle('viva', toca);
       cb.classList.toggle('chocando', toca);
@@ -9385,8 +9386,18 @@ const EV4 = {
     };
     passo();
   },
+  /* O ESTALO DO CURTO ("short_circuit", a 70% do volume), em laço enquanto
+     a barra encosta no cobre — a de metal ou a de grafite, cada choque com
+     o seu; separados (ou o app escondido), cala */
+  estala(E, on){
+    if (on && !document.hidden){
+      if (!E.som){ E.som = new Audio(encodeURI('Audios/vfx/short_circuit.mp3')); E.som.loop = true; E.som.volume = .7; }
+      if (E.som.paused) E.som.play().catch(() => {});
+    } else if (E.som && !E.som.paused) E.som.pause();
+  },
   paraEletro(ch = this.chMet()){
     const E = ch.E;
+    this.estala(E, false);
     cancelAnimationFrame(E.raf);
     E.raf = 0; E.pega = null; E.fagulhas = [];
     if (!ch.cb) return;
@@ -16183,7 +16194,7 @@ const ONDE = {
   }
 };
 setInterval(() => ONDE.guarda(), 1000);
-document.addEventListener('visibilitychange', () => { if (document.hidden){ ONDE.guarda(); ESTANTE4.zumbe(false); } });
+document.addEventListener('visibilitychange', () => { if (document.hidden){ ONDE.guarda(); ESTANTE4.zumbe(false); EV4.estala(EV4.E4, false); EV4.estala(EV4.E5, false); } });
 addEventListener('pagehide', () => ONDE.guarda());
 
 /* ao abrir: onde a aula parou; sem nada guardado, a capa. As fotos do
