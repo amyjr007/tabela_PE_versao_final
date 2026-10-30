@@ -938,14 +938,24 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
    escurece) e volta, num ciclo de 2,8 s — metais, ametais, gases nobres,
    ametais, e de novo —, até o aluno tocar num deles. ('scale' e não
    'transform': o transform da carta é o do lugar dela) */
-.mesa.tipos.chamaBlocos .pc[data-tipo="metais"] {animation:apertaM 2.8s ease-in-out infinite}
+.mesa.tipos.chamaBlocos :is(.pc[data-tipo="metais"],.casa.serie){animation:apertaM 2.8s ease-in-out infinite}
+/* os encaixes vazios, debaixo das cartas, não aparecem no slide 5 (só se
+   veriam com o bloco afundado) */
+.mesa.tipos .casa:not(.serie){visibility:hidden}
 .mesa.tipos.chamaBlocos .pc[data-tipo="ametais"]{animation:apertaA 2.8s ease-in-out infinite}
 .mesa.tipos.chamaBlocos .pc[data-tipo="nobres"] {animation:apertaN 2.8s ease-in-out infinite}
-@keyframes apertaM{0%,16%,100%{scale:1;filter:none} 7%{scale:.9;filter:brightness(.78)}}
-@keyframes apertaA{0%,25%,41%,75%,91%,100%{scale:1;filter:none} 32%,82%{scale:.9;filter:brightness(.78)}}
-@keyframes apertaN{0%,50%,66%,100%{scale:1;filter:none} 57%{scale:.9;filter:brightness(.78)}}
-/* tocado, o bloco inteiro afunda e brilha em verde */
-.mesa.tipos .pc.apertado{animation:none;scale:.86;filter:brightness(1.12);transition:scale .12s ease, filter .12s ease}
+/* (o bloco encolhe para 92% em volta do meio dele: cada carta encolhe e
+   anda 8% da distância até lá — EV4.preparaBotoes) */
+@keyframes apertaM{0%,16%,100%{scale:1;translate:0 0;filter:none}
+  7%{scale:.92;translate:calc(var(--bdx,0px) * .08) calc(var(--bdy,0px) * .08);filter:brightness(.78)}}
+@keyframes apertaA{0%,25%,41%,75%,91%,100%{scale:1;translate:0 0;filter:none}
+  32%,82%{scale:.92;translate:calc(var(--bdx,0px) * .08) calc(var(--bdy,0px) * .08);filter:brightness(.78)}}
+@keyframes apertaN{0%,50%,66%,100%{scale:1;translate:0 0;filter:none}
+  57%{scale:.92;translate:calc(var(--bdx,0px) * .08) calc(var(--bdy,0px) * .08);filter:brightness(.78)}}
+/* tocado, o bloco inteiro afunda (88%) e brilha em verde */
+.mesa.tipos :is(.pc,.casa.serie).apertado{animation:none;scale:.88;translate:calc(var(--bdx,0px) * .12) calc(var(--bdy,0px) * .12);
+  filter:brightness(1.12);transition:scale .12s ease, translate .12s ease, filter .12s ease}
+.mesa.tipos .casa.serie.apertado{box-shadow:0 0 0 2px #7DFFA8, 0 0 20px 6px rgba(61,220,120,.75)}
 .mesa.tipos .pc.apertado .face{box-shadow:0 0 0 2px #7DFFA8, 0 0 20px 6px rgba(61,220,120,.75)}
 /* na montagem, os nomes das classes pegam o dedo */
 body.montagem .classes4 .frase{pointer-events:auto}
@@ -3483,7 +3493,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v27.0';
+const VERSAO = 'v27.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7613,7 +7623,9 @@ const EV4 = {
     this.caixa.classList.toggle('escolha', escolha);
     /* à espera da escolha (narração acabada): os blocos afundam como
        botões, um de cada vez, da esquerda para a direita e de volta */
-    m.classList.toggle('chamaBlocos', escolha && acabou && !this.escolhida);
+    const chama = escolha && acabou && !this.escolhida;
+    if (chama) this.preparaBotoes(m);
+    m.classList.toggle('chamaBlocos', chama);
     /* à espera da escolha, com a narração acabada, o play sai: quem faz a
        aula seguir é o toque numa classe */
     stage.classList.toggle('em-classes', escolha && acabou);
@@ -7622,6 +7634,34 @@ const EV4 = {
     this.dig.escreve(tr === '4' ? t : /^4[A-E]/.test(tr) ? 1e3 : -1);
     if (tr === '4' && t < this.ate && !acabou && !this.miniaturas) this.destaques(m);
     else this.soltaRealce();
+  },
+
+  /* O BLOCO COMO UM BOTÃO SÓ: para o bloco encolher inteiro em volta do
+     meio dele, cada carta, ao encolher, anda para esse meio na mesma
+     proporção. --bdx e --bdy são a distância da carta ao meio do bloco,
+     menos meia carta: o 'scale' da carta é em volta do centro da caixa
+     dela, e o transform (translate -50%) põe o desenho meia carta acima e à
+     esquerda — sem a correção o bloco descia para a direita ao afundar. O
+     CSS multiplica pela fração que encolhe (1 − scale). */
+  botoesProntos:false,
+  preparaBotoes(m){
+    if (this.botoesProntos) return;
+    this.botoesProntos = true;
+    ['metais', 'ametais', 'nobres'].forEach(k => {
+      const cs = [...m.querySelectorAll('.pc[data-tipo="' + k + '"]')].filter(c => !c.classList.contains('serie-oculta'));
+      if (!cs.length) return;
+      const ps = cs.map(c => alvoDe(+c.dataset.z));
+      const xs = ps.map(p => p.x), ys = ps.map(p => p.y);
+      const bx = (Math.min(...xs) + Math.max(...xs)) / 2, by = (Math.min(...ys) + Math.max(...ys)) / 2;
+      /* (as casas das séries, 57–71 e 89–103, são metais: afundam com eles) */
+      const todas = cs.slice(), pos = ps.slice();
+      if (k === 'metais') m.querySelectorAll('.casa.serie').forEach(d => { todas.push(d); pos.push({ x: parseFloat(d.style.left), y: parseFloat(d.style.top) }); });
+      todas.forEach((c, i) => {
+        const meia = (c.offsetWidth || LADO) / 2;
+        c.style.setProperty('--bdx', (bx - pos[i].x - meia).toFixed(1) + 'px');
+        c.style.setProperty('--bdy', (by - pos[i].y - meia).toFixed(1) + 'px');
+      });
+    });
   },
 
   /* ---- os destaques ao acaso ---- */
@@ -9477,9 +9517,10 @@ const EV4 = {
     /* o bloco inteiro afunda, como um botão, e brilha em verde */
     const m = this.mesa();
     m.classList.remove('chamaBlocos');
-    m.querySelectorAll('.pc[data-tipo="' + k + '"]').forEach(c => c.classList.add('apertado'));
+    this.preparaBotoes(m);
+    m.querySelectorAll('.pc[data-tipo="' + k + '"]' + (k === 'metais' ? ', .casa.serie' : '')).forEach(c => c.classList.add('apertado'));
     clearTimeout(this.apertoT);
-    this.apertoT = setTimeout(() => m.querySelectorAll('.pc.apertado').forEach(c => c.classList.remove('apertado')), 650);
+    this.apertoT = setTimeout(() => m.querySelectorAll('.apertado').forEach(c => c.classList.remove('apertado')), 650);
     const tr = TRILHA_DA_CLASSE[k];
     if (!tr){ TP.diz('A narração dessa classe ainda vai ser gravada.'); return; }
     som.pause();
