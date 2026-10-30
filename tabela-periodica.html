@@ -1302,6 +1302,77 @@ body.montagem .propAm .frase,body.montagem .propAm1 .frase{pointer-events:auto}
 .mesa.tipos.arrumaNb .pc:not([data-tipo="nobres"]){opacity:0;pointer-events:none}
 .mesa.tipos.arrumaNb[data-luz] .eixo,.mesa.tipos.arrumaNb .classes4{opacity:0}
 .mesa.tipos.arrumaNb:not([data-luz=""])[data-luz] .casa{opacity:0}
+/* na "4C3", aos 24 s, a grade dos gases nobres sai também: a estante fica
+   sozinha */
+.mesa.tipos.someNb .pc[data-tipo="nobres"]{opacity:0!important;pointer-events:none}
+.tituloAm.fim{animation:none;opacity:0;transition:opacity .6s ease}
+/* os textos da "4C2" e da "4C3": a pergunta, a propriedade (clara), os
+   itens (prateados, para dentro) — nas cores dos outros blocos */
+.propNb2{position:absolute;inset:0;z-index:25;pointer-events:none}
+.propNb2 .frase{position:absolute;display:none;margin:0;white-space:nowrap;line-height:1;transform:translateY(-50%);
+  font-family:var(--display);font-weight:600;font-size:28px;color:#F4F2F8;text-shadow:0 2px 4px rgba(0,0,0,.5);
+  transition:opacity .6s ease}
+.propNb2 .frase.on{display:block}
+.propNb2 .frase.fim,.propNb2 .frase.saindo{opacity:0}
+.propNb2 .frase:nth-child(1){color:color-mix(in srgb,var(--cat-nobres) 55%,#fff)}
+.propNb2 .frase:nth-child(n+3){font-size:26px;color:#C9D2DC}
+.propNb2 .frase.larga{width:560px;white-space:normal;line-height:1.28;transform:none}
+.propNb3 .frase:nth-child(1){color:#F4F2F8}
+.propNb2 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:5px;vertical-align:-.1em;background:var(--ouro-luz)}
+.propNb2 .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+body.montagem .propNb2 .frase{pointer-events:auto}
+/* as moléculas na lupa tremem devagar; a que sai ganha o halo ao chegar;
+   os átomos pulsam (H, O, C), e os dos gases nobres flutuam */
+.treme4{animation:treme4 2.6s ease-in-out infinite alternate}
+@keyframes treme4{0%{transform:translate(0,0) rotate(0)} 50%{transform:translate(3px,-2px) rotate(6deg)} 100%{transform:translate(-2px,3px) rotate(-5deg)}}
+.at-flutua{animation:flutua4 4s ease-in-out infinite alternate}
+@keyframes flutua4{0%{transform:translate(0,0)} 33%{transform:translate(9px,-7px)} 66%{transform:translate(-6px,8px)} 100%{transform:translate(7px,5px)}}
+.mol-sai .mol-halo{opacity:0;transition:opacity .5s ease}
+.mol-sai.chegou .mol-halo{opacity:1}
+.cuboNb2 :is(.at-h,.at-o,.at-c,.at-livre){transform-box:fill-box;transform-origin:center}
+.cuboNb2 .pulsa{animation:pulsa4 .4s ease-in-out infinite alternate}
+@keyframes pulsa4{from{transform:scale(1);filter:none} to{transform:scale(1.35);filter:drop-shadow(0 0 4px #FFE27A)}}
+.cuboNb2 .pulsa2{animation:pulsa4 .4s ease-in-out 4 alternate}
+.form4{font-family:var(--display);font-weight:700;font-size:40px;fill:#FFE27A;
+  filter:drop-shadow(0 0 8px rgba(255,210,80,.55))}
+.form4 .indice{font-size:26px}
+.cil-nome{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:.06em;fill:#14161A;opacity:.82}
+/* o letreiro: o "Pub" falha aos trancos; o resto (e a luz na parede) treme
+   de leve, como um neon de verdade */
+.ln-jackie{font-family:'Brush Script MT','Segoe Script','Lucida Handwriting',cursive;font-size:84px}
+.ln-pub{font-family:var(--display);font-weight:700;font-size:58px;letter-spacing:.22em}
+.ln-tudo{animation:neonTreme 3.2s steps(1) infinite}
+.ln-falha{animation:neonFalha 4.6s steps(1) infinite}
+.ln-luz{animation:neonTreme 3.2s steps(1) infinite}
+@keyframes neonTreme{0%,100%{opacity:1} 47%{opacity:.86} 48%{opacity:1} 71%{opacity:.92} 72%{opacity:1}}
+@keyframes neonFalha{0%,100%{opacity:1} 12%{opacity:.15} 13%{opacity:1} 15%{opacity:.2} 17%{opacity:1}
+  58%{opacity:1} 59%{opacity:.08} 63%{opacity:.08} 64%{opacity:.9} 66%{opacity:.25} 67%{opacity:1}}
+/* a lâmpada de argônio e os faróis: a descarga a tremer um fio */
+.la-gas,.la-bloom{animation:tremeDescarga4 .17s steps(2,end) infinite alternate}
+@keyframes tremeDescarga4{0%{opacity:.88} 50%{opacity:1} 100%{opacity:.94}}
+/* A ESTANTE (ESTANTE4): os tubos, a bobina que entra, e o dedo */
+.estante4{position:absolute;inset:0;z-index:30;opacity:0;pointer-events:none;transition:opacity .8s ease}
+.estante4.on{opacity:1}
+.estante4 svg{position:absolute;inset:0;width:100%;height:100%}
+.estante4 .bobina4{opacity:0;transition:opacity .8s ease, filter .2s ease}
+.estante4.bob .bobina4{opacity:1}
+.estante4.livre{pointer-events:auto;touch-action:none}
+.estante4.livre .bobina4{cursor:grab}
+.estante4.pegando .bobina4{cursor:grabbing}
+.bobina4.viva{filter:drop-shadow(0 0 16px rgba(168,196,255,.7)) drop-shadow(0 0 44px rgba(120,150,255,.45))}
+.tubo4 .luz4{transition:opacity .12s ease}
+.tubo4.aceso .luz4{animation:tremeDescarga4 .17s steps(2,end) infinite alternate}
+.tubo4-et{font-family:var(--mono);font-size:15px;font-weight:700;fill:#20242B;text-anchor:middle;letter-spacing:.04em}
+.tubo4-nome{font-family:var(--mono);font-size:10.5px;fill:rgba(226,222,240,.55);text-anchor:middle;letter-spacing:.14em;text-transform:uppercase}
+.tubo4 .visto4{opacity:0;transition:opacity .4s ease}
+.tubo4.visto .visto4{opacity:1}
+.estante4-dica{position:absolute;left:0;right:0;top:646px;text-align:center;pointer-events:none;
+  font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:rgba(226,222,240,.5);
+  opacity:0;transition:opacity .5s ease}
+.estante4.livre .estante4-dica{opacity:1}
+/* o botão do quiz, no fim da "4C4": verde, a piscar */
+#som.saquei.pisca-quiz:not(.saquei-tocado){animation:piscaQuiz 1s ease-in-out infinite}
+@keyframes piscaQuiz{0%,100%{box-shadow:0 0 0 0 rgba(39,196,107,.7)} 50%{box-shadow:0 0 0 14px rgba(39,196,107,0)}}
 /* a coluna que brilha em verde (13 → 18,7 s) */
 .pc.brilhaNb{z-index:30;filter:brightness(1.15)}
 .pc.brilhaNb .face{box-shadow:0 0 0 2px #7DFFA8, 0 0 22px 6px rgba(61,220,120,.7), 0 8px 18px rgba(0,0,0,.4)}
@@ -3370,7 +3441,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v25.6';
+const VERSAO = 'v25.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4609,6 +4680,9 @@ const TRILHAS = {
   '4B3':  'Audios/audio_tabela_4B3.mp3',   /* depois do Saquei: quebradiços */
   '4B4':  'Audios/audio_tabela_4B4.mp3',   /* depois do Saquei: o fim dos ametais */
   '4C':   'Audios/audio_tabela_4C.mp3',    /* escolhidos os gases nobres */
+  '4C2':  'Audios/audio_tabela_4C2.mp3',   /* depois do Saquei: por que nobres */
+  '4C3':  'Audios/audio_tabela_4C3.mp3',   /* depois do Saquei: o brilho e a bobina */
+  '4C4':  'Audios/audio_tabela_4C4.mp3',   /* depois do Saquei: o fim, e o quiz */
   '5':    'Audios/audio_tabela_5.mp3',     /* o slide 6: as principais famílias (ainda por gravar) */
   '6':    'Audios/audio_tabela_6.mp3',     /* o slide 7: os grupos A e B (ainda por gravar) */
   '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
@@ -4730,6 +4804,9 @@ const ROTEIROS = {
   '4B3':  [],   /* em EV4.cenaAm3 */
   '4B4':  [],
   '4C':   [],   /* os gases nobres: em EV4.cenaNb */
+  '4C2':  [],   /* em EV4.cenaNb2 */
+  '4C3':  [],   /* em EV4.cenaNb3 */
+  '4C4':  [],
   '5':    [],
   '6':    [],
   '7':    [],   /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
@@ -5412,7 +5489,7 @@ const SEQ = {
     else if (id === '4A') EV4.fim4A();
     else if (id === '4A1') EV4.saquei4(true);
     /* o fim da "4B" (os ametais) e o da "4B1": o Saquei */
-    else if (id === '4B' || id === '4B1' || id === '4B2.1') EV4.saquei4(true);
+    else if (['4B', '4B1', '4B2.1', '4C', '4C2'].includes(id)) EV4.saquei4(true);
     /* o fim da "4B2": a "4B2.1", se o grafite já encostou no fio */
     else if (id === '4B2') EV4.fim4B2();
     /* o fim da "4A3": a "4A4", se o fio já foi puxado até ao fim */
@@ -7258,9 +7335,18 @@ const FRASES_AM3 = [
    "Gases Inertes", ao lado da coluna 18 */
 const FRASES_NB = [
   { de:20.0, ate:23.0, txt:'Propriedades gerais' },
-  { de:28.0, ate:29.0, txt:'1. Em condições normais, são todos gases' }
+  { de:28.0, ate:29.0, txt:'1. Em condições ambiente, são todos gases.' }
 ];
 const FRASES_INERTES = [ { de:8.7, ate:10.0, txt:'Gases Inertes' } ];
+/* na "4C2": a pergunta (que sai aos 6 s), a propriedade 2 e os itens dela */
+const FRASES_NB2 = [
+  { de:1.8, ate:3.8, some:6.0, txt:'Por que são chamados de nobres?' },
+  { de:6.0, ate:7.8, txt:'2. São altamente estáveis quimicamente.' },
+  { de:10.5, ate:14.0, txt:'Praticamente não reagem com outros átomos.' },
+  { de:17.0, ate:18.8, txt:'Possuem baixíssima reatividade.' }
+];
+/* na "4C3": a propriedade 3 */
+const FRASES_NB3 = [ { de:6.5, ate:9.0, txt:'3. Emitem um brilho característico quando submetidos a alta voltagem.' } ];
 /* a narração de cada classe, tocada a escolha */
 const TRILHA_DA_CLASSE = { metais:'4A', ametais:'4B', nobres:'4C' };
 /* os gases, na cor deles: os incolores numa névoa clara, o flúor amarelo-
@@ -7390,8 +7476,19 @@ const EV4 = {
     if (tr === '4B4') escolha = acabou;
     /* a "4C" fala dos gases nobres: a tabela inteira acesa até aos 5 s, e
        depois só eles */
+    /* a "4C2" e a "4C3" seguram a cena da "4C" parada no fim dela (os
+       textos saem); na "4C4" a tabela volta */
+    const nobre = ['4C', '4C2', '4C3'].includes(tr);
     if (tr === '4C'){ if (t >= this.NB4.apaga) luz = 'nobres'; this.cenaNb(m, t, acabou); }
+    else if (nobre){ luz = 'nobres'; this.cenaNb(m, 1e3, true, tr, t); }
     else if (this.sujaNb) this.desfazNb(m);
+    if (tr === '4C2') this.cenaNb2(m, t, acabou);
+    else if (tr === '4C3') this.saiNb2(m);
+    else if (this.sujaNb2) this.desfazNb2(m);
+    if (tr === '4C3') this.cenaNb3(m, t, acabou);
+    else if (this.sujaNb3) this.desfazNb3(m);
+    if (tr === '4C4') this.cenaNb4(t, acabou);
+    else if (this.quizNb) this.tiraQuizNb();
     if (tr === '4B') this.cenaAm(m, t, acabou);
     else if (ametal) this.cenaAm(m, 1e3, true, true);
     else if (this.sujaAm) this.desfazAm(m);
@@ -7442,7 +7539,7 @@ const EV4 = {
     if (tr === '4A4' || tr === '4A5') this.cena4E(m, t, acabou, tr);
     else if (this.suja4E) this.desfaz4E(m);
     /* a volta da tabela anda (e não salta); e os metais, vistos, verdes */
-    m.classList.toggle('reorganiza', tr === '4A5' || tr === '4B4');
+    m.classList.toggle('reorganiza', tr === '4A5' || tr === '4B4' || tr === '4C4');
     if (tr === '4A5' && !segura) this.metaisOk = true;
     m.classList.toggle('metais-ok', this.metaisOk);
     if (!escolha) this.escolhida = null;
@@ -7762,7 +7859,8 @@ const EV4 = {
      vem logo atrás (o da "4B1" ainda não tem seguinte: só some). No fim da
      "4A" ele só vem depois de o aluno tocar no mercúrio; no da "4A2",
      depois do curto no fio. */
-  SEGUINTE4:{ '4A':'4A1', '4A1':'4A2', '4A2':'4A3', '4B':'4B1', '4B1':'4B2', '4B2.1':'4B3', '4B3':'4B4' },
+  SEGUINTE4:{ '4A':'4A1', '4A1':'4A2', '4A2':'4A3', '4B':'4B1', '4B1':'4B2', '4B2.1':'4B3', '4B3':'4B4',
+              '4C':'4C2', '4C2':'4C3', '4C3':'4C4' },
   saquei4(sim){ botaoVerde(sim ? 'Saquei' : null, () => this.saqueiSegue()); },
   saqueiSegue(){
     if (somBtn.classList.contains('saquei-tocado')) return;
@@ -8754,18 +8852,22 @@ const EV4 = {
      Tudo função do relógio da narração. */
   NB4:{ apaga:5, cresce:13, volta:18.7, de:18.7, ate:23, salto:1.0, gas:28, sobe:0.5, um:1.12, onda:0.08,
         palavras:[36, 37, 38], palavraDura:1,
+        /* aos 43 s, os cards crescem um por um (o anterior volta) */
+        um1:43, um1Passo:0.56, um1Esc:1.35,
         /* a grade: 4 por linha, à direita; o texto, à esquerda */
         cols:4, passo:96, esc:1.25, x0:816, y0:324, textoX:64, textoY:174 },
   /* "São incolores, inodoros e insípidos", em partes: as três palavras
      levam uma caixa própria, para crescerem uma de cada vez */
   PARTES_NB:[ { t:'São ' }, { t:'incolores', c:'nbPal' }, { t:', ' }, { t:'inodoros', c:'nbPal' },
-              { t:' e ' }, { t:'insípidos', c:'nbPal' } ],
+              { t:' e ' }, { t:'insípidos', c:'nbPal' }, { t:'.' } ],
   nobres4:null, sujaNb:false, digNb:null, propNb:null, inertesNb:null, titNb:null, frase2Nb:null,
   vagaNb(k){
     const A = this.NB4;
     return { x: A.x0 + (k % A.cols) * A.passo, y: A.y0 + Math.floor(k / A.cols) * A.passo };
   },
-  cenaNb(m, t, acabou){
+  /* fase: na "4C2" e na "4C3" (a cena parada no fim; ts, o relógio delas):
+     os textos saem, e aos 24 s da "4C3" a grade e o título também */
+  cenaNb(m, t, acabou, fase, ts){
     const A = this.NB4;
     if (!this.nobres4) this.nobres4 = this.cartas(m).filter(c => c.dataset.tipo === 'nobres')
                                           .sort((a, b) => a.dataset.z - b.dataset.z);
@@ -8783,7 +8885,12 @@ const EV4 = {
       const z = +c.dataset.z, casa = alvoDe(z), vaga = this.vagaNb(k);
       const p = Math.max(0, Math.min(1, (t - A.de - k * fila) / A.salto)), e = suave(p);
       const x = entre(casa.x, vaga.x, e), y = entre(casa.y, vaga.y, e);
-      const esc = entre(1, A.esc, e) * cresce;
+      /* o da vez, dos 43 s em diante: cresce (subida e descida suaves, no
+         passo dele), e o anterior já volta */
+      const q = (t - A.um1 - k * A.um1Passo) / A.um1Passo;
+      const vez = q >= 0 && q < 1 ? Math.sin(Math.PI * q) : 0;
+      c.classList.toggle('realceAm', vez > .05);
+      const esc = entre(1, A.esc, e) * cresce * (1 + (A.um1Esc - 1) * vez);
       const alto = Math.min(150, 50 + 0.12 * Math.hypot(vaga.x - casa.x, vaga.y - casa.y));
       const sobe = -Math.sin(Math.PI * p) * alto;
       c.classList.toggle('brilhaNb', brilha);
@@ -8808,6 +8915,12 @@ const EV4 = {
     this.titNb.classList.toggle('on', t >= A.ate);
     this.digNb.escreve(t);
     this.escreveFrase2Nb(t);
+    /* na "4C2" só o título fica; na "4C3", aos 24 s, nem ele — e a grade e
+       o "Gases Nobres" saem também, para a estante ficar sozinha */
+    const someTudo = fase === '4C3' && ts >= this.NB3.estante;
+    [...this.propNb.children].forEach((f, i) => f.classList.toggle('fim', !!fase && (i > 0 || someTudo)));
+    m.classList.toggle('someNb', someTudo);
+    this.titNb.classList.toggle('fim', someTudo);
     this.sujaNb = true;
   },
   /* "São incolores, inodoros e insípidos": tantas letras quanto o tempo
@@ -8891,9 +9004,9 @@ const EV4 = {
     this.titNb = tit;
   },
   desfazNb(m){
-    m.classList.remove('arrumaNb');
+    m.classList.remove('arrumaNb', 'someNb');
     (this.nobres4 || []).forEach(c => {
-      c.classList.remove('anda4', 'no-ar4', 'brilhaNb');
+      c.classList.remove('anda4', 'no-ar4', 'brilhaNb', 'realceAm');
       const casa = alvoDe(+c.dataset.z);
       c.style.left = casa.x.toFixed(1) + 'px';
       c.style.top  = casa.y.toFixed(1) + 'px';
@@ -8906,10 +9019,217 @@ const EV4 = {
       this.digNb.limpa();
       this.digInertes.limpa();
       this.inertesNb.classList.remove('fim');
-      this.titNb.classList.remove('on');
+      this.titNb.classList.remove('on', 'fim');
+      this.propNb.querySelectorAll('.frase.fim').forEach(f => f.classList.remove('fim'));
       this.frase2Nb.innerHTML = ''; this.frase2Nb._n = 0; this.frase2Nb.classList.remove('on');
     }
     this.sujaNb = false;
+  },
+  /* ---- A "4C2": POR QUE NOBRES ----
+     0 s          os textos da "4C" saem (o título fica)
+     1,8 → 3,8 s  "Por que são chamados de nobres?"; sai aos 6 s
+     6 → 7,8 s    "2. São altamente estáveis quimicamente."
+     10,5 → 14 s  "Praticamente não reagem com outros átomos."
+     17 → 18,8 s  "Possuem baixíssima reatividade."
+     34 s         os textos saem (o título fica)
+     41,3 s       um cubo, em fade: a ÁGUA no copo e a lupa com as moléculas
+     43,5 s       uma molécula sai da lupa e cresce, com o halo
+     46 s         pulsam os dois H; 46,8 s o O; 50 s "H₂O" digitado acima
+     52 s         o cubo vira: o cilindro de GÁS CARBÔNICO e a lupa
+     54 s         uma molécula salta e cresce; 54,9 s pulsa o C; 55,6 s os O;
+                  58 s "CO₂"
+     60 s         vira outra vez: o cilindro de GASES NOBRES, e na lupa os
+                  átomos soltos, a flutuar; 72 s pulsam, duas vezes
+     fim          o Saquei (a "4C3")
+     Tudo função do relógio da narração. */
+  NB2:{ some:34, cubo:41.3, gira:52, gira2:60, giraDura:0.9, cx:330, cy:470, esc:0.72,
+        sai:43.5, saiDura:1.2, pulsaH:46, pulsaO:46.8, pulsaDura:0.8, formula:50, formulaDura:0.8,
+        sai2:54, pulsaC:54.9, pulsaO2:55.6, formula2:58, pulsaNb:72, pulsaNbDura:1.6 },
+  sujaNb2:false, digNb2:null, propNb2:null, cuboNb2:null,
+  cenaNb2(m, t, acabou){
+    const X = this.NB2;
+    this.preparaNb2(m);
+    this.digNb2.escreve(t);
+    [...this.propNb2.children].forEach(f => f.classList.toggle('fim', t >= X.some));
+    const cb = this.cuboNb2;
+    cb.classList.toggle('on', t >= X.cubo);
+    const giro = de => { const p = Math.max(0, Math.min(1, (t - de) / X.giraDura)); return [p, p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2]; };
+    const [p1, g1] = giro(X.gira), [p2, g2] = giro(X.gira2);
+    cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 * g1 - 90 * g2).toFixed(2) + 'deg)';
+    cb.classList.toggle('virou', p1 >= 1 && p2 <= 0);
+    cb.classList.toggle('virou2', p2 >= 1);
+    /* as duas moléculas que saem da lupa, crescem e pulsam; e as fórmulas */
+    this.moleculaSai(cb.querySelector('.mol-agua'), t, X.sai, X.saiDura);
+    this.moleculaSai(cb.querySelector('.mol-co2'), t, X.sai2, X.saiDura);
+    const pulsa = (sel, de) => cb.querySelectorAll(sel).forEach(e => e.classList.toggle('pulsa', t >= de && t < de + X.pulsaDura));
+    pulsa('.mol-agua .at-h', X.pulsaH);
+    pulsa('.mol-agua .at-o', X.pulsaO);
+    pulsa('.mol-co2 .at-c', X.pulsaC);
+    pulsa('.mol-co2 .at-o', X.pulsaO2);
+    this.formulaNb(cb.querySelector('.form-agua'), ['H', '2', 'O'], t, X.formula, X.formulaDura);
+    this.formulaNb(cb.querySelector('.form-co2'), ['C', 'O', '2'], t, X.formula2, X.formulaDura);
+    cb.querySelectorAll('.at-livre').forEach(e => e.classList.toggle('pulsa2', t >= X.pulsaNb && t < X.pulsaNb + X.pulsaNbDura));
+    this.sujaNb2 = true;
+  },
+  /* a molécula sai do centro da lupa (lx, ly) para o alto (ax, ay), e
+     cresce até 'esc', numa curva suave; chegada, o halo acende */
+  moleculaSai(g, t, de, dura){
+    const p = Math.max(0, Math.min(1, (t - de) / dura)), e = p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2;
+    const d = g.dataset, x = +d.lx + (+d.ax - +d.lx) * e, y = +d.ly + (+d.ay - +d.ly) * e, s = 1 + (+d.esc - 1) * e;
+    g.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') scale(' + s.toFixed(3) + ')');
+    g.style.opacity = p > 0 ? 1 : 0;
+    g.classList.toggle('chegou', p >= 1);
+  },
+  /* a fórmula, digitada letra a letra; o número vai em índice */
+  formulaNb(el, partes, t, de, dura){
+    const n = Math.round(Math.max(0, Math.min(1, (t - de) / dura)) * partes.length);
+    if (el._n === n) return;
+    if (n > (el._n || 0)) TECLAS.bate();
+    el._n = n;
+    el.innerHTML = partes.slice(0, n).map(c => /\d/.test(c) ? '<tspan class="indice" dy="7">' + c + '</tspan><tspan dy="-7"></tspan>' : c).join('');
+  },
+  preparaNb2(m){
+    if (this.digNb2) return;
+    const A = this.NB4, X = this.NB2;
+    const cx = document.createElement('div');
+    cx.className = 'propNb2';
+    cx.setAttribute('aria-live', 'polite');
+    m.appendChild(cx);
+    this.digNb2 = criaDigitacao(cx, FRASES_NB2);
+    /* a pergunta e a propriedade 2 no lugar da 1; os itens embaixo, para dentro */
+    const f = cx.querySelectorAll('.frase');
+    [['nobres-pergunta', 0, 48], ['nobres-propriedade-2', 0, 48], ['nobres-item-2a', 28, 88], ['nobres-item-2b', 28, 128]].forEach(([nome, dx, dy], i) => {
+      f[i].dataset.mont = nome;
+      f[i].style.left = (A.textoX + dx) + 'px';
+      f[i].style.top  = (A.textoY + dy) + 'px';
+    });
+    this.propNb2 = cx;
+    const cb = document.createElement('div');
+    cb.className = 'cubo4C cuboNb2';
+    cb.style.left = (X.cx - 220) + 'px';
+    cb.style.top  = (X.cy - 220) + 'px';
+    cb.style.setProperty('--esc', X.esc);
+    cb.innerHTML = '<div class="gira4">' +
+      '<div class="face4C frente">' + aguaSVG() + '</div>' +
+      '<div class="face4C lado">' + co2SVG() + '</div>' +
+      '<div class="face4C tras">' + cilindroNobresSVG() + '</div></div>';
+    m.appendChild(cb);
+    this.cuboNb2 = cb;
+  },
+  /* na "4C3": os textos e o cubo da "4C2" saem */
+  saiNb2(m){
+    this.preparaNb2(m);
+    this.digNb2.escreve(1e3);
+    [...this.propNb2.children].forEach(f => f.classList.add('fim'));
+    this.cuboNb2.classList.remove('on');
+    this.sujaNb2 = true;
+  },
+  desfazNb2(m){
+    if (this.digNb2){
+      this.digNb2.limpa();
+      this.propNb2.querySelectorAll('.frase.fim').forEach(f => f.classList.remove('fim'));
+      this.cuboNb2.classList.remove('on', 'virou', 'virou2');
+      this.cuboNb2.querySelector('.gira4').style.transform = '';
+    }
+    this.sujaNb2 = false;
+  },
+
+  /* ---- A "4C3": O BRILHO SOB DESCARGA ----
+     0 s          os textos e o cubo da "4C2" saem (o título e a grade ficam)
+     6,5 → 9 s    "3. Emitem um brilho característico quando submetidos a
+                  alta voltagem."
+     12 s         um cubo: o LETREIRO de neônio "Jackie's Pub", a falhar
+     17 s         vira: a LÂMPADA DE ARGÔNIO; 18,2 s vira: o CARRO com o
+                  farol de XENÔNIO
+     24 s         tudo sai — os textos (o título também), o cubo, a grade e
+                  o "Gases Nobres" —, e entra a ESTANTE com os cinco tubos
+                  (a do app do professor); 30 s a BOBINA DE TESLA; 35 s ela
+                  se deixa arrastar (ESTANTE4)
+     fim          passada a bobina por todos os tubos (e acabada a
+                  narração), o Saquei (a "4C4") */
+  NB3:{ cubo:12, gira:17, gira2:18.2, giraDura:0.9, cx:330, cy:500, esc:0.72, estante:24, bobina:30, livre:35 },
+  sujaNb3:false, digNb3:null, propNb3:null, cuboNb3:null, verdeNb3:false,
+  cenaNb3(m, t, acabou){
+    const X = this.NB3;
+    this.preparaNb3(m);
+    this.digNb3.escreve(t);
+    const sai = t >= X.estante;
+    [...this.propNb3.children].forEach(f => f.classList.toggle('fim', sai));
+    const cb = this.cuboNb3;
+    cb.classList.toggle('on', t >= X.cubo && !sai);
+    const giro = de => { const p = Math.max(0, Math.min(1, (t - de) / X.giraDura)); return [p, p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2]; };
+    const [p1, g1] = giro(X.gira), [p2, g2] = giro(X.gira2);
+    cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 * g1 - 90 * g2).toFixed(2) + 'deg)';
+    cb.classList.toggle('virou', p1 >= 1 && p2 <= 0);
+    cb.classList.toggle('virou2', p2 >= 1);
+    /* a estante, a bobina, e o dedo */
+    ESTANTE4.mostra(sai, t >= X.bobina, t >= X.livre);
+    if (!sai && ESTANTE4.vistos.size) ESTANTE4.zera();
+    const verde = acabou && ESTANTE4.todos();
+    if (verde !== this.verdeNb3){ this.verdeNb3 = verde; this.saquei4(verde); }
+    this.sujaNb3 = true;
+  },
+  preparaNb3(m){
+    if (this.digNb3) return;
+    const A = this.NB4, X = this.NB3;
+    const cx = document.createElement('div');
+    cx.className = 'propNb2 propNb3';
+    cx.setAttribute('aria-live', 'polite');
+    m.appendChild(cx);
+    this.digNb3 = criaDigitacao(cx, FRASES_NB3);
+    const f = cx.querySelector('.frase');
+    f.dataset.mont = 'nobres-propriedade-3';
+    f.classList.add('larga');
+    f.style.left = A.textoX + 'px';
+    f.style.top  = (A.textoY + 48 - 18) + 'px';
+    this.propNb3 = cx;
+    const cb = document.createElement('div');
+    cb.className = 'cubo4C cuboNb3';
+    cb.style.left = (X.cx - 220) + 'px';
+    cb.style.top  = (X.cy - 220) + 'px';
+    cb.style.setProperty('--esc', X.esc);
+    cb.innerHTML = '<div class="gira4">' +
+      '<div class="face4C frente">' + letreiroSVG() + '</div>' +
+      '<div class="face4C lado">' + lampadaArgonioSVG() + '</div>' +
+      '<div class="face4C tras">' + farolXenonioSVG() + '</div></div>';
+    m.appendChild(cb);
+    this.cuboNb3 = cb;
+    ESTANTE4.prepara(m);
+  },
+  desfazNb3(m){
+    if (this.digNb3){
+      this.digNb3.limpa();
+      this.propNb3.querySelectorAll('.frase.fim').forEach(f => f.classList.remove('fim'));
+      this.cuboNb3.classList.remove('on', 'virou', 'virou2');
+      this.cuboNb3.querySelector('.gira4').style.transform = '';
+      ESTANTE4.mostra(false, false, false);
+      ESTANTE4.zera();
+    }
+    if (this.verdeNb3){ this.verdeNb3 = false; this.saquei4(false); }
+    this.sujaNb3 = false;
+  },
+
+  /* ---- A "4C4": O FIM DOS GASES NOBRES ----
+     A tabela volta ao estado de começo (a "4C" e as seguintes saem, e o
+     'reorganiza' faz os cards andarem), e o play vira o botão "Quiz",
+     verde, a piscar. */
+  /* 0: sem botão; 1: o botão à vista; 2: já tocado (não volta nesta 4C4) */
+  quizNb:0,
+  cenaNb4(t, acabou){
+    if (this.quizNb) return;
+    this.quizNb = 1;
+    botaoVerde('Quiz', () => {
+      this.quizNb = 2;
+      somBtn.classList.remove('pisca-quiz');
+      botaoVerde(null);
+      TP.diz('O quiz dos tipos de elementos ainda vai ser montado.');
+    });
+    somBtn.classList.add('pisca-quiz');
+  },
+  /* fora da "4C4": o botão sai */
+  tiraQuizNb(){
+    if (this.quizNb === 1){ somBtn.classList.remove('pisca-quiz'); botaoVerde(null); }
+    this.quizNb = 0;
   },
   /* a mão, no botão "Ver" do a) (marca da "4B") */
   maoNoVer(){
@@ -9071,6 +9391,8 @@ const EV4 = {
     if (this.real) this.soltaRealce();
     if (this.E4.raf) this.paraEletro();
     if (this.E5.raf) this.paraEletro(this.chGr());
+    if (ESTANTE4.raf){ cancelAnimationFrame(ESTANTE4.raf); ESTANTE4.raf = 0; }
+    this.tiraQuizNb();
     this.puxaAba(false);
     stage.classList.remove('em-classes');
   },
@@ -9082,7 +9404,10 @@ const EV4 = {
     stage.classList.remove('em-classes');
     const m = this.mesa();
     if (!m) return;
+    if (this.sujaNb3) this.desfazNb3(m);
+    if (this.sujaNb2) this.desfazNb2(m);
     if (this.sujaNb) this.desfazNb(m);
+    this.tiraQuizNb();
     if (this.sujaAm3) this.desfazAm3(m);
     if (this.sujaAm2) this.desfazAm2(m);
     if (this.sujaAm1) this.desfazAm1(m);
@@ -10134,6 +10459,435 @@ const FRAG4 = {
       '" fill="' + k.tom + '" stroke="#3E0A08" stroke-width="1.2" stroke-linejoin="round"/>').join('');
     this.gPo.innerHTML = this.po.map(q => '<circle cx="' + q.x.toFixed(1) + '" cy="' + q.y.toFixed(1) + '" r="' + q.r.toFixed(1) +
       '" fill="#B8443A" opacity="' + (1 - q.t / q.vida).toFixed(2) + '"/>').join('');
+  }
+};
+
+/* ---- AS FACES DA "4C2": a substância, e a lupa com as moléculas dela ----
+   Os átomos são bolas com luz (o reflexo em cima à esquerda): o O vermelho,
+   o H branco, o C grafite; e os dos gases nobres, cada um na cor da
+   descarga dele. Dentro da lupa (um recorte redondo) as moléculas tremem
+   devagar; a que sai (mol-agua, mol-co2) é movida pelo relógio
+   (EV4.moleculaSai), do centro da lupa (lx, ly) para o alto (ax, ay). */
+const ATOMO_4 = { O:['#FF9C8F', '#E0352B', '#7A100B'], H:['#FFFFFF', '#E4E8EE', '#8E97A3'],
+                  C:['#8D939B', '#3A3F46', '#121417'],
+                  He:['#FFE4CF', '#FFAA6E', '#9C4A12'], Ne:['#FFC9A8', '#FF5A1F', '#8E2400'],
+                  Ar:['#E3D2FF', '#9A6BFF', '#4A2299'], Kr:['#FFFFFF', '#CFE6F0', '#6F8C99'],
+                  Xe:['#D8E8FF', '#5C9CFF', '#1F4DA8'] };
+function defsAtomos(px){
+  return Object.entries(ATOMO_4).map(([k, [c, m, e]]) =>
+    '<radialGradient id="' + px + '-' + k + '" cx=".35" cy=".3" r=".75">' +
+      '<stop offset="0" stop-color="' + c + '"/><stop offset=".45" stop-color="' + m + '"/><stop offset="1" stop-color="' + e + '"/></radialGradient>').join('');
+}
+const atomo4 = (px, k, x, y, r, cls) => '<circle class="' + (cls || '') + '" cx="' + x + '" cy="' + y + '" r="' + r + '" fill="url(#' + px + '-' + k + ')"/>';
+/* a água: o O e os dois H, no ângulo de 104,5° */
+const molAgua4 = (px, x, y, cls) => '<g class="' + (cls || 'mol-mini') + '"' + (x !== undefined ? ' transform="translate(' + x + ' ' + y + ')"' : '') + '>' +
+  atomo4(px, 'H', -14, 10, 7, 'at-h') + atomo4(px, 'H', 14, 10, 7, 'at-h') + atomo4(px, 'O', 0, 0, 11, 'at-o') + '</g>';
+/* o gás carbônico: O = C = O, em linha */
+const molCO24 = (px, x, y, cls) => '<g class="' + (cls || 'mol-mini') + '"' + (x !== undefined ? ' transform="translate(' + x + ' ' + y + ')"' : '') + '>' +
+  atomo4(px, 'O', -19, 0, 10, 'at-o') + atomo4(px, 'O', 19, 0, 10, 'at-o') + atomo4(px, 'C', 0, 0, 10, 'at-c') + '</g>';
+/* a lupa: o aro de metal, o cabo, o vidro com o reflexo, e o que se vê por
+   ela (dentro, recortado no círculo) */
+function lupa4(px, cx, cy, r, dentro){
+  return '<defs><clipPath id="' + px + '-vidro"><circle cx="' + cx + '" cy="' + cy + '" r="' + (r - 6) + '"/></clipPath>' +
+      '<linearGradient id="' + px + '-aro" x1="0" y1="0" x2="1" y2="1">' +
+        '<stop offset="0" stop-color="#F2F5F8"/><stop offset=".4" stop-color="#9AA6B2"/><stop offset=".7" stop-color="#5B6570"/><stop offset="1" stop-color="#C9D2DC"/></linearGradient>' +
+      '<linearGradient id="' + px + '-cabo" x1="0" y1="0" x2="1" y2="0">' +
+        '<stop offset="0" stop-color="#1A1410"/><stop offset=".45" stop-color="#4A3424"/><stop offset="1" stop-color="#140E0A"/></linearGradient></defs>' +
+    /* o cabo, na diagonal de baixo à direita */
+    '<g transform="rotate(45 ' + cx + ' ' + cy + ')">' +
+      '<rect x="' + (cx - 9) + '" y="' + (cy + r) + '" width="18" height="16" rx="3" fill="url(#' + px + '-aro)"/>' +
+      '<rect x="' + (cx - 12) + '" y="' + (cy + r + 14) + '" width="24" height="86" rx="11" fill="url(#' + px + '-cabo)"/></g>' +
+    /* o que se vê, ampliado, num fundo claro */
+    '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r - 6) + '" fill="#DDEBF6" fill-opacity=".14"/>' +
+    '<g clip-path="url(#' + px + '-vidro)">' + dentro + '</g>' +
+    /* o reflexo do vidro, e o aro */
+    '<path d="M' + (cx - r * .62) + ',' + (cy - r * .34) + ' A' + (r * .72) + ',' + (r * .72) + ' 0 0 1 ' + (cx - r * .1) + ',' + (cy - r * .7) + '" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="5" stroke-linecap="round"/>' +
+    '<circle cx="' + cx + '" cy="' + cy + '" r="' + (r - 3) + '" fill="none" stroke="url(#' + px + '-aro)" stroke-width="9"/>';
+}
+/* o fundo escuro da face, com a luz de cima */
+const fundoFace4 = px => '<radialGradient id="' + px + '-fundo" cx=".5" cy=".3" r=".85"><stop offset="0" stop-color="#2A2833"/>' +
+  '<stop offset=".6" stop-color="#16151C"/><stop offset="1" stop-color="#0A090D"/></radialGradient>' +
+  '<filter id="' + px + '-borra" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="8"/></filter>' +
+  '<radialGradient id="' + px + '-halo" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE27A" stop-opacity=".5"/>' +
+  '<stop offset="1" stop-color="#FFE27A" stop-opacity="0"/></radialGradient>';
+/* a molécula que sai: o halo atrás (acende quando chega) e os átomos */
+const molSai4 = (px, mol, cls, lx, ly, ax, ay, esc) => '<g class="mol-sai ' + cls + '" data-lx="' + lx + '" data-ly="' + ly + '" data-ax="' + ax +
+  '" data-ay="' + ay + '" data-esc="' + esc + '" transform="translate(' + lx + ' ' + ly + ')" style="opacity:0">' +
+  '<circle class="mol-halo" r="34" fill="url(#' + px + '-halo)"/>' + mol + '</g>';
+
+function aguaSVG(){
+  const px = 'ag4';
+  /* as moléculas dentro da lupa (o centro da lupa em 270, 210) */
+  const dentro = [[226, 176], [292, 160], [318, 222], [250, 236], [208, 222], [286, 268], [232, 280], [330, 180]]
+    .map(([x, y], i) => '<g class="treme4" style="animation-delay:-' + (i * .37).toFixed(2) + 's">' + molAgua4(px, x, y) + '</g>').join('');
+  return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Água no copo, e a lupa mostrando as moléculas de água">' +
+    '<defs>' + fundoFace4(px) + defsAtomos(px) +
+      '<linearGradient id="ag4-agua" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FC4F2" stop-opacity=".85"/>' +
+        '<stop offset="1" stop-color="#1D5E9C" stop-opacity=".92"/></linearGradient>' +
+      '<linearGradient id="ag4-copo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".35"/>' +
+        '<stop offset=".2" stop-color="#fff" stop-opacity=".06"/><stop offset=".85" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity=".3"/></linearGradient>' +
+    '</defs>' +
+    '<rect width="440" height="440" fill="url(#ag4-fundo)"/>' +
+    '<ellipse cx="128" cy="392" rx="82" ry="10" fill="#000" opacity=".55" filter="url(#ag4-borra)"/>' +
+    /* o copo de vidro, com a água e o menisco */
+    '<path d="M64,214 L80,388 Q82,396 92,396 L164,396 Q174,396 176,388 L192,214 Z" fill="url(#ag4-copo)" stroke="#E6F2FC" stroke-opacity=".55" stroke-width="1.6"/>' +
+    '<path d="M70,262 L80,388 Q82,394 92,394 L164,394 Q174,394 176,388 L186,262 Z" fill="url(#ag4-agua)"/>' +
+    '<ellipse cx="128" cy="262" rx="58" ry="7" fill="#BFE4FF" fill-opacity=".75"/>' +
+    '<path d="M76,226 L88,382" stroke="#fff" stroke-opacity=".5" stroke-width="4" stroke-linecap="round"/>' +
+    lupa4(px, 270, 220, 88, dentro) +
+    molSai4(px, molAgua4(px), 'mol-agua', 270, 220, 300, 104, 2.6) +
+    '<text class="form4 form-agua" x="300" y="52" text-anchor="middle"></text>' +
+    '<text class="po-nome" x="220" y="428" text-anchor="middle">Água</text>' +
+  '</svg>';
+}
+
+/* um cilindro de gás (de pé, à esquerda), com o nome escrito ao comprido */
+function cilindro4(px, cor, nome){
+  return '<linearGradient id="' + px + '-cil" x1="0" y1="0" x2="1" y2="0">' +
+      '<stop offset="0" stop-color="' + cor[2] + '"/><stop offset=".3" stop-color="' + cor[0] + '"/><stop offset=".55" stop-color="' + cor[1] + '"/>' +
+      '<stop offset="1" stop-color="' + cor[2] + '"/></linearGradient>' +
+    '<linearGradient id="' + px + '-val" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5B6570"/>' +
+      '<stop offset=".45" stop-color="#E6EBF0"/><stop offset="1" stop-color="#4C555F"/></linearGradient>|' +
+    '<ellipse cx="118" cy="398" rx="62" ry="9" fill="#000" opacity=".55" filter="url(#' + px + '-borra)"/>' +
+    /* a válvula, o pescoço e o corpo, com a cúpula em cima */
+    '<rect x="104" y="92" width="28" height="22" rx="4" fill="url(#' + px + '-val)"/>' +
+    '<rect x="96" y="84" width="44" height="10" rx="3" fill="url(#' + px + '-val)"/>' +
+    '<rect x="132" y="98" width="22" height="9" rx="3" fill="url(#' + px + '-val)"/>' +
+    '<path d="M72,170 Q72,118 118,114 Q164,118 164,170 L164,384 Q164,396 152,396 L84,396 Q72,396 72,384 Z" fill="url(#' + px + '-cil)"/>' +
+    '<path d="M84,160 L84,380" stroke="#fff" stroke-opacity=".35" stroke-width="5" stroke-linecap="round"/>' +
+    '<rect x="72" y="200" width="92" height="4" fill="#000" opacity=".18"/>' +
+    '<text class="cil-nome" transform="translate(126 300) rotate(-90)" text-anchor="middle">' + nome + '</text>';
+}
+function co2SVG(){
+  const px = 'cd4';
+  const dentro = [[232, 172], [300, 168], [262, 220], [326, 226], [220, 258], [286, 276], [250, 300]]
+    .map(([x, y], i) => '<g class="treme4" style="animation-delay:-' + (i * .41).toFixed(2) + 's">' + molCO24(px, x, y) + '</g>').join('');
+  const [defsCil, cil] = cilindro4(px, ['#C9CED6', '#8A929C', '#3E454E'], 'Gás carbônico').split('|');
+  return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Cilindro de gás carbônico, e a lupa mostrando as moléculas de CO2">' +
+    '<defs>' + fundoFace4(px) + defsAtomos(px) + defsCil + '</defs>' +
+    '<rect width="440" height="440" fill="url(#cd4-fundo)"/>' + cil +
+    lupa4(px, 280, 230, 86, dentro) +
+    molSai4(px, molCO24(px), 'mol-co2', 280, 230, 300, 104, 2.4) +
+    '<text class="form4 form-co2" x="300" y="52" text-anchor="middle"></text>' +
+  '</svg>';
+}
+function cilindroNobresSVG(){
+  const px = 'gn4', gases = ['He', 'Ne', 'Ar', 'Kr', 'Xe'];
+  /* os átomos soltos, cada um sozinho, a flutuar (cada um no seu ritmo) */
+  let dentro = '';
+  [[226, 170], [262, 150], [306, 166], [334, 204], [214, 214], [258, 200], [300, 226], [240, 254],
+   [284, 270], [322, 258], [206, 262], [266, 300], [312, 296], [230, 300]].forEach(([x, y], i) => {
+    dentro += '<g class="at-flutua" style="animation-duration:' + (3.2 + (i % 5) * .7).toFixed(1) + 's;animation-delay:-' + (i * .53).toFixed(2) + 's">' +
+      atomo4(px, gases[i % 5], x, y, 9, 'at-livre') + '</g>';
+  });
+  const [defsCil, cil] = cilindro4(px, ['#E4DCFF', '#9C8BEA', '#4A3C9A'], 'Gases Nobres').split('|');
+  return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Cilindro de gases nobres, e a lupa mostrando os átomos soltos">' +
+    '<defs>' + fundoFace4(px) + defsAtomos(px) + defsCil + '</defs>' +
+    '<rect width="440" height="440" fill="url(#gn4-fundo)"/>' + cil +
+    lupa4(px, 280, 230, 86, dentro) +
+  '</svg>';
+}
+
+/* ---- AS FACES DA "4C3": o brilho dos gases nobres no mundo ----
+   A luz de descarga é feita como a do app do professor: camadas somadas
+   (o núcleo quase branco, a cor do gás, e o halo largo borrado), e nunca
+   uma só. O letreiro falha como os de verdade: o "Pub" pisca aos trancos,
+   e o resto treme de leve. */
+function letreiroSVG(){
+  const px = 'ln4', neon = '#FF3B1F', nucleo = '#FFE7DC';
+  /* o tubo de neônio: o halo largo, a cor, o núcleo — o mesmo traço três vezes */
+  const tubo = (d, extra) => ['<g' + (extra || '') + '>',
+    '<g filter="url(#ln4-halo)" opacity=".9">' + d.replace(/STROKE/g, neon).replace(/WIDTH/g, '9') + '</g>',
+    '<g filter="url(#ln4-perto)">' + d.replace(/STROKE/g, neon).replace(/WIDTH/g, '5') + '</g>',
+    d.replace(/STROKE/g, nucleo).replace(/WIDTH/g, '1.8'), '</g>'].join('');
+  const txt = (x, y, s, cls, t) => '<text x="' + x + '" y="' + y + '" class="' + cls + '" text-anchor="middle" fill="none" stroke="STROKE" stroke-width="WIDTH" stroke-linejoin="round">' + t + '</text>';
+  /* os tijolos da parede, ao fundo */
+  let tij = '';
+  for (let r = 0; r < 12; r++) for (let c = -1; c < 8; c++){
+    const x = c * 62 + (r % 2) * 31, y = r * 36;
+    tij += '<rect x="' + (x + 2) + '" y="' + (y + 2) + '" width="58" height="32" rx="2" fill="' + ['#2A1612', '#2F1913', '#25130F'][(r * 3 + c) % 3] + '"/>';
+  }
+  return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Letreiro de neônio Jackie\'s Pub">' +
+    '<defs>' +
+      '<filter id="ln4-halo" x="-40%" y="-60%" width="180%" height="220%"><feGaussianBlur stdDeviation="9"/></filter>' +
+      '<filter id="ln4-perto" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="2.4"/></filter>' +
+      '<filter id="ln4-grao" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3"/>' +
+        '<feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .5 0"/><feComposite in2="SourceGraphic" operator="in"/></filter>' +
+      '<radialGradient id="ln4-luz" cx=".5" cy=".45" r=".55"><stop offset="0" stop-color="' + neon + '" stop-opacity=".42"/>' +
+        '<stop offset="1" stop-color="' + neon + '" stop-opacity="0"/></radialGradient>' +
+    '</defs>' +
+    '<rect width="440" height="440" fill="#120907"/>' + tij +
+    '<rect width="440" height="440" fill="#000" filter="url(#ln4-grao)" opacity=".7"/>' +
+    '<rect width="440" height="440" fill="#000" opacity=".35"/>' +
+    /* a luz que o letreiro joga na parede (falha com ele) */
+    '<rect class="ln-luz" width="440" height="440" fill="url(#ln4-luz)"/>' +
+    /* os suportes e o fio */
+    '<path d="M100,92 L100,118 M340,92 L340,118" stroke="#3A3F46" stroke-width="4"/>' +
+    '<path d="M340,330 Q372,370 352,440" fill="none" stroke="#14161A" stroke-width="3"/>' +
+    '<g class="ln-tudo">' +
+      tubo('<rect x="52" y="120" width="336" height="206" rx="26" fill="none" stroke="STROKE" stroke-width="WIDTH"/>') +
+      tubo(txt(220, 222, 0, 'ln-jackie', 'Jackie\'s')) +
+      tubo(txt(220, 300, 0, 'ln-pub', 'PUB'), ' class="ln-falha"') +
+    '</g>' +
+    '<text class="po-nome" x="220" y="420" text-anchor="middle">Neônio</text>' +
+  '</svg>';
+}
+function lampadaArgonioSVG(){
+  const cor = '#8E6BFF', nucleo = '#EFE6FF';
+  return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Lâmpada de argônio acesa">' +
+    '<defs>' +
+      '<radialGradient id="la4-fundo" cx=".5" cy=".4" r=".8"><stop offset="0" stop-color="#1C1630"/><stop offset=".6" stop-color="#0D0B16"/><stop offset="1" stop-color="#050408"/></radialGradient>' +
+      '<radialGradient id="la4-bloom" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="' + cor + '" stop-opacity=".7"/>' +
+        '<stop offset=".5" stop-color="' + cor + '" stop-opacity=".2"/><stop offset="1" stop-color="' + cor + '" stop-opacity="0"/></radialGradient>' +
+      '<radialGradient id="la4-gas" cx=".5" cy=".55" r=".55"><stop offset="0" stop-color="' + nucleo + '"/><stop offset=".35" stop-color="#B99CFF"/>' +
+        '<stop offset=".75" stop-color="' + cor + '" stop-opacity=".7"/><stop offset="1" stop-color="#3A1F8A" stop-opacity=".35"/></radialGradient>' +
+      '<linearGradient id="la4-rosca" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4C555F"/><stop offset=".4" stop-color="#E6EBF0"/>' +
+        '<stop offset=".7" stop-color="#8A949E"/><stop offset="1" stop-color="#3C444C"/></linearGradient>' +
+      '<filter id="la4-halo" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>' +
+      '<filter id="la4-largo" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="22"/></filter>' +
+    '</defs>' +
+    '<rect width="440" height="440" fill="url(#la4-fundo)"/>' +
+    /* a luz que vaza: larga e suave */
+    '<circle class="la-bloom" cx="220" cy="180" r="190" fill="url(#la4-bloom)"/>' +
+    /* o bulbo: o gás aceso dentro do vidro, com o brilho somado */
+    '<g style="mix-blend-mode:screen">' +
+      '<ellipse cx="220" cy="178" rx="92" ry="104" fill="' + cor + '" filter="url(#la4-largo)" opacity=".75"/>' +
+      '<path d="M178,282 C178,250 128,226 128,168 A92,92 0 1 1 312,168 C312,226 262,250 262,282 Z" fill="url(#la4-gas)" class="la-gas"/>' +
+      /* os dois elétrodos, ao rubro, e a coluna de descarga entre eles */
+      '<path d="M206,270 L206,196 M234,270 L234,196" stroke="' + nucleo + '" stroke-width="3" filter="url(#la4-halo)"/>' +
+      '<path class="la-arco" d="M206,196 Q214,150 220,128 Q226,150 234,196" fill="none" stroke="' + nucleo + '" stroke-width="5" filter="url(#la4-halo)"/>' +
+      '<path class="la-arco" d="M206,196 Q214,150 220,128 Q226,150 234,196" fill="none" stroke="#fff" stroke-width="1.6"/>' +
+    '</g>' +
+    /* o vidro e o reflexo */
+    '<path d="M178,282 C178,250 128,226 128,168 A92,92 0 1 1 312,168 C312,226 262,250 262,282 Z" fill="none" stroke="#E9E2FF" stroke-opacity=".55" stroke-width="2"/>' +
+    '<path d="M156,128 A76,76 0 0 1 206,86" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="6" stroke-linecap="round"/>' +
+    /* a rosca e o contato */
+    '<rect x="176" y="280" width="88" height="54" rx="6" fill="url(#la4-rosca)"/>' +
+    [290, 302, 314, 326].map(y => '<path d="M176,' + y + ' L264,' + (y + 5) + '" stroke="#3C444C" stroke-opacity=".7" stroke-width="2"/>').join('') +
+    '<path d="M196,334 L244,334 L234,352 L206,352 Z" fill="#1E2227"/>' +
+    '<text class="po-nome" x="220" y="410" text-anchor="middle">Lâmpada de argônio</text>' +
+  '</svg>';
+}
+function farolXenonioSVG(){
+  const nucleo = '#F4FAFF', cor = '#8EC5FF';
+  /* um farol: o halo, o facho no chão, o miolo branco e a estrela do brilho */
+  const farol = x => '<g style="mix-blend-mode:screen">' +
+      '<ellipse cx="' + x + '" cy="256" rx="70" ry="42" fill="' + cor + '" filter="url(#fx4-largo)" opacity=".85"/>' +
+      '<path d="M' + (x - 26) + ',266 L' + (x - 120) + ',440 L' + (x + 120) + ',440 L' + (x + 26) + ',266 Z" fill="url(#fx4-facho)"/>' +
+      '<ellipse cx="' + x + '" cy="256" rx="34" ry="17" fill="' + nucleo + '" filter="url(#fx4-halo)"/>' +
+      '<ellipse cx="' + x + '" cy="256" rx="20" ry="9" fill="#fff"/>' +
+      '<path d="M' + (x - 70) + ',256 L' + (x + 70) + ',256" stroke="#fff" stroke-width="1.6" opacity=".9" filter="url(#fx4-fino)"/>' +
+      '<path d="M' + x + ',232 L' + x + ',280" stroke="#fff" stroke-width="1.2" opacity=".6" filter="url(#fx4-fino)"/>' +
+    '</g>';
+  return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Carro com os faróis de xenônio acesos">' +
+    '<defs>' +
+      '<linearGradient id="fx4-ceu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05070D"/><stop offset=".6" stop-color="#0B1020"/><stop offset="1" stop-color="#151A26"/></linearGradient>' +
+      '<linearGradient id="fx4-lata" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5E6A7A"/><stop offset=".25" stop-color="#2A313C"/>' +
+        '<stop offset=".6" stop-color="#151A22"/><stop offset="1" stop-color="#0A0D12"/></linearGradient>' +
+      '<linearGradient id="fx4-vidro" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3B4A63"/><stop offset="1" stop-color="#0E141E"/></linearGradient>' +
+      '<linearGradient id="fx4-facho" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + cor + '" stop-opacity=".5"/>' +
+        '<stop offset="1" stop-color="' + cor + '" stop-opacity="0"/></linearGradient>' +
+      '<filter id="fx4-largo" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="18"/></filter>' +
+      '<filter id="fx4-halo" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="6"/></filter>' +
+      '<filter id="fx4-fino" x="-20%" y="-300%" width="140%" height="700%"><feGaussianBlur stdDeviation="1.4"/></filter>' +
+    '</defs>' +
+    '<rect width="440" height="440" fill="url(#fx4-ceu)"/>' +
+    '<rect y="330" width="440" height="110" fill="#0C0F15"/>' +
+    /* o carro, de frente: o teto e o para-brisa, o capô, a grade e o para-choque */
+    '<path d="M110,170 Q130,118 170,110 L270,110 Q310,118 330,170 Z" fill="url(#fx4-lata)"/>' +
+    '<path d="M130,166 Q146,128 176,122 L264,122 Q294,128 310,166 Z" fill="url(#fx4-vidro)"/>' +
+    '<path d="M150,140 L198,124" stroke="#fff" stroke-opacity=".2" stroke-width="5" stroke-linecap="round"/>' +
+    '<path d="M46,232 Q50,184 104,170 L336,170 Q390,184 394,232 L398,300 Q398,318 380,320 L60,320 Q42,318 42,300 Z" fill="url(#fx4-lata)"/>' +
+    '<path d="M60,190 Q220,176 380,190" fill="none" stroke="#8C9AAE" stroke-opacity=".45" stroke-width="2"/>' +
+    '<rect x="166" y="244" width="108" height="34" rx="8" fill="#07090D" stroke="#3B4452" stroke-width="2"/>' +
+    [176, 190, 204, 218, 232, 246, 260].map(x => '<path d="M' + x + ',250 L' + x + ',272" stroke="#252C36" stroke-width="3"/>').join('') +
+    '<rect x="54" y="298" width="332" height="18" rx="6" fill="#0E1218"/>' +
+    '<rect x="70" y="320" width="40" height="22" rx="4" fill="#06080B"/><rect x="330" y="320" width="40" height="22" rx="4" fill="#06080B"/>' +
+    /* as caixas dos faróis, e a luz deles */
+    '<path d="M64,236 Q74,224 140,228 L148,262 Q90,272 66,262 Z" fill="#0E141C" stroke="#4A5566" stroke-width="1.6"/>' +
+    '<path d="M376,236 Q366,224 300,228 L292,262 Q350,272 374,262 Z" fill="#0E141C" stroke="#4A5566" stroke-width="1.6"/>' +
+    farol(104) + farol(336) +
+    '<text class="po-nome" x="220" y="70" text-anchor="middle">Faróis de xenônio</text>' +
+  '</svg>';
+}
+
+/* A ESTANTE DE TUBOS E A BOBINA DE TESLA (a "4C3", aos 24 s) — a do app do
+   professor (estanteSVG, bobinaSVG, acordaTubos), trazida para cá só com a
+   bobina: ela anda com o dedo e, perto de uma ampola, acende-a SEM LHE
+   TOCAR, mais forte quanto mais perto, com as serpentinas a saltar do
+   toroide para o vidro. Cada tubo que já acendeu fica marcado; acesos os
+   cinco, a cena pode seguir. */
+const TUBOS4 = [
+  { s:'He', nome:'Hélio',     x:400, core:'#FFF2DC', gas:'#FF9A4D', halo:'#FF7BA0' },
+  { s:'Ne', nome:'Neônio',    x:520, core:'#FFE0C2', gas:'#FF3D00', halo:'#FF5A1A' },
+  { s:'Ar', nome:'Argônio',   x:640, core:'#EADCFF', gas:'#7C4DFF', halo:'#9A5CFF' },
+  { s:'Kr', nome:'Criptônio', x:760, core:'#F4FFFA', gas:'#8FE8C4', halo:'#9CD8FF' },
+  { s:'Xe', nome:'Xenônio',   x:880, core:'#DCEBFF', gas:'#3D8BFF', halo:'#7C7CFF' }
+];
+const TB4 = { W:46, TOPO:236, ALT:252, BASE:514, BX:1086, BTOPO:352, ALCANCE:205, ACENDE:.45 };
+const ESTANTE4 = {
+  el:null, svg:null, gs:[], bobina:null, gArcos:null, dica:null, bdx:0, bdy:0, perto:[], vistos:new Set(), raf:0, pega:null, livre:false,
+  prepara(m){
+    if (this.el) return;
+    const W = TB4.W, m2 = W / 2, T = TB4.TOPO, H = TB4.ALT, B = TB4.BASE;
+    const tubo = (t, i) => '<g class="tubo4" data-i="' + i + '">' +
+      '<g class="luz4" opacity="0" style="mix-blend-mode:screen">' +
+        '<ellipse cx="' + t.x + '" cy="' + (B + 2) + '" rx="78" ry="15" fill="' + t.gas + '" filter="url(#es4-bloom)"/>' +
+        '<rect x="' + (t.x - m2 + 9) + '" y="' + (T + 44) + '" width="' + (W - 18) + '" height="' + (H - 72) + '" rx="' + (m2 - 9) + '" fill="' + t.halo + '" filter="url(#es4-bloom)" opacity=".75"/>' +
+        '<rect x="' + (t.x - m2 + 7) + '" y="' + (T + 40) + '" width="' + (W - 14) + '" height="' + (H - 66) + '" rx="' + (m2 - 7) + '" fill="url(#es4-g' + i + ')" filter="url(#es4-halo)"/>' +
+        '<rect x="' + (t.x - m2 + 16) + '" y="' + (T + 50) + '" width="' + (W - 32) + '" height="' + (H - 88) + '" rx="' + (m2 - 16) + '" fill="' + t.core + '" opacity=".82"/>' +
+        '<ellipse cx="' + t.x + '" cy="' + (T + H - 14) + '" rx="11" ry="7" fill="' + t.core + '" filter="url(#es4-halo)"/>' +
+      '</g>' +
+      '<path d="M' + t.x + ',' + T + ' L' + (t.x + m2) + ',' + (T + 38) + ' L' + (t.x + m2) + ',' + (T + H - 16) + ' Q' + (t.x + m2) + ',' + (T + H) + ' ' + (t.x + m2 - 14) + ',' + (T + H) +
+        ' L' + (t.x - m2 + 14) + ',' + (T + H) + ' Q' + (t.x - m2) + ',' + (T + H) + ' ' + (t.x - m2) + ',' + (T + H - 16) + ' L' + (t.x - m2) + ',' + (T + 38) + ' Z"' +
+        ' fill="url(#es4-vidro)" stroke="rgba(226,240,255,.5)" stroke-width="1.3"/>' +
+      '<rect x="' + (t.x - m2 + 7) + '" y="' + (T + 44) + '" width="6" height="' + (H - 80) + '" rx="3" fill="rgba(255,255,255,.55)"/>' +
+      '<rect x="' + (t.x + m2 - 13) + '" y="' + (T + 52) + '" width="3" height="' + (H - 100) + '" rx="1.5" fill="rgba(255,255,255,.28)"/>' +
+      '<rect x="' + (t.x - 12) + '" y="' + (T + H - 9) + '" width="24" height="12" rx="3" fill="url(#es4-metal)"/>' +
+      '<rect x="' + (t.x - m2 + 3) + '" y="' + (T + 50) + '" width="' + (W - 6) + '" height="26" rx="3" fill="#F4F6F8" opacity=".93"/>' +
+      '<text x="' + t.x + '" y="' + (T + 68) + '" class="tubo4-et">' + t.s + '</text>' +
+      /* a marca de visto, embaixo do nome */
+      '<circle class="visto4" cx="' + t.x + '" cy="' + (B + 96) + '" r="5" fill="' + t.gas + '"/>' +
+    '</g>';
+    let voltas = '';
+    for (let y = 384; y < 528; y += 5.6) voltas += '<rect x="' + (TB4.BX - 21) + '" y="' + y.toFixed(1) + '" width="42" height="2.6" rx="1.3" fill="url(#es4-cobre)" opacity=".95"/>';
+    let prim = '';
+    for (let k = 0; k < 3; k++) prim += '<rect x="' + (TB4.BX - 34) + '" y="' + (528 + k * 7) + '" width="68" height="5" rx="2.5" fill="url(#es4-cobre)"/>';
+    const bobina = '<g class="bobina4">' +
+      '<rect x="' + (TB4.BX - 52) + '" y="552" width="104" height="20" rx="4" fill="url(#es4-base)"/>' + prim +
+      '<rect x="' + (TB4.BX - 22) + '" y="380" width="44" height="150" rx="4" fill="url(#es4-nucleo)"/>' + voltas +
+      '<ellipse cx="' + TB4.BX + '" cy="' + TB4.BTOPO + '" rx="60" ry="19" fill="url(#es4-bmetal)"/>' +
+      '<ellipse cx="' + TB4.BX + '" cy="' + (TB4.BTOPO - 4) + '" rx="60" ry="19" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/>' +
+      '<ellipse cx="' + (TB4.BX - 16) + '" cy="' + (TB4.BTOPO - 7) + '" rx="22" ry="6" fill="rgba(255,255,255,.3)"/>' +
+      '<circle cx="' + TB4.BX + '" cy="' + (TB4.BTOPO - 22) + '" r="7" fill="url(#es4-bmetal)"/>' +
+      '<text x="' + TB4.BX + '" y="596" class="tubo4-nome">Bobina de Tesla</text></g>';
+    const grad = (id, pares, x2 = 1, y2 = 0) => '<linearGradient id="' + id + '" x1="0" y1="0" x2="' + x2 + '" y2="' + y2 + '">' +
+      pares.map(([o, c]) => '<stop offset="' + o + '" stop-color="' + c + '"/>').join('') + '</linearGradient>';
+    const el = document.createElement('div');
+    el.className = 'estante4';
+    el.innerHTML = '<svg viewBox="0 0 1280 720" aria-label="Estante com tubos de gases nobres e uma bobina de Tesla" role="img"><defs>' +
+      TUBOS4.map((t, i) => grad('es4-g' + i, [[0, t.halo], [.5, t.gas], [1, t.halo]], 0, 1)).join('') +
+      grad('es4-vidro', [[0, 'rgba(196,220,245,.30)'], [.18, 'rgba(236,248,255,.16)'], [.5, 'rgba(150,180,214,.10)'], [.84, 'rgba(196,220,245,.22)'], [1, 'rgba(120,150,186,.34)']]) +
+      grad('es4-acril', [[0, 'rgba(226,240,255,.42)'], [.35, 'rgba(180,206,236,.16)'], [1, 'rgba(226,240,255,.30)']], 0, 1) +
+      grad('es4-cobre', [[0, '#4E2409'], [.3, '#E08B45'], [.45, '#FFD6A8'], [.7, '#B4602A'], [1, '#3A1A06']]) +
+      grad('es4-nucleo', [[0, '#171B22'], [.4, '#39424C'], [1, '#0C0F14']]) +
+      grad('es4-base', [[0, '#3A2A18'], [1, '#140E08']], 0, 1) +
+      grad('es4-bmetal', [[0, '#E9F0F8'], [.35, '#93A2B2'], [.55, '#C3CFDC'], [1, '#2B333D']], 0, 1) +
+      grad('es4-metal', [[0, '#E6EDF5'], [.4, '#8494A6'], [.55, '#B9C6D4'], [1, '#3E4855']], 0, 1) +
+      '<filter id="es4-bloom" x="-320%" y="-160%" width="740%" height="420%"><feGaussianBlur stdDeviation="24"/></filter>' +
+      '<filter id="es4-halo" x="-200%" y="-90%" width="500%" height="280%"><feGaussianBlur stdDeviation="9"/></filter>' +
+      '<filter id="es4-faisca" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="2.6" result="b"/>' +
+        '<feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>' +
+      '</defs>' +
+      '<rect x="352" y="' + B + '" width="576" height="46" rx="5" fill="url(#es4-acril)" stroke="rgba(226,240,255,.42)" stroke-width="1.2"/>' +
+      '<rect x="368" y="' + (B - 7) + '" width="544" height="9" rx="3" fill="url(#es4-metal)"/>' +
+      '<g>' + TUBOS4.map(tubo).join('') + '</g>' +
+      '<rect x="352" y="322" width="576" height="30" rx="5" fill="url(#es4-acril)" stroke="rgba(226,240,255,.5)" stroke-width="1.2"/>' +
+      '<rect x="352" y="322" width="576" height="4" rx="2" fill="rgba(255,255,255,.4)"/>' +
+      '<rect x="352" y="322" width="14" height="' + (B - 322) + '" rx="4" fill="url(#es4-acril)"/>' +
+      '<rect x="914" y="322" width="14" height="' + (B - 322) + '" rx="4" fill="url(#es4-acril)"/>' +
+      TUBOS4.map(t => '<text x="' + t.x + '" y="' + (B + 74) + '" class="tubo4-nome">' + t.nome + '</text>').join('') +
+      /* a bobina por diante da estante (é ela que se arrasta por baixo dos
+         tubos), e as serpentinas por cima de tudo */
+      bobina + '<g class="arcos4"></g>' +
+      '</svg><div class="estante4-dica"></div>';
+    m.appendChild(el);
+    this.el = el;
+    this.svg = el.querySelector('svg');
+    this.gs = [...el.querySelectorAll('.tubo4')];
+    this.bobina = el.querySelector('.bobina4');
+    this.gArcos = el.querySelector('.arcos4');
+    this.dica = el.querySelector('.estante4-dica');
+    this.perto = TUBOS4.map(() => 0);
+    /* o dedo pega na bobina (no toroide ou no corpo dela) e a leva */
+    const ponto = ev => { const r = this.svg.getBoundingClientRect(); return { x:(ev.clientX - r.left) / r.width * 1280, y:(ev.clientY - r.top) / r.height * 720 }; };
+    el.addEventListener('pointerdown', ev => {
+      if (!this.livre || naMontagem()) return;
+      const p = ponto(ev), ox = TB4.BX + this.bdx, oy = TB4.BTOPO + this.bdy;
+      if (Math.abs(p.x - ox) > 74 || p.y < oy - 34 || p.y > oy + 240) return;
+      ev.preventDefault(); ev.stopPropagation();
+      this.pega = { x0:p.x, y0:p.y, dx0:this.bdx, dy0:this.bdy };
+      try { el.setPointerCapture(ev.pointerId); } catch (_) {}
+      el.classList.add('pegando');
+    });
+    el.addEventListener('pointermove', ev => {
+      if (!this.pega) return;
+      const p = ponto(ev);
+      this.bdx = Math.max(-760, Math.min(120, this.pega.dx0 + (p.x - this.pega.x0)));
+      /* (desce até o toroide ficar sob a base dos tubos: "arraste a bobina
+         sob cada um dos frascos") */
+      this.bdy = Math.max(-120, Math.min(140, this.pega.dy0 + (p.y - this.pega.y0)));
+      this.poe();
+      if (this.campo() && !this.raf) this.danca();
+    });
+    const larga = () => { this.pega = null; el.classList.remove('pegando'); };
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => el.addEventListener(n, larga));
+    el.addEventListener('click', ev => ev.stopPropagation());
+    this.zera();
+  },
+  poe(){ this.bobina.setAttribute('transform', 'translate(' + this.bdx.toFixed(1) + ',' + this.bdy.toFixed(1) + ')'); },
+  /* o campo: a distância do toroide a cada ampola; perto o bastante, ela
+     acende (e fica vista), e a serpentina salta */
+  campo(){
+    const ox = TB4.BX + this.bdx, oy = TB4.BTOPO + this.bdy;
+    let algum = false, arcos = '';
+    TUBOS4.forEach((t, i) => {
+      /* a distância ao ponto do tubo mais perto do toroide (por baixo, por
+         cima ou ao lado, o campo chega igual) */
+      const cy = Math.max(TB4.TOPO + 40, Math.min(TB4.TOPO + TB4.ALT, oy)), d = Math.hypot(t.x - ox, cy - oy);
+      const f = d < TB4.ALCANCE ? Math.pow(1 - d / TB4.ALCANCE, 1.3) : 0;
+      this.perto[i] = f;
+      if (f > .18){ algum = true; arcos += this.serpentina(ox, oy, t.x + TB4.W / 2, cy + (Math.random() - .5) * 80, t.core); }
+      if (f >= TB4.ACENDE) this.vistos.add(i);
+      this.gs[i].querySelector('.luz4').setAttribute('opacity', Math.min(1, f * 1.6).toFixed(2));
+      this.gs[i].classList.toggle('aceso', f > .15);
+      this.gs[i].classList.toggle('visto', this.vistos.has(i));
+    });
+    this.gArcos.innerHTML = arcos;
+    this.bobina.classList.toggle('viva', algum);
+    if (this.dica) this.dica.textContent = this.todos() ? 'Você acendeu os cinco gases nobres'
+      : 'Arraste a bobina até cada tubo · ' + this.vistos.size + ' de ' + TUBOS4.length;
+    return algum;
+  },
+  serpentina(ax, ay, bx, by, cor){
+    let s = '';
+    for (let k = 0; k < 2; k++){
+      let d = 'M' + ax.toFixed(0) + ',' + ay.toFixed(0);
+      for (let i = 1; i <= 5; i++){
+        const u = i / 5;
+        d += ' L' + (ax + (bx - ax) * u + (Math.random() - .5) * 30).toFixed(0) + ',' + (ay + (by - ay) * u + (Math.random() - .5) * 30).toFixed(0);
+      }
+      s += '<path d="' + d + '" fill="none" stroke="' + (k ? cor : '#FFFFFF') + '" stroke-width="' + (k ? 3.2 : 1.4) + '" opacity="' + (k ? .5 : .95) + '"/>';
+    }
+    return '<g filter="url(#es4-faisca)">' + s + '</g>';
+  },
+  /* as serpentinas não ficam quietas: um laço as redesenha enquanto houver
+     ampola no campo, e pára sozinho */
+  danca(){
+    cancelAnimationFrame(this.raf);
+    let n = 0;
+    const passo = () => {
+      if (++n % 4 === 0 && !this.campo()){ this.raf = 0; return; }
+      this.raf = requestAnimationFrame(passo);
+    };
+    this.raf = requestAnimationFrame(passo);
+  },
+  todos(){ return this.vistos.size === TUBOS4.length; },
+  /* aparece (os tubos), a bobina entra, e o dedo é liberado */
+  mostra(on, bob, livre){
+    if (!this.el) return;
+    this.el.classList.toggle('on', on);
+    this.el.classList.toggle('bob', bob);
+    this.livre = livre;
+    this.el.classList.toggle('livre', livre);
+  },
+  zera(){
+    cancelAnimationFrame(this.raf); this.raf = 0;
+    this.bdx = this.bdy = 0; this.pega = null;
+    this.vistos.clear();
+    if (!this.el) return;
+    this.poe();
+    this.campo();
   }
 };
 
@@ -14645,6 +15399,10 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4B3', 0, g)); } },
   { titulo:'Os gases nobres', secao:'4.3', sub:'o começo da 4C', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4C', 0, g)); } },
+  { titulo:'Por que nobres?', sub:'o começo da 4C2: a estabilidade', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4C2', 0, g)); } },
+  { titulo:'O brilho sob descarga', sub:'o começo da 4C3: a bobina de Tesla', slide:4,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('4C3', 0, g)); } },
   /* ---- o slide 6 · As principais famílias ---- */
   { titulo:'Início', sub:'o começo do slide', slide:5,
     entra(){ /* o recomeço do slide já é o tópico */ } },
@@ -14793,6 +15551,8 @@ function tocaDesde(id, t, g){
 function topicoAtual(){
   if (atual === 4){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 4);
+    if (trilhaAtual === '4C3' || trilhaAtual === '4C4') return base + 13;
+    if (trilhaAtual === '4C2') return base + 12;
     if (trilhaAtual === '4C') return base + 11;
     if (trilhaAtual === '4B3' || trilhaAtual === '4B4') return base + 10;
     if (trilhaAtual === '4B2' || trilhaAtual === '4B2.1') return base + 9;
