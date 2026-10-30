@@ -1419,6 +1419,60 @@ body.montagem .propNb2 .frase{pointer-events:auto}
 body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
 /* os tubos acesos tremem mais forte (a descarga) */
 .tubo4.aceso .luz4{filter:saturate(1.25) brightness(1.15)}
+/* O QUIZ DO TÓPICO 4 (QUIZ5) */
+/* os nomes das classes saem; a mesa fica por cima do escuro */
+.slide.quiz5 .classes4{opacity:0!important}
+.slide.quiz5 .mesa{z-index:2}
+/* a pergunta no alto, como nos outros quizzes; acima da mesa */
+.quiz3.q5{z-index:60}
+/* Q1: a tabela em cinza (a cor não entrega a resposta); acertado, o bloco
+   ganha a cor dele */
+.mesa.tipos.cinza5.cinza5 .pc[data-tipo]{--cor:#77748A!important}
+.mesa.tipos.cinza5.cinza5.cor5-metais .pc[data-tipo="metais"]{--cor:var(--cat-transicao)!important}
+.mesa.tipos.cinza5.cinza5.cor5-ametais .pc:is([data-tipo="ametais"],[data-tipo="hidrogenio"]){--cor:var(--cat-ametais)!important}
+.mesa.tipos.cinza5.cinza5.cor5-nobres .pc[data-tipo="nobres"]{--cor:var(--cat-nobres)!important}
+.mesa.tipos .pc.ficha5.cinza5{--cor:#77748A!important}
+/* as questões que montam a cena delas: a tabela sai */
+.mesa.tipos.sem-tabela5 .pc:not(.ficha5),.mesa.tipos.sem-tabela5 .casa{opacity:0!important;pointer-events:none}
+/* a pista do segundo erro: pulsa em âmbar */
+.pista5{z-index:19}
+.pc.pista5 .face,.peca5.pista5{animation:pista5 1s ease-in-out infinite}
+@keyframes pista5{0%,100%{box-shadow:0 0 0 3px var(--ouro-luz), 0 0 14px 4px rgba(226,162,43,.5)}
+  50%{box-shadow:0 0 0 4px var(--ouro-luz), 0 0 32px 12px rgba(226,162,43,.9)}}
+.mesa.tipos .pc.apertado.pista5,.pc.errada3.pista5{z-index:21}
+/* as fichas (cópias dos cards) e as peças das questões */
+.pc.ficha5{z-index:24;transition:left .25s ease, top .25s ease, transform .25s ease}
+.pc.ficha5.arrasta5{cursor:grab;touch-action:none}
+.pc.ficha5.pegando5{z-index:40;transition:none;cursor:grabbing}
+.pc.ficha5.pegando5 .face{box-shadow:0 0 0 2px #fff, 0 14px 24px rgba(0,0,0,.5)}
+.peca5{position:absolute;z-index:22;pointer-events:none}
+.peca5 > span{position:absolute;left:0;right:0;top:-34px;text-align:center;
+  font:700 22px var(--display);color:#F3F0FB;text-shadow:0 2px 6px rgba(0,0,0,.6)}
+/* as bandejas (Q3) e os quadros (Q5) */
+.bandeja5,.quadro5{border-radius:18px;border:2px dashed rgba(243,240,251,.35);background:rgba(255,255,255,.05)}
+.bandeja5.ferve5[data-estado="solido"]{animation:vibra5 .12s linear 12}
+.bandeja5.ferve5[data-estado="liquido"]{animation:ondula5 .6s ease-in-out 3}
+.bandeja5.ferve5[data-estado="gas"]{animation:sobe5 .9s ease-in-out 2}
+@keyframes vibra5{0%,100%{translate:0 0} 25%{translate:2px -1px} 50%{translate:-2px 1px} 75%{translate:1px 2px}}
+@keyframes ondula5{0%,100%{rotate:0deg} 25%{rotate:1.2deg} 75%{rotate:-1.2deg}}
+@keyframes sobe5{0%,100%{translate:0 0} 50%{translate:0 -14px}}
+.quadro5.q5-metais{border-color:color-mix(in srgb,var(--cat-transicao) 70%,transparent)}
+.quadro5.q5-ametais{border-color:color-mix(in srgb,var(--cat-ametais) 70%,transparent)}
+.quadro5.q5-nobres{border-color:color-mix(in srgb,var(--cat-nobres) 70%,transparent)}
+/* o botão (Conferir, Pronto) */
+.bt5{pointer-events:auto;cursor:pointer;translate:-50% -50%;padding:10px 28px;border-radius:999px;
+  font:700 20px var(--display);color:#fff;background:#1FB85C;box-shadow:0 4px 14px rgba(0,0,0,.4);
+  transition:opacity .3s ease, scale .15s ease}
+.bt5:active{scale:.94}
+.bt5.some5{opacity:0;pointer-events:none}
+/* a vitrine (Q4): as amostras sem nome, marcadas com o contorno dourado */
+.pc.ficha5.sem-texto5 .face :is(i,b,u,em){opacity:0}
+.pc.ficha5.amostra5{cursor:pointer}
+.pc.ficha5.marcada5 .face{box-shadow:0 0 0 3px var(--ouro-luz), 0 0 18px 4px rgba(226,162,43,.6)}
+.pc.ficha5.reflete5{filter:brightness(1.45);transition:filter .4s ease .5s}
+.feixe5{background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,0) 40%,rgba(255,255,255,.35) 50%,rgba(255,255,255,0) 60%,transparent 100%);
+  background-size:300% 100%;animation:feixe5 1.1s ease-in-out 1 forwards;z-index:30}
+@keyframes feixe5{from{background-position:100% 0} to{background-position:0 0}}
 /* o botão do quiz, no fim da "4C4": verde, a piscar */
 #som.saquei.pisca-quiz:not(.saquei-tocado){animation:piscaQuiz 1s ease-in-out infinite}
 @keyframes piscaQuiz{0%,100%{box-shadow:0 0 0 0 rgba(39,196,107,.7)} 50%{box-shadow:0 0 0 14px rgba(39,196,107,0)}}
@@ -3496,7 +3550,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v27.7';
+const VERSAO = 'v27.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4040,6 +4094,7 @@ function montaTabela(i){
       /* no slide 4, nas perguntas, responde-se tocando na tabela */
       if (i === 3 && QUIZ4.ativo){ QUIZ4.tocaCarta(c); return; }
       /* no slide 5, à espera da escolha, o toque escolhe a classe */
+      if (i === 4 && QUIZ5.aberto){ QUIZ5.toca(c); return; }
       if (i === 4 && EV4.toca(c)) return;
       /* no slide 8, a carta de uma série que já desceu dá a volta dela
          (elas ficam fora do TP.todos(), e o TP.gira(z) não as acharia) */
@@ -9429,7 +9484,7 @@ const EV4 = {
       this.quizNb = 2;
       somBtn.classList.remove('pisca-quiz');
       botaoVerde(null);
-      TP.diz('O quiz dos tipos de elementos ainda vai ser montado.');
+      QUIZ5.abre();
     });
     somBtn.classList.add('pisca-quiz');
   },
@@ -9619,6 +9674,7 @@ const EV4 = {
     if (ESTANTE4.raf){ cancelAnimationFrame(ESTANTE4.raf); ESTANTE4.raf = 0; }
     ESTANTE4.zumbe(false);
     LAM4.roda(false);
+    if (QUIZ5.aberto) QUIZ5.fecha();
     this.tiraQuizNb();
     this.puxaAba(false);
     stage.classList.remove('em-classes', 'espera-bobina', 'espera-fio');
@@ -9636,6 +9692,7 @@ const EV4 = {
     if (this.sujaNb3) this.desfazNb3(m);
     if (this.sujaNb2) this.desfazNb2(m);
     if (this.sujaNb) this.desfazNb(m);
+    if (QUIZ5.aberto) QUIZ5.fecha();
     this.tiraQuizNb();
     if (this.sujaAm3) this.desfazAm3(m);
     if (this.sujaAm2) this.desfazAm2(m);
@@ -9662,6 +9719,446 @@ const EV4 = {
     if (this.dig) this.dig.limpa();
   }
 };
+
+/* ============================================================
+   O QUIZ DO TÓPICO 4 (slide 5) — aberto pelo botão "Quiz" do fim da
+   última classe (EV4.cenaNb4). Perguntas interativas, no ritual dos
+   outros quizzes: a sala escurece, "Questão N de M" digitada no alto; no
+   acerto, confete, fanfarra, aplausos e a voz; no erro, a questão fica, o
+   que foi tocado balança em vermelho e vem a dica; no segundo erro, a
+   resposta pulsa em âmbar; no fim, o cartão da nota (cada erro desconta o
+   valor de uma questão), com Refazer e Continuar.
+   Cada questão é um objeto de QUESTOES_5: 'monta' arma a cena e devolve o
+   enunciado; a resposta chega por QUIZ5.toca (um card da tabela) ou pelas
+   peças da própria questão (arrastar, marcar, Conferir), que chamam
+   QUIZ5.acerta / QUIZ5.erra. Os cards que se arrastam ou se vestem são
+   CÓPIAS dos da tabela (ficha5), postas na mesa: a tabela fica intacta.
+   ============================================================ */
+const CLASSE_5 = { metais:'metais', ametais:'ametais', nobres:'nobres', hidrogenio:'ametais' };
+const QUIZ5 = {
+  aberto:false, passo:0, itens:[], erros:0, tropecos:0, travado:false, g:0, q:null,
+  sl(){ return slides[4]; },
+  mesa(){ return EV4.mesa(); },
+  carta(z){ return EV4.carta(this.mesa(), z); },
+  classe(c){ return CLASSE_5[c.dataset.tipo]; },
+  /* um ponto do dedo, na mesa (1280 × 720) */
+  ponto(ev){
+    const m = this.mesa(), r = m.getBoundingClientRect(), s = r.width / m.offsetWidth;
+    return { x:(ev.clientX - r.left) / s, y:(ev.clientY - r.top) / s };
+  },
+  abre(){
+    if (atual !== 4) return;
+    this.fecha(true);
+    this.itens = QUESTOES_5.map(Q => Object.assign({}, Q));
+    this.passo = 0; this.erros = 0; this.aberto = true;
+    const g = ++this.g, sl = this.sl();
+    stage.classList.add('em-quiz');
+    /* a sala apaga-se, o cabeçalho vira "Quiz", toca o "quiz1" e entra a 1 */
+    let v = sl.querySelector(':scope > .breu-quiz');
+    if (!v){ v = document.createElement('div'); v.className = 'breu-quiz'; sl.insertBefore(v, sl.firstChild); v.getBoundingClientRect(); }
+    v.classList.add('on');
+    sl.classList.add('quiz-escuro', 'quiz5');
+    cabecaDoQuiz(sl, true, 'Quiz', 'quiz-cabeca');
+    if (!sl.querySelector('.confete'))
+      sl.insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
+    this.travado = true;
+    tocaEfeito('Audios/quiz1.mp3').then(() => { if (g === this.g) this.apresenta(g); });
+  },
+  /* a caixa da pergunta: entra pela esquerda; a respondida sai pela direita */
+  caixa(){ return this.sl().querySelector('.quiz3.q5:not(.sai)'); },
+  apresenta(g){
+    if (g !== this.g) return;
+    const Q = this.itens[this.passo];
+    this.q = Q;
+    this.tropecos = 0;
+    this.sl().querySelectorAll('.quiz3.q5:not(.sai)').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
+    const txt = Q.monta(this);
+    const cx = document.createElement('div');
+    cx.className = 'quiz3 q4 q2 q5';
+    cx.dataset.mont = 'pergunta-quiz-5';
+    cx.setAttribute('aria-live', 'polite');
+    cx.innerHTML = '<div class="q3-marca"></div><div class="q3-q"></div><div class="q3-msg"></div>';
+    cx.querySelector('.q3-marca').textContent = 'Questão ' + (this.passo + 1) + ' de ' + this.itens.length;
+    this.sl().appendChild(cx);
+    cx.getBoundingClientRect();
+    cx.classList.add('on');
+    /* a pergunta digitada; a resposta só vale com ela escrita */
+    const q = cx.querySelector('.q3-q'), passo = this.passo;
+    this.travado = true;
+    cx.classList.add('digitando');
+    let n = 0;
+    clearInterval(this.digT);
+    this.digT = setInterval(() => {
+      if (g !== this.g || passo !== this.passo){ clearInterval(this.digT); return; }
+      q.textContent = txt.slice(0, ++n);
+      TECLAS.bate();
+      if (n >= txt.length){ clearInterval(this.digT); cx.classList.remove('digitando'); this.travado = false; }
+    }, 38);
+  },
+  /* o toque num card da tabela (as questões que respondem assim) */
+  toca(c){
+    if (!this.aberto || this.travado || !this.q || !this.q.toca) return;
+    this.q.toca(this, c);
+  },
+  /* O ERRO: a questão fica; o que foi tocado balança em vermelho, a dica
+     aparece, a tela treme; no segundo erro, a resposta pulsa em âmbar */
+  erra(dica, els, pista){
+    if (!this.aberto) return;
+    this.erros++; this.tropecos++;
+    (els || []).filter(Boolean).forEach(e => {
+      e.classList.remove('errada3'); void e.offsetWidth; e.classList.add('errada3');
+      clearTimeout(e._erroT);
+      e._erroT = setTimeout(() => e.classList.remove('errada3'), 700);
+    });
+    const msg = this.caixa() && this.caixa().querySelector('.q3-msg');
+    if (msg){ msg.textContent = dica; msg.className = 'q3-msg dica'; }
+    if (this.tropecos >= 2 && pista) pista().forEach(e => e && e.classList.add('pista5'));
+    tremeVermelho();
+    const g = this.g;
+    const s = tocaEfeito('error');
+    if (this.tropecos === 1) s.then(() => { if (g === this.g && this.aberto) tocaEfeito(vozDoErro()); });
+  },
+  /* O ACERTO: a festa, a voz, e a questão seguinte (ou o cartão) */
+  async acerta(explica){
+    if (!this.aberto) return;
+    this.travado = true;
+    const g = this.g, ultima = this.passo === this.itens.length - 1;
+    this.mesa().querySelectorAll('.pista5').forEach(e => e.classList.remove('pista5'));
+    this.sl().querySelectorAll('.pista5').forEach(e => e.classList.remove('pista5'));
+    const voz = vozDoAcerto(ultima);
+    const msg = this.caixa() && this.caixa().querySelector('.q3-msg');
+    if (msg){ msg.textContent = voz.frase + (explica ? ' ' + explica : ''); msg.className = 'q3-msg ok'; }
+    confete();
+    const f = tocaEfeito('funfare');
+    tocaEfeito('applause');
+    await f;
+    if (g !== this.g) return;
+    await tocaEfeito(voz.som);
+    if (g !== this.g) return;
+    /* um respiro para a festa especial da questão terminar */
+    await new Promise(ok => setTimeout(ok, 400));
+    if (g !== this.g) return;
+    if (this.q && this.q.limpa) this.q.limpa(this);
+    this.passo++;
+    if (this.passo >= this.itens.length){ this.resultado(); return; }
+    tocaEfeito(somDaEntrada(this.passo, this.itens.length));
+    this.apresenta(g);
+  },
+  resultado(){
+    this.sl().querySelectorAll('.quiz3.q5').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
+    const n = this.itens.length, e = this.erros;
+    cartaoDoResultado(Math.round(Math.max(0, n - e) / n * 100) / 10,
+      n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
+      this.sl(), () => this.abre(), () => { this.fecha(); go(5); });
+  },
+  /* fecha tudo (sai do slide, Continuar, ou antes de reabrir) */
+  fecha(reabre){
+    this.g++;
+    clearInterval(this.digT);
+    if (this.q && this.q.limpa) this.q.limpa(this);
+    this.q = null;
+    this.aberto = false; this.travado = false;
+    const sl = this.sl();
+    if (!sl) return;
+    sl.querySelectorAll('.quiz3.q5, .quiz-cartao, .peca5').forEach(e => e.remove());
+    const m = this.mesa();
+    if (m) m.querySelectorAll('.ficha5, .peca5').forEach(e => e.remove());
+    if (m) m.classList.remove('cinza5', 'cor5-metais', 'cor5-ametais', 'cor5-nobres', 'sem-tabela5');
+    if (m) m.querySelectorAll('.pista5, .errada3, .certa3, .apertado').forEach(e => e.classList.remove('pista5', 'errada3', 'certa3', 'apertado'));
+    if (reabre) return;
+    stage.classList.remove('em-quiz');
+    const v = sl.querySelector(':scope > .breu-quiz');
+    if (v) v.classList.remove('on');
+    sl.classList.remove('quiz-escuro', 'quiz5');
+    cabecaDoQuiz(sl, false, 'Quiz', 'quiz-cabeca');
+  },
+
+  /* ---- as peças das questões ---- */
+  /* uma cópia de um card da tabela, posta na mesa em (x, y), na escala esc */
+  ficha(z, x, y, esc){
+    const orig = this.carta(z);
+    const c = orig.cloneNode(true);
+    c.querySelectorAll('.mat').forEach(e => e.remove());
+    c.className = 'pc ficha5';
+    ['--mc', '--mm', '--me', '--gas', '--s', '--bdx', '--bdy', '--sobe'].forEach(v => c.style.removeProperty(v));
+    c.style.removeProperty('opacity');
+    this.mesa().appendChild(c);
+    this.poe(c, x, y, esc);
+    return c;
+  },
+  poe(c, x, y, esc){
+    c._x = x; c._y = y;
+    c.style.left = x.toFixed(1) + 'px';
+    c.style.top  = y.toFixed(1) + 'px';
+    if (esc !== undefined) c.style.setProperty('--onda', esc);
+  },
+  /* uma peça solta (bandeja, quadro, botão), na mesa */
+  peca(cls, html, x, y, w, h){
+    const d = document.createElement('div');
+    d.className = 'peca5 ' + cls;
+    d.innerHTML = html || '';
+    Object.assign(d.style, { left:x + 'px', top:y + 'px' });
+    if (w) d.style.width = w + 'px';
+    if (h) d.style.height = h + 'px';
+    this.mesa().appendChild(d);
+    return d;
+  },
+  /* um botão (Conferir, Pronto), que só pega o dedo com a questão em pé */
+  botao(txt, x, y, faz){
+    const b = this.peca('bt5', '', x, y);
+    b.textContent = txt;
+    b.addEventListener('pointerdown', ev => ev.stopPropagation());
+    b.addEventListener('click', ev => { ev.stopPropagation(); if (this.aberto && !this.travado) faz(); });
+    return b;
+  },
+  /* ARRASTAR uma ficha: segue o dedo; largada, chama solta(x, y) */
+  arrastavel(c, solta){
+    c.classList.add('arrasta5');
+    c.addEventListener('pointerdown', ev => {
+      if (!this.aberto || this.travado || c._preso) return;
+      ev.preventDefault(); ev.stopPropagation();
+      const p = this.ponto(ev);
+      c._pega = { dx:c._x - p.x, dy:c._y - p.y };
+      try { c.setPointerCapture(ev.pointerId); } catch (_) {}
+      c.classList.add('pegando5');
+    });
+    c.addEventListener('pointermove', ev => {
+      if (!c._pega) return;
+      const p = this.ponto(ev);
+      this.poe(c, p.x + c._pega.dx, p.y + c._pega.dy);
+    });
+    const larga = () => {
+      if (!c._pega) return;
+      c._pega = null;
+      c.classList.remove('pegando5');
+      solta(c._x, c._y);
+    };
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => c.addEventListener(n, larga));
+    c.addEventListener('click', ev => ev.stopPropagation());
+  },
+  /* dentro de uma peça? (o centro da ficha no retângulo dela) */
+  dentro(x, y, d){
+    const l = parseFloat(d.style.left), t = parseFloat(d.style.top), w = d.offsetWidth, h = d.offsetHeight;
+    return x >= l && x <= l + w && y >= t && y <= t + h;
+  },
+  /* vestir uma ficha do material dela (o mesmo do slide: metal, gás, líquido, cristal) */
+  veste(c, tipo){
+    if (c._mat5){ EV4.despe(c, c._mat5.el, c._mat5.tipo); c._mat5 = null; }
+    if (!tipo) return;
+    const el = EV4.veste(c, tipo);
+    if (tipo === 'solido') el.classList.add('fosco');
+    if (tipo === 'gas' && !GASES_4[+c.dataset.z]) c.style.setProperty('--gas', '#DCE6FF');
+    c._mat5 = { el, tipo };
+  }
+};
+/* o material verdadeiro de um elemento, à temperatura ambiente */
+function material5(z){
+  if (z === 80) return 'hg';
+  if (z === 35) return 'br';
+  if (z in GASES_4) return 'gas';
+  return tipoDe(z) === 'metais' ? 'metal' : 'solido';
+}
+const sorteia5 = l => l[Math.floor(Math.random() * l.length)];
+
+/* AS QUESTÕES. monta(Q) arma a cena e devolve o enunciado; toca (cards da
+   tabela) ou as peças da questão chamam Q.acerta / Q.erra; limpa desarma. */
+const QUESTOES_5 = [
+  /* Q1 · Lembrar · onde fica cada classe: a tabela em cinza, e o toque num
+     card escolhe o bloco dele (o H é dos ametais) */
+  { monta(Q){
+      this.alvo = sorteia5(['metais', 'ametais', 'nobres']);
+      const m = Q.mesa();
+      EV4.preparaBotoes(m);
+      m.classList.add('cinza5');
+      return { metais:'Toque no bloco dos metais.', ametais:'Toque no bloco dos ametais.',
+               nobres:'Toque no bloco dos gases nobres.' }[this.alvo];
+    },
+    bloco(Q, k){
+      const m = Q.mesa();
+      return [...m.querySelectorAll('.pc')].filter(c => !c.classList.contains('ficha5') && !c.classList.contains('serie-oculta') && Q.classe(c) === k)
+        .concat(k === 'metais' ? [...m.querySelectorAll('.casa.serie')] : []);
+    },
+    toca(Q, c){
+      const k = Q.classe(c), els = this.bloco(Q, k);
+      /* o bloco inteiro afunda, como na escolha das classes */
+      els.forEach(e => e.classList.add('apertado'));
+      setTimeout(() => els.forEach(e => e.classList.remove('apertado')), 600);
+      if (k === this.alvo){
+        Q.mesa().classList.add('cor5-' + k);
+        Q.acerta();
+        return;
+      }
+      const dicas = { ametais:'Eles ficam no canto de cima à direita, mas não na última coluna.',
+                      nobres:'Eles ficam isolados, numa coluna só.', metais:'É a maior parte da tabela.' };
+      Q.erra(dicas[this.alvo], els, () => this.bloco(Q, this.alvo));
+    },
+    limpa(Q){ Q.mesa().classList.remove('cinza5', 'cor5-metais', 'cor5-ametais', 'cor5-nobres'); } },
+
+  /* Q2 · Lembrar · os dois líquidos: o Hg (metal) ou o Br (ametal) */
+  { monta(Q){
+      this.z = sorteia5([80, 35]);
+      return this.z === 80 ? 'Toque no único metal que é líquido.' : 'Toque no único ametal que é líquido.';
+    },
+    toca(Q, c){
+      const z = +c.dataset.z;
+      if (z === this.z){
+        c.classList.add('certa3');
+        QUIZ3.cresce.call(QUIZ3, c);
+        this.c = c;
+        this.mat = EV4.veste(c, this.z === 80 ? 'hg' : 'br');
+        Q.acerta();
+        return;
+      }
+      Q.erra(this.z === 80 ? 'Ele é prateado e fica no centro da tabela.' : 'Ele é castanho-avermelhado e fica do lado verde.',
+             [c], () => [Q.carta(this.z)]);
+    },
+    limpa(Q){
+      if (this.c){
+        this.c.classList.remove('certa3', 'frente3');
+        this.c.style.removeProperty('--onda'); this.c.style.removeProperty('--tsobe');
+        if (this.mat) EV4.despe(this.c, this.mat, this.z === 80 ? 'hg' : 'br');
+        this.c = this.mat = null;
+      }
+    } },
+
+  /* Q3 · Entender · classificar pelo estado físico: seis fichas e três
+     bandejas; o Conferir confere todas de uma vez */
+  { monta(Q){
+      const m = Q.mesa();
+      m.classList.add('sem-tabela5');
+      const zs = embaralha([80, 35, sorteia5([26, 29, 79, 13]), sorteia5([6, 16, 15, 53]),
+                            sorteia5([1, 7, 8, 9, 17]), sorteia5([2, 10, 18])]);
+      this.bandejas = [['solido', 'Sólido', 330], ['liquido', 'Líquido', 640], ['gas', 'Gasoso', 950]].map(([k, nome, x]) => {
+        const b = Q.peca('bandeja5', '<span>' + nome + '</span>', x - 150, 440, 300, 190);
+        b.dataset.estado = k;
+        return b;
+      });
+      this.fichas = zs.map((z, i) => {
+        const c = Q.ficha(z, 400 + i * 96, 300, 1.25);
+        c._casa = { x:400 + i * 96, y:300 };
+        c._estado = null;
+        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y));
+        return c;
+      });
+      this.bt = Q.botao('Conferir', 640, 678, () => this.confere(Q));
+      this.bt.classList.add('some5');
+      return 'Arraste cada elemento para o estado dele em temperatura ambiente.';
+    },
+    certo(z){ const t = material5(z); return t === 'hg' || t === 'br' ? 'liquido' : t === 'gas' ? 'gas' : 'solido'; },
+    /* largada numa bandeja, fica lá, vestida do estado dela; fora, volta */
+    solta(Q, c, x, y){
+      const b = this.bandejas.find(b => Q.dentro(x, y, b));
+      c._estado = b ? b.dataset.estado : null;
+      const z = +c.dataset.z, metal = tipoDe(z) === 'metais';
+      Q.veste(c, !b ? null : b.dataset.estado === 'solido' ? (metal ? 'metal' : 'solido')
+                           : b.dataset.estado === 'liquido' ? (metal ? 'hg' : 'br') : 'gas');
+      this.arruma(Q);
+    },
+    /* as fichas de cada bandeja, em fila (3 por linha); as soltas, no alto */
+    arruma(Q){
+      this.bandejas.forEach(b => {
+        const l = parseFloat(b.style.left), t = parseFloat(b.style.top);
+        this.fichas.filter(c => c._estado === b.dataset.estado).forEach((c, k) =>
+          Q.poe(c, l + 60 + (k % 3) * 90, t + 70 + Math.floor(k / 3) * 74, 1));
+      });
+      this.fichas.filter(c => !c._estado).forEach(c => Q.poe(c, c._casa.x, c._casa.y, 1.25));
+      this.bt.classList.toggle('some5', this.fichas.some(c => !c._estado));
+    },
+    confere(Q){
+      const erradas = this.fichas.filter(c => c._estado !== this.certo(+c.dataset.z));
+      if (!erradas.length){
+        this.fichas.forEach(c => c._preso = true);
+        this.bandejas.forEach(b => b.classList.add('ferve5'));
+        this.bt.classList.add('some5');
+        Q.acerta();
+        return;
+      }
+      const tipos = erradas.map(c => +c.dataset.z);
+      const dica = tipos.includes(80) ? 'Tem um metal que escapa da regra.'
+        : tipos.some(z => material5(z) === 'solido') ? 'A maioria dos ametais é sólida.'
+        : tipos.includes(35) ? 'Tem um ametal que escapa da regra: ele é líquido.'
+        : 'Os gases nobres e alguns ametais são gasosos.';
+      Q.erra(dica, erradas, () => erradas.flatMap(c => [c, this.bandejas.find(b => b.dataset.estado === this.certo(+c.dataset.z))]));
+      /* as erradas voltam para a fila; as certas ficam */
+      setTimeout(() => { erradas.forEach(c => { c._estado = null; Q.veste(c, null); }); this.arruma(Q); }, 650);
+    },
+    limpa(Q){ Q.mesa().classList.remove('sem-tabela5'); Q.mesa().querySelectorAll('.ficha5, .peca5').forEach(e => e.remove()); } },
+
+  /* Q4 · Entender · o brilho metálico não é só prateado: uma vitrine de
+     cinco amostras, sem nome; marcar todas as de metal e tocar em Pronto */
+  { monta(Q){
+      const m = Q.mesa();
+      m.classList.add('sem-tabela5');
+      /* 5 de 6, sempre com o ouro ou o cobre, e com o enxofre ou o fósforo */
+      let zs;
+      do zs = embaralha([26, 79, 29, 16, 15, 6]).slice(0, 5);
+      while (!zs.some(z => z === 79 || z === 29) || !zs.some(z => z === 16 || z === 15));
+      this.amostras = zs.map((z, i) => {
+        const c = Q.ficha(z, 320 + i * 160, 380, 2.0);
+        c.classList.add('sem-texto5', 'amostra5');
+        Q.veste(c, material5(z));
+        c.addEventListener('pointerdown', ev => ev.stopPropagation());
+        c.addEventListener('click', ev => {
+          ev.stopPropagation();
+          if (Q.aberto && !Q.travado) c.classList.toggle('marcada5');
+        });
+        return c;
+      });
+      this.bt = Q.botao('Pronto', 640, 560, () => this.confere(Q));
+      return 'Toque em todas as amostras de metal e depois em Pronto.';
+    },
+    confere(Q){
+      const metal = c => tipoDe(+c.dataset.z) === 'metais';
+      const erradas = this.amostras.filter(c => c.classList.contains('marcada5') !== metal(c));
+      if (!erradas.length){
+        /* o feixe de luz varre a vitrine: só os metais refletem; e os nomes aparecem */
+        const f = Q.peca('feixe5', '', 0, 250, 1280, 260);
+        this.amostras.filter(metal).forEach(c => c.classList.add('reflete5'));
+        setTimeout(() => { this.amostras.forEach(c => c.classList.remove('sem-texto5')); f.remove(); }, 1200);
+        Q.acerta();
+        return;
+      }
+      Q.erra('A cor não decide. Repare se a amostra brilha ou é fosca.', erradas, () => this.amostras.filter(metal));
+    },
+    limpa(Q){ Q.mesa().classList.remove('sem-tabela5'); Q.mesa().querySelectorAll('.ficha5, .peca5').forEach(e => e.remove()); } },
+
+  /* Q5 · Entender · o caso do hidrogênio: arrastar o H para o grupo dele */
+  { monta(Q){
+      const m = Q.mesa();
+      m.classList.add('sem-tabela5');
+      this.casa = { x:190, y:400 };
+      this.h = Q.ficha(1, this.casa.x, this.casa.y, 1.6);
+      this.h.classList.add('cinza5');
+      const quadros = [['metais', 'Metais', [11, 26, 29, 79]], ['ametais', 'Ametais', [6, 8, 16, 35]], ['nobres', 'Gases nobres', [2, 10, 18, 36]]];
+      this.quadros = quadros.map(([k, nome, zs], i) => {
+        const x = 420 + i * 270;
+        const d = Q.peca('quadro5 q5-' + k, '<span>' + nome + '</span>', x, 280, 240, 260);
+        d.dataset.classe = k;
+        zs.forEach((z, j) => Q.ficha(z, x + 75 + (j % 2) * 90, 360 + Math.floor(j / 2) * 90, .95));
+        return d;
+      });
+      Q.arrastavel(this.h, (x, y) => this.solta(Q, x, y));
+      return 'Arraste o hidrogênio para o grupo dele.';
+    },
+    solta(Q, x, y){
+      const d = this.quadros.find(d => Q.dentro(x, y, d));
+      if (!d){ Q.poe(this.h, this.casa.x, this.casa.y); return; }
+      if (d.dataset.classe === 'ametais'){
+        this.h._preso = true;
+        this.h.classList.remove('cinza5');
+        Q.poe(this.h, parseFloat(d.style.left) + 120, parseFloat(d.style.top) + 222, 1.1);
+        Q.acerta('Ele é tratado junto com os não-metais.');
+        return;
+      }
+      Q.erra(d.dataset.classe === 'metais' ? 'A posição engana. Ele é gás e não tem brilho de metal.'
+                                           : 'Ele é gás, mas se combina: está na água, H₂O.',
+             [this.h], () => [this.quadros[1]]);
+      setTimeout(() => Q.poe(this.h, this.casa.x, this.casa.y), 500);
+    },
+    limpa(Q){ Q.mesa().classList.remove('sem-tabela5'); Q.mesa().querySelectorAll('.ficha5, .peca5').forEach(e => e.remove()); } }
+];
+/* (as questões chamam Q.acerta e Q.erra: os do QUIZ5) */
+
 /* ============================================================
    A POÇA DE MERCÚRIO (a da "4A") — a do app do professor (slide 4,
    mercurioSVG e acordaMercurio), trazida para cá.
@@ -15707,6 +16204,23 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4C2', 0, g)); } },
   { titulo:'O brilho sob descarga', sub:'o começo da 4C3: a bobina de Tesla', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4C3', 0, g)); } },
+  { titulo:'Quiz sobre os tipos de elementos', secao:'4.4', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:4,
+    entra(v, g){
+      /* a mesa fica como na escolha da classe (a tabela montada), sem
+         voz; e o quiz abre já, como se o botão tivesse sido tocado */
+      depoisDaMesa(g, () => {
+        trilhaAtual = -1;
+        carregaTrilha('4');
+        const abre = () => {
+          if (g !== NAV.geracao || trilhaAtual !== '4') return;
+          EV4.tick(som.currentTime);
+          QUIZ5.abre();
+        };
+        const salta = () => { som.addEventListener('seeked', abre, { once:true }); som.currentTime = EV4.escolhaDe; };
+        if (som.readyState >= 1) salta();
+        else som.addEventListener('loadedmetadata', salta, { once:true });
+      });
+    } },
   /* ---- o slide 6 · As principais famílias ---- */
   { titulo:'Início', sub:'o começo do slide', slide:5,
     entra(){ /* o recomeço do slide já é o tópico */ } },
@@ -15855,6 +16369,7 @@ function tocaDesde(id, t, g){
 function topicoAtual(){
   if (atual === 4){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 4);
+    if (QUIZ5.aberto) return base + 14;
     if (['4C3', '4C4', '4C4f'].includes(trilhaAtual)) return base + 13;
     if (trilhaAtual === '4C2') return base + 12;
     if (trilhaAtual === '4C') return base + 11;

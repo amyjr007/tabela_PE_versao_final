@@ -342,6 +342,24 @@ Na montagem (G), os nomes das classes são peças (`classes-titulo`, `classe-met
 os nomes ganham o tom claro do próprio bloco. Nas fotos do
 carrossel (`?miniaturas`) os destaques não entram.
 
+#### O quiz do slide 5 (`QUIZ5`)
+
+O botão **Quiz** do fim do tópico (e a seção **4.4 · Quiz sobre os tipos
+de elementos** do sumário, que abre direto, com a tabela montada) apaga a
+sala, vira o cabeçalho para "Quiz", toca o `quiz1` e apresenta as questões
+(`QUESTOES_5`), uma de cada vez, digitadas, com "Questão N de M". Sem
+narração por questão. Errar treme a peça em vermelho e escreve a dica; no
+segundo erro, a resposta certa pulsa em âmbar. Acertar: confete, aplausos
+e a próxima. No fim, o cartão da nota (Refazer · Continuar).
+
+| Questão | O que o aluno faz |
+| --- | --- |
+| 1 | a tabela fica cinza; toca num card do bloco pedido — o bloco inteiro afunda e ganha a cor |
+| 2 | toca no metal líquido (o Hg cresce, com a textura de mercúrio; o Br é a outra resposta da vez) |
+| 3 | arrasta seis fichas para as bandejas Sólido, Líquido e Gasoso, e Conferir; as erradas voltam |
+| 4 | na vitrine, cinco amostras sem nome; marca as de metal e Pronto — um feixe de luz reflete nos metais, e os nomes aparecem |
+| 5 | arrasta o H (cinza) para o quadro do grupo dele: Metais, Ametais ou Gases nobres |
+
 ### Slide 6 · As principais famílias — Os Alcalinos, Alcalinos-Terrosos, Calcogênios e Halogênios
 
 A mesma tabela (sem as séries), de novo no **tabuleiro liso** do slide 4, de
