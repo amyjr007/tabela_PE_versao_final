@@ -3496,7 +3496,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v27.4';
+const VERSAO = 'v27.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8498,7 +8498,10 @@ const EV4 = {
        desfaz o que o aluno tocou); aos 50 s todos desligados; depois, o que
        o aluno escolher — e só acabada a narração eles se deixam tocar */
     if (!this.verAm || t < A.liga) this.verAm = Object.assign({}, this.VER_AM0);
-    const estado = t < A.apaga ? this.VER_AM0 : t < A.liga ? {} : this.verAm;
+    /* (até à demonstração do fim, o verde é o do estado físico da vez: os
+       gasosos, depois os sólidos, depois o bromo) */
+    const vezAm = t >= A.br ? 'br' : t >= A.solido ? 'solido' : 'gas';
+    const estado = t < A.apaga ? { [vezAm]: true } : t < A.liga ? {} : this.verAm;
     const pelosBotoes = !em1 && t >= A.apaga;
     const livre = acabou && !em1;
     this.verLivre = livre;

@@ -282,7 +282,7 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4B` · 35 s | os gasosos (N, O, F, Cl) viram **gás** e crescem um pouco (1,15×), com o halo na cor deles, e os outros ametais apagam (em fade; e acendem outra vez no fim da narração); "a) Alguns são gasosos.", prateado e um pouco para dentro |
 | `4B` · 40 s | os sólidos viram **sólido** (o cristal na cor da pedra, fosco: sem as faíscas) e crescem, e os gasosos voltam; "b) A maioria é sólido" |
 | `4B` · 44,5 s | o **Br** vira **líquido** e cresce (1,4×), e os sólidos voltam; "c) Somente o bromo é líquido." |
-| itens a), b), c) | cada um, acabado de escrever, ganha à direita o botão **Ver** — os três em coluna, logo depois do fim do c) (o item mais comprido); o do a) verde (ligado: saltado, com o halo verde e a luzinha acesa), os outros vermelhos (desligados: afundados, a luzinha apagada) |
+| itens a), b), c) | cada um, acabado de escrever, ganha à direita o botão **Ver** — os três em coluna, logo depois do fim do c) (o item mais comprido); verde (ligado: saltado, com o halo verde e a luzinha acesa) o do estado físico da vez — o a) nos gasosos, o b) nos sólidos, o c) no bromo —, os outros vermelhos (desligados: afundados, a luzinha apagada) |
 | `4B` · 50 s | o Br volta ao tamanho dos outros, todos os botões desligam e todos os cards apagam; a mãozinha vem ao **Ver** do a) |
 | `4B` · 56,9 s | no "ali" da fala, a mão aperta: o a) liga e os gasosos acendem; 1 s depois a mão sai |
 | fim da `4B` | os botões **Ver** passam a ligar e desligar: verde acende os cards daquele estado físico, vermelho apaga (em fade; de começo, só os gasosos acesos); e o play vira o **Saquei**, que leva à **`4B1`** (`Audios/audio_tabela_4B1.mp3`) |
