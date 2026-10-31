@@ -359,6 +359,11 @@ e a próxima. No fim, o cartão da nota (Refazer · Continuar).
 | 3 | arrasta seis fichas para as bandejas Sólido, Líquido e Gasoso, e Conferir; as erradas voltam |
 | 4 | na vitrine, cinco amostras sem nome; marca as de metal e Pronto — um feixe de luz reflete nos metais, e os nomes aparecem |
 | 5 | arrasta o H (cinza) para o quadro do grupo dele: Metais, Ametais ou Gases nobres |
+| 6 | o circuito aberto (pilha, lâmpada, duas pontas de cobre): arrasta uma barra de ametal (S, P, C, I) até a fresta; só o grafite faz o arco, o estalo do curto e acende a lâmpada |
+| 7 | o laminador da aula (uma cópia de `LAM4`, mais rápida): põe uma barra na mesa da entrada e toca em LIGAR; o metal sorteado (Al, Cu, Zn ou Fe) vira folha; o grafite e o S/P esfarelam nos rolos |
+| 8 | a sala escura, duas amostras na bigorna: cada toque é uma martelada — o metal amassa (mais largo e mais baixo, com o "tim" feito na hora), o ametal racha e, na segunda, se parte em cacos; batidas as duas, arrasta a etiqueta **Ametal**; acertou, a luz acende |
+| 9 | três frascos sem nome: a lupa arrastada mostra o que há dentro (água, CO₂ ou átomos soltos); o frasco do argônio, levado à lâmpada, acende-a em violeta e digita "Ar · argônio" |
+| 10 | o letreiro "Saquei!": arrasta um gás até o tubo e um sólido até a fieira, e puxa o fio (o grafite e o enxofre partem); com os dois prontos, o **Ligar** acende — só com gás nobre o tubo brilha, na cor dele |
 
 ### Slide 6 · As principais famílias — Os Alcalinos, Alcalinos-Terrosos, Calcogênios e Halogênios
 
