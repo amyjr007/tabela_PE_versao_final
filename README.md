@@ -356,13 +356,13 @@ e a próxima. No fim, o cartão da nota (Refazer · Continuar).
 | --- | --- |
 | 1 | a tabela fica cinza; toca num card do bloco pedido — o bloco inteiro afunda e ganha a cor |
 | 2 | toca no metal líquido (o Hg cresce, com a textura de mercúrio; o Br é a outra resposta da vez) |
-| 3 | arrasta seis fichas para as bandejas Sólido, Líquido e Gasoso, e Conferir; as erradas voltam |
-| 4 | na vitrine, cinco amostras sem nome; marca as de metal e Pronto — um feixe de luz reflete nos metais, e os nomes aparecem |
+| 3 | arrasta seis fichas para as bandejas Sólido, Líquido e Gasoso, e Conferir; as erradas voltam. Cada ficha numa cor só dela, e ao fundo a tabela escura, sem símbolos, com a casa de cada uma acesa na mesma cor (a posição diz a classe) |
+| 4 | na vitrine, cinco amostras sem nome (os ametais numa cor lisa, sem as facetas); marca as de metal e Pronto — um feixe de luz reflete nos metais, e os nomes aparecem |
 | 5 | arrasta o H (cinza) para o quadro do grupo dele: Metais, Ametais ou Gases nobres |
-| 6 | o circuito aberto (pilha, lâmpada, duas pontas de cobre): arrasta uma barra de ametal (S, P, C, I) até a fresta; só o grafite faz o arco, o estalo do curto e acende a lâmpada |
-| 7 | o laminador da aula (uma cópia de `LAM4`, mais rápida): põe uma barra na mesa da entrada e toca em LIGAR; o metal sorteado (Al, Cu, Zn ou Fe) vira folha; o grafite e o S/P esfarelam nos rolos |
-| 8 | a sala escura, duas amostras na bigorna: cada toque é uma martelada — o metal amassa (mais largo e mais baixo, com o "tim" feito na hora), o ametal racha e, na segunda, se parte em cacos; batidas as duas, arrasta a etiqueta **Ametal**; acertou, a luz acende |
-| 9 | três frascos sem nome: a lupa arrastada mostra o que há dentro (água, CO₂ ou átomos soltos); o frasco do argônio, levado à lâmpada, acende-a em violeta e digita "Ar · argônio" |
+| 6 | o circuito aberto (pilha, lâmpada, duas pontas de cobre que soltam estalinhos): arrasta uma barra de ametal (S, P, C, I) até as pontas; só o grafite encaixa com brilho, faz o curto da aula (o arco, as fagulhas e o `short_circuit` em laço) e acende a lâmpada |
+| 7 | o laminador da aula (uma cópia de `LAM4`, mais rápida): arrasta uma barra até o encaixe tracejado da mesa da entrada (brilha ao encaixar) e toca em LIGAR; o metal sorteado (Al, Cu, Zn ou Fe) vira folha; o grafite e o S/P esfarelam nos rolos |
+| 8 | a sala escura, duas amostras na bigorna e uma marreta de cada lado (`MARRETA5`), com o botão vermelho BATER na base: o metal amassa (mais largo e mais baixo, com o "tim" feito na hora), o ametal racha e, na segunda, se parte em cacos; batidas as duas, a etiqueta **Ametal** (com brilho amarelo) vai para o encaixe da bigorna embaixo da amostra; acertou, a luz acende |
+| 9 | três frascos sem nome, com névoa dentro, ligados por tubos ao bocal de uma lâmpada de cabeça para baixo (com a pilha). Segurando o dedo num vidro, a lupa aparece e anda em volta dele (o campo de moléculas corre com ela); largado, some. O botão vermelho da válvula solta o gás pelo tubo e enche o bulbo: só o argônio acende (violeta, "Ar · argônio"); com outro, esvazia e volta |
 | 10 | o letreiro "Saquei!": arrasta um gás até o tubo e um sólido até a fieira, e puxa o fio (o grafite e o enxofre partem); com os dois prontos, o **Ligar** acende — só com gás nobre o tubo brilha, na cor dele |
 
 ### Slide 6 · As principais famílias — Os Alcalinos, Alcalinos-Terrosos, Calcogênios e Halogênios
