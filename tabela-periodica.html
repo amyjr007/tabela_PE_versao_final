@@ -980,6 +980,27 @@ body.montagem .classes4 .frase{pointer-events:auto}
 .mesa.tipos .pc.anda4.volta4{transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1),
   transform .9s cubic-bezier(.4,0,.2,1), opacity .7s ease}
 .pc.hg4 .face{box-shadow:0 0 0 1px rgba(255,255,255,.9), 0 6px 14px rgba(0,0,0,.4), 0 0 14px 3px rgba(210,220,232,.55)}
+/* o Hg grande na grade: os outros metais apagam enquanto isso */
+.mesa.tipos.destacaHg .pc.anda4:not(.hg4){filter:brightness(.3) saturate(.5)}
+.mesa.tipos.destacaHg .pc.anda4.hg4 .face{box-shadow:0 0 0 2px #fff, 0 10px 24px rgba(0,0,0,.5), 0 0 30px 10px rgba(220,230,242,.6)}
+/* o efeito da poça que surge: o clarão, os anéis e as gotinhas que se juntam */
+.vfx4{position:absolute;width:0;height:0;z-index:42;pointer-events:none}
+.vfx4 b,.vfx4 i{position:absolute;left:0;top:0;opacity:0;border-radius:50%}
+.vfx4 .clarao{width:260px;height:150px;margin:-75px 0 0 -130px;
+  background:radial-gradient(closest-side,rgba(255,255,255,.95),rgba(214,226,240,.55) 45%,rgba(214,226,240,0))}
+.vfx4 .anel{width:120px;height:66px;margin:-33px 0 0 -60px;border:3px solid rgba(232,240,248,.9);box-shadow:0 0 14px rgba(232,240,248,.8)}
+.vfx4 i{width:14px;height:14px;margin:-7px 0 0 -7px;
+  background:radial-gradient(circle at 35% 30%,#fff,#B8C4CF 45%,#4E5862);box-shadow:0 0 6px rgba(255,255,255,.7)}
+.vfx4.on .clarao{animation:vfxClarao 1.1s ease-out .35s both}
+.vfx4.on .anel{animation:vfxAnel 1s ease-out .4s both}
+.vfx4.on .anel.dois{animation-delay:.62s}
+.vfx4.on i{animation:vfxGota .55s cubic-bezier(.5,0,.9,.6) var(--d) both}
+@keyframes vfxClarao{0%{opacity:0;transform:scale(.3)} 25%{opacity:1} 100%{opacity:0;transform:scale(1.25)}}
+@keyframes vfxAnel{0%{opacity:.95;transform:scale(.4)} 100%{opacity:0;transform:scale(2.6)}}
+@keyframes vfxGota{0%{opacity:0;transform:rotate(var(--a)) translateX(var(--r)) scale(.5)}
+  25%{opacity:1} 90%{opacity:1;transform:rotate(var(--a)) translateX(0) scale(1)} 100%{opacity:0;transform:rotate(var(--a)) translateX(0) scale(.4)}}
+/* na "4Ax", aos 9 s, a poça volta à forma dela e não pega mais o dedo */
+.poca4.parada{pointer-events:none!important}
 /* a grade inteira de metal: o brilho passa uma vez só (64 a correr sem
    parar pesariam no celular) */
 .mat.quieto .brilho{animation-iteration-count:1}
@@ -3705,7 +3726,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v28.5';
+const VERSAO = 'v28.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8051,12 +8072,17 @@ const EV4 = {
                 para caberem nas sete alturas da tabela
      20 s       ficam sólidos (o metal escovado), numa onda pela grade; o Hg
                 fica líquido
-     23 s       o Hg vai para o vazio da direita, e cresce
-     29 s       "Metal líquido", digitado debaixo dele
-     fim        o Hg volta para a casa dele na grade, e o texto sai
+     23 s       o Hg cresce na vaga dele, com destaque; os outros apagam
+     24,4 s     a poça de mercúrio surge no vazio da direita, num efeito
+     28,4 s     o Hg volta ao tamanho, e os outros acendem
+     29 s       "Metal líquido", digitado debaixo da poça
+     fim        a poça fica, para tocar (o toque leva à "4Ax")
      Tudo função do relógio da narração; só a volta do fim (o tempo já não
      anda) é uma transição. */
-  A4:{ de:4, ate:14, salto:1.0, solido:20, onda:0.02, hg:23, hgDur:0.9,
+  /* hg → hgVolta: o Hg grande na grade (escHgGrade); poca: a poça surge,
+     em pocaDur, com o efeito */
+  A4:{ de:4, ate:14, salto:1.0, solido:20, onda:0.02, hg:23, hgDur:0.9, hgVolta:28.4, escHgGrade:2.1,
+       poca:24.4, pocaDur:1.1,
        /* esc 0,76 e passo 58: a face da frente sai ~5% maior do que o lado
           (a perspectiva do cubo, --plano), e com 0,86 e 57 elas colavam;
           assim sobram ~8 px entre elas, e a grade ainda cabe nas sete alturas */
@@ -8085,24 +8111,25 @@ const EV4 = {
       let x = entre(casa.x, vaga.x, e), y = entre(casa.y, vaga.y, e), esc = entre(1, A.esc, e);
       const alto = Math.min(150, 50 + 0.12 * Math.hypot(vaga.x - casa.x, vaga.y - casa.y));
       const sobe = -Math.sin(Math.PI * p) * alto;
-      /* o Hg: salta para a direita e cresce, e a meio do caminho vira a
-         poça de mercúrio (POCA4), que se pode tocar; fica assim depois do
-         fim, e só no Saquei (na "4A1") faz o inverso e volta para a vaga */
+      /* O HG NÃO SAI DA GRADE: no "o mercúrio" (23 s) ele cresce na vaga
+         dele, com o destaque, e os outros apagam enquanto ele está grande;
+         aos 28,4 s volta ao tamanho. A poça de mercúrio (POCA4, a que se
+         toca) surge à parte, no vazio da direita, num efeito (vfxPoca), no
+         "metal líquido" (24,4 s); fica depois do fim, e só no Saquei (na
+         "4A1") escorre para a vaga do Hg e some */
       if (+c.dataset.z === 80){
-        const bruto = emB ? 0 : Math.max(0, Math.min(1, (t - A.hg) / A.hgDur)), f = suave(bruto);
-        x = entre(x, A.hgX, f); y = entre(y, A.hgY, f); esc = entre(esc, A.escHg, f);
-        c.classList.toggle('hg4', f > 0 || !!emB);
-        c.classList.toggle('volta4', !!emB);
-        /* A TRANSFORMAÇÃO, contínua: de 30% a 90% do salto o card arredonda,
-           a letra dele apaga e ele esmaece, enquanto a poça nasce no mesmo
-           lugar e do mesmo tamanho — os dois cruzam-se (--morf, de 0 a 1) */
-        const morf = emB ? 0 : suave(Math.max(0, Math.min(1, (bruto - .3) / .6)));
-        c.style.setProperty('--morf', morf.toFixed(3));
-        c.style.opacity = (1 - morf).toFixed(3);
-        this.pocaSegue(m, x, y, morf, emB, vaga, esc);
-        /* "Toque no metal", quando ele já é líquido, até ao primeiro toque */
+        const cresce = Math.max(0, Math.min(1, (t - A.hg) / A.hgDur)) - Math.max(0, Math.min(1, (t - A.hgVolta) / A.hgDur));
+        const f = emB ? 0 : suave(Math.max(0, cresce));
+        esc = entre(esc, A.escHgGrade, f);
+        c.classList.toggle('hg4', f > 0);
+        c.classList.remove('volta4');
+        m.classList.toggle('destacaHg', f > .02);
+        const pp = emB ? 0 : Math.max(0, Math.min(1, (t - A.poca) / A.pocaDur)), pe = suave(pp);
+        this.pocaSegue(m, A.hgX, A.hgY, pe, emB, vaga, A.escHg * (.35 + .65 * pe));
+        this.vfxPoca(m, !emB && t >= A.poca - .15 && t < A.poca + 1.6);
+        /* "Toque no metal", quando a poça está formada, até ao primeiro toque */
         this.prepara4A(m);
-        this.toque4.classList.toggle('on', !emB && morf >= 1 && !POCA4.tocou);
+        this.toque4.classList.toggle('on', !emB && pp >= 1 && !POCA4.tocou);
         /* acabada a narração, o play sai: quem faz a aula seguir é o toque na poça */
         stage.classList.toggle('espera-poca', trilhaAtual === '4A' && acabou && !emB && !POCA4.tocou);
       }
@@ -8172,6 +8199,25 @@ const EV4 = {
     el.style.top  = y.toFixed(1) + 'px';
     el.style.setProperty('--s', (esc * cabe).toFixed(3));
   },
+  /* O EFEITO DA POÇA QUE SURGE: o clarão prateado, dois anéis que abrem,
+     e as gotinhas que chegam de fora e se juntam no meio. Ligado na janela
+     de tempo dele (on): as animações recomeçam a cada vez que ele liga */
+  vfxPoca(m, on){
+    let v = this.vfx4;
+    if (!v){
+      if (!on) return;
+      v = this.vfx4 = document.createElement('div');
+      v.className = 'vfx4';
+      v.style.left = this.A4.hgX + 'px';
+      v.style.top  = this.A4.hgY + 'px';
+      let gotas = '';
+      for (let i = 0; i < 12; i++)
+        gotas += '<i style="--a:' + (i * 30 + (i % 2) * 11) + 'deg;--r:' + (120 + (i % 3) * 34) + 'px;--d:' + (i % 4) * 60 + 'ms"></i>';
+      v.innerHTML = '<b class="clarao"></b><b class="anel"></b><b class="anel dois"></b>' + gotas;
+      m.appendChild(v);
+    }
+    v.classList.toggle('on', on);
+  },
   prepara4A(m){
     if (this.dig4A) return;
     /* "Toque no metal", acima da poça */
@@ -8219,8 +8265,9 @@ const EV4 = {
   },
   /* fora da "4A" (outra trilha, ou o slide recomeçado): tudo volta */
   desfaz4A(m){
-    m.classList.remove('arruma4');
-    if (POCA4.el){ POCA4.el.classList.remove('on', 'volta'); POCA4.el.style.opacity = '0'; POCA4.desliga(); }
+    m.classList.remove('arruma4', 'destacaHg');
+    if (this.vfx4) this.vfx4.classList.remove('on');
+    if (POCA4.el){ POCA4.el.classList.remove('on', 'volta', 'parada'); POCA4.el.style.opacity = '0'; POCA4.desliga(); }
     POCA4.tocou = false;
     stage.classList.remove('espera-poca');
     if (this.toque4) this.toque4.classList.remove('on');
@@ -8275,25 +8322,37 @@ const EV4 = {
   acabou4A(){ return trilhaAtual === '4A' && (som.ended || (!!som.duration && som.currentTime >= som.duration - .05)); },
 
   /* ---- A "4Ax": O MERCÚRIO NO DIA A DIA (depois do toque na poça) ----
-     0 s          a cena da "4A" fica parada no fim dela; no lugar da poça
-                  (e do "Metal líquido") entra um cubo, com a poça na face da
-                  frente
+     0 s          a cena da "4A" fica parada no fim dela, e a poça continua
+                  a se deixar mexer
+     9 s          a poça volta à forma dela (o dedo solto) e não pega mais
+                  o dedo
+     9,5 s        no lugar dela (e do "Metal líquido") entra um cubo, com a
+                  poça, como ficou, na face da frente
      10 s         o cubo vira: o TERMÔMETRO DE MERCÚRIO, de vidro
      19 s         vira de novo: o TERMÔMETRO DIGITAL
      25 s         vira outra vez: a foto do GARIMPO (Imagens/garimpo.jpeg)
      fim          o Saquei, que leva à "4A1"
      Tudo função do relógio da narração. */
-  AX:{ gira:10, gira2:19, gira3:25, giraDura:0.9, cx:866, cy:440, esc:0.74 },
-  sujaAx:false, cuboAx:null,
+  AX:{ para:9, cubo:9.5, gira:10, gira2:19, gira3:25, giraDura:0.9, cx:866, cy:440, esc:0.74 },
+  sujaAx:false, cuboAx:null, fotoAx:false,
   cenaAx(m, t){
     const X = this.AX;
     this.preparaAx(m);
     const cb = this.cuboAx;
-    /* a poça de verdade e o "Metal líquido" saem; a cópia dela fica na frente do cubo */
-    if (!this.sujaAx) this.fotoPoca();
-    cb.classList.add('on');
-    if (POCA4.el) POCA4.el.style.opacity = '0';
-    this.liq4.querySelectorAll('.frase')[3].classList.add('fim');
+    /* aos 9 s a poça solta o dedo, volta à forma (as molas) e trava */
+    const parada = t >= X.para;
+    if (POCA4.el){
+      POCA4.el.classList.toggle('parada', parada);
+      if (parada) POCA4.dedo = null;
+    }
+    /* aos 9,5 s a poça de verdade e o "Metal líquido" saem; a cópia dela,
+       tirada nesse instante, fica na frente do cubo, que entra */
+    const cubo = t >= X.cubo;
+    if (cubo && !this.fotoAx){ this.fotoAx = true; this.fotoPoca(); }
+    if (!cubo) this.fotoAx = false;
+    cb.classList.toggle('on', cubo);
+    if (POCA4.el && cubo) POCA4.el.style.opacity = '0';
+    this.liq4.querySelectorAll('.frase')[3].classList.toggle('fim', cubo);
     const giro = de => { const p = Math.max(0, Math.min(1, (t - de) / X.giraDura)); return [p, p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2]; };
     const [p1, g1] = giro(X.gira), [p2, g2] = giro(X.gira2), [p3, g3] = giro(X.gira3);
     cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 * (g1 + g2 + g3)).toFixed(2) + 'deg)';
@@ -8332,6 +8391,8 @@ const EV4 = {
       this.cuboAx.classList.remove('on', 'virou', 'virou2', 'virou3', 'mede');
       this.cuboAx.querySelector('.gira4').style.transform = '';
     }
+    if (POCA4.el) POCA4.el.classList.remove('parada');
+    this.fotoAx = false;
     this.sujaAx = false;
   },
 
@@ -11297,7 +11358,7 @@ const POCA4 = {
       return { x:q.x, y:q.y };
     };
     el.addEventListener('pointerdown', ev => {
-      if (!el.classList.contains('on')) return;
+      if (!el.classList.contains('on') || el.classList.contains('parada')) return;
       ev.preventDefault(); ev.stopPropagation();
       /* o aluno tocou: o convite sai; e, acabada a "4A", vem o Saquei */
       if (!this.tocou){

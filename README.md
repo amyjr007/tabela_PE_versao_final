@@ -234,11 +234,15 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4A` · 11,5 s | no alto do lado direito, "Propriedades dos metais", digitado no dourado |
 | `4A` · 18,5 s | embaixo, "1. Os metais são sólidos", digitado |
 | `4A` · 20 s | ficam sólidos — o metal escovado, numa onda pela grade (o ouro, o cobre e o césio na cor deles) —, e o **Hg** fica líquido |
-| `4A` · 23 s | o Hg salta para o vazio da direita, debaixo das propriedades, e ao longo do caminho vira uma **poça de mercúrio** (`POCA4`, a do slide 4 do app do professor: o filtro "goo", a borda escura, sete gotas com mola), sem corte: o card arredonda, a letra dele apaga e ele esmaece enquanto a poça nasce no mesmo lugar e do mesmo tamanho (`--morf`). Já líquido, "Toque no metal" pisca em amarelo acima dele, até ao primeiro toque. O dedo (ou o mouse) empurra e gira as gotas, a poça abre-se ao meio, e largada volta a fundir-se |
+| `4A` · 23 s | o **Hg** cresce na vaga dele, na grade (`escHgGrade`), com o contorno aceso; os outros metais apagam enquanto ele está grande (`destacaHg`) |
+| `4A` · 24,4 s | no "metal líquido", a **poça de mercúrio** (`POCA4`, a do slide 4 do app do professor: as gotas fundem-se e o dedo empurra e gira) surge no vazio da direita, debaixo das propriedades, num efeito (`vfxPoca`): o clarão prateado, dois anéis que abrem e as gotinhas que se juntam no meio |
+| `4A` · 28,4 s | o Hg volta ao tamanho, e os outros acendem |
 | `4A` · 23,5 s | embaixo da propriedade, um pouco para dentro, "Exceto o mercúrio", digitado |
 | `4A` · 29 s | "Metal líquido", digitado debaixo dele |
 | fim da `4A` | a poça fica, para mexer; sem o play até o toque (`espera-poca`); tocado o mercúrio, toca sozinha a **`4Ax`** (`Audios/Audio_tabela_4Ax.mp3`) |
-| `4Ax` · 0 s | a cena da `4A` fica parada no fim; no lugar da poça e do "Metal líquido" entra um cubo (`cuboAx`), com a poça (uma cópia dela) e "Mercúrio" na frente |
+| `4Ax` · 0 s | a cena da `4A` fica parada no fim, e a poça continua a se deixar mexer |
+| `4Ax` · 9 s | a poça solta o dedo, volta à forma dela e não pega mais o dedo |
+| `4Ax` · 9,5 s | no lugar da poça e do "Metal líquido" entra um cubo (`cuboAx`), com a poça (uma cópia dela, como ficou) e "Mercúrio" na frente |
 | `4Ax` · 10 s | o cubo vira: o **termômetro de mercúrio**, de vidro (`termometroSVG`), e a coluna sobe |
 | `4Ax` · 19 s | vira de novo: o **termômetro digital** (`termometroDigitalSVG`), com 36,5 °C no visor |
 | `4Ax` · 25 s | vira outra vez: a foto do **garimpo** (`Imagens/garimpo.jpeg`) |
