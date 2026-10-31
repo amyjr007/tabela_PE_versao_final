@@ -356,7 +356,7 @@ e a próxima. No fim, o cartão da nota (Refazer · Continuar).
 | --- | --- |
 | 1 | a tabela fica cinza; toca num card do bloco pedido — o bloco inteiro afunda e ganha a cor |
 | 2 | toca no metal líquido (o Hg cresce, com a textura de mercúrio; o Br é a outra resposta da vez) |
-| 3 | arrasta seis fichas para as bandejas Sólido, Líquido e Gasoso, e Conferir; as erradas voltam. Cada ficha numa cor só dela, e ao fundo a tabela escura, sem símbolos, com a casa de cada uma acesa na mesma cor (a posição diz a classe) |
+| 3 | seis fichas, cada uma numa cor só dela, no vão do alto da tabela de fundo (escura, sem símbolos, 15% menor, com a casa de cada ficha na mesma cor, sem brilho: a posição diz a classe); arrasta cada uma para as bandejas Sólido, Líquido e Gasoso, na base, e Conferir; as erradas voltam |
 | 4 | na vitrine, cinco amostras sem nome (os ametais numa cor lisa, sem as facetas); marca as de metal e Pronto — um feixe de luz reflete nos metais, e os nomes aparecem |
 | 5 | arrasta o H (cinza) para o quadro do grupo dele: Metais, Ametais ou Gases nobres |
 | 6 | o circuito aberto (pilha, lâmpada, duas pontas de cobre que soltam estalinhos): arrasta uma barra de ametal (S, P, C, I) até as pontas; só o grafite encaixa com brilho, faz o curto da aula (o arco, as fagulhas e o `short_circuit` em laço) e acende a lâmpada |

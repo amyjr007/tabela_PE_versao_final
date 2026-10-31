@@ -1422,6 +1422,8 @@ body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
 /* O QUIZ DO TÓPICO 4 (QUIZ5) */
 /* os nomes das classes saem; a mesa fica por cima do escuro */
 .slide.quiz5 .classes4{opacity:0!important}
+/* as frases digitadas da aula que ficaram na mesa não aparecem nem pegam o dedo */
+.slide.quiz5 .frase{opacity:0!important;pointer-events:none!important}
 .slide.quiz5 .mesa{z-index:2}
 /* a pergunta no alto, como nos outros quizzes; acima da mesa */
 .quiz3.q5{z-index:60}
@@ -1550,8 +1552,7 @@ body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
 /* Q3: a tabela de fundo, escura e sem símbolos; a casa de cada ficha acesa na cor dela */
 .mesa.tipos.fundo5.fundo5 .pc[data-tipo]:not(.ficha5){--cor:#2C2A38!important;opacity:.55!important;pointer-events:none}
 .mesa.tipos.fundo5 .pc:not(.ficha5) .face :is(i,b,u,em){opacity:0}
-.mesa.tipos.fundo5.fundo5 .pc[data-tipo].acesa5{--cor:var(--c5)!important;opacity:.95!important}
-.mesa.tipos.fundo5 .pc.acesa5 .face{box-shadow:0 0 14px 3px color-mix(in srgb,var(--c5) 60%,transparent)}
+.mesa.tipos.fundo5.fundo5 .pc[data-tipo].acesa5{--cor:var(--c5)!important;opacity:.7!important}
 .mesa.tipos.fundo5 .casa{opacity:.25!important;color:transparent!important}
 .mesa.tipos.mesa .pc.ficha5.cor5{--cor:var(--c5)!important}
 /* Q4: os ametais da vitrine numa cor só, com o grão (sem as facetas do cristal) */
@@ -3678,7 +3679,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v28.0';
+const VERSAO = 'v28.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -10008,7 +10009,7 @@ const QUIZ5 = {
     const c = orig.cloneNode(true);
     c.querySelectorAll('.mat').forEach(e => e.remove());
     c.className = 'pc ficha5';
-    ['--mc', '--mm', '--me', '--gas', '--s', '--bdx', '--bdy', '--sobe'].forEach(v => c.style.removeProperty(v));
+    ['--mc', '--mm', '--me', '--gas', '--s', '--bdx', '--bdy', '--sobe', 'translate', 'scale'].forEach(v => c.style.removeProperty(v));
     c.style.removeProperty('opacity');
     this.mesa().appendChild(c);
     this.poe(c, x, y, esc);
@@ -10158,12 +10159,20 @@ const QUESTOES_5 = [
     } },
 
   /* Q3 · Entender · classificar pelo estado físico: seis fichas e três
-     bandejas; o Conferir confere todas de uma vez. Cada ficha numa cor só
-     dela, e a tabela ao fundo, escura e sem símbolos, com a casa de cada
-     uma acesa na mesma cor: a posição diz a classe, e não a cor */
+     bandejas (embaixo, na base); o Conferir confere todas de uma vez. Cada
+     ficha numa cor só dela, e a tabela ao fundo (15% menor), escura e sem
+     símbolos, com a casa de cada uma na mesma cor: a posição diz a classe */
   { monta(Q){
       const m = Q.mesa();
       m.classList.add('fundo5');
+      /* a tabela de fundo encolhe em volta do meio do alto (640, 170) */
+      const r = m.getBoundingClientRect(), s = r.width / m.offsetWidth;
+      this.encolhidas = [...m.querySelectorAll('.pc:not(.ficha5), .casa')];
+      this.encolhidas.forEach(e => {
+        const q = e.getBoundingClientRect(), cx = (q.left + q.width / 2 - r.left) / s, cy = (q.top + q.height / 2 - r.top) / s;
+        e.style.translate = ((640 - cx) * .15).toFixed(1) + 'px ' + ((170 - cy) * .15).toFixed(1) + 'px';
+        e.style.scale = '.85';
+      });
       const zs = embaralha([80, 35, sorteia5([26, 29, 79, 13]), sorteia5([6, 16, 15, 53]),
                             sorteia5([1, 7, 8, 9, 17]), sorteia5([2, 10, 18])]);
       this.acesas = zs.map((z, i) => {
@@ -10172,23 +10181,25 @@ const QUESTOES_5 = [
         c.classList.add('acesa5');
         return c;
       });
-      this.bandejas = [['solido', 'Sólido', 330], ['liquido', 'Líquido', 640], ['gas', 'Gasoso', 950]].map(([k, nome, x]) => {
-        const b = Q.peca('bandeja5', '<span>' + nome + '</span>', x - 150, 440, 300, 190);
+      this.bandejas = [['solido', 'Sólido', 300], ['liquido', 'Líquido', 600], ['gas', 'Gasoso', 900]].map(([k, nome, x]) => {
+        const b = Q.peca('bandeja5', '<span>' + nome + '</span>', x - 140, 548, 280, 160);
         b.dataset.estado = k;
         return b;
       });
       this.fichas = zs.map((z, i) => {
-        const c = Q.ficha(z, 400 + i * 96, 300, 1.25);
+        /* no vão do alto da tabela (entre as colunas 2 e 13), sem tapar casa nenhuma */
+        const x = 327 + i * 82, y = 300;
+        const c = Q.ficha(z, x, y, 1.06);
         c.style.setProperty('--c5', CORES_Q3[i]);
         c.classList.add('cor5');
-        c._casa = { x:400 + i * 96, y:300 };
+        c._casa = { x, y };
         c._estado = null;
         Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y));
         return c;
       });
-      this.bt = Q.botao('Conferir', 640, 678, () => this.confere(Q));
+      this.bt = Q.botao('Conferir', 1150, 628, () => this.confere(Q));
       this.bt.classList.add('some5');
-      return 'Arraste cada elemento para o estado dele em temperatura ambiente.';
+      return 'Observe esses elementos. Olhe para a tabela de fundo para identificar suas posições e arraste cada um deles para o estado físico correto, à temperatura ambiente.';
     },
     certo(z){ const t = material5(z); return t === 'hg' || t === 'br' ? 'liquido' : t === 'gas' ? 'gas' : 'solido'; },
     /* largada numa bandeja, fica lá, vestida do estado dela; fora, volta */
@@ -10205,9 +10216,9 @@ const QUESTOES_5 = [
       this.bandejas.forEach(b => {
         const l = parseFloat(b.style.left), t = parseFloat(b.style.top);
         this.fichas.filter(c => c._estado === b.dataset.estado).forEach((c, k) =>
-          Q.poe(c, l + 60 + (k % 3) * 90, t + 70 + Math.floor(k / 3) * 74, 1));
+          Q.poe(c, l + 55 + (k % 3) * 85, t + 48 + Math.floor(k / 3) * 64, .85));
       });
-      this.fichas.filter(c => !c._estado).forEach(c => Q.poe(c, c._casa.x, c._casa.y, 1.25));
+      this.fichas.filter(c => !c._estado).forEach(c => Q.poe(c, c._casa.x, c._casa.y, 1.06));
       this.bt.classList.toggle('some5', this.fichas.some(c => !c._estado));
     },
     confere(Q){
@@ -10231,6 +10242,8 @@ const QUESTOES_5 = [
     limpa(Q){
       Q.mesa().classList.remove('fundo5');
       (this.acesas || []).forEach(c => { c.classList.remove('acesa5'); c.style.removeProperty('--c5'); });
+      (this.encolhidas || []).forEach(e => { e.style.removeProperty('translate'); e.style.removeProperty('scale'); });
+      this.encolhidas = null;
       limpa5(Q);
     } },
 
