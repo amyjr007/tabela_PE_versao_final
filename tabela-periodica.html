@@ -3726,7 +3726,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v28.6';
+const VERSAO = 'v28.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7892,8 +7892,13 @@ const EV4 = {
     }
     else { this.mult4 = null; if (this.suja4B) this.desfaz4B(m); }
     if (tr === '4A') this.cena4A(m, t, acabou);
-    /* na "4Ax" a cena da "4A" fica parada no fim, e o cubo do mercúrio corre */
-    else if (tr === '4Ax') this.cena4A(m, 1e3, true);
+    /* na "4Ax" a cena da "4A" fica parada no fim (o Hg ainda grande, até o
+       garimpo), e o cubo do mercúrio corre */
+    else if (tr === '4Ax'){
+      this.encolheHg = Math.max(0, Math.min(1, (t - this.AX.gira3) / this.A4.hgDur));
+      this.cena4A(m, 1e3, true);
+      this.encolheHg = 0;
+    }
     else if (tr !== '4A1' && !depoisB && this.suja4A) this.desfaz4A(m);
     if (tr === '4Ax') this.cenaAx(m, t);
     else if (this.sujaAx) this.desfazAx(m);
@@ -8073,15 +8078,15 @@ const EV4 = {
      20 s       ficam sólidos (o metal escovado), numa onda pela grade; o Hg
                 fica líquido
      23 s       o Hg cresce na vaga dele, com destaque; os outros apagam
+                (assim até o garimpo, aos 25 s da "4Ax")
      24,4 s     a poça de mercúrio surge no vazio da direita, num efeito
-     28,4 s     o Hg volta ao tamanho, e os outros acendem
      29 s       "Metal líquido", digitado debaixo da poça
      fim        a poça fica, para tocar (o toque leva à "4Ax")
      Tudo função do relógio da narração; só a volta do fim (o tempo já não
      anda) é uma transição. */
-  /* hg → hgVolta: o Hg grande na grade (escHgGrade); poca: a poça surge,
-     em pocaDur, com o efeito */
-  A4:{ de:4, ate:14, salto:1.0, solido:20, onda:0.02, hg:23, hgDur:0.9, hgVolta:28.4, escHgGrade:2.1,
+  /* hg: o Hg grande na grade (escHgGrade), até o garimpo da "4Ax"; poca:
+     a poça surge, em pocaDur, com o efeito */
+  A4:{ de:4, ate:14, salto:1.0, solido:20, onda:0.02, hg:23, hgDur:0.9, escHgGrade:2.1,
        poca:24.4, pocaDur:1.1,
        /* esc 0,76 e passo 58: a face da frente sai ~5% maior do que o lado
           (a perspectiva do cubo, --plano), e com 0,86 e 57 elas colavam;
@@ -8113,12 +8118,13 @@ const EV4 = {
       const sobe = -Math.sin(Math.PI * p) * alto;
       /* O HG NÃO SAI DA GRADE: no "o mercúrio" (23 s) ele cresce na vaga
          dele, com o destaque, e os outros apagam enquanto ele está grande;
-         aos 28,4 s volta ao tamanho. A poça de mercúrio (POCA4, a que se
+         fica assim até o fim, e pela "4Ax" adentro: só volta ao tamanho
+         quando entra o garimpo (encolheHg, posto pelo tick). A poça de mercúrio (POCA4, a que se
          toca) surge à parte, no vazio da direita, num efeito (vfxPoca), no
          "metal líquido" (24,4 s); fica depois do fim, e só no Saquei (na
          "4A1") escorre para a vaga do Hg e some */
       if (+c.dataset.z === 80){
-        const cresce = Math.max(0, Math.min(1, (t - A.hg) / A.hgDur)) - Math.max(0, Math.min(1, (t - A.hgVolta) / A.hgDur));
+        const cresce = Math.max(0, Math.min(1, (t - A.hg) / A.hgDur)) - (this.encolheHg || 0);
         const f = emB ? 0 : suave(Math.max(0, cresce));
         esc = entre(esc, A.escHgGrade, f);
         c.classList.toggle('hg4', f > 0);
