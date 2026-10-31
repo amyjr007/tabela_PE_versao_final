@@ -460,6 +460,23 @@ var LEGENDAS = {
   "quiz1": [
     [0,1.94,"Certo, vamos pra primeira questão."]
   ],
+  "Audio_tabela_4Ax": [
+    [0,2.98,"Você sabia que o mercúrio, por ser o único metal líquido"],
+    [2.98,5.96,"em condições ambientes e se dilatar de forma"],
+    [5.96,8.93,"muito uniforme com o calor, era usado antigamente"],
+    [8.93,11.41,"naqueles termômetros analógicos de vidro?"],
+    [11.91,14.89,"Pois é, mas por ser altamente"],
+    [14.89,17.87,"tóxico para o nosso organismo, ele acabou sendo substituído"],
+    [17.87,20.85,"por modelos digitais, com tecnologias mais modernas."],
+    [20.85,23.82,"Outra curiosidade é que o mercúrio"],
+    [23.82,26.8,"é utilizado em garimpos para a extração de ouro,"],
+    [26.8,29.78,"graças à sua capacidade de se misturar e"],
+    [29.78,32.76,"formar uma liga metálica especial chamada amálgama."],
+    [32.76,35.74,"Trata-se de uma prática perigosa"],
+    [35.74,38.71,"e hoje proibida, devido aos graves danos"],
+    [38.71,41.69,"que os seus vapores e resíduos causam"],
+    [41.69,43.73,"à nossa saúde e ao meio ambiente."]
+  ],
   "congratsHg": [
     [0,2.98,"Caramba! Você lembrou que o mercúrio é o único"],
     [2.98,5.07,"metal líquido. Parabéns!"]

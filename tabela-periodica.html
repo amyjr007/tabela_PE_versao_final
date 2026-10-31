@@ -1126,6 +1126,19 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 .cubo4C.virou3 .gira4{transform:none!important;transform-style:flat}
 .cubo4C.virou3 .face4C:not(.esq){display:none}
 .cubo4C.virou3 .face4C.esq{transform:none}
+/* o cubo da "4Ax": a poça (cópia) com o nome; os termômetros; o garimpo */
+.cuboAx .ax-poca{position:absolute;left:6%;right:6%;top:20%;height:52%}
+.cuboAx .ax-poca svg{width:100%;height:100%}
+.cuboAx .ax-nome{position:absolute;left:0;right:0;bottom:34px;text-align:center;
+  font:600 30px var(--display);color:#F4F2F8;text-shadow:0 2px 6px rgba(0,0,0,.6)}
+.cuboAx .ax-foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cuboAx .ax-sobre{bottom:0;padding:70px 0 26px;background:linear-gradient(transparent,rgba(0,0,0,.78))}
+.cuboAx .ax-t{font:600 28px var(--display);fill:#F4F2F8}
+.cuboAx .ax-num{font:700 10px var(--display);fill:#2A2F38}
+.cuboAx .td-num{font:700 19px var(--mono);fill:#1C2A22}
+.cuboAx .td-uni{font:700 11px var(--mono);fill:#1C2A22}
+.cuboAx .coluna{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(.2);transition:transform 2.4s cubic-bezier(.3,.6,.3,1)}
+.cuboAx.mede .coluna{transform:scaleY(1)}
 /* as chapas: a mesma, em três metais, que se trocam em fade */
 .chapas4{position:absolute;inset:0}
 .chapas4 .ch4{opacity:0;transition:opacity .6s ease}
@@ -3692,7 +3705,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v28.4';
+const VERSAO = 'v28.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4920,6 +4933,7 @@ const TRILHAS = {
   '3.7':  'Audios/audio_tabela_3.7.mp3',   /* as questões 08 a 10: tocar no período e na família */
   '4':    'Audios/audio_tabela_4.mp3',     /* o slide 5: os tipos — as três classes */
   '4A':   'Audios/audio_tabela_4A.mp3',    /* escolhidos os metais */
+  '4Ax':   'Audios/Audio_tabela_4Ax.mp3',    /* depois do toque no mercúrio: o termômetro e o garimpo */
   '4A1':   'Audios/audio_tabela_4A1.mp3',    /* depois do Saquei: o brilho metálico */
   '4A2':   'Audios/audio_tabela_4A2.mp3',    /* depois do Saquei: o calor e a eletricidade */
   '4A3':   'Audios/audio_tabela_4A3.mp3',    /* depois do Saquei: a ductilidade e a fieira */
@@ -5029,6 +5043,7 @@ const ROTEIROS = {
   '3.7':  [],
   '4':    [],   /* o slide 5: tudo função do tempo, em EV4 */
   '4A':   [],
+  '4Ax':  [],   /* o cubo do mercúrio: função do tempo, em EV4.cenaAx */
   '4A1':   [],
   '4A2':   [
     /* aos 12,9 s a narração pára um segundo, e continua */
@@ -5759,10 +5774,11 @@ const SEQ = {
     else if (id === '3.6') QUIZ4.coordsComeca();
     /* o fim da "3.7": as questões 08 a 10 */
     else if (id === '3.7') QUIZ4.eixosComeca();
-    /* o fim da "4A": o "Saquei", que leva à "4A1" (só depois do toque no
-       mercúrio); o da "4A1", à "4A2" (o da "4A2" vem do curto: EV4.cena4C) */
+    /* o fim da "4A": a "4Ax" (só depois do toque no mercúrio); o da "4Ax",
+       o "Saquei", que leva à "4A1"; o da "4A1", à "4A2" (o da "4A2" vem do
+       curto: EV4.cena4C) */
     else if (id === '4A') EV4.fim4A();
-    else if (id === '4A1') EV4.saquei4(true);
+    else if (id === '4Ax' || id === '4A1') EV4.saquei4(true);
     /* o fim da "4B" (os ametais) e o da "4B1": o Saquei */
     else if (['4B', '4B1', '4B2.1', '4C', '4C2'].includes(id)) EV4.saquei4(true);
     /* o fim da "4B2": a "4B2.1", se o grafite já encostou no fio */
@@ -7792,7 +7808,7 @@ const EV4 = {
        paradas no fim, apagadas; depois dela, a tabela volta, e no fim da
        "4A5" a escolha das classes também */
     const segura = tr === '4A4' || (tr === '4A5' && t < this.E4E.reorg);
-    if (['4A', '4A1', '4A2', '4A3'].includes(tr) || segura) luz = 'metais';
+    if (['4A', '4Ax', '4A1', '4A2', '4A3'].includes(tr) || segura) luz = 'metais';
     else if (tr === '4A5') escolha = acabou && !final;
     /* as narrações dos ametais (da "4B" à "4B4", até à volta da tabela):
        eles ficam acesos, e cada cena fica parada no fim dela nas seguintes */
@@ -7855,7 +7871,11 @@ const EV4 = {
     }
     else { this.mult4 = null; if (this.suja4B) this.desfaz4B(m); }
     if (tr === '4A') this.cena4A(m, t, acabou);
+    /* na "4Ax" a cena da "4A" fica parada no fim, e o cubo do mercúrio corre */
+    else if (tr === '4Ax') this.cena4A(m, 1e3, true);
     else if (tr !== '4A1' && !depoisB && this.suja4A) this.desfaz4A(m);
+    if (tr === '4Ax') this.cenaAx(m, t);
+    else if (this.sujaAx) this.desfazAx(m);
     if (tr === '4A2') this.cena4C(m, t, acabou);
     else if (tr === '4A3' || segura) this.cena4C(m, 1e3, true, true);
     else if (this.suja4C) this.desfaz4C(m);
@@ -8230,7 +8250,7 @@ const EV4 = {
      vem logo atrás (o da "4B1" ainda não tem seguinte: só some). No fim da
      "4A" ele só vem depois de o aluno tocar no mercúrio; no da "4A2",
      depois do curto no fio. */
-  SEGUINTE4:{ '4A':'4A1', '4A1':'4A2', '4A2':'4A3', '4B':'4B1', '4B1':'4B2', '4B2.1':'4B3', '4B3':'4B4',
+  SEGUINTE4:{ '4Ax':'4A1', '4A1':'4A2', '4A2':'4A3', '4B':'4B1', '4B1':'4B2', '4B2.1':'4B3', '4B3':'4B4',
               '4C':'4C2', '4C2':'4C3', '4C3':'4C4' },
   saquei4(sim){ botaoVerde(sim ? 'Saquei' : null, () => this.saqueiSegue()); },
   saqueiSegue(){
@@ -8247,11 +8267,73 @@ const EV4 = {
       else TP.diz('A próxima narração ainda vai ser gravada.');
     }, 250);
   },
-  /* o fim da "4A": o Saquei, se o aluno já mexeu no mercúrio (senão, ele
+  /* o fim da "4A": a "4Ax", se o aluno já mexeu no mercúrio (senão, ela
      vem com o primeiro toque: POCA4) */
-  fim4A(){ if (POCA4.tocou) this.saquei4(true); },
+  fim4A(){ if (POCA4.tocou) this.tocaAx(); },
+  tocaAx(){ setTimeout(() => { if (atual === 4 && trilhaAtual === '4A') tocaTrilha('4Ax'); }, 400); },
   /* a "4A" acabou? (também quando o app reabre parado no fim dela) */
   acabou4A(){ return trilhaAtual === '4A' && (som.ended || (!!som.duration && som.currentTime >= som.duration - .05)); },
+
+  /* ---- A "4Ax": O MERCÚRIO NO DIA A DIA (depois do toque na poça) ----
+     0 s          a cena da "4A" fica parada no fim dela; no lugar da poça
+                  (e do "Metal líquido") entra um cubo, com a poça na face da
+                  frente
+     10 s         o cubo vira: o TERMÔMETRO DE MERCÚRIO, de vidro
+     19 s         vira de novo: o TERMÔMETRO DIGITAL
+     25 s         vira outra vez: a foto do GARIMPO (Imagens/garimpo.jpeg)
+     fim          o Saquei, que leva à "4A1"
+     Tudo função do relógio da narração. */
+  AX:{ gira:10, gira2:19, gira3:25, giraDura:0.9, cx:866, cy:440, esc:0.74 },
+  sujaAx:false, cuboAx:null,
+  cenaAx(m, t){
+    const X = this.AX;
+    this.preparaAx(m);
+    const cb = this.cuboAx;
+    /* a poça de verdade e o "Metal líquido" saem; a cópia dela fica na frente do cubo */
+    if (!this.sujaAx) this.fotoPoca();
+    cb.classList.add('on');
+    if (POCA4.el) POCA4.el.style.opacity = '0';
+    this.liq4.querySelectorAll('.frase')[3].classList.add('fim');
+    const giro = de => { const p = Math.max(0, Math.min(1, (t - de) / X.giraDura)); return [p, p < .5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2) / 2]; };
+    const [p1, g1] = giro(X.gira), [p2, g2] = giro(X.gira2), [p3, g3] = giro(X.gira3);
+    cb.querySelector('.gira4').style.transform = 'translateZ(-220px) rotateY(' + (-90 * (g1 + g2 + g3)).toFixed(2) + 'deg)';
+    cb.classList.toggle('virou', p1 >= 1 && p2 <= 0);
+    cb.classList.toggle('virou2', p2 >= 1 && p3 <= 0);
+    cb.classList.toggle('virou3', p3 >= 1);
+    /* a coluna de mercúrio sobe quando o termômetro chega */
+    cb.classList.toggle('mede', t >= X.gira + X.giraDura);
+    this.sujaAx = true;
+  },
+  /* a poça, como ela está agora, copiada para a face da frente (os ids do
+     desenho trocados, para a cópia ter os filtros dela) */
+  fotoPoca(){
+    const f = this.cuboAx.querySelector('.face4C.frente .ax-poca');
+    f.innerHTML = POCA4.el ? POCA4.el.querySelector('svg').outerHTML.replace(/poca4-/g, 'pz4-') : '';
+  },
+  preparaAx(m){
+    if (this.cuboAx) return;
+    const X = this.AX;
+    const cb = document.createElement('div');
+    cb.className = 'cubo4C cuboAx';
+    cb.style.left = (X.cx - 220) + 'px';
+    cb.style.top  = (X.cy - 220) + 'px';
+    cb.style.setProperty('--esc', X.esc);
+    cb.innerHTML = '<div class="gira4">' +
+      '<div class="face4C frente"><div class="ax-poca"></div><div class="ax-nome">Mercúrio</div></div>' +
+      '<div class="face4C lado">' + termometroSVG() + '</div>' +
+      '<div class="face4C tras">' + termometroDigitalSVG() + '</div>' +
+      '<div class="face4C esq"><img class="ax-foto" src="Imagens/garimpo.jpeg" alt="Garimpo de ouro"><div class="ax-nome ax-sobre">Garimpo</div></div>' +
+      '</div>';
+    m.appendChild(cb);
+    this.cuboAx = cb;
+  },
+  desfazAx(m){
+    if (this.cuboAx){
+      this.cuboAx.classList.remove('on', 'virou', 'virou2', 'virou3', 'mede');
+      this.cuboAx.querySelector('.gira4').style.transform = '';
+    }
+    this.sujaAx = false;
+  },
 
   /* ---- A "4A1": O BRILHO METÁLICO ----
      0 s        a propriedade 1 (e a exceção dela) sai em fade
@@ -11221,7 +11303,7 @@ const POCA4 = {
       if (!this.tocou){
         this.tocou = true;
         stage.classList.remove('espera-poca');
-        if (EV4.acabou4A()) EV4.saquei4(true);
+        if (EV4.acabou4A()) EV4.tocaAx();
       }
       try { el.setPointerCapture(ev.pointerId); } catch (_) {}
       this.dedo = ponto(ev);
@@ -12295,6 +12377,77 @@ function cilindroNobresSVG(){
     '<defs>' + fundoFace4(px) + defsAtomos(px) + defsCil + '</defs>' +
     '<rect width="440" height="440" fill="url(#gn4-fundo)"/>' + cil +
     lupa4(px, 280, 230, 86, dentro) +
+  '</svg>';
+}
+
+/* ---- AS FACES DA "4Ax": o mercúrio no dia a dia ----
+   O termômetro de vidro: o tubo com o capilar, a faixa leitosa da escala
+   (35 a 42 °C), o bulbo, e a coluna de mercúrio — prateada, com o reflexo
+   no meio —, que sobe quando a face chega (.mede). Os dois deitados na
+   diagonal, como sobre uma mesa. */
+function termometroSVG(){
+  let escala = '';
+  for (let i = 0; i <= 35; i++){
+    const y = 318 - i * 7, grande = i % 5 === 0;
+    escala += '<path d="M217,' + y + ' H' + (grande ? 226 : 221) + '" stroke="#2A2F38" stroke-width="' + (grande ? 1.4 : .9) + '"/>';
+    if (grande) escala += '<text x="229" y="' + (y + 3.5) + '" class="ax-num">' + (35 + i / 5) + '</text>';
+  }
+  return '<svg viewBox="0 0 440 440" role="img" aria-label="Termômetro de mercúrio, de vidro">' +
+    '<defs>' + fundoFace4('tm4') +
+      '<linearGradient id="tm4-hg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4A535D"/><stop offset=".35" stop-color="#F4F8FB"/>' +
+        '<stop offset=".6" stop-color="#9AA4AE"/><stop offset="1" stop-color="#2E353C"/></linearGradient>' +
+      '<radialGradient id="tm4-bulbo" cx=".38" cy=".35" r=".7"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".35" stop-color="#B8C2CB"/>' +
+        '<stop offset=".8" stop-color="#4E5862"/><stop offset="1" stop-color="#2A3138"/></radialGradient>' +
+      '<linearGradient id="tm4-vidro" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".32"/>' +
+        '<stop offset=".22" stop-color="#fff" stop-opacity=".06"/><stop offset=".8" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#fff" stop-opacity=".25"/></linearGradient>' +
+    '</defs>' +
+    '<rect width="440" height="440" fill="url(#tm4-fundo)"/>' +
+    '<g transform="rotate(-32 220 205)">' +
+      '<ellipse cx="226" cy="392" rx="40" ry="7" fill="#000" opacity=".5" filter="url(#tm4-borra)"/>' +
+      /* a faixa leitosa da escala, ao lado do capilar (à direita) */
+      '<rect x="215" y="64" width="31" height="262" rx="3" fill="#EEEAE0" opacity=".92"/>' + escala +
+      /* o capilar vazio, e a coluna de mercúrio (sobe do bulbo), escura nas
+         bordas para o prateado se ver contra o vidro */
+      '<rect x="203" y="60" width="10" height="290" rx="5" fill="#0E1116" opacity=".55"/>' +
+      '<rect class="coluna" x="204" y="150" width="8" height="200" rx="4" fill="url(#tm4-hg)" stroke="#20262C" stroke-width=".8"/>' +
+      '<circle cx="208" cy="356" r="18" fill="url(#tm4-bulbo)"/>' +
+      /* o vidro por cima: o tubo, o bulbo e os reflexos */
+      '<rect x="194" y="38" width="56" height="300" rx="24" fill="url(#tm4-vidro)" stroke="#E6F2FC" stroke-opacity=".55" stroke-width="1.6"/>' +
+      '<circle cx="208" cy="356" r="27" fill="url(#tm4-vidro)" stroke="#E6F2FC" stroke-opacity=".55" stroke-width="1.6"/>' +
+      '<path d="M199,62 V318" stroke="#fff" stroke-opacity=".5" stroke-width="3" stroke-linecap="round"/>' +
+      '<path d="M194,346 A16,16 0 0 1 202,336" stroke="#fff" stroke-opacity=".7" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+    '</g>' +
+    '<text class="ax-t" x="220" y="420" text-anchor="middle">Termômetro de mercúrio</text>' +
+  '</svg>';
+}
+/* o termômetro digital: o corpo de plástico, o visor com 36,5 °C, o botão
+   e a ponta de metal */
+function termometroDigitalSVG(){
+  return '<svg viewBox="0 0 440 440" role="img" aria-label="Termômetro digital">' +
+    '<defs>' + fundoFace4('td4') +
+      '<linearGradient id="td4-corpo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#B9C4CE"/><stop offset=".3" stop-color="#FFFFFF"/>' +
+        '<stop offset=".7" stop-color="#E4EAF0"/><stop offset="1" stop-color="#9AA6B2"/></linearGradient>' +
+      '<linearGradient id="td4-faixa" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0E6E78"/><stop offset=".4" stop-color="#2CC0CC"/><stop offset="1" stop-color="#0A5560"/></linearGradient>' +
+      '<linearGradient id="td4-visor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C6D9C9"/><stop offset="1" stop-color="#8FA897"/></linearGradient>' +
+      '<linearGradient id="td4-aco" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5B6570"/><stop offset=".4" stop-color="#F2F5F8"/><stop offset="1" stop-color="#4C555F"/></linearGradient>' +
+    '</defs>' +
+    '<rect width="440" height="440" fill="url(#td4-fundo)"/>' +
+    '<g transform="rotate(-32 220 205)">' +
+      '<ellipse cx="226" cy="392" rx="46" ry="7" fill="#000" opacity=".5" filter="url(#td4-borra)"/>' +
+      /* a ponta de metal, e o corpo que afina até ela */
+      '<path d="M210,286 L210,364 Q210,380 220,380 Q230,380 230,364 L230,286 Z" fill="url(#td4-aco)"/>' +
+      '<path d="M176,72 Q176,36 220,36 Q264,36 264,72 L264,196 Q264,232 242,262 L236,292 L204,292 L198,262 Q176,232 176,196 Z" fill="url(#td4-corpo)" stroke="#8592A0" stroke-width="1"/>' +
+      '<path d="M176,200 Q176,232 198,262 L204,292 L236,292 L242,262 Q264,232 264,200 Z" fill="url(#td4-faixa)" opacity=".9"/>' +
+      /* o visor de cristal líquido, e o botão */
+      '<rect x="184" y="70" width="72" height="62" rx="8" fill="#2A323A"/>' +
+      '<rect x="188" y="74" width="64" height="54" rx="5" fill="url(#td4-visor)"/>' +
+      '<text x="213" y="110" text-anchor="middle" class="td-num">36,5</text>' +
+      '<text x="244" y="110" text-anchor="middle" class="td-uni">°C</text>' +
+      '<circle cx="220" cy="164" r="13" fill="url(#td4-faixa)" stroke="#0A5560" stroke-width="1.5"/>' +
+      '<circle cx="216" cy="160" r="4" fill="#fff" opacity=".45"/>' +
+      '<path d="M184,70 V190" stroke="#fff" stroke-opacity=".7" stroke-width="4" stroke-linecap="round"/>' +
+    '</g>' +
+    '<text class="ax-t" x="220" y="420" text-anchor="middle">Termômetro digital</text>' +
   '</svg>';
 }
 
@@ -17365,7 +17518,7 @@ function topicoAtual(){
     if (trilhaAtual === '4A3') return base + 5;
     if (trilhaAtual === '4A2') return base + 4;
     if (trilhaAtual === '4A1') return base + 3;
-    if (trilhaAtual === '4A') return base + 2;
+    if (trilhaAtual === '4A' || trilhaAtual === '4Ax') return base + 2;
     return base + (trilhaAtual === '4' && (som.currentTime || 0) >= EV4.escolhaDe ? 1 : 0);
   }
   if (atual === 5) return NAV_TOPICOS.findIndex(t => t.slide === 5);
