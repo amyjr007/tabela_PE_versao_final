@@ -1580,6 +1580,19 @@ body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
 .cena9 .fluxo9{opacity:0;transition:opacity .3s ease}
 .cena9 .fluxo9.on9{opacity:.85;animation:flui9 .5s linear infinite}
 @keyframes flui9{to{stroke-dashoffset:-19}}
+/* o pedido da Q9 e a mãozinha, os dois em amarelo */
+.pede9{font:600 22px var(--display);color:#FFD43B;white-space:nowrap;text-shadow:0 2px 8px rgba(0,0,0,.7);
+  opacity:0;transition:opacity .4s ease;z-index:34}
+.pede9.on{opacity:1}
+.mao9{z-index:35;opacity:0;transition:opacity .35s ease;filter:drop-shadow(0 3px 7px rgba(0,0,0,.55));
+  scale:1.4;transform-origin:23px 6px}
+.mao9.on{opacity:1}
+.mao9 svg{display:block;width:100%;height:100%;fill:#FFD43B;stroke:#3A2E00;stroke-width:1.1;stroke-linejoin:round;
+  transition:transform .2s ease}
+.mao9.aperta9 svg{transform:scale(.82)}
+.mao9 .onda{position:absolute;left:22px;top:7px;width:12px;height:12px;margin:-6px 0 0 -6px;
+  border-radius:50%;border:2.5px solid #FFD43B;opacity:0}
+.mao9.aperta9 .onda{animation:maoOnda .62s ease-out}
 .lampada5 .nevoa-l{opacity:0;transition:opacity .8s ease}
 .lampada5.cheia9 .nevoa-l{opacity:.35}
 .lampada5 .gas5{opacity:0;transition:opacity .8s ease}
@@ -3679,7 +3692,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v28.1';
+const VERSAO = 'v28.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -10638,6 +10651,7 @@ const QUESTOES_5 = [
           ev.preventDefault(); ev.stopPropagation();
           try { f.setPointerCapture(ev.pointerId); } catch (_) {}
           this.olhando = f;
+          this.calaPedido();
           this.olha(Q.ponto(ev));
         });
         f.addEventListener('pointermove', ev => { if (this.olhando === f) this.olha(Q.ponto(ev)); });
@@ -10662,7 +10676,32 @@ const QUESTOES_5 = [
       this.dentro = this.lupa.querySelector('.lupa-dentro');
       this.campos = { agua:campo9('agua'), co2:campo9('co2'), ar:campo9('ar') };
       this.visto = null;
+      this.pede(Q);
       return 'Libere o gás do frasco e encha o bulbo da lâmpada. Mas atenção: ela só acende com gases inertes.';
+    },
+    /* O PEDIDO: "Segure no frasco…", em amarelo, e a mãozinha (amarela
+       também) que segura o frasco do meio e some. Num ciclo, até o aluno
+       segurar um frasco pela primeira vez */
+    pede(Q){
+      const x = Q9.fx[1], y = Q9.fy + 40;
+      this.pedido = Q.pecaCentro('pede9', 'Segure no frasco para olhar seus átomos', x, 262);
+      this.mao = Q.peca('mao9', document.querySelector('#mao svg').outerHTML + '<i class="onda"></i>', x - 23, y - 6, 48, 48);
+      const T = this.pedeT = [];
+      const ciclo = () => {
+        this.pedido.classList.add('on');
+        this.mao.classList.add('on');
+        T.push(setTimeout(() => this.mao.classList.add('aperta9'), 600));
+        T.push(setTimeout(() => this.mao.classList.remove('aperta9'), 1800));
+        T.push(setTimeout(() => { this.mao.classList.remove('on'); this.pedido.classList.remove('on'); }, 2300));
+        T.push(setTimeout(ciclo, 2300 + 2500));
+      };
+      T.push(setTimeout(ciclo, 400));
+    },
+    calaPedido(){
+      (this.pedeT || []).forEach(clearTimeout);
+      this.pedeT = [];
+      if (this.mao) this.mao.classList.remove('on', 'aperta9');
+      if (this.pedido) this.pedido.classList.remove('on');
     },
     /* o dedo no vidro: a lente um pouco acima dele (o dedo não a tapa),
        sempre em volta do bojo; o campo anda ao contrário, mais depressa */
@@ -10711,7 +10750,7 @@ const QUESTOES_5 = [
         }, 1400);
       }, 1100);
     },
-    limpa(Q){ this.visto = null; this.olhando = null; this.enchendo = false; limpa5(Q); } },
+    limpa(Q){ this.calaPedido(); this.visto = null; this.olhando = null; this.enchendo = false; limpa5(Q); } },
 
   /* Q10 · Criar · o letreiro: o gás do tubo (arrastado até ele) e o fio, puxado
      na fieira da aula; com os dois prontos, o Ligar */
