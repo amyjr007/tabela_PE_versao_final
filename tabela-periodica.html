@@ -1606,14 +1606,10 @@ body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
 .tubo5.aceso5 .tb-luz{animation:liga5 1.1s steps(1) forwards, neon5 2.6s ease-in-out 1.1s infinite}
 @keyframes liga5{0%{opacity:.9} 10%{opacity:0} 22%{opacity:1} 30%{opacity:.1} 45%{opacity:1} 55%{opacity:.4} 100%{opacity:1}}
 @keyframes neon5{0%,100%{opacity:1} 50%{opacity:.82}}
-.tubo5.falha5 .tb-gas{animation:falha5 .7s ease}
-@keyframes falha5{0%,100%{opacity:.4} 20%,60%{opacity:.15}}
-.fie5{pointer-events:auto}
-.fie5.m5-13 .fr-met{filter:grayscale(1) brightness(1.3)}
-.fie5.m5-6 .fr-met{filter:grayscale(1) brightness(.42)}
-.fie5.m5-16 .fr-met{filter:grayscale(1) sepia(1) saturate(5) brightness(1.35)}
-.fie5.quebra5 .fr-met{animation:quebra5 .8s ease forwards}
-@keyframes quebra5{0%{translate:0 0} 15%{translate:-4px 0} 30%{translate:4px 0} 45%{translate:0 0;opacity:1} 100%{translate:0 40px;opacity:0}}
+/* a falha (Q10, gás errado): a luz acende fraca aos trancos e apaga */
+.tubo5.falha10 .tb-luz{animation:falha10 1.2s steps(1) forwards}
+@keyframes falha10{0%{opacity:0} 8%{opacity:.55} 14%{opacity:0} 22%{opacity:.35} 26%{opacity:0} 38%{opacity:.6}
+  42%{opacity:.1} 50%{opacity:.4} 54%{opacity:0} 66%{opacity:.3} 70%{opacity:0} 80%{opacity:.18} 84%,100%{opacity:0}}
 .bt5.apagado5{background:#4A4F5C;color:#9AA0AC;pointer-events:none}
 /* o botão do quiz, no fim da "4C4": verde, a piscar */
 #som.saquei.pisca-quiz:not(.saquei-tocado){animation:piscaQuiz 1s ease-in-out infinite}
@@ -3692,7 +3688,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v28.2';
+const VERSAO = 'v28.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -10752,137 +10748,70 @@ const QUESTOES_5 = [
     },
     limpa(Q){ this.calaPedido(); this.visto = null; this.olhando = null; this.enchendo = false; limpa5(Q); } },
 
-  /* Q10 · Criar · o letreiro: o gás do tubo (arrastado até ele) e o fio, puxado
-     na fieira da aula; com os dois prontos, o Ligar */
+  /* Q10 · Criar · o letreiro "Let it be": seis gases para escolher; o que
+     vai para as letras enche o tubo, e o Ligar acende — só o neônio dá a
+     luz dos letreiros antigos. Com outro, a luz falha aos trancos com o
+     estalo do curto, apaga, e o tubo esvazia para tentar de novo */
   { monta(Q){
       Q.mesa().classList.add('sem-tabela5');
-      this.nobre = sorteia5([10, 18, 54]);
-      this.gas = this.carregado = this.fio = null;
-      this.tubo = Q.peca('tubo5', tubo5SVG(), 400, 205, 600, 150);
-      this.fie = Q.peca('fieira4 fie5 maquina instrui', fieiraSVG().replace(/fr4-/g, 'fq5-'), 20, 290, 360, 360);
-      this.zonaFie = Q.peca('zona5', '', 10, 340, 230, 220);
-      Q.peca('bandeja5', '<span>Gases</span>', 440, 440, 330, 120);
-      Q.peca('bandeja5', '<span>Sólidos</span>', 830, 440, 330, 120);
-      const gases = embaralha([this.nobre, 8, 17]), solidos = embaralha([sorteia5([29, 13]), 6, 16]);
-      this.fichas = gases.map((z, i) => [z, 495 + i * 110]).concat(solidos.map((z, i) => [z, 885 + i * 110])).map(([z, x]) => {
-        const c = Q.ficha(z, x, 500, 1.15);
-        Q.veste(c, material5(z));
-        c._casa = { x, y:500 };
+      this.gas = null;
+      this.falhando = false;
+      this.tubo = Q.peca('tubo5', tubo5SVG('Let it be'), 340, 225, 600, 150);
+      Q.peca('bandeja5', '<span>Gases</span>', 250, 445, 780, 120);
+      this.fichas = embaralha([10, 1, 7, 8, 9, 17]).map((z, i) => {
+        const x = 327 + i * 125, y = 505;
+        const c = Q.ficha(z, x, y, 1.15);
+        Q.veste(c, 'gas');
+        c._casa = { x, y };
         Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y));
         return c;
       });
-      this.bt = Q.botao('Ligar', 800, 640, () => this.liga(Q));
+      this.bt = Q.botao('Ligar', 640, 640, () => this.liga(Q));
       this.bt.classList.add('apagado5');
-      this.preparaFieira(Q);
-      return 'Monte o letreiro: escolha o gás do tubo e o metal do fio.';
+      return 'Arraste o elemento que produz aquela luz especial dos letreiros antigos e depois clique em Ligar.';
     },
-    ehGas(c){ return material5(+c.dataset.z) === 'gas'; },
     volta(Q, c){ if (!c) return; c.classList.remove('some5'); c._preso = false; Q.poe(c, c._casa.x, c._casa.y); },
+    /* largado nas letras, o gás enche o tubo (a cor fraca dele); outro
+       gás que já estava lá volta para a bandeja */
     solta(Q, c, x, y){
-      if (this.ehGas(c) && Q.dentro(x, y, this.tubo)){
-        if (this.gas) this.volta(Q, this.gas);
-        this.gas = c;
-        c.classList.add('some5'); c._preso = true;
-        const z = +c.dataset.z;
-        this.tubo.style.setProperty('--gas', COR_GAS5[z]);
-        this.tubo.style.setProperty('--neon', NEON5[z] || COR_GAS5[z]);
-        this.tubo.classList.add('cheio5');
-      } else if (!this.ehGas(c) && Q.dentro(x, y, this.zonaFie) && !this.fio){
-        if (this.carregado) this.volta(Q, this.carregado);
-        this.carregado = c;
-        c.classList.add('some5'); c._preso = true;
-        this.fie.classList.remove('m5-13', 'm5-29', 'm5-6', 'm5-16', 'puxou');
-        this.fie.classList.add('metal', 'm5-' + c.dataset.z);
-        this.ponta = FR4.ponta0;
-        this.desenhaFio();
-      } else Q.poe(c, c._casa.x, c._casa.y);
-      this.pronto();
-    },
-    pronto(){ this.bt.classList.toggle('apagado5', !(this.gas && this.fio)); },
-    /* A FIEIRA: a mesma da aula, com um dedo só dela — o metal estica até o
-       fim; o grafite e o enxofre se partem no primeiro puxão */
-    preparaFieira(Q){
-      const el = this.fie, svg = el.querySelector('svg');
-      this.ponta = FR4.ponta0;
-      this.desenhaFio();
-      const ponto = ev => { const r = svg.getBoundingClientRect(); return { x:(ev.clientX - r.left) / r.width * 440, y:(ev.clientY - r.top) / r.height * 440 }; };
-      el.addEventListener('pointerdown', ev => {
-        if (!Q.aberto || Q.travado || !this.carregado || this.fio || this.partindo) return;
-        const p = ponto(ev);
-        if (Math.hypot(p.x - (this.ponta + 16), p.y - FR4.cy) > 60) return;
-        ev.preventDefault(); ev.stopPropagation();
-        try { el.setPointerCapture(ev.pointerId); } catch (_) {}
-        this.pega = this.ponta - p.x;
-        el.classList.add('pegando');
-      });
-      el.addEventListener('pointermove', ev => {
-        if (this.pega === null || this.pega === undefined) return;
-        const x = Math.min(FR4.pontaMax, Math.max(this.ponta, ponto(ev).x + this.pega));
-        if (x > this.ponta + .5) el.classList.add('puxou');
-        if (tipoDe(+this.carregado.dataset.z) !== 'metais' && x > FR4.ponta0 + 14){ this.pega = null; this.parte(Q); return; }
-        this.ponta = x;
-        this.desenhaFio();
-        if (x >= FR4.pontaMax - .5){ this.pega = null; this.esticou(); }
-      });
-      const larga = () => { this.pega = null; el.classList.remove('pegando'); };
-      ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => el.addEventListener(n, larga));
-      el.addEventListener('click', ev => ev.stopPropagation());
-    },
-    desenhaFio(){
-      const F = FR4, s = this.fie.querySelector('svg'), xb = F.barra0 + (this.ponta - F.ponta0) * (F.r / F.R) ** 2;
-      s.querySelector('.fr-barra').setAttribute('x', xb.toFixed(2));
-      s.querySelector('.fr-barra').setAttribute('width', (F.entra - xb).toFixed(2));
-      s.querySelector('.fr-topo').setAttribute('cx', xb.toFixed(2));
-      s.querySelector('.fr-fio').setAttribute('d', FIEIRA4.fioPath(F.sai - 2, this.ponta, 0));
-      s.querySelector('.fr-garra').setAttribute('transform', 'translate(' + this.ponta.toFixed(1) + ' ' + F.cy + ')');
-      const conta = s.querySelector('.fr-conta');
-      conta.classList.toggle('instr', !this.fio && this.ponta <= F.ponta0 + .5);
-      conta.textContent = this.fio ? 'Fio pronto!' : 'Puxe a ponta do fio';
-    },
-    esticou(){
-      this.fio = this.carregado;
-      this.fie.classList.remove('pegando');
-      tocaEfeito('right');
-      this.desenhaFio();
-      this.pronto();
-    },
-    parte(Q){
-      this.partindo = true;
-      this.fie.classList.remove('pegando');
-      this.fie.classList.add('quebra5');
-      tocaEfeito('rupture');
-      Q.erra('Fio tem que esticar sem quebrar.', [],
-             () => [this.fichas.find(c => !this.ehGas(c) && tipoDe(+c.dataset.z) === 'metais')]);
-      setTimeout(() => {
-        this.partindo = false;
-        this.fie.classList.remove('quebra5', 'metal', 'puxou');
-        this.volta(Q, this.carregado);
-        this.carregado = null;
-        this.ponta = FR4.ponta0;
-        this.desenhaFio();
-      }, 900);
+      if (!Q.dentro(x, y, this.tubo) || this.falhando){ Q.poe(c, c._casa.x, c._casa.y); return; }
+      if (this.gas) this.volta(Q, this.gas);
+      this.gas = c;
+      c.classList.add('some5'); c._preso = true;
+      const z = +c.dataset.z;
+      this.tubo.style.setProperty('--gas', COR_GAS5[z]);
+      this.tubo.style.setProperty('--neon', NEON5[z] || COR_GAS5[z]);
+      this.tubo.classList.add('cheio5');
+      this.bt.classList.remove('apagado5');
     },
     liga(Q){
-      if (!this.gas || !this.fio) return;
-      if (tipoDe(+this.gas.dataset.z) === 'nobres'){
+      if (!this.gas || this.falhando) return;
+      if (+this.gas.dataset.z === 10){
         this.fichas.forEach(c => c._preso = true);
         this.bt.classList.add('some5');
         this.tubo.classList.add('aceso5');
-        Q.acerta('Gás nobre no tubo, metal no fio.');
+        Q.acerta('O neônio, um gás nobre, dá a luz dos letreiros.');
         return;
       }
-      /* um gás que reage não brilha: o letreiro fica apagado, e o tubo esvazia */
-      Q.erra('Precisa de um gás que brilhe com a descarga e não reaja.', [],
-             () => [this.fichas.find(c => +c.dataset.z === this.nobre)]);
-      this.tubo.classList.add('falha5');
-      setTimeout(() => {
-        this.tubo.classList.remove('falha5', 'cheio5');
+      /* A FALHA: a luz pisca aos trancos, fraca, com o estalo do curto; apaga,
+         o tubo esvazia e o gás volta para a bandeja */
+      this.falhando = true;
+      this.bt.classList.add('apagado5');
+      this.tubo.classList.add('falha10');
+      this.som = new Audio(encodeURI('Audios/vfx/short_circuit.mp3'));
+      this.som.volume = .7;
+      if (!document.hidden) this.som.play().catch(() => {});
+      Q.erra('Esse gás reage com outros átomos e não dá essa luz. Procure um gás nobre.', [],
+             () => [this.fichas.find(c => +c.dataset.z === 10)]);
+      this.falhaT = setTimeout(() => {
+        if (this.som) this.som.pause();
+        this.tubo.classList.remove('falha10', 'cheio5');
         this.volta(Q, this.gas);
         this.gas = null;
-        this.pronto();
-      }, 700);
+        this.falhando = false;
+      }, 1300);
     },
-    limpa(Q){ this.pega = null; this.partindo = false; limpa5(Q); } }
+    limpa(Q){ clearTimeout(this.falhaT); if (this.som) this.som.pause(); this.som = null; this.falhando = false; limpa5(Q); } }
 ];
 
 /* as seis cores da Q3 (uma para cada ficha, e a casa dela na tabela de fundo) */
@@ -11152,12 +11081,12 @@ function digita5(el, txt){
   }, 70);
 }
 /* as cores de cada gás da Q10: a do tubo cheio, e a do letreiro aceso */
-const COR_GAS5 = { 10:'#FF6A3D', 18:'#9A7BFF', 54:'#6FA8FF', 8:'#BFD9FF', 17:'#C8E86A' };
+const COR_GAS5 = { 10:'#FF6A3D', 18:'#9A7BFF', 54:'#6FA8FF', 8:'#BFD9FF', 17:'#C8E86A', 1:'#E6D6FF', 7:'#D2C4FF', 9:'#F0EDB0' };
 const NEON5 = { 10:'#FF3B1F', 18:'#9A5CFF', 54:'#3D8BFF' };
-/* o tubo de vidro do letreiro "Saquei!": vazio, cheio (a cor fraca do gás)
+/* o tubo de vidro do letreiro (a palavra): vazio, cheio (a cor fraca do gás)
    e aceso (o halo, a cor e o núcleo, como o letreiro da "4C3") */
-function tubo5SVG(){
-  const txt = (cls, estilo) => '<text x="300" y="112" text-anchor="middle" class="tb5 ' + cls + '" style="' + estilo + '">Saquei!</text>';
+function tubo5SVG(palavra){
+  const txt = (cls, estilo) => '<text x="300" y="112" text-anchor="middle" class="tb5 ' + cls + '" style="' + estilo + '">' + palavra + '</text>';
   return '<svg viewBox="0 0 600 150" overflow="visible" aria-label="Tubo de vidro do letreiro" role="img"><defs>' +
     '<filter id="tb5-halo" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="10"/></filter>' +
     '<filter id="tb5-perto" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="2.6"/></filter></defs>' +
