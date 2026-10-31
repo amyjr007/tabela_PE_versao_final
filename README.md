@@ -237,7 +237,7 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4A` · 23 s | o Hg salta para o vazio da direita, debaixo das propriedades, e ao longo do caminho vira uma **poça de mercúrio** (`POCA4`, a do slide 4 do app do professor: o filtro "goo", a borda escura, sete gotas com mola), sem corte: o card arredonda, a letra dele apaga e ele esmaece enquanto a poça nasce no mesmo lugar e do mesmo tamanho (`--morf`). Já líquido, "Toque no metal" pisca em amarelo acima dele, até ao primeiro toque. O dedo (ou o mouse) empurra e gira as gotas, a poça abre-se ao meio, e largada volta a fundir-se |
 | `4A` · 23,5 s | embaixo da propriedade, um pouco para dentro, "Exceto o mercúrio", digitado |
 | `4A` · 29 s | "Metal líquido", digitado debaixo dele |
-| fim da `4A` | a poça fica, para mexer; o play vira o **Saquei** (verde) só depois de o aluno tocar no mercúrio; tocado, ele espoca (a bolha, sem som) e vem a **`4A1`** (`Audios/audio_tabela_4A1.mp3`) |
+| fim da `4A` | a poça fica, para mexer; sem o play até o toque (`espera-poca`); o **Saquei** (verde) só depois de o aluno tocar no mercúrio; tocado, ele espoca (a bolha, sem som) e vem a **`4A1`** (`Audios/audio_tabela_4A1.mp3`) |
 | `4A1` · 0 s | o inverso: a poça encolhe e esmaece a caminho da casa do Hg na grade, e o card dele refaz-se lá aos poucos (os cantos e a letra voltam); "Metal líquido", "1. Os metais são sólidos" e "Exceto o mercúrio" saem em fade |
 | `4A1` · 4 s | no lugar deles, "2. Os metais têm um brilho característico", digitado |
 | `4A1` · 7 s | um brilho corre pela grade na diagonal, carta a carta |
@@ -251,7 +251,7 @@ lugar dela, os **destaques ao acaso** (`EV4`, `efeitos4`).
 | `4A2` · 9,5 s | no lado direito, numa face de cubo, a **panela** de aço inox com cabo de madeira: as faixas de reflexo, o escovado, o fundo em anéis, o lábio, o veio da madeira, a virola e os rebites, e um brilho que passa |
 | `4A2` · 12,9 s | a narração pára 1 s, e continua |
 | `4A2` · 14,5 s | a panela vira como a face de um cubo (um quarto de volta), e a face nova é a do **choque** (a face 3 do slide 4 do app do professor): o cabo com o cobre nu — sete pernas de cobre trançado, com as pontas à vista nas bocas da capa — e a barra de aço que o dedo arrasta; encostada no cobre, o arco estala (o `short_circuit`, a 70%, em laço enquanto encosta), as fagulhas saltam, o clarão azul e o cubo sacode. Virada, a face fica plana (no 3D o toque atravessava) |
-| fim da `4A2` | "Toque o metal no fio", a piscar em amarelo logo acima do cobre nu, até ao curto (na montagem é peça, `aviso-toque-o-metal-no-fio`, e texto editável); feito o curto, o **Saquei** (espoca), que leva à **`4A3`** (`Audios/audio_tabela_4A3.mp3`) |
+| fim da `4A2` | o metal é um **garfo** de aço inox (`barra4SVG`); "Arraste o metal para o fio", a piscar em amarelo logo abaixo do garfo (anda com ele), até ao curto (na montagem é peça, `aviso-arraste-o-metal`, e texto editável); sem o play enquanto isso (`espera-curto`); feito o curto, o **Saquei** |
 | `4A3` · 0 s | a propriedade 3 sai em fade, e o cubo inteiro também (a interação do choque e o quadro) |
 | `4A3` · 10,9 s e 27,2 s | a narração pára 1 s, e continua |
 | `4A3` · 4,2 → 6 s | "Metais são dúcteis e maleáveis", digitado |
@@ -344,6 +344,8 @@ carrossel (`?miniaturas`) os destaques não entram.
 
 #### O quiz do slide 5 (`QUIZ5`)
 
+O que se arrasta anda pelo transform (`--vx`, `--vy`), e não por left/top: assim o celular não redesenha a mesa a cada movimento do dedo. Largado, o lugar passa para left/top.
+
 O botão **Quiz** do fim do tópico (e a seção **4.4 · Quiz sobre os tipos
 de elementos** do sumário, que abre direto, com a tabela montada) apaga a
 sala, vira o cabeçalho para "Quiz", toca o `quiz1` e apresenta as questões
@@ -355,7 +357,7 @@ e a próxima. No fim, o cartão da nota (Refazer · Continuar).
 | Questão | O que o aluno faz |
 | --- | --- |
 | 1 | a tabela fica cinza; toca num card do bloco pedido — o bloco inteiro afunda e ganha a cor |
-| 2 | toca no metal líquido (o Hg cresce, com a textura de mercúrio; o Br é a outra resposta da vez) |
+| 2 | toca no metal líquido (o Hg cresce, com a textura de mercúrio; o Br, o ametal líquido, é a outra pergunta da vez). Acertando de primeira, a fala de parabéns no lugar da voz de sempre: `Audios/congratsHg.mp3` ou `Audios/congratsBr.mp3` |
 | 3 | seis fichas, cada uma numa cor só dela, no vão do alto da tabela de fundo (escura, sem símbolos, 15% menor, com a casa de cada ficha na mesma cor, sem brilho: a posição diz a classe); arrasta cada uma para as bandejas Sólido, Líquido e Gasoso, na base, e Conferir; as erradas voltam |
 | 4 | na vitrine, cinco amostras sem nome (os ametais numa cor lisa, sem as facetas); marca as de metal e Pronto — um feixe de luz reflete nos metais, e os nomes aparecem |
 | 5 | arrasta o H (cinza) para o quadro do grupo dele: Metais, Ametais ou Gases nobres |

@@ -960,8 +960,11 @@ html.celular .classes4 .frase.nobres4{white-space:normal}
 .mesa.tipos .pc.apertado .face{box-shadow:0 0 0 2px #7DFFA8, 0 0 20px 6px rgba(61,220,120,.75)}
 /* na montagem, os nomes das classes pegam o dedo */
 body.montagem .classes4 .frase{pointer-events:auto}
-/* (e no fim da "4C3", à espera de a bobina acender os cinco tubos) */
+/* (e no fim da "4C3", à espera de a bobina acender os cinco tubos; no fim
+   da "4A", à espera do toque na poça; no fim da "4A2", à espera do curto) */
 #stage.espera-bobina #som, #stage.espera-bobina #som-dica,
+#stage.espera-poca #som, #stage.espera-poca #som-dica,
+#stage.espera-curto #som, #stage.espera-curto #som-dica,
 #stage.espera-fio #som, #stage.espera-fio #som-dica{display:none!important}
 /* A "4A" (EV4.cena4A): só os metais ficam — os outros somem de todo, com
    os números dos eixos, as casas das séries e os textos —, e os metais
@@ -1477,7 +1480,8 @@ body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
 @keyframes feixe5{from{background-position:100% 0} to{background-position:0 0}}
 /* AS QUESTÕES 6 A 10 */
 .peca5 > svg{display:block;width:100%;height:100%;overflow:visible}
-.peca5.centro5{translate:-50% -50%}
+.peca5.centro5{translate:calc(-50% + var(--vx,0px)) calc(-50% + var(--vy,0px))}
+.peca5.pegando5,.pc.ficha5.pegando5{will-change:transform,translate}
 .peca5.arrasta5{pointer-events:auto;cursor:grab;touch-action:none}
 .peca5.arrasta5:not(.pegando5){transition:left .25s ease, top .25s ease, opacity .3s ease}
 .peca5.pegando5{z-index:40;cursor:grabbing}
@@ -1570,7 +1574,7 @@ body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
 .frasco5 .nv-b{animation:nevoa9 5.5s ease-in-out -2s infinite alternate-reverse}
 .frasco5 .nv-c{animation:nevoa9 8s ease-in-out -4s infinite alternate}
 @keyframes nevoa9{from{translate:-14px 6px} to{translate:16px -10px}}
-.lupa5{z-index:32;opacity:0;transition:opacity .2s ease}
+.lupa5{z-index:32;opacity:0;transition:opacity .2s ease;will-change:translate}
 .lupa5.on9{opacity:1}
 /* Q9: os tubos (o gás corre por eles), os botões vermelhos das válvulas, a névoa no bulbo */
 .cena9{z-index:21}
@@ -3688,7 +3692,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v28.3';
+const VERSAO = 'v28.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8079,6 +8083,8 @@ const EV4 = {
         /* "Toque no metal", quando ele já é líquido, até ao primeiro toque */
         this.prepara4A(m);
         this.toque4.classList.toggle('on', !emB && morf >= 1 && !POCA4.tocou);
+        /* acabada a narração, o play sai: quem faz a aula seguir é o toque na poça */
+        stage.classList.toggle('espera-poca', trilhaAtual === '4A' && acabou && !emB && !POCA4.tocou);
       }
       /* o que a "4A1" faz crescer */
       const mult = this.mult4 && this.mult4.get(+c.dataset.z);
@@ -8196,6 +8202,7 @@ const EV4 = {
     m.classList.remove('arruma4');
     if (POCA4.el){ POCA4.el.classList.remove('on', 'volta'); POCA4.el.style.opacity = '0'; POCA4.desliga(); }
     POCA4.tocou = false;
+    stage.classList.remove('espera-poca');
     if (this.toque4) this.toque4.classList.remove('on');
     (this.metais4 || []).forEach(c => {
       c.classList.remove('anda4', 'no-ar4', 'hg4', 'volta4');
@@ -8358,8 +8365,9 @@ const EV4 = {
      14,5 s       a panela vira como a face de um cubo, e a face nova é a
                   do choque (a face 3 do slide 4 do app do professor): o
                   cabo com o cobre nu, e a barra que o dedo arrasta até ele
-     fim          "Toque o metal no fio", a piscar, até o curto; feito o
-                  curto (e acabada a narração), o Saquei
+     fim          "Arraste o metal para o fio", a piscar, logo abaixo do
+                  garfo (anda com ele), até o curto; sem play enquanto isso;
+                  feito o curto (e acabada a narração), o Saquei
      O texto e o giro são função do relógio da narração; a barra e o
      choque, do dedo. */
   C4:{ de:3, ate:7, panela:9.5, gira:14.5, giraDura:0.9, cx:880, cy:492, esc:0.78 },
@@ -8407,6 +8415,8 @@ const EV4 = {
     if (virou) this.ligaEletro(); else if (this.E4.raf) this.paraEletro();
     /* o aviso, acabada a narração, até ao curto; e o Saquei, depois dele */
     this.alerta4C.classList.toggle('on', acabou && !this.curto4);
+    /* acabada a narração, o play sai: quem faz a aula seguir é o curto */
+    stage.classList.toggle('espera-curto', trilhaAtual === '4A2' && acabou && !this.curto4);
     const verde = acabou && this.curto4;
     if (verde !== this.verde4C){ this.verde4C = verde; this.saquei4(verde); }
     this.suja4C = true;
@@ -8435,12 +8445,9 @@ const EV4 = {
     this.cubo4C = cb;
     const al = document.createElement('div');
     al.className = 'toque4 alerta4C';
-    al.dataset.mont = 'aviso-toque-o-metal-no-fio';   /* peça da montagem (G), e texto editável */
-    al.textContent = 'Toque o metal no fio';
-    /* logo acima do cobre nu: o ponto (meio do descascado, 40 acima do fio)
-       da face de 440, levado à mesa pela escala do cubo */
-    al.style.left = (C.cx + ((NU4_X1 + NU4_X2) / 2 - 220) * C.esc).toFixed(1) + 'px';
-    al.style.top  = (C.cy + (FIO4_Y - 40 - 220) * C.esc).toFixed(1) + 'px';
+    al.dataset.mont = 'aviso-arraste-o-metal';   /* peça da montagem (G), e texto editável */
+    al.textContent = 'Arraste o metal para o fio';
+    /* (o lugar é o do garfo: logo abaixo dele, posto pelo poeBarra) */
     m.appendChild(al);
     this.alerta4C = al;
     this.preparaEletro();
@@ -8464,6 +8471,7 @@ const EV4 = {
       this.E4.bx = 220; this.E4.by = 330; this.poeBarra();
     }
     this.curto4 = false;
+    stage.classList.remove('espera-curto');
     if (this.verde4C){ this.verde4C = false; this.saquei4(false); }
     this.suja4C = false;
   },
@@ -9677,7 +9685,7 @@ const EV4 = {
   E4:{ bx:220, by:330, pega:null, raf:0, quadros:0, fagulhas:[] },
   /* o mesmo choque serve a dois cubos: o dos metais (a "4A2") e o do grafite
      (a "4B2", EV4.chGr); cada um com o seu estado e o que faz no curto */
-  chMet(){ return { cb:this.cubo4C, E:this.E4, curto:() => { this.curto4 = true; } }; },
+  chMet(){ return { cb:this.cubo4C, E:this.E4, curto:() => { this.curto4 = true; stage.classList.remove('espera-curto'); } }; },
   preparaEletro(ch = this.chMet()){
     const cx = ch.cb.querySelector('.choque4'), E = ch.E;
     const ponto = ev => {
@@ -9711,6 +9719,12 @@ const EV4 = {
     if (!b) return;
     b.style.left = ch.E.bx + 'px';
     b.style.top  = ch.E.by + 'px';
+    /* o "Arraste o metal para o fio" anda com o garfo, logo abaixo dele */
+    if (ch.cb === this.cubo4C && this.alerta4C){
+      const C = this.C4;
+      this.alerta4C.style.left = (C.cx + (ch.E.bx - 220) * C.esc).toFixed(1) + 'px';
+      this.alerta4C.style.top  = (C.cy + (ch.E.by + BARRA4_H / 2 + 24 - 220) * C.esc).toFixed(1) + 'px';
+    }
   },
   ligaEletro(ch = this.chMet()){
     if (ch.E.raf) return;
@@ -9815,7 +9829,7 @@ const EV4 = {
     if (QUIZ5.aberto) QUIZ5.fecha();
     this.tiraQuizNb();
     this.puxaAba(false);
-    stage.classList.remove('em-classes', 'espera-bobina', 'espera-fio');
+    stage.classList.remove('em-classes', 'espera-bobina', 'espera-fio', 'espera-poca', 'espera-curto');
     const m = this.mesa();
     if (m) m.classList.remove('chamaBlocos');
   },
@@ -9956,14 +9970,15 @@ const QUIZ5 = {
     const s = tocaEfeito('error');
     if (this.tropecos === 1) s.then(() => { if (g === this.g && this.aberto) tocaEfeito(vozDoErro()); });
   },
-  /* O ACERTO: a festa, a voz, e a questão seguinte (ou o cartão) */
-  async acerta(explica){
+  /* O ACERTO: a festa, a voz, e a questão seguinte (ou o cartão). 'fala':
+     uma fala gravada só para esse acerto, no lugar da voz de sempre */
+  async acerta(explica, fala){
     if (!this.aberto) return;
     this.travado = true;
     const g = this.g, ultima = this.passo === this.itens.length - 1;
     this.mesa().querySelectorAll('.pista5').forEach(e => e.classList.remove('pista5'));
     this.sl().querySelectorAll('.pista5').forEach(e => e.classList.remove('pista5'));
-    const voz = vozDoAcerto(ultima);
+    const voz = fala ? { frase:'Parabéns!', som:fala } : vozDoAcerto(ultima);
     const msg = this.caixa() && this.caixa().querySelector('.q3-msg');
     if (msg){ msg.textContent = voz.frase + (explica ? ' ' + explica : ''); msg.className = 'q3-msg ok'; }
     confete();
@@ -10056,26 +10071,39 @@ const QUIZ5 = {
     return d;
   },
   /* ARRASTAR uma ficha: segue o dedo (e chama mexe(x, y), se houver);
-     largada, chama solta(x, y) */
+     largada, chama solta(x, y). DURANTE O ARRASTO a peça anda pelo
+     transform (--vx, --vy), e não por left/top: mexer em left/top a cada
+     movimento do dedo refazia o desenho da mesa inteira (a tabela, as
+     texturas), e no celular a peça ficava muito atrás do dedo. A medida da
+     mesa é tirada uma vez, no toque. Largada, o lugar passa para left/top */
   arrastavel(c, solta, mexe){
     c.classList.add('arrasta5');
     c.addEventListener('pointerdown', ev => {
       if (!this.aberto || this.travado || c._preso) return;
       ev.preventDefault(); ev.stopPropagation();
-      const p = this.ponto(ev);
-      c._pega = { dx:c._x - p.x, dy:c._y - p.y };
+      const m = this.mesa(), r = m.getBoundingClientRect(), s = r.width / m.offsetWidth;
+      const p = { x:(ev.clientX - r.left) / s, y:(ev.clientY - r.top) / s };
+      c._pega = { dx:c._x - p.x, dy:c._y - p.y, r, s, bx:c._x, by:c._y };
       try { c.setPointerCapture(ev.pointerId); } catch (_) {}
       c.classList.add('pegando5');
     });
     c.addEventListener('pointermove', ev => {
-      if (!c._pega) return;
-      const p = this.ponto(ev);
-      this.poe(c, p.x + c._pega.dx, p.y + c._pega.dy);
+      const P = c._pega;
+      if (!P) return;
+      c._x = (ev.clientX - P.r.left) / P.s + P.dx;
+      c._y = (ev.clientY - P.r.top) / P.s + P.dy;
+      c.style.setProperty('--vx', (c._x - P.bx).toFixed(1) + 'px');
+      c.style.setProperty('--vy', (c._y - P.by).toFixed(1) + 'px');
       if (mexe) mexe(c._x, c._y);
     });
     const larga = () => {
       if (!c._pega) return;
       c._pega = null;
+      /* o lugar passa para left/top ainda sem transição (pegando5), e só
+         depois a peça volta a animar o que o solta pedir */
+      c.style.removeProperty('--vx'); c.style.removeProperty('--vy');
+      this.poe(c, c._x, c._y);
+      void c.offsetWidth;
       c.classList.remove('pegando5');
       solta(c._x, c._y);
     };
@@ -10152,7 +10180,8 @@ const QUESTOES_5 = [
         QUIZ3.cresce.call(QUIZ3, c);
         this.c = c;
         this.mat = EV4.veste(c, this.z === 80 ? 'hg' : 'br');
-        Q.acerta();
+        /* de primeira, a fala de parabéns gravada para cada líquido */
+        Q.acerta('', Q.tropecos ? null : this.z === 80 ? 'Audios/congratsHg.mp3' : 'Audios/congratsBr.mp3');
         return;
       }
       Q.erra(this.z === 80 ? 'Ele fica no meio da tabela e é usado nos garimpos para separar o ouro. Também era usado em termômetros antigos.' :'Ele é castanho-avermelhado e fica do lado verde.',
@@ -10648,9 +10677,12 @@ const QUESTOES_5 = [
           try { f.setPointerCapture(ev.pointerId); } catch (_) {}
           this.olhando = f;
           this.calaPedido();
-          this.olha(Q.ponto(ev));
+          /* a medida da mesa, uma vez no toque */
+          const m = Q.mesa(), r = m.getBoundingClientRect(), s = r.width / m.offsetWidth;
+          this.medida = ev2 => ({ x:(ev2.clientX - r.left) / s, y:(ev2.clientY - r.top) / s });
+          this.olha(this.medida(ev));
         });
-        f.addEventListener('pointermove', ev => { if (this.olhando === f) this.olha(Q.ponto(ev)); });
+        f.addEventListener('pointermove', ev => { if (this.olhando === f) this.olha(this.medida(ev)); });
         ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => f.addEventListener(n, () => {
           if (this.olhando !== f) return;
           this.olhando = null;
@@ -10984,7 +11016,8 @@ function frasco5SVG(letra){
    bocal (cada um mais alto, para não se cruzarem), a válvula com o botão
    vermelho em cima de cada rolha, e a pilha ligada ao bocal */
 const Q9 = { fx:[300, 480, 660], fy:580, lx:900, ly:290 };
-function Q9poe(el, x, y){ el._x = x; el._y = y; el.style.left = x.toFixed(1) + 'px'; el.style.top = y.toFixed(1) + 'px'; }
+/* a lupa anda só pelo transform (posta em 0, 0): segue o dedo sem refazer o desenho da mesa */
+function Q9poe(el, x, y){ el._x = x; el._y = y; el.style.setProperty('--vx', x.toFixed(1) + 'px'); el.style.setProperty('--vy', y.toFixed(1) + 'px'); }
 function q9SVG(){
   const by = Q9.ly + 48, valv = Q9.fy - 110 + 14;   /* o alto do bocal; o alto da rolha */
   const caminho = i => { const x = Q9.fx[i], alto = by - 42 + i * 14, entra = Q9.lx + 10 - i * 10;
@@ -11187,6 +11220,7 @@ const POCA4 = {
       /* o aluno tocou: o convite sai; e, acabada a "4A", vem o Saquei */
       if (!this.tocou){
         this.tocou = true;
+        stage.classList.remove('espera-poca');
         if (EV4.acabou4A()) EV4.saquei4(true);
       }
       try { el.setPointerCapture(ev.pointerId); } catch (_) {}
@@ -11410,22 +11444,28 @@ function fio4SVGcru(){
     '<g class="fagulhas"></g>' +
   '</svg>';
 }
-/* a barra que anda: o aço da panela */
+/* o metal que anda (a "4A2"): um garfo de aço inox, deitado, com os dentes
+   para a direita — na mesma caixa de 170 × 56 da barra que havia, para o
+   toque no cobre ser o mesmo */
 function barra4SVG(){
-  return '<svg viewBox="0 0 170 56" aria-label="Barra de metal" role="img">' +
+  const dentes = [17, 24.5, 32, 39.5].map(y =>
+    '<rect x="128" y="' + y + '" width="40" height="4.6" rx="2.3" fill="url(#b4-aco)"/>' +
+    '<rect x="130" y="' + (y + .6) + '" width="35" height="1.1" rx=".5" fill="#fff" opacity=".7"/>').join('');
+  return '<svg viewBox="0 0 170 56" aria-label="Garfo de metal" role="img">' +
     '<defs>' +
-      '<linearGradient id="b4-t" x1="0" y1="0" x2=".4" y2="1">' +
-        '<stop offset="0" stop-color="#EFF5FB"/><stop offset=".3" stop-color="#AEBBC8"/><stop offset="1" stop-color="#5F6B78"/></linearGradient>' +
-      '<linearGradient id="b4-f" x1="0" y1="0" x2="0" y2="1">' +
-        '<stop offset="0" stop-color="#0B0E12"/><stop offset=".18" stop-color="#252C34"/>' +
-        '<stop offset=".34" stop-color="#5F6B78"/><stop offset=".40" stop-color="#EFF5FB"/>' +
-        '<stop offset=".48" stop-color="#AEBBC8"/><stop offset=".64" stop-color="#5F6B78"/>' +
-        '<stop offset=".84" stop-color="#252C34"/><stop offset="1" stop-color="#AEBBC8"/></linearGradient>' +
+      '<linearGradient id="b4-aco" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0" stop-color="#FFFFFF"/><stop offset=".3" stop-color="#C9D2DB"/>' +
+        '<stop offset=".6" stop-color="#7C8792"/><stop offset="1" stop-color="#3A424B"/></linearGradient>' +
+      '<filter id="b4-sombra" x="-10%" y="-40%" width="120%" height="180%"><feGaussianBlur stdDeviation="2.2"/></filter>' +
     '</defs>' +
-    '<polygon points="16,14 140,6 162,20 40,30" fill="url(#b4-t)"/>' +
-    '<polygon points="40,30 162,20 162,42 40,52" fill="url(#b4-f)"/>' +
-    '<polygon points="16,14 40,30 40,52 16,36" fill="#252C34"/>' +
-    '<path d="M40,30 L162,20" stroke="#EFF5FB" stroke-width="1.3" opacity=".7" fill="none"/>' +
+    /* a sombra no chão, e o cabo (mais largo na ponta) */
+    '<ellipse cx="88" cy="48" rx="76" ry="4" fill="#000" opacity=".45" filter="url(#b4-sombra)"/>' +
+    '<path d="M6,29 C6,22.5 12,20.5 20,20.5 L84,24.6 C92,25.2 98,26.6 104,27 L104,31.4 C98,31.8 92,33.2 84,33.8 L20,37.9 C12,37.9 6,35.5 6,29 Z" fill="url(#b4-aco)"/>' +
+    '<path d="M14,23.6 L84,26.4" stroke="#fff" stroke-width="1.4" opacity=".75" stroke-linecap="round"/>' +
+    /* o pescoço que abre na cabeça, e os quatro dentes */
+    '<path d="M102,27 Q112,26.6 116,20.5 Q120,16 128,16 L132,16 L132,44.6 L128,44.6 Q120,44.6 116,38.5 Q112,31.8 102,31.4 Z" fill="url(#b4-aco)"/>' +
+    dentes +
+    '<path d="M118,20 Q122,17.2 128,17.2" stroke="#fff" stroke-width="1" opacity=".7" fill="none"/>' +
   '</svg>';
 }
 /* a barra de GRAFITE (a "4B2"): a mesma forma da de metal, no cinza-chumbo

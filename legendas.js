@@ -459,5 +459,14 @@ var LEGENDAS = {
   ],
   "quiz1": [
     [0,1.94,"Certo, vamos pra primeira questão."]
+  ],
+  "congratsHg": [
+    [0,2.98,"Caramba! Você lembrou que o mercúrio é o único"],
+    [2.98,5.07,"metal líquido. Parabéns!"]
+  ],
+  "congratsBr": [
+    [0,2.98,"Caramba! Você lembrou que o bromo é o único ametal"],
+    [2.98,5.96,"líquido. Parabéns! Pouca gente acerta"],
+    [5.96,7.16,"essa de primeira."]
   ]
 };
