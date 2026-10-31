@@ -848,6 +848,14 @@ exatamente como eram, mesmo com a janela do navegador mais larga do que
 que não a escureça (`color-scheme: only light`): o modo escuro automático
 de alguns celulares pintava de preto o fundo fora do palco.
 
+**No tablet (16:10, como o Galaxy Tab S9) é o mesmo, na vertical**
+(`palco-alto`): o papel vai até em cima e embaixo, o cabeçalho sobe e os
+botões descem. As camadas que cobrem a cena chegam às faixas pela própria
+cor, esticada até as bordas da tela (os breus esticam a caixa; o véu, o
+quiz e o jogo, um `::before` atrás do conteúdo) — e não por uma sombra em
+volta: a emenda entre a camada e a sombra, as duas semitransparentes, saía
+como uma linha na borda de cima e na de baixo do palco.
+
 | tecla | o que faz |
 |---|---|
 | ← → | voltar / avançar |

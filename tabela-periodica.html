@@ -129,9 +129,20 @@ html.palco-largo #viewport{
 }
 html.palco-largo #stage{background:transparent;box-shadow:none;overflow:visible}
 html.palco-largo #stage::before, html.palco-largo #stage::after{display:none}
-html.palco-largo .veu     {box-shadow:0 0 0 var(--folga) rgba(12,10,32,.87)}
-html.palco-largo .quiz    {box-shadow:0 0 0 var(--folga) rgba(12,10,32,.55)}
-html.palco-largo .memoria {box-shadow:0 0 0 var(--folga) rgba(7,6,22,.995)}
+/* AS CAMADAS QUE COBREM A CENA cobrem também as faixas. Não por uma sombra
+   em volta: a emenda entre a camada e a sombra, as duas semitransparentes,
+   saía como uma linha na borda do palco (no Tab S9). A cor delas passa
+   para um ::before esticado até as bordas da tela, atrás do conteúdo (que
+   fica no lugar); o breu do quiz, sem nada dentro, estica a caixa. */
+html:is(.palco-largo,.palco-alto) :is(.veu,.quiz,.memoria){background:none}
+html:is(.palco-largo,.palco-alto) :is(.veu,.quiz,.memoria)::before{content:'';position:absolute;z-index:-1;pointer-events:none}
+html.palco-largo :is(.veu,.quiz,.memoria)::before{inset:0 calc(-1 * var(--folga))}
+html.palco-alto  :is(.veu,.quiz,.memoria)::before{inset:calc(-1 * var(--folgav)) 0}
+html:is(.palco-largo,.palco-alto) .veu::before {background:rgba(12,10,32,.87)}
+html:is(.palco-largo,.palco-alto) .quiz::before{background:rgba(12,10,32,.55)}
+html:is(.palco-largo,.palco-alto) .memoria::before{background:radial-gradient(ellipse 92% 82% at 50% 46%,
+  rgba(20,17,46,.95) 0%, rgba(11,9,30,.985) 62%, rgba(7,6,22,.995) 100%)}
+html.palco-largo .breu-quiz{inset:0 calc(-1 * var(--folga))}
 html.palco-largo #flash-erro{box-shadow:0 0 0 var(--folga) rgba(220,38,60,.55)}
 html.palco-largo #som, html.palco-largo #som-dica{translate:var(--folga) 0}
 /* o da velocidade fica no canto do palco, junto do botão do carrossel, e
@@ -164,10 +175,8 @@ html.palco-alto #viewport{
 html.palco-alto.capa-escura #viewport{background:#14131B}
 html.palco-alto #stage{background:transparent;box-shadow:none;overflow:visible}
 html.palco-alto #stage::before, html.palco-alto #stage::after{display:none}
-html.palco-alto .veu     {box-shadow:0 0 0 var(--folgav) rgba(12,10,32,.87)}
-html.palco-alto .quiz    {box-shadow:0 0 0 var(--folgav) rgba(12,10,32,.55)}
-html.palco-alto .memoria {box-shadow:0 0 0 var(--folgav) rgba(7,6,22,.995)}
-html.palco-alto .breu-quiz{box-shadow:0 0 0 var(--folgav) #000}
+/* (as camadas que cobrem a cena: ver o palco largo, acima) */
+html.palco-alto .breu-quiz{inset:calc(-1 * var(--folgav)) 0}
 html.palco-alto #flash-erro{box-shadow:0 0 0 var(--folgav) rgba(220,38,60,.55)}
 /* o alto: o cabeçalho, o progresso, o carrossel e a velocidade */
 html.palco-alto .tira, html.palco-alto #ver-slides, html.palco-alto #vel{translate:0 calc(-1 * var(--folgav))}
@@ -865,8 +874,10 @@ html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
 .breu4{position:absolute;inset:0;z-index:3;background:rgba(12,10,32,.84);
   opacity:0;pointer-events:none;transition:opacity .7s ease}
 .breu4.on{opacity:1}
-html.palco-largo .breu4{box-shadow:0 0 0 var(--folga) rgba(12,10,32,.84)}
-html.palco-alto  .breu4{box-shadow:0 0 0 var(--folgav) rgba(12,10,32,.84)}
+/* (nas faixas da tela larga ou alta, o breu estica a própria caixa, e não
+   uma sombra: a emenda das duas, semitransparentes, era uma linha) */
+html.palco-largo .breu4{inset:0 calc(-1 * var(--folga))}
+html.palco-alto  .breu4{inset:calc(-1 * var(--folgav)) 0}
 .mesa.tipos .pc{transition:transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease, opacity .7s ease}
 .mesa.tipos .eixo,.mesa.tipos .casa{transition:opacity .7s ease}
 /* no slide 5 a tabela fica sem os números das linhas e das colunas */
@@ -3726,7 +3737,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v28.7';
+const VERSAO = 'v28.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
