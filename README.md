@@ -412,6 +412,7 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | `5A1` · 25,6 s / 26,7 s | o **K** e o **Na** crescem e acendem |
 | `5A1` · 31 s | o K e o Na apagam, e as letras de "Metais Alcalinos", no card, crescem uma a uma até ao fim (0,1 s cada; a anterior volta quando a seguinte cresce) |
 | os cards na montagem | cada card de nome é peça (`card-grupo-1` a `card-grupo-18`); na montagem (G) ficam à vista os das cinco famílias de nome e o da família no ar, para arrastar e mudar de tamanho |
+| os cards no celular | os lugares que o professor mediu no celular (`EV5.CARDS_NO_CELULAR`, o centro no palco, convertido para a mesa do celular): o 18 em x 1053, y 123 |
 | o brilho do card | o card do nome brilha em dourado, a pulsar, sempre que a família sobe — é o convite ao toque; o brilho sai quando o áudio do card começa (e não volta no fim dele) e volta quando a família sobe outra vez |
 | `5B1` · 1,9 s | digita “terras”, na cor do card |
 | `5B1` · 6 → 13 s | a foto da **cal** (`Imagens/cal.jpeg`), em fade, no lugar da montagem do professor: o centro em x 572, y 437, com 361 × 207; na montagem (G), peça `foto-cal` |
