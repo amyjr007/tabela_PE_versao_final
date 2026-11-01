@@ -3832,7 +3832,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v32.1';
+const VERSAO = 'v32.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -18175,7 +18175,7 @@ function pintaQuizzesDoSumario(){
     const k = b.dataset.quiz, feito = k in feitos, nota = feitos[k];
     b.classList.toggle('quiz-feito', feito);
     b.classList.toggle('quiz-falta', !feito);
-    b.querySelector('.nav-quiz').textContent = !feito ? 'falta fazer' :
+    b.querySelector('.nav-quiz').textContent = !feito ? '(falta fazer)' :
       (typeof nota === 'number' ? 'Nota ' + String(Math.round(nota * 10) / 10).replace('.', ',') : '') +
       /* (o jogo da memória leva só a nota) */
       (k === 'jogo' ? '' : (typeof nota === 'number' ? ' · ' : '') + 'pode refazer');
