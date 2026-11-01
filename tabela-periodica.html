@@ -2355,14 +2355,18 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
   text-shadow:0 0 10px rgba(255,255,255,.95), 0 0 3px #fff;opacity:0;transition:opacity .4s ease}
 .origem5.on{opacity:1}
 .origem5 i{font-style:italic;color:var(--cat-alcalinos)}
-.foto5{position:absolute;left:712px;top:172px;margin:0;z-index:25;pointer-events:none;
+/* (o lugar e o tamanho que o professor deixou na montagem: o centro em
+   x 805, y 390, a 1,83 — já postos aqui no tamanho, sem escala) */
+.foto5{position:absolute;left:805px;top:390px;transform:translate(-50%,-50%);margin:0;z-index:25;pointer-events:none;
   opacity:0;transition:opacity .7s ease;text-align:center}
 .foto5.on{opacity:1}
 /* na montagem a foto fica à vista (ela só aparece 3 s na 5A1) e pega o dedo */
 body.montagem .foto5{opacity:1;pointer-events:auto}
-.foto5 img{display:block;height:156px;width:auto;border-radius:10px;border:3px solid #fff;
-  box-shadow:0 10px 24px rgba(32,28,66,.3)}
-.foto5 figcaption{margin-top:4px;font-family:var(--display);font-weight:600;font-size:14px;color:var(--indigo)}
+.foto5 img{display:block;height:292px;width:auto;border-radius:16px;border:5px solid #fff;
+  box-shadow:0 16px 40px rgba(32,28,66,.32)}
+/* o nome, acima da foto */
+.foto5 figcaption{margin-bottom:6px;font-family:var(--display);font-weight:700;font-size:25px;line-height:1.1;
+  color:var(--indigo);white-space:nowrap;text-shadow:0 0 10px rgba(255,255,255,.95), 0 0 3px #fff}
 /* à espera do toque numa família, sem o play */
 #stage.espera-familia #som, #stage.espera-familia #som-dica{display:none!important}
 /* O QUIZ DO SLIDE 4: o quadro padrão das perguntas (o do quiz do slide
@@ -3807,7 +3811,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v29.7';
+const VERSAO = 'v29.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13270,7 +13274,7 @@ const EV5 = {
     const ft = document.createElement('figure');
     ft.className = 'foto5';
     ft.dataset.mont = 'foto-davy';      /* na montagem (G), peça: anda e muda de tamanho */
-    ft.innerHTML = '<img src="Imagens/humphry_davy.jpeg" alt="Humphry Davy" draggable="false"><figcaption>Humphry Davy</figcaption>';
+    ft.innerHTML = '<figcaption>Humphry Davy</figcaption><img src="Imagens/humphry_davy.jpeg" alt="Humphry Davy" draggable="false">';
     m.appendChild(ft);
     this.foto = ft;
     /* as famílias de nome: a cor e o atraso da boia, uma vez */
