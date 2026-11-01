@@ -468,6 +468,11 @@ var LEGENDAS = {
     [22.86,25.72,"Grupo 17 são os halogênios."],
     [25.72,28.6,"E o último grupo aqui são os gases nobres."]
   ],
+  "audio_tabela_5.2": [
+    [0,4.12,"Pronto, o tópico sobre os nomes famosos de algumas famílias já foi."],
+    [4.12,7.4,"Agora você pode refazer o quiz com questões novas,"],
+    [7.4,10.7,"mas parecidas, ou passar pro tópico 6."]
+  ],
   "audio_tabela_5A": [
     [0,1.42,"Metais alcalinos"]
   ],

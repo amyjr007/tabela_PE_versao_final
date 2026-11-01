@@ -448,7 +448,10 @@ de 6" digitada no alto, e a resposta é um toque na tabela. Acerto: o card
 cresce verde (nas de família, a coluna inteira sobe verde), confete,
 `funfare`, `applause` e a voz; erro: treme em vermelho, `error`, a dica (e,
 no primeiro, a voz do erro); no segundo erro, a resposta pulsa em âmbar. No
-fim, o cartão da nota (Refazer · Continuar, que leva ao slide 7). Enquanto o
+fim, o cartão da nota (Refazer · Continuar, que leva ao slide 7); depois do
+`statistics`, a fala **`5.2`** ("Pronto, o tópico sobre os nomes famosos…"),
+e o Refazer pulsa aos 5,2 s ("refazer o quiz") e o Continuar aos 8,8 s
+("passar pro tópico 6"). Enquanto o
 quiz está aberto, os números das colunas descem até ao topo da sua coluna,
 como no quiz do tópico 3, e saem de baixo da pergunta: o 1 e o 18 ficam
 sobre o H e o He; o 2, e com ele o 13 a 17, sobre a 2.ª linha; o 3, e com

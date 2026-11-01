@@ -109,6 +109,7 @@ const CASCA = [
   /* o slide 6: as principais famílias, os nomes e a origem deles */
   './Audios/audio_tabela_5.mp3',
   './Audios/audio_tabela_5.1.mp3',
+  './Audios/audio_tabela_5.2.mp3',
   './Audios/audio_tabela_5A.mp3',
   './Audios/audio_tabela_5A1.mp3',
   './Audios/audio_tabela_5B.mp3',
