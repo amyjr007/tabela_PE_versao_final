@@ -29,7 +29,8 @@ lado do título; feito (chegou ao cartão da nota), em verde, com a nota da
 última vez e "pode refazer" (ex.: "Nota 8,3 · pode refazer"). Fica guardado
 no aparelho (`QUIZ_FEITOS`, localStorage `tabela-aluno-quizzes`). No tópico 3
 as três partes (Quiz 1, 2 e 3) são um quiz só, com um cartão no fim, e
-ficam verdes juntas. O jogo da memória não entra.
+ficam verdes juntas. O jogo da memória também: vermelho com "falta fazer";
+acabado (o cartão da nota), verde, só com a nota.
 
 ## Os cubos
 
