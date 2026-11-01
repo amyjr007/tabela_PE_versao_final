@@ -2374,9 +2374,10 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 body.montagem .foto5{opacity:1;pointer-events:auto}
 .foto5 img{display:block;height:292px;width:auto;border-radius:16px;border:5px solid #fff;
   box-shadow:0 16px 40px rgba(32,28,66,.32)}
-/* a cal (5B1): deitada, no vazio, à direita do texto */
-.foto5.cal5{left:600px;top:262px}
-.foto5.cal5 img{height:170px}
+/* a cal (5B1), no lugar e no tamanho que o professor deixou na montagem: o
+   centro em x 572, y 437, com 361 × 207 (o tamanho já posto aqui, sem escala) */
+.foto5.cal5{left:572px;top:437px}
+.foto5.cal5 img{height:207px}
 /* o nome, acima da foto */
 .foto5 figcaption{margin-bottom:6px;font-family:var(--display);font-weight:700;font-size:25px;line-height:1.1;
   color:var(--indigo);white-space:nowrap;text-shadow:0 0 10px rgba(255,255,255,.95), 0 0 3px #fff}
@@ -3824,7 +3825,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v31.5';
+const VERSAO = 'v31.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13508,7 +13509,7 @@ const EV5 = {
      e da família do alumínio na "5"): [coluna, de, até] */
   ONDAS_COLUNA:{ '5E1':[18, 7.0, 9.0] },
   /* as fotos de cada card: [foto, de, até] (em fade) */
-  FOTOS_5:{ '5A1':['davy', 20.8, 24.0], '5B1':['cal', 6.0, 7.0] },
+  FOTOS_5:{ '5A1':['davy', 20.8, 24.0], '5B1':['cal', 6.0, 13.0] },
   /* a onda nas letras do nome, no card: [coluna, de, duração] — cada letra
      cresce (0,1 s, ou a duração repartida pelas letras), e a anterior volta
      quando a seguinte cresce */
