@@ -411,6 +411,7 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | `5E1` · 10 → 11,5 s | digita “não reagem com outros elementos”; fica até subir outra família |
 | `5C1` · 1,3 → 6,8 s | no vazio, digitados: “*chalkos*” (1,3 s) e ao lado " = minério" (3,5 s); embaixo “*gene*” (5 s) e ao lado " = formador" (6 s) — as palavras gregas entre aspas e em itálico; o texto dos cards todo na cor do card da família (`ORIGENS_5`) |
 | o lugar do texto dos cards | dos grupos 1 e 2, à esquerda (x 196); dos grupos da direita (16 a 18), encostado à direita, a acabar logo antes do grupo 13 (x 828), a crescer para a esquerda |
+| `5C1` · 8,2 → 9,2 s | as letras de "Calcogênios", no card, crescem uma a uma (a onda da 5A1, em 1 s) |
 | `5C1` · 10 → 11 s | apaga tudo e digita “formadores de minérios”; o texto fica à vista, também depois do áudio, até subir outra família |
 | `5C1` · 13,2 s / 14,2 s | o card dos calcogênios: o **O** cresce, depois o **S**; no fim do áudio voltam |
 | `5D1` · 1,8 → 5,6 s | digitados na cor do card: “*hals*” (1,8 s) e ao lado " = “sal”" (3 s); embaixo “*genes*” (4,1 s) e ao lado " = “formadores”" (4,9 s) |

@@ -3824,7 +3824,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v31.2';
+const VERSAO = 'v31.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13509,9 +13509,10 @@ const EV5 = {
   ONDAS_COLUNA:{ '5E1':[18, 7.0, 9.0] },
   /* as fotos de cada card: [foto, de, até] (em fade) */
   FOTOS_5:{ '5A1':['davy', 20.8, 24.0], '5B1':['cal', 6.0, 7.0] },
-  /* a onda nas letras do nome, no card: [coluna, de] — cada letra cresce
-     0,1 s, e a anterior volta quando a seguinte cresce */
-  ONDAS_NOME:{ '5A1':[1, 31.0], '5B1':[2, 16.0] },
+  /* a onda nas letras do nome, no card: [coluna, de, duração] — cada letra
+     cresce (0,1 s, ou a duração repartida pelas letras), e a anterior volta
+     quando a seguinte cresce */
+  ONDAS_NOME:{ '5A1':[1, 31.0], '5B1':[2, 16.0], '5C1':[16, 8.2, 1.0] },
   /* A CENA DE UM CARD: as palavras dele e, na 5A1, a foto de Davy e o K e o
      Na; t < 0 tira-a */
   cenaCartao(t, realce, cartao){
@@ -13550,7 +13551,8 @@ const EV5 = {
     /* a onda nas letras do nome, no card */
     const onda = on && this.ONDAS_NOME[cartao];
     const letras = onda ? this.nomes[onda[0]].children : [];
-    const k = onda && t >= onda[1] ? Math.floor((t - onda[1]) / 0.1) : -1;
+    const passo = onda && onda[2] ? onda[2] / letras.length : 0.1;
+    const k = onda && t >= onda[1] ? Math.floor((t - onda[1]) / passo) : -1;
     const alvo = k >= 0 && k < letras.length ? letras[k] : null;
     if (alvo !== this.letraOnda){
       if (this.letraOnda) this.letraOnda.classList.remove('cresce5');
