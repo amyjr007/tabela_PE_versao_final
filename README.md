@@ -445,12 +445,16 @@ ele o 4 a 12, sobre a 4.ª (classe `quiz6`). Ao abrir e ao fechar, deslizam.
 Na resposta certa de família, o número sobe junto com ela, o mesmo tanto
 (`--sobe5`), e desce com ela na questão seguinte.
 
-1. o último elemento alcalino (o Fr);
-2. o 3º elemento dos gases nobres (o Ar);
-3. a família dos alcalinoterrosos (o grupo 2);
-4. a família dos halogênios (o 17);
-5. qualquer elemento que antecede um calcogênio (o grupo 15);
-6. qualquer elemento posterior aos halogênios (o 18).
+As questões são sorteadas a cada vez que o quiz abre (e no Refazer), nos
+seis modelos do professor, entre as cinco famílias de nome (`sorteiaQuestoes6`):
+
+1. o primeiro ou o último de uma família ("Toque no último elemento alcalino.");
+2. o 2º a 5º de outra família, contando de cima para baixo ("Toque no 3º elemento dos gases nobres.");
+3. e 4. duas famílias inteiras, diferentes ("Toque na família dos halogênios."; o H não vale como alcalino);
+5. qualquer elemento que antecede um elemento da família (2, 16, 17 ou 18) — o vizinho da esquerda, na mesma linha;
+6. qualquer elemento posterior a uma família (1, 2, 16 ou 17) — o vizinho da direita, na mesma linha; nunca com a mesma coluna de resposta da 5.
+
+As dicas acompanham a família sorteada.
 
 ### Slide 7 · Os Grupos A e B — Os elementos principais
 

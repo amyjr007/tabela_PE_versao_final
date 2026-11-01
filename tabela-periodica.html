@@ -3825,7 +3825,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v31.7';
+const VERSAO = 'v31.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13661,20 +13661,62 @@ window.EV5 = EV5;
    dica, e no segundo erro a resposta pulsa em âmbar. No fim, o cartão da
    nota (Refazer · Continuar).
    ============================================================ */
-const QUESTOES_6 = [
-  { q:'Toque no último elemento alcalino.', certo:c => +c.dataset.z === 87,
-    dica:'Os alcalinos são a família 1 da tabela. O último deles fica no período 7.' },
-  { q:'Toque no 3º elemento dos gases nobres.', certo:c => +c.dataset.z === 18,
-    dica:'Os gases nobres são a família 18. Conte de cima para baixo na coluna.' },
-  { q:'Toque na família dos alcalinoterrosos.', familia:2,
-    dica:'Os alcalinoterrosos ocupam a família 2, ao lado dos alcalinos.' },
-  { q:'Toque na família dos halogênios.', familia:17,
-    dica:'Os halogênios são a família 17, logo ao lado dos gases nobres.' },
-  { q:'Toque em qualquer elemento que antecede um calcogênio.', certo:c => +c.dataset.col === 15,
-    dica:'Os calcogênios são a família 16. Os que os antecedem ficam na família 15.' },
-  { q:'Toque em qualquer elemento posterior aos halogênios.', certo:c => +c.dataset.col === 18,
-    dica:'Os halogênios são a família 17. Os elementos após eles ficam na família 18.' }
-];
+/* AS QUESTÕES SORTEADAS: os seis modelos de cima, cada vez com outra
+   família (e outra posição), sorteados a cada vez que o quiz abre (e no
+   Refazer). As famílias: o plural, o singular ("o último ___") e a dica
+   da questão "toque na família" */
+const FAMS_6 = {
+  1:  { pl:'alcalinos', sing:'elemento alcalino', um:'alcalino',
+        acha:'Os alcalinos são a família 1, a primeira coluna (o H não é alcalino).' },
+  2:  { pl:'alcalinoterrosos', sing:'elemento alcalinoterroso', um:'alcalinoterroso',
+        acha:'Os alcalinoterrosos ocupam a família 2, ao lado dos alcalinos.' },
+  16: { pl:'calcogênios', sing:'calcogênio', um:'calcogênio',
+        acha:'Os calcogênios são a família 16, a do oxigênio.' },
+  17: { pl:'halogênios', sing:'halogênio', um:'halogênio',
+        acha:'Os halogênios são a família 17, logo ao lado dos gases nobres.' },
+  18: { pl:'gases nobres', sing:'gás nobre', um:'gás nobre',
+        acha:'Os gases nobres são a família 18, a última coluna.' }
+};
+/* o card na mesma linha, logo antes (ou logo depois) de um da família */
+const vizinho6 = (c, col, lado) => +c.dataset.col === col + lado &&
+  EV5.familia(col).some(e => e.dataset.linha === c.dataset.linha);
+function sorteiaQuestoes6(){
+  const fams = embaralha(Object.keys(FAMS_6).map(Number));
+  const so = l => l[Math.floor(Math.random() * l.length)];
+  const qs = [];
+  let col1 = 0, col5 = 0;
+  /* 1 · o primeiro ou o último da família */
+  {
+    const col = col1 = so(fams), F = FAMS_6[col], l = EV5.familia(col);
+    const ult = Math.random() < .6, alvo = ult ? l[l.length - 1] : l[0];
+    qs.push({ q:'Toque no ' + (ult ? 'último ' : 'primeiro ') + F.sing + '.', certo:c => c === alvo,
+      dica:'Os ' + F.pl + ' são a família ' + col + ' da tabela. O ' + (ult ? 'último' : 'primeiro') +
+           ' deles fica no período ' + alvo.dataset.linha + '.' });
+  }
+  /* 2 · o n-ésimo, contando de cima para baixo (de 2 a 5; outra família) */
+  {
+    const col = so(fams.filter(f => f !== col1)), F = FAMS_6[col], l = EV5.familia(col);
+    const n = 2 + Math.floor(Math.random() * Math.min(4, l.length - 1)), alvo = l[n - 1];
+    qs.push({ q:'Toque no ' + n + 'º elemento dos ' + F.pl + '.', certo:c => c === alvo,
+      dica:'Os ' + F.pl + ' são a família ' + col + '. Conte de cima para baixo na coluna.' });
+  }
+  /* 3 e 4 · a família inteira (duas diferentes) */
+  fams.slice(0, 2).forEach(col => qs.push({ q:'Toque na família dos ' + FAMS_6[col].pl + '.', familia:col, dica:FAMS_6[col].acha }));
+  /* 5 · o que antecede um elemento da família (as que têm vizinha à esquerda) */
+  {
+    const col = col5 = so([2, 16, 17, 18]), F = FAMS_6[col];
+    qs.push({ q:'Toque em qualquer elemento que antecede um ' + F.um + '.', certo:c => vizinho6(c, col, -1),
+      dica:'Os ' + F.pl + ' são a família ' + col + '. Os que os antecedem ficam na família ' + (col - 1) + '.' });
+  }
+  /* 6 · o que vem depois (as que têm vizinha à direita; nunca com a mesma
+     coluna de resposta da 5 — antes do 18 e depois do 16 são ambas a 17) */
+  {
+    const col = so([1, 2, 16, 17].filter(f => f + 1 !== col5 - 1)), F = FAMS_6[col];
+    qs.push({ q:'Toque em qualquer elemento posterior aos ' + F.pl + '.', certo:c => vizinho6(c, col, +1),
+      dica:'Os ' + F.pl + ' são a família ' + col + '. Os elementos após eles ficam na família ' + (col + 1) + '.' });
+  }
+  return qs;
+}
 const QUIZ6 = {
   aberto:false, passo:0, itens:[], erros:0, tropecos:0, travado:false, g:0, q:null, marcados:[], digT:0,
   sl(){ return slides[5]; },
@@ -13689,7 +13731,7 @@ const QUIZ6 = {
     SEQ.comecou = true;
     VIDA.desliga();
     EV5.desce();
-    this.itens = QUESTOES_6.map(Q => Object.assign({}, Q));
+    this.itens = sorteiaQuestoes6();
     this.passo = 0; this.erros = 0; this.aberto = true;
     const g = ++this.g, sl = this.sl();
     stage.classList.add('em-quiz');
@@ -13739,7 +13781,8 @@ const QUIZ6 = {
     const Q = this.q;
     if (Q.familia){
       const col = +c.dataset.col, els = col === 1 ? EV5.familia(1) : EV5.coluna(col);
-      if (col === Q.familia){
+      /* (o H não é alcalino: tocá-lo não escolhe a família 1) */
+      if (col === Q.familia && +c.dataset.z !== 1){
         els.forEach(e => { e.classList.add('certa3'); EV5.levanta(e, EV5.altura(col)); });
         const num = this.mesa().querySelector('.eixo[data-grupo="' + col + '"]');
         if (num) num.style.setProperty('--sobe5', EV5.altura(col) + 'px');
