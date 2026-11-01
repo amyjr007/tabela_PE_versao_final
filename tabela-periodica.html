@@ -3825,7 +3825,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v31.6';
+const VERSAO = 'v31.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13513,7 +13513,7 @@ const EV5 = {
   /* a onda nas letras do nome, no card: [coluna, de, duração] — cada letra
      cresce (0,1 s, ou a duração repartida pelas letras), e a anterior volta
      quando a seguinte cresce */
-  ONDAS_NOME:{ '5A1':[1, 31.0], '5B1':[2, 16.0], '5C1':[16, 8.2, 1.0], '5D1':[17, 7.0, 1.0], '5E1':[18, 0.0, 1.0] },
+  ONDAS_NOME:{ '5A1':[1, 31.0], '5B1':[2, 16.0, 1.8],      /* (o áudio acaba aos 17,95 s: a onda toda cabe antes) */ '5C1':[16, 8.2, 1.0], '5D1':[17, 7.0, 1.0], '5E1':[18, 0.0, 1.0] },
   /* A CENA DE UM CARD: as palavras dele e, na 5A1, a foto de Davy e o K e o
      Na; t < 0 tira-a */
   cenaCartao(t, realce, cartao){
