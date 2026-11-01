@@ -22,6 +22,15 @@ A passagem entre as duas é o cubo girando, a mesma do app do professor.
 Os outros slides entram na lista `SLIDES`, no alto do script, e o resto
 do arquivo não muda.
 
+## Os quizzes no sumário
+
+No sumário, cada quiz por fazer aparece em vermelho, com "falta fazer" ao
+lado do título; feito (chegou ao cartão da nota), em verde, com a nota da
+última vez e "pode refazer" (ex.: "Nota 8,3 · pode refazer"). Fica guardado
+no aparelho (`QUIZ_FEITOS`, localStorage `tabela-aluno-quizzes`). No tópico 3
+as três partes (Quiz 1, 2 e 3) são um quiz só, com um cartão no fim, e
+ficam verdes juntas. O jogo da memória não entra.
+
 ## Os cubos
 
 Cada elemento é um **cubo de seis faces iguais**: número atômico,

@@ -3228,6 +3228,13 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
 .sum-sub.sum-secao .nav-txt b{font-weight:700}
 .sum-sub.na-secao{padding-left:34px}
 .sum-subs .nav-variantes{margin:0 0 6px 44px}
+/* OS QUIZZES: por fazer, em vermelho, com "falta fazer"; feitos (chegaram ao
+   cartão da nota), em verde, com "Feito, mas pode refazer" (QUIZ_FEITOS) */
+.nav-quiz{margin-left:8px;font-family:var(--display);font-size:12.5px;font-weight:600;white-space:nowrap}
+.sum-sub[data-quiz] .nav-txt{display:block}
+.sum-sub[data-quiz] .nav-txt b{display:inline}
+.nav-item.quiz-falta .nav-txt b, .nav-item.quiz-falta .nav-quiz, .nav-item.quiz-falta .sum-letra{color:#C62828}
+.nav-item.quiz-feito .nav-txt b, .nav-item.quiz-feito .nav-quiz, .nav-item.quiz-feito .sum-letra{color:#1E8E4E}
 /* no celular deitado a tela é baixa: o cabeçalho encolhe e o rodapé sai,
    e a altura fica para a lista */
 @media (max-height:500px){
@@ -3825,7 +3832,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v31.8';
+const VERSAO = 'v31.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -10264,6 +10271,7 @@ const QUIZ5 = {
   resultado(){
     this.sl().querySelectorAll('.quiz3.q5').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
     const n = this.itens.length, e = this.erros;
+    QUIZ_FEITOS.marca('q4', Math.round(Math.max(0, n - e) / n * 100) / 10);      /* feito: verde no sumário */
     cartaoDoResultado(Math.round(Math.max(0, n - e) / n * 100) / 10,
       n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
       this.sl(), () => this.abre(), () => { this.fecha(); go(5); });
@@ -13851,6 +13859,7 @@ const QUIZ6 = {
   resultado(){
     this.sl().querySelectorAll('.quiz3.q5').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
     const n = this.itens.length, e = this.erros;
+    QUIZ_FEITOS.marca('q5', Math.round(Math.max(0, n - e) / n * 100) / 10);      /* feito: verde no sumário */
     cartaoDoResultado(Math.round(Math.max(0, n - e) / n * 100) / 10,
       n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
       this.sl(), () => this.abre(), () => { this.fecha(); go(6); });
@@ -14729,6 +14738,7 @@ const QUIZ4 = {
   resultado(){
     this.despede();
     const n = 3 + CARROSSEL_Q4.length + EIXOS_Q8.length, e = this.erros;
+    QUIZ_FEITOS.marca('q3', Math.round(Math.max(0, n - e) / n * 100) / 10);      /* feito: verde no sumário */
     cartaoDoResultado(Math.round(Math.max(0, n - e) / n * 100) / 10,
       n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
       /* depois do "statistics", a fala do fim (3.7B); o Refazer volta ao Quiz 1 */
@@ -15050,6 +15060,7 @@ const QUIZ3 = {
     this.despede();
     /* cada erro desconta o valor de uma questão (e a nota não desce de 0) */
     const n = this.itens.length, e = this.erros;
+    QUIZ_FEITOS.marca('q2', Math.round(Math.max(0, n - e) / n * 100) / 10);      /* feito: verde no sumário */
     cartaoDoResultado(Math.round(Math.max(0, n - e) / n * 100) / 10,
       n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
       slides[2], () => this.abre(), () => { this.fecha(); go(3); }, 'Audios/audio_tabela_2.5B.mp3');
@@ -16193,6 +16204,8 @@ const QUIZ = {
     cx.classList.add('nota-on');
     this.mostrandoNota = true;
     this.nota = nota;
+    /* feito: o sumário pinta-o de verde, com a nota (o da 1.4 é o Quiz 2; o da 1.3, o 1) */
+    QUIZ_FEITOS.marca(this.origem === '1.4' ? 'q1-2' : 'q1-1', nota);
     tocaEfeito('statistics');
     /* o play fica fora de cena: quem segue é o Continuar do cartão, que
        toca a narração seguinte, ou o Refazer, que abre outro quiz igual */
@@ -18138,17 +18151,43 @@ function telaCheia(){
      variantes     atalhos para uma versão do tópico
      engatilhado   o tópico ainda não existe: aparece, mas não abre
    ============================================================ */
+/* OS QUIZZES JÁ FEITOS — os que chegaram ao cartão da nota, com a nota
+   (a da última vez), guardados no aparelho. No sumário, o quiz por fazer
+   fica em vermelho, com "falta fazer"; o feito, em verde, com a nota e
+   "pode refazer". As chaves vão em cada tópico de quiz (quiz:'q…'); no
+   tópico 3 as três partes são um quiz só, com um cartão no fim */
+const QUIZ_FEITOS = {
+  CHAVE: 'tabela-aluno-quizzes',
+  le(){ try { const v = JSON.parse(localStorage.getItem(this.CHAVE) || '{}'); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; } catch (_) { return {}; } },
+  marca(k, nota){
+    const s = this.le();
+    s[k] = nota;
+    try { localStorage.setItem(this.CHAVE, JSON.stringify(s)); } catch (_) {}
+    pintaQuizzesDoSumario();
+  }
+};
+function pintaQuizzesDoSumario(){
+  if (!window.navGaveta) return;
+  const feitos = QUIZ_FEITOS.le();
+  navGaveta.querySelectorAll('.nav-item[data-quiz]').forEach(b => {
+    const k = b.dataset.quiz, feito = k in feitos, nota = feitos[k];
+    b.classList.toggle('quiz-feito', feito);
+    b.classList.toggle('quiz-falta', !feito);
+    b.querySelector('.nav-quiz').textContent = !feito ? 'falta fazer' :
+      (typeof nota === 'number' ? 'Nota ' + String(Math.round(nota * 10) / 10).replace('.', ',') + ' · ' : '') + 'pode refazer';
+  });
+}
 const NAV_TOPICOS = [
   { titulo:'Visão geral da tabela', sub:'o slide desde o começo', slide:1,
     entra(){ /* o recomeço do slide já é o tópico */ } },
-  { titulo:'Quiz 1', sub:'aos 35,8 s da 1.3A ou aos 35,5 s da 1.3B', slide:1,
+  { titulo:'Quiz 1', sub:'aos 35,8 s da 1.3A ou aos 35,5 s da 1.3B', slide:1, quiz:'q1-1',
     variantes:[ { id:'1.3A', rotulo:'1.3A · uma letra' }, { id:'1.3B', rotulo:'1.3B · duas letras' } ],
     entra(v, g){
       const c = eleitoDaNavegacao(v === '1.3A' ? 1 : v === '1.3B' ? 2 : 0);
       const id = c.dataset.sym.length === 1 ? '1.3A' : '1.3B';
       depoisDaMesa(g, () => tocaDesde(id, QUIZ_NA_HORA[id], g));
     } },
-  { titulo:'Quiz 2', sub:'aos 47 s da 1.4 · os nomes diferentes', slide:1,
+  { titulo:'Quiz 2', sub:'aos 47 s da 1.4 · os nomes diferentes', slide:1, quiz:'q1-2',
     entra(v, g){
       eleitoDaNavegacao(0);
       depoisDaMesa(g, () => tocaDesde('1.4', QUIZ_NA_HORA['1.4'], g));
@@ -18177,7 +18216,7 @@ const NAV_TOPICOS = [
       TP.todos().filter(c => +c.dataset.z <= ENCAIXE.sozinhoAte).forEach(poeNoLugarJa);
       depoisDaMesa(g, () => tocaDesde('2.3', 4, g));
     } },
-  { titulo:'Quiz', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:2,
+  { titulo:'Quiz', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:2, quiz:'q2',
     entra(v, g){
       semTransicaoUmInstante();
       trilhaAtual = -1;
@@ -18194,11 +18233,11 @@ const NAV_TOPICOS = [
     entra(){ /* o recomeço do slide já é o tópico */ } },
   /* o quiz em três partes: as questões 01 a 03, a 04 (o carrossel), e as
      dos números da tabela */
-  { titulo:'Quiz 1', sub:'o começo da 3.3: as questões 01 a 03', slide:3,
+  { titulo:'Quiz 1', sub:'o começo da 3.3: as questões 01 a 03', slide:3, quiz:'q3',
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('3.3', 0, g)); } },
-  { titulo:'Quiz 2', sub:'o começo da 3.6: a questão 04, o carrossel', slide:3,
+  { titulo:'Quiz 2', sub:'o começo da 3.6: a questão 04, o carrossel', slide:3, quiz:'q3',
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('3.6', 0, g)); } },
-  { titulo:'Quiz 3', sub:'o começo da 3.7: os números da tabela', slide:3,
+  { titulo:'Quiz 3', sub:'o começo da 3.7: os números da tabela', slide:3, quiz:'q3',
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('3.7', 0, g)); } },
   /* ---- o slide 5 · Os tipos de elementos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:4,
@@ -18229,7 +18268,7 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4C2', 0, g)); } },
   { titulo:'O brilho sob descarga', sub:'o começo da 4C3: a bobina de Tesla', slide:4,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('4C3', 0, g)); } },
-  { titulo:'Quiz sobre os tipos de elementos', secao:'4.4', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:4,
+  { titulo:'Quiz sobre os tipos de elementos', secao:'4.4', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:4, quiz:'q4',
     entra(v, g){
       /* a mesa fica como na escolha da classe (a tabela montada), sem
          voz; e o quiz abre já, como se o botão tivesse sido tocado */
@@ -18249,7 +18288,7 @@ const NAV_TOPICOS = [
   /* ---- o slide 6 · As principais famílias ---- */
   { titulo:'Início', sub:'o começo do slide', slide:5,
     entra(){ /* o recomeço do slide já é o tópico */ } },
-  { titulo:'Quiz sobre as famílias', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:5,
+  { titulo:'Quiz sobre as famílias', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:5, quiz:'q5',
     entra(v, g){
       /* a tabela como no fim da "5", sem voz, e o quiz abre já */
       depoisDaMesa(g, () => {
@@ -18528,7 +18567,9 @@ function montaNav(){
         if (t.secao){ k = 0; naSecao = true; }
         /* só o título: o 'sub' de cada tópico é nota técnica, e fica no código */
         b.innerHTML = '<span class="sum-letra">' + marca + '</span><span class="nav-txt"><b></b>' +
-          (t.engatilhado ? '<span class="nav-breve">em breve</span>' : '') + '</span>';
+          (t.engatilhado ? '<span class="nav-breve">em breve</span>' : '') +
+          (t.quiz ? '<span class="nav-quiz"></span>' : '') + '</span>';
+        if (t.quiz) b.dataset.quiz = t.quiz;
         b.querySelector('b').textContent = t.titulo;
         b.querySelector('b').insertAdjacentHTML('beforeend', '<span class="nav-aqui">aqui</span>');
         if (t.engatilhado) b.disabled = true;
@@ -18544,6 +18585,7 @@ function montaNav(){
     lista.appendChild(cap);
   }
   document.body.append(navAlca, navFundo, navGaveta);
+  pintaQuizzesDoSumario();
   navNoSlide();
 }
 function navAberta(){ return !!navGaveta && navGaveta.classList.contains('aberta'); }
