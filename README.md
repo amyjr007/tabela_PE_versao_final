@@ -407,6 +407,7 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | `5B1` · 6 → 7 s | a foto da **cal** (`Imagens/cal.jpeg`), em fade, no vazio à direita do texto; na montagem (G), peça `foto-cal` |
 | `5B1` · 12 → 13 s | apaga tudo e digita “terras alcalinas”; fica até subir outra família |
 | `5B1` · 16 s | as letras de "Metais Alcalinoterrosos", no card, crescem uma a uma (a mesma onda da 5A1, `ONDAS_NOME`) |
+| `5E1` · 0 → 1 s | as letras de "Gases Nobres", no card, crescem uma a uma (a onda da 5A1, em 1 s) |
 | `5E1` · 7 → 9 s | os gases nobres crescem um a um, de cima para baixo (a onda do grupo 2 na "5", `ONDAS_COLUNA`) |
 | `5E1` · 10 → 11,5 s | digita “não reagem com outros elementos”; fica até subir outra família |
 | `5C1` · 1,3 → 6,8 s | no vazio, digitados: “*chalkos*” (1,3 s) e ao lado " = minério" (3,5 s); embaixo “*gene*” (5 s) e ao lado " = formador" (6 s) — as palavras gregas entre aspas e em itálico; o texto dos cards todo na cor do card da família (`ORIGENS_5`) |
