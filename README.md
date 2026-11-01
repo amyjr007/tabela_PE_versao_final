@@ -394,7 +394,7 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | `5` · 27,6 s | "Algumas famílias têm nomes famosos." (sai aos 41 s) |
 | `5` · 35 s | sobe o grupo 18, com "Gases Nobres" digitado à esquerda dele |
 | `5` · 41 s | os grupos 1 (sem o H), 2, 16, 17 e 18 ganham a cor deles e boiam devagar; o 18 desce |
-| fim da `5` | o play sai, e cada família responde ao toque: sobe (só uma de cada vez) e o **nome** aparece junto, num card — na linha 1 para o 1, o 2 e do 13 ao 18 (o 18 à esquerda do He), na linha 3 por cima dos de transição. As famílias sem nome famoso são "Família do Boro", "Família do Ferro"… O H só dá a volta dele |
+| fim da `5` | o play sai, e cada família responde ao toque com a animação do `snapUp` do tópico 4 do app do professor: a coluna inteira sobe 1,3 card de uma vez, com mola (0,32 s; o 18 sobe só 46 px, para o He não chegar ao botão do carrossel), e desce em 0,28 s — só uma no ar de cada vez. O **nome** aparece num card um pouco acima da linha 1, ao lado da coluna (à direita até ao grupo 15, à esquerda do 16 ao 18), entrando a deslizar 60 px com mola (0,52 s); sai a deslizar de volta, a apagar. Subindo o grupo 1, o **H** (que não é alcalino) desliza para o lado, para a casa vazia da linha 1 no grupo 2, e volta quando ele desce. As famílias sem nome famoso são "Família do Boro", "Família do Ferro"…; tocado sozinho, o H só dá a volta dele |
 | o toque nas famílias de nome | o nome é falado: grupo 1 → `5A`, 2 → `5B`, 16 → `5C`, 17 → `5D`, 18 → `5E`; o card do nome, com a setinha, toca a origem dele (`5A1` a `5E1`) |
 | `5A1` · 2,6 s / 4,4 s | "*al-qali*", em itálico; ao lado, " = Cinzas de plantas" |
 | `5A1` · 20,8 → 24 s | a foto de **Humphry Davy** (`Imagens/humphry_davy.jpeg`), em fade |
