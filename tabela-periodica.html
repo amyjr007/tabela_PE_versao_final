@@ -2370,10 +2370,13 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 .foto5{position:absolute;left:732px;top:353px;transform:translate(-50%,-50%);margin:0;z-index:25;pointer-events:none;
   opacity:0;transition:opacity .7s ease;text-align:center}
 .foto5.on{opacity:1}
-/* na montagem a foto fica à vista (ela só aparece 3 s na 5A1) e pega o dedo */
+/* na montagem as fotos ficam à vista (elas só aparecem uns segundos) e pegam o dedo */
 body.montagem .foto5{opacity:1;pointer-events:auto}
 .foto5 img{display:block;height:292px;width:auto;border-radius:16px;border:5px solid #fff;
   box-shadow:0 16px 40px rgba(32,28,66,.32)}
+/* a cal (5B1): deitada, no vazio, à direita do texto */
+.foto5.cal5{left:600px;top:262px}
+.foto5.cal5 img{height:170px}
 /* o nome, acima da foto */
 .foto5 figcaption{margin-bottom:6px;font-family:var(--display);font-weight:700;font-size:25px;line-height:1.1;
   color:var(--indigo);white-space:nowrap;text-shadow:0 0 10px rgba(255,255,255,.95), 0 0 3px #fff}
@@ -3821,7 +3824,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v31.0';
+const VERSAO = 'v31.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13227,8 +13230,8 @@ const EV5 = {
         mao:[3.0, 6.0] },     /* a mãozinha clica no play do card (mímica) */
   maoOn:false,
   /* a 5A1: a origem do nome dos alcalinos */
-  a1:{ foto:[20.8, 24.0], k:25.6, na:26.7, fim:31.0, onda:31.0, passoOnda:0.1 },
-  letraOnda:-1,
+  a1:{ k:25.6, na:26.7, fim:31.0 },
+  letraOnda:null,
   CARTOES:['5A1', '5B1', '5C1', '5D1', '5E1'],
   /* os destaques das outras origens, [segundo, Z]: cada um cresce e fica até
      ao fim do áudio — na 5C1 o O e o S; na 5D1 o Cl, e aos 16,7 s os
@@ -13285,12 +13288,19 @@ const EV5 = {
     o.className = 'origem5';
     m.appendChild(o);
     this.origem = o;
-    const ft = document.createElement('figure');
-    ft.className = 'foto5';
-    ft.dataset.mont = 'foto-davy';      /* na montagem (G), peça: anda e muda de tamanho */
-    ft.innerHTML = '<figcaption>Humphry Davy</figcaption><img src="Imagens/humphry_davy.jpeg" alt="Humphry Davy" draggable="false">';
-    m.appendChild(ft);
-    this.foto = ft;
+    /* as fotos dos cards (na montagem, G, cada uma é peça: anda e muda de tamanho) */
+    const foto = (cls, mont, html) => {
+      const ft = document.createElement('figure');
+      ft.className = 'foto5 ' + cls;
+      ft.dataset.mont = mont;
+      ft.innerHTML = html;
+      m.appendChild(ft);
+      return ft;
+    };
+    this.fotos = {
+      davy: foto('davy5', 'foto-davy', '<figcaption>Humphry Davy</figcaption><img src="Imagens/humphry_davy.jpeg" alt="Humphry Davy" draggable="false">'),
+      cal:  foto('cal5', 'foto-cal', '<img src="Imagens/cal.jpeg" alt="Um saco de cal e um monte de cal em pó" draggable="false">')
+    };
     /* as famílias de nome: a cor e o atraso da boia, uma vez */
     NOMEADAS_5.forEach(col => this.familia(col).forEach((c, i) => {
       c.style.setProperty('--c5', FAMILIAS_5[col].cor);
@@ -13476,7 +13486,7 @@ const EV5 = {
     b.style.setProperty('--sd', sd);
   },
   /* AS PALAVRAS DE CADA CARD, digitadas no vazio: as linhas, e em cada uma
-     as partes [texto, itálico?, de, até] (a palavra antiga em itálico, na
+     as partes [texto, itálico?, de, até] (a palavra antiga em itálico; tudo na
      cor da família); 'ate' apaga a linha. Ficam depois do áudio, até subir
      outra família */
   ORIGENS_5:{
@@ -13489,8 +13499,19 @@ const EV5 = {
             { partes:[['“formadores de minérios”', false, 10.0, 11.0]] } ],
     '5D1':[ { partes:[['“hals”', true, 1.8, 2.3], [' = “sal”', false, 3.0, 3.5]], ate:8.3 },
             { partes:[['“genes”', true, 4.1, 4.6], [' = “formadores”', false, 4.9, 5.6]], ate:8.3 },
-            { partes:[['“formadores de sais”', false, 8.3, 9.3]] } ]
+            { partes:[['“formadores de sais”', false, 8.3, 9.3]] } ],
+    '5B1':[ { partes:[['“terras”', false, 1.9, 2.5]], ate:12.0 },
+            { partes:[['“terras alcalinas”', false, 12.0, 13.0]] } ],
+    '5E1':[ { partes:[['“não reagem com outros elementos”', false, 10.0, 11.5]] } ]
   },
+  /* a onda de cima para baixo na família, um card de cada vez (a do grupo 2
+     e da família do alumínio na "5"): [coluna, de, até] */
+  ONDAS_COLUNA:{ '5E1':[18, 7.0, 9.0] },
+  /* as fotos de cada card: [foto, de, até] (em fade) */
+  FOTOS_5:{ '5A1':['davy', 20.8, 24.0], '5B1':['cal', 6.0, 7.0] },
+  /* a onda nas letras do nome, no card: [coluna, de] — cada letra cresce
+     0,1 s, e a anterior volta quando a seguinte cresce */
+  ONDAS_NOME:{ '5A1':[1, 31.0], '5B1':[2, 16.0] },
   /* A CENA DE UM CARD: as palavras dele e, na 5A1, a foto de Davy e o K e o
      Na; t < 0 tira-a */
   cenaCartao(t, realce, cartao){
@@ -13522,17 +13543,27 @@ const EV5 = {
       });
     });
     o.classList.toggle('on', alguma);
-    const a = this.a1, a1 = on && cartao === '5A1';
-    this.foto.classList.toggle('on', a1 && t >= a.foto[0] && t < a.foto[1]);
-    /* aos 31 s, as letras de "Metais Alcalinos", no card, crescem uma a uma
-       (a anterior volta quando a seguinte cresce) */
-    const letras = this.nomes[1].children, k = a1 && t >= a.onda ? Math.floor((t - a.onda) / a.passoOnda) : -1;
-    const i = k >= 0 && k < letras.length ? k : -1;
-    if (i !== this.letraOnda){
-      if (letras[this.letraOnda]) letras[this.letraOnda].classList.remove('cresce5');
-      if (letras[i]) letras[i].classList.add('cresce5');
-      this.letraOnda = i;
+    /* a foto do card, em fade */
+    const f = on && this.FOTOS_5[cartao];
+    Object.entries(this.fotos).forEach(([nome, el]) =>
+      el.classList.toggle('on', !!f && f[0] === nome && t >= f[1] && t < f[2]));
+    /* a onda nas letras do nome, no card */
+    const onda = on && this.ONDAS_NOME[cartao];
+    const letras = onda ? this.nomes[onda[0]].children : [];
+    const k = onda && t >= onda[1] ? Math.floor((t - onda[1]) / 0.1) : -1;
+    const alvo = k >= 0 && k < letras.length ? letras[k] : null;
+    if (alvo !== this.letraOnda){
+      if (this.letraOnda) this.letraOnda.classList.remove('cresce5');
+      if (alvo) alvo.classList.add('cresce5');
+      this.letraOnda = alvo;
     }
+    /* a onda de cima para baixo na coluna */
+    const oc = on && this.ONDAS_COLUNA[cartao];
+    if (oc && t >= oc[1] && t < oc[2]){
+      const l = this.coluna(oc[0]), i = Math.floor((t - oc[1]) / ((oc[2] - oc[1]) / l.length));
+      if (l[i]) realce.add(l[i]);
+    }
+    const a = this.a1, a1 = on && cartao === '5A1';
     if (a1 && t < a.fim){
       if (t >= a.k)  realce.add(TP.cubo(19));
       if (t >= a.na) realce.add(TP.cubo(11));
