@@ -380,8 +380,31 @@ e a próxima. No fim, o cartão da nota (Refazer · Continuar).
 A mesma tabela (sem as séries), de novo no **tabuleiro liso** do slide 4, de
 uma cor só (`.mesa.lisa`). Chega-se a ele pela seta de avançar do slide 5 (ou
 pela navegação, "1. Início"), com o play à espera da narração `5`
-(`Audios/audio_tabela_5.mp3`, ainda por gravar) e a mesa a respirar até ele
-ser tocado.
+(`Audios/audio_tabela_5.mp3`). Os eventos (`EV5`), no relógio do áudio:
+
+| Narração · tempo | O que acontece |
+|---|---|
+| antes do play | a vida solta do slide 4 (cubos que saltam e giram, famílias que sobem e descem), **sem a cruz** das coordenadas; o play cala-a |
+| `5` · 1,5 s | o grupo 2 sobe |
+| `5` · 1,8 → 5 s | os cards dele crescem um a um, de cima para baixo (o anterior volta quando o seguinte cresce); aos 5 s a coluna desce |
+| `5` · 3 → 5 s | "Numa mesma coluna todos são semelhantes", no vazio acima dos de transição |
+| `5` · 10 s | as 18 colunas sobem em onda (0,11 s cada: a da frente sobe, a de trás desce), e a última desce no mesmo ritmo |
+| `5` · 12 → 13 s | o texto sai, e "São 18 famílias" |
+| `5` · 22 s | o texto sai, e sobe a família do alumínio (grupo 13); 23 → 24 s os cards dela crescem um a um |
+| `5` · 27,6 s | "Algumas famílias têm nomes famosos." (sai aos 41 s) |
+| `5` · 35 s | sobe o grupo 18, com "Gases Nobres" digitado à esquerda dele |
+| `5` · 41 s | os grupos 1 (sem o H), 2, 16, 17 e 18 ganham a cor deles e boiam devagar; o 18 desce |
+| fim da `5` | o play sai, e cada família responde ao toque: sobe (só uma de cada vez) e o **nome** aparece junto, num card — na linha 1 para o 1, o 2 e do 13 ao 18 (o 18 à esquerda do He), na linha 3 por cima dos de transição. As famílias sem nome famoso são "Família do Boro", "Família do Ferro"… O H só dá a volta dele |
+| o toque nas famílias de nome | o nome é falado: grupo 1 → `5A`, 2 → `5B`, 16 → `5C`, 17 → `5D`, 18 → `5E`; o card do nome, com a setinha, toca a origem dele (`5A1` a `5E1`) |
+| `5A1` · 2,6 s / 4,4 s | "*al-qali*", em itálico; ao lado, " = Cinzas de plantas" |
+| `5A1` · 20,8 → 24 s | a foto de **Humphry Davy** (`Imagens/humphry_davy.jpeg`), em fade |
+| `5A1` · 25,6 s / 26,7 s | o **K** e o **Na** crescem e acendem |
+| `5A1` · 31 s | apagam, e o card "Metais Alcalinos" acende, a pulsar |
+| `5B1` a `5E1` | por enquanto só o áudio |
+
+Um toque noutra família a meio de um card cala-o, e a cena dele sai. Ao
+reabrir o app, a espera do toque volta (`ONDE`, `livre5`). A `5.1` ainda
+não tem lugar.
 
 ### Slide 7 · Os Grupos A e B — Os elementos principais
 

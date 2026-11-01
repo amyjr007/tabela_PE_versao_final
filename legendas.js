@@ -442,6 +442,85 @@ var LEGENDAS = {
     [0,3.72,"Então, amigos, sobre os ametais é basicamente isso."],
     [3.72,6.78,"Agora, escolha a próxima classe de elementos."]
   ],
+  "audio_tabela_5": [
+    [0,2.89,"Você lembra que os elementos de uma mesma coluna da"],
+    [2.89,5.66,"tabela têm propriedades químicas muito parecidas?"],
+    [5.66,9.71,"Aliás, é justamente por causa dessa semelhança que"],
+    [9.71,13.68,"as 18 colunas são chamadas de grupos ou famílias."],
+    [13.68,16.72,"A ideia é a mesma de uma família de pessoas."],
+    [16.72,20.26,"Quem é da mesma família costuma ter traços parecidos."],
+    [20.26,23.94,"Com os elementos de um mesmo grupo é assim também."],
+    [24.46,27.21,"E, assim como cada família tem o seu sobrenome,"],
+    [27.21,32.12,"algumas famílias da tabela ganharam um nome próprio ao longo da história da química."],
+    [32.12,37.18,"Uma delas você já conhece bem, a família dos gases nobres, bem aqui."],
+    [37.18,42.06,"As outras famílias que têm nome estão destacadas com cores na tabela."],
+    [42.06,45.66,"Toque em cada uma pra descobrir o nome usado na química."]
+  ],
+  "audio_tabela_5.1": [
+    [0,2.73,"Se quiser saber mais sobre a origem desses nomes,"],
+    [2.73,5.96,"clique no card que aparece junto das famílias em destaque."],
+    [5.96,9.5,"Saber a origem facilita muito o aprendizado deles."],
+    [9.5,13.62,"Se não, pode clicar no quiz ali quando quiser pra exercitar."],
+    [13.62,14.84,"Só não esqueça!"],
+    [14.84,17.02,"Grupo 1 são os alcalinos."],
+    [17.02,20.1,"Grupo 2 são os alcalinoterrosos."],
+    [20.1,22.86,"Grupo 16 são os calcogênios."],
+    [22.86,25.72,"Grupo 17 são os halogênios."],
+    [25.72,28.6,"E o último grupo aqui são os gases nobres."]
+  ],
+  "audio_tabela_5A": [
+    [0,1.42,"Metais alcalinos"]
+  ],
+  "audio_tabela_5A1": [
+    [0,5.74,"A palavra alcalinos vem do árabe al-qali, que quer dizer cinzas de plantas."],
+    [5.74,10.92,"Há muitos séculos, as pessoas queimavam plantas, misturavam as cinzas com água"],
+    [10.92,13.36,"e usavam essa mistura pra fazer sabão."],
+    [13.36,16.72,"Essa substância passou a ser chamada de álcali."],
+    [16.72,23.84,"Em 1807, o químico inglês Humphry Davy conseguiu separar dessas substâncias"],
+    [23.84,27.2,"dois metais novos, o potássio e o sódio."],
+    [27.7,32.6,"Como eles vinham dos álcalis, a família inteira ganhou o nome de metais alcalinos."]
+  ],
+  "audio_tabela_5B": [
+    [0,2,"Metais alcalinoterrosos"]
+  ],
+  "audio_tabela_5B1": [
+    [0,3.3,"Os antigos químicos chamavam de terras os pós que"],
+    [3.3,6.4,"não derretiam nem mudavam no fogo, como a cal."],
+    [6.4,9.82,"Essas terras também formavam álcalis com a água."],
+    [9.82,13.31,"Por isso, ficaram conhecidas como terras alcalinas,"],
+    [13.31,17.76,"e os metais que vinham delas ganharam o nome de alcalinoterrosos."]
+  ],
+  "audio_tabela_5C": [
+    [0,1,"Calcogênios."]
+  ],
+  "audio_tabela_5C1": [
+    [0,4.78,"O nome vem do grego, khalkós, que quer dizer cobre ou minério,"],
+    [4.78,7.02,"e genes, quer dizer formador."],
+    [7.02,11.54,"Ou seja, calcogênio significa formadores de minérios."],
+    [11.54,12.92,"Faz sentido."],
+    [12.92,17.41,"O oxigênio e o enxofre dessa família aparecem combinados com metais"],
+    [17.41,21.63,"em muitos minérios da natureza, como os do cobre e os do ferro."]
+  ],
+  "audio_tabela_5D": [
+    [0,0.9,"Halogênios."]
+  ],
+  "audio_tabela_5D1": [
+    [0,5.58,"O nome também vem do grego, háls, que quer dizer sal, e genes, formadores."],
+    [5.58,9.76,"Ou seja, halogênio quer dizer formadores de sais."],
+    [9.76,12.14,"E eles fazem jus ao nome."],
+    [12.14,16.28,"O cloro, por exemplo, se junta ao sódio e forma o sal de cozinha."],
+    [16.28,21.04,"Os outros elementos dessa família também reagem com metais e formam sais."]
+  ],
+  "audio_tabela_5E": [
+    [0,1.12,"Gases nobres."]
+  ],
+  "audio_tabela_5E1": [
+    [0,3.26,"O nome é uma comparação com a nobreza de antigamente,"],
+    [3.26,6.22,"que vivia isolada e não se misturava com o povo."],
+    [6.22,8.59,"Esses gases fazem algo parecido,"],
+    [8.59,12.6,"quase não reagem nem se combinam com outros elementos."],
+    [12.6,17.86,"É o mesmo motivo de o ouro e a platina serem chamados de metais nobres."]
+  ],
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]
   ],
