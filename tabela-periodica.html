@@ -2312,6 +2312,17 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 .pc.boia5{animation:boia5 2.6s ease-in-out infinite;animation-delay:var(--atr5,0s)}
 /* no quiz, os nomes e a cena da 5A1 saem */
 .slide.quiz5 :is(.nome5,.origem5,.foto5){opacity:0!important;pointer-events:none!important}
+/* NO QUIZ DO TÓPICO 5 os números das colunas descem até ao topo da sua
+   coluna (como no quiz do tópico 3), e saem de baixo da pergunta: o 1 e o
+   18 ficam sobre o H e o He; o 2, e com ele o 13 a 17, sobre a 2.ª linha;
+   o 3, e com ele o 4 a 12, sobre a 4.ª. Ao abrir e ao fechar, deslizam */
+.mesa[data-slide="5"] .eixo[data-grupo]{transition:opacity .3s,color .25s,background .25s,border-color .25s,transform .25s,
+  top .85s cubic-bezier(.3,.85,.3,1)}
+.slide.quiz6 .mesa .eixo:is([data-grupo="2"],[data-grupo="13"],[data-grupo="14"],[data-grupo="15"],
+  [data-grupo="16"],[data-grupo="17"]){top:215px!important}
+.slide.quiz6 .mesa .eixo:is([data-grupo="3"],[data-grupo="4"],[data-grupo="5"],[data-grupo="6"],
+  [data-grupo="7"],[data-grupo="8"],[data-grupo="9"],[data-grupo="10"],[data-grupo="11"],
+  [data-grupo="12"]){top:347px!important}
 @keyframes boia5{0%,100%{translate:0 0} 50%{translate:0 -5px}}
 /* o nome da família tocada: um card junto da coluna. Entra como no app do
    professor (snapUp do tópico 4): desliza 60 px na direção da coluna, com
@@ -3790,7 +3801,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v29.3';
+const VERSAO = 'v29.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13552,6 +13563,9 @@ const QUIZ6 = {
     /* a narração (a 5.1, ou um card) cala-se, e a família que estava no ar desce */
     som.pause();
     if (trilhaAtual !== '5') carregaTrilha('5');
+    /* (e a vida solta, se o quiz abriu antes da narração) */
+    SEQ.comecou = true;
+    VIDA.desliga();
     EV5.desce();
     this.itens = QUESTOES_6.map(Q => Object.assign({}, Q));
     this.passo = 0; this.erros = 0; this.aberto = true;
@@ -13560,7 +13574,7 @@ const QUIZ6 = {
     let v = sl.querySelector(':scope > .breu-quiz');
     if (!v){ v = document.createElement('div'); v.className = 'breu-quiz'; sl.insertBefore(v, sl.firstChild); v.getBoundingClientRect(); }
     v.classList.add('on');
-    sl.classList.add('quiz-escuro', 'quiz5');
+    sl.classList.add('quiz-escuro', 'quiz5', 'quiz6');
     cabecaDoQuiz(sl, true, 'Quiz', 'quiz-cabeca');
     if (!sl.querySelector('.confete'))
       sl.insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
@@ -13687,7 +13701,7 @@ const QUIZ6 = {
     stage.classList.remove('em-quiz');
     const v = sl.querySelector(':scope > .breu-quiz');
     if (v) v.classList.remove('on');
-    sl.classList.remove('quiz-escuro', 'quiz5');
+    sl.classList.remove('quiz-escuro', 'quiz5', 'quiz6');
     cabecaDoQuiz(sl, false, 'Quiz', 'quiz-cabeca');
   }
 };
