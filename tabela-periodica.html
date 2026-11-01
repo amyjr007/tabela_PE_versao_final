@@ -3243,10 +3243,22 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
 /* no celular deitado a tela é baixa: o cabeçalho encolhe e o rodapé sai,
    e a altura fica para a lista */
 @media (max-height:500px){
-  #nav header{padding:12px 20px 10px}
-  #nav h2{margin-top:2px;font-size:17px}
+  #nav header{padding:10px 20px 8px}
+  #nav h2{margin-top:0;font-size:17px}
   .nav-fecha{top:10px}
   .nav-pe{display:none}
+  /* a velocidade e as legendas: metade do tamanho, lado a lado — a lista
+     sobe e fica com a altura */
+  #nav .nav-vel, #nav .nav-leg{display:inline-flex;width:calc(50% - 4px);margin-top:8px;vertical-align:top;
+    gap:6px;padding:5px 9px;border-radius:9px}
+  #nav .nav-leg{margin-left:8px;border-width:1.5px}
+  #nav :is(.nav-vel, .nav-leg) svg{width:15px;height:15px}
+  #nav :is(.nav-vel-txt, .nav-leg-txt){font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #nav .nav-vel-v{min-width:0;padding:1px 6px;border-radius:6px;font-size:12px}
+  #nav .nav-leg-chave{width:26px;height:15px;border-radius:8px}
+  #nav .nav-leg-chave::after{top:2px;left:2px;width:11px;height:11px}
+  #nav .nav-leg.ligada .nav-leg-chave::after{transform:translateX(11px)}
+  #nav :is(.nav-vel, .nav-leg){box-shadow:none}
 }
 
 /* ---------- visão geral (tecla O) ----------
@@ -3837,7 +3849,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v32.8';
+const VERSAO = 'v32.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
