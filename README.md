@@ -387,7 +387,7 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | antes do play | a vida solta do slide 4 (cubos que saltam e giram, famílias que sobem e descem), **sem a cruz** das coordenadas; o play cala-a |
 | `5` · 1,5 s | o grupo 2 sobe |
 | `5` · 1,8 → 5 s | os cards dele crescem um a um, de cima para baixo (o anterior volta quando o seguinte cresce); aos 5 s a coluna desce |
-| `5` · 3 → 5 s | "Numa mesma coluna todos são semelhantes", no vazio acima dos de transição |
+| `5` · 3 → 5 s | "Numa mesma coluna todos são semelhantes", no vazio acima dos de transição (o quadro das frases — peça `quadro-de-frases` — no lugar da montagem do professor: o centro em x 499, y 282, a 0,9) |
 | `5` · 10 s | as 18 colunas sobem em onda (0,11 s cada: a da frente sobe, a de trás desce), e a última desce no mesmo ritmo |
 | `5` · 12 → 13 s | o texto sai, e "São 18 famílias" |
 | `5` · 22 s | o texto sai, e sobe a família do alumínio (grupo 13); 23 → 24 s os cards dela crescem um a um |
@@ -406,6 +406,7 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | `5C1` · 13,2 s / 14,2 s | o card dos calcogênios: o **O** cresce, depois o **S**; no fim do áudio voltam |
 | `5D1` · 12,5 s | o card dos halogênios: o **Cl** cresce; aos 16,7 s os outros crescem em sequência, de 0,6 em 0,6 s (F, Br, I, At, Ts); no fim do áudio todos voltam |
 | coloridas as cinco | depois da fala do nome da última, toca a **`5.1`** (uma vez só) |
+| `5.1` · 3 → 6 s | a mãozinha vai ao play do card que está à vista e aperta-o (só mímica: a narração não pára); aos 6 s some |
 | `5.1` · 11,5 s | o play vira o botão **Quiz**, verde, a piscar (o dos tópicos anteriores); fica daí em diante — também se a `5.1` for interrompida. Tocado, estoura, a narração pára e abre o quiz |
 | `5.1` · 15,1 / 17,3 / 20,8 / 23,8 / 26 s | sobem, uma de cada vez e com o card do nome, os grupos 1, 2, 16, 17 e 18 (o 18 fica no ar no fim) |
 
