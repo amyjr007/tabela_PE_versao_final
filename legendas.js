@@ -443,18 +443,18 @@ var LEGENDAS = {
     [3.72,6.78,"Agora, escolha a próxima classe de elementos."]
   ],
   "audio_tabela_5": [
-    [0,2.89,"Você lembra que os elementos de uma mesma coluna da"],
-    [2.89,5.66,"tabela têm propriedades químicas muito parecidas?"],
-    [5.66,9.71,"Aliás, é justamente por causa dessa semelhança que"],
-    [9.71,13.68,"as 18 colunas são chamadas de grupos ou famílias."],
-    [13.68,16.72,"A ideia é a mesma de uma família de pessoas."],
-    [16.72,20.26,"Quem é da mesma família costuma ter traços parecidos."],
-    [20.26,23.94,"Com os elementos de um mesmo grupo é assim também."],
-    [24.46,27.21,"E, assim como cada família tem o seu sobrenome,"],
-    [27.21,32.12,"algumas famílias da tabela ganharam um nome próprio ao longo da história da química."],
-    [32.12,37.18,"Uma delas você já conhece bem, a família dos gases nobres, bem aqui."],
-    [37.18,42.06,"As outras famílias que têm nome estão destacadas com cores na tabela."],
-    [42.06,45.66,"Toque em cada uma pra descobrir o nome usado na química."]
+    [0,2.86,"Você lembra que os elementos de uma mesma coluna da"],
+    [2.86,5.6,"tabela têm propriedades químicas muito parecidas?"],
+    [5.6,9.66,"Aliás, é justamente por causa dessa semelhança que"],
+    [9.66,13.64,"as 18 colunas são chamadas de grupos ou famílias."],
+    [13.64,16.62,"A ideia é a mesma de uma família de pessoas."],
+    [16.62,19.96,"Quem é da mesma família costuma ter traços parecidos."],
+    [19.96,23.4,"Com os elementos de um mesmo grupo, é assim também."],
+    [23.4,26.78,"E, assim como cada família tem o seu sobrenome,"],
+    [26.78,31.4,"algumas famílias da tabela ganharam um nome próprio ao longo da história da química."],
+    [31.4,36.56,"Uma delas você já conhece bem, a família dos gases nobres, bem aqui."],
+    [36.56,42,"As outras famílias que têm nome estão se movendo discretamente na tabela abaixo."],
+    [42,46.46,"Toque em cada uma delas pra descobrir o nome famoso usado na química."]
   ],
   "audio_tabela_5.1": [
     [0,2.73,"Se quiser saber mais sobre a origem desses nomes,"],
