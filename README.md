@@ -435,8 +435,9 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | `5.1` · 11,5 s | o play vira o botão **Quiz**, verde, a piscar (o dos tópicos anteriores); fica daí em diante — também se a `5.1` for interrompida. Tocado, estoura, a narração pára e abre o quiz |
 | `5.1` · 15,1 / 17,3 / 20,8 / 23,8 / 26 s | sobem, uma de cada vez e com o card do nome, os grupos 1, 2, 16, 17 e 18 (o 18 fica no ar no fim) |
 
-Um toque noutra família a meio de um card (ou da `5.1`) cala-o, e a cena
-dele sai. Ao reabrir o app, a espera do toque volta, com as cores, a `5.1`
+Um toque noutra família a meio de um card cala-o, e a cena dele sai. **Durante
+a `5.1`** (até ela acabar) nada na mesa responde — nem as famílias, nem os
+cards dos nomes, nem o H —, e os cards não brilham: só o botão do quiz. Ao reabrir o app, a espera do toque volta, com as cores, a `5.1`
 já ouvida e o botão do quiz (`ONDE`, `livre5`). No sumário, "Quiz" abre o quiz direto.
 
 #### O quiz do slide 6 (`QUIZ6`)

@@ -2386,6 +2386,8 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
   color:var(--indigo);white-space:nowrap;text-shadow:0 0 10px rgba(255,255,255,.95), 0 0 3px #fff}
 /* à espera do toque numa família, sem o play */
 #stage.espera-familia #som, #stage.espera-familia #som-dica{display:none!important}
+/* durante a "5.1", nada na mesa se toca (só o quiz, no botão do canto) */
+#stage.trava51 .mesa :is(.pc, .nome5){cursor:default}
 /* O QUIZ DO SLIDE 4: o quadro padrão das perguntas (o do quiz do slide
    3), no vazio da tabela do slide 4; na primeira, o cursor da digitação */
 /* a caixa da pergunta, no alto (o lugar que o professor deixou na
@@ -3835,7 +3837,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v32.6';
+const VERSAO = 'v32.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13420,7 +13422,7 @@ const EV5 = {
       /* O BRILHO DOURADO diz que o card se toca: à vista, à espera do toque;
          sai quando o áudio dele começa (e não volta no fim), e volta quando
          a família sobe outra vez */
-      const chama = on && this.livre && !!k && cartao !== k;
+      const chama = on && this.livre && !!k && cartao !== k && !this.travado51();
       if (b.classList.contains('destaque5') !== chama) b.classList.toggle('destaque5', chama);
     }
     /* A MÃOZINHA, dos 3 aos 6 s da "5.1": vai ao play do card que está à
@@ -13439,6 +13441,8 @@ const EV5 = {
     if (this.quizPronto && !this.quizBotao) this.poeQuiz(true);
     /* à espera do toque, sem o play (nem a "5" de novo, nem um card acabado) */
     stage.classList.toggle('espera-familia', this.livre && !this.quizBotao && (trilhaAtual === '5' || som.ended));
+    /* e, durante a "5.1", a mesa e os cards não chamam o dedo */
+    stage.classList.toggle('trava51', this.travado51());
   },
   poeQuiz(sim){
     this.quizBotao = sim;
@@ -13603,11 +13607,14 @@ const EV5 = {
   /* O TOQUE NUMA CARTA: a família dela sobe (com o "right"), ganha a cor e
      diz o nome; o H (que não é alcalino) só dá a volta dele. Coloridas as
      cinco de nome, depois da fala do nome, a "5.1" */
+  /* durante a "5.1" (até ela acabar) a mesa não responde: só o quiz */
+  travado51(){ return atual === 5 && trilhaAtual === '5.1' && !som.ended; },
   toca(c){
     if (!this.livre || atual !== 5) return false;
+    if (this.travado51()) return true;      /* (nem o H dá a volta) */
     if (+c.dataset.z === 1) return false;
-    /* um card ou a "5.1" a meio: cala-se, e a cena dele sai */
-    if (this.CARTOES.includes(trilhaAtual) || trilhaAtual === '5.1') carregaTrilha('5');
+    /* um card a meio: cala-se, e a cena dele sai */
+    if (this.CARTOES.includes(trilhaAtual)) carregaTrilha('5');
     som.pause();
     const col = +c.dataset.col, f = FAMILIAS_5[col];
     this.fam = col;
@@ -13631,7 +13638,7 @@ const EV5 = {
      continua (pausado) ou recomeça (acabado) */
   tocaNome(col){
     const f = FAMILIAS_5[col];
-    if (!this.livre || !f.cartao || QUIZ6.aberto) return;
+    if (!this.livre || !f.cartao || QUIZ6.aberto || this.travado51()) return;
     if (trilhaAtual === f.cartao){
       if (!som.paused){ som.pause(); return; }
       if (som.ended) som.currentTime = 0;
@@ -13656,7 +13663,7 @@ const EV5 = {
   semMao(){ if (this.maoOn){ this.maoOn = false; limpaMao(); tiraMao(); } },
   fora(){
     this.semMao();
-    stage.classList.remove('espera-familia');
+    stage.classList.remove('espera-familia', 'trava51');
     if (this.quizBotao) this.poeQuiz(false);
     if (QUIZ6.aberto) QUIZ6.fecha();
   },
