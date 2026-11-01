@@ -3811,7 +3811,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v29.9';
+const VERSAO = 'v30.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13225,9 +13225,11 @@ const EV5 = {
     '5D1':[[12.5, 17], [16.7, 9], [17.3, 35], [17.9, 53], [18.5, 85], [19.1, 117]]
   },
   dig:null, nomes:{}, origem:null, foto:null,
-  livre:false, fam:0, famAntes:0, trilha:null, realces:new Set(), boiaOn:false, destacado:null,
+  livre:false, fam:0, famAntes:0, trilha:null, realces:new Set(), boiaOn:false,
   /* as famílias que já subiram (as de nome ficam com a cor); as pintadas agora */
   coloridas:new Set(), pintadas:new Set(),
+  /* os cards cujo áudio já tocou (não brilham mais) */
+  ouvidos:new Set(),
   /* a 5.1 já começou; o botão do quiz já pode estar à vista; e está */
   ouviu51:false, quizPronto:false, quizBotao:false,
   mesa(){ return slides[5] && slides[5].querySelector('.mesa'); },
@@ -13291,6 +13293,8 @@ const EV5 = {
     if (QUIZ6.aberto){ stage.classList.remove('espera-familia'); return; }
     const cartao = this.CARTOES.includes(trilhaAtual) ? trilhaAtual : null;
     if (cartao || trilhaAtual === '5.1') this.livre = true;
+    /* o card cujo áudio já tocou deixa de brilhar */
+    if (cartao && !som.paused) this.ouvidos.add(cartao);
     /* mudada a trilha, a cena do card anterior sai; e, saindo da 5.1 antes
        da hora, o botão do quiz fica na mesma */
     if (trilhaAtual !== this.trilha){
@@ -13378,8 +13382,12 @@ const EV5 = {
         b.tabIndex = on && b.classList.contains('com-origem') ? 0 : -1;
       }
       /* o ícone do card: pause enquanto o áudio dele toca, play no resto */
-      const tocando = cartao === FAMILIAS_5[col].cartao && !som.paused;
+      const k = FAMILIAS_5[col].cartao, tocando = cartao === k && !som.paused;
       if (b.classList.contains('tocando5') !== tocando) b.classList.toggle('tocando5', tocando);
+      /* O BRILHO DOURADO diz que o card se toca: à vista, à espera do toque,
+         enquanto o áudio dele ainda não foi tocado (depois, não) */
+      const chama = on && this.livre && !!k && !this.ouvidos.has(k);
+      if (b.classList.contains('destaque5') !== chama) b.classList.toggle('destaque5', chama);
     }
     /* O BOTÃO DO QUIZ: aos 11,5 s da "5.1", e daí em diante */
     if (trilhaAtual === '5.1' && t >= this.q51.quiz) this.quizPronto = true;
@@ -13465,12 +13473,6 @@ const EV5 = {
       if (t >= a.k)  realce.add(TP.cubo(19));
       if (t >= a.na) realce.add(TP.cubo(11));
     }
-    const nome = on && t >= a.fim ? this.nomes[1] : null;
-    if (nome !== this.destacado){
-      if (this.destacado) this.destacado.classList.remove('destaque5');
-      if (nome) nome.classList.add('destaque5');
-      this.destacado = nome;
-    }
   },
   /* acabada a "5": cada família responde ao toque */
   fim5(){ this.livre = true; this.coloridas.add(18); },   /* (o 18 subiu aos 35 s) */
@@ -13533,7 +13535,7 @@ const EV5 = {
   },
   zera(){
     this.livre = false; this.fam = 0; this.famAntes = 0; this.trilha = null; this.boiaOn = false;
-    this.coloridas.clear(); this.pintadas.clear();
+    this.coloridas.clear(); this.pintadas.clear(); this.ouvidos.clear();
     this.ouviu51 = false; this.quizPronto = false;
     this.fora();
     const m = this.mesa();
@@ -18720,7 +18722,8 @@ const ONDE = {
     /* as classes do slide 5 já vistas (decidem a narração final) */
     if (EV4.feitas.size) o.feitas = [...EV4.feitas];
     /* no slide 6, acabada a "5": a família que estava no ar */
-    if (atual === 5 && EV5.livre) o.livre5 = { fam:EV5.fam, cores:[...EV5.coloridas], ouviu:EV5.ouviu51, quiz:EV5.quizPronto };
+    if (atual === 5 && EV5.livre) o.livre5 = { fam:EV5.fam, cores:[...EV5.coloridas], ouviu:EV5.ouviu51, quiz:EV5.quizPronto,
+                                                    ouvidos:[...EV5.ouvidos] };
     if (QUIZ.aberto) o.quiz = { origem:QUIZ.origem, itens:QUIZ.itens.map(i => i.z), passo:QUIZ.passo,
                                 acertos:QUIZ.acertos, erros:QUIZ.erros, nota:!!QUIZ.mostrandoNota };
     if (QUIZ3.aberto) o.quiz3 = true;
@@ -18759,6 +18762,7 @@ const ONDE = {
       const l = o.livre5;
       EV5.livre = true; EV5.fam = EV5.famAntes = l.fam || 0;
       (l.cores || []).forEach(c => EV5.coloridas.add(c));
+      (l.ouvidos || []).forEach(k => EV5.ouvidos.add(k));
       EV5.ouviu51 = !!l.ouviu; EV5.quizPronto = !!l.quiz;
       if (tr === '5') fim = true;
     }
