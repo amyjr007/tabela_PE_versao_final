@@ -2299,26 +2299,19 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 .texto-colunas.texto5{left:182px;top:206px;width:652px;padding:0}
 .texto-colunas.texto3.texto5 .frase{color:var(--indigo);font-size:30px;white-space:nowrap}
 .texto-colunas.texto3.texto5 .frase .cursor{background:var(--indigo)}
-/* "Gases Nobres", ao lado do grupo 18: encostado à direita, cresce para a esquerda */
-.nobres5{position:absolute;z-index:25;pointer-events:none;transform:translate(-100%,-50%)}
-.nobres5 .frase{display:none;margin:0;white-space:nowrap;font-family:var(--display);font-weight:700;
-  font-size:24px;line-height:1;color:var(--cat-nobres);text-shadow:0 0 10px rgba(255,255,255,.95), 0 0 3px #fff;
-  transition:opacity .4s ease}
-.nobres5 .frase.on{display:block}
-.nobres5 .frase.saindo{opacity:0}
-.nobres5 .frase .cursor{display:inline-block;width:3px;height:.9em;margin-left:4px;vertical-align:-.1em;background:var(--cat-nobres)}
-.nobres5 .frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
 /* o card que cresce, um de cada vez (e o K e o Na, na 5A1) */
 .mesa .pc.realce5{z-index:9}
 .pc.realce5 .cubo{--sc:1.3;--dz:12px;--dur:.28s}
 .pc.realce5 .face{box-shadow:0 0 0 2px var(--ouro-luz), 0 0 24px 6px rgba(226,162,43,.6)}
-/* as famílias de nome, na cor delas, a boiar devagar (o translate soma-se
-   ao transform da carta, sem mexer na subida) */
+/* as famílias de nome: a cor delas só depois de subirem; e boiam devagar
+   (o translate soma-se ao transform da carta, sem mexer na subida) */
 .mesa.lisa .pc.cor5 .face{background:linear-gradient(145deg,color-mix(in srgb,var(--c5) 80%,#fff),color-mix(in srgb,var(--c5) 86%,#000));
   border-color:rgba(255,255,255,.3)}
 .mesa.lisa .pc.cor5 .face b{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
 .mesa.lisa .pc.cor5 .face :is(i,u,em){color:rgba(255,255,255,.86)}
-.pc.cor5{animation:boia5 2.6s ease-in-out infinite;animation-delay:var(--atr5,0s)}
+.pc.boia5{animation:boia5 2.6s ease-in-out infinite;animation-delay:var(--atr5,0s)}
+/* no quiz, os nomes e a cena da 5A1 saem */
+.slide.quiz5 :is(.nome5,.origem5,.foto5){opacity:0!important;pointer-events:none!important}
 @keyframes boia5{0%,100%{translate:0 0} 50%{translate:0 -5px}}
 /* o nome da família tocada: um card junto da coluna. Entra como no app do
    professor (snapUp do tópico 4): desliza 60 px na direção da coluna, com
@@ -3797,7 +3790,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v29.1';
+const VERSAO = 'v29.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4344,6 +4337,7 @@ function montaTabela(i){
       if (i === 4 && QUIZ5.aberto){ QUIZ5.toca(c); return; }
       if (i === 4 && EV4.toca(c)) return;
       /* no slide 6, acabada a "5", o toque sobe a família e diz o nome */
+      if (i === 5 && QUIZ6.aberto){ QUIZ6.toca(c); return; }
       if (i === 5 && EV5.toca(c)) return;
       /* no slide 8, a carta de uma série que já desceu dá a volta dela
          (elas ficam fora do TP.todos(), e o TP.gira(z) não as acharia) */
@@ -5051,6 +5045,7 @@ const TRILHAS = {
   '4C4':  'Audios/audio_tabela_4C4.mp3',   /* depois do Saquei: o fim, e o quiz */
   '5':    'Audios/audio_tabela_5.mp3',     /* o slide 6: as principais famílias */
   /* os cards dos nomes: a origem de cada um (EV5.tocaNome) */
+  '5.1':  'Audios/audio_tabela_5.1.mp3',   /* coloridas as cinco: o quiz e os cinco nomes */
   '5A1':  'Audios/audio_tabela_5A1.mp3',   /* os alcalinos: al-qali e Davy */
   '5B1':  'Audios/audio_tabela_5B1.mp3',   /* os alcalinoterrosos */
   '5C1':  'Audios/audio_tabela_5C1.mp3',   /* os calcogênios */
@@ -13153,23 +13148,28 @@ function efeitos4(t){ EV4.tick(t); }
      22 s            o texto sai, e sobe a família do alumínio (o 13)
      23 → 24 s       os cards dela crescem um a um, como os do grupo 2
      27,6 s          "Algumas famílias têm nomes famosos."
-     35 s            sobe o grupo 18, com "Gases Nobres" ao lado
-     41 s            os grupos 1 (sem o H), 2, 16, 17 e 18 ganham cor e
-                     boiam devagar; o 18 desce
-   Acabada a "5", o play sai e cada família responde ao toque: sobe, e o
-   nome dela aparece junto, num card. As cinco de nome famoso falam o nome
-   (5A a 5E), e o card delas toca a origem do nome (5A1 a 5E1). Na 5A1:
+     35 s            o grupo 18 sobe como no toque (com o "right"), ganha a
+                     cor dele e o card "Gases Nobres"
+     41 s            desce; as cinco famílias de nome boiam devagar
+   A TABELA É TODA DE UMA COR: uma família de nome só ganha a cor dela
+   quando sobe (e fica com ela). Acabada a "5", o play sai e cada família
+   responde ao toque: sobe (com o "right") e o nome dela aparece junto, num
+   card. As cinco de nome famoso falam o nome (5A a 5E), e o card delas toca
+   a origem do nome (5A1 a 5E1). Na 5A1:
      2,6 s           "al-qali", em itálico; 4,4 s " = Cinzas de plantas"
      20,8 → 24 s     a foto de Humphry Davy, em fade
      25,6 s / 26,7 s o K e o Na acendem
      31 s            apagam, e o card do nome acende
+   Coloridas as cinco, toca a "5.1":
+     11,5 s          o play vira o botão Quiz, verde (fica daí em diante)
+     15,1 s ...      sobem, uma de cada vez, com o card do nome: o grupo 1,
+                     aos 17,3 s o 2, 20,8 s o 16, 23,8 s o 17 e 26 s o 18
    ============================================================ */
 const FRASES_5 = [
   { de:3.0,  ate:5.0,  some:12.0, txt:'Numa mesma coluna todos são semelhantes' },
   { de:12.4, ate:13.0, some:22.0, txt:'São 18 famílias' },
   { de:27.6, ate:29.4, some:41.0, txt:'Algumas famílias têm nomes famosos.' }
 ];
-const FRASES_5N = [ { de:35.0, ate:36.0, some:41.0, txt:'Gases Nobres' } ];
 /* o nome de cada coluna; as de nome famoso têm a fala do nome, o card que
    conta a origem dele e a cor */
 const FAMILIAS_5 = {
@@ -13184,17 +13184,24 @@ const FAMILIAS_5 = {
   17:{ nome:'Halogênios', fala:'5D', cartao:'5D1', cor:'var(--cat-halogenios)' },
   18:{ nome:'Gases Nobres', fala:'5E', cartao:'5E1', cor:'var(--cat-nobres)' }
 };
+const NOMEADAS_5 = [1, 2, 16, 17, 18];
 const EV5 = {
   g2:{ sobe:1.5, de:1.8, ate:5.0 },
   onda:{ de:10.0, passo:0.11 },
   al:{ sobe:22.0, de:23.0, ate:24.0 },
   nobres:{ sobe:35.0, ate:41.0 },
-  cores:41.0,
+  boia:41.0,
+  /* a 5.1: o botão do quiz, e as cinco famílias, uma de cada vez */
+  q51:{ quiz:11.5, sobe:[[15.1, 1], [17.3, 2], [20.8, 16], [23.8, 17], [26.0, 18]] },
   /* a 5A1: a origem do nome dos alcalinos */
   a1:{ qali:[2.6, 3.3], cinzas:[4.4, 5.6], foto:[20.8, 24.0], k:25.6, na:26.7, fim:31.0 },
   CARTOES:['5A1', '5B1', '5C1', '5D1', '5E1'],
-  dig:null, digN:null, nomes:{}, origem:null, foto:null,
-  livre:false, fam:0, trilha:null, realces:new Set(), coresOn:false, destacado:null,
+  dig:null, nomes:{}, origem:null, foto:null,
+  livre:false, fam:0, famAntes:0, trilha:null, realces:new Set(), boiaOn:false, destacado:null,
+  /* as famílias que já subiram (as de nome ficam com a cor); as pintadas agora */
+  coloridas:new Set(), pintadas:new Set(),
+  /* a 5.1 já começou; o botão do quiz já pode estar à vista; e está */
+  ouviu51:false, quizPronto:false, quizBotao:false,
   mesa(){ return slides[5] && slides[5].querySelector('.mesa'); },
   /* os cards de uma coluna, de cima para baixo (sem as séries) */
   coluna(col){
@@ -13206,6 +13213,8 @@ const EV5 = {
     }
     return l;
   },
+  /* a família de nome, sem o H (que não é alcalino) */
+  familia(col){ return this.coluna(col).filter(c => +c.dataset.z !== 1); },
   prepara(){
     const m = this.mesa();
     if (!m || this.dig) return;
@@ -13214,14 +13223,7 @@ const EV5 = {
     cx.setAttribute('aria-live', 'polite');
     m.appendChild(cx);
     this.dig = criaDigitacao(cx, FRASES_5);
-    /* "Gases Nobres", ao lado do grupo 18 (encostado à direita: cresce para a esquerda) */
-    const nb = document.createElement('div');
-    nb.className = 'nobres5';
-    nb.style.left = (xDaColuna(17) + LADO/2) + 'px';
-    nb.style.top  = (yDaLinha(1) - 11) + 'px';
-    m.appendChild(nb);
-    this.digN = criaDigitacao(nb, FRASES_5N);
-    /* os nomes das famílias: um card por coluna, escondido até ao toque */
+    /* os nomes das famílias: um card por coluna, escondido até subir */
     for (let col = 1; col <= 18; col++){
       const f = FAMILIAS_5[col], b = document.createElement('button');
       b.type = 'button';
@@ -13246,9 +13248,8 @@ const EV5 = {
     ft.innerHTML = '<img src="Imagens/humphry_davy.jpeg" alt="Humphry Davy" draggable="false"><figcaption>Humphry Davy</figcaption>';
     m.appendChild(ft);
     this.foto = ft;
-    /* as famílias de cor: a cor e o atraso da boia, uma vez */
-    [1, 2, 16, 17, 18].forEach(col => this.coluna(col).forEach((c, i) => {
-      if (+c.dataset.z === 1) return;
+    /* as famílias de nome: a cor e o atraso da boia, uma vez */
+    NOMEADAS_5.forEach(col => this.familia(col).forEach((c, i) => {
       c.style.setProperty('--c5', FAMILIAS_5[col].cor);
       c.style.setProperty('--atr5', (-(col * 0.37 + i * 0.12)).toFixed(2) + 's');
     }));
@@ -13257,34 +13258,71 @@ const EV5 = {
     const m = this.mesa();
     if (!m) return;
     this.prepara();
+    /* no quiz, a mesa é dele */
+    if (QUIZ6.aberto){ stage.classList.remove('espera-familia'); return; }
     const cartao = this.CARTOES.includes(trilhaAtual) ? trilhaAtual : null;
-    if (cartao) this.livre = true;
-    /* mudada a trilha, a cena do card anterior sai */
-    if (trilhaAtual !== this.trilha){ this.trilha = trilhaAtual; this.cenaCartao(-1); }
+    if (cartao || trilhaAtual === '5.1') this.livre = true;
+    /* mudada a trilha, a cena do card anterior sai; e, saindo da 5.1 antes
+       da hora, o botão do quiz fica na mesma */
+    if (trilhaAtual !== this.trilha){
+      if (this.trilha === '5.1') this.quizPronto = true;
+      this.trilha = trilhaAtual;
+      this.cenaCartao(-1);
+    }
     /* acabada a "5", o relógio dela fica no fim */
     const t5 = this.livre ? 1e4 : trilhaAtual === '5' ? t : -1;
-    /* quem está no ar */
+    /* A FAMÍLIA NO AR, com o card do nome: na "5", o 18 dos 35 aos 41 s; na
+       "5.1", a da vez (antes da primeira, a que o toque deixou); no toque, a tocada */
+    let fam = 0;
+    if (trilhaAtual === '5.1'){
+      fam = this.fam;
+      this.q51.sobe.forEach(([de, col]) => { if (t >= de) fam = col; });
+    }
+    else if (this.livre) fam = this.fam;
+    else if (t5 >= this.nobres.sobe && t5 < this.nobres.ate) fam = 18;
+    /* subida nova, com a narração a tocar: o "right" (o toque toca o dele) */
+    if (fam !== this.famAntes){
+      if (fam && !som.paused) tocaEfeito('right');
+      this.famAntes = fam;
+    }
+    /* quem está no ar na narração (as colunas da onda, o 2 e o 13) */
     const k = Math.floor((t5 - this.onda.de) / this.onda.passo);
     const noAr = col =>
-      this.livre ? col === this.fam :
       (col === 2 && t5 >= this.g2.sobe && t5 < this.g2.ate) ||
       (k >= 0 && k < 18 && col === k + 1) ||
-      (col === 13 && t5 >= this.al.sobe && t5 < this.al.ate) ||
-      (col === 18 && t5 >= this.nobres.sobe && t5 < this.nobres.ate);
+      (col === 13 && t5 >= this.al.sobe && t5 < this.al.ate);
     for (let col = 1; col <= 18; col++){
-      /* no toque, a subida do app do professor: a coluna toda de uma vez,
-         1,3 card, com mola. O H não é alcalino: a família 1 sobe sem ele */
-      if (this.livre) this.coluna(col).forEach(c =>
-        this.levanta(c, col === this.fam && +c.dataset.z !== 1 ? this.altura(col) : 0));
+      /* a família no ar sobe como no app do professor: a coluna toda de uma
+         vez, 1,3 card, com mola. O H não é alcalino: a família 1 sobe sem ele */
+      if (col === fam) this.coluna(col).forEach(c =>
+        this.levanta(c, +c.dataset.z !== 1 ? this.altura(col) : 0));
+      else if (this.livre) this.coluna(col).forEach(c => this.levanta(c, 0));
       else this.coluna(col).forEach((c, i) => this.sobe(c, noAr(col), i));
     }
-    /* e, subindo a família 1, o H desliza para o lado, para a casa vazia
-       da linha 1 (a do grupo 2) */
-    this.desliza(this.livre && this.fam === 1);
+    /* e, subindo a família 1, o H desliza para a esquerda, para fora dela */
+    this.desliza(fam === 1);
     /* o número da coluna no ar recua: a carta de cima passa por ele */
-    if (this.recuado !== (this.livre ? this.fam : 0)){
-      this.recuado = this.livre ? this.fam : 0;
-      m.querySelectorAll('.eixo[data-grupo]').forEach(e => e.classList.toggle('recuado', +e.dataset.grupo === this.recuado));
+    if (this.recuado !== fam){
+      this.recuado = fam;
+      m.querySelectorAll('.eixo[data-grupo]').forEach(e => e.classList.toggle('recuado', +e.dataset.grupo === fam));
+    }
+    /* A COR: só a das famílias de nome que já subiram (o 18 desde os 35 s da "5") */
+    const cor = new Set([...this.coloridas].filter(c => NOMEADAS_5.includes(c)));
+    if (t5 >= this.nobres.sobe) cor.add(18);
+    if (fam && NOMEADAS_5.includes(fam)) cor.add(fam);
+    NOMEADAS_5.forEach(col => {
+      const on = cor.has(col);
+      if (on !== this.pintadas.has(col)){
+        this.familia(col).forEach(c => c.classList.toggle('cor5', on));
+        if (on) this.pintadas.add(col); else this.pintadas.delete(col);
+      }
+    });
+    if (trilhaAtual === '5.1') NOMEADAS_5.forEach(c => this.coloridas.add(c));
+    /* e as cinco de nome boiam devagar, dos 41 s da "5" em diante */
+    const boia = t5 >= this.boia;
+    if (boia !== this.boiaOn){
+      this.boiaOn = boia;
+      NOMEADAS_5.forEach(col => this.familia(col).forEach(c => c.classList.toggle('boia5', boia)));
     }
     /* o card que cresce: um de cada vez, de cima para baixo */
     const realce = new Set();
@@ -13297,19 +13335,10 @@ const EV5 = {
     umAum(13, this.al.de, this.al.ate);
     if (cartao === '5A1') this.cenaCartao(t, realce);
     this.realca(realce);
-    /* as famílias de nome, coloridas e a boiar */
-    const cores = this.livre || t5 >= this.cores;
-    if (cores !== this.coresOn){
-      this.coresOn = cores;
-      [1, 2, 16, 17, 18].forEach(col => this.coluna(col).forEach(c => {
-        if (+c.dataset.z !== 1) c.classList.toggle('cor5', cores);
-      }));
-    }
     this.dig.escreve(t5);
-    this.digN.escreve(t5);
-    /* o nome da família tocada */
+    /* o nome da família no ar */
     for (let col = 1; col <= 18; col++){
-      const b = this.nomes[col], on = this.livre && col === this.fam;
+      const b = this.nomes[col], on = col === fam;
       if (b.classList.contains('on') !== on){
         /* (o lugar e o lado antes de entrar: ele desliza a partir dali) */
         if (on) this.posicionaNome(col);
@@ -13317,8 +13346,23 @@ const EV5 = {
         b.tabIndex = on && b.classList.contains('com-origem') ? 0 : -1;
       }
     }
+    /* O BOTÃO DO QUIZ: aos 11,5 s da "5.1", e daí em diante */
+    if (trilhaAtual === '5.1' && t >= this.q51.quiz) this.quizPronto = true;
+    if (this.quizPronto && !this.quizBotao) this.poeQuiz(true);
     /* à espera do toque, sem o play (nem a "5" de novo, nem um card acabado) */
-    stage.classList.toggle('espera-familia', this.livre && (trilhaAtual === '5' || som.ended));
+    stage.classList.toggle('espera-familia', this.livre && !this.quizBotao && (trilhaAtual === '5' || som.ended));
+  },
+  poeQuiz(sim){
+    this.quizBotao = sim;
+    if (sim){
+      botaoVerde('Quiz', () => {
+        somBtn.classList.remove('pisca-quiz');
+        botaoVerde(null);
+        this.quizBotao = false;
+        QUIZ6.abre();
+      });
+      somBtn.classList.add('pisca-quiz');
+    } else { somBtn.classList.remove('pisca-quiz'); botaoVerde(null); }
   },
   sobe(c, sim, i){
     if (!!c._up5 === sim) return;
@@ -13327,9 +13371,9 @@ const EV5 = {
     c.style.removeProperty('--e-salto');
     c._t5 = setTimeout(() => TP.poe(c, sim ? 22 : 0, sim ? 300 : 340), i * 30);
   },
-  /* A SUBIDA DO TOQUE (a do snapUp do app do professor): sobe em 0,32 s com
-     mola e desce em 0,28 s; o grupo 18, que começa na linha 1, sobe menos,
-     para o He não chegar ao botão do carrossel */
+  /* A SUBIDA DA FAMÍLIA (a do snapUp do app do professor): sobe em 0,32 s
+     com mola e desce em 0,28 s; o grupo 18, que começa na linha 1, sobe
+     menos, para o He não chegar ao botão do carrossel */
   MOLA:'cubic-bezier(.34,1.56,.64,1)',
   altura(col){ return col === 18 ? 46 : Math.round(PASSO * 1.3); },
   levanta(c, alto){
@@ -13339,13 +13383,15 @@ const EV5 = {
     c.style.setProperty('--e-salto', alto ? this.MOLA : 'ease-out');
     TP.poe(c, alto, alto ? 320 : 280);
   },
+  /* o H, para a esquerda (como no app do professor): quase uma casa, para
+     não sair do palco */
   desliza(sim){
     const h = TP.cubo(1);
     if (!h || !!h._lado5 === sim) return;
     h._lado5 = sim;
     h.style.setProperty('--e-salto', sim ? this.MOLA : 'ease-out');
     h.style.setProperty('--tsobe', (sim ? 320 : 280) + 'ms');
-    h.style.setProperty('--vx', (sim ? PASSO : 0) + 'px');
+    h.style.setProperty('--vx', (sim ? -PASSO : 0) + 'px');
   },
   realca(set){
     this.realces.forEach(c => { if (!set.has(c)) c.classList.remove('realce5'); });
@@ -13392,35 +13438,69 @@ const EV5 = {
     }
   },
   /* acabada a "5": cada família responde ao toque */
-  fim5(){ this.livre = true; },
-  /* O TOQUE NUMA CARTA: a família dela sobe e diz o nome; o H (que não é
-     alcalino) só dá a volta dele */
+  fim5(){ this.livre = true; this.coloridas.add(18); },   /* (o 18 subiu aos 35 s) */
+  /* O TOQUE NUMA CARTA: a família dela sobe (com o "right"), ganha a cor e
+     diz o nome; o H (que não é alcalino) só dá a volta dele. Coloridas as
+     cinco de nome, depois da fala do nome, a "5.1" */
   toca(c){
     if (!this.livre || atual !== 5) return false;
     if (+c.dataset.z === 1) return false;
-    /* um card a meio: cala-se, e a cena dele sai */
-    if (this.CARTOES.includes(trilhaAtual)) carregaTrilha('5');
-    this.fam = +c.dataset.col;
-    const f = FAMILIAS_5[this.fam];
-    if (f.fala) tocaEfeito('Audios/audio_tabela_' + f.fala + '.mp3');
+    /* um card ou a "5.1" a meio: cala-se, e a cena dele sai */
+    if (this.CARTOES.includes(trilhaAtual) || trilhaAtual === '5.1') carregaTrilha('5');
+    som.pause();
+    const col = +c.dataset.col, f = FAMILIAS_5[col];
+    this.fam = col;
+    this.famAntes = col;          /* (o "right" é este, e não o do relógio) */
+    this.coloridas.add(col);
+    tocaEfeito('right');
+    const todas = NOMEADAS_5.every(n => this.coloridas.has(n));
+    if (f.fala) setTimeout(() => {
+      if (atual !== 5 || this.fam !== col) return;
+      const fala = tocaEfeito('Audios/audio_tabela_' + f.fala + '.mp3');
+      if (todas && !this.ouviu51){
+        this.ouviu51 = true;
+        fala.then(() => setTimeout(() => {
+          if (atual === 5 && this.livre && trilhaAtual === '5' && !QUIZ6.aberto) tocaTrilha('5.1');
+        }, 400));
+      }
+    }, 250);
     return true;
   },
   /* o card do nome: a origem dele */
   tocaNome(col){
     const f = FAMILIAS_5[col];
-    if (!this.livre || !f.cartao) return;
+    if (!this.livre || !f.cartao || QUIZ6.aberto) return;
     if (trilhaAtual === f.cartao){ som.currentTime = 0; som.play().catch(avisaSeNaoTocou); }
-    else tocaTrilha(f.cartao);
+    else { this.fam = col; tocaTrilha(f.cartao); }
   },
-  fora(){ stage.classList.remove('espera-familia'); },
+  /* tudo no chão, sem nome nem cena de card (a entrada do quiz) */
+  desce(){
+    const m = this.mesa();
+    if (!m) return;
+    this.fam = this.famAntes = 0;
+    for (let col = 1; col <= 18; col++) this.coluna(col).forEach(c => this.levanta(c, 0));
+    this.desliza(false);
+    Object.values(this.nomes).forEach(b => b.classList.remove('on', 'destaque5'));
+    this.cenaCartao(-1);
+    this.realca(new Set());
+    m.querySelectorAll('.eixo.recuado').forEach(e => e.classList.remove('recuado'));
+    this.recuado = 0;
+  },
+  fora(){
+    stage.classList.remove('espera-familia');
+    if (this.quizBotao) this.poeQuiz(false);
+    if (QUIZ6.aberto) QUIZ6.fecha();
+  },
   zera(){
-    this.livre = false; this.fam = 0; this.trilha = null; this.coresOn = false;
+    this.livre = false; this.fam = 0; this.famAntes = 0; this.trilha = null; this.boiaOn = false;
+    this.coloridas.clear(); this.pintadas.clear();
+    this.ouviu51 = false; this.quizPronto = false;
     this.fora();
     const m = this.mesa();
     if (!m) return;
-    if (this.dig){ this.dig.limpa(); this.digN.limpa(); this.cenaCartao(-1); }
+    if (this.dig){ this.dig.limpa(); this.cenaCartao(-1); }
     this.realca(new Set());
-    TP.todos().forEach(c => { clearTimeout(c._t5); delete c._up5; delete c._lado5; c.classList.remove('cor5', 'realce5');
+    TP.todos().forEach(c => { clearTimeout(c._t5); delete c._up5; delete c._lado5; c.classList.remove('cor5', 'boia5', 'realce5');
                               c.style.removeProperty('--e-salto'); c.style.removeProperty('--vx'); });
     m.querySelectorAll('.eixo.recuado').forEach(e => e.classList.remove('recuado'));
     this.recuado = 0;
@@ -13428,6 +13508,180 @@ const EV5 = {
   }
 };
 window.EV5 = EV5;
+
+/* ============================================================
+   O QUIZ DO TÓPICO 5 (QUIZ6, no slide 6) — as seis questões do tópico 4
+   do app do professor (S4_QUIZ), no formato dos quizzes daqui: a sala
+   escura, o quiz1, "Questão N de 6" digitada no alto, a resposta é um
+   toque na tabela. Acerto: o card (ou a família inteira, que sobe) fica
+   verde, confete, fanfarra, aplausos e a voz; erro: treme em vermelho, a
+   dica, e no segundo erro a resposta pulsa em âmbar. No fim, o cartão da
+   nota (Refazer · Continuar).
+   ============================================================ */
+const QUESTOES_6 = [
+  { q:'Toque no último elemento alcalino.', certo:c => +c.dataset.z === 87,
+    dica:'Os alcalinos são a família 1 da tabela. O último deles fica no período 7.' },
+  { q:'Toque no 3º elemento dos gases nobres.', certo:c => +c.dataset.z === 18,
+    dica:'Os gases nobres são a família 18. Conte de cima para baixo na coluna.' },
+  { q:'Toque na família dos alcalinoterrosos.', familia:2,
+    dica:'Os alcalinoterrosos ocupam a família 2, ao lado dos alcalinos.' },
+  { q:'Toque na família dos halogênios.', familia:17,
+    dica:'Os halogênios são a família 17, logo ao lado dos gases nobres.' },
+  { q:'Toque em qualquer elemento que antecede um calcogênio.', certo:c => +c.dataset.col === 15,
+    dica:'Os calcogênios são a família 16. Os que os antecedem ficam na família 15.' },
+  { q:'Toque em qualquer elemento posterior aos halogênios.', certo:c => +c.dataset.col === 18,
+    dica:'Os halogênios são a família 17. Os elementos após eles ficam na família 18.' }
+];
+const QUIZ6 = {
+  aberto:false, passo:0, itens:[], erros:0, tropecos:0, travado:false, g:0, q:null, marcados:[], digT:0,
+  sl(){ return slides[5]; },
+  mesa(){ return EV5.mesa(); },
+  abre(){
+    if (atual !== 5) return;
+    this.fecha(true);
+    /* a narração (a 5.1, ou um card) cala-se, e a família que estava no ar desce */
+    som.pause();
+    if (trilhaAtual !== '5') carregaTrilha('5');
+    EV5.desce();
+    this.itens = QUESTOES_6.map(Q => Object.assign({}, Q));
+    this.passo = 0; this.erros = 0; this.aberto = true;
+    const g = ++this.g, sl = this.sl();
+    stage.classList.add('em-quiz');
+    let v = sl.querySelector(':scope > .breu-quiz');
+    if (!v){ v = document.createElement('div'); v.className = 'breu-quiz'; sl.insertBefore(v, sl.firstChild); v.getBoundingClientRect(); }
+    v.classList.add('on');
+    sl.classList.add('quiz-escuro', 'quiz5');
+    cabecaDoQuiz(sl, true, 'Quiz', 'quiz-cabeca');
+    if (!sl.querySelector('.confete'))
+      sl.insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
+    this.travado = true;
+    tocaEfeito('Audios/quiz1.mp3').then(() => { if (g === this.g) this.apresenta(g); });
+  },
+  caixa(){ return this.sl().querySelector('.quiz3.q5:not(.sai)'); },
+  apresenta(g){
+    if (g !== this.g) return;
+    const Q = this.itens[this.passo];
+    this.q = Q;
+    this.tropecos = 0;
+    this.sl().querySelectorAll('.quiz3.q5:not(.sai)').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
+    const cx = document.createElement('div');
+    cx.className = 'quiz3 q4 q2 q5';
+    cx.dataset.mont = 'pergunta-quiz-6';
+    cx.setAttribute('aria-live', 'polite');
+    cx.innerHTML = '<div class="q3-marca"></div><div class="q3-q"></div><div class="q3-msg"></div>';
+    cx.querySelector('.q3-marca').textContent = 'Questão ' + (this.passo + 1) + ' de ' + this.itens.length;
+    this.sl().appendChild(cx);
+    cx.getBoundingClientRect();
+    cx.classList.add('on');
+    /* a pergunta digitada; a resposta só vale com ela escrita */
+    const q = cx.querySelector('.q3-q'), passo = this.passo, txt = Q.q;
+    this.travado = true;
+    cx.classList.add('digitando');
+    let n = 0;
+    clearInterval(this.digT);
+    this.digT = setInterval(() => {
+      if (g !== this.g || passo !== this.passo){ clearInterval(this.digT); return; }
+      q.textContent = txt.slice(0, ++n);
+      TECLAS.bate();
+      if (n >= txt.length){ clearInterval(this.digT); cx.classList.remove('digitando'); this.travado = false; }
+    }, 38);
+  },
+  /* O TOQUE NUM CARD: nas questões de família, a coluna inteira responde
+     (e, certa, sobe); nas outras, o card */
+  toca(c){
+    if (!this.aberto || this.travado || !this.q) return;
+    const Q = this.q;
+    if (Q.familia){
+      const col = +c.dataset.col, els = col === 1 ? EV5.familia(1) : EV5.coluna(col);
+      if (col === Q.familia){
+        els.forEach(e => { e.classList.add('certa3'); EV5.levanta(e, EV5.altura(col)); });
+        this.marcados = els;
+        this.acerta();
+      } else this.erra(Q.dica, els, () => EV5.coluna(Q.familia));
+      return;
+    }
+    if (Q.certo(c)){
+      c.classList.add('certa3');
+      QUIZ3.cresce.call(QUIZ3, c);
+      this.marcados = [c];
+      this.acerta();
+    } else this.erra(Q.dica, [c], () => TP.todos().filter(Q.certo));
+  },
+  erra(dica, els, pista){
+    if (!this.aberto) return;
+    this.erros++; this.tropecos++;
+    (els || []).filter(Boolean).forEach(e => {
+      e.classList.remove('errada3'); void e.offsetWidth; e.classList.add('errada3');
+      clearTimeout(e._erroT);
+      e._erroT = setTimeout(() => e.classList.remove('errada3'), 700);
+    });
+    const msg = this.caixa() && this.caixa().querySelector('.q3-msg');
+    if (msg){ msg.textContent = dica; msg.className = 'q3-msg dica'; }
+    if (this.tropecos >= 2 && pista) pista().forEach(e => e && e.classList.add('pista5'));
+    tremeVermelho();
+    const g = this.g;
+    const s = tocaEfeito('error');
+    if (this.tropecos === 1) s.then(() => { if (g === this.g && this.aberto) tocaEfeito(vozDoErro()); });
+  },
+  async acerta(){
+    if (!this.aberto) return;
+    this.travado = true;
+    const g = this.g, ultima = this.passo === this.itens.length - 1;
+    this.mesa().querySelectorAll('.pista5').forEach(e => e.classList.remove('pista5'));
+    const voz = vozDoAcerto(ultima);
+    const msg = this.caixa() && this.caixa().querySelector('.q3-msg');
+    if (msg){ msg.textContent = voz.frase; msg.className = 'q3-msg ok'; }
+    confete();
+    const f = tocaEfeito('funfare');
+    tocaEfeito('applause');
+    await f;
+    if (g !== this.g) return;
+    await tocaEfeito(voz.som);
+    if (g !== this.g) return;
+    await new Promise(ok => setTimeout(ok, 400));
+    if (g !== this.g) return;
+    this.limpa();
+    this.passo++;
+    if (this.passo >= this.itens.length){ this.resultado(); return; }
+    tocaEfeito(somDaEntrada(this.passo, this.itens.length));
+    this.apresenta(g);
+  },
+  /* o que a questão deixou: o verde, o crescido, a família no ar */
+  limpa(){
+    this.marcados.forEach(c => {
+      c.classList.remove('certa3', 'frente3');
+      c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe');
+      if (c._up5) EV5.levanta(c, 0);
+    });
+    this.marcados = [];
+  },
+  resultado(){
+    this.sl().querySelectorAll('.quiz3.q5').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
+    const n = this.itens.length, e = this.erros;
+    cartaoDoResultado(Math.round(Math.max(0, n - e) / n * 100) / 10,
+      n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
+      this.sl(), () => this.abre(), () => { this.fecha(); go(6); });
+  },
+  fecha(reabre){
+    this.g++;
+    clearInterval(this.digT);
+    this.limpa();
+    this.q = null;
+    this.aberto = false; this.travado = false;
+    const sl = this.sl();
+    if (!sl) return;
+    sl.querySelectorAll('.quiz3.q5, .quiz-cartao').forEach(e => e.remove());
+    const m = this.mesa();
+    if (m) m.querySelectorAll('.pista5, .errada3, .certa3').forEach(e => e.classList.remove('pista5', 'errada3', 'certa3'));
+    if (reabre) return;
+    stage.classList.remove('em-quiz');
+    const v = sl.querySelector(':scope > .breu-quiz');
+    if (v) v.classList.remove('on');
+    sl.classList.remove('quiz-escuro', 'quiz5');
+    cabecaDoQuiz(sl, false, 'Quiz', 'quiz-cabeca');
+  }
+};
+window.QUIZ6 = QUIZ6;
 
 /* ============================================================
    O QUIZ DO SLIDE 4 — as perguntas das coordenadas, da "3.3" à "3.6"
@@ -17802,6 +18056,17 @@ const NAV_TOPICOS = [
   /* ---- o slide 6 · As principais famílias ---- */
   { titulo:'Início', sub:'o começo do slide', slide:5,
     entra(){ /* o recomeço do slide já é o tópico */ } },
+  { titulo:'Quiz sobre as famílias', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:5,
+    entra(v, g){
+      /* a tabela como no fim da "5", sem voz, e o quiz abre já */
+      depoisDaMesa(g, () => {
+        if (g !== NAV.geracao) return;
+        trilhaAtual = -1;
+        carregaTrilha('5');
+        EV5.livre = true; EV5.quizPronto = true;
+        QUIZ6.abre();
+      });
+    } },
   /* ---- o slide 7 · Os Grupos A e B ---- */
   { titulo:'Início', sub:'o começo do slide', slide:6,
     entra(){ /* o recomeço do slide já é o tópico */ } },
@@ -18408,7 +18673,7 @@ const ONDE = {
     /* as classes do slide 5 já vistas (decidem a narração final) */
     if (EV4.feitas.size) o.feitas = [...EV4.feitas];
     /* no slide 6, acabada a "5": a família que estava no ar */
-    if (atual === 5 && EV5.livre) o.livre5 = { fam:EV5.fam };
+    if (atual === 5 && EV5.livre) o.livre5 = { fam:EV5.fam, cores:[...EV5.coloridas], ouviu:EV5.ouviu51, quiz:EV5.quizPronto };
     if (QUIZ.aberto) o.quiz = { origem:QUIZ.origem, itens:QUIZ.itens.map(i => i.z), passo:QUIZ.passo,
                                 acertos:QUIZ.acertos, erros:QUIZ.erros, nota:!!QUIZ.mostrandoNota };
     if (QUIZ3.aberto) o.quiz3 = true;
@@ -18443,7 +18708,13 @@ const ONDE = {
     if (o.feitas) o.feitas.forEach(k => EV4.feitas.add(k));
     /* (a "5" carregada de novo depois de um toque numa família está no 0,
        mas a narração já tinha acabado) */
-    if (o.livre5){ EV5.livre = true; EV5.fam = o.livre5.fam || 0; if (tr === '5') fim = true; }
+    if (o.livre5){
+      const l = o.livre5;
+      EV5.livre = true; EV5.fam = EV5.famAntes = l.fam || 0;
+      (l.cores || []).forEach(c => EV5.coloridas.add(c));
+      EV5.ouviu51 = !!l.ouviu; EV5.quizPronto = !!l.quiz;
+      if (tr === '5') fim = true;
+    }
     /* o escolhido, na "1.2", está lá em cima, crescido — já, sem viagem e
        sem pousar, para os nomes dele serem medidos com ele no lugar (o voo
        dele não é função do tempo; na "1.3A/B" a volta já é) */

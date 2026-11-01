@@ -392,19 +392,41 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | `5` · 12 → 13 s | o texto sai, e "São 18 famílias" |
 | `5` · 22 s | o texto sai, e sobe a família do alumínio (grupo 13); 23 → 24 s os cards dela crescem um a um |
 | `5` · 27,6 s | "Algumas famílias têm nomes famosos." (sai aos 41 s) |
-| `5` · 35 s | sobe o grupo 18, com "Gases Nobres" digitado à esquerda dele |
-| `5` · 41 s | os grupos 1 (sem o H), 2, 16, 17 e 18 ganham a cor deles e boiam devagar; o 18 desce |
-| fim da `5` | o play sai, e cada família responde ao toque com a animação do `snapUp` do tópico 4 do app do professor: a coluna inteira sobe 1,3 card de uma vez, com mola (0,32 s; o 18 sobe só 46 px, para o He não chegar ao botão do carrossel), e desce em 0,28 s — só uma no ar de cada vez. O **nome** aparece num card um pouco acima da linha 1, ao lado da coluna (à direita até ao grupo 15, à esquerda do 16 ao 18), entrando a deslizar 60 px com mola (0,52 s); sai a deslizar de volta, a apagar. Subindo o grupo 1, o **H** (que não é alcalino) desliza para o lado, para a casa vazia da linha 1 no grupo 2, e volta quando ele desce. As famílias sem nome famoso são "Família do Boro", "Família do Ferro"…; tocado sozinho, o H só dá a volta dele |
-| o toque nas famílias de nome | o nome é falado: grupo 1 → `5A`, 2 → `5B`, 16 → `5C`, 17 → `5D`, 18 → `5E`; o card do nome, com a setinha, toca a origem dele (`5A1` a `5E1`) |
+| `5` · 35 s | o grupo 18 sobe como no toque (a mola, o `right`), ganha a cor dele e o card "Gases Nobres" entra a deslizar |
+| `5` · 41 s | o 18 desce (e o card sai); as cinco famílias de nome — 1 (sem o H), 2, 16, 17 e 18 — boiam devagar daí em diante |
+| a cor | a tabela é toda de uma cor (o lilás liso): uma família de nome só ganha a cor dela quando sobe, e fica com ela |
+| fim da `5` | o play sai, e cada família responde ao toque com a animação do `snapUp` do tópico 4 do app do professor: a coluna inteira sobe 1,3 card de uma vez, com mola (0,32 s; o 18 sobe só 46 px, para o He não chegar ao botão do carrossel), e desce em 0,28 s — só uma no ar de cada vez —, com o `right`. O **nome** aparece num card um pouco acima da linha 1, ao lado da coluna (à direita até ao grupo 15, à esquerda do 16 ao 18), entrando a deslizar 60 px com mola (0,52 s); sai a deslizar de volta, a apagar. Subindo o grupo 1, o **H** (que não é alcalino) desliza uma casa para a **esquerda**, para fora da tabela, e volta quando ele desce. As famílias sem nome famoso são "Família do Boro", "Família do Ferro"…; tocado sozinho, o H só dá a volta dele |
+| o toque nas famílias de nome | o `right`, e logo o nome falado: grupo 1 → `5A`, 2 → `5B`, 16 → `5C`, 17 → `5D`, 18 → `5E`; o card do nome, com a setinha, toca a origem dele (`5A1` a `5E1`) |
 | `5A1` · 2,6 s / 4,4 s | "*al-qali*", em itálico; ao lado, " = Cinzas de plantas" |
 | `5A1` · 20,8 → 24 s | a foto de **Humphry Davy** (`Imagens/humphry_davy.jpeg`), em fade |
 | `5A1` · 25,6 s / 26,7 s | o **K** e o **Na** crescem e acendem |
 | `5A1` · 31 s | apagam, e o card "Metais Alcalinos" acende, a pulsar |
 | `5B1` a `5E1` | por enquanto só o áudio |
+| coloridas as cinco | depois da fala do nome da última, toca a **`5.1`** (uma vez só) |
+| `5.1` · 11,5 s | o play vira o botão **Quiz**, verde, a piscar (o dos tópicos anteriores); fica daí em diante — também se a `5.1` for interrompida. Tocado, estoura, a narração pára e abre o quiz |
+| `5.1` · 15,1 / 17,3 / 20,8 / 23,8 / 26 s | sobem, uma de cada vez e com o card do nome, os grupos 1, 2, 16, 17 e 18 (o 18 fica no ar no fim) |
 
-Um toque noutra família a meio de um card cala-o, e a cena dele sai. Ao
-reabrir o app, a espera do toque volta (`ONDE`, `livre5`). A `5.1` ainda
-não tem lugar.
+Um toque noutra família a meio de um card (ou da `5.1`) cala-o, e a cena
+dele sai. Ao reabrir o app, a espera do toque volta, com as cores, a `5.1`
+já ouvida e o botão do quiz (`ONDE`, `livre5`). No sumário, "Quiz sobre as
+famílias" abre o quiz direto.
+
+#### O quiz do slide 6 (`QUIZ6`)
+
+As seis questões do tópico 4 do app do professor (`S4_QUIZ`), no formato
+dos quizzes daqui: a sala escura, o cabeçalho "Quiz", o `quiz1`, "Questão N
+de 6" digitada no alto, e a resposta é um toque na tabela. Acerto: o card
+cresce verde (nas de família, a coluna inteira sobe verde), confete,
+`funfare`, `applause` e a voz; erro: treme em vermelho, `error`, a dica (e,
+no primeiro, a voz do erro); no segundo erro, a resposta pulsa em âmbar. No
+fim, o cartão da nota (Refazer · Continuar, que leva ao slide 7).
+
+1. o último elemento alcalino (o Fr);
+2. o 3º elemento dos gases nobres (o Ar);
+3. a família dos alcalinoterrosos (o grupo 2);
+4. a família dos halogênios (o 17);
+5. qualquer elemento que antecede um calcogênio (o grupo 15);
+6. qualquer elemento posterior aos halogênios (o 18).
 
 ### Slide 7 · Os Grupos A e B — Os elementos principais
 
