@@ -404,6 +404,7 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | o brilho do card | o card do nome brilha em dourado, a pulsar, sempre que a família sobe — é o convite ao toque; o brilho sai quando o áudio do card começa (e não volta no fim dele) e volta quando a família sobe outra vez |
 | `5B1` / `5E1` | o card dos alcalinoterrosos / dos gases nobres: só o áudio |
 | `5C1` · 1,3 → 6,8 s | no vazio, digitados: “*chalkos*” (1,3 s) e ao lado " = minério" (4 s); embaixo “*gene*” (5 s) e ao lado " = formador" (6 s) — as palavras gregas entre aspas e em itálico; o texto dos cards todo na cor do card da família (`ORIGENS_5`) |
+| o lugar do texto dos cards | dos grupos 1 e 2, à esquerda (x 196); dos grupos da direita (16 a 18), encostado à direita, a acabar logo antes do grupo 13 (x 828), a crescer para a esquerda |
 | `5C1` · 10 → 11 s | apaga tudo e digita “formadores de minérios”; o texto fica à vista, também depois do áudio, até subir outra família |
 | `5C1` · 13,2 s / 14,2 s | o card dos calcogênios: o **O** cresce, depois o **S**; no fim do áudio voltam |
 | `5D1` · 1,8 → 5,6 s | digitados na cor do card: “*hals*” (1,8 s) e ao lado " = “sal”" (3 s); embaixo “*genes*” (4,1 s) e ao lado " = “formadores”" (4,9 s) |

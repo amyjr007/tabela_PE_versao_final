@@ -2359,6 +2359,9 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 .origem5{color:var(--c5,var(--indigo))}
 .origem5 i{font-style:italic}
 .origem5 .lin5 + .lin5{margin-top:14px}
+/* (das famílias 16 a 18: encostado à direita, a acabar 12 px antes do
+   grupo 13 — a escrita cresce para a esquerda) */
+.origem5.direita5{left:828px;transform:translateX(-100%);text-align:right}
 /* (o lugar e o tamanho que o professor deixou na montagem: o centro em
    x 732, y 353, com 212 × 326 — o tamanho já posto aqui, sem escala) */
 .foto5{position:absolute;left:732px;top:353px;transform:translate(-50%,-50%);margin:0;z-index:25;pointer-events:none;
@@ -3815,7 +3818,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v30.5';
+const VERSAO = 'v30.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13490,6 +13493,8 @@ const EV5 = {
       this.origemDe = on ? cartao : null;
       const col = +Object.keys(FAMILIAS_5).find(c => FAMILIAS_5[c].cartao === cartao) || 1;
       o.style.setProperty('--c5', FAMILIAS_5[col].cor || 'var(--indigo)');
+      /* das famílias da direita, o texto encosta no grupo 13 (perto delas) */
+      o.classList.toggle('direita5', col >= 13);
       o.innerHTML = linhas.map(l => '<div class="lin5">' +
         l.partes.map(p => p[1] ? '<i></i>' : '<span></span>').join('') + '</div>').join('');
     }
