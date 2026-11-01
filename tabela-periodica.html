@@ -2340,6 +2340,9 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 /* as letras do nome, cada uma numa caixinha: a onda da 5A1 cresce uma de cada vez */
 .nome5 .l5{display:inline-block;transition:transform .14s ease-out;transform-origin:50% 70%}
 .nome5 .l5.cresce5{transform:scale(1.55) translateY(-2px)}
+/* na montagem, os cards das cinco famílias de nome (e o da que está no ar)
+   ficam à vista e pegam o dedo, para o professor os arrumar */
+body.montagem .nome5:is(.com-origem,.on){opacity:1;pointer-events:auto;animation:none}
 .nome5.on{opacity:1;pointer-events:auto;transform:translate(0,-50%);
   transition:transform .52s cubic-bezier(.34,1.56,.64,1), opacity .28s ease}
 /* os que contam a origem do nome chamam o toque */
@@ -3832,7 +3835,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v32.2';
+const VERSAO = 'v32.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13285,6 +13288,7 @@ const EV5 = {
       b.innerHTML = [...f.nome].map(ch => '<span class="l5">' + (ch === ' ' ? '&nbsp;' : esc(ch)) + '</span>').join('');
       b.setAttribute('aria-label', f.nome);
       b.dataset.col = col;
+      b.dataset.mont = 'card-grupo-' + col;     /* na montagem (G), peça: anda e muda de tamanho */
       if (f.cor) b.style.setProperty('--c5', f.cor);
       b.tabIndex = -1;
       b.addEventListener('click', ev => { ev.stopPropagation(); if (!naMontagem()) this.tocaNome(col); });
