@@ -2337,6 +2337,9 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
   font-family:var(--display);font-weight:700;font-size:21px;line-height:1.1;color:var(--indigo);
   background:#fff;border:2px solid var(--c5,var(--indigo-dim));box-shadow:0 8px 20px rgba(32,28,66,.18);
   cursor:default}
+/* as letras do nome, cada uma numa caixinha: a onda da 5A1 cresce uma de cada vez */
+.nome5 .l5{display:inline-block;transition:transform .14s ease-out;transform-origin:50% 70%}
+.nome5 .l5.cresce5{transform:scale(1.55) translateY(-2px)}
 .nome5.on{opacity:1;pointer-events:auto;transform:translate(0,-50%);
   transition:transform .52s cubic-bezier(.34,1.56,.64,1), opacity .28s ease}
 /* os que contam a origem do nome chamam o toque */
@@ -3818,7 +3821,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v30.9';
+const VERSAO = 'v31.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13224,7 +13227,8 @@ const EV5 = {
         mao:[3.0, 6.0] },     /* a mãozinha clica no play do card (mímica) */
   maoOn:false,
   /* a 5A1: a origem do nome dos alcalinos */
-  a1:{ qali:[2.6, 3.3], cinzas:[4.4, 5.6], foto:[20.8, 24.0], k:25.6, na:26.7, fim:31.0 },
+  a1:{ foto:[20.8, 24.0], k:25.6, na:26.7, fim:31.0, onda:31.0, passoOnda:0.1 },
+  letraOnda:-1,
   CARTOES:['5A1', '5B1', '5C1', '5D1', '5E1'],
   /* os destaques das outras origens, [segundo, Z]: cada um cresce e fica até
      ao fim do áudio — na 5C1 o O e o S; na 5D1 o Cl, e aos 16,7 s os
@@ -13265,7 +13269,9 @@ const EV5 = {
       const f = FAMILIAS_5[col], b = document.createElement('button');
       b.type = 'button';
       b.className = 'nome5' + (f.cartao ? ' com-origem' : '');
-      b.textContent = f.nome;
+      /* uma caixinha por letra: elas crescem uma a uma (a onda da 5A1) */
+      b.innerHTML = [...f.nome].map(ch => '<span class="l5">' + (ch === ' ' ? '&nbsp;' : esc(ch)) + '</span>').join('');
+      b.setAttribute('aria-label', f.nome);
       b.dataset.col = col;
       if (f.cor) b.style.setProperty('--c5', f.cor);
       b.tabIndex = -1;
@@ -13474,7 +13480,10 @@ const EV5 = {
      cor da família); 'ate' apaga a linha. Ficam depois do áudio, até subir
      outra família */
   ORIGENS_5:{
-    '5A1':[ { partes:[['“al-qali”', true, 2.6, 3.3], [' = Cinzas de plantas', false, 4.4, 5.6]] } ],
+    /* (a parte com um 5.º número sai nesse segundo: aos 16 s o “al-qali”
+       dá o lugar ao “álcali”) */
+    '5A1':[ { partes:[['“al-qali”', true, 2.6, 3.3, 16.0], ['“álcali”', true, 16.0, 16.6],
+                      [' = “Cinzas de plantas”', false, 4.4, 5.6]] } ],
     '5C1':[ { partes:[['“chalkos”', true, 1.3, 1.9], [' = minério', false, 3.5, 4.3]], ate:10.0 },
             { partes:[['“gene”', true, 5.0, 5.4], [' = formador', false, 6.0, 6.8]], ate:10.0 },
             { partes:[['“formadores de minérios”', false, 10.0, 11.0]] } ],
@@ -13503,9 +13512,9 @@ const EV5 = {
       const el = o.children[i], vista = t >= l.partes[0][2] && t < (l.ate || Infinity);
       el.style.display = vista ? '' : 'none';
       alguma = alguma || vista;
-      l.partes.forEach(([txt, , de, ate], j) => {
+      l.partes.forEach(([txt, , de, ate, sai], j) => {
         const s = el.children[j];
-        const n = !vista || t < de ? 0 : Math.round(Math.min(1, (t - de) / (ate - de)) * txt.length);
+        const n = !vista || t < de || t >= (sai || Infinity) ? 0 : Math.round(Math.min(1, (t - de) / (ate - de)) * txt.length);
         if (+(s.dataset.n || 0) !== n){
           if (n > +(s.dataset.n || 0)) TECLAS.bate();
           s.dataset.n = n; s.textContent = txt.slice(0, n);
@@ -13515,6 +13524,15 @@ const EV5 = {
     o.classList.toggle('on', alguma);
     const a = this.a1, a1 = on && cartao === '5A1';
     this.foto.classList.toggle('on', a1 && t >= a.foto[0] && t < a.foto[1]);
+    /* aos 31 s, as letras de "Metais Alcalinos", no card, crescem uma a uma
+       (a anterior volta quando a seguinte cresce) */
+    const letras = this.nomes[1].children, k = a1 && t >= a.onda ? Math.floor((t - a.onda) / a.passoOnda) : -1;
+    const i = k >= 0 && k < letras.length ? k : -1;
+    if (i !== this.letraOnda){
+      if (letras[this.letraOnda]) letras[this.letraOnda].classList.remove('cresce5');
+      if (letras[i]) letras[i].classList.add('cresce5');
+      this.letraOnda = i;
+    }
     if (a1 && t < a.fim){
       if (t >= a.k)  realce.add(TP.cubo(19));
       if (t >= a.na) realce.add(TP.cubo(11));

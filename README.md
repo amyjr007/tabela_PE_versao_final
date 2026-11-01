@@ -397,10 +397,11 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | a cor | a tabela é toda de uma cor (o lilás liso): uma família de nome só ganha a cor dela quando sobe, e fica com ela |
 | fim da `5` | o play sai, e cada família responde ao toque com a animação do `snapUp` do tópico 4 do app do professor: a coluna inteira sobe 1,3 card de uma vez, com mola (0,32 s; o 18 sobe só 46 px, para o He não chegar ao botão do carrossel), e desce em 0,28 s — só uma no ar de cada vez —, com o `right`. O **nome** aparece num card um pouco acima da linha 1, ao lado da coluna (à direita até ao grupo 15, à esquerda do 16 ao 18), entrando a deslizar 60 px com mola (0,52 s); sai a deslizar de volta, a apagar. Subindo o grupo 1, o **H** (que não é alcalino) desliza uma casa para a **esquerda**, para fora da tabela, e volta quando ele desce. As famílias sem nome famoso são "Família do Boro", "Família do Ferro"…; tocado sozinho, o H só dá a volta dele |
 | o toque nas famílias de nome | o `right`, e logo o nome falado: grupo 1 → `5A`, 2 → `5B`, 16 → `5C`, 17 → `5D`, 18 → `5E`; o card do nome, com o ícone de play, toca a origem dele (`5A1` a `5E1`). Enquanto o áudio do card toca, o ícone vira pause; tocado de novo, o card pausa, continua de onde parou ou, acabado o áudio, recomeça |
-| `5A1` · 2,6 s / 4,4 s | “*al-qali*”, entre aspas e em itálico, na cor do card; ao lado, " = Cinzas de plantas" |
+| `5A1` · 2,6 s / 4,4 s | “*al-qali*”, entre aspas e em itálico, na cor do card; ao lado, " = “Cinzas de plantas”" |
+| `5A1` · 16 → 16,6 s | o “al-qali” sai, e no lugar dele é digitado “*álcali*” |
 | `5A1` · 20,8 → 24 s | a foto de **Humphry Davy** (`Imagens/humphry_davy.jpeg`), em fade, com o nome acima dela — no lugar que o professor deixou na montagem: o centro em x 732, y 353, com 212 × 326. Na montagem (G) ela fica à vista e é peça (`foto-davy`): arrasta, e a pinça ou a roda mudam o tamanho |
 | `5A1` · 25,6 s / 26,7 s | o **K** e o **Na** crescem e acendem |
-| `5A1` · 31 s | o K e o Na apagam |
+| `5A1` · 31 s | o K e o Na apagam, e as letras de "Metais Alcalinos", no card, crescem uma a uma até ao fim (0,1 s cada; a anterior volta quando a seguinte cresce) |
 | o brilho do card | o card do nome brilha em dourado, a pulsar, sempre que a família sobe — é o convite ao toque; o brilho sai quando o áudio do card começa (e não volta no fim dele) e volta quando a família sobe outra vez |
 | `5B1` / `5E1` | o card dos alcalinoterrosos / dos gases nobres: só o áudio |
 | `5C1` · 1,3 → 6,8 s | no vazio, digitados: “*chalkos*” (1,3 s) e ao lado " = minério" (3,5 s); embaixo “*gene*” (5 s) e ao lado " = formador" (6 s) — as palavras gregas entre aspas e em itálico; o texto dos cards todo na cor do card da família (`ORIGENS_5`) |
