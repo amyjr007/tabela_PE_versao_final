@@ -363,8 +363,7 @@ carrossel (`?miniaturas`) os destaques não entram.
 
 O que se arrasta anda pelo transform (`--vx`, `--vy`), e não por left/top: assim o celular não redesenha a mesa a cada movimento do dedo. Largado, o lugar passa para left/top.
 
-O botão **Quiz** do fim do tópico (e a seção **4.4 · Quiz sobre os tipos
-de elementos** do sumário, que abre direto, com a tabela montada) apaga a
+O botão **Quiz** do fim do tópico (e a seção **4.4 · Quiz** do sumário, que abre direto, com a tabela montada) apaga a
 sala, vira o cabeçalho para "Quiz", toca o `quiz1` e apresenta as questões
 (`QUESTOES_5`), uma de cada vez, digitadas, com "Questão N de M". Sem
 narração por questão. Errar treme a peça em vermelho e escreve a dica; no
@@ -435,8 +434,7 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 
 Um toque noutra família a meio de um card (ou da `5.1`) cala-o, e a cena
 dele sai. Ao reabrir o app, a espera do toque volta, com as cores, a `5.1`
-já ouvida e o botão do quiz (`ONDE`, `livre5`). No sumário, "Quiz sobre as
-famílias" abre o quiz direto.
+já ouvida e o botão do quiz (`ONDE`, `livre5`). No sumário, "Quiz" abre o quiz direto.
 
 #### O quiz do slide 6 (`QUIZ6`)
 
