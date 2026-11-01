@@ -3835,7 +3835,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v32.5';
+const VERSAO = 'v32.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13493,7 +13493,8 @@ const EV5 = {
   /* NO CELULAR, os lugares que o professor deixou na montagem: o centro do
      card no palco de 1280 × 720 (a mesa, lá, anda e cresce: a conta passa
      para as medidas dela, como na montagem) */
-  CARDS_NO_CELULAR:{ 1:{ x:182, y:126 }, 2:{ x:308, y:130 }, 18:{ x:1053, y:123 } },
+  CARDS_NO_CELULAR:{ 1:{ x:182, y:126 }, 2:{ x:308, y:130 }, 13:{ x:738, y:139 }, 14:{ x:775, y:141 },
+                     15:{ x:854, y:137 }, 18:{ x:1053, y:123 } },
   posicionaNome(col){
     const b = this.nomes[col], w = b.offsetWidth, folga = 10;
     let x = xDaColuna(col) + LADO/2 + folga, sd = 1;
