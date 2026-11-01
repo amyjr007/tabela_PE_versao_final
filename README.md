@@ -401,7 +401,9 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | `5A1` · 20,8 → 24 s | a foto de **Humphry Davy** (`Imagens/humphry_davy.jpeg`), em fade |
 | `5A1` · 25,6 s / 26,7 s | o **K** e o **Na** crescem e acendem |
 | `5A1` · 31 s | apagam, e o card "Metais Alcalinos" acende, a pulsar |
-| `5B1` a `5E1` | por enquanto só o áudio |
+| `5B1` / `5E1` | o card dos alcalinoterrosos / dos gases nobres: só o áudio |
+| `5C1` · 13,2 s / 14,2 s | o card dos calcogênios: o **O** cresce, depois o **S**; no fim do áudio voltam |
+| `5D1` · 12,5 s | o card dos halogênios: o **Cl** cresce; aos 16,7 s os outros crescem em sequência, de 0,6 em 0,6 s (F, Br, I, At, Ts); no fim do áudio todos voltam |
 | coloridas as cinco | depois da fala do nome da última, toca a **`5.1`** (uma vez só) |
 | `5.1` · 11,5 s | o play vira o botão **Quiz**, verde, a piscar (o dos tópicos anteriores); fica daí em diante — também se a `5.1` for interrompida. Tocado, estoura, a narração pára e abre o quiz |
 | `5.1` · 15,1 / 17,3 / 20,8 / 23,8 / 26 s | sobem, uma de cada vez e com o card do nome, os grupos 1, 2, 16, 17 e 18 (o 18 fica no ar no fim) |

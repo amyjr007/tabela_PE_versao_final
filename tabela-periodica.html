@@ -3790,7 +3790,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v29.2';
+const VERSAO = 'v29.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13196,6 +13196,13 @@ const EV5 = {
   /* a 5A1: a origem do nome dos alcalinos */
   a1:{ qali:[2.6, 3.3], cinzas:[4.4, 5.6], foto:[20.8, 24.0], k:25.6, na:26.7, fim:31.0 },
   CARTOES:['5A1', '5B1', '5C1', '5D1', '5E1'],
+  /* os destaques das outras origens, [segundo, Z]: cada um cresce e fica até
+     ao fim do áudio — na 5C1 o O e o S; na 5D1 o Cl, e aos 16,7 s os
+     outros halogênios em sequência (F, Br, I, At, Ts) */
+  REALCES_CARTAO:{
+    '5C1':[[13.2, 8], [14.2, 16]],
+    '5D1':[[12.5, 17], [16.7, 9], [17.3, 35], [17.9, 53], [18.5, 85], [19.1, 117]]
+  },
   dig:null, nomes:{}, origem:null, foto:null,
   livre:false, fam:0, famAntes:0, trilha:null, realces:new Set(), boiaOn:false, destacado:null,
   /* as famílias que já subiram (as de nome ficam com a cor); as pintadas agora */
@@ -13334,6 +13341,9 @@ const EV5 = {
     umAum(2, this.g2.de, this.g2.ate);
     umAum(13, this.al.de, this.al.ate);
     if (cartao === '5A1') this.cenaCartao(t, realce);
+    /* acabado o áudio, todos voltam ao normal */
+    const rc = this.REALCES_CARTAO[cartao];
+    if (rc && !som.ended) rc.forEach(([de, z]) => { if (t >= de) realce.add(TP.cubo(z)); });
     this.realca(realce);
     this.dig.escreve(t5);
     /* o nome da família no ar */
