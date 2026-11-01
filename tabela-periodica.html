@@ -2317,7 +2317,9 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
    18 ficam sobre o H e o He; o 2, e com ele o 13 a 17, sobre a 2.ª linha;
    o 3, e com ele o 4 a 12, sobre a 4.ª. Ao abrir e ao fechar, deslizam */
 .mesa[data-slide="5"] .eixo[data-grupo]{transition:opacity .3s,color .25s,background .25s,border-color .25s,transform .25s,
-  top .85s cubic-bezier(.3,.85,.3,1)}
+  top .85s cubic-bezier(.3,.85,.3,1), translate .32s cubic-bezier(.34,1.56,.64,1)}
+/* a família certa sobe, e o número dela sobe junto, o mesmo tanto (--sobe5) */
+.slide.quiz6 .mesa .eixo[data-grupo]{translate:0 calc(-1 * var(--sobe5,0px))}
 .slide.quiz6 .mesa .eixo:is([data-grupo="2"],[data-grupo="13"],[data-grupo="14"],[data-grupo="15"],
   [data-grupo="16"],[data-grupo="17"]){top:215px!important}
 .slide.quiz6 .mesa .eixo:is([data-grupo="3"],[data-grupo="4"],[data-grupo="5"],[data-grupo="6"],
@@ -3801,7 +3803,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v29.4';
+const VERSAO = 'v29.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13619,6 +13621,8 @@ const QUIZ6 = {
       const col = +c.dataset.col, els = col === 1 ? EV5.familia(1) : EV5.coluna(col);
       if (col === Q.familia){
         els.forEach(e => { e.classList.add('certa3'); EV5.levanta(e, EV5.altura(col)); });
+        const num = this.mesa().querySelector('.eixo[data-grupo="' + col + '"]');
+        if (num) num.style.setProperty('--sobe5', EV5.altura(col) + 'px');
         this.marcados = els;
         this.acerta();
       } else this.erra(Q.dica, els, () => EV5.coluna(Q.familia));
@@ -13678,6 +13682,8 @@ const QUIZ6 = {
       if (c._up5) EV5.levanta(c, 0);
     });
     this.marcados = [];
+    const m = this.mesa();
+    if (m) m.querySelectorAll('.eixo[data-grupo]').forEach(e => e.style.removeProperty('--sobe5'));
   },
   resultado(){
     this.sl().querySelectorAll('.quiz3.q5').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });

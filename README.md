@@ -426,6 +426,8 @@ quiz está aberto, os números das colunas descem até ao topo da sua coluna,
 como no quiz do tópico 3, e saem de baixo da pergunta: o 1 e o 18 ficam
 sobre o H e o He; o 2, e com ele o 13 a 17, sobre a 2.ª linha; o 3, e com
 ele o 4 a 12, sobre a 4.ª (classe `quiz6`). Ao abrir e ao fechar, deslizam.
+Na resposta certa de família, o número sobe junto com ela, o mesmo tanto
+(`--sobe5`), e desce com ela na questão seguinte.
 
 1. o último elemento alcalino (o Fr);
 2. o 3º elemento dos gases nobres (o Ar);
