@@ -406,6 +406,8 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | `5C1` · 1,3 → 6,8 s | no vazio, digitados: “*chalkos*” (1,3 s) e ao lado " = minério" (4 s); embaixo “*gene*” (5 s) e ao lado " = formador" (6 s) — as palavras gregas entre aspas e em itálico; o texto dos cards todo na cor do card da família (`ORIGENS_5`) |
 | `5C1` · 10 → 11 s | apaga tudo e digita “formadores de minérios”; o texto fica à vista, também depois do áudio, até subir outra família |
 | `5C1` · 13,2 s / 14,2 s | o card dos calcogênios: o **O** cresce, depois o **S**; no fim do áudio voltam |
+| `5D1` · 1,8 → 5,6 s | digitados na cor do card: “*hals*” (1,8 s) e ao lado " = “sal”" (3 s); embaixo “*genes*” (4,1 s) e ao lado " = “formadores”" (4,9 s) |
+| `5D1` · 8,3 → 9,3 s | apaga tudo e digita “formadores de sal”; fica à vista até subir outra família |
 | `5D1` · 12,5 s | o card dos halogênios: o **Cl** cresce; aos 16,7 s os outros crescem em sequência, de 0,6 em 0,6 s (F, Br, I, At, Ts); no fim do áudio todos voltam |
 | coloridas as cinco | depois da fala do nome da última, toca a **`5.1`** (uma vez só) |
 | `5.1` · 3 → 6 s | a mãozinha vai ao play do card que está à vista e aperta-o (só mímica: a narração não pára); aos 6 s some |
