@@ -401,7 +401,7 @@ pela navegação, "1. Início"), com o play à espera da narração `5`
 | `5A1` · 20,8 → 24 s | a foto de **Humphry Davy** (`Imagens/humphry_davy.jpeg`), em fade, com o nome acima dela — no lugar que o professor deixou na montagem: o centro em x 732, y 353, com 212 × 326. Na montagem (G) ela fica à vista e é peça (`foto-davy`): arrasta, e a pinça ou a roda mudam o tamanho |
 | `5A1` · 25,6 s / 26,7 s | o **K** e o **Na** crescem e acendem |
 | `5A1` · 31 s | o K e o Na apagam |
-| o brilho do card | o card do nome brilha em dourado, a pulsar, enquanto o áudio dele ainda não foi tocado — é o convite ao toque; tocado o áudio, o brilho sai e não volta |
+| o brilho do card | o card do nome brilha em dourado, a pulsar, sempre que a família sobe — é o convite ao toque; o brilho sai quando o áudio do card começa (e não volta no fim dele) e volta quando a família sobe outra vez |
 | `5B1` / `5E1` | o card dos alcalinoterrosos / dos gases nobres: só o áudio |
 | `5C1` · 1,3 → 6,8 s | no vazio, digitados: “*chalkos*” (1,3 s) e ao lado " = minério" (4 s); embaixo “*gene*” (5 s) e ao lado " = formador" (6 s) — as palavras gregas entre aspas e em itálico; o texto dos cards todo na cor do card da família (`ORIGENS_5`) |
 | `5C1` · 10 → 11 s | apaga tudo e digita “formadores de minérios”; o texto fica à vista, também depois do áudio, até subir outra família |
