@@ -3909,7 +3909,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v34.2';
+const VERSAO = 'v34.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14044,11 +14044,13 @@ window.QUIZ6 = QUIZ6;
    última letra num pedaço à parte (o "A" e o "B" que crescem sozinhos) */
 const TEXTOS_6 = [
   /* (x, y: o centro, nos lugares que o professor deixou na montagem) */
-  { k:'ga', mont:'grupos-a', x:329, y:139, cls:'a6 grande6',
+  /* (os dois dourados no tamanho do "Metais de Transição - Grupos B", que fica
+     junto deles na "6.1" e na "6.2") */
+  { k:'ga', mont:'grupos-a', x:329, y:139, cls:'a6 medio6',
     partes:[ { k:'g', txt:'Grupos A', de:9.0, ate:10.0, letra:true } ] },
   { k:'gb', mont:'grupos-b', x:687, y:144, cls:'b6 grande6',
     partes:[ { k:'g', txt:'Grupos B', de:10.5, ate:11.4 } ] },
-  { k:'er', mont:'elementos-representativos', x:332, y:179, cls:'a6',
+  { k:'er', mont:'elementos-representativos', x:332, y:179, cls:'a6 medio6',
     partes:[ { k:'e', txt:'Elementos representativos', de:17.1, ate:18.3 } ] },
   { k:'et', mont:'elementos-de-transicao', x:695, y:179, cls:'b6',
     partes:[ { k:'e', txt:'Elementos de Transição', de:19.1, ate:20.3 } ] },
