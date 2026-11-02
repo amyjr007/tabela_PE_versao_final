@@ -591,16 +591,6 @@ var LEGENDAS = {
   "audio_tabela_6.3B": [
     [0,1.36,"Família 3B"]
   ],
-  "audio_tabela_6.4": [
-    [0,6.76,"8B. Pára aí. Repare, o 8B não é uma coluna só, são estas três aqui."],
-    [6.76,11.26,"Isso acontece porque esses elementos são muito parecidos quimicamente,"],
-    [11.26,14.12,"não só na vertical, mas também na horizontal."],
-    [14.12,18.66,"O ferro, o cobalto e o níquel, por exemplo, são quase irmãos."],
-    [18.66,23.12,"Na tabela do russo Dmitri Mendeleev, de 1871,"],
-    [23.12,26.4,"eles ficavam juntos num grupo só, o grupo 8."],
-    [26.96,31.48,"Hoje, eles ocupam três colunas, mas o nome continuou o mesmo, 8B."],
-    [31.48,33.78,"Certo. Continue a sequência."]
-  ],
   "audio_tabela_6.4A": [
     [0,1.2,"4A"]
   ],
@@ -642,10 +632,14 @@ var LEGENDAS = {
     [12.85,15.48,"pelos professores de Química ainda hoje."]
   ],
   "audio_tabela_6.8B": [
-    [0,0.72,"8B."],
-    [0.72,4.64,"Na verdade, 8B são esses três grupos aqui."],
-    [4.64,7.75,"Eles são tão semelhantes quimicamente que os químicos"],
-    [7.75,10.62,"decidiram usar a mesma classificação pra os três."]
+    [0,6.76,"8B. Pára aí. Repare, o 8B não é uma coluna só, são estas três aqui."],
+    [6.76,11.26,"Isso acontece porque esses elementos são muito parecidos quimicamente,"],
+    [11.26,14.12,"não só na vertical, mas também na horizontal."],
+    [14.12,18.66,"O ferro, o cobalto e o níquel, por exemplo, são quase irmãos."],
+    [18.66,23.12,"Na tabela do russo Dmitri Mendeleev, de 1871,"],
+    [23.12,26.4,"eles ficavam juntos num grupo só, o grupo 8."],
+    [26.96,31.48,"Hoje, eles ocupam três colunas, mas o nome continuou o mesmo, 8B."],
+    [31.48,33.78,"Certo. Continue a sequência."]
   ],
   "audio_tabela_6.0": [
     [0,2.84,"Tópico 6. Os grupos A e B."]

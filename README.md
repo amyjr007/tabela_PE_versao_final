@@ -513,17 +513,17 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6.2` · 23 s | "Grupos A" e "Grupos B" saem em fade, e a tabela inteira acende; o toque nas famílias, na ordem (a da vez brilha de leve): cada uma sobe 50 px com mola (a anterior desce), com o rótulo em cima ("1A", "2A"…), o `right` e a fala do nome |
 | as falas das famílias | 1A → `6.1A`, 2A → `6.2A`, 3B → `6.3B`, 4B → `6.4B`, 5B → `6.5B`, 6B → `6.6B`, 7B → `6.7B` (`FAMILIAS_AB6`) |
 | depois da 2A | toca sozinha a **`6.3`**: dos 2,6 aos 5 s os grupos B crescem, com o brilho vermelho; dos 6 aos 7 s só a família 3 cresce, brilha e sobe — sem o "3B", que só aparece quando o aluno a toca |
-| depois da `6.3` | o toque segue: 3B, 4B, 5B, 6B, 7B; e o grupo 8, que sobe com o 9 e o 10, em sequência, com uma chave em cima e o "8B", e toca a **`6.4`** |
+| depois da `6.3` | o toque segue: 3B, 4B, 5B, 6B, 7B; e o grupo 8, que sobe com o 9 e o 10, em sequência, com uma chave em cima e o "8B", e toca a **`6.8B`** |
 | o toque certo | corta o que estiver a tocar (a narração, a fala da família anterior) |
-| `6.4` · 2 s | as três do 8B descem (a chave e o "8B" ficam) |
-| `6.4` · 3 s | o "8B" pulsa |
-| `6.4` · 5,9 → 6,7 s | a onda: sobe a 8, depois a 9 (a 8 desce), a 10, e desce |
-| `6.4` · os brilhos | em verde |
-| `6.4` · 12 → 13 s | os elementos do 8B brilham de cima para baixo, linha a linha, e voltam |
-| `6.4` · 14 → 15 s | brilham de lado, coluna a coluna, depressa; acesos até aos 15 s |
-| `6.4` · 15 / 16 / 16,6 s | brilha o Fe, o Co (o Fe fica) e o Ni; aos 17,8 s apagam depressa, e dos 18 aos 20 s brilham os três outra vez |
-| `6.4` · 20 → 28 s | a foto de **Dmitri Mendeleev** (`Imagens/Dmitri_Mendeleev.jpg`), com o nome e "1871" em cima, em fade, no lugar da montagem do professor (o centro em x 954, y 386, a 1,62; peça `foto-mendeleev`) |
-| `6.4` · 28 → 32 s | as três colunas brilham e crescem; aos 31 s pulsam a chave e o "8B" |
+| `6.8B` · 2 s | as três do 8B descem (a chave e o "8B" ficam) |
+| `6.8B` · 3 s | o "8B" pulsa |
+| `6.8B` · 5,9 → 6,7 s | a onda: sobe a 8, depois a 9 (a 8 desce), a 10, e desce |
+| `6.8B` · os brilhos | em verde |
+| `6.8B` · 12 → 13 s | os elementos do 8B brilham de cima para baixo, linha a linha, e voltam |
+| `6.8B` · 14 → 15 s | brilham de lado, coluna a coluna, depressa; acesos até aos 15 s |
+| `6.8B` · 15 / 16 / 16,6 s | brilha o Fe, o Co (o Fe fica) e o Ni; aos 17,8 s apagam depressa, e dos 18 aos 20 s brilham os três outra vez |
+| `6.8B` · 20 → 28 s | a foto de **Dmitri Mendeleev** (`Imagens/Dmitri_Mendeleev.jpg`), com o nome e "1871" em cima, em fade, no lugar da montagem do professor (o centro em x 954, y 386, a 1,62; peça `foto-mendeleev`) |
+| `6.8B` · 28 → 32 s | as três colunas brilham e crescem; aos 31 s pulsam a chave e o "8B" |
 
 No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s)
 "b – Os elementos representativos" (o começo da `6.1`) e "c – Dividindo as
