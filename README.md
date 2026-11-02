@@ -1,4 +1,4 @@
-# Audiobook interativo da Tabela Periódica Moderna
+﻿# Audiobook interativo da Tabela Periódica Moderna
 
 A mesma aula do Prof. Amauri Junior, do lado de cá: o aluno abre
 `tabela-periodica.html` no celular ou no Chromebook e a aula anda
@@ -589,7 +589,7 @@ em diante o toque nos bilhetes vale, e eles pulsam a chamar o dedo. Descida a
 série inteira, o card do nome sai em fade e volta em fade à esquerda do La (ou
 do Ac), com a seta para ele. Tocada qualquer carta de uma série já embaixo, a
 série inteira volta para o bilhete, o card volta ao lugar do começo e, se era
-a última, a mesa desce. Os quatro cards são peças da montagem
+a última, a mesa desce. Os quatro cards, no cinza dos bilhetes com o nome em branco, são peças da montagem
 (`rotulo-lantanideos`, `rotulo-actinideos` e os `…-serie`); a seta segue o card.
 O ONDE guarda as séries que estão embaixo (`series8`). As casas **57–71** e
 **89–103** viram botão (`SERIES8`): tocada uma delas, os quinze elementos da
