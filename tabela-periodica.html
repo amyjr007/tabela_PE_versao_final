@@ -2167,6 +2167,11 @@ body.montagem .quadro71{pointer-events:auto}
   transition:transform .45s cubic-bezier(.34,1.56,.64,1),color .3s ease,margin .45s ease}
 .quadro71 b.grande71{transform:scale(1.35);color:#D93A2E;margin:0 .55em}
 .veu-terras{background:rgba(12,10,32,.94)}
+/* o "terras-raras" no azul das linhas (também crescido), e a borda do mesmo
+   azul nos lantanídeos, de carta em carta enquanto ele é digitado */
+.quadro71 .def71.azul71, .quadro71 .def71.azul71 b.grande71{color:var(--cor-linha)}
+.mesa.series8 .pc.borda71::before{content:'';position:absolute;inset:-2px;z-index:3;pointer-events:none;
+  border:3px solid var(--cor-linha);border-radius:5px}
 /* o véu das terras-raras: o título e, embaixo, um carrossel — o celular,
    a TV, os fones */
 .veu-terras .titulo71{margin:0 0 22px;font-family:var(--display);font-weight:700;font-size:52px;color:var(--ouro-luz)}
@@ -4171,7 +4176,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v37.6';
+const VERSAO = 'v37.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17232,6 +17237,9 @@ const EV7 = {
         } else el[j].textContent = s;
       });
     });
+    /* (o "terras-raras" em azul desde a primeira letra) */
+    const TR = LINHAS_71[0].def[1];
+    this.quadro.querySelector('.def71').classList.toggle('azul71', tq >= TR.de && TR.txt.startsWith(this.escritos[0][2]));
     if (bate) TECLAS.bate();
     const vis = {};
     ROTULOS_7.forEach(R => {
@@ -17263,6 +17271,8 @@ const EV7 = {
       terras: t71 >= Q.terras && t71 < Q.raras, raras: t71 >= Q.raras && t71 < Q.veu,
       veu: t71 >= Q.veu && t71 < Q.sai, foto: t71 < Q.tv ? 0 : t71 < Q.fone ? 1 : 2,
       brLan: corre(Q.brLan[0], Q.brLan[1], Q.nomeAct), brAct: corre(Q.brAct[0], Q.brAct[1], Q.fim),
+      /* a borda azul, junto com o "terras-raras", até o texto sair */
+      borda: corre(TR.de, TR.ate, Q.some),
       /* a "7.2": os cards dos nomes crescem (1 e 2,2 s), a linha cinza (3,8–20 s),
          os bilhetes crescem (6,5 s), o bloco B brilha (8–9 s), e dos 20 s
          só os representativos, dos 22,8 s só os de transição, dos 26,5 s tudo */
@@ -17304,7 +17314,11 @@ const EV7 = {
     if (b.length){ b[0].classList.toggle('grande71', E.terras); b[1].classList.toggle('grande71', E.raras); }
     this.veu.classList.toggle('on', E.veu);
     this.veu.querySelector('.trilho71').style.transform = 'translateX(' + (-440 * E.foto) + 'px)';
-    SERIES8.zs('lan').forEach((z, k) => SERIES8.carta(m, z).classList.toggle('acende71', k < E.brLan));
+    SERIES8.zs('lan').forEach((z, k) => {
+      const c = SERIES8.carta(m, z);
+      c.classList.toggle('acende71', k < E.brLan);
+      c.classList.toggle('borda71', k < E.borda);
+    });
     SERIES8.zs('act').forEach((z, k) => SERIES8.carta(m, z).classList.toggle('acende71', k < E.brAct));
     SERIES8.carta(m, 57).classList.toggle('real71', E.el71.lan);
     SERIES8.carta(m, 89).classList.toggle('real71', E.el71.act);
@@ -17324,7 +17338,8 @@ const EV7 = {
     this.quadro.classList.remove('on');
     this.veu.classList.remove('on');
     Object.values(this.rot).forEach(r => r.depois.classList.remove('destaque71'));
-    this.mesa().querySelectorAll('.acende71, .real71').forEach(c => c.classList.remove('acende71', 'real71'));
+    this.mesa().querySelectorAll('.acende71, .real71, .borda71').forEach(c => c.classList.remove('acende71', 'real71', 'borda71'));
+    this.quadro.querySelector('.def71').classList.remove('azul71');
     Object.values(this.faixas).forEach(b => b.classList.remove('on'));
     Object.values(this.eixos).forEach(e => e.classList.remove('mostra7', 'acesa'));
     this.mesa().querySelectorAll('.casa.serie').forEach(d => d.classList.remove('cresce7', 'chama7'));

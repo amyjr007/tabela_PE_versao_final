@@ -611,8 +611,10 @@ voltam ao normal. No vão da tabela, em cima dos metais de transição
 Parecidos com o actínio" (`LINHAS_71`: cada pedaço da linha com os passos dele,
 apagar o que havia e digitar o novo). Aos 18 s o primeiro nome vira
 **Lantanoides** e aos 19 s o segundo vira **Actinoides**; aos 25,3 s a definição do primeiro vira
-**terras-raras** (até 25,8 s); "terras" cresce em vermelho aos 27 s e "raras"
-aos 34,2 s. Dos 42 aos 47 s, o véu escuro com o título **Lantanídeos =
+**terras-raras** (até 25,8 s), no azul das linhas (`--cor-linha`), e no mesmo
+tempo uma borda desse azul corre os lantanídeos de carta em carta (fica até
+o texto sair, aos 59 s); "terras" cresce aos 27 s e "raras" aos 34,2 s, sem
+perder o azul. Dos 42 aos 47 s, o véu escuro com o título **Lantanídeos =
 Terras-raras** e, embaixo, um carrossel desenhado no código: o celular, aos 43 s
 a TV e aos 44 s os fones. Aos 59 s o texto do vão sai em fade; aos 60,6 s
 cresce o card Lantanídeos e, dos 62 aos 63 s, um brilho corre a série de
