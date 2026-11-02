@@ -524,12 +524,14 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6.8B` · 15 / 16 / 16,6 s | brilha o Fe, o Co (o Fe fica) e o Ni; aos 17,8 s apagam depressa, e dos 18 aos 20 s brilham os três outra vez |
 | `6.8B` · 20 → 28 s | a foto de **Dmitri Mendeleev** (`Imagens/Dmitri_Mendeleev.jpg`), com o nome e "1871" em cima, em fade, no lugar da montagem do professor (o centro em x 954, y 386, a 1,62; peça `foto-mendeleev`) |
 | `6.8B` · 28 → 32 s | as três colunas brilham e crescem; aos 31 s pulsam a chave e o "8B" |
-| acabada a `6.8B` | o toque segue: 1B (o Cu, `6.1B`), 2B (o Zn, toca a **`6.2B`**); acabada ela, 3A … 7A (`6.3A` … `6.7A`) e o 8A (o He; a coluna 18 sobe só 12 px, para o rótulo não ficar sob o botão do carrossel), que toca a **`6.8A`**. Depois de uma família com narração, o toque só vale com ela acabada |
+| acabada a `6.8B` | o toque segue: 1B (o Cu, `6.1B`), 2B (o Zn, toca a **`6.2B`**); acabada ela, 3A … 7A (`6.3A` … `6.7A`) e o 8A (o He; a coluna 18 sobe só 12 px, para o rótulo não ficar sob o botão do carrossel), que toca a **`6.8A`**. Com a `6.8B` (ou a `6.2B`) ainda a tocar, o toque na família seguinte vale: corta a narração e leva-a ao fim (o que ainda viria nela não acontece), e segue; o brilho que chama a família da vez só aparece com a narração acabada |
 | `6.2B` · 6 → 7 s | o bloco representativo da direita (13 a 18) cresce, e volta |
-| `6.8A` · 6,8 s | a narração pára: os números de todas as famílias brilham, dourados, saem os confetes e toca o `funfare`; acabado ele, a narração continua |
+| `6.8A` · 3 s | os gases nobres (a coluna 18) descem à posição normal |
+| `6.8A` · 6,8 s | a narração pára: a tabela toda brilha (dourado), as bolinhas azuis das linhas voltam em fade (e ficam), saem os confetes e toca o `funfare`; acabado ele, o brilho sai e a narração continua |
 | `6.8A` · 16 / 18 / 21 s | os representativos crescem; brilham (verde); aos 21 s voltam e apagam o brilho, e crescem os de transição |
 | `6.8A` · 24,9 → 26 s | os de transição brilham; aos 26 s voltam ao normal (o tamanho e o brilho) |
 | `6.8A` · 31,2 → 41 s | os números das famílias viram algarismos romanos (IA, IIA, IIIB … VIIIB, IB, IIB, IIIA … VIIIA), transformando-se no lugar — o arábico desfoca e some enquanto o romano se forma, e a largura anda de um para o outro; aos 41 s voltam, com a mesma animação |
+| acabada a `6.8A` | **o toque livre**: tocado qualquer elemento, acendem a linha (faixa azul, com a bolinha do período) e a coluna (faixa laranja) dele, como no quiz das coordenadas, e o resto da tabela recua; no lugar da bolinha laranja do grupo, brilha o rótulo da família (1A, 8B…). Outro elemento troca; o mesmo apaga |
 
 No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s)
 "b – Os elementos representativos" (o começo da `6.1`) e "c – Dividindo as

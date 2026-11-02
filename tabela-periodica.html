@@ -1914,9 +1914,14 @@ body.montagem .rot6{opacity:1;pointer-events:auto}
 .texto6.on.apaga6{opacity:0}
 /* na "6.2B" e na "6.8A": os blocos que crescem (a escala à parte do transform) */
 .mesa .pc.maior6{scale:1.1;z-index:8}
-/* a conquista da "6.8A": os números das famílias brilham, dourados */
-.rot6.conquista6{animation:conquista6 .9s ease-in-out infinite}
-@keyframes conquista6{50%{scale:1.35;text-shadow:0 0 6px #fff, 0 0 18px #FFD54F, 0 0 32px #FFB300}}
+/* a conquista da "6.8A": a tabela toda brilha, dourada; as bolinhas das
+   linhas voltam em fade */
+.mesa .pc.festa6 .face, .mesa .casa.serie.festa6{box-shadow:0 0 0 2px #FFE08A, 0 0 22px 7px rgba(255,196,48,.85)}
+.mesa[data-slide="6"] .eixo[data-periodo]{transition:opacity .9s ease,color .25s,background .25s,border-color .25s,transform .25s}
+/* o toque livre, acabada a "6.8A": o rótulo da família do elemento brilha
+   (no lugar da bolinha laranja do grupo) */
+.rot6.acesa6{text-shadow:0 0 6px #fff, 0 0 14px #FFB74D, 0 0 26px #E0782B;scale:1.2;
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1), opacity .4s ease, scale .3s ease, text-shadow .3s ease}
 /* o aviso do toque fora da ordem ("Comece pela família 1") */
 .aviso6{position:absolute;z-index:27;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:24px;color:#D32F2F;
@@ -3951,7 +3956,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v35.8';
+const VERSAO = 'v35.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14190,10 +14195,11 @@ const EV6 = {
   },
   /* a "6.2B": aos 6 s o bloco representativo da direita (13 a 18) cresce por 1 s */
   s62B:{ maiorDir:[6.0, 7.0] },
-  /* a "6.8A": aos 6,8 s pára — a conquista (os números brilham, confetes e o
-     funfare) — e continua; 16 s crescem os representativos, 18 s brilham,
+  /* a "6.8A": aos 3 s os gases nobres (a 8A) descem; aos 6,8 s pára — a
+     conquista (a tabela toda brilha, as bolinhas das linhas voltam, confetes
+     e o funfare) — e continua; 16 s crescem os representativos, 18 s brilham,
      21 s voltam e crescem os de transição, 24,9 s brilham, 26 s voltam */
-  s68A:{ pausa:6.8, maiorA:[16.0, 21.0], luzA:[18.0, 21.0], maiorB:[21.0, 26.0], luzB:[24.9, 26.0],
+  s68A:{ desce:3.0, pausa:6.8, maiorA:[16.0, 21.0], luzA:[18.0, 21.0], maiorB:[21.0, 26.0], luzB:[24.9, 26.0],
          /* dos 31,2 aos 41 s, os números das famílias em algarismos romanos */
          romanos:[31.2, 41.0] },
   pausou68:false, fim68:0,
@@ -14205,17 +14211,42 @@ const EV6 = {
     if (!this.fim68) this.fim68 = performance.now();
     return (som.duration || r) + (performance.now() - this.fim68) / 1000;
   },
-  /* A CONQUISTA, aos 6 s da "6.8A": a narração pára, os números das famílias
-     brilham, os confetes e o funfare; acabado ele, a narração continua */
+  /* A CONQUISTA, aos 6,8 s da "6.8A": a narração pára, a tabela toda brilha,
+     os confetes e o funfare; acabado ele, a narração continua (as bolinhas
+     das linhas, que voltam aqui, ficam) */
+  festa:false,
   conquista(){
     this.pausou68 = true;
+    this.festa = true;
     som.pause();
-    this.rotulos.forEach(r => r.classList.add('conquista6'));
     confete();
     tocaEfeito('funfare').then(() => {
-      this.rotulos.forEach(r => r.classList.remove('conquista6'));
+      this.festa = false;
       if (atual === 6 && trilhaAtual === '6.8A' && som.paused && !som.ended) som.play().catch(avisaSeNaoTocou);
     });
+  },
+  /* O TOQUE LIVRE, acabada a "6.8A": tocado um elemento qualquer, a linha e
+     a coluna dele acendem (as faixas azul e laranja do quiz das coordenadas);
+     no lugar da bolinha laranja do grupo, brilha o rótulo da família (1A,
+     8B…). Outro toque troca; o mesmo apaga */
+  cruz6:0,
+  coordenadas(c){
+    const z = +c.dataset.z;
+    this.semCruz();
+    if (z === this.cruz6){ this.cruz6 = 0; return; }
+    this.cruz6 = z;
+    TP.coordenadas(z, {ms:0});
+    const m = this.mesa();
+    m.querySelectorAll('.eixo[data-grupo].acesa').forEach(e => e.classList.remove('acesa'));
+    /* a coluna desenhada só é o grupo nas sete linhas de cima */
+    if (+c.dataset.linha <= 7){
+      const F = FAMILIAS_AB6.findIndex(F => F.cols.includes(+c.dataset.col));
+      if (F >= 0) this.rotulos[F].classList.add('acesa6');
+    }
+  },
+  semCruz(){
+    TP.semCoordenadas();
+    if (this.rotulos) this.rotulos.forEach(r => r.classList.remove('acesa6'));
   },
   /* O NÚMERO QUE SE TRANSFORMA: o arábico desfaz-se (desfoca e some) enquanto o
      romano se forma no mesmo lugar, e a largura do número anda de uma para a
@@ -14383,8 +14414,12 @@ const EV6 = {
       if (t < this.s68A.pausa - 0.2) this.pausou68 = false;
       else if (!this.pausou68 && !som.paused && t >= this.s68A.pausa) this.conquista();
     }
-    /* na "6.8B", as três do 8B, levantadas no toque, descem aos 2 s */
+    /* na "6.8B", as três do 8B, levantadas no toque, descem aos 2 s; na
+       "6.8A", os gases nobres aos 3 s */
     if (t4 >= this.s64.desce && this.noAr === 7) this.noAr = -1;
+    if (t8A >= this.s68A.desce && this.noAr === FAMILIAS_AB6.length - 1) this.noAr = -1;
+    /* a "6.8A" outra vez a tocar (voltada atrás): o toque livre sai */
+    if (this.cruz6 && !this.acabou('6.8A')){ this.cruz6 = 0; this.semCruz(); }
     /* começada a subida da 3 na "6.3", a 2A (a última tocada) já desceu de vez */
     if (t3 >= this.s63.sobe[0] && this.noAr === 1) this.noAr = -1;
     /* a vida solta, só até aos 8 s da narração (também pausada) */
@@ -14429,7 +14464,8 @@ const EV6 = {
     const vistos = FAMILIAS_AB6.map((F, i) => i < this.passo || i === this.noAr);
     const est = {
       bA: dentro(t6, this.brilhoA), bB: dentro(t6, this.brilhoB), cET: dentro(t6, this.cresceET),
-      semNum: t6 >= this.escuro,
+      /* os números das linhas saem aos 28 s da "6", e voltam na conquista da "6.8A" */
+      semNum: t6 >= this.escuro && !(t8A >= this.s68A.pausa), festa: this.festa,
       /* os representativos: escuros dos 28 s da "6" até aos 0,9 s da "6.1"; e,
          na "6.2", dos 17 aos 23 s (saído "Metais de Transição - ") */
       escA: t6 >= this.escuro && !(t1 >= S1.trocaB),
@@ -14451,7 +14487,7 @@ const EV6 = {
       cB: dentro(t2, S2.cresceB), saiGrupos: t2 >= S2.saiGrupos,
       /* os textos que se veem */
       on: TEXTOS_6.map(T => this.textos[T.k]._algum).join(''),
-      noAr, vistos: vistos.join(''), chama: this.podeTocar(t2, t3) ? this.passo : -1, monta,
+      noAr, vistos: vistos.join(''), chama: this.podeTocar(t2, t3) && !this.anteriorTocando() ? this.passo : -1, monta,
       /* a "6.3": os grupos B crescidos e a brilhar; depois só a família 3 */
       cB63: dentro(t3, this.s63.cresceB), c363: dentro(t3, this.s63.sobe),
       /* a "6.8B" */
@@ -14537,6 +14573,8 @@ const EV6 = {
     C.b.forEach(c => c.classList.toggle('maior6', est.maiorB));
     m.classList.toggle('luz6-rapida', est.luzRapida);
     this.foto.classList.toggle('on', est.foto);
+    /* a conquista da "6.8A": a tabela toda brilha */
+    C.todas.concat(C.series).forEach(c => c.classList.toggle('festa6', est.festa));
     /* na "6.8A", os números viram romanos (e voltam), transformando-se no lugar */
     this.rotulos.forEach(r => this.romano(r, est.romanos));
     /* na "6.3", os grupos B crescem com o brilho vermelho; aos 5 s, só a família 3 */
@@ -14570,10 +14608,13 @@ const EV6 = {
     if (this.passo >= FAMILIAS_AB6.length || t2 < this.s62.toque) return false;
     /* depois da 2A, só com a "6.3" já começada */
     if (this.passo === 2 && t3 < 0) return false;
-    /* depois de uma família com narração (o 8B, o 2B), só com ela acabada */
-    const ant = FAMILIAS_AB6[this.passo - 1];
-    if (ant && ant.trilha && !this.acabou(ant.trilha)) return false;
     return true;
+  },
+  /* a narração da família anterior (o 8B, o 2B) ainda a tocar: o toque na
+     seguinte vale (e corta-a), mas o brilho que a chama espera pelo fim */
+  anteriorTocando(){
+    const ant = FAMILIAS_AB6[this.passo - 1];
+    return !!(ant && ant.trilha && trilhaAtual === ant.trilha && !this.acabou(ant.trilha));
   },
   /* a narração já acabou (ou já se passou a outra, mais adiante) */
   acabou(id){
@@ -14585,6 +14626,8 @@ const EV6 = {
   toca(c){
     if (atual !== 6) return false;
     const t = tempoDaNarracao();
+    /* acabada a "6.8A", o toque livre: as coordenadas do elemento */
+    if (this.passo >= FAMILIAS_AB6.length && this.acabou('6.8A')){ this.coordenadas(c); return true; }
     if (!this.podeTocar(this.relogio('6.2', t), this.relogio('6.3', t))) return false;
     const F = FAMILIAS_AB6[this.passo];
     /* fora da ordem: a família tocada treme em vermelho, e o aviso da da vez */
@@ -14599,6 +14642,12 @@ const EV6 = {
       return true;
     }
     this.calaAviso();
+    /* com a narração da anterior ainda a tocar (a "6.8B", a "6.2B"), ela é
+       cortada e levada ao fim: o que ainda viria nela não acontece mais */
+    if (this.anteriorTocando()){
+      som.pause();
+      if (som.duration) som.currentTime = som.duration;
+    }
     const i = this.passo;
     this.noAr = i;
     this.passo++;
@@ -14620,7 +14669,8 @@ const EV6 = {
     return true;
   },
   zera(){
-    this.estado = ''; this.passo = 0; this.noAr = -1; this.pausou68 = false; this.fim68 = 0;
+    this.estado = ''; this.passo = 0; this.noAr = -1; this.pausou68 = false; this.fim68 = 0; this.festa = false;
+    if (this.cruz6){ this.cruz6 = 0; this.semCruz(); }
     clearTimeout(this.falaT);
     this.calaAviso();
     this.cortaFala();
@@ -14630,7 +14680,7 @@ const EV6 = {
     m.classList.remove('luz6-rapida');
     const C = this.cartas();
     C.todas.concat(C.series).forEach(c => {
-      c.classList.remove('brilhoA6', 'brilhoB6', 'escuro6', 'pulsa6c', 'chama6', 'luz6', 'cresceB6', 'maior6', 'apaga6');
+      c.classList.remove('brilhoA6', 'brilhoB6', 'escuro6', 'pulsa6c', 'chama6', 'luz6', 'cresceB6', 'maior6', 'apaga6', 'festa6');
       clearTimeout(c._t6);
       if (c._up6){ c._up6 = false; TP.poe(c, 0, 0); c.style.removeProperty('--e-salto'); }
     });
@@ -14640,7 +14690,7 @@ const EV6 = {
                                         s.classList.remove('pulsa6', 'sai6'); });
       d.classList.remove('on', 'escuro6', 'cresce6');
     });
-    this.rotulos.forEach(r => { r.classList.remove('on', 'conquista6', 'romano6'); r.style.removeProperty('--sobe6');
+    this.rotulos.forEach(r => { r.classList.remove('on', 'acesa6', 'romano6'); r.style.removeProperty('--sobe6');
                                 r.querySelector('.num6').style.removeProperty('width'); });
     this.chave8.classList.remove('on');
     m.querySelectorAll('.eixo.some6').forEach(e => e.classList.remove('some6'));
