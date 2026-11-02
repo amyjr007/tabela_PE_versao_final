@@ -509,9 +509,10 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6.2` · 14 → 15 s | o "A" de "Grupos A" cresce, e volta |
 | `6.2` · 17 s | "Metais de Transição - " sai em fade (fica "Grupos B") |
 | `6.2` · 18,5 → 21 s | o "B" de "Grupos B" cresce, e volta |
-| `6.2` · 23 s | "Grupos A" e "Grupos B" saem em fade; daqui em diante, **o toque nas famílias, na ordem** (a da vez brilha de leve): cada uma sobe 50 px com mola (a anterior desce), com o rótulo em cima ("1A", "2A"…), o `right` e a fala do nome |
+| `6.2` · 20 s | **o toque nas famílias** passa a valer, na ordem. Tocada outra família, ela treme em vermelho, toca o `error` e aparece o aviso "Comece pela família 1" (depois, "Agora, toque na família N", a da vez) por 3 s; e, enquanto a da vez não for tocada, ele volta de 3 em 3 s (peça `aviso-familia` na montagem) |
+| `6.2` · 23 s | "Grupos A" e "Grupos B" saem em fade; o toque nas famílias, na ordem (a da vez brilha de leve): cada uma sobe 50 px com mola (a anterior desce), com o rótulo em cima ("1A", "2A"…), o `right` e a fala do nome |
 | as falas das famílias | 1A → `6.1A`, 2A → `6.2A`, 3B → `6.3B`, 4B → `6.4B`, 5B → `6.5B`, 6B → `6.6B`, 7B → `6.7B` (`FAMILIAS_AB6`) |
-| depois da 2A | toca sozinha a **`6.3`**: aos 5 s a família 3 sobe, com o "3B", e aos 7,2 s desce (o rótulo desce junto e fica) |
+| depois da 2A | toca sozinha a **`6.3`**: dos 2,6 aos 5 s os grupos B crescem, com o brilho vermelho; aos 5 s voltam, e só a família 3 cresce e sobe, com o "3B"; aos 7 s volta ao normal (o rótulo desce junto e fica) |
 | depois da `6.3` | o toque segue: 3B, 4B, 5B, 6B, 7B; e o grupo 8, que sobe com o 9 e o 10, em sequência, com uma chave em cima e o "8B" (ainda sem fala) |
 
 No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s)

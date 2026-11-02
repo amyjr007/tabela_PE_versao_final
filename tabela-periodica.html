@@ -1886,6 +1886,17 @@ body.montagem .rot6{opacity:1;pointer-events:auto}
   transform:translateY(var(--sobe6,0px));opacity:0;
   transition:transform .32s cubic-bezier(.34,1.56,.64,1), opacity .4s ease}
 .chave6.on{opacity:1}
+/* na "6.3": os grupos B crescidos, com o brilho vermelho (a escala à parte do transform) */
+.mesa[data-slide="6"] .pc{transition:transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease, opacity .45s ease, scale .35s ease}
+.mesa .pc.cresceB6{scale:1.12;z-index:8}
+.mesa .pc.cresceB6 .face{box-shadow:0 0 0 2px #FF6B5E, 0 0 18px 5px rgba(230,60,50,.7)}
+/* o aviso do toque fora da ordem ("Comece pela família 1") */
+.aviso6{position:absolute;z-index:27;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
+  font-family:var(--display);font-weight:700;font-size:24px;color:#D32F2F;
+  text-shadow:0 0 10px rgba(255,255,255,.95), 0 0 3px #fff;opacity:0;transition:opacity .4s ease}
+.aviso6.on{opacity:1}
+body.montagem .aviso6{opacity:1;pointer-events:auto}
+body.montagem .aviso6:empty::before{content:'Comece pela família 1'}
 /* a próxima família a tocar: um brilho leve, a pulsar */
 .mesa .pc.chama6 .face{animation:chama6 1.6s ease-in-out infinite}
 @keyframes chama6{50%{box-shadow:0 0 0 2px rgba(255,255,255,.9), 0 0 16px 4px rgba(242,193,78,.75)}}
@@ -3912,7 +3923,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v34.7';
+const VERSAO = 'v34.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14097,8 +14108,12 @@ const EV6 = {
   someA:25.0,
   s61:{ trocaB:0.9, acendeGA:3.0, acendeER:4.2, cresceER:[17.5, 19.0], cresceGA:[19.0, 21.0],
         pulsaA:[20.8, 21.6], acendeB:29.5, pulsaGB:[31.0, 31.8], pulsaB:[32.0, 32.8] },
-  s62:{ saiER:10.0, cresceA:[14.0, 15.0], saiMT:17.0, cresceB:[18.5, 21.0], saiGrupos:23.0, toque:23.0 },
-  s63:{ sobe:[5.0, 7.2] },
+  s62:{ saiER:10.0, cresceA:[14.0, 15.0], saiMT:17.0, cresceB:[18.5, 21.0], saiGrupos:23.0, toque:20.0 },
+  /* a "6.3": dos 2,6 aos 5 s os grupos B crescem, com o brilho vermelho; aos 5 s
+     só a família 3 (3B) fica crescida, e sobe, até aos 7 s */
+  s63:{ cresceB:[2.6, 5.0], sobe:[5.0, 7.0] },
+  /* o aviso do toque fora da ordem: 3 s à vista, e volta de 3 em 3 s */
+  aviso:null, avisoT:0, avisoP:-1,
   /* a subida das famílias: 50 px, com mola (a do tópico 5) */
   alto:50,
   textos:null, rotulos:null, chave8:null, estado:'',
@@ -14162,6 +14177,36 @@ const EV6 = {
       (w/2 + 10) + ' 10 L' + (w - 12) + ' 10 Q' + (w - 2) + ' 10 ' + (w - 2) + ' 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>';
     m.appendChild(ch);
     this.chave8 = ch;
+    /* o aviso "Comece pela família 1" (no vazio, acima dos de transição) */
+    const av = document.createElement('div');
+    av.className = 'aviso6';
+    av.dataset.mont = 'aviso-familia';    /* na montagem, peça */
+    av.style.left = '508px';
+    av.style.top = '205px';
+    m.appendChild(av);
+    this.aviso = av;
+  },
+  /* O AVISO DO TOQUE FORA DA ORDEM: 3 s à vista; e, enquanto a família da
+     vez não for tocada, volta de 3 em 3 s */
+  avisa(){
+    clearTimeout(this.avisoT);
+    const p = this.passo;
+    this.avisoP = p;
+    const F = FAMILIAS_AB6[p];
+    if (!F || !this.aviso) return;
+    this.aviso.textContent = p === 0 ? 'Comece pela família 1' : 'Agora, toque na família ' + F.cols[0];
+    this.aviso.classList.add('on');
+    this.avisoT = setTimeout(() => {
+      this.aviso.classList.remove('on');
+      this.avisoT = setTimeout(() => {
+        if (atual === 6 && this.passo === p && this.avisoP === p) this.avisa();
+      }, 3000);
+    }, 3000);
+  },
+  calaAviso(){
+    clearTimeout(this.avisoT);
+    this.avisoP = -1;
+    if (this.aviso) this.aviso.classList.remove('on');
   },
   /* o relógio de cada narração: o segundo dela, 1e4 se já passou, -1 se ainda não */
   relogio(id, t){
@@ -14231,7 +14276,9 @@ const EV6 = {
       cB: dentro(t2, S2.cresceB), saiGrupos: t2 >= S2.saiGrupos,
       /* os textos que se veem */
       on: TEXTOS_6.map(T => this.textos[T.k]._algum).join(''),
-      noAr, vistos: vistos.join(''), chama: this.podeTocar(t2, t3) ? this.passo : -1, monta
+      noAr, vistos: vistos.join(''), chama: this.podeTocar(t2, t3) ? this.passo : -1, monta,
+      /* a "6.3": os grupos B crescidos e a brilhar; depois só a família 3 */
+      cB63: dentro(t3, this.s63.cresceB), c363: dentro(t3, this.s63.sobe)
     };
     const chave = JSON.stringify(est);
     if (chave === this.estado) return;
@@ -14284,6 +14331,8 @@ const EV6 = {
     this.chave8.classList.toggle('on', vistos[7]);
     this.chave8.style.setProperty('--sobe6', (noAr === 7 ? -this.alto : 0) + 'px');
     this.chave8.style.transitionDelay = noAr === 7 ? '440ms' : '0ms';
+    /* na "6.3", os grupos B crescem com o brilho vermelho; aos 5 s, só a família 3 */
+    C.b.forEach(c => c.classList.toggle('cresceB6', est.cB63 || (est.c363 && +c.dataset.col === 3)));
     /* a próxima família a tocar chama o dedo, com um brilho leve */
     C.todas.forEach(c => c.classList.toggle('chama6', est.chama >= 0 && FAMILIAS_AB6[est.chama].cols.includes(+c.dataset.col)));
     /* aos 31 s, os de transição viram metal, numa onda da esquerda para a direita */
@@ -14322,7 +14371,18 @@ const EV6 = {
     const t = tempoDaNarracao();
     if (!this.podeTocar(this.relogio('6.2', t), this.relogio('6.3', t))) return false;
     const F = FAMILIAS_AB6[this.passo];
-    if (!F.cols.includes(+c.dataset.col)) return false;
+    /* fora da ordem: a família tocada treme em vermelho, e o aviso da da vez */
+    if (!F.cols.includes(+c.dataset.col)){
+      this.cartas().todas.filter(e => +e.dataset.col === +c.dataset.col).forEach(e => {
+        e.classList.remove('errada3'); void e.offsetWidth; e.classList.add('errada3');
+        clearTimeout(e._erroT);
+        e._erroT = setTimeout(() => e.classList.remove('errada3'), 700);
+      });
+      tocaEfeito('error');
+      this.avisa();
+      return true;
+    }
+    this.calaAviso();
     const i = this.passo;
     this.noAr = i;
     this.passo++;
@@ -14341,6 +14401,7 @@ const EV6 = {
   zera(){
     this.estado = ''; this.passo = 0; this.noAr = -1;
     clearTimeout(this.falaT);
+    this.calaAviso();
     const m = this.mesa();
     if (!m || !this.textos) return;
     const C = this.cartas();
