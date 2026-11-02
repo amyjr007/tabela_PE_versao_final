@@ -1861,9 +1861,31 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 .mesa .eixo.some6{opacity:0!important;transition:opacity .6s ease}
 /* na "6.1": o "Grupos B" do "Metais de Transição - Grupos B" pulsa sozinho, e
    os blocos pulsam (a escala à parte, sem mexer no transform da carta) */
-.texto6 .mais6{display:inline-block;white-space:pre}
-.texto6 .mais6.pulsa6{animation:pulsa6 .8s ease-in-out}
+.texto6 .p6{display:inline-block;white-space:pre;transition:opacity .6s ease}
+.texto6 .p6.pulsa6{animation:pulsa6 .8s ease-in-out}
 @keyframes pulsa6{50%{transform:scale(1.35)}}
+/* na "6.2": "Metais de Transição - " sai (fica "Grupos B"); o "A" e o "B" crescem sozinhos */
+.texto6 .p6.sai6{opacity:0}
+.texto6 .l6{display:inline-block;transform-origin:50% 60%;transition:transform .45s cubic-bezier(.34,1.56,.64,1)}
+.texto6 .l6.cresce6{transform:scale(1.7)}
+/* os rótulos das famílias (1A, 2A, 3B…): em cima da coluna, sobem e descem com ela */
+.rot6{position:absolute;z-index:26;pointer-events:none;white-space:nowrap;
+  transform:translate(-50%,-50%) translateY(var(--sobe6,0px));
+  font-family:var(--display);font-weight:800;font-size:22px;line-height:1;color:#A6382F;
+  text-shadow:0 0 8px rgba(255,255,255,.95), 0 0 2px #fff;opacity:0;
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1), opacity .4s ease}
+.rot6.on{opacity:1}
+.rot6:is([data-mont="rotulo-1A"],[data-mont="rotulo-2A"]){color:#B4881C}
+.rot6.rot6-8{font-size:24px}
+body.montagem .rot6{opacity:1;pointer-events:auto}
+/* a chave em cima do 8B (as colunas 8, 9 e 10) */
+.chave6{position:absolute;z-index:26;pointer-events:none;color:#A6382F;line-height:0;
+  transform:translateY(var(--sobe6,0px));opacity:0;
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1), opacity .4s ease}
+.chave6.on{opacity:1}
+/* a próxima família a tocar: um brilho leve, a pulsar */
+.mesa .pc.chama6 .face{animation:chama6 1.6s ease-in-out infinite}
+@keyframes chama6{50%{box-shadow:0 0 0 2px rgba(255,255,255,.9), 0 0 16px 4px rgba(242,193,78,.75)}}
 .mesa .pc.pulsa6c, .mesa .casa.serie.pulsa6c{animation:pulsaCarta6 .8s ease-in-out}
 @keyframes pulsaCarta6{50%{scale:1.12}}
 /* aos 28 s, os textos dos representativos escurecem com eles */
@@ -3887,7 +3909,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v33.9';
+const VERSAO = 'v34.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4436,6 +4458,8 @@ function montaTabela(i){
       /* no slide 6, acabada a "5", o toque sobe a família e diz o nome */
       if (i === 5 && QUIZ6.aberto){ QUIZ6.toca(c); return; }
       if (i === 5 && EV5.toca(c)) return;
+      /* no slide 7, dos 23 s da "6.2", o toque sobe a família da vez */
+      if (i === 6 && EV6.toca(c)) return;
       /* no slide 8, a carta de uma série que já desceu dá a volta dela
          (elas ficam fora do TP.todos(), e o TP.gira(z) não as acharia) */
       if (i === 7 && ehDaSerie(z)){ if (!c._voo) TP.gira(c); return; }
@@ -5150,6 +5174,8 @@ const TRILHAS = {
   '5E1':  'Audios/audio_tabela_5E1.mp3',   /* os gases nobres */
   '6':    'Audios/audio_tabela_6.mp3',     /* o slide 7: os grupos A e B */
   '6.1':  'Audios/audio_tabela_6.1.mp3',   /* o play, depois da "6": os representativos */
+  '6.2':  'Audios/audio_tabela_6.2.mp3',   /* o play, depois da "6.1": a classificação A e B */
+  '6.3':  'Audios/audio_tabela_6.3.mp3',   /* depois da 2A: os grupos B */
   '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
   '8':    'Audios/audio_tabela_8.mp3',     /* o slide 9: a natureza (ainda por gravar) */
   '9':    'Audios/audio_tabela_9.mp3',     /* o slide 10: a valência (ainda por gravar) */
@@ -5976,6 +6002,8 @@ const SEQ = {
     else if (id === '5') EV5.fim5();
     /* o fim da "6": o play passa a tocar a "6.1" (a cena da "6" fica) */
     else if (id === '6') carregaTrilha('6.1');
+    /* e o da "6.1", a "6.2" */
+    else if (id === '6.1') carregaTrilha('6.2');
     else if (id === '4Ax' || id === '4A1') EV4.saquei4(true);
     /* o fim da "4B" (os ametais) e o da "4B1": o Saquei */
     else if (['4B', '4B1', '4B2.1', '4C', '4C2'].includes(id)) EV4.saquei4(true);
@@ -13970,7 +13998,8 @@ const QUIZ6 = {
 window.QUIZ6 = QUIZ6;
 
 /* ============================================================
-   O SLIDE 7 · OS GRUPOS A E B — a narração "6"
+   O SLIDE 7 · OS GRUPOS A E B — as narrações "6", "6.1", "6.2" e "6.3"
+   A "6":
      antes do play    a vida solta (cubos e famílias, sem a cruz)
      0 → 8 s          ela continua com a narração, e cala-se aos 8 s
      9 → 10 s         "Grupos A", no dourado dos representativos — e,
@@ -13986,30 +14015,83 @@ window.QUIZ6 = QUIZ6;
      34,1 → 35,4 s    "Metais de Transição", acima do bloco
      38 → 39 s        "Grupos B" e "Elementos de Transição" saem, e ao lado
                       de "Metais de Transição" escreve-se " - Grupos B"
-     fim da "6"       o metal sai em fade, e o vermelho dos de transição volta
+     fim              o metal sai em fade, e o vermelho dos de transição volta;
+                      o play passa a tocar a "6.1"
+   A "6.1" (a cena da "6" fica como acabou), tudo em fade:
+     0,9 s            o bloco de transição e o texto vermelho escurecem, e os
+                      representativos acendem
+     3 s / 4,2 s      acende "Grupos A"; acende "Elementos representativos"
+     17,5 → 19 s      "Elementos representativos" cresce; aos 19 s volta, e
+                      "Grupos A" cresce até aos 21 s
+     20,8 s           os representativos (os blocos laterais) pulsam
+     29,5 s           o bloco de transição e o texto vermelho acendem
+     31 s / 32 s      pulsa "Grupos B"; pulsa o bloco de transição
+     fim              o play passa a tocar a "6.2"
+   A "6.2":
+     10 s             "Elementos representativos" sai
+     14 → 15 s        o "A" de "Grupos A" cresce
+     17 s             "Metais de Transição - " sai (fica "Grupos B")
+     18,5 → 21 s      o "B" de "Grupos B" cresce
+     23 s             "Grupos A" e "Grupos B" saem; a partir daqui, tocar nas
+                      famílias, na ordem: a 1 (1A) e a 2 (2A) — cada uma sobe,
+                      com o número e a letra em cima, o "right" e a fala dela
+   Depois da 2A, a "6.3" sozinha: aos 5 s a família 3 sobe (3B), e aos 7,2 s
+   desce. E o toque segue: 3B, 4B, 5B, 6B, 7B; e o grupo 8, que sobe com o
+   9 e o 10, em sequência, com uma chave em cima e o "8B".
    Os textos são peças na montagem (G): andam e mudam de tamanho.
    ============================================================ */
+/* cada texto em pedaços ('partes'), digitados em sequência; 'letra': a
+   última letra num pedaço à parte (o "A" e o "B" que crescem sozinhos) */
 const TEXTOS_6 = [
   /* (x, y: o centro, nos lugares que o professor deixou na montagem) */
-  { k:'ga', mont:'grupos-a',                  txt:'Grupos A',                  de:9.0,  ate:10.0, x:329, y:139, cls:'a6 grande6' },
-  /* ('sai': o segundo em que o texto se apaga) */
-  { k:'gb', mont:'grupos-b',                  txt:'Grupos B',                  de:10.5, ate:11.4, x:687, y:144, cls:'b6 grande6', sai:38.0 },
-  { k:'er', mont:'elementos-representativos', txt:'Elementos representativos', de:17.1, ate:18.3, x:332, y:179, cls:'a6' },
-  { k:'et', mont:'elementos-de-transicao',    txt:'Elementos de Transição',    de:19.1, ate:20.3, x:695, y:179, cls:'b6', sai:38.0 },
+  { k:'ga', mont:'grupos-a', x:329, y:139, cls:'a6 grande6',
+    partes:[ { k:'g', txt:'Grupos A', de:9.0, ate:10.0, letra:true } ] },
+  { k:'gb', mont:'grupos-b', x:687, y:144, cls:'b6 grande6',
+    partes:[ { k:'g', txt:'Grupos B', de:10.5, ate:11.4 } ] },
+  { k:'er', mont:'elementos-representativos', x:332, y:179, cls:'a6',
+    partes:[ { k:'e', txt:'Elementos representativos', de:17.1, ate:18.3 } ] },
+  { k:'et', mont:'elementos-de-transicao', x:695, y:179, cls:'b6',
+    partes:[ { k:'e', txt:'Elementos de Transição', de:19.1, ate:20.3 } ] },
   /* aos 38 s o "Grupos B" passa para o lado dele: "Metais de Transição - Grupos B",
      sempre centrado no meio do bloco de transição (x 508: entre as colunas 3 e 12) */
-  { k:'mt', mont:'metais-de-transicao',       txt:'Metais de Transição',       de:34.1, ate:35.4, x:508, y:265, cls:'b6 medio6',
-    mais:{ txt:' - Grupos B', de:38.0, ate:39.0 } }
+  { k:'mt', mont:'metais-de-transicao', x:508, y:265, cls:'b6 medio6',
+    partes:[ { k:'m', txt:'Metais de Transição', de:34.1, ate:35.4 },
+             { k:'s', txt:' - ', de:38.0, ate:38.3 },
+             { k:'g', txt:'Grupos B', de:38.3, ate:39.0, letra:true } ] }
 ];
+/* A ORDEM DAS FAMÍLIAS, a partir dos 23 s da "6.2": a coluna (ou as três do
+   8B), o rótulo e a fala do nome (pelo que cada áudio diz: o "2A" está no
+   arquivo 6.6B, o "4B" no 6.2A e o "6B" no 6.4B) */
+const FAMILIAS_AB6 = [
+  { cols:[1], rot:'1A', fala:'6.1A' },
+  { cols:[2], rot:'2A', fala:'6.6B' },
+  { cols:[3], rot:'3B', fala:'6.3B' },
+  { cols:[4], rot:'4B', fala:'6.2A' },
+  { cols:[5], rot:'5B', fala:'6.5B' },
+  { cols:[6], rot:'6B', fala:'6.4B' },
+  { cols:[7], rot:'7B', fala:'6.7B' },
+  { cols:[8, 9, 10], rot:'8B', fala:null }
+];
+/* as narrações do slide, na ordem: o relógio de cada uma vale 1e4 depois dela */
+const TRILHAS_6 = ['6', '6.1', '6.2', '6.3'];
 const EV6 = {
   vidaAte:8.0,
   brilhoA:[9.0, 10.0], brilhoB:[10.5, 11.4],
   /* "Elementos de Transição" cresce dos 25 aos 27 s */
   cresceET:[25.0, 27.0],
   /* (a "6" regravada, de 40 s) aos 28 s os representativos escurecem e os
-     números das linhas saem; aos 31 s, o metal */
-  escuro:28.0, metal:31.0,
-  textos:null, estado:'',
+     números das linhas saem; aos 31 s, o metal; aos 38 s saem "Grupos B" e
+     "Elementos de Transição" */
+  escuro:28.0, metal:31.0, saiB:38.0,
+  s61:{ trocaB:0.9, acendeGA:3.0, acendeER:4.2, cresceER:[17.5, 19.0], cresceGA:[19.0, 21.0],
+        pulsaA:[20.8, 21.6], acendeB:29.5, pulsaGB:[31.0, 31.8], pulsaB:[32.0, 32.8] },
+  s62:{ saiER:10.0, cresceA:[14.0, 15.0], saiMT:17.0, cresceB:[18.5, 21.0], saiGrupos:23.0, toque:23.0 },
+  s63:{ sobe:[5.0, 7.2] },
+  /* a subida das famílias: 50 px, com mola (a do tópico 5) */
+  alto:50,
+  textos:null, rotulos:null, chave8:null, estado:'',
+  /* o toque: quantas famílias já foram (o índice da próxima em FAMILIAS_AB6) e a no ar */
+  passo:0, noAr:-1, falaT:0,
   mesa(){ return slides[6] && slides[6].querySelector('.mesa'); },
   /* os representativos (grupos 1, 2 e 13 a 18, com o H) e os de transição
      (3 a 12, com as casas das séries) */
@@ -14017,10 +14099,11 @@ const EV6 = {
     if (!this._cartas || !this._cartas.a.length || !this._cartas.a[0].isConnected){
       const m = this.mesa(), todas = [...m.querySelectorAll('.pc:not(.serie-oculta)')];
       const b = c => +c.dataset.col >= 3 && +c.dataset.col <= 12;
-      this._cartas = { a: todas.filter(c => !b(c)), b: todas.filter(b), series: [...m.querySelectorAll('.casa.serie')] };
+      this._cartas = { a: todas.filter(c => !b(c)), b: todas.filter(b), series: [...m.querySelectorAll('.casa.serie')], todas };
     }
     return this._cartas;
   },
+  coluna(col){ return this.cartas().todas.filter(c => +c.dataset.col === col); },
   prepara(){
     const m = this.mesa();
     if (!m || this.textos) return;
@@ -14029,81 +14112,127 @@ const EV6 = {
       const d = document.createElement('div');
       d.className = 'texto6 ' + T.cls;
       d.dataset.mont = T.mont;            /* na montagem (G), peça: anda e muda de tamanho */
-      /* o texto, e o pedaço que se escreve depois ao lado dele (pulsa sozinho) */
-      d.innerHTML = '<span></span>' + (T.mais ? '<span class="mais6"></span>' : '');
-      d._mais = d.children[1] || null;
+      d._p = {};
+      T.partes.forEach(P => {
+        const s = document.createElement('span');
+        s.className = 'p6';
+        s.appendChild(document.createTextNode(''));
+        if (P.letra){ s._l = document.createElement('span'); s._l.className = 'l6'; s.appendChild(s._l); }
+        d.appendChild(s);
+        d._p[P.k] = s;
+      });
       d.style.left = T.x + 'px';
       d.style.top  = T.y + 'px';
       m.appendChild(d);
       this.textos[T.k] = d;
     });
+    /* os rótulos das famílias (o número e a letra), em cima de cada uma */
+    this.rotulos = FAMILIAS_AB6.map(F => {
+      const r = document.createElement('div');
+      r.className = 'rot6' + (F.cols.length > 1 ? ' rot6-8' : '');
+      r.dataset.mont = 'rotulo-' + F.rot;     /* na montagem, peça */
+      r.textContent = F.rot;
+      const topo = Math.min(...F.cols.map(c => Math.min(...this.coluna(c).map(p => +p.dataset.linha))));
+      r.style.left = ((xDaColuna(F.cols[0]) + xDaColuna(F.cols[F.cols.length - 1])) / 2).toFixed(1) + 'px';
+      r.style.top  = (yDaLinha(topo) - LADO/2 - (F.cols.length > 1 ? 40 : 16)) + 'px';
+      m.appendChild(r);
+      return r;
+    });
+    /* a chave em cima do 8B (8, 9 e 10) */
+    const ch = document.createElement('div');
+    ch.className = 'chave6';
+    const x0 = xDaColuna(8) - LADO/2, x1 = xDaColuna(10) + LADO/2, w = x1 - x0;
+    ch.style.left = x0 + 'px';
+    ch.style.top  = (yDaLinha(4) - LADO/2 - 24) + 'px';
+    ch.style.width = w + 'px';
+    ch.innerHTML = '<svg viewBox="0 0 ' + w + ' 20" width="' + w + '" height="20" aria-hidden="true">' +
+      '<path d="M2 18 Q2 10 12 10 L' + (w/2 - 10) + ' 10 Q' + (w/2) + ' 10 ' + (w/2) + ' 2 Q' + (w/2) + ' 10 ' +
+      (w/2 + 10) + ' 10 L' + (w - 12) + ' 10 Q' + (w - 2) + ' 10 ' + (w - 2) + ' 18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>';
+    m.appendChild(ch);
+    this.chave8 = ch;
   },
-  /* A "6.1" (o play, depois da "6"): a cena da "6" fica como acabou, e:
-       0,9 s           o bloco de transição e o texto vermelho escurecem, e
-                       os representativos acendem
-       3 s / 4,2 s     acende "Grupos A"; acende "Elementos representativos"
-       17,5 → 19 s     "Elementos representativos" cresce; aos 19 s volta, e
-                       "Grupos A" cresce até aos 21 s
-       20,8 s          os representativos (os blocos laterais) pulsam
-       29,5 s          o bloco de transição e o texto vermelho acendem
-       31 s / 32 s     pulsa "Grupos B"; pulsa o bloco de transição
-     Tudo em fade. */
-  s61:{ trocaB:0.9, acendeGA:3.0, acendeER:4.2, cresceER:[17.5, 19.0], cresceGA:[19.0, 21.0],
-        pulsaA:[20.8, 21.6], acendeB:29.5, pulsaGB:[31.0, 31.8], pulsaB:[32.0, 32.8] },
+  /* o relógio de cada narração: o segundo dela, 1e4 se já passou, -1 se ainda não */
+  relogio(id, t){
+    const a = TRILHAS_6.indexOf(trilhaAtual), b = TRILHAS_6.indexOf(id);
+    /* (as falas curtas das famílias tocam por cima da última trilha, que fica) */
+    if (a < 0) return -1;
+    return a > b ? 1e4 : a === b ? t : -1;
+  },
   tick(t){
     const m = this.mesa();
     if (!m) return;
     this.prepara();
-    /* o relógio da "6" (na "6.1", ela já acabou) e o da "6.1" */
-    const em61 = trilhaAtual === '6.1';
-    const t6 = trilhaAtual === '6' ? t : em61 ? 1e4 : -1;
-    const t1 = em61 ? t : -1;
-    /* a vida solta, só até aos 8 s da narração */
-    /* (também com a narração pausada: arrastada para depois dos 8 s, a vida
-       solta seguia a girar cubos por baixo do metal) */
+    const t6 = this.relogio('6', t), t1 = this.relogio('6.1', t), t2 = this.relogio('6.2', t), t3 = this.relogio('6.3', t);
+    /* começada a subida da 3 na "6.3", a 2A (a última tocada) já desceu de vez */
+    if (t3 >= this.s63.sobe[0] && this.noAr === 1) this.noAr = -1;
+    /* a vida solta, só até aos 8 s da narração (também pausada) */
     if (VIDA.ligada && t6 >= this.vidaAte) VIDA.desliga();
     /* os textos, digitados (na montagem, inteiros: são peças a arrumar) */
     const monta = naMontagem();
     const letras = (txt, de, ate) => monta ? txt.length : t6 < de ? 0 : Math.round(Math.min(1, (t6 - de) / (ate - de)) * txt.length);
+    let bate = false;
     TEXTOS_6.forEach(T => {
       const d = this.textos[T.k];
-      /* o texto, e o que se escreve depois ao lado dele ('mais', num pedaço à parte) */
-      const txt = T.txt.slice(0, letras(T.txt, T.de, T.ate));
-      const mais = T.mais ? T.mais.txt.slice(0, monta ? 0 : letras(T.mais.txt, T.mais.de, T.mais.ate)) : '';
-      if (d.firstChild.textContent !== txt || (d._mais && d._mais.textContent !== mais)){
-        if (txt.length + mais.length > d.textContent.length && !monta) TECLAS.bate();
-        d.firstChild.textContent = txt;
-        if (d._mais) d._mais.textContent = mais;
-      }
-      d.classList.toggle('on', txt.length > 0 && !(T.sai && t6 >= T.sai && !monta));
+      let algum = false;
+      T.partes.forEach(P => {
+        const s = d._p[P.k], n = letras(P.txt, P.de, P.ate);
+        const corpo = P.letra ? P.txt.slice(0, Math.min(n, P.txt.length - 1)) : P.txt.slice(0, n);
+        const fim = P.letra && n === P.txt.length ? P.txt.slice(-1) : '';
+        if (s.firstChild.nodeValue !== corpo || (s._l && s._l.textContent !== fim)){
+          if (corpo.length + fim.length > s.textContent.length && !monta) bate = true;
+          s.firstChild.nodeValue = corpo;
+          if (s._l) s._l.textContent = fim;
+        }
+        algum = algum || n > 0;
+      });
+      d._algum = algum;
     });
+    if (bate) TECLAS.bate();
     const dentro = (t0, [de, ate]) => t0 >= de && t0 < ate;
-    const S = this.s61;
-    /* acabada a narração, o metal sai em fade e o vermelho dos de transição volta */
-    const fim6 = em61 || (trilhaAtual === '6' && (som.ended || (!!som.duration && t6 >= som.duration - 0.05)));
+    const S1 = this.s61, S2 = this.s62;
+    /* acabada a "6", o metal sai em fade e o vermelho dos de transição volta */
+    const fim6 = t1 >= 0 || (trilhaAtual === '6' && (som.ended || (!!som.duration && t6 >= som.duration - 0.05)));
+    /* A FAMÍLIA NO AR: na "6.3", a 3 dos 5 aos 7,2 s; no toque, a tocada */
+    const auto3 = dentro(t3, this.s63.sobe);
+    const noAr = auto3 ? 2 : this.noAr;
+    /* os rótulos à vista: os das famílias já tocadas (e o 3B, desde os 5 s da "6.3") */
+    const vistos = FAMILIAS_AB6.map((F, i) => i < this.passo || (i === 2 && t3 >= this.s63.sobe[0]) || i === noAr);
     const est = {
       bA: dentro(t6, this.brilhoA), bB: dentro(t6, this.brilhoB), cET: dentro(t6, this.cresceET),
       semNum: t6 >= this.escuro,
       /* os representativos: escuros dos 28 s da "6" até aos 0,9 s da "6.1" */
-      escA: t6 >= this.escuro && !(t1 >= S.trocaB),
-      escGA: t6 >= this.escuro && !(t1 >= S.acendeGA),
-      escER: t6 >= this.escuro && !(t1 >= S.acendeER),
+      escA: t6 >= this.escuro && !(t1 >= S1.trocaB),
+      escGA: t6 >= this.escuro && !(t1 >= S1.acendeGA),
+      escER: t6 >= this.escuro && !(t1 >= S1.acendeER),
       /* o bloco de transição e o texto vermelho: escuros dos 0,9 aos 29,5 s da "6.1" */
-      escB: t1 >= S.trocaB && t1 < S.acendeB,
+      escB: t1 >= S1.trocaB && t1 < S1.acendeB,
       metal: t6 >= this.metal && !fim6,
-      cER: dentro(t1, S.cresceER), cGA: dentro(t1, S.cresceGA),
-      pA: dentro(t1, S.pulsaA), pGB: dentro(t1, S.pulsaGB), pB: dentro(t1, S.pulsaB)
+      cER: dentro(t1, S1.cresceER), cGA: dentro(t1, S1.cresceGA),
+      pA: dentro(t1, S1.pulsaA), pGB: dentro(t1, S1.pulsaGB), pB: dentro(t1, S1.pulsaB),
+      /* a "6.2" */
+      saiER: t2 >= S2.saiER, cA: dentro(t2, S2.cresceA), saiMT: t2 >= S2.saiMT,
+      cB: dentro(t2, S2.cresceB), saiGrupos: t2 >= S2.saiGrupos,
+      /* os textos que se veem */
+      on: TEXTOS_6.map(T => this.textos[T.k]._algum).join(''),
+      noAr, vistos: vistos.join(''), chama: this.podeTocar(t2, t3) ? this.passo : -1, monta
     };
     const chave = JSON.stringify(est);
     if (chave === this.estado) return;
     this.estado = chave;
     const C = this.cartas();
     const Tx = this.textos;
-    /* "Elementos de Transição" cresce por 2 s; na "6.1", "Elementos
-       representativos" e depois "Grupos A" */
+    /* os textos à vista (e os que saem, em fade) */
+    const sai = { gb: t6 >= this.saiB, et: t6 >= this.saiB, er: est.saiER, ga: est.saiGrupos, mt: est.saiGrupos };
+    TEXTOS_6.forEach(T => Tx[T.k].classList.toggle('on', Tx[T.k]._algum && (monta || !sai[T.k])));
+    /* na "6.2", "Metais de Transição - " sai e fica "Grupos B" */
+    Tx.mt._p.m.classList.toggle('sai6', est.saiMT && !monta);
+    Tx.mt._p.s.classList.toggle('sai6', est.saiMT && !monta);
+    /* o que cresce: os textos inteiros, e o "A" e o "B" sozinhos */
     Tx.et.classList.toggle('cresce6', est.cET);
     Tx.er.classList.toggle('cresce6', est.cER);
     Tx.ga.classList.toggle('cresce6', est.cGA);
+    Tx.ga._p.g._l.classList.toggle('cresce6', est.cA);
+    Tx.mt._p.g._l.classList.toggle('cresce6', est.cB);
     /* aos 28 s os números das linhas, à esquerda, saem */
     m.querySelectorAll('.eixo[data-periodo]').forEach(e => e.classList.toggle('some6', est.semNum));
     /* o brilho enquanto se escreve o nome do grupo; o escuro; o pulso dos blocos */
@@ -14113,7 +14242,31 @@ const EV6 = {
     Tx.er.classList.toggle('escuro6', est.escER);
     Tx.mt.classList.toggle('escuro6', est.escB);
     /* o pulso do "Grupos B" (o pedaço do "Metais de Transição - Grupos B") */
-    Tx.mt._mais.classList.toggle('pulsa6', est.pGB);
+    Tx.mt._p.g.classList.toggle('pulsa6', est.pGB);
+    /* AS FAMÍLIAS: a no ar sobe (com mola), as outras descem; o rótulo anda com ela */
+    FAMILIAS_AB6.forEach((F, i) => {
+      const sobe = i === noAr;
+      F.cols.forEach((col, k) => this.coluna(col).forEach(c => {
+        if (c._up6 === sobe) return;
+        c._up6 = sobe;
+        clearTimeout(c._t6);
+        /* (as três do 8B sobem em sequência) */
+        c._t6 = setTimeout(() => {
+          c.style.setProperty('--e-salto', sobe ? 'cubic-bezier(.34,1.56,.64,1)' : 'ease-out');
+          TP.poe(c, sobe ? this.alto : 0, sobe ? 320 : 280);
+        }, sobe ? k * 220 : 0);
+      }));
+      const r = this.rotulos[i];
+      r.classList.toggle('on', vistos[i]);
+      r.style.setProperty('--sobe6', (sobe ? -this.alto : 0) + 'px');
+      r.style.transitionDelay = sobe ? ((F.cols.length - 1) * 220) + 'ms' : '0ms';
+    });
+    /* a chave do 8B, com as três */
+    this.chave8.classList.toggle('on', vistos[7]);
+    this.chave8.style.setProperty('--sobe6', (noAr === 7 ? -this.alto : 0) + 'px');
+    this.chave8.style.transitionDelay = noAr === 7 ? '440ms' : '0ms';
+    /* a próxima família a tocar chama o dedo, com um brilho leve */
+    C.todas.forEach(c => c.classList.toggle('chama6', est.chama >= 0 && FAMILIAS_AB6[est.chama].cols.includes(+c.dataset.col)));
     /* aos 31 s, os de transição viram metal, numa onda da esquerda para a direita */
     const metal = est.metal;
     C.b.forEach(c => {
@@ -14134,17 +14287,57 @@ const EV6 = {
       }
     });
   },
+  /* o toque nas famílias vale dos 23 s da "6.2" em diante, menos com a "6.3"
+     a tocar, e acabadas as oito */
+  podeTocar(t2, t3){
+    if (this.passo >= FAMILIAS_AB6.length || t2 < this.s62.toque) return false;
+    if (trilhaAtual === '6.3' && !som.paused && !som.ended) return false;
+    /* depois da 2A, só com a "6.3" já ouvida */
+    if (this.passo === 2 && t3 < 0) return false;
+    return true;
+  },
+  /* O TOQUE NUMA CARTA: se é da próxima família, ela sobe (a anterior desce),
+     com o rótulo, o "right" e a fala dela; a 2A chama a "6.3" */
+  toca(c){
+    if (atual !== 6) return false;
+    const t = tempoDaNarracao();
+    if (!this.podeTocar(this.relogio('6.2', t), this.relogio('6.3', t))) return false;
+    const F = FAMILIAS_AB6[this.passo];
+    if (!F.cols.includes(+c.dataset.col)) return false;
+    const i = this.passo;
+    this.noAr = i;
+    this.passo++;
+    tocaEfeito('right');
+    clearTimeout(this.falaT);
+    if (F.fala) this.falaT = setTimeout(() => {
+      if (atual !== 6) return;
+      const fala = tocaEfeito('Audios/audio_tabela_' + F.fala + '.mp3');
+      /* depois da 2A, a "6.3" sozinha */
+      if (i === 1) fala.then(() => setTimeout(() => {
+        if (atual === 6 && trilhaAtual === '6.2') tocaTrilha('6.3');
+      }, 400));
+    }, 250);
+    return true;
+  },
   zera(){
-    this.estado = '';
+    this.estado = ''; this.passo = 0; this.noAr = -1;
+    clearTimeout(this.falaT);
     const m = this.mesa();
     if (!m || !this.textos) return;
     const C = this.cartas();
-    C.a.concat(C.b, C.series).forEach(c => c.classList.remove('brilhoA6', 'brilhoB6', 'escuro6', 'pulsa6c'));
+    C.todas.concat(C.series).forEach(c => {
+      c.classList.remove('brilhoA6', 'brilhoB6', 'escuro6', 'pulsa6c', 'chama6');
+      clearTimeout(c._t6);
+      if (c._up6){ c._up6 = false; TP.poe(c, 0, 0); c.style.removeProperty('--e-salto'); }
+    });
     C.b.forEach(c => { if (c._mat6){ EV4.despe(c, c._mat6, 'metal'); c._mat6 = null; } });
     Object.values(this.textos).forEach(d => {
-      [...d.children].forEach(s => { s.textContent = ''; s.classList.remove('pulsa6'); });
+      Object.values(d._p).forEach(s => { s.firstChild.nodeValue = ''; if (s._l){ s._l.textContent = ''; s._l.classList.remove('cresce6'); }
+                                        s.classList.remove('pulsa6', 'sai6'); });
       d.classList.remove('on', 'escuro6', 'cresce6');
     });
+    this.rotulos.forEach(r => { r.classList.remove('on'); r.style.removeProperty('--sobe6'); });
+    this.chave8.classList.remove('on');
     m.querySelectorAll('.eixo.some6').forEach(e => e.classList.remove('some6'));
   }
 };
@@ -19189,6 +19382,8 @@ const ONDE = {
     if (EV4.feitas.size) o.feitas = [...EV4.feitas];
     /* no slide 6, acabada a "5": a família que estava no ar */
     if (atual === 5 && EV5.livre) o.livre5 = { fam:EV5.fam, cores:[...EV5.coloridas], ouviu:EV5.ouviu51, quiz:EV5.quizPronto };
+    /* no slide 7, as famílias já tocadas (A e B) e a que está no ar */
+    if (atual === 6 && EV6.passo) o.ab6 = { passo:EV6.passo, noAr:EV6.noAr };
     if (QUIZ.aberto) o.quiz = { origem:QUIZ.origem, itens:QUIZ.itens.map(i => i.z), passo:QUIZ.passo,
                                 acertos:QUIZ.acertos, erros:QUIZ.erros, nota:!!QUIZ.mostrandoNota };
     if (QUIZ3.aberto) o.quiz3 = true;
@@ -19223,6 +19418,7 @@ const ONDE = {
     if (o.feitas) o.feitas.forEach(k => EV4.feitas.add(k));
     /* (a "5" carregada de novo depois de um toque numa família está no 0,
        mas a narração já tinha acabado) */
+    if (o.ab6){ EV6.passo = o.ab6.passo || 0; EV6.noAr = o.ab6.noAr ?? -1; }
     if (o.livre5){
       const l = o.livre5;
       EV5.livre = true; EV5.fam = EV5.famAntes = l.fam || 0;
