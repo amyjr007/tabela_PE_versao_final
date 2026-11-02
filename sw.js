@@ -122,6 +122,14 @@ const CASCA = [
   './Audios/audio_tabela_5E1.mp3',
   /* o slide 7: os grupos A e B */
   './Audios/audio_tabela_6.mp3',
+  './Audios/audio_tabela_6.1.mp3', './Audios/audio_tabela_6.1A.mp3', './Audios/audio_tabela_6.1B.mp3',
+  './Audios/audio_tabela_6.2.mp3', './Audios/audio_tabela_6.2A.mp3', './Audios/audio_tabela_6.2B.mp3',
+  './Audios/audio_tabela_6.3.mp3', './Audios/audio_tabela_6.3A.mp3', './Audios/audio_tabela_6.3B.mp3',
+  './Audios/audio_tabela_6.4.mp3', './Audios/audio_tabela_6.4A.mp3', './Audios/audio_tabela_6.4B.mp3',
+  './Audios/audio_tabela_6.5.mp3', './Audios/audio_tabela_6.5A.mp3', './Audios/audio_tabela_6.5B.mp3',
+  './Audios/audio_tabela_6.6A.mp3', './Audios/audio_tabela_6.6B.mp3',
+  './Audios/audio_tabela_6.7A.mp3', './Audios/audio_tabela_6.7B.mp3',
+  './Audios/audio_tabela_6.8A.mp3', './Audios/audio_tabela_6.8B.mp3',
   './Imagens/humphry_davy.jpeg',
   './Imagens/cal.jpeg',
   /* as aberturas dos capítulos, uma por slide */

@@ -543,6 +543,109 @@ var LEGENDAS = {
     [33.78,40.22,"Repare que todos são metais, por isso também são chamados de metais de transição."],
     [40.22,44.12,"Esses são os elementos dos grupos B da tabela."]
   ],
+  "audio_tabela_6.1": [
+    [0,3.94,"Os blocos das laterais são os elementos dos grupos A da tabela."],
+    [3.94,6.56,"São os elementos representativos."],
+    [6.56,10.66,"Eles têm esse nome porque representam bem os padrões da tabela."],
+    [10.66,15.76,"Ou seja, o comportamento deles é fácil de prever, como veremos mais à frente."],
+    [15.76,21.64,"Resumindo, os elementos representativos dos grupos A são os laterais."],
+    [21.64,26,"Eles são mais fáceis de estudar porque o comportamento deles é regular"],
+    [26,28.52,"e segue direitinho os padrões da tabela."],
+    [29.3,32.62,"Já os de transição dos grupos B ficam aqui no meio."],
+    [32.62,36.24,"Eles têm mais particularidades e, muitas vezes,"],
+    [36.24,40.62,"são as exceções das regras que você vai aprender ainda nesse aplicativo."]
+  ],
+  "audio_tabela_6.1A": [
+    [0,1.32,"Família 1A"]
+  ],
+  "audio_tabela_6.1B": [
+    [0,0.54,"1B."]
+  ],
+  "audio_tabela_6.2": [
+    [0,4.34,"Essa divisão favorece uma nova classificação das famílias na tabela,"],
+    [4.34,8,"que vamos aprender agora de forma simples e intuitiva."],
+    [8,10,"A lógica é simples:"],
+    [10,13.35,"os elementos representativos serão classificados"],
+    [13.35,16,"com uma numeração e a letra A do lado,"],
+    [16,20,"e os elementos de transição terão a letra B nos seus grupos."],
+    [20,22.3,"Pareceu confuso? Não é não!"],
+    [22.3,24.76,"Toca ali na primeira família pra você entender."]
+  ],
+  "audio_tabela_6.2A": [
+    [0,0.72,"4B"]
+  ],
+  "audio_tabela_6.2B": [
+    [0,1.48,"2B. Pronto."],
+    [1.48,4.7,"Essa era a última família de elementos de transição."],
+    [4.7,7.26,"Agora, voltam os representativos."]
+  ],
+  "audio_tabela_6.3": [
+    [0,3.7,"Agora, calma aí que a gente vai entrar nos grupos B da tabela."],
+    [3.7,7.2,"Ou seja, é a terceira família, só que do grupo B."],
+    [7.2,8.88,"Clica aí pra ver como fica."]
+  ],
+  "audio_tabela_6.3A": [
+    [0,0.88,"3A"]
+  ],
+  "audio_tabela_6.3B": [
+    [0,1.36,"Família 3B"]
+  ],
+  "audio_tabela_6.4": [
+    [0,6.82,"8B. Pára aí. Repare, o 8B não é uma coluna só, são estas três aqui."],
+    [6.82,9.96,"Isso acontece porque esses elementos são parecidos"],
+    [9.96,13.6,"quimicamente não só na vertical, mas também na horizontal."],
+    [13.6,18.14,"O ferro, o cobalto e o níquel, por exemplo, são quase irmãos."],
+    [18.14,23.6,"Por isso, em versões da tabela mais antigas, eles ficavam juntos num grupo só,"],
+    [23.6,26.96,"assim, mas a tabela ficaria pouco prática assim."],
+    [27.4,33.06,"Então, deixa eles voltarem a ocupar três colunas, todas com o mesmo nome, 8B."],
+    [33.06,37.28,"É mais prático e já faz parte da história da química. Bora continuar!"]
+  ],
+  "audio_tabela_6.4A": [
+    [0,1.2,"4A"]
+  ],
+  "audio_tabela_6.4B": [
+    [0,0.84,"6B"]
+  ],
+  "audio_tabela_6.5": [
+    [0,1.62,"8A. Pronto."],
+    [1.62,4.71,"Tá aí a outra classificação com a distinção"],
+    [4.71,7.72,"entre elementos representativos, grupos A,"],
+    [7.72,9.76,"e de transição, grupos B."],
+    [9.76,12.85,"É uma classificação antiga, mas muito utilizada"],
+    [12.85,15.48,"pelos professores de Química ainda hoje."]
+  ],
+  "audio_tabela_6.5A": [
+    [0,0.9,"5A."]
+  ],
+  "audio_tabela_6.5B": [
+    [0,0.86,"5B."]
+  ],
+  "audio_tabela_6.6A": [
+    [0,0.94,"6A"]
+  ],
+  "audio_tabela_6.6B": [
+    [0,1.42,"Família 2A"]
+  ],
+  "audio_tabela_6.7A": [
+    [0,1.22,"7A"]
+  ],
+  "audio_tabela_6.7B": [
+    [0,0.88,"7B"]
+  ],
+  "audio_tabela_6.8A": [
+    [0,1.62,"8A. Pronto."],
+    [1.62,4.71,"Tá aí a outra classificação com a distinção"],
+    [4.71,7.72,"entre elementos representativos, grupos A,"],
+    [7.72,9.76,"e de transição, grupos B."],
+    [9.76,12.85,"É uma classificação antiga, mas muito utilizada"],
+    [12.85,15.48,"pelos professores de Química ainda hoje."]
+  ],
+  "audio_tabela_6.8B": [
+    [0,0.72,"8B."],
+    [0.72,4.64,"Na verdade, 8B são esses três grupos aqui."],
+    [4.64,7.75,"Eles são tão semelhantes quimicamente que os químicos"],
+    [7.75,10.62,"decidiram usar a mesma classificação pra os três."]
+  ],
   "audio_tabela_6.0": [
     [0,2.84,"Tópico 6. Os grupos A e B."]
   ],
