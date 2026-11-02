@@ -3950,7 +3950,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v35.5';
+const VERSAO = 'v35.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14514,7 +14514,8 @@ const EV6 = {
           TP.poe(c, sobe ? this.altoDe(col) : 0, onda ? 180 : sobe ? 320 : 280);
         }, sobe && i === noAr ? k * 220 : 0);
       }));
-      const r = this.rotulos[i], sobe = i === noAr;
+      /* (na onda da "6.8B", o "8B" sobe e desce com as três) */
+      const r = this.rotulos[i], sobe = i === noAr || (F.cols.includes(ondaCol) && F.cols.length > 1);
       r.classList.toggle('on', vistos[i]);
       r.style.setProperty('--sobe6', (sobe ? -this.altoDe(F.cols[0]) : 0) + 'px');
       /* (o 8B sobe com a coluna do Fe, a primeira das três) */
@@ -14522,7 +14523,7 @@ const EV6 = {
     });
     /* a chave do 8B, com as três */
     this.chave8.classList.toggle('on', vistos[7]);
-    this.chave8.style.setProperty('--sobe6', (noAr === 7 ? -this.alto : 0) + 'px');
+    this.chave8.style.setProperty('--sobe6', (noAr === 7 || ondaCol ? -this.alto : 0) + 'px');
     /* a chave sobe com a coluna do Fe, e desce com as três */
     this.chave8.style.transitionDelay = '0ms';
     /* na "6.8B": o 8B pulsa (3 s e 31 s), e a chave com ele (31 s) */

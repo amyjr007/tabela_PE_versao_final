@@ -517,7 +517,7 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | o toque certo | corta o que estiver a tocar (a narração, a fala da família anterior) |
 | `6.8B` · 2 s | as três do 8B descem (a chave e o "8B" ficam) |
 | `6.8B` · 3 s | o "8B" pulsa |
-| `6.8B` · 5,9 → 6,7 s | a onda: sobe a 8, depois a 9 (a 8 desce), a 10, e desce |
+| `6.8B` · 5,9 → 6,7 s | a onda: sobe a 8, depois a 9 (a 8 desce), a 10, e desce; a chave e o "8B" sobem com a primeira e descem com a última |
 | `6.8B` · os brilhos | em verde |
 | `6.8B` · 12 → 13 s | os elementos do 8B brilham de cima para baixo, linha a linha, e voltam |
 | `6.8B` · 14 → 15 s | brilham de lado, coluna a coluna, depressa; acesos até aos 15 s |
