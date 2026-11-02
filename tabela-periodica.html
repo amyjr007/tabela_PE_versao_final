@@ -1985,6 +1985,13 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
 .mesa.grupos.fundo7.fundo7 .pc.acesa7:not(.ficha5){--cor:var(--c5)!important;opacity:.75!important}
 .mesa.grupos.fundo7 .casa{opacity:.25!important;color:transparent!important}
 .mesa.grupos .pc.ficha5.cor7.cor7{--cor:var(--c5)!important}
+/* com um card pegado: só a casa da cor dele fica, com um brilho âmbar discreto */
+/* (as das outras cores perdem a cor, em fade, e ficam como as escuras em volta) */
+.mesa.grupos.fundo7.pegando7 .pc.acesa7:not(.ficha5):not(.alvo7){filter:saturate(0) brightness(.3);opacity:.55!important}
+.mesa.grupos.fundo7 .pc.acesa7.alvo7 .face{box-shadow:0 0 0 2px rgba(255,196,80,.75), 0 0 14px 4px rgba(255,176,40,.45)}
+/* o encaixe na bandeja: o brilho de confirmação */
+.mesa .pc.ficha5.encaixa7 .face{animation:encaixa7 .7s ease-out}
+@keyframes encaixa7{0%{box-shadow:0 0 0 3px #fff, 0 0 26px 10px rgba(62,224,138,.95)} 100%{box-shadow:0 0 0 0 rgba(62,224,138,0)}}
 .mesa .pc.aperta7{scale:.95}
 /* Q1: o bloco tocado em destaque, inteiro */
 .mesa .pc.bloco7 .face{box-shadow:0 0 0 2px #fff, 0 0 18px 5px rgba(255,255,255,.55)}
@@ -4053,7 +4060,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v36.5';
+const VERSAO = 'v36.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14973,7 +14980,7 @@ const QUESTOES_7 = [
      cor — é a posição na tabela que diz o bloco, e não o símbolo decorado */
   { monta(Q){
       const m = Q.mesa();
-      m.classList.add('fundo7');
+      m.classList.add('fundo7', 'sem-linhas7');
       /* a tabela de fundo encolhe em volta do meio do alto (640, 170) */
       const r = m.getBoundingClientRect(), s = r.width / m.offsetWidth;
       this.encolhidas = [...m.querySelectorAll('.pc:not(.ficha5), .casa, .eixo[data-periodo]')];
@@ -14999,17 +15006,35 @@ const QUESTOES_7 = [
         c.classList.add('cor7');
         c._casa = { x, y };
         c._bloco = null;
-        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y));
+        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y), () => this.pega(Q, c));
         return c;
       });
       this.bt = Q.botao('Conferir', 640, 660, () => this.confere(Q));
       this.bt.classList.add('some5');
       return 'Observe a tabela de fundo e posicione os cards a seguir nos blocos corretos.';
     },
+    /* pegado um card, a casa da mesma cor na tabela de fundo brilha (âmbar,
+       discreto) e as das outras cores somem em fade */
+    pega(Q, c){
+      if (this.pegado === c) return;
+      this.pegado = c;
+      const casa = Q.carta(+c.dataset.z);
+      (this.acesas || []).forEach(a => a.classList.toggle('alvo7', a === casa));
+      Q.mesa().classList.add('pegando7');
+    },
+    /* largado, as outras voltam em fade; encaixado numa bandeja, o card
+       brilha de confirmação, com o "right" */
     solta(Q, c, x, y){
+      this.pegado = null;
+      Q.mesa().classList.remove('pegando7');
+      (this.acesas || []).forEach(a => a.classList.remove('alvo7'));
       const b = this.bandejas.find(b => Q.dentro(x, y, b));
       c._bloco = b ? b.dataset.bloco : null;
       this.arruma(Q);
+      if (b){
+        c.classList.remove('encaixa7'); void c.offsetWidth; c.classList.add('encaixa7');
+        tocaEfeito('right');
+      }
     },
     arruma(Q){
       this.bandejas.forEach(b => {
@@ -15044,8 +15069,9 @@ const QUESTOES_7 = [
     },
     /* a tabela de fundo volta a ser a tabela */
     desfaz(Q){
-      Q.mesa().classList.remove('fundo7');
-      (this.acesas || []).forEach(c => { c.classList.remove('acesa7'); c.style.removeProperty('--c5'); });
+      Q.mesa().classList.remove('fundo7', 'pegando7');
+      this.pegado = null;
+      (this.acesas || []).forEach(c => { c.classList.remove('acesa7', 'alvo7'); c.style.removeProperty('--c5'); });
       (this.encolhidas || []).forEach(e => { e.style.removeProperty('translate'); e.style.removeProperty('scale'); });
       this.acesas = this.encolhidas = null;
     },
