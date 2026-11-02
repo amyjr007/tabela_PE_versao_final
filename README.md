@@ -489,10 +489,9 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6` · 9,5 → 10,4 s | "Grupos A", no dourado dos representativos; enquanto se escreve, os representativos (grupos 1, 2 e 13 a 18, com o H) brilham em âmbar |
 | `6` · 10,5 → 11,4 s | "Grupos B", no vermelho dos de transição; enquanto se escreve, os de transição (3 a 12, com as casas das séries) brilham em vermelho |
 | `6` · 17,8 s / 19,8 s | "Elementos representativos", embaixo do "Grupos A"; "Elementos de Transição", embaixo do "Grupos B" |
-| `6` · 23,5 s / 24 s | pulsa "Grupos A"; pulsa "Grupos B" |
-| `6` · 32 s | os representativos escurecem, e os textos deles também |
-| `6` · 36 s | os de transição viram metal, numa onda da esquerda para a direita (o Au dourado, o Cu avermelhado, os outros prata) |
-| `6` · 38,7 → 40 s | "Metais de Transição", acima do bloco |
+| `6` · 28 s | os representativos escurecem, e os textos deles também |
+| `6` · 32 s | os de transição viram metal, numa onda da esquerda para a direita (o Au dourado, o Cu avermelhado, os outros prata) |
+| `6` · 34,7 → 36 s | "Metais de Transição", acima do bloco |
 
 Os textos são peças na montagem (G), à vista e inteiros lá: `grupos-a`,
 `grupos-b`, `elementos-representativos`, `elementos-de-transicao`,

@@ -530,18 +530,17 @@ var LEGENDAS = {
     [0,2.94,"Tópico 5. As principais famílias."]
   ],
   "audio_tabela_6": [
-    [0,2.42,"A tabela periódica tem uma divisão clássica,"],
-    [2.42,6.1,"que os professores usam muito pra organizar o estudo dos elementos."],
-    [6.1,10.86,"É tipo dividir um campeonato em dois grupos, grupos A e grupos B."],
-    [10.86,13.98,"Fica mais fácil entender como cada time joga."],
-    [13.98,17.77,"Na tabela, esses dois blocos são os elementos"],
-    [17.77,21.48,"representativos e os elementos de transição."],
-    [21.48,24.8,"Também são chamados de grupos A e grupos B."],
-    [24.8,26.98,"Deixa eu te mostrar quem é quem."],
-    [27.64,31.58,"Vamos começar pelos de transição, que são mais fáceis de achar."],
-    [31.58,33.78,"São esses aqui, no meio da tabela."],
-    [33.78,40.22,"Repare que todos são metais, por isso também são chamados de metais de transição."],
-    [40.22,44.12,"Esses são os elementos dos grupos B da tabela."]
+    [0,2.39,"A tabela periódica tem uma divisão clássica,"],
+    [2.39,6.02,"que os professores usam muito pra organizar o estudo dos elementos."],
+    [6.02,10.76,"É tipo dividir um campeonato em dois grupos, grupos A e grupos B."],
+    [10.76,13.64,"Fica mais fácil entender como cada time joga."],
+    [13.64,17.18,"Na tabela, esses dois blocos são os elementos"],
+    [17.18,20.64,"representativos e os elementos de transição."],
+    [20.64,22.88,"Deixa eu te mostrar quem é quem."],
+    [22.88,27.34,"Vamos começar pelos de transição, que são mais fáceis de achar."],
+    [27.34,29.58,"São esses aqui, no meio da tabela."],
+    [30.52,35.98,"Repare que todos são metais, por isso também são chamados de metais de transição."],
+    [35.98,39.8,"Esses são os elementos dos grupos B da tabela."]
   ],
   "audio_tabela_6.1": [
     [0,3.94,"Os blocos das laterais são os elementos dos grupos A da tabela."],
