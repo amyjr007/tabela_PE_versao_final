@@ -3912,7 +3912,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v34.6';
+const VERSAO = 'v34.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14240,7 +14240,10 @@ const EV6 = {
     const Tx = this.textos;
     /* os textos à vista (e os que saem, em fade) */
     const sai = { gb: t6 >= this.saiB, et: t6 >= this.saiB, er: est.saiER || est.someER, ga: est.saiGrupos || est.someGA, mt: est.saiGrupos,
-                  ra: est.saiGrupos, rt: est.saiGrupos };
+                  /* as frases da "6.1" saem com o texto da cor delas, na "6.2": a
+                     dourada com "Elementos representativos" (10 s), a vermelha
+                     com "Metais de Transição - " (17 s) */
+                  ra: est.saiER, rt: est.saiMT };
     TEXTOS_6.forEach(T => Tx[T.k].classList.toggle('on', Tx[T.k]._algum && (monta || !sai[T.k])));
     /* na "6.2", "Metais de Transição - " sai e fica "Grupos B" */
     Tx.mt._p.m.classList.toggle('sai6', est.saiMT && !monta);

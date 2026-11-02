@@ -502,7 +502,7 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6.1` · 20,8 s | os representativos (os blocos laterais) pulsam |
 | `6.1` · 22 → 27 s | ao lado de "Grupos A", em dourado: "Seguem as regras da tabela e têm comportamento regular." |
 | `6.1` · 29,5 s | o bloco de transição e o texto vermelho acendem |
-| `6.1` · 33 → 39 s | embaixo do "Metais de Transição - Grupos B", em vermelho: "Têm mais particularidades e muitas vezes são exceções às regras." (as duas frases saem com os grupos, aos 23 s da `6.2`) |
+| `6.1` · 33 → 39 s | embaixo do "Metais de Transição - Grupos B", em vermelho: "Têm mais particularidades e muitas vezes são exceções às regras." (na `6.2`, a dourada sai com "Elementos representativos", aos 10 s, e a vermelha com "Metais de Transição - ", aos 17 s) |
 | `6.1` · 31 s / 32 s | pulsa o "Grupos B" (do "Metais de Transição - Grupos B"); pulsa o bloco de transição |
 | fim da `6.1` | o play passa a tocar a **`6.2`** |
 | `6.2` · 10 s | "Elementos representativos" sai em fade |
