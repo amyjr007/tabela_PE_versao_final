@@ -574,9 +574,11 @@ quizzes). Ela começa no lugar que o professor deixou na
 montagem (`{ el:'tabela', x:1, y:92, esc:0.94 }`, medido sobre a medida das
 séries: `.mesa.series8`, top −16 px e left 1 px) e, quando a primeira série
 desce, sobe ao vivo (0,9 s) para a medida das séries: 108 px mais acima, a
-0,94 (`.mesa.series8.subida`, pelo `top`/`bottom`/`left` da mesa e pelo
-`--zoom` — o `--px`/`--py` são da ferramenta de ajuste; a mesma medida do
-slide 9). Recolhidas as duas séries, ela desce de volta.
+0,94 (`.mesa.series8.subida`; a mesma medida do slide 9). A caixa da mesa fica
+sempre na medida das séries e o deslocamento vai só no `transform` (`--dx8`,
+`--dy8`, somados ao `--px`/`--py` da ferramenta de ajuste): pelo `top`/`left`,
+a subida refazia o layout dos 118 cubos a cada quadro. Na montagem, o x/y da
+tabela deste slide passa a contar a partir do lugar do começo. Recolhidas as duas séries, ela desce de volta.
 
 A narração `7` (`EV7`, função do tempo): aos 1 s a faixa da coluna 3, com a
 bolinha do grupo acesa dizendo **3B** (em cima do Sc); aos 2,7 s a faixa da
@@ -586,8 +588,8 @@ linha 6 (sobre o Ta), e aos 17 s o **Actinídeos**, na linha 7 (sobre o Db) —
 os lugares que o professor deixou na montagem (no palco, 366, 503 e 357, 560;
 no código, convertidos para a medida da mesa do começo). Dos 18 s
 em diante o toque nos bilhetes vale, e eles pulsam a chamar o dedo. Descida a
-série inteira, o card do nome sai em fade e volta em fade à esquerda do La (ou
-do Ac), com a seta para ele. Tocada qualquer carta de uma série já embaixo, a
+primeira carta, o card do nome sai em fade e volta em fade à esquerda do La (ou
+do Ac), com a seta para o lugar dele. Tocada qualquer carta de uma série já embaixo, a
 série inteira volta para o bilhete, o card volta ao lugar do começo e, se era
 a última, a mesa desce. Os quatro cards, no cinza dos bilhetes com o nome em branco, são peças da montagem
 (`rotulo-lantanideos`, `rotulo-actinideos` e os `…-serie`); a seta segue o card.

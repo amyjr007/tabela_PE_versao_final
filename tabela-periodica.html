@@ -2104,12 +2104,16 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
 /* no slide 8 a mesa começa no lugar que o professor deixou na montagem
    ({ el:'tabela', x:1, y:92, esc:0.94 }, medido sobre a medida das séries:
    92 px abaixo dela e 1 px à direita) e só sobe quando a primeira série
-   desce (SERIES8.desce); recolhidas as duas, volta. Pelo top/left, e não
-   pelo --px/--py, que são da ferramenta de ajuste do celular */
-.mesa.series8{top:-16px;bottom:16px;left:1px;right:-1px;--zoom:.94}
-.mesa.series8.subida,.mesa.natureza{top:-108px;bottom:108px;left:0;right:0;--zoom:.94}
-.mesa.series8.anda8{transition:top .9s cubic-bezier(.3,.85,.3,1), bottom .9s cubic-bezier(.3,.85,.3,1),
-  left .9s cubic-bezier(.3,.85,.3,1), right .9s cubic-bezier(.3,.85,.3,1), transform .9s cubic-bezier(.3,.85,.3,1)}
+   desce (SERIES8.desce); recolhidas as duas, volta. A caixa da mesa fica
+   sempre na medida das séries e o deslocamento vai só no transform (--dx8,
+   --dy8, somados ao --px/--py da ferramenta de ajuste do celular): andar
+   pelo top/left refazia o layout dos 118 cubos a cada quadro, e a subida
+   engasgava. (Na montagem, o x/y da tabela deste slide conta a partir daqui) */
+.mesa.series8,.mesa.natureza{top:-108px;bottom:108px;--zoom:.94}
+.mesa.series8{--dx8:1px;--dy8:92px;will-change:transform;
+  transform:translate(calc(var(--px,0px) + var(--dx8)),calc(var(--py,0px) + var(--dy8))) scale(calc(var(--zoom,1) * var(--abre,1)))}
+.mesa.series8.subida{--dx8:0px;--dy8:0px}
+.mesa.series8.anda8{transition:transform .9s cubic-bezier(.3,.85,.3,1)}
 /* A NARRAÇÃO "7" (EV7): as faixas da coluna 3 e das linhas 6 e 7, com as
    bolinhas acesas (a do grupo diz "3B", em cima do Sc); os bilhetes que
    crescem e, dos 18 s, chamam o dedo; os cards dos nomes, com a seta */
@@ -2120,8 +2124,12 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
 .mesa.series8.grupos .pc:is([data-fam="lantanideos"],[data-fam="actinideos"]){--cor:#77748A!important}
 .mesa.series8 .eixo.mostra7{opacity:1}
 .mesa.series8 .eixo.mostra7[data-grupo]{width:24px;height:24px;font-size:10px}
-.mesa.series8 .casa.serie.chama7{animation:chama7 1.4s ease-in-out infinite}
-@keyframes chama7{50%{box-shadow:0 0 0 3px #FF6B5E, 0 0 20px 6px rgba(230,60,50,.65)}}
+/* (o brilho numa camada por cima, que só muda de opacidade: animar o
+   box-shadow redesenhava o bilhete a cada quadro) */
+.mesa.series8 .casa.serie::after{content:'';position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;
+  box-shadow:0 0 0 3px #FF6B5E, 0 0 20px 6px rgba(230,60,50,.65);opacity:0}
+.mesa.series8 .casa.serie.chama7::after{animation:chama7 1.4s ease-in-out infinite}
+@keyframes chama7{50%{opacity:1}}
 .rotulo7{position:absolute;z-index:26;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   /* (no cinza dos bilhetes e das cartas das séries, o nome em branco) */
   padding:6px 14px;border-radius:12px;background:linear-gradient(145deg,#A3A1AE,#7E7C8B);
@@ -4097,7 +4105,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v37.2';
+const VERSAO = 'v37.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16779,6 +16787,8 @@ const SERIES8 = {
   voo: .55,          /* s de cada voo */
   aberta: { lan:false, act:false },
   anda:   { lan:false, act:false },
+  /* a série a voltar para o bilhete (o card do nome já voltou ao começo) */
+  recolhe:{ lan:false, act:false },
   mesa(){ return slides[7] && slides[7].querySelector('.mesa'); },
   zs(qual){ const a = qual === 'lan' ? 57 : 89; return Array.from({length:15}, (_, k) => a + k); },
   carta(m, z){ return m.querySelector('.pc[data-z="'+z+'"]'); },
@@ -16815,6 +16825,7 @@ const SERIES8 = {
     if (!m || !this.aberta[qual] || this.anda[qual]) return;
     const g = this.g, o = this.origem(qual), zs = this.zs(qual).reverse();
     this.anda[qual] = true;
+    this.recolhe[qual] = true;
     zs.forEach((z, k) => setTimeout(() => {
       if (g !== this.g) return;
       const c = this.carta(m, z);
@@ -16826,7 +16837,7 @@ const SERIES8 = {
         c.style.left = a.x.toFixed(1) + 'px';
         c.style.top  = a.y.toFixed(1) + 'px';
         if (k === zs.length - 1 && g === this.g){
-          this.aberta[qual] = false; this.anda[qual] = false;
+          this.aberta[qual] = false; this.anda[qual] = false; this.recolhe[qual] = false;
           /* recolhidas as duas, a mesa desce de volta */
           if (!this.aberta.lan && !this.aberta.act) m.classList.remove('subida');
         }
@@ -16840,6 +16851,7 @@ const SERIES8 = {
     this.g++;
     this.aberta = { lan:false, act:false };
     this.anda   = { lan:false, act:false };
+    this.recolhe = { lan:false, act:false };
     const m = this.mesa();
     if (!m) return;
     m.classList.remove('anda8', 'subida');
@@ -16890,8 +16902,9 @@ const EV7 = {
   /* o segundo da "7": 1e4 depois dela, -1 fora do slide */
   relogio(t){ const a = TRILHAS_7.indexOf(trilhaAtual); return a < 0 ? -1 : a > 0 ? 1e4 : t; },
   podeTocar(){ return atual === 7 && this.relogio(tempoDaNarracao()) >= this.toque; },
-  /* a série inteira já embaixo (e não a voltar) */
-  desceu(q){ return SERIES8.aberta[q] && !SERIES8.anda[q]; },
+  /* a série a descer ou já embaixo (e não a voltar): o card do nome salta
+     para a esquerda dela assim que desce a primeira carta */
+  desceu(q){ return SERIES8.aberta[q] && !SERIES8.recolhe[q]; },
   prepara(){
     const m = this.mesa();
     if (!m || this.rot) return;
@@ -16947,7 +16960,8 @@ const EV7 = {
     const mr = m.getBoundingClientRect(), k = mr.width / m.offsetWidth || 1;
     const caixa = el => { const r = el.getBoundingClientRect();
       return { x:(r.left - mr.left + r.width/2) / k, y:(r.top - mr.top + r.height/2) / k, w:r.width / k / 2, h:r.height / k / 2 }; };
-    const a = caixa(card), b = caixa(alvo);
+    /* (o alvo é uma peça, ou um lugar da mesa: { x, y, w, h }, o meio e a meia medida) */
+    const a = caixa(card), b = alvo instanceof Element ? caixa(alvo) : alvo;
     /* o ponto da borda de uma caixa na direção do outro centro */
     const borda = (c, ox, oy, folga) => {
       const dx = ox - c.x, dy = oy - c.y, s = Math.min(c.w / Math.abs(dx || 1e-6), c.h / Math.abs(dy || 1e-6));
@@ -16983,7 +16997,15 @@ const EV7 = {
       const r = this.rot[R.k], baixo = this.desceu(R.k);
       vis[R.k] = { antes: monta || (t7 >= R.de && !baixo), depois: monta || baixo };
       /* a seta do card da linha nova, a cada quadro (só se ele se vê) */
-      if (vis[R.k].depois) this.seta(m, r.setaDepois, r.depois, SERIES8.carta(m, R.k === 'act' ? 89 : 57));
+      /* (para o lugar do La e do Ac na linha nova: a carta pode ainda estar
+         no voo). Medida uma vez ao aparecer — o card e o lugar andam juntos
+         com a mesa —, e a cada quadro só na montagem, onde o card anda */
+      if (vis[R.k].depois && (monta || !r.setaFeita)){
+        const a = alvoDe(R.k === 'act' ? 89 : 57);
+        this.seta(m, r.setaDepois, r.depois, { x:a.x, y:a.y, w:LADO/2, h:LADO/2 });
+        r.setaFeita = true;
+      }
+      if (!vis[R.k].depois) r.setaFeita = false;
     });
     const est = JSON.stringify({ col: t7 >= this.col, l6: t7 >= this.lin6, l7: t7 >= this.lin7,
       cresce: t7 >= this.cresce, toque: t7 >= this.toque, vis, ab: SERIES8.aberta });
