@@ -1858,6 +1858,8 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 /* "Elementos de Transição" cresce dos 25 aos 27 s */
 .texto6{transition:opacity .6s ease, filter .6s ease, transform .45s cubic-bezier(.34,1.56,.64,1)}
 .texto6.cresce6{transform:translate(-50%,-50%) scale(1.35)}
+/* o preso pela esquerda ("Metais de Transição - Grupos B"): cresce para a direita */
+.texto6.esq6{transform:translate(0,-50%)}
 /* aos 28 s, os números das linhas, à esquerda, saem */
 .mesa .eixo.some6{opacity:0!important;transition:opacity .6s ease}
 /* aos 28 s, os textos dos representativos escurecem com eles */
@@ -3880,7 +3882,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v33.6';
+const VERSAO = 'v33.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13974,16 +13976,22 @@ window.QUIZ6 = QUIZ6;
                       também; os números das linhas, à esquerda, saem
      31 s             os de transição viram metal (o Au dourado, o Cu avermelhado)
      34,1 → 35,4 s    "Metais de Transição", acima do bloco
+     38 → 39 s        "Grupos B" e "Elementos de Transição" saem, e ao lado
+                      de "Metais de Transição" escreve-se " - Grupos B"
      fim da "6"       o metal sai em fade, e o vermelho dos de transição volta
    Os textos são peças na montagem (G): andam e mudam de tamanho.
    ============================================================ */
 const TEXTOS_6 = [
   /* (x, y: o centro, nos lugares que o professor deixou na montagem) */
   { k:'ga', mont:'grupos-a',                  txt:'Grupos A',                  de:9.0,  ate:10.0, x:329, y:139, cls:'a6 grande6' },
-  { k:'gb', mont:'grupos-b',                  txt:'Grupos B',                  de:10.5, ate:11.4, x:687, y:144, cls:'b6 grande6' },
+  /* ('sai': o segundo em que o texto se apaga) */
+  { k:'gb', mont:'grupos-b',                  txt:'Grupos B',                  de:10.5, ate:11.4, x:687, y:144, cls:'b6 grande6', sai:38.0 },
   { k:'er', mont:'elementos-representativos', txt:'Elementos representativos', de:17.1, ate:18.3, x:332, y:179, cls:'a6' },
-  { k:'et', mont:'elementos-de-transicao',    txt:'Elementos de Transição',    de:19.1, ate:20.3, x:695, y:179, cls:'b6' },
-  { k:'mt', mont:'metais-de-transicao',       txt:'Metais de Transição',       de:34.1, ate:35.4, x:508, y:265, cls:'b6 medio6' }
+  { k:'et', mont:'elementos-de-transicao',    txt:'Elementos de Transição',    de:19.1, ate:20.3, x:695, y:179, cls:'b6', sai:38.0 },
+  /* aos 38 s o "Grupos B" passa para o lado dele: "Metais de Transição - Grupos B"
+     (preso pela esquerda, para a escrita crescer para a direita; x é a beira) */
+  { k:'mt', mont:'metais-de-transicao',       txt:'Metais de Transição',       de:34.1, ate:35.4, x:373.5, y:265, cls:'b6 medio6 esq6',
+    mais:{ txt:' - Grupos B', de:38.0, ate:39.0 } }
 ];
 const EV6 = {
   vidaAte:8.0,
@@ -14030,14 +14038,17 @@ const EV6 = {
     if (VIDA.ligada && t6 >= this.vidaAte) VIDA.desliga();
     /* os textos, digitados (na montagem, inteiros: são peças a arrumar) */
     const monta = naMontagem();
+    const letras = (txt, de, ate) => monta ? txt.length : t6 < de ? 0 : Math.round(Math.min(1, (t6 - de) / (ate - de)) * txt.length);
     TEXTOS_6.forEach(T => {
       const d = this.textos[T.k];
-      const n = monta ? T.txt.length : t6 < T.de ? 0 : Math.round(Math.min(1, (t6 - T.de) / (T.ate - T.de)) * T.txt.length);
-      if (+(d.dataset.n || 0) !== n){
-        if (n > +(d.dataset.n || 0) && !monta) TECLAS.bate();
-        d.dataset.n = n; d.textContent = T.txt.slice(0, n);
+      /* o texto, e o que se escreve depois ao lado dele ('mais') */
+      const txt = T.txt.slice(0, letras(T.txt, T.de, T.ate)) +
+                  (T.mais ? T.mais.txt.slice(0, monta ? 0 : letras(T.mais.txt, T.mais.de, T.mais.ate)) : '');
+      if (d.textContent !== txt){
+        if (txt.length > d.textContent.length && !monta) TECLAS.bate();
+        d.textContent = txt;
       }
-      d.classList.toggle('on', n > 0);
+      d.classList.toggle('on', txt.length > 0 && !(T.sai && t6 >= T.sai && !monta));
     });
     const dentro = ([de, ate]) => t6 >= de && t6 < ate;
     /* acabada a narração, o metal sai em fade e o vermelho dos de transição volta */
