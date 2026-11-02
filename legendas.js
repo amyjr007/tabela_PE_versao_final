@@ -657,6 +657,14 @@ var LEGENDAS = {
   "audio_tabela_7.0": [
     [0,3.62,"Tópico 7. Os lantanídeos e os actinídeos."]
   ],
+  "audio_tabela_7": [
+    [0,4.34,"Você já reparou que aqui no grupo 3B, nos sexto e sétimo períodos,"],
+    [4.34,8.64,"em vez do card de um elemento, aparece um card com um intervalo de números?"],
+    [8.64,15.3,"É que cada uma dessas casas guarda uma série inteira de elementos propositalmente escondidos."],
+    [15.3,18.14,"São os lantanídeos e os actinídeos."],
+    [18.14,19.38,"Quer vê-los?"],
+    [19.38,22.94,"Toque em cada um dos cards aí pra revelar esses elementos."]
+  ],
   "audio_tabela_8.0": [
     [0,2.9,"Tópico 8. Da natureza dos elementos."]
   ],

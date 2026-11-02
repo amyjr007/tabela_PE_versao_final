@@ -2101,15 +2101,46 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
 .mesa.blocos .eixo[data-grupo]{opacity:0}
 /* (o slide 9, a natureza, tem as séries à vista desde o começo, e por
    isso a mesma medida) */
-.mesa.series8.subida,.mesa.natureza{top:-108px;bottom:108px;--zoom:.94}
-/* no slide 8 a mesa começa no lugar do slide 7 e só sobe quando a
-   primeira série desce (SERIES8.desce); recolhidas as duas, volta */
+/* no slide 8 a mesa começa no lugar que o professor deixou na montagem
+   ({ el:'tabela', x:1, y:92, esc:0.94 }, medido sobre a medida das séries:
+   92 px abaixo dela e 1 px à direita) e só sobe quando a primeira série
+   desce (SERIES8.desce); recolhidas as duas, volta. Pelo top/left, e não
+   pelo --px/--py, que são da ferramenta de ajuste do celular */
+.mesa.series8{top:-16px;bottom:16px;left:1px;right:-1px;--zoom:.94}
+.mesa.series8.subida,.mesa.natureza{top:-108px;bottom:108px;left:0;right:0;--zoom:.94}
 .mesa.series8.anda8{transition:top .9s cubic-bezier(.3,.85,.3,1), bottom .9s cubic-bezier(.3,.85,.3,1),
-  transform .9s cubic-bezier(.3,.85,.3,1)}
+  left .9s cubic-bezier(.3,.85,.3,1), right .9s cubic-bezier(.3,.85,.3,1), transform .9s cubic-bezier(.3,.85,.3,1)}
+/* A NARRAÇÃO "7" (EV7): as faixas da coluna 3 e das linhas 6 e 7, com as
+   bolinhas acesas (a do grupo diz "3B", em cima do Sc); os bilhetes que
+   crescem e, dos 18 s, chamam o dedo; os cards dos nomes, com a seta */
+/* (os bilhetes e as cartas das duas séries em cinza: o cinza do bilhete
+   e o dos quizzes, no lugar do vermelho dos grupos B) */
+.mesa.series8.grupos .casa.serie,.mesa.series8.grupos .casa.serie.act{
+  background:linear-gradient(145deg,#A3A1AE,#7E7C8B);border-color:rgba(255,255,255,.24);color:rgba(255,255,255,.92)}
+.mesa.series8.grupos .pc:is([data-fam="lantanideos"],[data-fam="actinideos"]){--cor:#77748A!important}
+.mesa.series8 .eixo.mostra7{opacity:1}
+.mesa.series8 .eixo.mostra7[data-grupo]{width:24px;height:24px;font-size:10px}
+.mesa.series8 .casa.serie.chama7{animation:chama7 1.4s ease-in-out infinite}
+@keyframes chama7{50%{box-shadow:0 0 0 3px #FF6B5E, 0 0 20px 6px rgba(230,60,50,.65)}}
+.rotulo7{position:absolute;z-index:26;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
+  padding:6px 14px;border-radius:12px;background:#FFFDF8;border:2px solid #A6382F;color:#A6382F;
+  font-family:var(--display);font-weight:700;font-size:22px;line-height:1.1;
+  box-shadow:0 4px 14px rgba(80,20,10,.22);opacity:0;transition:opacity .6s ease}
+.rotulo7.on{opacity:1}
+/* (o da linha nova da série, preso pela direita: à esquerda do La e do Ac) */
+.rotulo7.esq7{transform:translate(-100%,-50%);font-size:18px;padding:5px 11px;border-radius:10px}
+body.montagem .rotulo7{opacity:1;pointer-events:auto}
+.setas7{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none;z-index:25}
+.setas7 path{fill:none;stroke:#A6382F;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;
+  opacity:0;transition:opacity .6s ease}
+.setas7 path.on, body.montagem .setas7 path{opacity:1}
 .mesa.series8 .eixo,.mesa.natureza .eixo{opacity:0}
-.mesa.series8 .casa.serie{pointer-events:auto;cursor:pointer;transition:transform .2s ease,filter .2s ease}
+.mesa.series8 .casa.serie{pointer-events:auto;cursor:pointer;
+  transition:transform .45s cubic-bezier(.34,1.56,.64,1),filter .2s ease,box-shadow .35s ease}
 .mesa.series8 .casa.serie:hover{filter:brightness(1.12)}
 .mesa.series8 .casa.serie:active{transform:translate(-50%,-50%) scale(.94)}
+.mesa.series8 .casa.serie.cresce7{transform:translate(-50%,-50%) scale(1.22);z-index:14}
+.mesa.series8 .casa.serie.cresce7:active{transform:translate(-50%,-50%) scale(1.12)}
 
 .face i,.face b,.face u,.face em{
   position:relative;z-index:3;font-style:normal;text-decoration:none;color:#fff;
@@ -4064,7 +4095,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v36.9';
+const VERSAO = 'v37.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4417,7 +4448,7 @@ function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
 function recomecaMesa(i, semPouso){
   if (i === 1) SEQ.reinicia();
   else if (temMesa(i)){ SEQ.comecou = false; if (i === 2) SEQ.reinicia2(); if (i === 3) EV3.zera();
-                        if (i === 4) EV4.zera(); if (i === 5) EV5.zera(); if (i === 6) EV6.zera(); if (i === 7) SERIES8.zera(); }
+                        if (i === 4) EV4.zera(); if (i === 5) EV5.zera(); if (i === 6) EV6.zera(); if (i === 7){ SERIES8.zera(); EV7.zera(); } }
   else return;
   if (semPouso) TP.reinicia(); else pousaTabela();
   setTimeout(() => VIDA.liga(), 1500);
@@ -4588,9 +4619,10 @@ function montaTabela(i){
      elemento dentro, têm o bilhete que diz onde procurar */
   mesa.appendChild(casaSerie(xDaColuna(3), yDaLinha(6), '57–71', false));
   mesa.appendChild(casaSerie(xDaColuna(3), yDaLinha(7), '89–103', true));
-  /* no slide 8 o bilhete é botão: tocado, a série desce (ver SERIES8) */
+  /* no slide 8 o bilhete é botão: tocado, a série desce (ver SERIES8) —
+     dos 18 s da "7" em diante (EV7.podeTocar) */
   if (i === 7) mesa.querySelectorAll('.casa.serie').forEach(d =>
-    d.addEventListener('click', () => { if (!naMontagem()) SERIES8.toca(d.classList.contains('act') ? 'act' : 'lan'); }));
+    d.addEventListener('click', () => { if (!naMontagem() && EV7.podeTocar()) SERIES8.toca(d.classList.contains('act') ? 'act' : 'lan'); }));
 
   /* --- os 118 cubos --- */
   const cubos = [];
@@ -4616,9 +4648,9 @@ function montaTabela(i){
       /* no slide 7, dos 23 s da "6.2", o toque sobe a família da vez */
       if (i === 6 && QUIZ7.aberto){ QUIZ7.toca(c); return; }
       if (i === 6 && EV6.toca(c)) return;
-      /* no slide 8, a carta de uma série que já desceu dá a volta dela
-         (elas ficam fora do TP.todos(), e o TP.gira(z) não as acharia) */
-      if (i === 7 && ehDaSerie(z)){ if (!c._voo) TP.gira(c); return; }
+      /* no slide 8, tocada a carta de uma série que já desceu, a série
+         inteira volta para o bilhete (e a mesa desce, se era a última) */
+      if (i === 7 && ehDaSerie(z)){ if (!naMontagem()) SERIES8.toca(z >= 89 ? 'act' : 'lan'); return; }
       /* depois da "2.5", o toque abre e fecha a tabela (ver LC25) */
       if (i === 2 && LC25.livre) return;
       if (i === 2 && ENCAIXE.ativo){ ENCAIXE.toca(c); return; }
@@ -5335,7 +5367,7 @@ const TRILHAS = {
   '6.8B': 'Audios/audio_tabela_6.8B.mp3',  /* o toque no 8B: as três colunas, e Mendeleev */
   '6.2B': 'Audios/audio_tabela_6.2B.mp3',  /* o toque no 2B: a última de transição */
   '6.8A': 'Audios/audio_tabela_6.8A.mp3',  /* o toque no 8A: o fim da classificação */
-  '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
+  '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries escondidas (EV7) */
   '8':    'Audios/audio_tabela_8.mp3',     /* o slide 9: a natureza (ainda por gravar) */
   '9':    'Audios/audio_tabela_9.mp3',     /* o slide 10: a valência (ainda por gravar) */
   '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: os blocos (ainda por gravar) */
@@ -5478,7 +5510,7 @@ const ROTEIROS = {
   '4C4':  [],
   '5':    [],
   '6':    [],
-  '7':    [],   /* o slide 8: o timing do SERIES8.desce('lan' / 'act') vem aqui */
+  '7':    [],   /* o slide 8: função do tempo, em EV7 */
   '8':    [],
   '9':    [],
   '10':   []
@@ -6499,6 +6531,8 @@ function efeitosDoTempo(){
   if (atual === 5){ EV5.tick(t); return; }
   /* e o slide 7 (a narração "6") */
   if (atual === 6){ EV6.tick(t); return; }
+  /* e o slide 8 (a narração "7") */
+  if (atual === 7){ EV7.tick(t); return; }
   if (atual !== 1 || !veu) return;
 
   /* a tela escura é da trilha "1", dos 14,8 s em diante — e continua
@@ -16817,8 +16851,171 @@ const SERIES8 = {
       c.style.left = a.x.toFixed(1) + 'px';
       c.style.top  = a.y.toFixed(1) + 'px';
     });
+  },
+  /* a volta da aula (ONDE): as séries já embaixo, sem o voo, e a mesa já em cima */
+  abreJa(abertas){
+    const m = this.mesa();
+    if (!m) return;
+    ['lan', 'act'].filter(q => abertas[q]).forEach(q => {
+      this.aberta[q] = true;
+      m.classList.add('subida');
+      this.zs(q).forEach(z => this.carta(m, z).classList.remove('serie-oculta'));
+    });
   }
 };
+
+/* ============================================================
+   SLIDE 8 · A NARRAÇÃO "7" (EV7)
+   Tudo função do tempo da "7": aos 1 s a faixa da coluna 3, com a
+   bolinha do grupo acesa e dizendo "3B" (em cima do Sc); aos 2,7 s a
+   faixa da linha 6 e aos 3 s a da 7, com as bolinhas delas; aos 8 s os
+   dois bilhetes crescem; aos 16 s o card "Lantanídeos", digitado, com a
+   seta para o bilhete 57–71, e aos 17 s o "Actinídeos". Dos 18 s em
+   diante o toque nos bilhetes vale (e eles chamam o dedo). Descida a
+   série inteira, o card do nome sai em fade e volta em fade à direita
+   da linha nova dela; recolhida, volta para o lugar do começo.
+   Os cards são peças na montagem (G): a seta segue o card.
+   ============================================================ */
+const ROTULOS_7 = [
+  { k:'lan', txt:'Lantanídeos', mont:'rotulo-lantanideos', de:16.0, ate:16.8 },
+  { k:'act', txt:'Actinídeos',  mont:'rotulo-actinideos',  de:17.0, ate:17.8 }
+];
+const TRILHAS_7 = ['7', '7.1'];
+const EV7 = {
+  col:1.0, lin6:2.7, lin7:3.0, cresce:8.0, toque:18.0,
+  estado:'', rot:null,
+  mesa(){ return slides[7] && slides[7].querySelector('.mesa'); },
+  /* o segundo da "7": 1e4 depois dela, -1 fora do slide */
+  relogio(t){ const a = TRILHAS_7.indexOf(trilhaAtual); return a < 0 ? -1 : a > 0 ? 1e4 : t; },
+  podeTocar(){ return atual === 7 && this.relogio(tempoDaNarracao()) >= this.toque; },
+  /* a série inteira já embaixo (e não a voltar) */
+  desceu(q){ return SERIES8.aberta[q] && !SERIES8.anda[q]; },
+  prepara(){
+    const m = this.mesa();
+    if (!m || this.rot) return;
+    /* a bolinha do grupo, na notação A/B e em cima do Sc (a coluna 3 começa na linha 4) */
+    const g3 = m.querySelector('.eixo[data-grupo="3"]');
+    g3.textContent = '3B';
+    g3.style.top = (yDaLinha(4) - LADO/2 - 15).toFixed(1) + 'px';
+    /* as três faixas: a da coluna 3 (da bolinha até à linha 7) e as das linhas 6 e 7 */
+    const faixa = (cls, l, t, w, h) => {
+      const b = document.createElement('div');
+      b.className = 'banda ' + cls;
+      Object.assign(b.style, { left:l + 'px', top:t + 'px', width:w + 'px', height:h + 'px' });
+      /* (por baixo dos cubos, como as da cruz: antes deles na mesa) */
+      m.insertBefore(b, m.querySelector('.banda'));
+      return b;
+    };
+    const larg = LADO + 14, acima = 30, alt = LADO + 14;
+    this.faixas = {
+      col: faixa('banda-col', xDaColuna(3) - larg/2, yDaLinha(4) - LADO/2 - acima, larg, 3*PASSO + LADO + acima + 8),
+      l6:  faixa('banda-linha', TAB_ESQ - 32, yDaLinha(6) - alt/2, TAB_LARG + 64, alt),
+      l7:  faixa('banda-linha', TAB_ESQ - 32, yDaLinha(7) - alt/2, TAB_LARG + 64, alt)
+    };
+    this.eixos = { g3, p6: m.querySelector('.eixo[data-periodo="6"]'), p7: m.querySelector('.eixo[data-periodo="7"]') };
+    /* os cards dos nomes: o do começo (lantanídeos por cima, actinídeos por
+       baixo da tabela) e o da linha nova, à esquerda do La e do Ac */
+    const ini = { lan:alvoDe(57), act:alvoDe(89) };
+    const lugar = { lan:{ x:xDaColuna(5), y:yDaLinha(2.6) }, act:{ x:xDaColuna(5), y:yDaLinha(7) + PASSO } };
+    this.rot = {};
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'setas7');
+    m.appendChild(svg);
+    ROTULOS_7.forEach(R => {
+      const card = (mont, x, y, cls) => {
+        const d = document.createElement('div');
+        d.className = 'rotulo7' + cls;
+        d.dataset.mont = mont;              /* na montagem, peça */
+        d.style.left = x.toFixed(1) + 'px';
+        d.style.top  = y.toFixed(1) + 'px';
+        m.appendChild(d);
+        return d;
+      };
+      const seta = () => { const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); svg.appendChild(p); return p; };
+      const depois = card(R.mont + '-serie', ini[R.k].x - LADO/2 - 30, ini[R.k].y, ' esq7');
+      depois.textContent = R.txt;
+      this.rot[R.k] = { antes: card(R.mont, lugar[R.k].x, lugar[R.k].y, ''), depois,
+                        setaAntes: seta(), setaDepois: seta() };
+    });
+  },
+  /* A SETA: do card ao alvo (o bilhete; na linha nova, o último da série),
+     num arco leve, com a ponta. Medida a cada quadro: na montagem, o card anda */
+  seta(m, p, card, alvo){
+    const mr = m.getBoundingClientRect(), k = mr.width / m.offsetWidth || 1;
+    const caixa = el => { const r = el.getBoundingClientRect();
+      return { x:(r.left - mr.left + r.width/2) / k, y:(r.top - mr.top + r.height/2) / k, w:r.width / k / 2, h:r.height / k / 2 }; };
+    const a = caixa(card), b = caixa(alvo);
+    /* o ponto da borda de uma caixa na direção do outro centro */
+    const borda = (c, ox, oy, folga) => {
+      const dx = ox - c.x, dy = oy - c.y, s = Math.min(c.w / Math.abs(dx || 1e-6), c.h / Math.abs(dy || 1e-6));
+      const n = Math.hypot(dx, dy) || 1;
+      return { x:c.x + dx*s + dx/n*folga, y:c.y + dy*s + dy/n*folga };
+    };
+    const p0 = borda(a, b.x, b.y, 4), p1 = borda(b, a.x, a.y, 6);
+    const dx = p1.x - p0.x, dy = p1.y - p0.y, n = Math.hypot(dx, dy) || 1;
+    const cx = (p0.x + p1.x)/2 - dy/n * n * 0.15, cy = (p0.y + p1.y)/2 + dx/n * n * 0.15;
+    /* a ponta, na direção com que o arco chega */
+    const ux = p1.x - cx, uy = p1.y - cy, un = Math.hypot(ux, uy) || 1, ex = ux/un, ey = uy/un, L = 12;
+    const f = v => v.toFixed(1);
+    p.setAttribute('d', 'M' + f(p0.x) + ' ' + f(p0.y) + ' Q' + f(cx) + ' ' + f(cy) + ' ' + f(p1.x) + ' ' + f(p1.y) +
+      ' M' + f(p1.x - L*ex - L*.55*ey) + ' ' + f(p1.y - L*ey + L*.55*ex) + ' L' + f(p1.x) + ' ' + f(p1.y) +
+      ' L' + f(p1.x - L*ex + L*.55*ey) + ' ' + f(p1.y - L*ey - L*.55*ex));
+  },
+  tick(t){
+    const m = this.mesa();
+    if (!m) return;
+    this.prepara();
+    const t7 = this.relogio(t), monta = naMontagem();
+    /* os nomes, digitados (na montagem, inteiros) */
+    let bate = false;
+    ROTULOS_7.forEach(R => {
+      const d = this.rot[R.k].antes;
+      const n = monta ? R.txt.length : t7 < R.de ? 0 : Math.round(Math.min(1, (t7 - R.de) / (R.ate - R.de)) * R.txt.length);
+      const s = R.txt.slice(0, n);
+      if (d.textContent !== s){ if (s.length > d.textContent.length && !monta) bate = true; d.textContent = s; }
+    });
+    if (bate) TECLAS.bate();
+    const vis = {};
+    ROTULOS_7.forEach(R => {
+      const r = this.rot[R.k], baixo = this.desceu(R.k);
+      vis[R.k] = { antes: monta || (t7 >= R.de && !baixo), depois: monta || baixo };
+      /* as setas, a cada quadro (só as que se veem) */
+      if (vis[R.k].antes) this.seta(m, r.setaAntes, r.antes, m.querySelector('.casa.serie' + (R.k === 'act' ? '.act' : ':not(.act)')));
+      if (vis[R.k].depois) this.seta(m, r.setaDepois, r.depois, SERIES8.carta(m, R.k === 'act' ? 89 : 57));
+    });
+    const est = JSON.stringify({ col: t7 >= this.col, l6: t7 >= this.lin6, l7: t7 >= this.lin7,
+      cresce: t7 >= this.cresce, toque: t7 >= this.toque, vis, ab: SERIES8.aberta });
+    if (est === this.estado) return;
+    this.estado = est;
+    const E = JSON.parse(est), F = this.faixas, X = this.eixos;
+    F.col.classList.toggle('on', E.col); X.g3.classList.toggle('mostra7', E.col); X.g3.classList.toggle('acesa', E.col);
+    F.l6.classList.toggle('on', E.l6);   X.p6.classList.toggle('mostra7', E.l6);  X.p6.classList.toggle('acesa', E.l6);
+    F.l7.classList.toggle('on', E.l7);   X.p7.classList.toggle('mostra7', E.l7);  X.p7.classList.toggle('acesa', E.l7);
+    /* os bilhetes: crescidos dos 8 s, e a chamar o dedo dos 18 s — até a série dele descer */
+    m.querySelectorAll('.casa.serie').forEach(d => {
+      const q = d.classList.contains('act') ? 'act' : 'lan';
+      d.classList.toggle('cresce7', E.cresce && !E.ab[q]);
+      d.classList.toggle('chama7', E.toque && !E.ab[q]);
+    });
+    ROTULOS_7.forEach(R => {
+      const r = this.rot[R.k], v = E.vis[R.k];
+      r.antes.classList.toggle('on', v.antes); r.setaAntes.classList.toggle('on', v.antes);
+      r.depois.classList.toggle('on', v.depois); r.setaDepois.classList.toggle('on', v.depois);
+    });
+  },
+  zera(){
+    this.estado = '';
+    if (!this.rot) return;
+    Object.values(this.faixas).forEach(b => b.classList.remove('on'));
+    Object.values(this.eixos).forEach(e => e.classList.remove('mostra7', 'acesa'));
+    this.mesa().querySelectorAll('.casa.serie').forEach(d => d.classList.remove('cresce7', 'chama7'));
+    Object.values(this.rot).forEach(r => {
+      r.antes.textContent = '';
+      [r.antes, r.depois, r.setaAntes, r.setaDepois].forEach(e => e.classList.remove('on'));
+    });
+  }
+};
+window.EV7 = EV7;
 
 /* A COR NEUTRA de quem está fora do lugar: um cinza morno que escurece
    devagar com o número atômico (o do professor). A cor da família volta
@@ -20504,6 +20701,8 @@ const ONDE = {
     if (atual === 5 && EV5.livre) o.livre5 = { fam:EV5.fam, cores:[...EV5.coloridas], ouviu:EV5.ouviu51, quiz:EV5.quizPronto };
     /* no slide 7, as famílias já tocadas (A e B) e a que está no ar */
     if (atual === 6 && EV6.passo) o.ab6 = { passo:EV6.passo, noAr:EV6.noAr };
+    /* no slide 8, as séries que estão embaixo */
+    if (atual === 7 && (SERIES8.aberta.lan || SERIES8.aberta.act)) o.series8 = { lan:SERIES8.aberta.lan, act:SERIES8.aberta.act };
     if (QUIZ.aberto) o.quiz = { origem:QUIZ.origem, itens:QUIZ.itens.map(i => i.z), passo:QUIZ.passo,
                                 acertos:QUIZ.acertos, erros:QUIZ.erros, nota:!!QUIZ.mostrandoNota };
     if (QUIZ3.aberto) o.quiz3 = true;
@@ -20539,6 +20738,7 @@ const ONDE = {
     /* (a "5" carregada de novo depois de um toque numa família está no 0,
        mas a narração já tinha acabado) */
     if (o.ab6){ EV6.passo = o.ab6.passo || 0; EV6.noAr = o.ab6.noAr ?? -1; }
+    if (o.series8) SERIES8.abreJa(o.series8);
     if (o.livre5){
       const l = o.livre5;
       EV5.livre = true; EV5.fam = EV5.famAntes = l.fam || 0;

@@ -568,12 +568,28 @@ gravar).
 
 ### Slide 8 · Os Lantanídeos e Actinídeos
 
-A tabela com as cores dos grupos A e B do slide 7 (as séries também no
-vermelho), sem os números. Ela chega no mesmo lugar do slide 7 e, quando a
-primeira série desce, sobe ao vivo (0,9 s) para a medida das séries: 108 px
-mais acima, a 0,94 (`.mesa.series8.subida`, pelo `top`/`bottom` da mesa e pelo
-`--zoom` — o `--py` é da ferramenta de ajuste; a mesma medida do slide 9).
-Recolhidas as duas séries, ela desce de volta. As casas **57–71** e
+A tabela com as cores dos grupos A e B do slide 7, sem os números; os dois
+bilhetes e as cartas das séries em cinza (o cinza do bilhete e o `#77748A` dos
+quizzes). Ela começa no lugar que o professor deixou na
+montagem (`{ el:'tabela', x:1, y:92, esc:0.94 }`, medido sobre a medida das
+séries: `.mesa.series8`, top −16 px e left 1 px) e, quando a primeira série
+desce, sobe ao vivo (0,9 s) para a medida das séries: 108 px mais acima, a
+0,94 (`.mesa.series8.subida`, pelo `top`/`bottom`/`left` da mesa e pelo
+`--zoom` — o `--px`/`--py` são da ferramenta de ajuste; a mesma medida do
+slide 9). Recolhidas as duas séries, ela desce de volta.
+
+A narração `7` (`EV7`, função do tempo): aos 1 s a faixa da coluna 3, com a
+bolinha do grupo acesa dizendo **3B** (em cima do Sc); aos 2,7 s a faixa da
+linha 6 e aos 3 s a da 7, com as bolinhas delas; aos 8 s os dois bilhetes
+crescem; aos 16 s o card **Lantanídeos**, digitado, com a seta para o bilhete
+57–71 (por cima da tabela), e aos 17 s o **Actinídeos** (por baixo). Dos 18 s
+em diante o toque nos bilhetes vale, e eles pulsam a chamar o dedo. Descida a
+série inteira, o card do nome sai em fade e volta em fade à esquerda do La (ou
+do Ac), com a seta para ele. Tocada qualquer carta de uma série já embaixo, a
+série inteira volta para o bilhete, o card volta ao lugar do começo e, se era
+a última, a mesa desce. Os quatro cards são peças da montagem
+(`rotulo-lantanideos`, `rotulo-actinideos` e os `…-serie`); a seta segue o card.
+O ONDE guarda as séries que estão embaixo (`series8`). As casas **57–71** e
 **89–103** viram botão (`SERIES8`): tocada uma delas, os quinze elementos da
 série saem dela um a um, como cartas dadas, e voam em arco até a linha deles
 embaixo da tabela, cada um dando a volta com o som `flipcard`; tocada de
