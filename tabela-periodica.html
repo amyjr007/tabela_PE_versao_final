@@ -3923,7 +3923,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v34.8';
+const VERSAO = 'v34.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14049,8 +14049,9 @@ window.QUIZ6 = QUIZ6;
      23 s             "Grupos A" e "Grupos B" saem; a partir daqui, tocar nas
                       famílias, na ordem: a 1 (1A) e a 2 (2A) — cada uma sobe,
                       com o número e a letra em cima, o "right" e a fala dela
-   Depois da 2A, a "6.3" sozinha: aos 5 s a família 3 sobe (3B), e aos 7,2 s
-   desce. E o toque segue: 3B, 4B, 5B, 6B, 7B; e o grupo 8, que sobe com o
+   Depois da 2A, a "6.3" sozinha: dos 2,6 aos 5 s os grupos B crescem e
+   brilham; dos 6 aos 7 s só a família 3 (sem o "3B", que é do toque). E o
+   toque segue: 3B, 4B, 5B, 6B, 7B; e o grupo 8, que sobe com o
    9 e o 10, em sequência, com uma chave em cima e o "8B".
    Os textos são peças na montagem (G): andam e mudam de tamanho.
    ============================================================ */
@@ -14109,9 +14110,10 @@ const EV6 = {
   s61:{ trocaB:0.9, acendeGA:3.0, acendeER:4.2, cresceER:[17.5, 19.0], cresceGA:[19.0, 21.0],
         pulsaA:[20.8, 21.6], acendeB:29.5, pulsaGB:[31.0, 31.8], pulsaB:[32.0, 32.8] },
   s62:{ saiER:10.0, cresceA:[14.0, 15.0], saiMT:17.0, cresceB:[18.5, 21.0], saiGrupos:23.0, toque:20.0 },
-  /* a "6.3": dos 2,6 aos 5 s os grupos B crescem, com o brilho vermelho; aos 5 s
-     só a família 3 (3B) fica crescida, e sobe, até aos 7 s */
-  s63:{ cresceB:[2.6, 5.0], sobe:[5.0, 7.0] },
+  /* a "6.3": dos 2,6 aos 5 s os grupos B crescem, com o brilho vermelho; dos 6
+     aos 7 s só a família 3 cresce, brilha e sobe — sem o "3B", que só aparece
+     no toque */
+  s63:{ cresceB:[2.6, 5.0], sobe:[6.0, 7.0] },
   /* o aviso do toque fora da ordem: 3 s à vista, e volta de 3 em 3 s */
   aviso:null, avisoT:0, avisoP:-1,
   /* a subida das famílias: 50 px, com mola (a do tópico 5) */
@@ -14252,11 +14254,11 @@ const EV6 = {
     const S1 = this.s61, S2 = this.s62;
     /* acabada a "6", o metal sai em fade e o vermelho dos de transição volta */
     const fim6 = t1 >= 0 || (trilhaAtual === '6' && (som.ended || (!!som.duration && t6 >= som.duration - 0.05)));
-    /* A FAMÍLIA NO AR: na "6.3", a 3 dos 5 aos 7,2 s; no toque, a tocada */
+    /* A FAMÍLIA NO AR: na "6.3", a 3 dos 6 aos 7 s; no toque, a tocada */
     const auto3 = dentro(t3, this.s63.sobe);
     const noAr = auto3 ? 2 : this.noAr;
-    /* os rótulos à vista: os das famílias já tocadas (e o 3B, desde os 5 s da "6.3") */
-    const vistos = FAMILIAS_AB6.map((F, i) => i < this.passo || (i === 2 && t3 >= this.s63.sobe[0]) || i === noAr);
+    /* os rótulos à vista: só os das famílias já tocadas (a subida da 3 na "6.3" não o mostra) */
+    const vistos = FAMILIAS_AB6.map((F, i) => i < this.passo || i === this.noAr);
     const est = {
       bA: dentro(t6, this.brilhoA), bB: dentro(t6, this.brilhoB), cET: dentro(t6, this.cresceET),
       semNum: t6 >= this.escuro,
