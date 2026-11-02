@@ -493,7 +493,7 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6` · 28 s | os representativos escurecem bem, e os textos deles também; os números das linhas, à esquerda, saem |
 | `6` · 31 s | os de transição viram metal, numa onda da esquerda para a direita (o Au dourado, o Cu avermelhado, os outros prata) |
 | `6` · 34,1 → 35,4 s | "Metais de Transição", acima do bloco |
-| `6` · 38 → 39 s | "Grupos B" e "Elementos de Transição" saem, e ao lado de "Metais de Transição" escreve-se " - Grupos B" (o texto, preso pela esquerda, cresce para a direita) |
+| `6` · 38 → 39 s | "Grupos B" e "Elementos de Transição" saem, e ao lado de "Metais de Transição" escreve-se " - Grupos B" — "Metais de Transição - Grupos B", centrado no meio do bloco de transição (x 508) |
 | fim da `6` | o metal sai em fade, e o vermelho dos de transição volta |
 
 Os textos são peças na montagem (G), à vista e inteiros lá: `grupos-a`,
