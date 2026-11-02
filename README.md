@@ -541,13 +541,13 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | 3 | Entender | "Toque na família VIIA" (sorteada, em romanos): a coluna acende de cima a baixo; acerto: o cabeçalho "VIIA = 7A" |
 | 4 | Aplicar | (do professor) "Qual elemento está no Nº período, família XX?" |
 | 5 | Aplicar | "Toque no elemento do 4º período, família 2B" (Zn, Ag, Au, Cr, Sc, Al); no 3º erro, a linha e a coluna do certo ficam acesas |
-| 6 | Aplicar | os carrosséis do quiz das coordenadas: período (1–7) e família (1A … 8A, na ordem da tabela), e confirmar (Cl, Ca, Al, Fe, Mn, Au, Hg); acerto: o elemento voa da caixa até a casa dele |
+| 6 | Aplicar | os carrosséis do quiz das coordenadas: período (1–7) e família (1A … 8A, na ordem da tabela), e o botão verde Confirmar (embaixo, à direita). Os rótulos das famílias ficam à vista na tabela, e a caixa, deitada (o elemento ao lado dos carrosséis), fica no vão do alto, à esquerda do 8B (Cl, Ca, Al, Fe, Mn, Au, Hg); acerto: o elemento voa da caixa até a casa dele |
 | 7 | Aplicar | (do professor) outra vez, outro elemento |
 | 8 | Analisar | "Arraste a moldura e posicione numa tríade de elementos “quase irmãos” de tão semelhantes.": a moldura de três casas (nova) encaixa na grade; Pronto: certo nas colunas 8–10, períodos 4 a 6; acerto: as colunas 9 e 10 juntam-se à 8 e separam-se, e aparece o "8B" |
 | 9 | Avaliar | o balão do colega (novo): Concordo/Discordo, e depois o card do elemento para a bandeja certa; o balão ganha ✔ ou é riscado |
 | 10 | Criar | as etiquetas (8B, 8B, 8B, 1B, 2B, 9B, 10B) para os cabeçalhos vazios das colunas 8 a 12, e Pronto; acerto: a tabela inteira numerada, os do A acesos, e "Perfeito" |
 
-Nas questões de tocar um card (1, 3, 4, 5, 7), acendem a linha e a coluna do card tocado, como no quiz das coordenadas (nas 4, 5 e 7 ele também gira), e aparecem as bolinhas dos períodos e as das colunas (cada uma no topo da sua coluna), com as do card acesas. Nas questões 1 e 3, as bolinhas das linhas só aparecem nesse primeiro toque.
+Nas questões de tocar um card (1, 3, 4, 5, 7), acendem a linha e a coluna do card tocado, como no quiz das coordenadas (nas 4, 5 e 7 ele também gira), e aparecem as bolinhas dos períodos e as das colunas (cada uma no topo da sua coluna, com a família na notação A/B: 1A, 2A, 3B…), com as do card acesas; a da coluna acesa sobe um pouco e fica por cima do card que cresce (quando a resposta é o do topo). Nas questões 1 e 3, as bolinhas das linhas só aparecem nesse primeiro toque.
 
 No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s)
 "b – Os elementos representativos" (o começo da `6.1`) e "c – Dividindo as

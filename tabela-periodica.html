@@ -2007,7 +2007,13 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
 .cabeca7.a7{color:#F0C75A}
 /* Q5: o elemento da caixa dos carrosséis gira; os valores certos pulsam */
 /* (de um lado ao outro, sem chegar a ficar de costas: o símbolo sempre se lê) */
-.roda7 .rd-el{animation:gira7 2.4s ease-in-out infinite}
+.roda4.roda7{flex-direction:row;gap:22px;padding:6px 20px}
+/* (os títulos na vertical, ao lado de cada carrossel: a caixa cabe entre a
+   pergunta e os rótulos do bloco B) */
+.roda7 .rd-col{flex-direction:row;align-items:center;gap:6px}
+.roda7 .rd-tit{writing-mode:vertical-rl;transform:rotate(180deg)}
+.roda7 :is(.rd-msg,.rd-ok){display:none}
+.roda7 .rd-el{min-width:90px;animation:gira7 2.4s ease-in-out infinite}
 @keyframes gira7{0%,100%{transform:perspective(300px) rotateY(-35deg)} 50%{transform:perspective(300px) rotateY(35deg)}}
 .rd-v.pista5{animation:pistaRd7 1s ease-in-out infinite;border-radius:8px}
 @keyframes pistaRd7{50%{background:rgba(226,162,43,.35);color:#9A6410}}
@@ -2022,6 +2028,10 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
 /* as bolinhas: sem as das linhas (Q1, Q3) até ao toque; tocado um card, as das colunas também */
 .mesa.grupos.sem-linhas7 .eixo[data-periodo]{opacity:0!important}
 .mesa.grupos.eixos7 .eixo[data-grupo]{opacity:1}
+/* (um fio mais largas, para o 1A, o 8B…; a acesa sobe um pouco e fica por cima do
+   card que cresce na resposta, quando ele é o do topo da coluna) */
+.slide.quiz7 .mesa .eixo[data-grupo]{width:24px;height:24px;font-size:10px}
+.slide.quiz7 .mesa .eixo[data-grupo].acesa{translate:0 -26px;z-index:30}
 /* (cada uma no topo da sua coluna, como no quiz do tópico 5: no alto, as das
    colunas 3 a 17 ficavam por cima da pergunta) */
 .slide.quiz7 .mesa .eixo:is([data-grupo="2"],[data-grupo="13"],[data-grupo="14"],[data-grupo="15"],
@@ -4041,7 +4051,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v36.3';
+const VERSAO = 'v36.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14839,12 +14849,12 @@ const romano7 = rot => ROMANO7[parseInt(rot, 10)] + rot.slice(-1);
 const grade7 = Q => EV6.cartas().todas.filter(c => +c.dataset.linha <= 7);
 const coluna7 = (Q, cols) => grade7(Q).filter(c => cols.includes(+c.dataset.col)).sort((a, b) => a.dataset.linha - b.dataset.linha);
 /* a linha e a coluna de um card acendem (as faixas do quiz das coordenadas) */
-function cruz7(Q, c){
+function cruz7(Q, c, semEixos){
   const m = Q.mesa();
   if (!c){ EV3.poeCruz(m, m.querySelector('.pc'), false, false); return; }
   /* tocado um card, as bolinhas aparecem (as dos períodos e as das colunas), e as dele acendem */
   m.classList.remove('sem-linhas7');
-  m.classList.add('eixos7');
+  if (!semEixos) m.classList.add('eixos7');
   EV3.poeCruz(m, c, true, +c.dataset.linha <= 7);
 }
 /* o toque num card, como no quiz das coordenadas: ele gira, a linha e a
@@ -15082,13 +15092,19 @@ const QUESTOES_7 = [
       this.c = grade7(Q).find(c => c.dataset.sym === sym);
       this.L = L; this.f = FAMILIAS_AB6.findIndex(F => F.rot === rot);
       this.roda = this.caixa(Q);
+      /* os rótulos das famílias (1A, 2A…) ficam à vista na tabela */
+      EV6.rotulos.forEach(r => r.classList.add('mostra7'));
+      EV6.chave8.classList.add('mostra7');
       return 'Gire os carrosséis e mostre onde fica esse elemento.';
     },
     caixa(Q){
       const c = this.c, b = document.createElement('div');
       b.className = 'roda4 roda7';
-      b.style.left = (+c.dataset.col <= 9 ? xDaColuna(14.5) : xDaColuna(4.5)) + 'px';
-      b.style.top = (TAB_TOPO + 3.5 * PASSO + 10 - 136) + 'px';
+      /* deitada (o elemento ao lado dos carrosséis), no vão do alto entre as
+         colunas 3 e 12, à esquerda do 8B: não tapa a tabela nem os rótulos das
+         famílias. O confirmar é o botão verde, embaixo, como nas outras */
+      b.style.left = (xDaColuna(3) - LADO / 2 + 165) + 'px';
+      b.style.top = '208px';
       const lista = vs => '<div class="rd-pad"></div>' + vs.map(v => '<div class="rd-v">' + v + '</div>').join('') + '<div class="rd-pad"></div>';
       b.innerHTML =
         '<div class="rd-el"><span>' + c.dataset.z + '</span><b>' + c.dataset.sym + '</b><em>' + NOMES[c.dataset.z - 1] + '</em></div>' +
@@ -15101,7 +15117,7 @@ const QUESTOES_7 = [
       Q.mesa().appendChild(b);
       b.addEventListener('pointerdown', ev => ev.stopPropagation());
       b.querySelectorAll('.rd-roda').forEach(r => QUIZ4.giravel.call(QUIZ4, r));
-      b.querySelector('.rd-ok').addEventListener('click', ev => { ev.stopPropagation(); if (Q.aberto && !Q.travado) this.confirma(Q); });
+      this.bt = Q.botao('Confirmar', 1100, 672, () => this.confirma(Q));
       setTimeout(() => b.classList.add('pousada'), 950);
       return b;
     },
@@ -15112,14 +15128,14 @@ const QUESTOES_7 = [
     confirma(Q){
       const okP = this.valor('p') + 1 === this.L, okF = this.valor('f') === this.f, b = this.roda;
       if (okP && okF){
-        b.querySelector('.rd-ok').disabled = true;
+        this.bt.classList.add('some5');
         b.classList.add('certa');
         /* o elemento voa da caixa até a casa dele na tabela */
         const r = b.querySelector('.rd-el').getBoundingClientRect(), m = Q.mesa(), rm = m.getBoundingClientRect(), s = rm.width / m.offsetWidth;
         const f = Q.ficha(+this.c.dataset.z, (r.left + r.width / 2 - rm.left) / s, (r.top + r.height / 2 - rm.top) / s, 1.3);
         f.classList.add('voa7');
         setTimeout(() => { Q.poe(f, xDaColuna(+this.c.dataset.col), yDaLinha(+this.c.dataset.linha), 1); }, 60);
-        setTimeout(() => { this.c.classList.add('acende7'); cruz7(Q, this.c); }, 800);
+        setTimeout(() => { this.c.classList.add('acende7'); cruz7(Q, this.c, true); }, 800);
         Q.acerta();
         return;
       }
@@ -15316,6 +15332,11 @@ const QUIZ7 = Object.assign(Object.create(QUIZ5), {
     /* o toque livre (as coordenadas) sai */
     if (EV6.cruz6){ EV6.cruz6 = 0; EV6.semCruz(); }
     this.itens = QUESTOES_7.map(Q => Object.assign({}, Q));
+    /* as bolinhas das colunas dizem a família na notação A/B (1A, 2A, 3B…) */
+    this.mesa().querySelectorAll('.eixo[data-grupo]').forEach(e => {
+      if (e.dataset.num === undefined) e.dataset.num = e.textContent;
+      e.textContent = familia7(+e.dataset.grupo).rot;
+    });
     this.passo = 0; this.erros = 0; this.aberto = true; this.marcados = [];
     const g = ++this.g, sl = this.sl();
     stage.classList.add('em-quiz');
@@ -15349,6 +15370,7 @@ const QUIZ7 = Object.assign(Object.create(QUIZ5), {
     const m = this.mesa();
     if (m) m.querySelectorAll('.pista5, .errada3, .certa3, .roda7').forEach(e => e.classList.contains('roda7') ? e.remove() : e.classList.remove('pista5', 'errada3', 'certa3'));
     if (reabre) return;
+    if (m) m.querySelectorAll('.eixo[data-grupo]').forEach(e => { if (e.dataset.num !== undefined){ e.textContent = e.dataset.num; delete e.dataset.num; } });
     stage.classList.remove('em-quiz');
     const v = sl.querySelector(':scope > .breu-quiz');
     if (v) v.classList.remove('on');
