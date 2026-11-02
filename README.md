@@ -507,7 +507,7 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | fim da `6.1` | o play passa a tocar a **`6.2`** |
 | `6.2` · 10 s | "Elementos representativos" sai em fade; os de transição e os textos vermelhos apagam de todo (somem) |
 | `6.2` · 14 → 15 s | o "A" de "Grupos A" cresce, e volta |
-| `6.2` · 17 s | "Metais de Transição - " sai em fade (fica "Grupos B"); os representativos e "Grupos A" apagam de todo (a família 1 reaparece aos 20 s, a brilhar: é a da vez), e o bloco B e os textos vermelhos acendem |
+| `6.2` · 17 s | "Metais de Transição - " sai em fade (fica "Grupos B"); os representativos e "Grupos A" apagam de todo (todos, a família 1 também: voltam juntos aos 23 s), e o bloco B e os textos vermelhos acendem |
 | `6.2` · 18,5 → 21 s | o "B" de "Grupos B" cresce, e volta |
 | `6.2` · 20 s | **o toque nas famílias** passa a valer, na ordem. Tocada outra família, ela treme em vermelho, toca o `error` e aparece o aviso "Comece pela família 1" (depois, "Agora, toque na família N", a da vez) por 3 s; e, enquanto a da vez não for tocada, ele volta de 3 em 3 s (peça `aviso-familia` na montagem) |
 | `6.2` · 23 s | "Grupos A" e "Grupos B" saem em fade, e a tabela inteira acende; o toque nas famílias, na ordem (a da vez brilha de leve): cada uma sobe 50 px com mola (a anterior desce), com o rótulo em cima ("1A", "2A"…), o `right` e a fala do nome |
