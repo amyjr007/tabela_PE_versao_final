@@ -494,7 +494,13 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6` · 31 s | os de transição viram metal, numa onda da esquerda para a direita (o Au dourado, o Cu avermelhado, os outros prata) |
 | `6` · 34,1 → 35,4 s | "Metais de Transição", acima do bloco |
 | `6` · 38 → 39 s | "Grupos B" e "Elementos de Transição" saem, e ao lado de "Metais de Transição" escreve-se " - Grupos B" — "Metais de Transição - Grupos B", centrado no meio do bloco de transição (x 508) |
-| fim da `6` | o metal sai em fade, e o vermelho dos de transição volta |
+| fim da `6` | o metal sai em fade, e o vermelho dos de transição volta; o play passa a tocar a **`6.1`** (a cena da `6` fica como acabou) |
+| `6.1` · 0,9 s | o bloco de transição e o "Metais de Transição - Grupos B" escurecem, e os representativos acendem (tudo em fade) |
+| `6.1` · 3 s / 4,2 s | acende "Grupos A"; acende "Elementos representativos" |
+| `6.1` · 17,5 → 19 s | "Elementos representativos" cresce; aos 19 s volta, e "Grupos A" cresce até aos 21 s |
+| `6.1` · 20,8 s | os representativos (os blocos laterais) pulsam |
+| `6.1` · 29,5 s | o bloco de transição e o texto vermelho acendem |
+| `6.1` · 31 s / 32 s | pulsa o "Grupos B" (do "Metais de Transição - Grupos B"); pulsa o bloco de transição |
 
 Os textos são peças na montagem (G), à vista e inteiros lá: `grupos-a`,
 `grupos-b`, `elementos-representativos`, `elementos-de-transicao`,
