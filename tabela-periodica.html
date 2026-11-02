@@ -2101,7 +2101,11 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
 .mesa.blocos .eixo[data-grupo]{opacity:0}
 /* (o slide 9, a natureza, tem as séries à vista desde o começo, e por
    isso a mesma medida) */
-.mesa.series8,.mesa.natureza{top:-108px;bottom:108px;--zoom:.94}
+.mesa.series8.subida,.mesa.natureza{top:-108px;bottom:108px;--zoom:.94}
+/* no slide 8 a mesa começa no lugar do slide 7 e só sobe quando a
+   primeira série desce (SERIES8.desce); recolhidas as duas, volta */
+.mesa.series8.anda8{transition:top .9s cubic-bezier(.3,.85,.3,1), bottom .9s cubic-bezier(.3,.85,.3,1),
+  transform .9s cubic-bezier(.3,.85,.3,1)}
 .mesa.series8 .eixo,.mesa.natureza .eixo{opacity:0}
 .mesa.series8 .casa.serie{pointer-events:auto;cursor:pointer;transition:transform .2s ease,filter .2s ease}
 .mesa.series8 .casa.serie:hover{filter:brightness(1.12)}
@@ -4060,7 +4064,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v36.8';
+const VERSAO = 'v36.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16753,6 +16757,8 @@ const SERIES8 = {
     if (!m || this.aberta[qual] || this.anda[qual]) return;
     const g = this.g, o = this.origem(qual), zs = this.zs(qual);
     this.aberta[qual] = true; this.anda[qual] = true;
+    /* a mesa sobe, ao vivo, para dar lugar às linhas de baixo */
+    m.classList.add('anda8', 'subida');
     zs.forEach((z, k) => setTimeout(() => {
       if (g !== this.g) return;
       const c = this.carta(m, z);
@@ -16783,7 +16789,11 @@ const SERIES8 = {
         const a = alvoDe(z);
         c.style.left = a.x.toFixed(1) + 'px';
         c.style.top  = a.y.toFixed(1) + 'px';
-        if (k === zs.length - 1 && g === this.g){ this.aberta[qual] = false; this.anda[qual] = false; }
+        if (k === zs.length - 1 && g === this.g){
+          this.aberta[qual] = false; this.anda[qual] = false;
+          /* recolhidas as duas, a mesa desce de volta */
+          if (!this.aberta.lan && !this.aberta.act) m.classList.remove('subida');
+        }
       }, 0.15);
       TP.gira(c, { eixo:'y', graus:-360, dur: this.voo * 1000 });
       if (k % 2 === 0) tocaEfeito('flipcard');
@@ -16796,6 +16806,7 @@ const SERIES8 = {
     this.anda   = { lan:false, act:false };
     const m = this.mesa();
     if (!m) return;
+    m.classList.remove('anda8', 'subida');
     [...this.zs('lan'), ...this.zs('act')].forEach(z => {
       const c = this.carta(m, z), a = alvoDe(z);
       c._vooG = (c._vooG || 0) + 1;   /* um voo a meio já não é o dela */

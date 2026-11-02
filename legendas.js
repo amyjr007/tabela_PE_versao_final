@@ -561,16 +561,15 @@ var LEGENDAS = {
     [0,0.54,"1B."]
   ],
   "audio_tabela_6.2": [
-    [0,3.94,"Essa divisão favorece uma nova classificação das famílias na tabela,"],
-    [3.94,7.34,"que vamos aprender agora de forma simples e intuitiva."],
-    [7.34,9.38,"A lógica é simples."],
-    [9.38,12.64,"Os elementos representativos serão classificados"],
-    [12.64,15.22,"com uma numeração e a letra A do lado."],
-    [15.22,19.62,"Já os elementos de transição terão a letra B nos seus grupos."],
-    [19.62,21,"Pareceu confuso?"],
-    [21,21.9,"Não é não."],
-    [21.9,26.98,"Vou deixar as cores nos blocos aqui pra facilitar a distinção de A e B."],
-    [26.98,29.68,"Toca ali na primeira família pra gente começar."]
+    [0,4.04,"Essa divisão favorece uma antiga classificação das famílias na tabela,"],
+    [4.04,7.34,"que vamos aprender agora de forma simples e intuitiva."],
+    [7.34,9.24,"A lógica é simples."],
+    [9.24,12.6,"Os elementos representativos serão classificados"],
+    [12.6,15.14,"com uma numeração e a letra A do lado."],
+    [15.14,19.66,"Já os elementos de transição terão a letra B nos seus grupos."],
+    [19.66,21.94,"Pareceu confuso? Não é não!"],
+    [21.94,26.98,"Vou deixar as cores nos blocos aqui pra facilitar a distinção de A e B."],
+    [26.98,29.78,"Toca ali na primeira família pra gente começar."]
   ],
   "audio_tabela_6.2A": [
     [0,0.88,"2A"]

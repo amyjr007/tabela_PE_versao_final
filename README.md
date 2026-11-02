@@ -569,8 +569,11 @@ gravar).
 ### Slide 8 · Os Lantanídeos e Actinídeos
 
 A tabela com as cores dos grupos A e B do slide 7 (as séries também no
-vermelho), 92 px mais acima (`.mesa.series8`, pelo `top`/`bottom` da mesa —
-o `--py` é da ferramenta de ajuste), sem os números. As casas **57–71** e
+vermelho), sem os números. Ela chega no mesmo lugar do slide 7 e, quando a
+primeira série desce, sobe ao vivo (0,9 s) para a medida das séries: 108 px
+mais acima, a 0,94 (`.mesa.series8.subida`, pelo `top`/`bottom` da mesa e pelo
+`--zoom` — o `--py` é da ferramenta de ajuste; a mesma medida do slide 9).
+Recolhidas as duas séries, ela desce de volta. As casas **57–71** e
 **89–103** viram botão (`SERIES8`): tocada uma delas, os quinze elementos da
 série saem dela um a um, como cartas dadas, e voam em arco até a linha deles
 embaixo da tabela, cada um dando a volta com o som `flipcard`; tocada de
