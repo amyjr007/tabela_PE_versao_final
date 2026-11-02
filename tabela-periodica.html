@@ -3960,7 +3960,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v36.0';
+const VERSAO = 'v36.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14492,7 +14492,8 @@ const EV6 = {
     const est = {
       bA: dentro(t6, this.brilhoA), bB: dentro(t6, this.brilhoB), cET: dentro(t6, this.cresceET),
       /* os números das linhas saem aos 28 s da "6", e voltam na conquista da "6.8A" */
-      semNum: t6 >= this.escuro && !(t8A >= this.s68A.pausa), festa: this.festa,
+      /* (e no quiz, também o aberto pelo sumário) */
+      semNum: t6 >= this.escuro && !(t8A >= this.s68A.pausa) && !(window.QUIZ7 && QUIZ7.aberto), festa: this.festa,
       /* os representativos: escuros dos 28 s da "6" até aos 0,9 s da "6.1"; e,
          na "6.2", dos 17 aos 23 s (saído "Metais de Transição - ") */
       escA: t6 >= this.escuro && !(t1 >= S1.trocaB),
@@ -14774,17 +14775,39 @@ const QUIZ7 = Object.assign(Object.create(QUIZ6), {
     this.travado = true;
     tocaEfeito('Audios/quiz1.mp3').then(() => { if (g === this.g) this.apresenta(g); });
   },
+  /* COMO NO QUIZ DAS COORDENADAS: o escolhido gira, e a linha e a coluna dele
+     acendem (as faixas azul e laranja); no lugar da bolinha do grupo, brilha
+     o rótulo da família. No erro, apagam-se passado o tremor */
   toca(c){
     if (!this.aberto || this.travado || !this.q) return;
     const Q = this.q;
+    clearTimeout(this.cruzT);
+    TP.gira(c, { eixo:'y', graus:360, dur:800 });
+    this.cruz(c);
     if (Q.certo(c)){
       c.classList.add('certa3');
       QUIZ3.cresce.call(QUIZ3, c);
       this.marcados = [c];
       this.acerta();
-    } else this.erra(Q.dica, [c], () => EV6.cartas().todas.filter(Q.certo));
+    } else {
+      this.erra(Q.dica, [c], () => EV6.cartas().todas.filter(Q.certo));
+      const g = this.g, passo = this.passo;
+      this.cruzT = setTimeout(() => { if (g === this.g && passo === this.passo && !this.travado) this.cruz(null); }, 1100);
+    }
+  },
+  cruz(c){
+    const m = this.mesa();
+    if (!m) return;
+    EV6.rotulos.forEach(r => r.classList.remove('acesa6'));
+    if (!c){ EV3.poeCruz(m, m.querySelector('.pc'), false, false); return; }
+    EV3.poeCruz(m, c, true, +c.dataset.linha <= 7);
+    m.querySelectorAll('.eixo[data-grupo].acesa').forEach(e => e.classList.remove('acesa'));
+    const F = FAMILIAS_AB6.findIndex(F => F.cols.includes(+c.dataset.col));
+    if (F >= 0) EV6.rotulos[F].classList.add('acesa6');
   },
   limpa(){
+    clearTimeout(this.cruzT);
+    this.cruz(null);
     this.marcados.forEach(c => {
       c.classList.remove('certa3', 'frente3');
       c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe');
