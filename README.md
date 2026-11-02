@@ -553,7 +553,7 @@ No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s
 "b – Os elementos representativos" (o começo da `6.1`) e "c – Dividindo as
 famílias em A e B" (o começo da `6.2`) e "d – Quiz" (a tabela como no fim da `6.8A`, e o quiz abre já; no sumário, "(falta fazer)" ou a nota, como nos outros).
 
-Os rótulos ficam à vista depois de a família descer, e descem com ela. Na
+Os rótulos ficam à vista depois de a família descer, e descem com ela. Os lugares deles são os que o professor deixou na montagem (o 1A em y 134; o 2A em 143, 195; o 3B em y 339), e os outros alinhados com eles pela linha do topo da coluna (`ALTO_ROT6`): o 8A com o 1A, o 3A a 7A com o 2A, e o bloco B (com o 8B e a chave) com o 3B. Na
 montagem são peças (`rotulo-1A` … `rotulo-8A`). Os textos do slide também se editam lá
 (dois toques: o texto, "Quebrar linha", "Uma linha só"; as frases são
 `frase-representativos` e `frase-transicao`); editado, o relógio não o reescreve. Ao reabrir o app, as

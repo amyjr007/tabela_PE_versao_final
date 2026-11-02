@@ -4060,7 +4060,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v36.7';
+const VERSAO = 'v36.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14248,6 +14248,10 @@ const FAMILIAS_AB6 = [
   { cols:[18], rot:'8A', fala:null, trilha:'6.8A', a:true }
 ];
 /* as narrações do slide, na ordem: o relógio de cada uma vale 1e4 depois dela */
+/* quanto o rótulo de cada família fica acima do card do topo da coluna, pela
+   linha dele (1: o 1A e o 8A; 2: o 2A e o 3A a 7A; 4: os do bloco B) — os
+   lugares que o professor deixou na montagem */
+const ALTO_ROT6 = { 1:30, 2:35, 4:23 };
 const TRILHAS_6 = ['6', '6.1', '6.2', '6.3', '6.8B', '6.2B', '6.8A'];
 const EV6 = {
   vidaAte:8.0,
@@ -14460,8 +14464,11 @@ const EV6 = {
       r.innerHTML = '<span class="num6"><span class="ar6">' + k + '</span><span class="ro6">' +
         ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'][k] + '</span></span>' + F.rot.slice(-1);
       const topo = Math.min(...F.cols.map(c => Math.min(...this.coluna(c).map(p => +p.dataset.linha))));
-      r.style.left = ((xDaColuna(F.cols[0]) + xDaColuna(F.cols[F.cols.length - 1])) / 2).toFixed(1) + 'px';
-      r.style.top  = (yDaLinha(topo) - LADO/2 - (F.cols.length > 1 ? 40 : 16)) + 'px';
+      /* (os lugares que o professor deixou na montagem — o 1A em y 134, o 2A em
+         143, 195, o 3B em y 339 — e os outros alinhados com eles, pela linha do
+         topo da coluna: ALTO_ROT6) */
+      r.style.left = (F.rot === '2A' ? 143 : (xDaColuna(F.cols[0]) + xDaColuna(F.cols[F.cols.length - 1])) / 2).toFixed(1) + 'px';
+      r.style.top  = (yDaLinha(topo) - LADO/2 - ALTO_ROT6[topo] - (F.cols.length > 1 ? 24 : 0)) + 'px';
       m.appendChild(r);
       return r;
     });
@@ -14470,7 +14477,7 @@ const EV6 = {
     ch.className = 'chave6';
     const x0 = xDaColuna(8) - LADO/2, x1 = xDaColuna(10) + LADO/2, w = x1 - x0;
     ch.style.left = x0 + 'px';
-    ch.style.top  = (yDaLinha(4) - LADO/2 - 24) + 'px';
+    ch.style.top  = (yDaLinha(4) - LADO/2 - 31) + 'px';
     ch.style.width = w + 'px';
     ch.innerHTML = '<svg viewBox="0 0 ' + w + ' 20" width="' + w + '" height="20" aria-hidden="true">' +
       '<path d="M2 18 Q2 10 12 10 L' + (w/2 - 10) + ' 10 Q' + (w/2) + ' 10 ' + (w/2) + ' 2 Q' + (w/2) + ' 10 ' +
@@ -15297,7 +15304,7 @@ const QUESTOES_7 = [
      vazios das colunas 8 a 12 (3B a 7B já postos) */
   { monta(Q){
       EV6.rotulos.slice(2, 7).forEach(r => r.classList.add('mostra7'));
-      const y = yDaLinha(4) - LADO / 2 - 16;
+      const y = yDaLinha(4) - LADO / 2 - ALTO_ROT6[4];
       this.slots = [8, 9, 10, 11, 12].map(col => {
         const s = Q.pecaCentro('slot5 slot7', '', xDaColuna(col), y, LADO - 2, 34);
         s.dataset.col = col;
