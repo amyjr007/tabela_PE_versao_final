@@ -1855,8 +1855,13 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 .texto6.medio6{font-size:28px}
 .texto6.a6{color:#B4881C}
 .texto6.b6{color:#A6382F}
+/* "Elementos de Transição" cresce dos 25 aos 27 s */
+.texto6{transition:opacity .6s ease, filter .6s ease, transform .45s cubic-bezier(.34,1.56,.64,1)}
+.texto6.cresce6{transform:translate(-50%,-50%) scale(1.35)}
+/* aos 28 s, os números das linhas, à esquerda, saem */
+.mesa .eixo.some6{opacity:0!important;transition:opacity .6s ease}
 /* aos 28 s, os textos dos representativos escurecem com eles */
-.texto6.escuro6{opacity:.3;filter:saturate(.4)}
+.texto6.escuro6{opacity:.18;filter:saturate(.3)}
 /* na montagem, os textos à vista e a pegar o dedo */
 body.montagem .texto6{opacity:1;pointer-events:auto}
 /* o brilho enquanto se escreve: âmbar nos representativos, vermelho nos de transição */
@@ -1864,7 +1869,7 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
 .mesa .pc.brilhoB6 .face, .mesa .casa.serie.brilhoB6{box-shadow:0 0 0 2px #FF6B5E, 0 0 18px 5px rgba(230,60,50,.7)}
 .mesa[data-slide="6"] :is(.pc .face, .casa.serie){transition:box-shadow .35s ease}
 /* aos 28 s, os representativos escurecem (o filter já tem transição na carta) */
-.mesa .pc.escuro6{filter:brightness(.42) saturate(.55)}
+.mesa .pc.escuro6{filter:brightness(.22) saturate(.4)}
 /* no título do slide 7 ("Os Grupos A e B"), o A e o B nas cores da mesa dele */
 .tira .title .grupoA{color:#C39B2E}
 .tira .title .grupoB{color:#A6382F}
@@ -3875,7 +3880,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v33.4';
+const VERSAO = 'v33.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13958,29 +13963,35 @@ window.QUIZ6 = QUIZ6;
    O SLIDE 7 · OS GRUPOS A E B — a narração "6"
      antes do play    a vida solta (cubos e famílias, sem a cruz)
      0 → 8 s          ela continua com a narração, e cala-se aos 8 s
-     9,5 → 10,4 s     "Grupos A", no dourado dos representativos — e,
+     9 → 10 s         "Grupos A", no dourado dos representativos — e,
                       enquanto se escreve, os representativos brilham em âmbar
      10,5 → 11,4 s    "Grupos B", no vermelho dos de transição — e os de
                       transição brilham em vermelho
-     17,8 s           "Elementos representativos", perto do "Grupos A"
-     19,8 s           "Elementos de Transição", perto do "Grupos B"
-     28 s             os representativos escurecem, e os textos deles também
-     32 s             os de transição viram metal (o Au dourado, o Cu avermelhado)
-     34,7 → 36 s      "Metais de Transição", acima do bloco
+     17,1 s           "Elementos representativos", perto do "Grupos A"
+     19,1 s           "Elementos de Transição", perto do "Grupos B"
+     25 → 27 s        "Elementos de Transição" cresce
+     28 s             os representativos escurecem bem, e os textos deles
+                      também; os números das linhas, à esquerda, saem
+     31 s             os de transição viram metal (o Au dourado, o Cu avermelhado)
+     34,1 → 35,4 s    "Metais de Transição", acima do bloco
+     fim da "6"       o metal sai em fade, e o vermelho dos de transição volta
    Os textos são peças na montagem (G): andam e mudam de tamanho.
    ============================================================ */
 const TEXTOS_6 = [
-  { k:'ga', mont:'grupos-a',                  txt:'Grupos A',                  de:9.5,  ate:10.4, x:330, y:205, cls:'a6 grande6' },
+  { k:'ga', mont:'grupos-a',                  txt:'Grupos A',                  de:9.0,  ate:10.0, x:330, y:205, cls:'a6 grande6' },
   { k:'gb', mont:'grupos-b',                  txt:'Grupos B',                  de:10.5, ate:11.4, x:690, y:205, cls:'b6 grande6' },
-  { k:'er', mont:'elementos-representativos', txt:'Elementos representativos', de:17.8, ate:19.0, x:330, y:246, cls:'a6' },
-  { k:'et', mont:'elementos-de-transicao',    txt:'Elementos de Transição',    de:19.8, ate:21.0, x:690, y:246, cls:'b6' },
-  { k:'mt', mont:'metais-de-transicao',       txt:'Metais de Transição',       de:34.7, ate:36.0, x:508, y:328, cls:'b6 medio6' }
+  { k:'er', mont:'elementos-representativos', txt:'Elementos representativos', de:17.1, ate:18.3, x:330, y:246, cls:'a6' },
+  { k:'et', mont:'elementos-de-transicao',    txt:'Elementos de Transição',    de:19.1, ate:20.3, x:690, y:246, cls:'b6' },
+  { k:'mt', mont:'metais-de-transicao',       txt:'Metais de Transição',       de:34.1, ate:35.4, x:508, y:328, cls:'b6 medio6' }
 ];
 const EV6 = {
   vidaAte:8.0,
-  brilhoA:[9.5, 10.4], brilhoB:[10.5, 11.4],
-  /* (a "6" regravada, de 40 s: sem os pulsos dos nomes; o resto, 4 s antes) */
-  escuro:28.0, metal:32.0,
+  brilhoA:[9.0, 10.0], brilhoB:[10.5, 11.4],
+  /* "Elementos de Transição" cresce dos 25 aos 27 s */
+  cresceET:[25.0, 27.0],
+  /* (a "6" regravada, de 40 s) aos 28 s os representativos escurecem e os
+     números das linhas saem; aos 31 s, o metal */
+  escuro:28.0, metal:31.0,
   textos:null, estado:'',
   mesa(){ return slides[6] && slides[6].querySelector('.mesa'); },
   /* os representativos (grupos 1, 2 e 13 a 18, com o H) e os de transição
@@ -14028,19 +14039,25 @@ const EV6 = {
       d.classList.toggle('on', n > 0);
     });
     const dentro = ([de, ate]) => t6 >= de && t6 < ate;
-    const est = [dentro(this.brilhoA), dentro(this.brilhoB),
-                 t6 >= this.escuro, t6 >= this.metal].map(Number).join('');
+    /* acabada a narração, o metal sai em fade e o vermelho dos de transição volta */
+    const fim6 = trilhaAtual === '6' && (som.ended || (!!som.duration && t6 >= som.duration - 0.05));
+    const est = [dentro(this.brilhoA), dentro(this.brilhoB), dentro(this.cresceET),
+                 t6 >= this.escuro, t6 >= this.metal && !fim6].map(Number).join('');
     if (est === this.estado) return;
     this.estado = est;
-    const [bA, bB, escuro, metal] = est.split('').map(x => x === '1');
+    const [bA, bB, cET, escuro, metal] = est.split('').map(x => x === '1');
     const C = this.cartas();
+    /* "Elementos de Transição" cresce por 2 s */
+    this.textos.et.classList.toggle('cresce6', cET);
+    /* aos 28 s os números das linhas, à esquerda, saem */
+    m.querySelectorAll('.eixo[data-periodo]').forEach(e => e.classList.toggle('some6', escuro));
     /* o brilho enquanto se escreve o nome do grupo */
     C.a.forEach(c => { c.classList.toggle('brilhoA6', bA); c.classList.toggle('escuro6', escuro); });
     C.b.concat(C.series).forEach(c => c.classList.toggle('brilhoB6', bB));
     /* aos 28 s, os textos dos representativos escurecem com eles */
     this.textos.ga.classList.toggle('escuro6', escuro);
     this.textos.er.classList.toggle('escuro6', escuro);
-    /* aos 32 s, os de transição viram metal, numa onda da esquerda para a direita */
+    /* aos 31 s, os de transição viram metal, numa onda da esquerda para a direita */
     C.b.forEach(c => {
       if (metal && !c._mat6){
         /* o metal vai na face da frente: o cubo que a vida solta deixou de
@@ -14049,7 +14066,14 @@ const EV6 = {
         deFrente(c);
         c._mat6 = EV4.veste(c, 'metal');
         c._mat6.style.animationDelay = ((+c.dataset.col - 3) * 0.06).toFixed(2) + 's';
-      } else if (!metal && c._mat6){ EV4.despe(c, c._mat6, 'metal'); c._mat6 = null; }
+      } else if (!metal && c._mat6){
+        /* sai em fade (a cor do card volta por baixo), e só então é tirado */
+        const el = c._mat6;
+        c._mat6 = null;
+        el.style.animationDelay = '0s';
+        el.classList.add('sai');
+        setTimeout(() => { if (!c._mat6) EV4.despe(c, el, 'metal'); else el.remove(); }, 650);
+      }
     });
   },
   zera(){
@@ -14059,7 +14083,8 @@ const EV6 = {
     const C = this.cartas();
     C.a.concat(C.b, C.series).forEach(c => c.classList.remove('brilhoA6', 'brilhoB6', 'escuro6'));
     C.b.forEach(c => { if (c._mat6){ EV4.despe(c, c._mat6, 'metal'); c._mat6 = null; } });
-    Object.values(this.textos).forEach(d => { d.textContent = ''; d.dataset.n = 0; d.classList.remove('on', 'escuro6'); });
+    Object.values(this.textos).forEach(d => { d.textContent = ''; d.dataset.n = 0; d.classList.remove('on', 'escuro6', 'cresce6'); });
+    m.querySelectorAll('.eixo.some6').forEach(e => e.classList.remove('some6'));
   }
 };
 window.EV6 = EV6;

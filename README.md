@@ -486,12 +486,14 @@ Os eventos (`EV6`), no relógio da narração `6`:
 |---|---|
 | antes do play | a vida solta (cubos que saltam e giram, famílias que sobem e descem), sem a cruz das coordenadas |
 | `6` · 0 → 8 s | a vida solta continua com a narração, e cala-se aos 8 s |
-| `6` · 9,5 → 10,4 s | "Grupos A", no dourado dos representativos; enquanto se escreve, os representativos (grupos 1, 2 e 13 a 18, com o H) brilham em âmbar |
+| `6` · 9 → 10 s | "Grupos A", no dourado dos representativos; enquanto se escreve, os representativos (grupos 1, 2 e 13 a 18, com o H) brilham em âmbar |
 | `6` · 10,5 → 11,4 s | "Grupos B", no vermelho dos de transição; enquanto se escreve, os de transição (3 a 12, com as casas das séries) brilham em vermelho |
-| `6` · 17,8 s / 19,8 s | "Elementos representativos", embaixo do "Grupos A"; "Elementos de Transição", embaixo do "Grupos B" |
-| `6` · 28 s | os representativos escurecem, e os textos deles também |
-| `6` · 32 s | os de transição viram metal, numa onda da esquerda para a direita (o Au dourado, o Cu avermelhado, os outros prata) |
-| `6` · 34,7 → 36 s | "Metais de Transição", acima do bloco |
+| `6` · 17,1 s / 19,1 s | "Elementos representativos", embaixo do "Grupos A"; "Elementos de Transição", embaixo do "Grupos B" |
+| `6` · 25 → 27 s | "Elementos de Transição" cresce |
+| `6` · 28 s | os representativos escurecem bem, e os textos deles também; os números das linhas, à esquerda, saem |
+| `6` · 31 s | os de transição viram metal, numa onda da esquerda para a direita (o Au dourado, o Cu avermelhado, os outros prata) |
+| `6` · 34,1 → 35,4 s | "Metais de Transição", acima do bloco |
+| fim da `6` | o metal sai em fade, e o vermelho dos de transição volta |
 
 Os textos são peças na montagem (G), à vista e inteiros lá: `grupos-a`,
 `grupos-b`, `elementos-representativos`, `elementos-de-transicao`,
