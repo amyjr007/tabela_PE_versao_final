@@ -684,6 +684,16 @@ var LEGENDAS = {
     [62.54,67.18,"e os actinídeos, do 89 ao 103."],
     [67.18,70.1,"São os números que aparecem nas casas da tabela."]
   ],
+  "audio_tabela_7.2": [
+    [0,5.28,"Mais um detalhe: os lantanídeos e os actinídeos também são elementos de transição."],
+    [5.28,8.42,"Repare que as casas deles ficam no bloco B."],
+    [8.42,13.48,"Mas, por causa de algo que acontece numa parte mais interna dos seus átomos,"],
+    [13.48,16.92,"eles são chamados de elementos de transição interna."],
+    [16.92,19.76,"Então, vamos reorganizar os blocos."],
+    [19.76,22.32,"Nas pontas ficam os representativos."],
+    [22.32,25.88,"Aqui, em vermelho, os de transição externa."],
+    [26.44,31.3,"E aqui embaixo, os de transição interna, do jeito que aparecem na maioria das tabelas."]
+  ],
   "audio_tabela_8.0": [
     [0,2.9,"Tópico 8. Da natureza dos elementos."]
   ],

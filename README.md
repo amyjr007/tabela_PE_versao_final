@@ -620,6 +620,22 @@ carta em carta; aos 64,3 s ele volta, os brilhos somem e cresce o
 Actinídeos, com o brilho de 65 a 66,8 s. Aos 68 s as duas séries recolhem e
 o toque volta a valer.
 
+A narração `7.2` (`Audios/audio_tabela_7.2.mp3`, também em `EV7`) fica no play
+no fim da `7.1`. Enquanto ela toca, o toque não abre nem fecha as séries
+(`EV7.na72`); as que estiverem fora entram de uma vez (`SERIES8.sobe(q, true)`:
+as quinze juntas, sem o giro, com um som só). Aos 1 s cresce o card
+Lantanídeos do começo e aos 2,2 s o Actinídeos (no cinza deles). Aos 3,8 s, no
+vão, em cinza, digita "Elementos de transição" com a barrinha a piscar
+(`.quadro72`, peça `texto-72`). Aos 6,5 s os cards voltam e crescem os dois
+bilhetes; aos 8 s eles voltam e brilha o bloco B (colunas 3 a 12 e os
+bilhetes), até aos 9 s. Aos 16 s digita " interna." e a barrinha some. Aos
+20 s o texto sai, os cards dos nomes também, e só os representativos ficam
+acesos, com o nome **Representativos** em fade, no dourado deles; aos 22,8 s
+só os de transição, com **Transição externa** no vermelho deles; aos 26,5 s
+acende tudo, as duas séries descem de uma vez e aparece **Transição interna**
+no cinza delas (`BLOCOS_72`, três peças da montagem, no meio do vão). No fim
+da 7.2 o toque volta a valer.
+
 ### Slide 9 · A Natureza dos elementos — Os naturais, os artificiais e os radioativos
 
 A base da cena do app do professor: o **tabuleiro liso**, com as duas séries
