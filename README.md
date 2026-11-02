@@ -582,8 +582,8 @@ tabela deste slide passa a contar a partir do lugar do começo. Recolhidas as du
 
 A narração `7` (`EV7`, função do tempo): aos 1 s a faixa da coluna 3, com a
 bolinha do grupo acesa dizendo **3B** (em cima do Sc); aos 2,7 s a faixa da
-linha 6 e aos 3 s a da 7, com as bolinhas delas; aos 8 s os dois bilhetes
-crescem; aos 16 s o card **Lantanídeos**, digitado e sem seta, em cima da
+linha 6 e aos 3 s a da 7, com as bolinhas delas; aos 6,8 s os dois bilhetes
+crescem; aos 10 s as faixas e as bolinhas saem; aos 16 s o card **Lantanídeos**, digitado e sem seta, em cima da
 linha 6 (sobre o Ta), e aos 17 s o **Actinídeos**, na linha 7 (sobre o Db) —
 os lugares que o professor deixou na montagem (no palco, 366, 503 e 357, 560;
 no código, convertidos para a medida da mesa do começo). Dos 18 s
@@ -603,14 +603,14 @@ escondidas.
 A narração `7.1` (`Audios/audio_tabela_7.1.mp3`, também em `EV7`) começa
 sozinha 0,7 s depois de as duas séries assentarem embaixo; dali até aos 68 s
 dela, o toque não recolhe as séries (`EV7.podeTocar`), e se elas não
-estiverem embaixo (um salto na trilha) descem. Aos 5 s o card **Lantanídeos**
-da linha nova cresce em vermelho, aos 7 s o **Actinídeos**, e aos 10 s os
-dois voltam ao normal. No vão da tabela, em cima dos metais de transição
+estiverem embaixo (um salto na trilha) descem. Aos 5 s a carta do **La**
+cresce em vermelho, com o brilho, aos 7 s a do **Ac**, e aos 10 s as duas
+voltam ao normal. No vão da tabela, em cima dos metais de transição
 (`.quadro71`, peça `texto-71` da montagem), digita dos 10 aos 12,7 s
-"Lantanídeo = Parecido com o lantânio" e, dos 13,8 aos 15,7 s, "Actinídeo =
-Parecido com o actínio" (`LINHAS_71`: cada pedaço da linha com os passos dele,
+"Lantanídeos = Parecidos com o lantânio" e, dos 13,8 aos 15,7 s, "Actinídeos =
+Parecidos com o actínio" (`LINHAS_71`: cada pedaço da linha com os passos dele,
 apagar o que havia e digitar o novo). Aos 18 s o primeiro nome vira
-**Lantanoide** e aos 19 s o segundo vira **Actinoide**; aos 25,3 s a definição do primeiro vira
+**Lantanoides** e aos 19 s o segundo vira **Actinoides**; aos 25,3 s a definição do primeiro vira
 **terras-raras** (até 25,8 s); "terras" cresce em vermelho aos 27 s e "raras"
 aos 34,2 s. Dos 42 aos 47 s, o véu escuro com o título **Lantanídeos =
 Terras-raras** e, embaixo, um carrossel desenhado no código: o celular, aos 43 s
