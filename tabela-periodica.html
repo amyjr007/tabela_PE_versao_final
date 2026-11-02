@@ -1996,7 +1996,7 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
 /* o brilho verde (o que acende), com o atraso de cada card */
 .mesa .pc.acende7 .face{box-shadow:0 0 0 3px #7CF5A8, 0 0 22px 8px rgba(46,214,113,.9);transition-delay:var(--atraso7,0ms)}
 /* as fichas que voam até a casa delas */
-.pc.ficha5.voa7{transition:left .7s cubic-bezier(.3,.8,.3,1), top .7s cubic-bezier(.3,.8,.3,1), transform .7s ease}
+.mesa[data-slide="6"] .pc.ficha5.voa7{transition:left .7s cubic-bezier(.3,.8,.3,1), top .7s cubic-bezier(.3,.8,.3,1), transform .7s ease}
 /* as bandejas A e B (Q2, Q7), na cor de cada bloco */
 .bandeja7.b7-A{border-color:rgba(240,199,90,.7)}
 .bandeja7.b7-B{border-color:rgba(255,138,126,.7)}
@@ -2015,6 +2015,20 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
 .moldura7{border:4px solid #FFD43B;border-radius:12px;background:rgba(255,212,59,.08);z-index:30;
   box-shadow:0 0 14px 3px rgba(255,212,59,.45)}
 .mesa .pc.junta7{translate:var(--junta) 0}
+/* (as fichas do quiz não herdam a transição dos cards do slide, de 0,42 s no transform:
+   arrastadas, andam com o dedo) */
+.mesa[data-slide="6"] .pc.ficha5{transition:left .25s ease, top .25s ease, transform .25s ease}
+.mesa .pc.ficha5.pegando5{transition:none!important}
+/* as bolinhas: sem as das linhas (Q1, Q3) até ao toque; tocado um card, as das colunas também */
+.mesa.grupos.sem-linhas7 .eixo[data-periodo]{opacity:0!important}
+.mesa.grupos.eixos7 .eixo[data-grupo]{opacity:1}
+/* (cada uma no topo da sua coluna, como no quiz do tópico 5: no alto, as das
+   colunas 3 a 17 ficavam por cima da pergunta) */
+.slide.quiz7 .mesa .eixo:is([data-grupo="2"],[data-grupo="13"],[data-grupo="14"],[data-grupo="15"],
+  [data-grupo="16"],[data-grupo="17"]){top:215px!important}
+.slide.quiz7 .mesa .eixo:is([data-grupo="3"],[data-grupo="4"],[data-grupo="5"],[data-grupo="6"],
+  [data-grupo="7"],[data-grupo="8"],[data-grupo="9"],[data-grupo="10"],[data-grupo="11"],
+  [data-grupo="12"]){top:347px!important}
 .mesa[data-slide="6"] .pc{transition:transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease, opacity .45s ease, scale .35s ease, translate .35s ease}
 /* Q7: o balão do colega, e os botões Concordo/Discordo */
 .balao7{z-index:30;padding:16px 26px;border-radius:22px;background:#FBF8EE;color:#2A2440;text-align:center;
@@ -4027,7 +4041,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v36.2';
+const VERSAO = 'v36.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14828,8 +14842,10 @@ const coluna7 = (Q, cols) => grade7(Q).filter(c => cols.includes(+c.dataset.col)
 function cruz7(Q, c){
   const m = Q.mesa();
   if (!c){ EV3.poeCruz(m, m.querySelector('.pc'), false, false); return; }
+  /* tocado um card, as bolinhas aparecem (as dos períodos e as das colunas), e as dele acendem */
+  m.classList.remove('sem-linhas7');
+  m.classList.add('eixos7');
   EV3.poeCruz(m, c, true, +c.dataset.linha <= 7);
-  m.querySelectorAll('.eixo[data-grupo].acesa').forEach(e => e.classList.remove('acesa'));
 }
 /* o toque num card, como no quiz das coordenadas: ele gira, a linha e a
    coluna dele acendem; no erro, apagam-se passado o tremor */
@@ -14877,7 +14893,7 @@ function limpa7(Q){
   cruz7(Q, null);
   (Q.marcados || []).forEach(c => { c.classList.remove('certa3', 'frente3'); c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe'); });
   Q.marcados = [];
-  m.classList.remove('cinza7', 'cor7-A', 'cor7-B', 'sem-tabela7');
+  m.classList.remove('cinza7', 'cor7-A', 'cor7-B', 'sem-tabela7', 'sem-linhas7', 'eixos7');
   m.querySelectorAll('.acende7, .aperta7, .pista5, .junta7').forEach(e => {
     e.classList.remove('acende7', 'aperta7', 'pista5', 'junta7');
     e.style.removeProperty('--atraso7'); e.style.removeProperty('--junta');
@@ -14892,13 +14908,22 @@ const QUESTOES_7 = [
      card escolhe o bloco dele (as duas laterais do A afundam juntas) */
   { monta(Q){
       this.alvo = sorteia5(['A', 'B']);
-      Q.mesa().classList.add('cinza7');
+      Q.mesa().classList.add('cinza7', 'sem-linhas7');
       return this.alvo === 'B' ? 'Toque no bloco dos elementos de transição.' : 'Toque no bloco dos elementos representativos.';
     },
     bloco(Q, k){ return grade7(Q).filter(c => bloco7(c) === k); },
+    /* a linha e a coluna do card tocado (no erro, apagam-se passado o tremor) */
+    cruz(Q, c, fica){
+      clearTimeout(Q.cruzT);
+      cruz7(Q, c);
+      if (fica) return;
+      const g = Q.g, passo = Q.passo;
+      Q.cruzT = setTimeout(() => { if (g === Q.g && passo === Q.passo && !Q.travado) cruz7(Q, null); }, 1100);
+    },
     toca(Q, c){
       const k = bloco7(c), els = this.bloco(Q, k);
       els.forEach(e => e.classList.add('aperta7'));
+      this.cruz(Q, c, k === this.alvo);
       setTimeout(() => els.forEach(e => e.classList.remove('aperta7')), 600);
       if (k === this.alvo){
         /* o bloco ganha a cor da aula, e a letra grande sobre ele */
@@ -14953,7 +14978,7 @@ const QUESTOES_7 = [
       });
       this.bt = Q.botao('Conferir', 640, 660, () => this.confere(Q));
       this.bt.classList.add('some5');
-      return 'Arraste cada elemento para o grupo dele.';
+      return 'Observe a tabela de fundo e posicione os cards a seguir nos blocos corretos.';
     },
     solta(Q, c, x, y){
       const b = this.bandejas.find(b => Q.dentro(x, y, b));
@@ -15004,6 +15029,7 @@ const QUESTOES_7 = [
   { monta(Q){
       this.F = sorteia5(FAMILIAS_AB6);
       this.nome = romano7(this.F.rot);
+      Q.mesa().classList.add('sem-linhas7');
       return 'Toque na família ' + this.nome + '.';
     },
     /* a coluna tocada acende de cima a baixo */
@@ -15013,13 +15039,14 @@ const QUESTOES_7 = [
     toca(Q, c){
       const col = +c.dataset.col, els = coluna7(Q, [col]);
       this.acende(Q, els, true);
+      QUESTOES_7[0].cruz(Q, c, this.F.cols.includes(col));
       if (this.F.cols.includes(col)){
         const todas = coluna7(Q, this.F.cols);
         this.acende(Q, todas, true);
         /* o cabeçalho, com os dois jeitos de escrever */
         const x = (xDaColuna(this.F.cols[0]) + xDaColuna(this.F.cols[this.F.cols.length - 1])) / 2;
         const topo = Math.min(...todas.map(e => +e.dataset.linha));
-        Q.pecaCentro('cabeca7' + (this.F.a ? ' a7' : ''), this.nome + ' = ' + this.F.rot, x, yDaLinha(topo) - LADO / 2 - 22);
+        Q.pecaCentro('cabeca7' + (this.F.a ? ' a7' : ''), this.nome + ' = ' + this.F.rot, Math.max(105, Math.min(1175, x)), yDaLinha(topo) - LADO / 2 - 46);
         Q.acerta();
         return;
       }
@@ -15117,7 +15144,7 @@ const QUESTOES_7 = [
       this.pos = null;
       Q.arrastavel(this.mold, (x, y) => this.encaixa(Q, x, y));
       this.bt = Q.botao('Pronto', 1100, 672, () => this.confere(Q));
-      return 'Ponha a moldura em três elementos quase irmãos.';
+      return 'Arraste a moldura e posicione numa tríade de elementos “quase irmãos” de tão semelhantes.';
     },
     /* largada, encaixa na grade: sempre sobre três casas de uma linha */
     encaixa(Q, x, y){
