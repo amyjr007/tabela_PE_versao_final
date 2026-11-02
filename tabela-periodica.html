@@ -3909,7 +3909,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v34.1';
+const VERSAO = 'v34.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14082,6 +14082,8 @@ const EV6 = {
      números das linhas saem; aos 31 s, o metal; aos 38 s saem "Grupos B" e
      "Elementos de Transição" */
   escuro:28.0, metal:31.0, saiB:38.0,
+  /* aos 25 s, "Grupos A" e "Elementos representativos" saem em fade */
+  someA:25.0,
   s61:{ trocaB:0.9, acendeGA:3.0, acendeER:4.2, cresceER:[17.5, 19.0], cresceGA:[19.0, 21.0],
         pulsaA:[20.8, 21.6], acendeB:29.5, pulsaGB:[31.0, 31.8], pulsaB:[32.0, 32.8] },
   s62:{ saiER:10.0, cresceA:[14.0, 15.0], saiMT:17.0, cresceB:[18.5, 21.0], saiGrupos:23.0, toque:23.0 },
@@ -14201,8 +14203,10 @@ const EV6 = {
       semNum: t6 >= this.escuro,
       /* os representativos: escuros dos 28 s da "6" até aos 0,9 s da "6.1" */
       escA: t6 >= this.escuro && !(t1 >= S1.trocaB),
-      escGA: t6 >= this.escuro && !(t1 >= S1.acendeGA),
-      escER: t6 >= this.escuro && !(t1 >= S1.acendeER),
+      /* "Grupos A" e "Elementos representativos" saem em fade aos 25 s da "6",
+         e voltam aos 3 s e aos 4,2 s da "6.1" */
+      someGA: t6 >= this.someA && !(t1 >= S1.acendeGA),
+      someER: t6 >= this.someA && !(t1 >= S1.acendeER),
       /* o bloco de transição e o texto vermelho: escuros dos 0,9 aos 29,5 s da "6.1" */
       escB: t1 >= S1.trocaB && t1 < S1.acendeB,
       metal: t6 >= this.metal && !fim6,
@@ -14221,7 +14225,7 @@ const EV6 = {
     const C = this.cartas();
     const Tx = this.textos;
     /* os textos à vista (e os que saem, em fade) */
-    const sai = { gb: t6 >= this.saiB, et: t6 >= this.saiB, er: est.saiER, ga: est.saiGrupos, mt: est.saiGrupos };
+    const sai = { gb: t6 >= this.saiB, et: t6 >= this.saiB, er: est.saiER || est.someER, ga: est.saiGrupos || est.someGA, mt: est.saiGrupos };
     TEXTOS_6.forEach(T => Tx[T.k].classList.toggle('on', Tx[T.k]._algum && (monta || !sai[T.k])));
     /* na "6.2", "Metais de Transição - " sai e fica "Grupos B" */
     Tx.mt._p.m.classList.toggle('sai6', est.saiMT && !monta);
@@ -14237,8 +14241,6 @@ const EV6 = {
     /* o brilho enquanto se escreve o nome do grupo; o escuro; o pulso dos blocos */
     C.a.forEach(c => { c.classList.toggle('brilhoA6', est.bA); c.classList.toggle('escuro6', est.escA); c.classList.toggle('pulsa6c', est.pA); });
     C.b.concat(C.series).forEach(c => { c.classList.toggle('brilhoB6', est.bB); c.classList.toggle('escuro6', est.escB); c.classList.toggle('pulsa6c', est.pB); });
-    Tx.ga.classList.toggle('escuro6', est.escGA);
-    Tx.er.classList.toggle('escuro6', est.escER);
     Tx.mt.classList.toggle('escuro6', est.escB);
     /* o pulso do "Grupos B" (o pedaço do "Metais de Transição - Grupos B") */
     Tx.mt._p.g.classList.toggle('pulsa6', est.pGB);
@@ -18778,6 +18780,8 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('6', 23, g)); } },
   { titulo:'Os elementos representativos', sub:'o começo da 6.1', slide:6,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('6.1', 0, g)); } },
+  { titulo:'Dividindo as famílias em A e B', sub:'o começo da 6.2', slide:6,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('6.2', 0, g)); } },
   /* ---- o slide 8 · Os Lantanídeos e Actinídeos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:7,
     entra(){ /* o recomeço do slide já é o tópico */ } },

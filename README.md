@@ -490,13 +490,14 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6` · 10,5 → 11,4 s | "Grupos B", no vermelho dos de transição; enquanto se escreve, os de transição (3 a 12, com as casas das séries) brilham em vermelho |
 | `6` · 17,1 s / 19,1 s | "Elementos representativos", embaixo do "Grupos A"; "Elementos de Transição", embaixo do "Grupos B" |
 | `6` · 25 → 27 s | "Elementos de Transição" cresce |
-| `6` · 28 s | os representativos escurecem bem, e os textos deles também; os números das linhas, à esquerda, saem |
+| `6` · 25 s | "Grupos A" e "Elementos representativos" saem em fade |
+| `6` · 28 s | os representativos escurecem bem; os números das linhas, à esquerda, saem |
 | `6` · 31 s | os de transição viram metal, numa onda da esquerda para a direita (o Au dourado, o Cu avermelhado, os outros prata) |
 | `6` · 34,1 → 35,4 s | "Metais de Transição", acima do bloco |
 | `6` · 38 → 39 s | "Grupos B" e "Elementos de Transição" saem, e ao lado de "Metais de Transição" escreve-se " - Grupos B" — "Metais de Transição - Grupos B", centrado no meio do bloco de transição (x 508) |
 | fim da `6` | o metal sai em fade, e o vermelho dos de transição volta; o play passa a tocar a **`6.1`** (a cena da `6` fica como acabou) |
 | `6.1` · 0,9 s | o bloco de transição e o "Metais de Transição - Grupos B" escurecem, e os representativos acendem (tudo em fade) |
-| `6.1` · 3 s / 4,2 s | acende "Grupos A"; acende "Elementos representativos" |
+| `6.1` · 3 s / 4,2 s | "Grupos A" volta, em fade; "Elementos representativos" volta |
 | `6.1` · 17,5 → 19 s | "Elementos representativos" cresce; aos 19 s volta, e "Grupos A" cresce até aos 21 s |
 | `6.1` · 20,8 s | os representativos (os blocos laterais) pulsam |
 | `6.1` · 29,5 s | o bloco de transição e o texto vermelho acendem |
@@ -512,7 +513,8 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | depois da `6.3` | o toque segue: 3B, 4B, 5B, 6B, 7B; e o grupo 8, que sobe com o 9 e o 10, em sequência, com uma chave em cima e o "8B" (ainda sem fala) |
 
 No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s)
-e "b – Os elementos representativos" (o começo da `6.1`).
+"b – Os elementos representativos" (o começo da `6.1`) e "c – Dividindo as
+famílias em A e B" (o começo da `6.2`).
 
 Os rótulos ficam à vista depois de a família descer, e descem com ela. Na
 montagem são peças (`rotulo-1A` … `rotulo-8B`). Ao reabrir o app, as
