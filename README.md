@@ -532,7 +532,22 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6.8A` · 24,9 → 26 s | os de transição brilham; aos 26 s voltam ao normal (o tamanho e o brilho) |
 | `6.8A` · 31,2 → 41 s | os números das famílias viram algarismos romanos (IA, IIA, IIIB … VIIIB, IB, IIB, IIIA … VIIIA), transformando-se no lugar — o arábico desfoca e some enquanto o romano se forma, e a largura anda de um para o outro; aos 41 s voltam, com a mesma animação |
 | acabada a `6.8A` | **o toque livre**: tocado qualquer elemento, acendem a linha (faixa azul, com a bolinha do período) e a coluna (faixa laranja) dele, como no quiz das coordenadas, e o resto da tabela recua; no lugar da bolinha laranja do grupo, brilha o rótulo da família (1A, 8B…). Outro elemento troca; o mesmo apaga |
-| acabada a `6.8A` · o quiz | o play vira **Quiz**, verde e a pulsar (como nos tópicos anteriores). O quiz é o dos Grupos A e B do app do professor: três elementos sorteados da grade, "Qual elemento está no Nº período, família XX?" (no 8B, qualquer das três colunas responde), no formato daqui — a sala escura, o `quiz1`, "Questão N de 3" digitada, o toque na tabela; acerto (verde, confete, fanfarra, aplausos, a voz), erro (treme, a dica "A família XX é a coluna N. Desça até a linha L.", e no segundo erro a resposta pulsa em âmbar); no fim, o cartão da nota (Refazer · Continuar → slide 8). Como no quiz das coordenadas, o elemento tocado gira e acendem a linha (faixa azul, com a bolinha do período) e a coluna (faixa laranja) dele, e brilha o rótulo da família no lugar da bolinha laranja; no erro, apagam-se passado o tremor (1,1 s), no acerto ficam até à questão seguinte. As bolinhas azuis das linhas ficam à vista no quiz (também aberto pelo sumário). Os rótulos 1A…8A ficam à vista, mais claros no escuro. A comemoração dos 6,8 s só acontece passando por ela (um salto para mais adiante não a dispara) |
+| acabada a `6.8A` · o quiz | o play vira **Quiz**, verde e a pulsar. O quiz (`QUIZ7`, sobre o `QUIZ5` do tópico 4: o mesmo ritual e as mesmas peças) tem **10 questões** — as 8 de `quiz_topico6_grupos_A_B.md` (taxonomia de Bloom) e 2 do app do professor. Os rótulos das famílias ficam apagados em todas (salvo os que a questão mostra). Ver a tabela abaixo |
+
+| Nº | Bloom | A questão |
+|---|---|---|
+| 1 | Lembrar | "Toque no bloco dos elementos de transição / representativos": a tabela em cinza, o toque afunda o bloco inteiro (as duas laterais do A juntas); acerto: o bloco ganha a cor e a letra grande (A ou B) aparece sobre ele |
+| 2 | Entender | seis fichas (2 metais representativos, 1 representativo não-metal, 2 de transição, o Zn ou o Hg) para as bandejas Representativos (A) / Transição (B), e Conferir. Como a Q3 do quiz dos tipos: cada ficha numa cor, a tabela ao fundo (15% menor), escura e sem símbolos, com a casa de cada ficha na cor dela — a posição diz o bloco. As erradas voltam; acerto: a tabela volta e as fichas voam para a casa delas |
+| 3 | Entender | "Toque na família VIIA" (sorteada, em romanos): a coluna acende de cima a baixo; acerto: o cabeçalho "VIIA = 7A" |
+| 4 | Aplicar | (do professor) "Qual elemento está no Nº período, família XX?" |
+| 5 | Aplicar | "Toque no elemento do 4º período, família 2B" (Zn, Ag, Au, Cr, Sc, Al); no 3º erro, a linha e a coluna do certo ficam acesas |
+| 6 | Aplicar | os carrosséis do quiz das coordenadas: período (1–7) e família (1A … 8A, na ordem da tabela), e confirmar (Cl, Ca, Al, Fe, Mn, Au, Hg); acerto: o elemento voa da caixa até a casa dele |
+| 7 | Aplicar | (do professor) outra vez, outro elemento |
+| 8 | Analisar | a moldura de três casas (nova) encaixa na grade; Pronto: certo nas colunas 8–10, períodos 4 a 6; acerto: as colunas 9 e 10 juntam-se à 8 e separam-se, e aparece o "8B" |
+| 9 | Avaliar | o balão do colega (novo): Concordo/Discordo, e depois o card do elemento para a bandeja certa; o balão ganha ✔ ou é riscado |
+| 10 | Criar | as etiquetas (8B, 8B, 8B, 1B, 2B, 9B, 10B) para os cabeçalhos vazios das colunas 8 a 12, e Pronto; acerto: a tabela inteira numerada, os do A acesos, e "Perfeito" |
+
+Nas questões de tocar um card (4, 5, 7), o card tocado gira e acendem a linha e a coluna dele, como no quiz das coordenadas.
 
 No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s)
 "b – Os elementos representativos" (o começo da `6.1`) e "c – Dividindo as
