@@ -500,7 +500,9 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6.1` · 3 s / 4,2 s | "Grupos A" volta, em fade; "Elementos representativos" volta |
 | `6.1` · 17,5 → 19 s | "Elementos representativos" cresce; aos 19 s volta, e "Grupos A" cresce até aos 21 s |
 | `6.1` · 20,8 s | os representativos (os blocos laterais) pulsam |
+| `6.1` · 22 → 27 s | ao lado de "Grupos A", em dourado: "Seguem as regras da tabela e têm comportamento regular." |
 | `6.1` · 29,5 s | o bloco de transição e o texto vermelho acendem |
+| `6.1` · 33 → 39 s | embaixo do "Metais de Transição - Grupos B", em vermelho: "Têm mais particularidades e muitas vezes são exceções às regras." (as duas frases saem com os grupos, aos 23 s da `6.2`) |
 | `6.1` · 31 s / 32 s | pulsa o "Grupos B" (do "Metais de Transição - Grupos B"); pulsa o bloco de transição |
 | fim da `6.1` | o play passa a tocar a **`6.2`** |
 | `6.2` · 10 s | "Elementos representativos" sai em fade |
@@ -517,7 +519,9 @@ No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s
 famílias em A e B" (o começo da `6.2`).
 
 Os rótulos ficam à vista depois de a família descer, e descem com ela. Na
-montagem são peças (`rotulo-1A` … `rotulo-8B`). Ao reabrir o app, as
+montagem são peças (`rotulo-1A` … `rotulo-8B`). Os textos do slide também se editam lá
+(dois toques: o texto, "Quebrar linha", "Uma linha só"; as frases são
+`frase-representativos` e `frase-transicao`); editado, o relógio não o reescreve. Ao reabrir o app, as
 famílias já tocadas voltam (`ONDE`, `ab6`).
 
 Os textos são peças na montagem (G), à vista e inteiros lá: `grupos-a`,

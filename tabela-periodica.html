@@ -1862,6 +1862,9 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 /* na "6.1": o "Grupos B" do "Metais de Transição - Grupos B" pulsa sozinho, e
    os blocos pulsam (a escala à parte, sem mexer no transform da carta) */
 .texto6 .p6{display:inline-block;white-space:pre;transition:opacity .6s ease}
+/* as frases da "6.1" (a dos representativos presa pela esquerda: cresce para a direita) */
+.texto6.frase6{font-size:19px;font-weight:600}
+.texto6.esq6{transform:translate(0,-50%)}
 .texto6 .p6.pulsa6{animation:pulsa6 .8s ease-in-out}
 @keyframes pulsa6{50%{transform:scale(1.35)}}
 /* na "6.2": "Metais de Transição - " sai (fica "Grupos B"); o "A" e o "B" crescem sozinhos */
@@ -3909,7 +3912,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v34.3';
+const VERSAO = 'v34.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14059,7 +14062,13 @@ const TEXTOS_6 = [
   { k:'mt', mont:'metais-de-transicao', x:508, y:265, cls:'b6 medio6',
     partes:[ { k:'m', txt:'Metais de Transição', de:34.1, ate:35.4 },
              { k:'s', txt:' - ', de:38.0, ate:38.3 },
-             { k:'g', txt:'Grupos B', de:38.3, ate:39.0, letra:true } ] }
+             { k:'g', txt:'Grupos B', de:38.3, ate:39.0, letra:true } ] },
+  /* na "6.1" ('rel': o relógio dela): ao lado de "Grupos A" (preso pela
+     esquerda, x é a beira) e embaixo do "Metais de Transição - Grupos B" */
+  { k:'ra', mont:'frase-representativos', x:405, y:139, cls:'a6 frase6 esq6', rel:'6.1',
+    partes:[ { k:'f', txt:'Seguem as regras da tabela e têm comportamento regular.', de:22.0, ate:27.0 } ] },
+  { k:'rt', mont:'frase-transicao', x:508, y:303, cls:'b6 frase6', rel:'6.1',
+    partes:[ { k:'f', txt:'Têm mais particularidades e muitas vezes são exceções às regras.', de:33.0, ate:39.0 } ] }
 ];
 /* A ORDEM DAS FAMÍLIAS, a partir dos 23 s da "6.2": a coluna (ou as três do
    8B), o rótulo e a fala do nome */
@@ -14172,13 +14181,16 @@ const EV6 = {
     if (VIDA.ligada && t6 >= this.vidaAte) VIDA.desliga();
     /* os textos, digitados (na montagem, inteiros: são peças a arrumar) */
     const monta = naMontagem();
-    const letras = (txt, de, ate) => monta ? txt.length : t6 < de ? 0 : Math.round(Math.min(1, (t6 - de) / (ate - de)) * txt.length);
+    const relogios = { '6':t6, '6.1':t1, '6.2':t2 };
+    const letras = (txt, de, ate, tt) => monta ? txt.length : tt < de ? 0 : Math.round(Math.min(1, (tt - de) / (ate - de)) * txt.length);
     let bate = false;
     TEXTOS_6.forEach(T => {
-      const d = this.textos[T.k];
+      const d = this.textos[T.k], tt = relogios[T.rel || '6'];
       let algum = false;
       T.partes.forEach(P => {
-        const s = d._p[P.k], n = letras(P.txt, P.de, P.ate);
+        /* editado na montagem (o texto, as quebras): o relógio não o reescreve mais */
+        if (d._p[P.k].classList.contains('texto-livre')){ algum = true; return; }
+        const s = d._p[P.k], n = letras(P.txt, P.de, P.ate, tt);
         const corpo = P.letra ? P.txt.slice(0, Math.min(n, P.txt.length - 1)) : P.txt.slice(0, n);
         const fim = P.letra && n === P.txt.length ? P.txt.slice(-1) : '';
         if (s.firstChild.nodeValue !== corpo || (s._l && s._l.textContent !== fim)){
@@ -14227,7 +14239,8 @@ const EV6 = {
     const C = this.cartas();
     const Tx = this.textos;
     /* os textos à vista (e os que saem, em fade) */
-    const sai = { gb: t6 >= this.saiB, et: t6 >= this.saiB, er: est.saiER || est.someER, ga: est.saiGrupos || est.someGA, mt: est.saiGrupos };
+    const sai = { gb: t6 >= this.saiB, et: t6 >= this.saiB, er: est.saiER || est.someER, ga: est.saiGrupos || est.someGA, mt: est.saiGrupos,
+                  ra: est.saiGrupos, rt: est.saiGrupos };
     TEXTOS_6.forEach(T => Tx[T.k].classList.toggle('on', Tx[T.k]._algum && (monta || !sai[T.k])));
     /* na "6.2", "Metais de Transição - " sai e fica "Grupos B" */
     Tx.mt._p.m.classList.toggle('sai6', est.saiMT && !monta);
@@ -17957,7 +17970,9 @@ function mostraCoord(el){
 const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title, .tira .subtitle, .quiz3.q4 .q3-q,' +
                ' .dica-escolha .txt, .toque-continuar, .rotulo-el .txt, .veu-frases .frase .txt,' +
                ' .texto-colunas .frase .txt, .veu-moseley figcaption b, .dica-final, .entendi3, .coords-el,' +
-               ' .conta-lc25 .txt, .alerta4C, .alerta4E, .alertaAm2, .alertaAm3, .classes4 .frase .txt, .propAm .frase .txt, .propAm1 .frase .txt, .propAm2 .frase .txt';
+               ' .conta-lc25 .txt, .alerta4C, .alerta4E, .alertaAm2, .alertaAm3, .classes4 .frase .txt, .propAm .frase .txt, .propAm1 .frase .txt, .propAm2 .frase .txt,' +
+               /* os textos do slide 7 (cada pedaço de um texto) */
+               ' .texto6 .p6';
 const EDICAO = {
   el:null, ultimo:null, tUlt:0, editados:new Set(),
   /* o bloco de linhas a que um texto pertence, dentro da peça */
@@ -18122,6 +18137,8 @@ const EDICAO = {
     getSelection().removeAllRanges();
   },
   nome(el){
+    /* um texto do slide 7: o nome da peça */
+    if (el.closest('.texto6')) return el.closest('.texto6').dataset.mont;
     if (el.classList.contains('title'))    return 'titulo-do-slide';
     if (el.classList.contains('subtitle')) return 'subtitulo-do-slide';
     if (el.closest('figcaption'))          return 'legenda-moseley';
