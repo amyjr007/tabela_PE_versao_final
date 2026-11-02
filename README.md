@@ -532,10 +532,11 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6.8A` · 24,9 → 26 s | os de transição brilham; aos 26 s voltam ao normal (o tamanho e o brilho) |
 | `6.8A` · 31,2 → 41 s | os números das famílias viram algarismos romanos (IA, IIA, IIIB … VIIIB, IB, IIB, IIIA … VIIIA), transformando-se no lugar — o arábico desfoca e some enquanto o romano se forma, e a largura anda de um para o outro; aos 41 s voltam, com a mesma animação |
 | acabada a `6.8A` | **o toque livre**: tocado qualquer elemento, acendem a linha (faixa azul, com a bolinha do período) e a coluna (faixa laranja) dele, como no quiz das coordenadas, e o resto da tabela recua; no lugar da bolinha laranja do grupo, brilha o rótulo da família (1A, 8B…). Outro elemento troca; o mesmo apaga |
+| acabada a `6.8A` · o quiz | o play vira **Quiz**, verde e a pulsar (como nos tópicos anteriores). O quiz é o dos Grupos A e B do app do professor: três elementos sorteados da grade, "Qual elemento está no Nº período, família XX?" (no 8B, qualquer das três colunas responde), no formato daqui — a sala escura, o `quiz1`, "Questão N de 3" digitada, o toque na tabela; acerto (verde, confete, fanfarra, aplausos, a voz), erro (treme, a dica "A família XX é a coluna N. Desça até a linha L.", e no segundo erro a resposta pulsa em âmbar); no fim, o cartão da nota (Refazer · Continuar → slide 8). Os rótulos 1A…8A ficam à vista, mais claros no escuro. A comemoração dos 6,8 s só acontece passando por ela (um salto para mais adiante não a dispara) |
 
 No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s)
 "b – Os elementos representativos" (o começo da `6.1`) e "c – Dividindo as
-famílias em A e B" (o começo da `6.2`).
+famílias em A e B" (o começo da `6.2`) e "d – Quiz" (a tabela como no fim da `6.8A`, e o quiz abre já; no sumário, "(falta fazer)" ou a nota, como nos outros).
 
 Os rótulos ficam à vista depois de a família descer, e descem com ela. Na
 montagem são peças (`rotulo-1A` … `rotulo-8A`). Os textos do slide também se editam lá

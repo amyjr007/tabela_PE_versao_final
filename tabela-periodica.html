@@ -1879,6 +1879,10 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
   transition:transform .32s cubic-bezier(.34,1.56,.64,1), opacity .4s ease}
 .rot6.on{opacity:1}
 .rot6.a6r{color:#B4881C}
+/* no quiz (a sala escura): sem o halo branco, e as duas cores mais claras */
+.slide.quiz-escuro .rot6{text-shadow:none;color:#E8776B}
+.slide.quiz-escuro .rot6.a6r{color:#F0C75A}
+.slide.quiz-escuro .chave6{color:#E8776B}
 .rot6.rot6-8{font-size:24px}
 /* na "6.8A", o número vira romano no lugar: um desfaz-se, desfocado, enquanto o
    outro se forma; a largura anda de um para o outro (posta pelo JS) */
@@ -3956,7 +3960,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v35.9';
+const VERSAO = 'v36.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4506,6 +4510,7 @@ function montaTabela(i){
       if (i === 5 && QUIZ6.aberto){ QUIZ6.toca(c); return; }
       if (i === 5 && EV5.toca(c)) return;
       /* no slide 7, dos 23 s da "6.2", o toque sobe a família da vez */
+      if (i === 6 && QUIZ7.aberto){ QUIZ7.toca(c); return; }
       if (i === 6 && EV6.toca(c)) return;
       /* no slide 8, a carta de uma série que já desceu dá a volta dela
          (elas ficam fora do TP.todos(), e o TP.gira(z) não as acharia) */
@@ -6379,6 +6384,7 @@ function efeitosDoTempo(){
   /* fora do slide 5, o play que a escolha das classes tirou volta */
   if (atual !== 4) EV4.fora();
   if (atual !== 5) EV5.fora();
+  if (atual !== 6) EV6.fora();
   /* o slide 3 tem os eventos dele */
   if (atual === 2){ efeitos2(t); return; }
   /* o slide 4 tem os eventos dele (a narração "3") */
@@ -14248,6 +14254,24 @@ const EV6 = {
     TP.semCoordenadas();
     if (this.rotulos) this.rotulos.forEach(r => r.classList.remove('acesa6'));
   },
+  quizBotao:false,
+  poeQuiz(sim){
+    this.quizBotao = sim;
+    if (sim){
+      botaoVerde('Quiz', () => {
+        somBtn.classList.remove('pisca-quiz');
+        botaoVerde(null);
+        this.quizBotao = false;
+        QUIZ7.abre();
+      });
+      somBtn.classList.add('pisca-quiz');
+    } else { somBtn.classList.remove('pisca-quiz'); botaoVerde(null); }
+  },
+  /* fora do slide: o botão do quiz e o quiz saem */
+  fora(){
+    if (this.quizBotao) this.poeQuiz(false);
+    if (window.QUIZ7 && QUIZ7.aberto) QUIZ7.fecha();
+  },
   /* O NÚMERO QUE SE TRANSFORMA: o arábico desfaz-se (desfoca e some) enquanto o
      romano se forma no mesmo lugar, e a largura do número anda de uma para a
      outra (o rótulo, centrado, não salta) */
@@ -14412,7 +14436,8 @@ const EV6 = {
     /* aos 6 s da "6.8A", a conquista (uma vez; voltando atrás, de novo) */
     if (trilhaAtual === '6.8A'){
       if (t < this.s68A.pausa - 0.2) this.pausou68 = false;
-      else if (!this.pausou68 && !som.paused && t >= this.s68A.pausa) this.conquista();
+      /* (só passando pelos 6,8 s: um salto para mais adiante não a dispara) */
+      else if (!this.pausou68 && !som.paused && t >= this.s68A.pausa && t < this.s68A.pausa + 1) this.conquista();
     }
     /* na "6.8B", as três do 8B, levantadas no toque, descem aos 2 s; na
        "6.8A", os gases nobres aos 3 s */
@@ -14420,6 +14445,8 @@ const EV6 = {
     if (t8A >= this.s68A.desce && this.noAr === FAMILIAS_AB6.length - 1) this.noAr = -1;
     /* a "6.8A" outra vez a tocar (voltada atrás): o toque livre sai */
     if (this.cruz6 && !this.acabou('6.8A')){ this.cruz6 = 0; this.semCruz(); }
+    /* O BOTÃO DO QUIZ: acabada a "6.8A", o play vira "Quiz", verde */
+    if (!this.quizBotao && window.QUIZ7 && !QUIZ7.aberto && this.passo >= FAMILIAS_AB6.length && this.acabou('6.8A')) this.poeQuiz(true);
     /* começada a subida da 3 na "6.3", a 2A (a última tocada) já desceu de vez */
     if (t3 >= this.s63.sobe[0] && this.noAr === 1) this.noAr = -1;
     /* a vida solta, só até aos 8 s da narração (também pausada) */
@@ -14670,6 +14697,7 @@ const EV6 = {
   },
   zera(){
     this.estado = ''; this.passo = 0; this.noAr = -1; this.pausou68 = false; this.fim68 = 0; this.festa = false;
+    this.fora();
     if (this.cruz6){ this.cruz6 = 0; this.semCruz(); }
     clearTimeout(this.falaT);
     this.calaAviso();
@@ -14697,6 +14725,99 @@ const EV6 = {
   }
 };
 window.EV6 = EV6;
+
+/* ============================================================
+   O QUIZ DO TÓPICO 6 (QUIZ7, no slide 7) — o quiz dos Grupos A e B do app
+   do professor (QUIZ[5]): três elementos sorteados da grade, cada um pelo
+   período e pela família na notação A/B ("Qual elemento está no 4º
+   período, família 8B?"; no 8B, qualquer das três colunas responde). No
+   formato dos quizzes daqui: a sala escura, o quiz1, "Questão N de 3"
+   digitada, a resposta é um toque na tabela. Acerto: o card cresce verde,
+   confete, fanfarra, aplausos e a voz; erro: treme em vermelho, a dica, e
+   no segundo erro a resposta pulsa em âmbar. No fim, o cartão da nota.
+   ============================================================ */
+function sorteiaQuestoes7(){
+  const casas = embaralha(EV6.cartas().todas.filter(c => +c.dataset.linha <= 7)).slice(0, 3);
+  return casas.map(c => {
+    const L = +c.dataset.linha, F = FAMILIAS_AB6.find(F => F.cols.includes(+c.dataset.col));
+    return {
+      q:'Qual elemento está no ' + L + 'º período, família ' + F.rot + '?',
+      certo:e => +e.dataset.linha === L && F.cols.includes(+e.dataset.col),
+      dica:'A família ' + F.rot + ' é ' + (F.cols.length > 1 ? 'a faixa das colunas 8, 9 e 10' : 'a coluna ' + F.cols[0]) +
+           '. Desça até a linha ' + L + '.'
+    };
+  });
+}
+const QUIZ7 = Object.assign(Object.create(QUIZ6), {
+  aberto:false, passo:0, itens:[], erros:0, tropecos:0, travado:false, g:0, q:null, marcados:[], digT:0,
+  sl(){ return slides[6]; },
+  mesa(){ return EV6.mesa(); },
+  abre(){
+    if (atual !== 6) return;
+    this.fecha(true);
+    som.pause();
+    SEQ.comecou = true;
+    VIDA.desliga();
+    /* o toque livre (as coordenadas) sai */
+    if (EV6.cruz6){ EV6.cruz6 = 0; EV6.semCruz(); }
+    this.itens = sorteiaQuestoes7();
+    this.passo = 0; this.erros = 0; this.aberto = true;
+    const g = ++this.g, sl = this.sl();
+    stage.classList.add('em-quiz');
+    let v = sl.querySelector(':scope > .breu-quiz');
+    if (!v){ v = document.createElement('div'); v.className = 'breu-quiz'; sl.insertBefore(v, sl.firstChild); v.getBoundingClientRect(); }
+    v.classList.add('on');
+    sl.classList.add('quiz-escuro', 'quiz7');
+    cabecaDoQuiz(sl, true, 'Quiz', 'quiz-cabeca');
+    if (!sl.querySelector('.confete'))
+      sl.insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
+    this.travado = true;
+    tocaEfeito('Audios/quiz1.mp3').then(() => { if (g === this.g) this.apresenta(g); });
+  },
+  toca(c){
+    if (!this.aberto || this.travado || !this.q) return;
+    const Q = this.q;
+    if (Q.certo(c)){
+      c.classList.add('certa3');
+      QUIZ3.cresce.call(QUIZ3, c);
+      this.marcados = [c];
+      this.acerta();
+    } else this.erra(Q.dica, [c], () => EV6.cartas().todas.filter(Q.certo));
+  },
+  limpa(){
+    this.marcados.forEach(c => {
+      c.classList.remove('certa3', 'frente3');
+      c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe');
+    });
+    this.marcados = [];
+  },
+  resultado(){
+    this.sl().querySelectorAll('.quiz3.q5').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
+    const n = this.itens.length, e = this.erros, nota = Math.round(Math.max(0, n - e) / n * 100) / 10;
+    QUIZ_FEITOS.marca('q6', nota);      /* feito: verde no sumário */
+    cartaoDoResultado(nota, n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
+      this.sl(), () => this.abre(), () => { this.fecha(); go(7); });
+  },
+  fecha(reabre){
+    this.g++;
+    clearInterval(this.digT);
+    this.limpa();
+    this.q = null;
+    this.aberto = false; this.travado = false;
+    const sl = this.sl();
+    if (!sl) return;
+    sl.querySelectorAll('.quiz3.q5, .quiz-cartao').forEach(e => e.remove());
+    const m = this.mesa();
+    if (m) m.querySelectorAll('.pista5, .errada3, .certa3').forEach(e => e.classList.remove('pista5', 'errada3', 'certa3'));
+    if (reabre) return;
+    stage.classList.remove('em-quiz');
+    const v = sl.querySelector(':scope > .breu-quiz');
+    if (v) v.classList.remove('on');
+    sl.classList.remove('quiz-escuro', 'quiz7');
+    cabecaDoQuiz(sl, false, 'Quiz', 'quiz-cabeca');
+  }
+});
+window.QUIZ7 = QUIZ7;
 
 /* ============================================================
    O QUIZ DO SLIDE 4 — as perguntas das coordenadas, da "3.3" à "3.6"
@@ -19140,6 +19261,17 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('6.1', 0, g)); } },
   { titulo:'Dividindo as famílias em A e B', sub:'o começo da 6.2', slide:6,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('6.2', 0, g)); } },
+  { titulo:'Quiz', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:6, quiz:'q6',
+    entra(v, g){
+      /* a tabela como no fim da "6.8A" (as famílias todas tocadas), sem voz, e o quiz abre já */
+      depoisDaMesa(g, () => {
+        if (g !== NAV.geracao) return;
+        trilhaAtual = -1;
+        carregaTrilha('6.8A');
+        EV6.passo = FAMILIAS_AB6.length;
+        QUIZ7.abre();
+      });
+    } },
   /* ---- o slide 8 · Os Lantanídeos e Actinídeos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:7,
     entra(){ /* o recomeço do slide já é o tópico */ } },
