@@ -1,4 +1,4 @@
-﻿# Audiobook interativo da Tabela Periódica Moderna
+# Audiobook interativo da Tabela Periódica Moderna
 
 A mesma aula do Prof. Amauri Junior, do lado de cá: o aluno abre
 `tabela-periodica.html` no celular ou no Chromebook e a aula anda
