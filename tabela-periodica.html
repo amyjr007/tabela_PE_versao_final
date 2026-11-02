@@ -3878,7 +3878,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v33.2';
+const VERSAO = 'v33.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14017,7 +14017,9 @@ const EV6 = {
     this.prepara();
     const t6 = trilhaAtual === '6' ? t : -1;
     /* a vida solta, só até aos 8 s da narração */
-    if (VIDA.ligada && t6 >= this.vidaAte && !som.paused) VIDA.desliga();
+    /* (também com a narração pausada: arrastada para depois dos 8 s, a vida
+       solta seguia a girar cubos por baixo do metal) */
+    if (VIDA.ligada && t6 >= this.vidaAte) VIDA.desliga();
     /* os textos, digitados (na montagem, inteiros: são peças a arrumar) */
     const monta = naMontagem();
     TEXTOS_6.forEach(T => {
@@ -14048,6 +14050,10 @@ const EV6 = {
     /* aos 36 s, os de transição viram metal, numa onda da esquerda para a direita */
     C.b.forEach(c => {
       if (metal && !c._mat6){
+        /* o metal vai na face da frente: o cubo que a vida solta deixou de
+           lado (meia volta, um quarto — o Ir, o Rg…) é posto de frente,
+           sem se ver (as seis faces são iguais) */
+        deFrente(c);
         c._mat6 = EV4.veste(c, 'metal');
         c._mat6.style.animationDelay = ((+c.dataset.col - 3) * 0.06).toFixed(2) + 's';
       } else if (!metal && c._mat6){ EV4.despe(c, c._mat6, 'metal'); c._mat6 = null; }
