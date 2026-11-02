@@ -624,12 +624,23 @@ var LEGENDAS = {
     [0,0.88,"7B"]
   ],
   "audio_tabela_6.8A": [
-    [0,1.62,"8A. Pronto."],
-    [1.62,4.71,"Tá aí a outra classificação com a distinção"],
-    [4.71,7.72,"entre elementos representativos, grupos A,"],
-    [7.72,9.76,"e de transição, grupos B."],
-    [9.76,12.85,"É uma classificação antiga, mas muito utilizada"],
-    [12.85,15.48,"pelos professores de Química ainda hoje."]
+    [0,1.92,"8A. Pronto."],
+    [2.98,5.96,"Tá aí a tabela inteira montada com a outra classificação nas famílias."],
+    [5.96,8.93,"É uma classificação antiga,"],
+    [8.93,11.91,"mas muito utilizada pelos professores de Química ainda hoje,"],
+    [11.91,14.89,"porque ajuda a gente a entender, só pela posição,"],
+    [14.89,17.87,"se um elemento é regular e previsível,"],
+    [17.87,20.85,"como os representativos, ou se constitui um elemento"],
+    [20.85,23.82,"mais inclinado a exceções às regras da tabela,"],
+    [23.82,25.82,"como os elementos de transição aqui."],
+    [25.82,26.8,"É isso."],
+    [26.8,29.78,"Ah, sim, tem mais uma coisa."],
+    [29.78,32.76,"Algumas tabelas usam algarismos romanos"],
+    [32.76,35.74,"pra numerar as famílias nesse critério de classificação,"],
+    [35.74,39.9,"mas a lógica é exatamente a mesma, já que são os mesmos números."],
+    [39.9,42.3,"Tá, agora você pode clicar em qualquer elemento"],
+    [42.3,44.67,"pra ver suas coordenadas nessa classificação."],
+    [44.67,48.15,"Ou clique no quiz ali pra gente ver se você entendeu."]
   ],
   "audio_tabela_6.8B": [
     [0,6.76,"8B. Pára aí. Repare, o 8B não é uma coluna só, são estas três aqui."],

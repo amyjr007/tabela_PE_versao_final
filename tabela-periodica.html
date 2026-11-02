@@ -1880,6 +1880,13 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 .rot6.on{opacity:1}
 .rot6.a6r{color:#B4881C}
 .rot6.rot6-8{font-size:24px}
+/* na "6.8A", o número vira romano no lugar: um desfaz-se, desfocado, enquanto o
+   outro se forma; a largura anda de um para o outro (posta pelo JS) */
+.rot6 .num6{display:inline-block;position:relative;text-align:center;vertical-align:top;transition:width .9s ease}
+.rot6 .ar6, .rot6 .ro6{display:inline-block;transition:opacity .9s ease, filter .9s ease, scale .9s ease}
+.rot6 .ro6{position:absolute;left:50%;top:0;translate:-50% 0;opacity:0;filter:blur(7px);scale:.5 1}
+.rot6.romano6 .ar6{opacity:0;filter:blur(7px);scale:1.6 1}
+.rot6.romano6 .ro6{opacity:1;filter:none;scale:1}
 body.montagem .rot6{opacity:1;pointer-events:auto}
 /* a chave em cima do 8B (as colunas 8, 9 e 10) */
 .chave6{position:absolute;z-index:26;pointer-events:none;color:#A6382F;line-height:0;
@@ -3945,7 +3952,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v35.3';
+const VERSAO = 'v35.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14189,7 +14196,9 @@ const EV6 = {
      18 s voltam e crescem os de transição, 23 s brilham por 1 s, 24 s voltam.
      (A narração tem 15,7 s: acabada, o relógio segue a contar, e o que vem
      depois dos 15,7 s acontece logo a seguir) */
-  s68A:{ pausa:6.0, maiorA:[14.5, 18.0], luzA:[16.0, 18.0], maiorB:[18.0, 24.0], luzB:[23.0, 24.0] },
+  s68A:{ pausa:6.0, maiorA:[14.5, 18.0], luzA:[16.0, 18.0], maiorB:[18.0, 24.0], luzB:[23.0, 24.0],
+         /* dos 31 aos 41 s, os números das famílias em algarismos romanos */
+         romanos:[31.0, 41.0] },
   pausou68:false, fim68:0,
   /* o relógio da "6.8A", que segue depois do fim */
   relogio68A(t){
@@ -14210,6 +14219,20 @@ const EV6 = {
       this.rotulos.forEach(r => r.classList.remove('conquista6'));
       if (atual === 6 && trilhaAtual === '6.8A' && som.paused && !som.ended) som.play().catch(avisaSeNaoTocou);
     });
+  },
+  /* O NÚMERO QUE SE TRANSFORMA: o arábico desfaz-se (desfoca e some) enquanto o
+     romano se forma no mesmo lugar, e a largura do número anda de uma para a
+     outra (o rótulo, centrado, não salta) */
+  romano(r, sim){
+    if (r.classList.contains('romano6') === sim) return;
+    const n = r.querySelector('.num6'), ar = n.querySelector('.ar6'), ro = n.querySelector('.ro6');
+    clearTimeout(n._t);
+    n.style.width = n.offsetWidth + 'px';
+    void n.offsetWidth;
+    r.classList.toggle('romano6', sim);
+    n.style.width = (sim ? ro : ar).offsetWidth + 'px';
+    /* acabada a troca, a largura volta a ser a do número à vista */
+    n._t = setTimeout(() => { if (!sim) n.style.removeProperty('width'); }, 1000);
   },
   /* a fala curta da família (cortada no toque seguinte) */
   falaA:null,
@@ -14279,7 +14302,11 @@ const EV6 = {
       const r = document.createElement('div');
       r.className = 'rot6' + (F.cols.length > 1 ? ' rot6-8' : '') + (F.a ? ' a6r' : '');
       r.dataset.mont = 'rotulo-' + F.rot;     /* na montagem, peça */
-      r.textContent = F.rot;
+      /* o número em duas formas, uma sobre a outra (o arábico e o romano, que
+         se transformam um no outro na "6.8A"), e a letra */
+      const k = parseInt(F.rot, 10);
+      r.innerHTML = '<span class="num6"><span class="ar6">' + k + '</span><span class="ro6">' +
+        ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'][k] + '</span></span>' + F.rot.slice(-1);
       const topo = Math.min(...F.cols.map(c => Math.min(...this.coluna(c).map(p => +p.dataset.linha))));
       r.style.left = ((xDaColuna(F.cols[0]) + xDaColuna(F.cols[F.cols.length - 1])) / 2).toFixed(1) + 'px';
       r.style.top  = (yDaLinha(topo) - LADO/2 - (F.cols.length > 1 ? 40 : 16)) + 'px';
@@ -14437,7 +14464,8 @@ const EV6 = {
       /* a "6.2B" e a "6.8A" */
       maiorDir: dentro(t2B, this.s62B.maiorDir),
       maiorA: dentro(t8A, this.s68A.maiorA), luzA: dentro(t8A, this.s68A.luzA),
-      maiorB: dentro(t8A, this.s68A.maiorB), luzB: dentro(t8A, this.s68A.luzB)
+      maiorB: dentro(t8A, this.s68A.maiorB), luzB: dentro(t8A, this.s68A.luzB),
+      romanos: dentro(t8A, this.s68A.romanos)
     };
     const chave = JSON.stringify(est);
     if (chave === this.estado) return;
@@ -14511,6 +14539,8 @@ const EV6 = {
     C.b.forEach(c => c.classList.toggle('maior6', est.maiorB));
     m.classList.toggle('luz6-rapida', est.luzRapida);
     this.foto.classList.toggle('on', est.foto);
+    /* na "6.8A", os números viram romanos (e voltam), transformando-se no lugar */
+    this.rotulos.forEach(r => this.romano(r, est.romanos));
     /* na "6.3", os grupos B crescem com o brilho vermelho; aos 5 s, só a família 3 */
     C.b.forEach(c => c.classList.toggle('cresceB6', est.cB63 || (est.c363 && +c.dataset.col === 3) ||
       (est.cresce8 && +c.dataset.col >= 8 && +c.dataset.col <= 10)));
@@ -14612,7 +14642,8 @@ const EV6 = {
                                         s.classList.remove('pulsa6', 'sai6'); });
       d.classList.remove('on', 'escuro6', 'cresce6');
     });
-    this.rotulos.forEach(r => { r.classList.remove('on', 'conquista6'); r.style.removeProperty('--sobe6'); });
+    this.rotulos.forEach(r => { r.classList.remove('on', 'conquista6', 'romano6'); r.style.removeProperty('--sobe6');
+                                r.querySelector('.num6').style.removeProperty('width'); });
     this.chave8.classList.remove('on');
     m.querySelectorAll('.eixo.some6').forEach(e => e.classList.remove('some6'));
   }

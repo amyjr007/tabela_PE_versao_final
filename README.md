@@ -528,7 +528,8 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6.2B` · 6 → 7 s | o bloco representativo da direita (13 a 18) cresce, e volta |
 | `6.8A` · 6 s | a narração pára: os números de todas as famílias brilham, dourados, saem os confetes e toca o `funfare`; acabado ele, a narração continua |
 | `6.8A` · 14,5 / 16 / 18 s | os representativos crescem; brilham (verde); aos 18 s voltam e apagam o brilho, e crescem os de transição |
-| `6.8A` · 23 → 24 s | os de transição brilham por 1 s; aos 24 s voltam ao normal (a narração tem 15,7 s: depois do fim, o relógio da cena segue a contar) |
+| `6.8A` · 23 → 24 s | os de transição brilham por 1 s; aos 24 s voltam ao normal |
+| `6.8A` · 31 → 41 s | os números das famílias viram algarismos romanos (IA, IIA, IIIB … VIIIB, IB, IIB, IIIA … VIIIA), transformando-se no lugar — o arábico desfoca e some enquanto o romano se forma, e a largura anda de um para o outro; aos 41 s voltam, com a mesma animação |
 
 No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s)
 "b – Os elementos representativos" (o começo da `6.1`) e "c – Dividindo as
