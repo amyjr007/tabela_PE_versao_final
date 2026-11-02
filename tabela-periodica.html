@@ -3909,7 +3909,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v34.0';
+const VERSAO = 'v34.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14060,15 +14060,14 @@ const TEXTOS_6 = [
              { k:'g', txt:'Grupos B', de:38.3, ate:39.0, letra:true } ] }
 ];
 /* A ORDEM DAS FAMÍLIAS, a partir dos 23 s da "6.2": a coluna (ou as três do
-   8B), o rótulo e a fala do nome (pelo que cada áudio diz: o "2A" está no
-   arquivo 6.6B, o "4B" no 6.2A e o "6B" no 6.4B) */
+   8B), o rótulo e a fala do nome */
 const FAMILIAS_AB6 = [
   { cols:[1], rot:'1A', fala:'6.1A' },
-  { cols:[2], rot:'2A', fala:'6.6B' },
+  { cols:[2], rot:'2A', fala:'6.2A' },
   { cols:[3], rot:'3B', fala:'6.3B' },
-  { cols:[4], rot:'4B', fala:'6.2A' },
+  { cols:[4], rot:'4B', fala:'6.4B' },
   { cols:[5], rot:'5B', fala:'6.5B' },
-  { cols:[6], rot:'6B', fala:'6.4B' },
+  { cols:[6], rot:'6B', fala:'6.6B' },
   { cols:[7], rot:'7B', fala:'6.7B' },
   { cols:[8, 9, 10], rot:'8B', fala:null }
 ];
@@ -18775,6 +18774,10 @@ const NAV_TOPICOS = [
   /* ---- o slide 7 · Os Grupos A e B ---- */
   { titulo:'Início', sub:'o começo do slide', slide:6,
     entra(){ /* o recomeço do slide já é o tópico */ } },
+  { titulo:'Os elementos de transição', sub:'aos 23 s da narração 6', slide:6,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('6', 23, g)); } },
+  { titulo:'Os elementos representativos', sub:'o começo da 6.1', slide:6,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('6.1', 0, g)); } },
   /* ---- o slide 8 · Os Lantanídeos e Actinídeos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:7,
     entra(){ /* o recomeço do slide já é o tópico */ } },

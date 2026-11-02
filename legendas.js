@@ -561,17 +561,19 @@ var LEGENDAS = {
     [0,0.54,"1B."]
   ],
   "audio_tabela_6.2": [
-    [0,4.34,"Essa divisão favorece uma nova classificação das famílias na tabela,"],
-    [4.34,8,"que vamos aprender agora de forma simples e intuitiva."],
-    [8,10,"A lógica é simples:"],
-    [10,13.35,"os elementos representativos serão classificados"],
-    [13.35,16,"com uma numeração e a letra A do lado,"],
-    [16,20,"e os elementos de transição terão a letra B nos seus grupos."],
-    [20,22.3,"Pareceu confuso? Não é não!"],
-    [22.3,24.76,"Toca ali na primeira família pra você entender."]
+    [0,3.94,"Essa divisão favorece uma nova classificação das famílias na tabela,"],
+    [3.94,7.34,"que vamos aprender agora de forma simples e intuitiva."],
+    [7.34,9.38,"A lógica é simples."],
+    [9.38,12.64,"Os elementos representativos serão classificados"],
+    [12.64,15.22,"com uma numeração e a letra A do lado."],
+    [15.22,19.62,"Já os elementos de transição terão a letra B nos seus grupos."],
+    [19.62,21,"Pareceu confuso?"],
+    [21,21.9,"Não é não."],
+    [21.9,26.98,"Vou deixar as cores nos blocos aqui pra facilitar a distinção de A e B."],
+    [26.98,29.68,"Toca ali na primeira família pra gente começar."]
   ],
   "audio_tabela_6.2A": [
-    [0,0.72,"4B"]
+    [0,0.88,"2A"]
   ],
   "audio_tabela_6.2B": [
     [0,1.48,"2B. Pronto."],
@@ -603,7 +605,7 @@ var LEGENDAS = {
     [0,1.2,"4A"]
   ],
   "audio_tabela_6.4B": [
-    [0,0.84,"6B"]
+    [0,0.7,"4B"]
   ],
   "audio_tabela_6.5": [
     [0,1.62,"8A. Pronto."],
@@ -623,7 +625,7 @@ var LEGENDAS = {
     [0,0.94,"6A"]
   ],
   "audio_tabela_6.6B": [
-    [0,1.42,"Família 2A"]
+    [0,1.15,"6B"]
   ],
   "audio_tabela_6.7A": [
     [0,1.22,"7A"]
