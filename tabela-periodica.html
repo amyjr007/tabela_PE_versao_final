@@ -4060,7 +4060,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v36.6';
+const VERSAO = 'v36.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -15092,6 +15092,8 @@ const QUESTOES_7 = [
       const col = +c.dataset.col, els = coluna7(Q, [col]);
       this.acende(Q, els, true);
       QUESTOES_7[0].cruz(Q, c, this.F.cols.includes(col));
+      /* (sem a bolinha da coluna acesa: no acerto, a família já aparece no cabeçalho) */
+      Q.mesa().querySelectorAll('.eixo[data-grupo].acesa').forEach(e => e.classList.remove('acesa'));
       if (this.F.cols.includes(col)){
         const todas = coluna7(Q, this.F.cols);
         this.acende(Q, todas, true);
