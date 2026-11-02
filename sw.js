@@ -132,6 +132,7 @@ const CASCA = [
   './Audios/audio_tabela_6.8A.mp3', './Audios/audio_tabela_6.8B.mp3',
   './Imagens/humphry_davy.jpeg',
   './Imagens/cal.jpeg',
+  './Imagens/Dmitri_Mendeleev.jpg',
   /* as aberturas dos capítulos, uma por slide */
   './Audios/audio_tabela_1.0.mp3',
   './Audios/audio_tabela_2.0.mp3',

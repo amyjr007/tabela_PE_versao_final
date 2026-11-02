@@ -1890,6 +1890,16 @@ body.montagem .rot6{opacity:1;pointer-events:auto}
 .mesa[data-slide="6"] .pc{transition:transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease, opacity .45s ease, scale .35s ease}
 .mesa .pc.cresceB6{scale:1.12;z-index:8}
 .mesa .pc.cresceB6 .face{box-shadow:0 0 0 2px #FF6B5E, 0 0 18px 5px rgba(230,60,50,.7)}
+/* a "6.4": o brilho dos elementos do 8B (apaga depressa aos 17,8 s); o pulso
+   do 8B e da chave; a foto de Mendeleev, com o nome e o ano embaixo */
+.mesa .pc.luz6 .face{box-shadow:0 0 0 2px #FFE9A8, 0 0 20px 6px rgba(255,214,102,.9)}
+.mesa.luz6-rapida .pc .face{transition-duration:.15s!important}
+.rot6.pulsa6r, .chave6.pulsa6r{animation:pulsaRot6 .8s ease-in-out}
+@keyframes pulsaRot6{50%{scale:1.35}}
+.foto5.foto6{left:400px;top:228px}
+.foto5.foto6 img{height:150px;border-width:4px;border-radius:12px}
+.foto5.foto6 figcaption{margin:6px 0 0;font-size:17px}
+.foto5.foto6 figcaption small{display:block;margin-top:2px;font-size:15px;font-weight:600;color:var(--tinta-dim)}
 /* o aviso do toque fora da ordem ("Comece pela família 1") */
 .aviso6{position:absolute;z-index:27;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:24px;color:#D32F2F;
@@ -3923,7 +3933,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v34.9';
+const VERSAO = 'v35.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5190,6 +5200,7 @@ const TRILHAS = {
   '6.1':  'Audios/audio_tabela_6.1.mp3',   /* o play, depois da "6": os representativos */
   '6.2':  'Audios/audio_tabela_6.2.mp3',   /* o play, depois da "6.1": a classificação A e B */
   '6.3':  'Audios/audio_tabela_6.3.mp3',   /* depois da 2A: os grupos B */
+  '6.4':  'Audios/audio_tabela_6.4.mp3',   /* o toque no 8B: as três colunas, e Mendeleev */
   '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries (ainda por gravar) */
   '8':    'Audios/audio_tabela_8.mp3',     /* o slide 9: a natureza (ainda por gravar) */
   '9':    'Audios/audio_tabela_9.mp3',     /* o slide 10: a valência (ainda por gravar) */
@@ -14092,10 +14103,11 @@ const FAMILIAS_AB6 = [
   { cols:[5], rot:'5B', fala:'6.5B' },
   { cols:[6], rot:'6B', fala:'6.6B' },
   { cols:[7], rot:'7B', fala:'6.7B' },
-  { cols:[8, 9, 10], rot:'8B', fala:null }
+  /* o 8B (8, 9 e 10): no lugar da fala curta, a narração "6.4" */
+  { cols:[8, 9, 10], rot:'8B', fala:null, trilha:'6.4' }
 ];
 /* as narrações do slide, na ordem: o relógio de cada uma vale 1e4 depois dela */
-const TRILHAS_6 = ['6', '6.1', '6.2', '6.3'];
+const TRILHAS_6 = ['6', '6.1', '6.2', '6.3', '6.4'];
 const EV6 = {
   vidaAte:8.0,
   brilhoA:[9.0, 10.0], brilhoB:[10.5, 11.4],
@@ -14114,6 +14126,55 @@ const EV6 = {
      aos 7 s só a família 3 cresce, brilha e sobe — sem o "3B", que só aparece
      no toque */
   s63:{ cresceB:[2.6, 5.0], sobe:[6.0, 7.0] },
+  /* a "6.4" (o toque no 8B): as três descem aos 2 s; o 8B pulsa aos 3 s; a
+     onda de 5,9 a 6,7 s; os brilhos de cima para baixo (12 s) e de lado (14 s);
+     o Fe, o Co e o Ni (15, 16, 16,6 s), que apagam depressa aos 17,8 s e
+     voltam dos 18 aos 20 s; a foto de Mendeleev dos 20 aos 28 s; as três
+     colunas acesas e crescidas dos 28 aos 32 s; aos 31 s pulsam a chave e o 8B */
+  s64:{ desce:2.0, pulsa8:[3.0, 3.8], onda:[5.9, 6.7], passoOnda:0.2,
+        linhas:[12.0, 13.0], colunas:[14.0, 15.0], fe:15.0, co:16.0, ni:16.6, apaga:[17.8, 18.0],
+        trio:[18.0, 20.0], foto:[20.0, 28.0], cresce:[28.0, 32.0], pulsaFim:[31.0, 31.8] },
+  /* os Z acesos na "6.4", no segundo t */
+  luz64(t){
+    const S = this.s64, z = [];
+    if (t < 0) return z;
+    const grupo = this.cartas().b.filter(c => +c.dataset.col >= 8 && +c.dataset.col <= 10);
+    /* de cima para baixo, linha a linha (0,2 s cada), até aos 13 s */
+    if (t >= S.linhas[0] && t < S.linhas[1])
+      grupo.forEach(c => { if (t >= S.linhas[0] + (+c.dataset.linha - 4) * 0.2) z.push(+c.dataset.z); });
+    /* de lado, coluna a coluna (0,1 s cada), todas acesas até aos 15 s */
+    if (t >= S.colunas[0] && t < S.colunas[1])
+      grupo.forEach(c => { if (t >= S.colunas[0] + (+c.dataset.col - 8) * 0.1) z.push(+c.dataset.z); });
+    /* o Fe, o Co e o Ni, um a um; apagam aos 17,8 s, e voltam juntos dos 18 aos 20 s */
+    if (t >= S.fe && t < S.apaga[0]) z.push(26);
+    if (t >= S.co && t < S.apaga[0]) z.push(27);
+    if (t >= S.ni && t < S.apaga[0]) z.push(28);
+    if (t >= S.trio[0] && t < S.trio[1]) z.push(26, 27, 28);
+    /* as três colunas, dos 28 aos 32 s */
+    if (t >= S.cresce[0] && t < S.cresce[1]) grupo.forEach(c => z.push(+c.dataset.z));
+    return [...new Set(z)].sort((a, b) => a - b);
+  },
+  /* a fala curta da família (cortada no toque seguinte) */
+  falaA:null,
+  tocaFala(src){
+    this.cortaFala();
+    const a = new Audio(encodeURI(src));
+    Velocidade.aplicar(a);
+    EFEITOS.add(a);
+    this.falaA = a;
+    return new Promise(ok => {
+      const fim = () => { EFEITOS.delete(a); if (this.falaA === a) this.falaA = null; ok(a); };
+      a.addEventListener('ended', fim);
+      a.addEventListener('error', fim);
+      a.play().catch(fim);
+    });
+  },
+  cortaFala(){
+    if (!this.falaA) return;
+    this.falaA.pause();
+    EFEITOS.delete(this.falaA);
+    this.falaA = null;
+  },
   /* o aviso do toque fora da ordem: 3 s à vista, e volta de 3 em 3 s */
   aviso:null, avisoT:0, avisoP:-1,
   /* a subida das famílias: 50 px, com mola (a do tópico 5) */
@@ -14187,6 +14248,14 @@ const EV6 = {
     av.style.top = '205px';
     m.appendChild(av);
     this.aviso = av;
+    /* a foto de Mendeleev (a "6.4"), com o nome e o ano */
+    const ft = document.createElement('figure');
+    ft.className = 'foto5 foto6';
+    ft.dataset.mont = 'foto-mendeleev';   /* na montagem, peça */
+    ft.innerHTML = '<img src="Imagens/Dmitri_Mendeleev.jpg" alt="Dmitri Mendeleev" draggable="false">' +
+                   '<figcaption>Dmitri Mendeleev<small>1871</small></figcaption>';
+    m.appendChild(ft);
+    this.foto = ft;
   },
   /* O AVISO DO TOQUE FORA DA ORDEM: 3 s à vista; e, enquanto a família da
      vez não for tocada, volta de 3 em 3 s */
@@ -14221,7 +14290,10 @@ const EV6 = {
     const m = this.mesa();
     if (!m) return;
     this.prepara();
-    const t6 = this.relogio('6', t), t1 = this.relogio('6.1', t), t2 = this.relogio('6.2', t), t3 = this.relogio('6.3', t);
+    const t6 = this.relogio('6', t), t1 = this.relogio('6.1', t), t2 = this.relogio('6.2', t), t3 = this.relogio('6.3', t),
+          t4 = this.relogio('6.4', t);
+    /* na "6.4", as três do 8B, levantadas no toque, descem aos 2 s */
+    if (t4 >= this.s64.desce && this.noAr === 7) this.noAr = -1;
     /* começada a subida da 3 na "6.3", a 2A (a última tocada) já desceu de vez */
     if (t3 >= this.s63.sobe[0] && this.noAr === 1) this.noAr = -1;
     /* a vida solta, só até aos 8 s da narração (também pausada) */
@@ -14257,6 +14329,11 @@ const EV6 = {
     /* A FAMÍLIA NO AR: na "6.3", a 3 dos 6 aos 7 s; no toque, a tocada */
     const auto3 = dentro(t3, this.s63.sobe);
     const noAr = auto3 ? 2 : this.noAr;
+    /* a onda da "6.4" (5,9 → 6,7 s): sobe a 8, depois a 9 (a 8 desce), a 10, e desce */
+    const S4 = this.s64, kOnda = Math.floor((t4 - S4.onda[0]) / S4.passoOnda);
+    const ondaCol = t4 >= S4.onda[0] && t4 < S4.onda[1] && kOnda < 3 ? 8 + kOnda : 0;
+    /* os brilhos da "6.4" (os Z que acendem) e o que cresce */
+    const luz = this.luz64(t4), cresce8 = dentro(t4, S4.cresce);
     /* os rótulos à vista: só os das famílias já tocadas (a subida da 3 na "6.3" não o mostra) */
     const vistos = FAMILIAS_AB6.map((F, i) => i < this.passo || i === this.noAr);
     const est = {
@@ -14280,7 +14357,11 @@ const EV6 = {
       on: TEXTOS_6.map(T => this.textos[T.k]._algum).join(''),
       noAr, vistos: vistos.join(''), chama: this.podeTocar(t2, t3) ? this.passo : -1, monta,
       /* a "6.3": os grupos B crescidos e a brilhar; depois só a família 3 */
-      cB63: dentro(t3, this.s63.cresceB), c363: dentro(t3, this.s63.sobe)
+      cB63: dentro(t3, this.s63.cresceB), c363: dentro(t3, this.s63.sobe),
+      /* a "6.4" */
+      ondaCol, luz: luz.join(','), luzRapida: dentro(t4, S4.apaga), cresce8,
+      pulsa8: dentro(t4, S4.pulsa8) || dentro(t4, S4.pulsaFim), pulsaChave: dentro(t4, S4.pulsaFim),
+      foto: dentro(t4, S4.foto)
     };
     const chave = JSON.stringify(est);
     if (chave === this.estado) return;
@@ -14313,18 +14394,19 @@ const EV6 = {
     Tx.mt._p.g.classList.toggle('pulsa6', est.pGB);
     /* AS FAMÍLIAS: a no ar sobe (com mola), as outras descem; o rótulo anda com ela */
     FAMILIAS_AB6.forEach((F, i) => {
-      const sobe = i === noAr;
       F.cols.forEach((col, k) => this.coluna(col).forEach(c => {
+        const sobe = i === noAr || col === ondaCol;
         if (c._up6 === sobe) return;
         c._up6 = sobe;
         clearTimeout(c._t6);
-        /* (as três do 8B sobem em sequência) */
+        /* (as três do 8B sobem em sequência, no toque; na onda, depressa) */
+        const onda = col === ondaCol || (ondaCol && !sobe && F.cols.length > 1 && i !== noAr);
         c._t6 = setTimeout(() => {
-          c.style.setProperty('--e-salto', sobe ? 'cubic-bezier(.34,1.56,.64,1)' : 'ease-out');
-          TP.poe(c, sobe ? this.alto : 0, sobe ? 320 : 280);
-        }, sobe ? k * 220 : 0);
+          c.style.setProperty('--e-salto', sobe && !onda ? 'cubic-bezier(.34,1.56,.64,1)' : 'ease-out');
+          TP.poe(c, sobe ? this.alto : 0, onda ? 180 : sobe ? 320 : 280);
+        }, sobe && i === noAr ? k * 220 : 0);
       }));
-      const r = this.rotulos[i];
+      const r = this.rotulos[i], sobe = i === noAr;
       r.classList.toggle('on', vistos[i]);
       r.style.setProperty('--sobe6', (sobe ? -this.alto : 0) + 'px');
       r.style.transitionDelay = sobe ? ((F.cols.length - 1) * 220) + 'ms' : '0ms';
@@ -14333,8 +14415,17 @@ const EV6 = {
     this.chave8.classList.toggle('on', vistos[7]);
     this.chave8.style.setProperty('--sobe6', (noAr === 7 ? -this.alto : 0) + 'px');
     this.chave8.style.transitionDelay = noAr === 7 ? '440ms' : '0ms';
+    /* na "6.4": o 8B pulsa (3 s e 31 s), e a chave com ele (31 s) */
+    this.rotulos[7].classList.toggle('pulsa6r', est.pulsa8);
+    this.chave8.classList.toggle('pulsa6r', est.pulsaChave);
+    /* os brilhos, e a foto de Mendeleev */
+    const acesos = new Set(luz);
+    C.b.forEach(c => c.classList.toggle('luz6', acesos.has(+c.dataset.z)));
+    m.classList.toggle('luz6-rapida', est.luzRapida);
+    this.foto.classList.toggle('on', est.foto);
     /* na "6.3", os grupos B crescem com o brilho vermelho; aos 5 s, só a família 3 */
-    C.b.forEach(c => c.classList.toggle('cresceB6', est.cB63 || (est.c363 && +c.dataset.col === 3)));
+    C.b.forEach(c => c.classList.toggle('cresceB6', est.cB63 || (est.c363 && +c.dataset.col === 3) ||
+      (est.cresce8 && +c.dataset.col >= 8 && +c.dataset.col <= 10)));
     /* a próxima família a tocar chama o dedo, com um brilho leve */
     C.todas.forEach(c => c.classList.toggle('chama6', est.chama >= 0 && FAMILIAS_AB6[est.chama].cols.includes(+c.dataset.col)));
     /* aos 31 s, os de transição viram metal, numa onda da esquerda para a direita */
@@ -14388,11 +14479,16 @@ const EV6 = {
     const i = this.passo;
     this.noAr = i;
     this.passo++;
+    /* o que estiver a tocar (a narração, a fala da família anterior) é cortado */
+    if (!som.paused) som.pause();
+    this.cortaFala();
     tocaEfeito('right');
     clearTimeout(this.falaT);
+    /* o 8B: a narração "6.4" */
+    if (F.trilha) this.falaT = setTimeout(() => { if (atual === 6) tocaTrilha(F.trilha); }, 250);
     if (F.fala) this.falaT = setTimeout(() => {
       if (atual !== 6) return;
-      const fala = tocaEfeito('Audios/audio_tabela_' + F.fala + '.mp3');
+      const fala = this.tocaFala('Audios/audio_tabela_' + F.fala + '.mp3');
       /* depois da 2A, a "6.3" sozinha */
       if (i === 1) fala.then(() => setTimeout(() => {
         if (atual === 6 && trilhaAtual === '6.2') tocaTrilha('6.3');
@@ -14404,11 +14500,14 @@ const EV6 = {
     this.estado = ''; this.passo = 0; this.noAr = -1;
     clearTimeout(this.falaT);
     this.calaAviso();
+    this.cortaFala();
     const m = this.mesa();
     if (!m || !this.textos) return;
+    this.foto.classList.remove('on');
+    m.classList.remove('luz6-rapida');
     const C = this.cartas();
     C.todas.concat(C.series).forEach(c => {
-      c.classList.remove('brilhoA6', 'brilhoB6', 'escuro6', 'pulsa6c', 'chama6');
+      c.classList.remove('brilhoA6', 'brilhoB6', 'escuro6', 'pulsa6c', 'chama6', 'luz6', 'cresceB6');
       clearTimeout(c._t6);
       if (c._up6){ c._up6 = false; TP.poe(c, 0, 0); c.style.removeProperty('--e-salto'); }
     });
