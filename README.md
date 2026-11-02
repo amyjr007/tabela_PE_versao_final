@@ -581,8 +581,10 @@ slide 9). Recolhidas as duas séries, ela desce de volta.
 A narração `7` (`EV7`, função do tempo): aos 1 s a faixa da coluna 3, com a
 bolinha do grupo acesa dizendo **3B** (em cima do Sc); aos 2,7 s a faixa da
 linha 6 e aos 3 s a da 7, com as bolinhas delas; aos 8 s os dois bilhetes
-crescem; aos 16 s o card **Lantanídeos**, digitado, com a seta para o bilhete
-57–71 (por cima da tabela), e aos 17 s o **Actinídeos** (por baixo). Dos 18 s
+crescem; aos 16 s o card **Lantanídeos**, digitado e sem seta, em cima da
+linha 6 (sobre o Ta), e aos 17 s o **Actinídeos**, na linha 7 (sobre o Db) —
+os lugares que o professor deixou na montagem (no palco, 366, 503 e 357, 560;
+no código, convertidos para a medida da mesa do começo). Dos 18 s
 em diante o toque nos bilhetes vale, e eles pulsam a chamar o dedo. Descida a
 série inteira, o card do nome sai em fade e volta em fade à esquerda do La (ou
 do Ac), com a seta para ele. Tocada qualquer carta de uma série já embaixo, a

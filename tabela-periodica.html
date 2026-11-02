@@ -4095,7 +4095,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v37.0';
+const VERSAO = 'v37.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16869,12 +16869,12 @@ const SERIES8 = {
    Tudo função do tempo da "7": aos 1 s a faixa da coluna 3, com a
    bolinha do grupo acesa e dizendo "3B" (em cima do Sc); aos 2,7 s a
    faixa da linha 6 e aos 3 s a da 7, com as bolinhas delas; aos 8 s os
-   dois bilhetes crescem; aos 16 s o card "Lantanídeos", digitado, com a
-   seta para o bilhete 57–71, e aos 17 s o "Actinídeos". Dos 18 s em
+   dois bilhetes crescem; aos 16 s o card "Lantanídeos", digitado, em cima
+   da linha 6, e aos 17 s o "Actinídeos", na 7. Dos 18 s em
    diante o toque nos bilhetes vale (e eles chamam o dedo). Descida a
    série inteira, o card do nome sai em fade e volta em fade à direita
-   da linha nova dela; recolhida, volta para o lugar do começo.
-   Os cards são peças na montagem (G): a seta segue o card.
+   da linha nova dela, com uma seta; recolhida, volta para o lugar do
+   começo. Os cards são peças na montagem (G): a seta segue o card.
    ============================================================ */
 const ROTULOS_7 = [
   { k:'lan', txt:'Lantanídeos', mont:'rotulo-lantanideos', de:16.0, ate:16.8 },
@@ -16913,10 +16913,12 @@ const EV7 = {
       l7:  faixa('banda-linha', TAB_ESQ - 32, yDaLinha(7) - alt/2, TAB_LARG + 64, alt)
     };
     this.eixos = { g3, p6: m.querySelector('.eixo[data-periodo="6"]'), p7: m.querySelector('.eixo[data-periodo="7"]') };
-    /* os cards dos nomes: o do começo (lantanídeos por cima, actinídeos por
-       baixo da tabela) e o da linha nova, à esquerda do La e do Ac */
+    /* os cards dos nomes: o do começo, sem seta, em cima da linha da série
+       (no lugar que o professor deixou na montagem: no palco, o Lantanídeos
+       em 366, 503 e o Actinídeos em 357, 560 — aqui, na medida da mesa do
+       começo) e o da linha nova, à esquerda do La e do Ac */
     const ini = { lan:alvoDe(57), act:alvoDe(89) };
-    const lugar = { lan:{ x:xDaColuna(5), y:yDaLinha(2.6) }, act:{ x:xDaColuna(5), y:yDaLinha(7) + PASSO } };
+    const lugar = { lan:{ x:347.4, y:529.1 }, act:{ x:337.9, y:589.8 } };
     this.rot = {};
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svg.setAttribute('class', 'setas7');
@@ -16934,8 +16936,7 @@ const EV7 = {
       const seta = () => { const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); svg.appendChild(p); return p; };
       const depois = card(R.mont + '-serie', ini[R.k].x - LADO/2 - 30, ini[R.k].y, ' esq7');
       depois.textContent = R.txt;
-      this.rot[R.k] = { antes: card(R.mont, lugar[R.k].x, lugar[R.k].y, ''), depois,
-                        setaAntes: seta(), setaDepois: seta() };
+      this.rot[R.k] = { antes: card(R.mont, lugar[R.k].x, lugar[R.k].y, ''), depois, setaDepois: seta() };
     });
   },
   /* A SETA: do card ao alvo (o bilhete; na linha nova, o último da série),
@@ -16979,8 +16980,7 @@ const EV7 = {
     ROTULOS_7.forEach(R => {
       const r = this.rot[R.k], baixo = this.desceu(R.k);
       vis[R.k] = { antes: monta || (t7 >= R.de && !baixo), depois: monta || baixo };
-      /* as setas, a cada quadro (só as que se veem) */
-      if (vis[R.k].antes) this.seta(m, r.setaAntes, r.antes, m.querySelector('.casa.serie' + (R.k === 'act' ? '.act' : ':not(.act)')));
+      /* a seta do card da linha nova, a cada quadro (só se ele se vê) */
       if (vis[R.k].depois) this.seta(m, r.setaDepois, r.depois, SERIES8.carta(m, R.k === 'act' ? 89 : 57));
     });
     const est = JSON.stringify({ col: t7 >= this.col, l6: t7 >= this.lin6, l7: t7 >= this.lin7,
@@ -16999,7 +16999,7 @@ const EV7 = {
     });
     ROTULOS_7.forEach(R => {
       const r = this.rot[R.k], v = E.vis[R.k];
-      r.antes.classList.toggle('on', v.antes); r.setaAntes.classList.toggle('on', v.antes);
+      r.antes.classList.toggle('on', v.antes);
       r.depois.classList.toggle('on', v.depois); r.setaDepois.classList.toggle('on', v.depois);
     });
   },
@@ -17011,7 +17011,7 @@ const EV7 = {
     this.mesa().querySelectorAll('.casa.serie').forEach(d => d.classList.remove('cresce7', 'chama7'));
     Object.values(this.rot).forEach(r => {
       r.antes.textContent = '';
-      [r.antes, r.depois, r.setaAntes, r.setaDepois].forEach(e => e.classList.remove('on'));
+      [r.antes, r.depois, r.setaDepois].forEach(e => e.classList.remove('on'));
     });
   }
 };
