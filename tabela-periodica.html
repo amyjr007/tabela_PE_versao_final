@@ -1845,6 +1845,9 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 .pc.mat-solido.claro .f1 :is(i,b,u,em){color:#2A2410;text-shadow:0 1px 0 rgba(255,255,255,.55)}
 .pc:is(.realce4,.realceAm).mat-solido .face{box-shadow:0 0 0 1.5px rgba(255,255,255,.7), 0 12px 26px rgba(0,0,0,.38),
   0 0 24px 5px color-mix(in srgb,var(--s) 60%,transparent)}
+/* no título do slide 7 ("Os Grupos A e B"), o A e o B nas cores da mesa dele */
+.tira .title .grupoA{color:#C39B2E}
+.tira .title .grupoB{color:#A6382F}
 /* O SLIDE 7 PINTA POR GRUPO A E B: os elementos principais (grupos 1, 2
    e 13 a 18, o hidrogênio junto) no dourado; os de transição (grupos 3
    a 12) no vermelho, e as casas das séries com eles. Só os números das
@@ -3824,6 +3827,9 @@ const SLIDES = [
 
   /* o slide 7: a mesma tabela, pintada por grupo A (dourado) e B (vermelho) */
   { title:'Os Grupos A e B',
+    /* o A no dourado dos grupos A e o B no vermelho dos de transição (as
+       cores da mesa deste slide) */
+    tituloHTML:'Os Grupos <span class="cor-titulo grupoA">A</span> e <span class="cor-titulo grupoB">B</span>',
     subtitle:'Os elementos principais' },
 
   /* o slide 8: a tabela A e B, mais acima; as séries descem ao toque */
@@ -3849,7 +3855,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v32.9';
+const VERSAO = 'v33.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4166,7 +4172,7 @@ SLIDES.forEach((sl,i) => {
       '<div class="tira">' +
         '<div class="regua" data-mont="regua" aria-label="Ir para um slide"></div>' +
         '<div class="num" data-mont="numero">'+i+'</div>' +
-        '<h2 class="title" data-mont="titulo-do-slide">'+esc(sl.title)+'</h2>' +
+        '<h2 class="title" data-mont="titulo-do-slide">'+(sl.tituloHTML || esc(sl.title))+'</h2>' +
         '<div class="subtitle'+(sl.subLongo ? ' longo' : '')+'" data-mont="subtitulo-do-slide">'+esc(sl.subtitle || '')+'</div>' +
       '</div>' +
       '<div class="body-area"></div>';
@@ -15917,17 +15923,26 @@ function animaTituloNaAbertura(i, a){
   const o = TITULO_NA_ABERTURA[i] || TITULO_NA_ABERTURA.padrao, sl = slides[i];
   if (!o || !sl) return;
   const num = sl.querySelector('.tira .num'), tit = sl.querySelector('.tira .title');
-  if (!num || !tit || tit.children.length) return;   /* editado na montagem: fica quieto */
-  const texto = tit.textContent;
+  /* editado na montagem: fica quieto (as letras coloridas do título, as
+     .cor-titulo, não contam) */
+  if (!num || !tit || [...tit.children].some(c => !c.classList.contains('cor-titulo'))) return;
+  const html = tit.innerHTML;
+  /* os pedaços do título: o texto solto e as letras coloridas, que
+     continuam coloridas enquanto são escritas */
+  const partes = [...tit.childNodes].map(n => ({ txt:n.textContent, cls:n.nodeType === 1 ? n.className : null }));
   tit.textContent = '';
   const letras = [];
-  [...texto].forEach(ch => {
-    if (!ch.trim()){ tit.append(ch); return; }
-    const s = document.createElement('span');
-    s.className = 'letra-ab';
-    s.textContent = ch;
-    tit.appendChild(s);
-    letras.push(s);
+  partes.forEach(p => {
+    let onde = tit;
+    if (p.cls){ onde = document.createElement('span'); onde.className = p.cls; tit.appendChild(onde); }
+    [...p.txt].forEach(ch => {
+      if (!ch.trim()){ onde.append(ch); return; }
+      const s = document.createElement('span');
+      s.className = 'letra-ab';
+      s.textContent = ch;
+      onde.appendChild(s);
+      letras.push(s);
+    });
   });
   /* A DIGITAÇÃO (no lugar da pulsada e das cores em sequência): o número
      aparece aos 'num' s, e as letras do título, escondidas, são escritas
@@ -15937,7 +15952,7 @@ function animaTituloNaAbertura(i, a){
   cursor.className = 'cursor-ab';
   let escritas = -1;
   const limpa = () => {
-    tit.textContent = texto;
+    tit.innerHTML = html;
     num.style.removeProperty('visibility');
   };
   (function quadro(){

@@ -477,6 +477,8 @@ grupos A — 1, 2 e 13 a 18, o hidrogênio junto — no dourado; os grupos B —
 a 12, os de transição — no vermelho, e as casas das séries (57–71, 89–103)
 também. À esquerda ficam só os números das linhas, já na bolinha índigo do
 professor (a mesma que o slide 4 mostra); os números das colunas saem.
+No título, o **A** vai no dourado dos grupos A e o **B** no vermelho dos de
+transição (`tituloHTML`, que a digitação da abertura respeita).
 Chega-se pela seta de avançar do slide 6 (ou pela navegação, "1. Início"),
 com o play à espera da narração `6` (`Audios/audio_tabela_6.mp3`, ainda por
 gravar).
