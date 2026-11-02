@@ -598,9 +598,27 @@ O ONDE guarda as séries que estão embaixo (`series8`). As casas **57–71** e
 série saem dela um a um, como cartas dadas, e voam em arco até a linha deles
 embaixo da tabela, cada um dando a volta com o som `flipcard`; tocada de
 novo, a série recolhe-se ao contrário. Chegando ao slide, as duas voltam
-escondidas. O timing da narração `7` (`Audios/audio_tabela_7.mp3`, ainda por
-gravar) virá depois: o roteiro `'7'` só terá de chamar `SERIES8.desce('lan')`
-e `SERIES8.desce('act')`.
+escondidas.
+
+A narração `7.1` (`Audios/audio_tabela_7.1.mp3`, também em `EV7`) começa
+sozinha 0,7 s depois de as duas séries assentarem embaixo; dali até aos 68 s
+dela, o toque não recolhe as séries (`EV7.podeTocar`), e se elas não
+estiverem embaixo (um salto na trilha) descem. Aos 5 s o card **Lantanídeos**
+da linha nova cresce em vermelho, aos 7 s o **Actinídeos**, e aos 10 s os
+dois voltam ao normal. No vão da tabela, em cima dos metais de transição
+(`.quadro71`, peça `texto-71` da montagem), digita dos 10 aos 12,7 s
+"Lantanídeo = Parecido com o lantânio" e, dos 13,8 aos 15,7 s, "Actinídeo =
+Parecido com o actínio" (`LINHAS_71`: cada pedaço da linha com os passos dele,
+apagar o que havia e digitar o novo). Aos 18 s o primeiro nome vira
+**Lantanoide** e aos 19 s o segundo vira **Actinoide**; aos 25,3 s a definição do primeiro vira
+**terras-raras** (até 25,8 s); "terras" cresce em vermelho aos 27 s e "raras"
+aos 34,2 s. Dos 42 aos 47 s, o véu escuro com o título **Lantanídeos =
+Terras-raras** e, embaixo, um carrossel desenhado no código: o celular, aos 43 s
+a TV e aos 44 s os fones. Aos 59 s o texto do vão sai em fade; aos 60,6 s
+cresce o card Lantanídeos e, dos 62 aos 63 s, um brilho corre a série de
+carta em carta; aos 64,3 s ele volta, os brilhos somem e cresce o
+Actinídeos, com o brilho de 65 a 66,8 s. Aos 68 s as duas séries recolhem e
+o toque volta a valer.
 
 ### Slide 9 · A Natureza dos elementos — Os naturais, os artificiais e os radioativos
 

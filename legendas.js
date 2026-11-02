@@ -665,6 +665,25 @@ var LEGENDAS = {
     [18.14,19.38,"Quer vê-los?"],
     [19.38,22.94,"Toque em cada um dos cards aí pra revelar esses elementos."]
   ],
+  "audio_tabela_7.1": [
+    [0,4.74,"Pronto. O nome dessas séries vem do elemento que inicia cada uma delas:"],
+    [4.74,8.8,"o lantânio aqui em cima e o actínio aqui embaixo."],
+    [8.8,12.4,"Aliás, lantanídeo quer dizer parecido com o lantânio"],
+    [12.4,16.26,"e actinídeo, parecido com o actínio."],
+    [16.26,21.58,"Você também pode encontrar os nomes lantanoides e actinoides, que são a mesma coisa."],
+    [21.58,26.64,"Ah, os lantanídeos também têm um apelido famoso: terras-raras."],
+    [27.02,29.78,"Terras, lembra? É como os antigos químicos"],
+    [29.78,33.72,"chamavam os pós que não mudavam no fogo, igual nos alcalinoterrosos."],
+    [33.72,37.58,"E raras porque eram difíceis de achar e de separar."],
+    [37.58,41.69,"Mas, na verdade, eles nem são tão raros e estão no seu bolso:"],
+    [41.69,45.7,"em celulares, telas, ímãs de fones de ouvido etc."],
+    [45.7,50.86,"Você sabia que o Brasil tem uma das maiores reservas de terras-raras do mundo?"],
+    [50.86,55.46,"Por isso, esses elementos têm uma enorme importância estratégica para o Brasil."],
+    [55.46,58.74,"São matéria-prima de muitas tecnologias modernas."],
+    [58.74,62.54,"Para fechar essa parte, os lantanídeos vão do 57 ao 71"],
+    [62.54,67.18,"e os actinídeos, do 89 ao 103."],
+    [67.18,70.1,"São os números que aparecem nas casas da tabela."]
+  ],
   "audio_tabela_8.0": [
     [0,2.9,"Tópico 8. Da natureza dos elementos."]
   ],
