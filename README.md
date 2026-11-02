@@ -547,7 +547,7 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | 9 | Avaliar | o balão do colega (novo): Concordo/Discordo, e depois o card do elemento para a bandeja certa; o balão ganha ✔ ou é riscado |
 | 10 | Criar | as etiquetas (8B, 8B, 8B, 1B, 2B, 9B, 10B) para os cabeçalhos vazios das colunas 8 a 12, e Pronto; acerto: a tabela inteira numerada, os do A acesos, e "Perfeito" |
 
-Nas questões de tocar um card (1, 3, 4, 5, 7), acendem a linha e a coluna do card tocado, como no quiz das coordenadas (nas 4, 5 e 7 ele também gira), e aparecem as bolinhas dos períodos e as das colunas (cada uma no topo da sua coluna, com a família na notação A/B: 1A, 2A, 3B…), com as do card acesas; a da coluna acesa sobe um pouco e fica por cima do card que cresce (quando a resposta é o do topo). Nas questões 1 e 3, as bolinhas das linhas só aparecem nesse primeiro toque.
+Na questão 1, o toque destaca o bloco inteiro do card (e não a linha e a coluna dele), e as bolinhas aparecem. Nas questões de tocar um card pela posição (3, 4, 5, 7), acendem a linha e a coluna do card tocado, como no quiz das coordenadas (nas 4, 5 e 7 ele também gira), e aparecem as bolinhas dos períodos e as das colunas (cada uma no topo da sua coluna, com a família na notação A/B: 1A, 2A, 3B…), com as do card acesas; a da coluna acesa sobe um pouco e fica por cima do card que cresce (quando a resposta é o do topo). Nas questões 1 e 3, as bolinhas das linhas só aparecem nesse primeiro toque.
 
 No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s)
 "b – Os elementos representativos" (o começo da `6.1`) e "c – Dividindo as

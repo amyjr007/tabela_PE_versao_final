@@ -1986,6 +1986,8 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
 .mesa.grupos.fundo7 .casa{opacity:.25!important;color:transparent!important}
 .mesa.grupos .pc.ficha5.cor7.cor7{--cor:var(--c5)!important}
 .mesa .pc.aperta7{scale:.95}
+/* Q1: o bloco tocado em destaque, inteiro */
+.mesa .pc.bloco7 .face{box-shadow:0 0 0 2px #fff, 0 0 18px 5px rgba(255,255,255,.55)}
 .letra7{font:800 150px/1 var(--display);z-index:30;text-shadow:0 0 18px rgba(0,0,0,.6), 0 0 4px #fff;
   animation:letra7 .6s cubic-bezier(.3,1.5,.5,1) both}
 .letra7.l7-A{color:#F0C75A}
@@ -4051,7 +4053,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v36.4';
+const VERSAO = 'v36.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14904,8 +14906,8 @@ function limpa7(Q){
   (Q.marcados || []).forEach(c => { c.classList.remove('certa3', 'frente3'); c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe'); });
   Q.marcados = [];
   m.classList.remove('cinza7', 'cor7-A', 'cor7-B', 'sem-tabela7', 'sem-linhas7', 'eixos7');
-  m.querySelectorAll('.acende7, .aperta7, .pista5, .junta7').forEach(e => {
-    e.classList.remove('acende7', 'aperta7', 'pista5', 'junta7');
+  m.querySelectorAll('.acende7, .aperta7, .pista5, .junta7, .bloco7').forEach(e => {
+    e.classList.remove('acende7', 'aperta7', 'pista5', 'junta7', 'bloco7');
     e.style.removeProperty('--atraso7'); e.style.removeProperty('--junta');
   });
   m.querySelectorAll('.ficha5, .peca5').forEach(e => e.remove());
@@ -14922,6 +14924,20 @@ const QUESTOES_7 = [
       return this.alvo === 'B' ? 'Toque no bloco dos elementos de transição.' : 'Toque no bloco dos elementos representativos.';
     },
     bloco(Q, k){ return grade7(Q).filter(c => bloco7(c) === k); },
+    /* Q1: no toque, quem se destaca é o bloco inteiro (e não a linha e a coluna
+       do card); as bolinhas dos períodos e das colunas aparecem. No erro, o
+       destaque apaga-se passado o tremor */
+    destaca(Q, els, fica){
+      const m = Q.mesa();
+      clearTimeout(Q.cruzT);
+      m.classList.remove('sem-linhas7');
+      m.classList.add('eixos7');
+      m.querySelectorAll('.bloco7').forEach(e => e.classList.remove('bloco7'));
+      els.forEach(e => e.classList.add('bloco7'));
+      if (fica) return;
+      const g = Q.g, passo = Q.passo;
+      Q.cruzT = setTimeout(() => { if (g === Q.g && passo === Q.passo && !Q.travado) els.forEach(e => e.classList.remove('bloco7')); }, 1100);
+    },
     /* a linha e a coluna do card tocado (no erro, apagam-se passado o tremor) */
     cruz(Q, c, fica){
       clearTimeout(Q.cruzT);
@@ -14933,7 +14949,7 @@ const QUESTOES_7 = [
     toca(Q, c){
       const k = bloco7(c), els = this.bloco(Q, k);
       els.forEach(e => e.classList.add('aperta7'));
-      this.cruz(Q, c, k === this.alvo);
+      this.destaca(Q, els, k === this.alvo);
       setTimeout(() => els.forEach(e => e.classList.remove('aperta7')), 600);
       if (k === this.alvo){
         /* o bloco ganha a cor da aula, e a letra grande sobre ele */
