@@ -1892,14 +1892,16 @@ body.montagem .rot6{opacity:1;pointer-events:auto}
 .mesa .pc.cresceB6 .face{box-shadow:0 0 0 2px #FF6B5E, 0 0 18px 5px rgba(230,60,50,.7)}
 /* a "6.4": o brilho dos elementos do 8B (apaga depressa aos 17,8 s); o pulso
    do 8B e da chave; a foto de Mendeleev, com o nome e o ano embaixo */
-.mesa .pc.luz6 .face{box-shadow:0 0 0 2px #FFE9A8, 0 0 20px 6px rgba(255,214,102,.9)}
+.mesa .pc.luz6 .face{box-shadow:0 0 0 3px #7CF5A8, 0 0 24px 9px rgba(46,214,113,.95)}
 .mesa.luz6-rapida .pc .face{transition-duration:.15s!important}
 .rot6.pulsa6r, .chave6.pulsa6r{animation:pulsaRot6 .8s ease-in-out}
 @keyframes pulsaRot6{50%{scale:1.35}}
-.foto5.foto6{left:400px;top:228px}
-.foto5.foto6 img{height:150px;border-width:4px;border-radius:12px}
-.foto5.foto6 figcaption{margin:6px 0 0;font-size:17px}
-.foto5.foto6 figcaption small{display:block;margin-top:2px;font-size:15px;font-weight:600;color:var(--tinta-dim)}
+/* (o lugar e o tamanho que o professor deixou na montagem: o centro em x 954,
+   y 386, a 1,62 — o tamanho já posto aqui, sem escala) */
+.foto5.foto6{left:954px;top:386px}
+.foto5.foto6 img{height:249px;border-width:5px;border-radius:16px}
+.foto5.foto6 figcaption{margin:0 0 6px;font-size:27px}
+.foto5.foto6 figcaption small{display:block;margin-top:2px;font-size:24px;font-weight:600;color:var(--tinta-dim)}
 /* o aviso do toque fora da ordem ("Comece pela família 1") */
 .aviso6{position:absolute;z-index:27;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:24px;color:#D32F2F;
@@ -3933,7 +3935,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v35.0';
+const VERSAO = 'v35.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14121,7 +14123,11 @@ const EV6 = {
   someA:25.0,
   s61:{ trocaB:0.9, acendeGA:3.0, acendeER:4.2, cresceER:[17.5, 19.0], cresceGA:[19.0, 21.0],
         pulsaA:[20.8, 21.6], acendeB:29.5, pulsaGB:[31.0, 31.8], pulsaB:[32.0, 32.8] },
-  s62:{ saiER:10.0, cresceA:[14.0, 15.0], saiMT:17.0, cresceB:[18.5, 21.0], saiGrupos:23.0, toque:20.0 },
+  /* (escB: saído "Elementos representativos", os de transição e os textos
+     vermelhos escurecem; escA: saído "Metais de Transição - ", escurecem os
+     representativos e "Grupos A", e o bloco B acende; aos 23 s, tudo aceso) */
+  s62:{ saiER:10.0, cresceA:[14.0, 15.0], saiMT:17.0, cresceB:[18.5, 21.0], saiGrupos:23.0, toque:20.0,
+        escB:[10.0, 17.0], escA:[17.0, 23.0] },
   /* a "6.3": dos 2,6 aos 5 s os grupos B crescem, com o brilho vermelho; dos 6
      aos 7 s só a família 3 cresce, brilha e sobe — sem o "3B", que só aparece
      no toque */
@@ -14252,8 +14258,9 @@ const EV6 = {
     const ft = document.createElement('figure');
     ft.className = 'foto5 foto6';
     ft.dataset.mont = 'foto-mendeleev';   /* na montagem, peça */
-    ft.innerHTML = '<img src="Imagens/Dmitri_Mendeleev.jpg" alt="Dmitri Mendeleev" draggable="false">' +
-                   '<figcaption>Dmitri Mendeleev<small>1871</small></figcaption>';
+    /* (o nome e o ano acima da foto) */
+    ft.innerHTML = '<figcaption>Dmitri Mendeleev<small>1871</small></figcaption>' +
+                   '<img src="Imagens/Dmitri_Mendeleev.jpg" alt="Dmitri Mendeleev" draggable="false">';
     m.appendChild(ft);
     this.foto = ft;
   },
@@ -14339,14 +14346,18 @@ const EV6 = {
     const est = {
       bA: dentro(t6, this.brilhoA), bB: dentro(t6, this.brilhoB), cET: dentro(t6, this.cresceET),
       semNum: t6 >= this.escuro,
-      /* os representativos: escuros dos 28 s da "6" até aos 0,9 s da "6.1" */
-      escA: t6 >= this.escuro && !(t1 >= S1.trocaB),
+      /* os representativos: escuros dos 28 s da "6" até aos 0,9 s da "6.1"; e,
+         na "6.2", dos 17 aos 23 s (saído "Metais de Transição - ") */
+      escA: (t6 >= this.escuro && !(t1 >= S1.trocaB)) || dentro(t2, this.s62.escA),
       /* "Grupos A" e "Elementos representativos" saem em fade aos 25 s da "6",
          e voltam aos 3 s e aos 4,2 s da "6.1" */
       someGA: t6 >= this.someA && !(t1 >= S1.acendeGA),
       someER: t6 >= this.someA && !(t1 >= S1.acendeER),
-      /* o bloco de transição e o texto vermelho: escuros dos 0,9 aos 29,5 s da "6.1" */
-      escB: t1 >= S1.trocaB && t1 < S1.acendeB,
+      /* o bloco de transição e o texto vermelho: escuros dos 0,9 aos 29,5 s da
+         "6.1"; e, na "6.2", dos 10 aos 17 s (saído "Elementos representativos") */
+      escB: (t1 >= S1.trocaB && t1 < S1.acendeB) || dentro(t2, this.s62.escB),
+      /* "Grupos A", escuro com os representativos na "6.2" */
+      escGA62: dentro(t2, this.s62.escA),
       metal: t6 >= this.metal && !fim6,
       cER: dentro(t1, S1.cresceER), cGA: dentro(t1, S1.cresceGA),
       pA: dentro(t1, S1.pulsaA), pGB: dentro(t1, S1.pulsaGB), pB: dentro(t1, S1.pulsaB),
@@ -14390,6 +14401,8 @@ const EV6 = {
     C.a.forEach(c => { c.classList.toggle('brilhoA6', est.bA); c.classList.toggle('escuro6', est.escA); c.classList.toggle('pulsa6c', est.pA); });
     C.b.concat(C.series).forEach(c => { c.classList.toggle('brilhoB6', est.bB); c.classList.toggle('escuro6', est.escB); c.classList.toggle('pulsa6c', est.pB); });
     Tx.mt.classList.toggle('escuro6', est.escB);
+    Tx.rt.classList.toggle('escuro6', est.escB);
+    Tx.ga.classList.toggle('escuro6', est.escGA62);
     /* o pulso do "Grupos B" (o pedaço do "Metais de Transição - Grupos B") */
     Tx.mt._p.g.classList.toggle('pulsa6', est.pGB);
     /* AS FAMÍLIAS: a no ar sobe (com mola), as outras descem; o rótulo anda com ela */
