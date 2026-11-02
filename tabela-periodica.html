@@ -1929,16 +1929,17 @@ body.montagem .aviso6:empty::before{content:'Comece pela família 1'}
 @keyframes chama6{50%{box-shadow:0 0 0 2px rgba(255,255,255,.9), 0 0 16px 4px rgba(46,214,113,.8)}}
 .mesa .pc.pulsa6c, .mesa .casa.serie.pulsa6c{animation:pulsaCarta6 .8s ease-in-out}
 @keyframes pulsaCarta6{50%{scale:1.12}}
-/* aos 28 s, os textos dos representativos escurecem com eles */
-.texto6.escuro6{opacity:.18;filter:saturate(.3)}
+/* aos 28 s da "6" (e na "6.1"), os textos que saem com o bloco somem de todo, como ele */
+.texto6.escuro6{opacity:0}
 /* na montagem, os textos à vista e a pegar o dedo */
 body.montagem .texto6{opacity:1;pointer-events:auto}
 /* o brilho enquanto se escreve: âmbar nos representativos, vermelho nos de transição */
 .mesa .pc.brilhoA6 .face{box-shadow:0 0 0 2px #F2C14E, 0 0 18px 5px rgba(242,180,40,.75)}
 .mesa .pc.brilhoB6 .face, .mesa .casa.serie.brilhoB6{box-shadow:0 0 0 2px #FF6B5E, 0 0 18px 5px rgba(230,60,50,.7)}
 .mesa[data-slide="6"] :is(.pc .face, .casa.serie){transition:box-shadow .35s ease}
-/* aos 28 s, os representativos escurecem (o filter já tem transição na carta) */
-.mesa .pc.escuro6, .mesa .casa.serie.escuro6{filter:brightness(.22) saturate(.4)}
+/* aos 28 s da "6", os representativos somem de todo (em fade), como na "6.2";
+   na "6.1", o bloco de transição, até voltar */
+.mesa .pc.escuro6, .mesa .casa.serie.escuro6{opacity:0}
 .mesa[data-slide="6"] .casa.serie{transition:box-shadow .35s ease, filter .45s ease, opacity .45s ease}
 /* no título do slide 7 ("Os Grupos A e B"), o A e o B nas cores da mesa dele */
 .tira .title .grupoA{color:#C39B2E}
@@ -3950,7 +3951,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v35.7';
+const VERSAO = 'v35.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
