@@ -526,10 +526,10 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6.8B` · 28 → 32 s | as três colunas brilham e crescem; aos 31 s pulsam a chave e o "8B" |
 | acabada a `6.8B` | o toque segue: 1B (o Cu, `6.1B`), 2B (o Zn, toca a **`6.2B`**); acabada ela, 3A … 7A (`6.3A` … `6.7A`) e o 8A (o He; a coluna 18 sobe só 12 px, para o rótulo não ficar sob o botão do carrossel), que toca a **`6.8A`**. Depois de uma família com narração, o toque só vale com ela acabada |
 | `6.2B` · 6 → 7 s | o bloco representativo da direita (13 a 18) cresce, e volta |
-| `6.8A` · 6 s | a narração pára: os números de todas as famílias brilham, dourados, saem os confetes e toca o `funfare`; acabado ele, a narração continua |
-| `6.8A` · 14,5 / 16 / 18 s | os representativos crescem; brilham (verde); aos 18 s voltam e apagam o brilho, e crescem os de transição |
-| `6.8A` · 23 → 24 s | os de transição brilham por 1 s; aos 24 s voltam ao normal |
-| `6.8A` · 31 → 41 s | os números das famílias viram algarismos romanos (IA, IIA, IIIB … VIIIB, IB, IIB, IIIA … VIIIA), transformando-se no lugar — o arábico desfoca e some enquanto o romano se forma, e a largura anda de um para o outro; aos 41 s voltam, com a mesma animação |
+| `6.8A` · 6,8 s | a narração pára: os números de todas as famílias brilham, dourados, saem os confetes e toca o `funfare`; acabado ele, a narração continua |
+| `6.8A` · 16 / 18 / 21 s | os representativos crescem; brilham (verde); aos 21 s voltam e apagam o brilho, e crescem os de transição |
+| `6.8A` · 24,9 → 26 s | os de transição brilham; aos 26 s voltam ao normal (o tamanho e o brilho) |
+| `6.8A` · 31,2 → 41 s | os números das famílias viram algarismos romanos (IA, IIA, IIIB … VIIIB, IB, IIB, IIIA … VIIIA), transformando-se no lugar — o arábico desfoca e some enquanto o romano se forma, e a largura anda de um para o outro; aos 41 s voltam, com a mesma animação |
 
 No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s)
 "b – Os elementos representativos" (o começo da `6.1`) e "c – Dividindo as

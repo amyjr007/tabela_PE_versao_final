@@ -3950,7 +3950,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v35.6';
+const VERSAO = 'v35.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -14189,14 +14189,12 @@ const EV6 = {
   },
   /* a "6.2B": aos 6 s o bloco representativo da direita (13 a 18) cresce por 1 s */
   s62B:{ maiorDir:[6.0, 7.0] },
-  /* a "6.8A": aos 6 s pára — a conquista (os números brilham, confetes e o
-     funfare) — e continua; 14,5 s crescem os representativos, 16 s brilham,
-     18 s voltam e crescem os de transição, 23 s brilham por 1 s, 24 s voltam.
-     (A narração tem 15,7 s: acabada, o relógio segue a contar, e o que vem
-     depois dos 15,7 s acontece logo a seguir) */
-  s68A:{ pausa:6.0, maiorA:[14.5, 18.0], luzA:[16.0, 18.0], maiorB:[18.0, 24.0], luzB:[23.0, 24.0],
-         /* dos 31 aos 41 s, os números das famílias em algarismos romanos */
-         romanos:[31.0, 41.0] },
+  /* a "6.8A": aos 6,8 s pára — a conquista (os números brilham, confetes e o
+     funfare) — e continua; 16 s crescem os representativos, 18 s brilham,
+     21 s voltam e crescem os de transição, 24,9 s brilham, 26 s voltam */
+  s68A:{ pausa:6.8, maiorA:[16.0, 21.0], luzA:[18.0, 21.0], maiorB:[21.0, 26.0], luzB:[24.9, 26.0],
+         /* dos 31,2 aos 41 s, os números das famílias em algarismos romanos */
+         romanos:[31.2, 41.0] },
   pausou68:false, fim68:0,
   /* o relógio da "6.8A", que segue depois do fim */
   relogio68A(t){
