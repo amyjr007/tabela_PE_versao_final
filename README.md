@@ -505,13 +505,13 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6.1` · 33 → 39 s | embaixo do "Metais de Transição - Grupos B", em vermelho: "Têm mais particularidades e muitas vezes são exceções às regras." (na `6.2`, a dourada sai com "Elementos representativos", aos 10 s, e a vermelha com "Metais de Transição - ", aos 17 s) |
 | `6.1` · 31 s / 32 s | pulsa o "Grupos B" (do "Metais de Transição - Grupos B"); pulsa o bloco de transição |
 | fim da `6.1` | o play passa a tocar a **`6.2`** |
-| `6.2` · 10 s | "Elementos representativos" sai em fade; os de transição e os textos vermelhos escurecem |
+| `6.2` · 10 s | "Elementos representativos" sai em fade; os de transição e os textos vermelhos apagam de todo (somem) |
 | `6.2` · 14 → 15 s | o "A" de "Grupos A" cresce, e volta |
-| `6.2` · 17 s | "Metais de Transição - " sai em fade (fica "Grupos B"); os representativos e "Grupos A" escurecem, e o bloco B e os textos vermelhos acendem |
+| `6.2` · 17 s | "Metais de Transição - " sai em fade (fica "Grupos B"); os representativos e "Grupos A" apagam de todo (a família 1 reaparece aos 20 s, a brilhar: é a da vez), e o bloco B e os textos vermelhos acendem |
 | `6.2` · 18,5 → 21 s | o "B" de "Grupos B" cresce, e volta |
 | `6.2` · 20 s | **o toque nas famílias** passa a valer, na ordem. Tocada outra família, ela treme em vermelho, toca o `error` e aparece o aviso "Comece pela família 1" (depois, "Agora, toque na família N", a da vez) por 3 s; e, enquanto a da vez não for tocada, ele volta de 3 em 3 s (peça `aviso-familia` na montagem) |
 | `6.2` · 23 s | "Grupos A" e "Grupos B" saem em fade, e a tabela inteira acende; o toque nas famílias, na ordem (a da vez brilha de leve): cada uma sobe 50 px com mola (a anterior desce), com o rótulo em cima ("1A", "2A"…), o `right` e a fala do nome |
-| as falas das famílias | 1A → `6.1A`, 2A → `6.2A`, 3B → `6.3B`, 4B → `6.4B`, 5B → `6.5B`, 6B → `6.6B`, 7B → `6.7B` (`FAMILIAS_AB6`) |
+| as falas das famílias | 1A → `6.1A`, 2A → `6.2A`, 3B → `6.3B`, 4B → `6.4B`, 5B → `6.5B`, 6B → `6.6B`, 7B → `6.7B`, 1B → `6.1B`, 3A → `6.3A` … 7A → `6.7A` (`FAMILIAS_AB6`) |
 | depois da 2A | toca sozinha a **`6.3`**: dos 2,6 aos 5 s os grupos B crescem, com o brilho vermelho; dos 6 aos 7 s só a família 3 cresce, brilha e sobe — sem o "3B", que só aparece quando o aluno a toca |
 | depois da `6.3` | o toque segue: 3B, 4B, 5B, 6B, 7B; e o grupo 8, que sobe com o 9 e o 10, em sequência, com uma chave em cima e o "8B", e toca a **`6.8B`** |
 | o toque certo | corta o que estiver a tocar (a narração, a fala da família anterior) |
@@ -524,13 +524,18 @@ Os eventos (`EV6`), no relógio da narração `6`:
 | `6.8B` · 15 / 16 / 16,6 s | brilha o Fe, o Co (o Fe fica) e o Ni; aos 17,8 s apagam depressa, e dos 18 aos 20 s brilham os três outra vez |
 | `6.8B` · 20 → 28 s | a foto de **Dmitri Mendeleev** (`Imagens/Dmitri_Mendeleev.jpg`), com o nome e "1871" em cima, em fade, no lugar da montagem do professor (o centro em x 954, y 386, a 1,62; peça `foto-mendeleev`) |
 | `6.8B` · 28 → 32 s | as três colunas brilham e crescem; aos 31 s pulsam a chave e o "8B" |
+| acabada a `6.8B` | o toque segue: 1B (o Cu, `6.1B`), 2B (o Zn, toca a **`6.2B`**); acabada ela, 3A … 7A (`6.3A` … `6.7A`) e o 8A (o He; a coluna 18 sobe só 12 px, para o rótulo não ficar sob o botão do carrossel), que toca a **`6.8A`**. Depois de uma família com narração, o toque só vale com ela acabada |
+| `6.2B` · 6 → 7 s | o bloco representativo da direita (13 a 18) cresce, e volta |
+| `6.8A` · 6 s | a narração pára: os números de todas as famílias brilham, dourados, saem os confetes e toca o `funfare`; acabado ele, a narração continua |
+| `6.8A` · 14,5 / 16 / 18 s | os representativos crescem; brilham (verde); aos 18 s voltam e apagam o brilho, e crescem os de transição |
+| `6.8A` · 23 → 24 s | os de transição brilham por 1 s; aos 24 s voltam ao normal (a narração tem 15,7 s: depois do fim, o relógio da cena segue a contar) |
 
 No sumário, o tópico 6 tem "a – Os elementos de transição" (a `6` aos 23 s)
 "b – Os elementos representativos" (o começo da `6.1`) e "c – Dividindo as
 famílias em A e B" (o começo da `6.2`).
 
 Os rótulos ficam à vista depois de a família descer, e descem com ela. Na
-montagem são peças (`rotulo-1A` … `rotulo-8B`). Os textos do slide também se editam lá
+montagem são peças (`rotulo-1A` … `rotulo-8A`). Os textos do slide também se editam lá
 (dois toques: o texto, "Quebrar linha", "Uma linha só"; as frases são
 `frase-representativos` e `frase-transicao`); editado, o relógio não o reescreve. Ao reabrir o app, as
 famílias já tocadas voltam (`ONDE`, `ab6`).
