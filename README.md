@@ -479,6 +479,24 @@ também. À esquerda ficam só os números das linhas, já na bolinha índigo do
 professor (a mesma que o slide 4 mostra); os números das colunas saem.
 No título, o **A** vai no dourado dos grupos A e o **B** no vermelho dos de
 transição (`tituloHTML`, que a digitação da abertura respeita).
+
+Os eventos (`EV6`), no relógio da narração `6`:
+
+| Narração · tempo | O que acontece |
+|---|---|
+| antes do play | a vida solta (cubos que saltam e giram, famílias que sobem e descem), sem a cruz das coordenadas |
+| `6` · 0 → 8 s | a vida solta continua com a narração, e cala-se aos 8 s |
+| `6` · 9,5 → 10,4 s | "Grupos A", no dourado dos representativos; enquanto se escreve, os representativos (grupos 1, 2 e 13 a 18, com o H) brilham em âmbar |
+| `6` · 10,5 → 11,4 s | "Grupos B", no vermelho dos de transição; enquanto se escreve, os de transição (3 a 12, com as casas das séries) brilham em vermelho |
+| `6` · 17,8 s / 19,8 s | "Elementos representativos", embaixo do "Grupos A"; "Elementos de Transição", embaixo do "Grupos B" |
+| `6` · 23,5 s / 24 s | pulsa "Grupos A"; pulsa "Grupos B" |
+| `6` · 32 s | os representativos escurecem, e os textos deles também |
+| `6` · 36 s | os de transição viram metal, numa onda da esquerda para a direita (o Au dourado, o Cu avermelhado, os outros prata) |
+| `6` · 38,7 → 40 s | "Metais de Transição", acima do bloco |
+
+Os textos são peças na montagem (G), à vista e inteiros lá: `grupos-a`,
+`grupos-b`, `elementos-representativos`, `elementos-de-transicao`,
+`metais-de-transicao`.
 Chega-se pela seta de avançar do slide 6 (ou pela navegação, "1. Início"),
 com o play à espera da narração `6` (`Audios/audio_tabela_6.mp3`, ainda por
 gravar).

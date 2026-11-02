@@ -120,6 +120,8 @@ const CASCA = [
   './Audios/audio_tabela_5D1.mp3',
   './Audios/audio_tabela_5E.mp3',
   './Audios/audio_tabela_5E1.mp3',
+  /* o slide 7: os grupos A e B */
+  './Audios/audio_tabela_6.mp3',
   './Imagens/humphry_davy.jpeg',
   './Imagens/cal.jpeg',
   /* as aberturas dos capítulos, uma por slide */

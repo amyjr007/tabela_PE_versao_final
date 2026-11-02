@@ -529,6 +529,20 @@ var LEGENDAS = {
   "audio_tabela_5.0": [
     [0,2.94,"Tópico 5. As principais famílias."]
   ],
+  "audio_tabela_6": [
+    [0,2.42,"A tabela periódica tem uma divisão clássica,"],
+    [2.42,6.1,"que os professores usam muito pra organizar o estudo dos elementos."],
+    [6.1,10.86,"É tipo dividir um campeonato em dois grupos, grupos A e grupos B."],
+    [10.86,13.98,"Fica mais fácil entender como cada time joga."],
+    [13.98,17.77,"Na tabela, esses dois blocos são os elementos"],
+    [17.77,21.48,"representativos e os elementos de transição."],
+    [21.48,24.8,"Também são chamados de grupos A e grupos B."],
+    [24.8,26.98,"Deixa eu te mostrar quem é quem."],
+    [27.64,31.58,"Vamos começar pelos de transição, que são mais fáceis de achar."],
+    [31.58,33.78,"São esses aqui, no meio da tabela."],
+    [33.78,40.22,"Repare que todos são metais, por isso também são chamados de metais de transição."],
+    [40.22,44.12,"Esses são os elementos dos grupos B da tabela."]
+  ],
   "audio_tabela_6.0": [
     [0,2.84,"Tópico 6. Os grupos A e B."]
   ],
