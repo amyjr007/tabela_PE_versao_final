@@ -694,6 +694,21 @@ var LEGENDAS = {
     [22.32,25.88,"Aqui, em vermelho, os de transição externa."],
     [26.44,31.3,"E aqui embaixo, os de transição interna, do jeito que aparecem na maioria das tabelas."]
   ],
+  "audio_tabela_7.3": [
+    [0,2.52,"Para encerrar esse tópico, tem só mais uma coisa."],
+    [2.52,7.9,"Sabe por que essas séries ficam todas amontoadas aqui dentro da tabela, nessas posições?"],
+    [7.9,13.52,"Primeiro, porque os elementos de cada série são muito parecidos entre si."],
+    [13.52,16.82,"Por isso, cabem todos numa casa só da tabela."],
+    [16.82,19.34,"Segundo, por praticidade."],
+    [19.34,23.52,"Se eles entrassem na tabela, ela ficaria assim, comprida demais."]
+  ],
+  "audio_tabela_7.4": [
+    [0,2.0,"É bem melhor desse outro jeito aqui, né?"],
+    [2.0,5.38,"É mais prática e esteticamente mais bonita."],
+    [5.38,6.5,"Ou assim."],
+    [6.5,11.36,"Enfim, sobre as séries dos lantanídeos e actinídeos, é isso."],
+    [11.36,14.14,"Bora fazer um quiz pra gente ver o que você aprendeu?"]
+  ],
   "audio_tabela_8.0": [
     [0,2.9,"Tópico 8. Da natureza dos elementos."]
   ],

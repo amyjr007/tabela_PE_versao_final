@@ -636,7 +636,28 @@ acesos, com o nome **Representativos** em fade, no dourado deles; aos 22,8 s
 só os de transição, com **Transição externa** no vermelho deles; aos 26,5 s
 acende tudo, as duas séries descem de uma vez e aparece **Transição interna**
 no cinza delas (`BLOCOS_72`, três peças da montagem, no meio do vão). No fim
-da 7.2 o toque volta a valer.
+da 7.2 os cards Lantanídeos e Actinídeos saem em fade (não voltam mais no
+slide), o toque volta a valer e o play passa a tocar a `7.3`.
+
+A narração `7.3` (`Audios/audio_tabela_7.3.mp3`, em `EV7`): o toque fica travado
+desde o play. As séries que estiverem embaixo voltam para dentro dos 3 aos 6 s
+(`SERIES8.sobe` com o passo esticado). Dos 5,9 aos 9 s os bilhetes cinzas crescem
+com o brilho (também quando as séries já estavam guardadas). Dos 10 aos 13 s,
+no vão, em cinza, digita "Os elementos de cada série / são muito parecidos"
+(peça `texto-73`), que sai aos 17,5 s. Aos 21,8 s a tabela abre em **32 colunas**
+(`EV7.longa`, `alvoLongo`): as séries saem dos bilhetes para a linha delas (o La
+e o Ac debaixo do Sc e do Y), os grupos 4 a 18 vão para as colunas 18 a 32, e a
+mesa encolhe para caber. No fim, "Toque na tela" (`.toque73`), com a tela
+inteira à espera do dedo.
+
+O toque toca a `7.4`: aos 0,2 s a tabela volta às 18 colunas, com as séries para
+dentro dos bilhetes. Aos 5,5 s a narração pára 1 s e segue; aos 6,7 s pára de
+novo, as duas séries descem, e ela segue quando a última carta pousa. No fim,
+o play vira o botão **Quiz** (as questões ainda vão chegar: por ora ele só avisa).
+
+No sumário do slide 8: **a – As séries dos lantanídeos e actinídeos** (a `7.1`,
+com as séries já embaixo), **b – Os elementos de transição interna** (a `7.2`) e
+**c – Quiz** (em breve).
 
 ### Slide 9 · A Natureza dos elementos — Os naturais, os artificiais e os radioativos
 

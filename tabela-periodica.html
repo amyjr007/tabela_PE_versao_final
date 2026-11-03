@@ -2222,6 +2222,19 @@ body.montagem .bloco72{pointer-events:auto}
 .mesa.series8 .casa.serie:active{transform:translate(-50%,-50%) scale(.94)}
 .mesa.series8 .casa.serie.cresce7{transform:translate(-50%,-50%) scale(1.22);z-index:14}
 .mesa.series8 .casa.serie.cresce7:active{transform:translate(-50%,-50%) scale(1.12)}
+/* A NARRAÇÃO "7.3": a tabela de 32 colunas (EV7.longa) — a mesa encolhe
+   para caber, as casas vazias e os bilhetes somem, e as cartas andam pelo
+   left/top só enquanto ela abre ou fecha (anda73) */
+.mesa.series8.longa73{--abre:.6}
+.mesa.series8.anda73{transition:transform .9s cubic-bezier(.3,.85,.3,1)}
+.mesa.series8.anda73 .pc{transition:left .9s cubic-bezier(.3,.85,.3,1), top .9s cubic-bezier(.3,.85,.3,1),
+  transform var(--tsobe,.42s) var(--e-salto), opacity .45s ease}
+.mesa.series8 .casa{transition:opacity .45s ease}
+.mesa.series8.longa73 .casa{opacity:0;pointer-events:none}
+/* o "Toque na tela" do fim dela, na tinta do slide claro, e a tela inteira à espera do dedo */
+.toque-continuar.toque73{color:var(--tinta);z-index:41}
+.pega73{position:absolute;inset:0;z-index:40;cursor:pointer;display:none}
+.pega73.on{display:block}
 
 .face i,.face b,.face u,.face em{
   position:relative;z-index:3;font-style:normal;text-decoration:none;color:#fff;
@@ -4176,7 +4189,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v37.7';
+const VERSAO = 'v37.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5452,6 +5465,8 @@ const TRILHAS = {
   '7':    'Audios/audio_tabela_7.mp3',     /* o slide 8: as séries escondidas (EV7) */
   '7.1':  'Audios/audio_tabela_7.1.mp3',   /* as duas séries embaixo: os nomes e as terras-raras (EV7) */
   '7.2':  'Audios/audio_tabela_7.2.mp3',   /* o play, depois da "7.1": a transição interna (EV7) */
+  '7.3':  'Audios/audio_tabela_7.3.mp3',   /* o play, depois da "7.2": por que as séries ficam dentro (EV7) */
+  '7.4':  'Audios/audio_tabela_7.4.mp3',   /* o toque na tela, depois da "7.3": a tabela volta, e o quiz (EV7) */
   '8':    'Audios/audio_tabela_8.mp3',     /* o slide 9: a natureza (ainda por gravar) */
   '9':    'Audios/audio_tabela_9.mp3',     /* o slide 10: a valência (ainda por gravar) */
   '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: os blocos (ainda por gravar) */
@@ -5597,6 +5612,8 @@ const ROTEIROS = {
   '7':    [],   /* o slide 8: função do tempo, em EV7 */
   '7.1':  [],   /* (também em EV7) */
   '7.2':  [],
+  '7.3':  [],
+  '7.4':  [],
   '8':    [],
   '9':    [],
   '10':   []
@@ -6113,9 +6130,12 @@ function tocaOuPara(){
   /* na tela escura à espera do toque, o botão também serve de toque */
   if (SEQ.aguardaToque){ SEQ.continua(); return; }
   if (SEQ.aguardaToque2){ SEQ.continua2(); return; }
+  if (EV7.esperaToque){ EV7.continua(); return; }
   /* o botão do jogo abre o jogo, e a fala das regras toca por cima */
   if (somBtn.classList.contains('jogo')){ estouraEsegue(entraNoJogo); return; }
   /* e o do quiz, o quiz do slide 3 */
+  /* (o do slide 8 ainda espera as questões) */
+  if (somBtn.classList.contains('botao-quiz') && atual === 7){ TP.diz('As questões deste quiz ainda vão chegar.'); return; }
   if (somBtn.classList.contains('botao-quiz')){ estouraEsegue(() => QUIZ3.abre()); return; }
   /* no quiz — e no cartão da nota, que segue pelos botões dele — e no
      jogo, nada toca, nem pela barra de espaço */
@@ -6283,6 +6303,11 @@ const SEQ = {
     else if (id === '6.1') carregaTrilha('6.2');
     /* o fim da "7.1": o play passa a tocar a "7.2" (EV7) */
     else if (id === '7.1') carregaTrilha('7.2');
+    /* o da "7.2", a "7.3"; o da "7.3" pede o toque na tela (que toca a
+       "7.4"); e o da "7.4" troca o play pelo quiz */
+    else if (id === '7.2') carregaTrilha('7.3');
+    else if (id === '7.3') EV7.pedeToque();
+    else if (id === '7.4') viraQuiz(true);
     else if (id === '4Ax' || id === '4A1') EV4.saquei4(true);
     /* o fim da "4B" (os ametais) e o da "4B1": o Saquei */
     else if (['4B', '4B1', '4B2.1', '4C', '4C2'].includes(id)) EV4.saquei4(true);
@@ -6609,6 +6634,7 @@ function efeitosDoTempo(){
   if (atual !== 4) EV4.fora();
   if (atual !== 5) EV5.fora();
   if (atual !== 6) EV6.fora();
+  if (atual !== 7) EV7.fora();
   /* o slide 3 tem os eventos dele */
   if (atual === 2){ efeitos2(t); return; }
   /* o slide 4 tem os eventos dele (a narração "3") */
@@ -16899,10 +16925,12 @@ const SERIES8 = {
       if (!junto || k === 0) tocaEfeito('flipcard');
     }, k * passo));
   },
-  sobe(qual, junto){
+  /* (passo: os ms entre uma carta e a seguinte, quando a narração pede outro) */
+  sobe(qual, junto, passo){
     const m = this.mesa();
     if (!m || !this.aberta[qual] || this.anda[qual]) return;
-    const g = this.g, o = this.origem(qual), zs = this.zs(qual).reverse(), passo = junto ? 0 : this.passo * .7;
+    const g = this.g, o = this.origem(qual), zs = this.zs(qual).reverse();
+    passo = junto ? 0 : passo || this.passo * .7;
     this.anda[qual] = true;
     this.recolhe[qual] = true;
     zs.forEach((z, k) => setTimeout(() => {
@@ -16982,7 +17010,21 @@ const ROTULOS_7 = [
   { k:'lan', txt:'Lantanídeos', mont:'rotulo-lantanideos', de:16.0, ate:16.8 },
   { k:'act', txt:'Actinídeos',  mont:'rotulo-actinideos',  de:17.0, ate:17.8 }
 ];
-const TRILHAS_7 = ['7', '7.1', '7.2'];
+const TRILHAS_7 = ['7', '7.1', '7.2', '7.3', '7.4'];
+/* A "7.3" (o play no fim da "7.2"): o que ela digita no vão, em duas linhas */
+const LINHAS_73 = [{ de:10.0, ate:11.73, txt:'Os elementos de cada série' }, { de:11.73, ate:13.0, txt:'são muito parecidos' }];
+/* A TABELA DE 32 COLUNAS (a "7.3", dos 21,8 s): as séries entram na linha
+   delas, do La (debaixo do Sc e do Y) ao Lu, e os grupos 4 a 18 vão para a
+   direita, para as colunas 18 a 32 */
+function colunaLonga(z){
+  if (ehDaSerie(z)) return 3 + z - (z >= 89 ? 89 : 57);
+  const g = posDe(z).col;
+  return g <= 3 ? g : g + 14;
+}
+function alvoLongo(z){
+  const esq = TAB_CX - (32*LADO + 31*VAO) / 2;
+  return { x: esq + (colunaLonga(z) - 1)*PASSO + LADO/2, y: yDaLinha(posDe(z).row) };
+}
 /* A "7.2" (o play no fim da "7.1"): o que ela digita no vão, em cinza, e
    os três nomes dos blocos, cada um na cor do seu */
 const LINHA_72 = [{ de:3.8, ate:5.0, txt:'Elementos de transição' }, { de:16.0, ate:16.6, txt:' interna.' }];
@@ -17054,7 +17096,11 @@ const EV7 = {
          some:59.0, nomeLan:60.6, brLan:[62.0, 63.0], nomeAct:64.3, brAct:[65.0, 66.8], fim:68.0 },
   /* os segundos da "7.2" */
   q72: { lan:1.0, act:2.2, casas:6.5, blocoB:8.0, apagaB:9.0, rep:20.0, ext:22.8, desce:26.5 },
-  estado:'', rot:null, vai71:0, t71ant:-1, t72ant:-1,
+  /* os da "7.3" (as séries voltam dos 3 aos 6 s) e os da "7.4" */
+  q73: { volta:3.0, ate:6.0, casas:5.9, normal:9.0, some:17.5, longa:21.8 },
+  q74: { fecha:0.2, pausa1:5.5, pausa2:6.7 },
+  estado:'', rot:null, vai71:0, t71ant:-1, t72ant:-1, t74ant:-1,
+  longaFeita:false, esperaToque:false, esperaDesce:false,
   mesa(){ return slides[7] && slides[7].querySelector('.mesa'); },
   /* o segundo da "7": 1e4 depois dela, -1 fora do slide */
   relogio(t){ const a = TRILHAS_7.indexOf(trilhaAtual); return a < 0 ? -1 : a > 0 ? 1e4 : t; },
@@ -17064,10 +17110,15 @@ const EV7 = {
     if (trilhaAtual === '7') return !(SERIES8.aberta.lan && SERIES8.aberta.act);
     /* a "7.2" trava o toque do play ao fim dela */
     if (trilhaAtual === '7.2') return !this.na72();
+    /* a "7.3" e a "7.4" também, até ao fim desta (a da "7.3" pede o toque na tela) */
+    if (trilhaAtual === '7.3') return !this.comecou('7.3');
+    if (trilhaAtual === '7.4') return som.ended;
     return !(trilhaAtual === '7.1' && !som.ended && tempoDaNarracao() < this.q71.fim);
   },
+  /* a trilha já tocada pelo play (a tocar, parada a meio, ou no fim) */
+  comecou(id){ return trilhaAtual === id && (som.ended || !som.paused || (som.currentTime || 0) > 0.05); },
   /* a "7.2" a tocar (já tocada pelo play e ainda não no fim) */
-  na72(){ return trilhaAtual === '7.2' && !som.ended && (!som.paused || (som.currentTime || 0) > 0.05); },
+  na72(){ return this.comecou('7.2') && !som.ended; },
   /* a série a descer ou já embaixo (e não a voltar): o card do nome salta
      para a esquerda dela assim que desce a primeira carta */
   desceu(q){ return SERIES8.aberta[q] && !SERIES8.recolhe[q]; },
@@ -17157,6 +17208,88 @@ const EV7 = {
     });
     this.blocoB = [...m.querySelectorAll('.pc')].filter(c => +c.dataset.col >= 3 && +c.dataset.col <= 12 && !ehDaSerie(+c.dataset.z));
     this.blocoB.forEach(c => c.classList.add('brilho71'));
+    /* a "7.3": as duas linhas do vão, no mesmo cinza (peça na montagem), e o
+       "Toque na tela" do fim dela, com a tela inteira à espera do dedo */
+    const q3 = document.createElement('div');
+    q3.className = 'quadro71 quadro72';
+    q3.dataset.mont = 'texto-73';
+    q3.style.left = q.style.left;
+    q3.style.top  = q.style.top;
+    q3.innerHTML = LINHAS_73.map(() => '<div class="linha71"><span></span></div>').join('');
+    m.appendChild(q3);
+    this.quadro3 = q3;
+    this.escritos3 = LINHAS_73.map(() => '');
+    slides[7].insertAdjacentHTML('beforeend',
+      '<div class="pega73" aria-hidden="true"></div><div class="toque-continuar toque73">Toque na tela</div>');
+    this.pega = slides[7].querySelector('.pega73');
+    this.toqueTxt = slides[7].querySelector('.toque73');
+    this.pega.addEventListener('click', () => this.continua());
+  },
+  /* o fim da "7.3": a tela à espera do toque (o play sai) */
+  pedeToque(){
+    if (atual !== 7) return;
+    this.prepara();
+    this.esperaToque = true;
+    this.pega.classList.add('on');
+    this.toqueTxt.classList.add('on');
+    stage.classList.add('em-toque');
+  },
+  /* tocada a tela: o pedido estoura, e toca a "7.4" */
+  continua(){
+    if (!this.esperaToque || naMontagem()) return;
+    estouraBolha(this.toqueTxt, '#7E7C8B');
+    playDepois();
+    this.tiraToque();
+    tocaTrilha('7.4');
+  },
+  tiraToque(){
+    this.esperaToque = false;
+    if (!this.pega) return;
+    this.pega.classList.remove('on');
+    this.toqueTxt.classList.remove('on');
+    stage.classList.remove('em-toque');
+  },
+  /* saindo do slide com o pedido em cena, o play volta */
+  fora(){ if (this.esperaToque) this.tiraToque(); clearTimeout(this.pausaT); this.esperaDesce = false; },
+  /* A TABELA DE 32 COLUNAS: abre (as séries saem dos bilhetes para a linha
+     delas, o resto vai para os lados, e a mesa encolhe para caber) e fecha
+     (tudo de volta, e as séries para dentro dos bilhetes). Só a ida e a
+     volta andam pelo left/top, com a transição ligada por um segundo:
+     ligada sempre, ela atrapalharia o voo em arco das séries */
+  longa(sim, ja){
+    const m = this.mesa();
+    if (!m || this.longaFeita === sim) return;
+    this.longaFeita = sim;
+    clearTimeout(this.longaT);
+    const cartas = [...m.querySelectorAll('.pc')], serie = c => ehDaSerie(+c.dataset.z);
+    const poe = (c, a) => { c.style.left = a.x.toFixed(1) + 'px'; c.style.top = a.y.toFixed(1) + 'px'; };
+    const bilhete = c => SERIES8.origem(+c.dataset.z >= 89 ? 'act' : 'lan');
+    const guarda = () => cartas.filter(serie).forEach(c => { c.classList.add('serie-oculta'); poe(c, alvoDe(+c.dataset.z)); });
+    if (ja){
+      m.classList.remove('anda73');
+      m.classList.toggle('longa73', sim);
+      cartas.forEach(c => poe(c, sim ? alvoLongo(+c.dataset.z) : alvoDe(+c.dataset.z)));
+      if (sim) cartas.filter(serie).forEach(c => c.classList.remove('serie-oculta')); else guarda();
+      return;
+    }
+    if (sim){
+      /* (as séries, se alguma estivesse embaixo, já não estão: entram na tabela) */
+      SERIES8.g++;
+      SERIES8.aberta = { lan:false, act:false }; SERIES8.anda = { lan:false, act:false }; SERIES8.recolhe = { lan:false, act:false };
+      m.classList.remove('subida');
+      cartas.filter(serie).forEach(c => {
+        c._vooG = (c._vooG || 0) + 1; c._voo = 0;
+        ['--vx', '--vy', '--tsobe'].forEach(v => c.style.removeProperty(v));
+        c.classList.remove('sobe', 'serie-oculta');
+        poe(c, bilhete(c));
+      });
+      void m.offsetWidth;       /* (vistas no bilhete antes de sair dele) */
+    }
+    m.classList.add('anda73');
+    m.classList.toggle('longa73', sim);
+    cartas.forEach(c => poe(c, sim ? alvoLongo(+c.dataset.z) : serie(c) ? bilhete(c) : alvoDe(+c.dataset.z)));
+    tocaEfeito('transition_cube');
+    this.longaT = setTimeout(() => { m.classList.remove('anda73'); if (!sim) guarda(); }, 950);
   },
   /* A SETA: do card ao alvo (o bilhete; na linha nova, o último da série),
      num arco leve, com a ponta. Medida a cada quadro: na montagem, o card anda */
@@ -17213,6 +17346,46 @@ const EV7 = {
     if (t72 >= P.desce && this.t72ant >= 0 && this.t72ant < P.desce && !monta)
       ['lan', 'act'].forEach(q => SERIES8.desce(q, true));
     this.t72ant = t72;
+    /* A "7.3" (só depois do play): as séries que estiverem embaixo voltam
+       dos 3 aos 6 s (a última sai a tempo de pousar aos 6 s), e dos 21,8 s
+       a tabela abre em 32 colunas, até aos 0,2 s da "7.4", em que fecha */
+    const S = this.q73, U = this.q74, t73 = this.comecou('7.3') ? t : -1;
+    const t74 = trilhaAtual === '7.4' ? t : -1, tocando = !som.paused && !som.ended;
+    if (t73 >= S.volta && t73 < S.longa && tocando && !monta)
+      ['lan', 'act'].forEach(q => { if (SERIES8.aberta[q] && !SERIES8.anda[q] && !SERIES8.recolhe[q])
+        SERIES8.sobe(q, false, (S.ate - S.volta - SERIES8.voo) / 14 * 1000); });
+    if (!monta) this.longa(t73 >= S.longa || (t74 >= 0 && t74 < U.fecha));
+    /* aos 5,5 s da "7.4" a narração pára 1 s; aos 6,7 s pára de novo, as
+       séries descem, e ela segue quando a última carta pousar */
+    if (t74 >= 0 && tocando && !monta && this.t74ant >= 0){
+      if (this.t74ant < U.pausa1 && t74 >= U.pausa1){
+        som.pause();
+        const em = som.currentTime;
+        clearTimeout(this.pausaT);
+        this.pausaT = setTimeout(() => {
+          if (atual === 7 && trilhaAtual === '7.4' && som.paused && Math.abs(som.currentTime - em) < 0.1) som.play().catch(avisaSeNaoTocou);
+        }, 1000);
+      }
+      else if (this.t74ant < U.pausa2 && t74 >= U.pausa2){
+        som.pause();
+        this.esperaDesce = true;
+        ['lan', 'act'].forEach(q => SERIES8.desce(q));
+      }
+    }
+    if (this.esperaDesce && !SERIES8.anda.lan && !SERIES8.anda.act){
+      this.esperaDesce = false;
+      if (atual === 7 && trilhaAtual === '7.4' && som.paused) som.play().catch(avisaSeNaoTocou);
+    }
+    this.t74ant = t74;
+    /* as duas linhas da "7.3" (na montagem, inteiras) */
+    const tq3 = monta ? 13 : t73;
+    LINHAS_73.forEach((p, j) => {
+      const s = tq3 < 0 ? '' : escrito71(tq3, [p]);
+      if (s === this.escritos3[j]) return;
+      if (s.length > this.escritos3[j].length && !monta) bate = true;
+      this.escritos3[j] = s;
+      this.quadro3.children[j].firstChild.textContent = s;
+    });
     /* a linha cinza do vão, com a barrinha a piscar até ao "interna." */
     const tq2 = monta ? 17 : t72;
     LINHA_72.forEach((p, j) => {
@@ -17245,7 +17418,8 @@ const EV7 = {
     ROTULOS_7.forEach(R => {
       const r = this.rot[R.k], baixo = this.desceu(R.k);
       /* (dos 20 aos 26,5 s da "7.2" a tabela apaga-se, e os cards com ela) */
-      const apaga = t72 >= P.rep && t72 < P.desce;
+      /* (e no fim dela saem de vez: da "7.3" em diante não voltam) */
+      const apaga = t72 >= P.rep && t72 < P.desce || TRILHAS_7.indexOf(trilhaAtual) >= 3;
       vis[R.k] = { antes: monta || (t7 >= R.de && !baixo && !apaga), depois: monta || (baixo && !apaga) };
       /* a seta do card da linha nova, a cada quadro (só se ele se vê) */
       /* (para o lugar do La e do Ac na linha nova: a carta pode ainda estar
@@ -17281,7 +17455,11 @@ const EV7 = {
       quadro2: monta || (t72 >= LINHA_72[0].de && t72 < P.rep), cursor: monta || (t72 >= LINHA_72[0].de && t72 < LINHA_72[1].ate),
       casas72: t72 >= P.casas && t72 < P.blocoB, brilhoB: t72 >= P.blocoB && t72 < P.apagaB,
       so: t72 >= P.rep && t72 < P.ext ? 'rep' : t72 >= P.ext && t72 < P.desce ? 'trans' : '',
-      blocos: BLOCOS_72.map(B => monta || (t72 >= B.de && t72 < B.ate)) });
+      /* (o "Transição interna" fica até a "7.3" começar) */
+      blocos: BLOCOS_72.map(B => monta || (t72 >= B.de && t72 < B.ate) || (B.k === 'int' && trilhaAtual === '7.3' && t73 < 0)),
+      /* a "7.3": os bilhetes crescem, com o brilho (5,9–9 s), e as duas linhas (10–17,5 s) */
+      depois72: TRILHAS_7.indexOf(trilhaAtual) >= 3, c73: t73 >= S.casas && t73 < S.normal,
+      quadro3: monta || (t73 >= LINHAS_73[0].de && t73 < S.some) });
     if (est === this.estado) return;
     this.estado = est;
     const E = JSON.parse(est), F = this.faixas, X = this.eixos;
@@ -17292,10 +17470,12 @@ const EV7 = {
     m.querySelectorAll('.casa.serie').forEach(d => {
       const q = d.classList.contains('act') ? 'act' : 'lan';
       /* (na "7.2", só dos 6,5 aos 8 s; e sem chamar o dedo, que o toque está travado) */
-      d.classList.toggle('cresce7', E.na72 ? E.casas72 : E.cresce && !E.ab[q]);
+      /* (da "7.3" em diante, só dos 5,9 aos 9 s dela) */
+      d.classList.toggle('cresce7', E.na72 ? E.casas72 : E.depois72 ? E.c73 : E.cresce && !E.ab[q]);
       d.classList.toggle('chama7', E.toque && !E.ab[q] && E.livre);
-      d.classList.toggle('acende71', E.brilhoB);
+      d.classList.toggle('acende71', E.brilhoB || E.c73);
     });
+    this.quadro3.classList.toggle('on', E.quadro3);
     this.blocoB.forEach(c => c.classList.toggle('acende71', E.brilhoB));
     m.classList.toggle('so-rep72', E.so === 'rep');
     m.classList.toggle('so-trans72', E.so === 'trans');
@@ -17325,8 +17505,15 @@ const EV7 = {
   },
   zera(){
     this.estado = '';
-    clearTimeout(this.vai71); this.vai71 = 0; this.t71ant = -1; this.t72ant = -1;
+    clearTimeout(this.vai71); this.vai71 = 0; this.t71ant = -1; this.t72ant = -1; this.t74ant = -1;
+    clearTimeout(this.pausaT); this.esperaDesce = false;
     if (!this.rot) return;
+    /* a "7.3" e a "7.4": a tabela de volta às 18 colunas, já, sem pedido de toque */
+    this.longa(false, true);
+    this.tiraToque();
+    this.escritos3 = LINHAS_73.map(() => '');
+    this.quadro3.querySelectorAll('span').forEach(s => s.textContent = '');
+    this.quadro3.classList.remove('on');
     this.escritos2 = ['', ''];
     this.quadro2.querySelectorAll('span').forEach(s => s.textContent = '');
     this.quadro2.classList.remove('on', 'digitando72');
@@ -20429,6 +20616,15 @@ const NAV_TOPICOS = [
   /* ---- o slide 8 · Os Lantanídeos e Actinídeos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:7,
     entra(){ /* o recomeço do slide já é o tópico */ } },
+  /* (as duas séries já embaixo, sem o voo, e a mesa já em cima) */
+  { titulo:'As séries dos lantanídeos e actinídeos', sub:'o começo da 7.1', slide:7,
+    entra(v, g){ depoisDaMesa(g, () => { SERIES8.abreJa({ lan:true, act:true }); tocaDesde('7.1', 0, g); }); } },
+  /* (as séries guardadas, como no fim da "7.1") */
+  { titulo:'Os elementos de transição interna', sub:'o começo da 7.2', slide:7,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('7.2', 0, g)); } },
+  /* (as questões ainda vão chegar: por ora, "em breve") */
+  { titulo:'Quiz', sub:'o quiz do slide 8, à espera das questões', slide:7, engatilhado:true,
+    entra(){} },
   /* ---- o slide 9 · A Natureza dos elementos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:8,
     entra(){ /* o recomeço do slide já é o tópico */ } },
