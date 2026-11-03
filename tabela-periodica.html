@@ -2663,6 +2663,19 @@ body.montagem .bloco72{pointer-events:auto}
 .mesa.lisa .pc.cor5 .face :is(i,u,em){color:rgba(255,255,255,.86)}
 /* a onda colorida do slide 9 (EV8): a cor da família de cada um */
 .mesa.lisa .pc.onda-cor{--c5:var(--cor)}
+/* a "8.2": os naturais em verde e os artificiais em azul (os mesmos das
+   frases da tela escura), e quem cresce passa por cima dos vizinhos */
+.mesa.lisa .pc.cor82 .face{background:linear-gradient(145deg,color-mix(in srgb,var(--c82) 80%,#fff),color-mix(in srgb,var(--c82) 86%,#000));
+  border-color:rgba(255,255,255,.3);transition:background .3s ease}
+.mesa.lisa .pc.cor82 .face b{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+.mesa.lisa .pc.cor82 .face :is(i,u,em){color:rgba(255,255,255,.88)}
+.mesa.lisa .pc.nat82{--c82:#2FA866}
+.mesa.lisa .pc.art82{--c82:#3B8EDB}
+.mesa.lisa .pc.cresce82{--onda:1.4!important;z-index:8}
+/* (os 26 artificiais juntos crescem menos, para não se cobrirem) */
+.mesa.lisa .pc.cresce82.juntos82{--onda:1.2!important}
+.quadro82 .nat82{color:#1F9D55}
+.quadro82 .art82{color:#2F7FD0}
 .pc.boia5{animation:boia5 2.6s ease-in-out infinite;animation-delay:var(--atr5,0s)}
 /* no quiz, os nomes e a cena da 5A1 saem */
 .slide.quiz5 :is(.nome5,.origem5,.foto5){opacity:0!important;pointer-events:none!important}
@@ -4205,7 +4218,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v38.4';
+const VERSAO = 'v38.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5486,6 +5499,7 @@ const TRILHAS = {
   '7.4':  'Audios/audio_tabela_7.4.mp3',   /* o toque na tela, depois da "7.3": a tabela volta, e o quiz (EV7) */
   '8':    'Audios/audio_tabela_8.mp3',     /* o slide 9: a natureza — os naturais (EV8) */
   '8.1':  'Audios/audio_tabela_8.1.mp3',   /* o toque na tela escura: os artificiais (EV8) */
+  '8.2':  'Audios/audio_tabela_8.2.mp3',   /* o toque no fim da "8.1": do 1 ao 92, e do 93 em diante (EV8) */
   '9':    'Audios/audio_tabela_9.mp3',     /* o slide 10: a valência (ainda por gravar) */
   '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: os blocos (ainda por gravar) */
 };
@@ -5634,6 +5648,7 @@ const ROTEIROS = {
   '7.4':  [],
   '8':    [],   /* o slide 9: função do tempo, em EV8 */
   '8.1':  [],
+  '8.2':  [],
   '9':    [],
   '10':   []
 };
@@ -17581,6 +17596,17 @@ const APAGA_81 = 0.4;
 const FRASE_81 = { de:0.4, ate:4.8, antes:'Já os elementos produzidos em laboratórios são chamados de “',
                    verde:'elementos artificiais', depois:'”.', cor:'azul8' };
 const ONDA_8 = { de:7.5, ate:10.0, dura:0.6, cresce:0.45, brilho:0.75, suja:false };
+/* A "8.2" (o toque no fim da "8.1"): o Tc e o Pm crescem em azul; os
+   naturais (do H ao U, menos os dois) ficam verdes, um a um; os
+   artificiais (do 93 ao 118) ficam azuis, um a um; e as duas linhas no
+   vão da tabela, cada uma na cor dela */
+const Q82 = { tc:0.9, pm:2.7, nat:[4.7, 6.0], volta:10.2, art:[13.0, 16.0], juntos:18.0, normal:25.5 };
+const NATURAIS_82 = Array.from({ length:92 }, (_, i) => i + 1).filter(z => z !== 43 && z !== 61);
+const ARTIFICIAIS_82 = Array.from({ length:26 }, (_, i) => i + 93);
+const LINHAS_82 = [
+  { de:6.5,  ate:8.0,  txt:'Do 1 ao 92 – elementos naturais', cor:'nat82' },
+  { de:13.0, ate:16.0, txt:'Do 93 em diante – artificiais',   cor:'art82' }
+];
 const EV8 = {
   vidaAte:15.0, pausa:18.7, veuDe:20.0, dispensou:false, n:'', estado:'', t8ant:-1,
   /* a frase da trilha, e o segundo em que o pedido de toque aparece */
@@ -17595,15 +17621,64 @@ const EV8 = {
     this.cursor = this.veu.querySelector('.cursor');
     this.toque = this.veu.querySelector('.toque-continuar');
     this.veu.addEventListener('click', () => this.continua());
+    /* as duas linhas da "8.2", no vão da tabela (peça na montagem) */
+    const m = slides[8].querySelector('.mesa');
+    const q = document.createElement('div');
+    q.className = 'quadro71 quadro82';
+    q.dataset.mont = 'texto-82';
+    q.style.left = (xDaColuna(3) - LADO/2 + 24).toFixed(1) + 'px';
+    q.style.top  = (yDaLinha(1) - LADO/2 + 8).toFixed(1) + 'px';
+    q.innerHTML = LINHAS_82.map(L => '<div class="linha71 ' + L.cor + '"></div>').join('');
+    m.appendChild(q);
+    this.quadro = q;
+    this.escritos = LINHAS_82.map(() => '');
+    this.cartas = z => m.querySelector('.pc[data-z="' + z + '"]');
+  },
+  /* A "8.2", função do tempo dela */
+  tick82(t){
+    const monta = naMontagem(), t82 = trilhaAtual === '8.2' ? t : -1;
+    /* as linhas, letra a letra (na montagem, inteiras) */
+    const tq = monta ? 20 : t82;
+    let bate = false;
+    LINHAS_82.forEach((L, j) => {
+      const s = tq < 0 ? '' : escrito71(tq, [L]);
+      if (s === this.escritos[j]) return;
+      if (s.length > this.escritos[j].length && !monta) bate = true;
+      this.escritos[j] = s;
+      this.quadro.children[j].textContent = s;
+    });
+    if (bate) TECLAS.bate();
+    /* quantos da fila já mudaram de cor, de ate0 a ate1 */
+    const fila = (de, ate, n) => t82 < de ? 0 : Math.min(n, Math.floor((t82 - de) / ((ate - de) / (n - 1))) + 1);
+    const est = JSON.stringify({
+      tc: t82 >= Q82.tc, pm: t82 >= Q82.pm, grTc: t82 >= Q82.tc && t82 < Q82.volta, grPm: t82 >= Q82.pm && t82 < Q82.volta,
+      nat: fila(Q82.nat[0], Q82.nat[1], NATURAIS_82.length), grU: t82 >= Q82.volta && t82 < Q82.juntos,
+      art: fila(Q82.art[0], Q82.art[1], ARTIFICIAIS_82.length), juntos: t82 >= Q82.juntos && t82 < Q82.normal,
+      quadro: monta || t82 >= LINHAS_82[0].de });
+    if (est === this.estado82) return;
+    this.estado82 = est;
+    const E = JSON.parse(est);
+    const poe = (z, cor, grande) => {
+      const c = this.cartas(z);
+      c.classList.toggle('cor82', !!cor);
+      c.classList.toggle('nat82', cor === 'nat');
+      c.classList.toggle('art82', cor === 'art');
+      c.classList.toggle('cresce82', !!grande);
+    };
+    NATURAIS_82.forEach((z, k) => poe(z, k < E.nat ? 'nat' : '', z === 92 && E.grU));
+    poe(43, E.tc ? 'art' : '', E.grTc);
+    poe(61, E.pm ? 'art' : '', E.grPm);
+    ARTIFICIAIS_82.forEach((z, k) => { poe(z, k < E.art ? 'art' : '', E.juntos); this.cartas(z).classList.toggle('juntos82', E.juntos); });
+    this.quadro.classList.toggle('on', E.quadro);
   },
   /* a tela escura à espera do toque (do fim da digitação, até ele) */
   esperaToque(){ const F = this.frase(); return atual === 8 && !!F && !this.dispensou && tempoDaNarracao() >= F.ate; },
-  /* o toque no fim da "8" toca a "8.1"; o do fim da "8.1", por ora, desfaz a tela escura */
+  /* o toque no fim da "8" toca a "8.1"; o do fim da "8.1", a "8.2" (e a tela clareia) */
   continua(){
     if (!this.esperaToque() || naMontagem()) return;
     estouraBolha(this.toque, '#F4F2F8');
     playDepois();
-    if (trilhaAtual === '8') tocaTrilha('8.1'); else this.dispensou = true;
+    tocaTrilha(trilhaAtual === '8' ? '8.1' : '8.2');
   },
   /* a frase F com n letras escritas (o termo colorido é o pedaço do meio) */
   escreve(F, n){
@@ -17637,6 +17712,7 @@ const EV8 = {
       }, 2000);
     }
     this.t8ant = t8;
+    this.tick82(t);
     /* a frase, letra a letra; na "8.1", antes, a dos naturais apaga-se */
     const F = this.frase() || FRASE_8, len = f => (f.antes + f.verde + f.depois).length;
     if (de81 && t < APAGA_81) this.escreve(FRASE_8, Math.round((1 - Math.max(0, t) / APAGA_81) * len(FRASE_8)));
@@ -17652,7 +17728,7 @@ const EV8 = {
     stage.classList.toggle('em-toque', pede);
   },
   /* chegar ao slide: a tela clara, a frase por escrever */
-  zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.t8ant = -1; clearTimeout(this.pausaT); if (this.veu) this.tick(-1); },
+  zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.estado82 = ''; this.t8ant = -1; clearTimeout(this.pausaT); if (this.veu) this.tick(-1); },
   /* saindo do slide com o pedido em cena, o play volta */
   fora(){ clearTimeout(this.pausaT); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
 };

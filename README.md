@@ -683,8 +683,17 @@ acabada a digitação, "Toque na tela" (o play sai). O toque toca a `8.1`
 (`Audios/audio_tabela_8.1.mp3`, 5 s): a tela continua escura, a frase dos
 naturais apaga-se (0–0,4 s) e digita-se "Já os elementos produzidos em
 laboratórios são chamados de “elementos artificiais”." (`FRASE_81`, o termo em
-azul), até aos 4,8 s; aí, "Toque na tela" de novo — que, por ora, só desfaz a
-tela escura. As cores da natureza (o verde dos naturais até o urânio, o âmbar do
+azul), até aos 4,8 s; aí, "Toque na tela" de novo.
+
+O toque toca a `8.2` (`Audios/audio_tabela_8.2.mp3`, 60 s, em `EV8.tick82`, os
+segundos em `Q82`) e a tela clareia. Aos 0,9 s o Tc e aos 2,7 s o Pm crescem
+em azul; dos 4,7 aos 6 s os naturais ficam verdes, um a um, do H ao U (menos
+os dois); dos 6,5 aos 8 s digita no vão "Do 1 ao 92 – elementos naturais", em
+verde; aos 10,2 s o Tc e o Pm voltam ao tamanho (ficam azuis) e cresce o U;
+dos 13 aos 16 s os artificiais do 93 ao 118 ficam azuis, um a um, e digita
+"Do 93 em diante – artificiais", em azul (`LINHAS_82`, peça `texto-82`); aos
+18 s o U volta e os 26 artificiais crescem juntos (a 1,2), até aos 25,5 s. As
+cores ficam até ao fim. As cores da natureza (o verde dos naturais até o urânio, o âmbar do
 Tc e do Pm, o brilho dos artificiais, os estáveis e os radioativos) ficam
 para depois.
 

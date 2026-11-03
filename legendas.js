@@ -718,6 +718,21 @@ var LEGENDAS = {
   "audio_tabela_8.1": [
     [0,4.82,"Já os produzidos em laboratório são chamados de elementos artificiais."]
   ],
+  "audio_tabela_8.2": [
+    [0,4.22,"Com exceção do tecnécio, 43, e do promécio, 61,"],
+    [4.22,8.64,"do hidrogênio até o urânio, todos os elementos são naturais."],
+    [8.64,16.24,"Ora, se o urânio é o último natural, do elemento 93 em diante, todos são artificiais."],
+    [16.24,22.66,"Ou seja, todos esses foram criados artificialmente por cientistas dentro de laboratórios,"],
+    [22.66,24.78,"não são encontrados na natureza."],
+    [24.78,26.48,"Só mais um detalhe."],
+    [26.94,30.94,"Deu pra ver que praticamente todos os artificiais estão depois do urânio?"],
+    [30.94,37.66,"Então, por causa disso, eles são chamados de transurânicos, que quer dizer depois do urânio."],
+    [37.66,43.96,"Entretanto, o tecnécio e o promécio aqui estão antes do urânio, fugindo à regra geral."],
+    [43.96,50.2,"Por causa disso, eles são chamados de elementos cisurânicos, que quer dizer antes do urânio."],
+    [50.2,55.08,"Resumindo: cisurânicos, artificiais antes do urânio."],
+    [55.7,58.7,"Transurânicos, artificiais depois do urânio."],
+    [58.7,59.4,"Sacou?"]
+  ],
   "audio_tabela_8.0": [
     [0,2.9,"Tópico 8. Da natureza dos elementos."]
   ],

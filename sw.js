@@ -138,6 +138,7 @@ const CASCA = [
   /* o slide 9: a natureza dos elementos */
   './Audios/audio_tabela_8.mp3',
   './Audios/audio_tabela_8.1.mp3',
+  './Audios/audio_tabela_8.2.mp3',
   './Imagens/humphry_davy.jpeg',
   './Imagens/cal.jpeg',
   './Imagens/Dmitri_Mendeleev.jpg',
