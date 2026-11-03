@@ -668,7 +668,8 @@ séries entram no `TP.todos()`: a vida solta e as ondas passam por elas também.
 Chega-se pela seta de avançar do slide 8 (ou pela navegação, "1. Início"),
 com o play à espera da narração `8` (`Audios/audio_tabela_8.mp3`, 25,7 s: os
 elementos naturais e os artificiais, em `EV8`). Até aos 15 s dela a vida solta
-da tabela (os pulinhos, as famílias, a cruz) continua; aos 20 s a tela escurece
+da tabela (os pulinhos, as famílias, a cruz) continua; aos 18,7 s a narração
+pára 2 s e segue (`EV8.pausa`); aos 20 s a tela escurece
 e, até aos 25 s, digita no meio "Todo elemento que conseguimos encontrar no nosso
 planeta são chamados de “elementos naturais”." (`FRASE_8`, o termo em verde);
 acabada a digitação, "Toque na tela" (o play sai). O toque toca a `8.1`

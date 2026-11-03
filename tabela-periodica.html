@@ -4200,7 +4200,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v38.1';
+const VERSAO = 'v38.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17573,7 +17573,7 @@ const APAGA_81 = 0.4;
 const FRASE_81 = { de:0.4, ate:4.8, antes:'Já os elementos produzidos em laboratórios são chamados de “',
                    verde:'elementos artificiais', depois:'”.', cor:'azul8' };
 const EV8 = {
-  vidaAte:15.0, veuDe:20.0, dispensou:false, n:'', estado:'',
+  vidaAte:15.0, pausa:18.7, veuDe:20.0, dispensou:false, n:'', estado:'', t8ant:-1,
   /* a frase da trilha, e o segundo em que o pedido de toque aparece */
   frase(){ return trilhaAtual === '8' ? FRASE_8 : trilhaAtual === '8.1' ? FRASE_81 : null; },
   prepara(){
@@ -17615,6 +17615,17 @@ const EV8 = {
     const de8 = trilhaAtual === '8', de81 = trilhaAtual === '8.1';
     /* a vida solta cala-se aos 15 s */
     if (VIDA.ligada && de8 && t >= this.vidaAte && !som.paused) VIDA.desliga();
+    /* aos 18,7 s a narração pára 2 s e segue */
+    const t8 = de8 ? t : -1;
+    if (t8 >= 0 && this.t8ant >= 0 && this.t8ant < this.pausa && t8 >= this.pausa && !som.paused && !som.ended && !naMontagem()){
+      som.pause();
+      const em = som.currentTime;
+      clearTimeout(this.pausaT);
+      this.pausaT = setTimeout(() => {
+        if (atual === 8 && trilhaAtual === '8' && som.paused && Math.abs(som.currentTime - em) < 0.1) som.play().catch(avisaSeNaoTocou);
+      }, 2000);
+    }
+    this.t8ant = t8;
     /* a frase, letra a letra; na "8.1", antes, a dos naturais apaga-se */
     const F = this.frase() || FRASE_8, len = f => (f.antes + f.verde + f.depois).length;
     if (de81 && t < APAGA_81) this.escreve(FRASE_8, Math.round((1 - Math.max(0, t) / APAGA_81) * len(FRASE_8)));
@@ -17630,9 +17641,9 @@ const EV8 = {
     stage.classList.toggle('em-toque', pede);
   },
   /* chegar ao slide: a tela clara, a frase por escrever */
-  zera(){ this.dispensou = false; this.n = ''; this.estado = ''; if (this.veu) this.tick(-1); },
+  zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.t8ant = -1; clearTimeout(this.pausaT); if (this.veu) this.tick(-1); },
   /* saindo do slide com o pedido em cena, o play volta */
-  fora(){ if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
+  fora(){ clearTimeout(this.pausaT); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
 };
 window.EV8 = EV8;
 
