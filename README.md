@@ -666,8 +666,8 @@ já à vista nas linhas delas embaixo (`comSeries`, `.mesa.natureza`, na mesma
 medida do slide 8), com as casas e o "↓" nos bilhetes 57–71 e 89–103. Aqui as
 séries entram no `TP.todos()`: a vida solta e as ondas passam por elas também.
 Chega-se pela seta de avançar do slide 8 (ou pela navegação, "1. Início"),
-com o play à espera da narração `8` (`Audios/audio_tabela_8.mp3`, ainda por
-gravar). As cores da natureza (o verde dos naturais até o urânio, o âmbar do
+com o play à espera da narração `8` (`Audios/audio_tabela_8.mp3`, 25,7 s: os
+elementos naturais e os artificiais; os eventos dela ainda vão chegar). As cores da natureza (o verde dos naturais até o urânio, o âmbar do
 Tc e do Pm, o brilho dos artificiais, os estáveis e os radioativos) ficam
 para depois.
 

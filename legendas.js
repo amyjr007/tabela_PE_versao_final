@@ -709,6 +709,12 @@ var LEGENDAS = {
     [6.5,11.36,"Enfim, sobre as séries dos lantanídeos e actinídeos, é isso."],
     [11.36,14.14,"Bora fazer um quiz pra gente ver o que você aprendeu?"]
   ],
+  "audio_tabela_8": [
+    [0,5.88,"Você sabia que nem todos os elementos químicos da tabela periódica são encontrados prontos na natureza?"],
+    [5.88,15.84,"Pois é! Dos 118 elementos conhecidos, vários só existem porque foram produzidos artificialmente por cientistas dentro de laboratórios."],
+    [15.84,18.16,"Vamos entender como isso funciona?"],
+    [18.16,25.44,"Certo! Todo elemento que conseguimos encontrar no nosso planeta são chamados de elementos naturais."]
+  ],
   "audio_tabela_8.0": [
     [0,2.9,"Tópico 8. Da natureza dos elementos."]
   ],
