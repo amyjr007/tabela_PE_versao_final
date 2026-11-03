@@ -661,6 +661,10 @@ com as séries já embaixo), **b – Os elementos de transição interna** (a `7
 
 ### Slide 9 · A Natureza dos elementos — Os naturais, os artificiais e os radioativos
 
+A mesa fica, no tópico inteiro, no lugar que o professor deixou na montagem
+(`{ el:'tabela', x:-5, y:42, esc:0.94 }`: `--px`/`--py` da `.mesa[data-slide="8"]`,
+fora do celular, que tem a medida dele).
+
 A base da cena do app do professor: o **tabuleiro liso**, com as duas séries
 já à vista nas linhas delas embaixo (`comSeries`, `.mesa.natureza`, na mesma
 medida do slide 8), com as casas e o "↓" nos bilhetes 57–71 e 89–103. Aqui as

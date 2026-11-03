@@ -545,6 +545,9 @@ text.sim{font-family:var(--display);font-weight:700;font-size:4.1px;text-anchor:
    que o professor deixou na montagem: 3 px para a direita, 14 px para
    baixo, a 0,97. Fora do celular, que tem a medida dele (AJUSTE). */
 html:not(.celular) .mesa[data-slide="3"]{--px:3px;--py:14px;--zoom:.97}
+/* e a do slide 9 (A natureza dos elementos), durante o tópico inteiro:
+   5 px para a esquerda, 42 px para baixo, a 0,94 (a medida das séries) */
+html:not(.celular) .mesa[data-slide="8"]{--px:-5px;--py:42px;--zoom:.94}
 /* A TABELA ABERTA (LC25): as cartas andam para as linhas ou para as
    colunas, os números vão junto, e a mesa encolhe um fio para caber */
 /* "São 7 linhas" / "São 18 colunas", na tabela aberta pelo toque (LC25.conta) */
@@ -4200,7 +4203,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v38.2';
+const VERSAO = 'v38.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
