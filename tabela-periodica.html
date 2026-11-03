@@ -2581,7 +2581,7 @@ body.montagem .bloco72{pointer-events:auto}
 .veu.pede-toque{cursor:pointer}
 /* o slide 9, aos 20 s da "8": a frase dos elementos naturais no meio da
    tela escura, com o termo em verde, e o "Toque na tela" embaixo dela */
-.veu-natureza .frase8{width:1000px;margin:0;text-align:center;
+.veu-natureza .frase8{width:1000px;margin:0;text-align:center;text-wrap:balance;
   font-family:var(--display);font-weight:600;font-size:46px;line-height:1.25;letter-spacing:-.015em;color:#F4F2F8}
 .veu-natureza .frase8 b{font-weight:700;color:#4ADE80;white-space:nowrap}
 /* (na "8.1", os elementos artificiais no azul) */
@@ -2674,6 +2674,12 @@ body.montagem .bloco72{pointer-events:auto}
 .mesa.lisa .pc.cresce82{--onda:1.4!important;z-index:8}
 /* (os 26 artificiais juntos crescem menos, para não se cobrirem) */
 .mesa.lisa .pc.cresce82.juntos82{--onda:1.2!important}
+/* os azuis crescidos brilham — o Tc e o Pm em azul, os 26 juntos em
+   vermelho —, numa camada que só muda de opacidade */
+.mesa.lisa .pc.cor82::after{content:'';position:absolute;inset:-2px;border-radius:5px;pointer-events:none;
+  box-shadow:0 0 0 3px #7CC4FF, 0 0 20px 6px rgba(59,142,219,.7);opacity:0;transition:opacity .35s ease}
+.mesa.lisa .pc.cor82.juntos82::after{box-shadow:0 0 0 3px #FF6B5E, 0 0 18px 6px rgba(230,60,50,.65)}
+.mesa.lisa .pc.art82.cresce82::after{opacity:1}
 .quadro82 .nat82{color:#1F9D55}
 .quadro82 .art82{color:#2F7FD0}
 .pc.boia5{animation:boia5 2.6s ease-in-out infinite;animation-delay:var(--atr5,0s)}
@@ -4218,7 +4224,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v38.5';
+const VERSAO = 'v38.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17588,13 +17594,13 @@ window.EV7 = EV7;
    digita no meio a frase dos elementos naturais, com o termo em verde;
    acabada a digitação, "Toque na tela". Tudo função do tempo da "8".
    ============================================================ */
-const FRASE_8 = { de:20.0, ate:25.0, antes:'Todo elemento que conseguimos encontrar no nosso planeta são chamados de “',
-                  verde:'elementos naturais', depois:'”.', cor:'verde8' };
+const FRASE_8 = { de:20.0, ate:25.0, antes:'Os elementos encontrados na natureza são ',
+                  verde:'naturais', depois:'.', cor:'verde8' };
 /* a "8.1" (o toque na tela escura): apaga a frase dos naturais (0–0,4 s) e
    digita a dos artificiais (0,4–4,8 s), com o termo no azul */
 const APAGA_81 = 0.4;
-const FRASE_81 = { de:0.4, ate:4.8, antes:'Já os elementos produzidos em laboratórios são chamados de “',
-                   verde:'elementos artificiais', depois:'”.', cor:'azul8' };
+const FRASE_81 = { de:0.4, ate:4.8, antes:'Os que são produzidos em laboratórios são ',
+                   verde:'artificiais', depois:'.', cor:'azul8' };
 const ONDA_8 = { de:7.5, ate:10.0, dura:0.6, cresce:0.45, brilho:0.75, suja:false };
 /* A "8.2" (o toque no fim da "8.1"): o Tc e o Pm crescem em azul; os
    naturais (do H ao U, menos os dois) ficam verdes, um a um; os
@@ -17608,7 +17614,7 @@ const LINHAS_82 = [
   { de:13.0, ate:16.0, txt:'Do 93 em diante – artificiais',   cor:'art82' }
 ];
 const EV8 = {
-  vidaAte:15.0, pausa:18.7, veuDe:20.0, dispensou:false, n:'', estado:'', t8ant:-1,
+  vidaAte:15.0, pausa:18.7, /* (de 1,5 s) */ veuDe:20.0, dispensou:false, n:'', estado:'', t8ant:-1,
   /* a frase da trilha, e o segundo em que o pedido de toque aparece */
   frase(){ return trilhaAtual === '8' ? FRASE_8 : trilhaAtual === '8.1' ? FRASE_81 : null; },
   prepara(){
@@ -17709,7 +17715,7 @@ const EV8 = {
       clearTimeout(this.pausaT);
       this.pausaT = setTimeout(() => {
         if (atual === 8 && trilhaAtual === '8' && som.paused && Math.abs(som.currentTime - em) < 0.1) som.play().catch(avisaSeNaoTocou);
-      }, 2000);
+      }, 1500);
     }
     this.t8ant = t8;
     this.tick82(t);
