@@ -2676,6 +2676,7 @@ body.montagem .bloco72{pointer-events:auto}
 .mesa.lisa .pc.cresce82{--onda:1.4!important;z-index:8}
 /* (os 26 artificiais juntos crescem menos, para não se cobrirem) */
 .mesa.lisa .pc.cresce82.juntos82{--onda:1.2!important}
+.mesa.lisa .pc.cresce82:is([data-z="43"],[data-z="61"]){z-index:9}
 /* os azuis crescidos brilham — o Tc e o Pm em azul, os 26 juntos em
    vermelho —, numa camada que só muda de opacidade */
 .mesa.lisa .pc.cor82::after{content:'';position:absolute;inset:-2px;border-radius:5px;pointer-events:none;
@@ -4226,7 +4227,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v38.8';
+const VERSAO = 'v38.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17681,9 +17682,11 @@ const EV8 = {
       c.classList.toggle('cresce82', !!grande);
     };
     NATURAIS_82.forEach((z, k) => poe(z, k < E.nat ? 'nat' : '', z === 92 && E.grU));
-    poe(43, E.tc ? 'art' : '', E.grTc);
-    poe(61, E.pm ? 'art' : '', E.grPm);
-    ARTIFICIAIS_82.forEach((z, k) => { poe(z, k < E.art ? 'art' : '', E.juntos); this.cartas(z).classList.toggle('juntos82', E.juntos); });
+    /* (aos 18 s o Tc e o Pm crescem junto com os 26, com o mesmo brilho vermelho) */
+    poe(43, E.tc ? 'art' : '', E.grTc || E.juntos);
+    poe(61, E.pm ? 'art' : '', E.grPm || E.juntos);
+    ARTIFICIAIS_82.forEach((z, k) => poe(z, k < E.art ? 'art' : '', E.juntos));
+    [43, 61, ...ARTIFICIAIS_82].forEach(z => this.cartas(z).classList.toggle('juntos82', E.juntos));
     this.quadro.classList.toggle('on', E.quadro);
   },
   /* a tela escura à espera do toque (do fim da digitação, até ele) */

@@ -693,7 +693,7 @@ os dois); dos 6,5 aos 8 s digita no vão "Do 1 ao 92 – elementos naturais", em
 verde; aos 10,2 s o Tc e o Pm voltam ao tamanho (ficam azuis) e cresce o U;
 dos 13 aos 16 s os artificiais do 93 ao 118 ficam azuis, um a um, e digita
 "Do 93 em diante – artificiais", em azul (`LINHAS_82`, peça `texto-82`); aos
-18 s o U volta e os 26 artificiais crescem juntos (a 1,2), com um brilho vermelho, até aos 25,5 s (o Tc e o
+18 s o U volta e os 26 artificiais crescem juntos (a 1,2), com um brilho vermelho, e o Tc e o Pm com eles, até aos 25,5 s (o Tc e o
 Pm, crescidos, brilham em azul). As
 cores ficam até ao fim. As cores da natureza (o verde dos naturais até o urânio, o âmbar do
 Tc e do Pm, o brilho dos artificiais, os estáveis e os radioativos) ficam
