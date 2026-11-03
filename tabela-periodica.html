@@ -2576,6 +2576,15 @@ body.montagem .bloco72{pointer-events:auto}
 .veu:not(.veu-moseley) .toque-continuar{left:641px;top:490px;bottom:auto;transform:translate(-50%,-50%)}
 @keyframes respira{0%,100%{opacity:.4} 50%{opacity:1}}
 .veu.pede-toque{cursor:pointer}
+/* o slide 9, aos 20 s da "8": a frase dos elementos naturais no meio da
+   tela escura, com o termo em verde, e o "Toque na tela" embaixo dela */
+.veu-natureza .frase8{width:1000px;margin:0;text-align:center;
+  font-family:var(--display);font-weight:600;font-size:46px;line-height:1.25;letter-spacing:-.015em;color:#F4F2F8}
+.veu-natureza .frase8 b{font-weight:700;color:#4ADE80;white-space:nowrap}
+.veu-natureza .frase8 .cursor{display:inline-block;width:4px;height:.9em;margin-left:6px;vertical-align:-.1em;
+  background:var(--ouro-luz);border-radius:1px}
+.veu-natureza .frase8 .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+.veu.veu-natureza .toque-continuar{top:530px}
 
 /* ---- o slide 3 ---- */
 /* o brilho verde que atravessa a tabela aos 14 s: uma lavagem verde por
@@ -4189,7 +4198,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v37.9';
+const VERSAO = 'v38.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4542,7 +4551,8 @@ function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
 function recomecaMesa(i, semPouso){
   if (i === 1) SEQ.reinicia();
   else if (temMesa(i)){ SEQ.comecou = false; if (i === 2) SEQ.reinicia2(); if (i === 3) EV3.zera();
-                        if (i === 4) EV4.zera(); if (i === 5) EV5.zera(); if (i === 6) EV6.zera(); if (i === 7){ SERIES8.zera(); EV7.zera(); } }
+                        if (i === 4) EV4.zera(); if (i === 5) EV5.zera(); if (i === 6) EV6.zera(); if (i === 7){ SERIES8.zera(); EV7.zera(); }
+                        if (i === 8) EV8.zera(); }
   else return;
   if (semPouso) TP.reinicia(); else pousaTabela();
   setTimeout(() => VIDA.liga(), 1500);
@@ -6131,6 +6141,7 @@ function tocaOuPara(){
   if (SEQ.aguardaToque){ SEQ.continua(); return; }
   if (SEQ.aguardaToque2){ SEQ.continua2(); return; }
   if (EV7.esperaToque){ EV7.continua(); return; }
+  if (EV8.esperaToque()){ EV8.continua(); return; }
   /* o botão do jogo abre o jogo, e a fala das regras toca por cima */
   if (somBtn.classList.contains('jogo')){ estouraEsegue(entraNoJogo); return; }
   /* e o do quiz, o quiz do slide 3 */
@@ -6635,6 +6646,7 @@ function efeitosDoTempo(){
   if (atual !== 5) EV5.fora();
   if (atual !== 6) EV6.fora();
   if (atual !== 7) EV7.fora();
+  if (atual !== 8) EV8.fora();
   /* o slide 3 tem os eventos dele */
   if (atual === 2){ efeitos2(t); return; }
   /* o slide 4 tem os eventos dele (a narração "3") */
@@ -6647,6 +6659,8 @@ function efeitosDoTempo(){
   if (atual === 6){ EV6.tick(t); return; }
   /* e o slide 8 (a narração "7") */
   if (atual === 7){ EV7.tick(t); return; }
+  /* e o slide 9 (a narração "8") */
+  if (atual === 8){ EV8.tick(t); return; }
   if (atual !== 1 || !veu) return;
 
   /* a tela escura é da trilha "1", dos 14,8 s em diante — e continua
@@ -7196,6 +7210,8 @@ function vidaSegueNa2(){
   if (atual === 3) return trilhaAtual === '3' && (som.currentTime || 0) < EV3.vidaAte;
   /* e no slide 7, até aos 8 s da narração "6" (EV6 cala-a lá) */
   if (atual === 6) return trilhaAtual === '6' && (som.currentTime || 0) < EV6.vidaAte;
+  /* e no slide 9, até aos 15 s da narração "8" (EV8 cala-a lá) */
+  if (atual === 8) return trilhaAtual === '8' && (som.currentTime || 0) < EV8.vidaAte;
   return atual === 2 && trilhaAtual === '2' && (som.currentTime || 0) < VIDA_ATE_2;
 }
 /* 'cauda' é quantas colunas o brilho leva a apagar-se atrás da frente */
@@ -17537,6 +17553,70 @@ const EV7 = {
   }
 };
 window.EV7 = EV7;
+
+/* ============================================================
+   SLIDE 9 · A NARRAÇÃO "8" (EV8)
+   Até aos 15 s a vida solta da tabela (os pulinhos, as famílias, a cruz)
+   continua com a narração; aos 20 s a tela escurece e, até aos 25 s,
+   digita no meio a frase dos elementos naturais, com o termo em verde;
+   acabada a digitação, "Toque na tela". Tudo função do tempo da "8".
+   ============================================================ */
+const FRASE_8 = { de:20.0, ate:25.0, antes:'Todo elemento que conseguimos encontrar no nosso planeta são chamados de “',
+                  verde:'elementos naturais', depois:'”.' };
+const EV8 = {
+  vidaAte:15.0, veuDe:20.0, dispensou:false, n:-1, estado:'',
+  prepara(){
+    if (this.veu || !slides[8]) return;
+    slides[8].insertAdjacentHTML('beforeend',
+      '<div class="veu veu-natureza" aria-live="polite"><p class="frase8"><span></span><b></b><span></span><i class="cursor"></i></p>' +
+      '<div class="toque-continuar">Toque na tela</div></div>');
+    this.veu = slides[8].querySelector('.veu-natureza');
+    this.partes = this.veu.querySelectorAll('.frase8 span, .frase8 b');
+    this.cursor = this.veu.querySelector('.cursor');
+    this.toque = this.veu.querySelector('.toque-continuar');
+    this.veu.addEventListener('click', () => this.continua());
+  },
+  /* a tela escura à espera do toque (dos 25 s, até ele) */
+  esperaToque(){ return atual === 8 && trilhaAtual === '8' && !this.dispensou && tempoDaNarracao() >= FRASE_8.ate; },
+  continua(){
+    if (!this.esperaToque() || naMontagem()) return;
+    this.dispensou = true;
+    estouraBolha(this.toque, '#F4F2F8');
+    playDepois();
+  },
+  tick(t){
+    this.prepara();
+    if (!this.veu) return;
+    const de8 = trilhaAtual === '8';
+    /* a vida solta cala-se aos 15 s */
+    if (VIDA.ligada && de8 && t >= this.vidaAte && !som.paused) VIDA.desliga();
+    /* a frase, letra a letra (o verde é o pedaço do meio) */
+    const F = FRASE_8, tudo = F.antes + F.verde + F.depois;
+    const n = !de8 || t < F.de ? 0 : Math.round(Math.min(1, (t - F.de) / (F.ate - F.de)) * tudo.length);
+    if (n !== this.n){
+      if (n > Math.max(0, this.n)) TECLAS.bate();
+      this.n = n;
+      const a = F.antes.length, v = a + F.verde.length;
+      this.partes[0].textContent = F.antes.slice(0, n);
+      this.partes[1].textContent = F.verde.slice(0, Math.max(0, n - a));
+      this.partes[2].textContent = F.depois.slice(0, Math.max(0, n - v));
+    }
+    const veu = de8 && t >= this.veuDe && !this.dispensou, pede = veu && t >= F.ate;
+    const est = veu + '|' + pede;
+    if (est === this.estado) return;
+    this.estado = est;
+    this.veu.classList.toggle('on', veu);
+    this.veu.classList.toggle('pede-toque', pede);
+    this.toque.classList.toggle('on', pede);
+    this.cursor.classList.toggle('pisca', pede);
+    stage.classList.toggle('em-toque', pede);
+  },
+  /* chegar ao slide: a tela clara, a frase por escrever */
+  zera(){ this.dispensou = false; this.n = -1; this.estado = ''; if (this.veu) this.tick(-1); },
+  /* saindo do slide com o pedido em cena, o play volta */
+  fora(){ if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
+};
+window.EV8 = EV8;
 
 /* A COR NEUTRA de quem está fora do lugar: um cinza morno que escurece
    devagar com o número atômico (o do professor). A cor da família volta

@@ -667,7 +667,12 @@ medida do slide 8), com as casas e o "↓" nos bilhetes 57–71 e 89–103. Aqui
 séries entram no `TP.todos()`: a vida solta e as ondas passam por elas também.
 Chega-se pela seta de avançar do slide 8 (ou pela navegação, "1. Início"),
 com o play à espera da narração `8` (`Audios/audio_tabela_8.mp3`, 25,7 s: os
-elementos naturais e os artificiais; os eventos dela ainda vão chegar). As cores da natureza (o verde dos naturais até o urânio, o âmbar do
+elementos naturais e os artificiais, em `EV8`). Até aos 15 s dela a vida solta
+da tabela (os pulinhos, as famílias, a cruz) continua; aos 20 s a tela escurece
+e, até aos 25 s, digita no meio "Todo elemento que conseguimos encontrar no nosso
+planeta são chamados de “elementos naturais”." (`FRASE_8`, o termo em verde);
+acabada a digitação, "Toque na tela" (o play sai). O toque, por ora, só desfaz
+a tela escura. As cores da natureza (o verde dos naturais até o urânio, o âmbar do
 Tc e do Pm, o brilho dos artificiais, os estáveis e os radioativos) ficam
 para depois.
 
