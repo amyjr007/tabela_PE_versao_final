@@ -4226,7 +4226,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v38.7';
+const VERSAO = 'v38.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6353,8 +6353,11 @@ const SEQ = {
     else if (id === '7.2') carregaTrilha('7.3');
     else if (id === '7.3') EV7.pedeToque();
     else if (id === '7.4') viraQuiz(true);
-    /* o fim da "8.2.0": a "8.2", sem esperar o play (EV8) */
-    else if (id === '8.2.0'){ if (atual === 8) tocaTrilha('8.2'); }
+    /* o fim da "8.2.0": 1,5 s depois, a "8.2", sem esperar o play (EV8) */
+    else if (id === '8.2.0'){
+      clearTimeout(EV8.vai82);
+      EV8.vai82 = setTimeout(() => { if (atual === 8 && trilhaAtual === '8.2.0') tocaTrilha('8.2'); }, 1500);
+    }
     else if (id === '4Ax' || id === '4A1') EV4.saquei4(true);
     /* o fim da "4B" (os ametais) e o da "4B1": o Saquei */
     else if (['4B', '4B1', '4B2.1', '4C', '4C2'].includes(id)) EV4.saquei4(true);
@@ -17725,8 +17728,8 @@ const EV8 = {
       }, 1500);
     }
     this.t8ant = t8;
-    /* durante a "8.2.0" o play fica fora */
-    stage.classList.toggle('sem-play8', atual === 8 && trilhaAtual === '8.2.0' && !som.ended);
+    /* durante a "8.2.0" (e no 1,5 s depois dela) o play fica fora */
+    stage.classList.toggle('sem-play8', atual === 8 && trilhaAtual === '8.2.0');
     this.tick82(t);
     /* a frase, letra a letra; na "8.1", antes, a dos naturais apaga-se */
     const F = this.frase() || FRASE_8, len = f => (f.antes + f.verde + f.depois).length;
@@ -17745,7 +17748,7 @@ const EV8 = {
   /* chegar ao slide: a tela clara, a frase por escrever */
   zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.estado82 = ''; this.t8ant = -1; clearTimeout(this.pausaT); if (this.veu) this.tick(-1); },
   /* saindo do slide com o pedido em cena, o play volta */
-  fora(){ clearTimeout(this.pausaT); stage.classList.remove('sem-play8'); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
+  fora(){ clearTimeout(this.pausaT); clearTimeout(this.vai82); stage.classList.remove('sem-play8'); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
 };
 window.EV8 = EV8;
 
