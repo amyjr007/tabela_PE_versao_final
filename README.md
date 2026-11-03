@@ -671,8 +671,12 @@ elementos naturais e os artificiais, em `EV8`). Até aos 15 s dela a vida solta
 da tabela (os pulinhos, as famílias, a cruz) continua; aos 20 s a tela escurece
 e, até aos 25 s, digita no meio "Todo elemento que conseguimos encontrar no nosso
 planeta são chamados de “elementos naturais”." (`FRASE_8`, o termo em verde);
-acabada a digitação, "Toque na tela" (o play sai). O toque, por ora, só desfaz
-a tela escura. As cores da natureza (o verde dos naturais até o urânio, o âmbar do
+acabada a digitação, "Toque na tela" (o play sai). O toque toca a `8.1`
+(`Audios/audio_tabela_8.1.mp3`, 5 s): a tela continua escura, a frase dos
+naturais apaga-se (0–0,4 s) e digita-se "Já os elementos produzidos em
+laboratórios são chamados de “elementos artificiais”." (`FRASE_81`, o termo em
+azul), até aos 4,8 s; aí, "Toque na tela" de novo — que, por ora, só desfaz a
+tela escura. As cores da natureza (o verde dos naturais até o urânio, o âmbar do
 Tc e do Pm, o brilho dos artificiais, os estáveis e os radioativos) ficam
 para depois.
 

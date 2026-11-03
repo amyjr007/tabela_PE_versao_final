@@ -715,6 +715,9 @@ var LEGENDAS = {
     [15.84,18.16,"Vamos entender como isso funciona?"],
     [18.16,25.44,"Certo! Todo elemento que conseguimos encontrar no nosso planeta são chamados de elementos naturais."]
   ],
+  "audio_tabela_8.1": [
+    [0,4.82,"Já os produzidos em laboratório são chamados de elementos artificiais."]
+  ],
   "audio_tabela_8.0": [
     [0,2.9,"Tópico 8. Da natureza dos elementos."]
   ],
