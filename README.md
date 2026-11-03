@@ -684,8 +684,10 @@ acabada a digitação, "Toque na tela" (o play sai). O toque toca a `8.1`
 naturais apaga-se (0–0,4 s) e digita-se "Os que são produzidos em
 laboratórios são artificiais." (`FRASE_81`, o termo em azul), até aos 4,8 s; aí, "Toque na tela" de novo.
 
-O toque toca a `8.2` (`Audios/audio_tabela_8.2.mp3`, 60 s, em `EV8.tick82`, os
-segundos em `Q82`) e a tela clareia. Aos 0,9 s o Tc e aos 2,7 s o Pm crescem
+O toque toca a `8.2.0` (`Audios/audio_tabela_8.2.0.mp3`, 3,5 s, "agora vamos
+pra tabela"): a tela clareia e o play fica fora (`#stage.sem-play8`); acabada
+ela, a `8.2` (`Audios/audio_tabela_8.2.mp3`, 60 s, em `EV8.tick82`, os
+segundos em `Q82`) toca sozinha. Aos 0,9 s o Tc e aos 2,7 s o Pm crescem
 em azul; dos 4,7 aos 6 s os naturais ficam verdes, um a um, do H ao U (menos
 os dois); dos 6,5 aos 8 s digita no vão "Do 1 ao 92 – elementos naturais", em
 verde; aos 10,2 s o Tc e o Pm voltam ao tamanho (ficam azuis) e cresce o U;

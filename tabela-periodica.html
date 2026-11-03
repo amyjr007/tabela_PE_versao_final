@@ -2460,6 +2460,8 @@ body.montagem .bloco72{pointer-events:auto}
 #stage.em-escolha #vel{display:none!important}
 /* e com a tela escura também: ali o que faz a aula seguir é o toque na tela */
 #stage.tela-escura #som, #stage.tela-escura #som-dica, #stage.tela-escura #vel{display:none!important}
+/* e na fala curta da "8.2.0", que passa sozinha à "8.2" (EV8) */
+#stage.sem-play8 #som, #stage.sem-play8 #som-dica, #stage.sem-play8 #vel{display:none!important}
 
 /* ---- o cartão da nota, no fim do quiz ---- */
 .nota-card{
@@ -4224,7 +4226,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v38.6';
+const VERSAO = 'v38.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5505,7 +5507,8 @@ const TRILHAS = {
   '7.4':  'Audios/audio_tabela_7.4.mp3',   /* o toque na tela, depois da "7.3": a tabela volta, e o quiz (EV7) */
   '8':    'Audios/audio_tabela_8.mp3',     /* o slide 9: a natureza — os naturais (EV8) */
   '8.1':  'Audios/audio_tabela_8.1.mp3',   /* o toque na tela escura: os artificiais (EV8) */
-  '8.2':  'Audios/audio_tabela_8.2.mp3',   /* o toque no fim da "8.1": do 1 ao 92, e do 93 em diante (EV8) */
+  '8.2.0':'Audios/audio_tabela_8.2.0.mp3', /* o toque no fim da "8.1": "vamos para a tabela", sem play (EV8) */
+  '8.2':  'Audios/audio_tabela_8.2.mp3',  /* o toque no fim da "8.1": do 1 ao 92, e do 93 em diante (EV8) */
   '9':    'Audios/audio_tabela_9.mp3',     /* o slide 10: a valência (ainda por gravar) */
   '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: os blocos (ainda por gravar) */
 };
@@ -5654,6 +5657,7 @@ const ROTEIROS = {
   '7.4':  [],
   '8':    [],   /* o slide 9: função do tempo, em EV8 */
   '8.1':  [],
+  '8.2.0':[],
   '8.2':  [],
   '9':    [],
   '10':   []
@@ -6349,6 +6353,8 @@ const SEQ = {
     else if (id === '7.2') carregaTrilha('7.3');
     else if (id === '7.3') EV7.pedeToque();
     else if (id === '7.4') viraQuiz(true);
+    /* o fim da "8.2.0": a "8.2", sem esperar o play (EV8) */
+    else if (id === '8.2.0'){ if (atual === 8) tocaTrilha('8.2'); }
     else if (id === '4Ax' || id === '4A1') EV4.saquei4(true);
     /* o fim da "4B" (os ametais) e o da "4B1": o Saquei */
     else if (['4B', '4B1', '4B2.1', '4C', '4C2'].includes(id)) EV4.saquei4(true);
@@ -17679,12 +17685,13 @@ const EV8 = {
   },
   /* a tela escura à espera do toque (do fim da digitação, até ele) */
   esperaToque(){ const F = this.frase(); return atual === 8 && !!F && !this.dispensou && tempoDaNarracao() >= F.ate; },
-  /* o toque no fim da "8" toca a "8.1"; o do fim da "8.1", a "8.2" (e a tela clareia) */
+  /* o toque no fim da "8" toca a "8.1"; o do fim da "8.1", a "8.2.0" (a tela
+     clareia, sem o play), que ao acabar passa sozinha à "8.2" */
   continua(){
     if (!this.esperaToque() || naMontagem()) return;
     estouraBolha(this.toque, '#F4F2F8');
     playDepois();
-    tocaTrilha(trilhaAtual === '8' ? '8.1' : '8.2');
+    tocaTrilha(trilhaAtual === '8' ? '8.1' : '8.2.0');
   },
   /* a frase F com n letras escritas (o termo colorido é o pedaço do meio) */
   escreve(F, n){
@@ -17718,6 +17725,8 @@ const EV8 = {
       }, 1500);
     }
     this.t8ant = t8;
+    /* durante a "8.2.0" o play fica fora */
+    stage.classList.toggle('sem-play8', atual === 8 && trilhaAtual === '8.2.0' && !som.ended);
     this.tick82(t);
     /* a frase, letra a letra; na "8.1", antes, a dos naturais apaga-se */
     const F = this.frase() || FRASE_8, len = f => (f.antes + f.verde + f.depois).length;
@@ -17736,7 +17745,7 @@ const EV8 = {
   /* chegar ao slide: a tela clara, a frase por escrever */
   zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.estado82 = ''; this.t8ant = -1; clearTimeout(this.pausaT); if (this.veu) this.tick(-1); },
   /* saindo do slide com o pedido em cena, o play volta */
-  fora(){ clearTimeout(this.pausaT); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
+  fora(){ clearTimeout(this.pausaT); stage.classList.remove('sem-play8'); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
 };
 window.EV8 = EV8;
 
