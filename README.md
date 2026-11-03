@@ -672,12 +672,10 @@ séries entram no `TP.todos()`: a vida solta e as ondas passam por elas também.
 Chega-se pela seta de avançar do slide 8 (ou pela navegação, "1. Início"),
 com o play à espera da narração `8` (`Audios/audio_tabela_8.mp3`, 25,7 s: os
 elementos naturais e os artificiais, em `EV8`). Até aos 15 s dela a vida solta
-da tabela (os pulinhos e as famílias; a cruz das coordenadas não entra neste
-slide) continua. Dos 7,8 aos 13 s passa a onda da `1.1` (`ONDA_8`,
-`ondaDaNatureza`, coluna a coluna) e, no alto dela, cada card ganha a cor da
-natureza: os naturais (até o U, menos o Tc e o Pm) no verde e os artificiais no
-azul das frases da tela escura (`.nat8`, `.art8`), cores que ficam pelo resto
-do tópico. Aos 18,7 s a narração
+da tabela (os pulinhos, as famílias, a cruz) continua; dos 7,5 aos 10 s passa
+a onda dos 118 da `1.1` (`ondaDos118` com `ONDA_8`), da esquerda para a
+direita, e cada elemento acende na cor da família dele enquanto ela passa
+(`.onda-cor`, sobre o `cor5` da mesa lisa); aos 18,7 s a narração
 pára 2 s e segue (`EV8.pausa`); aos 20 s a tela escurece
 e, até aos 25 s, digita no meio "Todo elemento que conseguimos encontrar no nosso
 planeta são chamados de “elementos naturais”." (`FRASE_8`, o termo em verde);

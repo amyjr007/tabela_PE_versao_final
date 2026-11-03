@@ -2590,14 +2590,6 @@ body.montagem .bloco72{pointer-events:auto}
   background:var(--ouro-luz);border-radius:1px}
 .veu-natureza .frase8 .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
 .veu.veu-natureza .toque-continuar{top:530px}
-/* a onda da "8" (7,8–13 s): os naturais no verde e os artificiais no azul
-   das frases, por cima do lilás do tabuleiro liso */
-.mesa.lisa .pc.nat8{--c8:#4ADE80}
-.mesa.lisa .pc.art8{--c8:#5BB8FF}
-.mesa.lisa .pc:is(.nat8,.art8) .face{background:linear-gradient(145deg,var(--c8),color-mix(in srgb,var(--c8) 72%,#000));
-  border-color:rgba(255,255,255,.3)}
-.mesa.lisa .pc:is(.nat8,.art8) .face b{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.45)}
-.mesa.lisa .pc:is(.nat8,.art8) .face :is(i,u,em){color:rgba(255,255,255,.92);text-shadow:0 1px 2px rgba(0,0,0,.4)}
 
 /* ---- o slide 3 ---- */
 /* o brilho verde que atravessa a tabela aos 14 s: uma lavagem verde por
@@ -2669,6 +2661,8 @@ body.montagem .bloco72{pointer-events:auto}
   border-color:rgba(255,255,255,.3)}
 .mesa.lisa .pc.cor5 .face b{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
 .mesa.lisa .pc.cor5 .face :is(i,u,em){color:rgba(255,255,255,.86)}
+/* a onda colorida do slide 9 (EV8): a cor da família de cada um */
+.mesa.lisa .pc.onda-cor{--c5:var(--cor)}
 .pc.boia5{animation:boia5 2.6s ease-in-out infinite;animation-delay:var(--atr5,0s)}
 /* no quiz, os nomes e a cena da 5A1 saem */
 .slide.quiz5 :is(.nome5,.origem5,.foto5){opacity:0!important;pointer-events:none!important}
@@ -5265,9 +5259,8 @@ const VIDA = {
     this.ligada = true;
     this.marcaCubo(700);
     this.marcaFamilia(1300);
-    /* nos slides 6 e 7, sem a cruz das coordenadas; e no 9 também (ela
-       apagava a tabela e escondia as cores da onda da natureza) */
-    if (atual !== 5 && atual !== 6 && atual !== 8) this.marcaCruz(5200);
+    /* nos slides 6 e 7, sem a cruz das coordenadas */
+    if (atual !== 5 && atual !== 6) this.marcaCruz(5200);
   },
   desliga(){
     /* a cruz só é apagada se era dela (a vida estava ligada): a da
@@ -6787,8 +6780,9 @@ function ondaDasFamilias(t){
    atravessa a tabela da esquerda para a direita, com uma pequena
    descida em cada coluna, de cima para baixo. */
 const ONDA_118 = { de:5.1, ate:7.0, dura:0.5, cresce:0.45, brilho:0.75, suja:false };
-function ondaDos118(t){
-  const o = ONDA_118;
+/* (a mesma onda, noutra trilha: o; cor, na mesa lisa, acende a cor da
+   família de cada elemento enquanto ela passa por ele — o slide 9) */
+function ondaDos118(t, o = ONDA_118, cor){
   const dentro = t >= o.de && t <= o.ate + 0.1;
   if (!dentro && !o.suja) return;
   const passo = (o.ate - o.de - o.dura - 8*0.02) / 17;
@@ -6796,6 +6790,7 @@ function ondaDos118(t){
     if (!dentro){
       c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe');
       c.style.removeProperty('filter'); c.classList.remove('sobe');
+      if (cor) c.classList.remove('cor5', 'onda-cor');
       return;
     }
     const atraso = (+c.dataset.col - 1)*passo + (+c.dataset.linha - 1)*0.02;
@@ -6806,6 +6801,7 @@ function ondaDos118(t){
     if (k > 0) c.style.filter = 'brightness(' + (1 + o.brilho*k).toFixed(3) + ')';
     else c.style.removeProperty('filter');
     c.classList.toggle('sobe', k > .05);
+    if (cor){ c.classList.toggle('cor5', k > .05); c.classList.toggle('onda-cor', k > .05); }
   });
   o.suja = dentro;
 }
@@ -17584,44 +17580,7 @@ const FRASE_8 = { de:20.0, ate:25.0, antes:'Todo elemento que conseguimos encont
 const APAGA_81 = 0.4;
 const FRASE_81 = { de:0.4, ate:4.8, antes:'Já os elementos produzidos em laboratórios são chamados de “',
                    verde:'elementos artificiais', depois:'”.', cor:'azul8' };
-/* A ONDA DA NATUREZA (a "8", dos 7,8 aos 13 s): a mesma onda da "1.1" (o
-   card cresce e acende ao passar, coluna a coluna), e cada card troca de
-   cor no alto dela — os naturais no verde, os artificiais no azul das
-   frases da tela escura — e fica assim pelo resto do tópico. Naturais: até
-   o urânio (92), menos o tecnécio (43) e o promécio (61) */
-/* (o brilho é menor que o da "1.1": no lilás do tabuleiro, o de lá deixava o card branco) */
-const ONDA_8 = { de:7.8, ate:13.0, dura:0.5, cresce:0.45, brilho:0.2, suja:false };
-const ehNatural = z => z <= 92 && z !== 43 && z !== 61;
-function ondaDaNatureza(t){
-  const o = ONDA_8, aqui = trilhaAtual === '8' || trilhaAtual === '8.1';
-  /* (na "8.1" a onda já passou: as cores ficam) */
-  const tt = trilhaAtual === '8.1' ? 1e4 : aqui ? t : -1;
-  const dentro = tt >= o.de && tt <= o.ate + 0.1;
-  const passo = (o.ate - o.de - o.dura - 8*0.02) / 17;
-  if (!dentro && !o.suja && o.pintou === (tt > o.ate)) return;
-  o.pintou = tt > o.ate;
-  TP.todos().forEach(c => {
-    const atraso = (+c.dataset.col - 1)*passo + (Math.min(7, +c.dataset.linha) - 1)*0.02;
-    const p = (tt - o.de - atraso) / o.dura;
-    const k = dentro && p > 0 && p < 1 ? Math.sin(Math.PI*p) : 0;
-    /* a cor, no alto da onda (e para trás dela) */
-    const cor = tt < 0 ? '' : p >= .5 ? (ehNatural(+c.dataset.z) ? 'nat8' : 'art8') : '';
-    if (c._c8 !== cor){
-      c.classList.remove('nat8', 'art8');
-      if (cor) c.classList.add(cor);
-      c._c8 = cor;
-    }
-    if (!dentro){
-      if (o.suja){ c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe'); c.style.removeProperty('filter'); }
-      return;
-    }
-    c.style.setProperty('--tsobe', '90ms');
-    c.style.setProperty('--onda', (1 + o.cresce*k).toFixed(3));
-    if (k > 0) c.style.filter = 'brightness(' + (1 + o.brilho*k).toFixed(3) + ')';
-    else c.style.removeProperty('filter');
-  });
-  o.suja = dentro;
-}
+const ONDA_8 = { de:7.5, ate:10.0, dura:0.6, cresce:0.45, brilho:0.75, suja:false };
 const EV8 = {
   vidaAte:15.0, pausa:18.7, veuDe:20.0, dispensou:false, n:'', estado:'', t8ant:-1,
   /* a frase da trilha, e o segundo em que o pedido de toque aparece */
@@ -17665,8 +17624,8 @@ const EV8 = {
     const de8 = trilhaAtual === '8', de81 = trilhaAtual === '8.1';
     /* a vida solta cala-se aos 15 s */
     if (VIDA.ligada && de8 && t >= this.vidaAte && !som.paused) VIDA.desliga();
-    /* dos 7,8 aos 13 s, a onda que pinta os naturais e os artificiais */
-    if (!naMontagem()) ondaDaNatureza(t);
+    /* dos 7,5 aos 10 s, a onda dos 118 do 1.1, com a cor de cada família */
+    ondaDos118(de8 ? t : -1, ONDA_8, true);
     /* aos 18,7 s a narração pára 2 s e segue */
     const t8 = de8 ? t : -1;
     if (t8 >= 0 && this.t8ant >= 0 && this.t8ant < this.pausa && t8 >= this.pausa && !som.paused && !som.ended && !naMontagem()){
@@ -17693,11 +17652,7 @@ const EV8 = {
     stage.classList.toggle('em-toque', pede);
   },
   /* chegar ao slide: a tela clara, a frase por escrever */
-  zera(){
-    this.dispensou = false; this.n = ''; this.estado = ''; this.t8ant = -1; clearTimeout(this.pausaT);
-    ONDA_8.pintou = undefined; ONDA_8.suja = true;    /* (a próxima onda reescreve as cores) */
-    if (this.veu) this.tick(-1);
-  },
+  zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.t8ant = -1; clearTimeout(this.pausaT); if (this.veu) this.tick(-1); },
   /* saindo do slide com o pedido em cena, o play volta */
   fora(){ clearTimeout(this.pausaT); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
 };
