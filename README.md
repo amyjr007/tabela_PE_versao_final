@@ -689,7 +689,9 @@ pra tabela"): a tela clareia e o play fica fora (`#stage.sem-play8`); acabada
 ela, 1,5 s depois (ainda sem o play), a `8.2` (`Audios/audio_tabela_8.2.mp3`, 60 s, em `EV8.tick82`, os
 segundos em `Q82`) toca sozinha. Aos 0,9 s o Tc e aos 2,7 s o Pm crescem
 em azul; dos 4,7 aos 6 s os naturais ficam verdes, um a um, do H ao U (menos
-os dois); dos 6,5 aos 8 s digita no vão "Do 1 ao 92 – elementos naturais", em
+os dois) — a mudança de cor do app do professor no capítulo da natureza: cada
+um passa à cor nova em 0,35 s, e as letras clareiam junto (a cor numa camada
+`.face::after` que só muda de opacidade); dos 6,5 aos 8 s digita no vão "Do 1 ao 92 – elementos naturais", em
 verde; aos 10,2 s o Tc e o Pm voltam ao tamanho (ficam azuis) e cresce o U;
 dos 13 aos 16 s os artificiais do 93 ao 118 ficam azuis, um a um, e digita
 "Do 93 em diante – artificiais", em azul (`LINHAS_82`, peça `texto-82`); aos

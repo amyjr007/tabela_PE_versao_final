@@ -2667,8 +2667,16 @@ body.montagem .bloco72{pointer-events:auto}
 .mesa.lisa .pc.onda-cor{--c5:var(--cor)}
 /* a "8.2": os naturais em verde e os artificiais em azul (os mesmos das
    frases da tela escura), e quem cresce passa por cima dos vizinhos */
-.mesa.lisa .pc.cor82 .face{background:linear-gradient(145deg,color-mix(in srgb,var(--c82) 80%,#fff),color-mix(in srgb,var(--c82) 86%,#000));
-  border-color:rgba(255,255,255,.3);transition:background .3s ease}
+/* (a mudança de cor do app do professor, no capítulo da natureza: cada
+   elemento passa à cor nova em 0,35 s, e as letras clareiam junto. A cor
+   vem numa camada por cima do lilás, que só muda de opacidade — um
+   degradê não se anima de um para o outro) */
+.mesa.natureza .face::after{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--c82,#3B8EDB) 80%,#fff),color-mix(in srgb,var(--c82,#3B8EDB) 86%,#000));
+  opacity:0;transition:opacity .35s ease}
+.mesa.natureza .face :is(b,i,u,em){transition:color .35s ease,text-shadow .35s ease}
+.mesa.lisa .pc.cor82 .face{border-color:rgba(255,255,255,.3)}
+.mesa.lisa .pc.cor82 .face::after{opacity:1}
 .mesa.lisa .pc.cor82 .face b{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
 .mesa.lisa .pc.cor82 .face :is(i,u,em){color:rgba(255,255,255,.88)}
 .mesa.lisa .pc.nat82{--c82:#2FA866}
@@ -4227,7 +4235,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v38.9';
+const VERSAO = 'v39.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
