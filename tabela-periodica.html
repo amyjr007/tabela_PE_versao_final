@@ -2789,6 +2789,29 @@ body.montagem .bloco72{pointer-events:auto}
 .trilho83 figure{flex:0 0 640px;margin:0}
 .trilho83 img{display:block;width:640px;height:358px;object-fit:cover;border-radius:18px}
 .trilho83 figcaption{margin-top:14px;text-align:center;font-family:var(--display);font-size:26px;font-weight:600;color:#F4F2F8}
+/* A "8.4": os estáveis verde-claros (na mesma camada que entra em fade da
+   "8.2"; a letra fica escura), o Pb a piscar no verde deles, e o símbolo da
+   radioatividade no canto de cima das cartas */
+.mesa.lisa .pc.cor84{--c82:#6FD08F}
+.mesa.lisa .pc.cor84 .face::after{opacity:1}
+.mesa.lisa .pc.cresce84{--onda:1.4!important;z-index:9}
+.mesa.lisa .pc.pb84::after{content:'';position:absolute;inset:-2px;border-radius:5px;pointer-events:none;
+  box-shadow:0 0 0 3px #4ADE80, 0 0 26px 9px rgba(74,222,128,.85);animation:pisca82 .9s ease-in-out infinite}
+.pc .radio84{position:absolute;right:-12px;top:-12px;width:30px;height:30px;z-index:6;pointer-events:none;
+  opacity:0;transform:scale(.6);transition:opacity .5s ease, transform .5s cubic-bezier(.34,1.56,.64,1)}
+.pc .radio84 svg{display:block;width:100%;height:100%;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
+.pc.radio-on .radio84{opacity:1;transform:none}
+/* as linhas do vão: a primeira no verde dos estáveis, a segunda no amarelo do símbolo */
+.quadro84 .est84{color:#2FA866}
+.quadro84 .rad84{color:#FFD21F;text-shadow:0 0 1px #201C42, 0 1px 2px rgba(32,28,66,.7), 0 0 10px rgba(255,210,31,.5);
+  opacity:0;transition:opacity .4s ease}
+.quadro84 .rad84.on, body.montagem .quadro84 .rad84{opacity:1}
+/* "O chumbo é o último elemento estável", embaixo da tabela, debaixo do Pb, preso pela direita */
+.rotulo84{position:absolute;z-index:30;white-space:nowrap;pointer-events:none;transform-origin:100% 0;
+  transform:translateX(-100%) scale(1.6);padding:2px 10px;border-radius:10px;background:rgba(255,253,248,.88);
+  font-family:var(--display);font-weight:700;font-size:30px;line-height:1.2;color:#2FA866;opacity:0;transition:opacity .4s ease}
+.rotulo84.on, body.montagem .rotulo84{opacity:1}
+body.montagem .rotulo84{pointer-events:auto}
 /* (as duas linhas da 8.2 crescem com a mesa encolhida, para ficarem do tamanho de antes) */
 .mesa.natureza .quadro82{transform-origin:0 0;transition:transform .9s cubic-bezier(.3,.85,.3,1), opacity .6s ease}
 .mesa.natureza.longa89 .quadro82{transform:scale(1.6)}
@@ -4384,7 +4407,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v40.4';
+const VERSAO = 'v40.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5667,6 +5690,7 @@ const TRILHAS = {
   '8.1':  'Audios/audio_tabela_8.1.mp3',   /* o toque na tela escura: os artificiais (EV8) */
   '8.2.0':'Audios/audio_tabela_8.2.0.mp3', /* o toque no fim da "8.1": "vamos para a tabela", sem play (EV8) */
   '8.3':  'Audios/audio_tabela_8.3.mp3',   /* o play no fim da "8.2": a radioatividade (EV8) */
+  '8.4':  'Audios/audio_tabela_8.4.mp3',   /* o toque no fim da "8.3": estáveis e radioativos (EV8) */
   '8.2':  'Audios/audio_tabela_8.2.mp3', /* o toque no fim da "8.1": do 1 ao 92, e do 93 em diante (EV8) */
   '9':    'Audios/audio_tabela_9.mp3',     /* o slide 10: a valência (ainda por gravar) */
   '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: os blocos (ainda por gravar) */
@@ -5818,6 +5842,7 @@ const ROTEIROS = {
   '8.1':  [],
   '8.2.0':[],
   '8.3':  [],
+  '8.4':  [],
   '8.2':  [],
   '9':    [],
   '10':   []
@@ -17843,6 +17868,30 @@ const VEU_83 = (() => {
     '<div class="janela83"><div class="trilho83">' + fig('Imagens/radio1.jpeg', 'No tratamento de tumores') +
     fig('Imagens/radio2.jpeg', 'Na geração de eletricidade') + '</div></div></div>';
 })();
+/* A "8.4" (o toque na tela escura do fim da "8.3"): aos 1 s a tabela abre de
+   novo em 32 colunas; aos 4 e 5 s o símbolo da radioatividade no Tc e no Pm;
+   dos 6 aos 7 s os estáveis (do 1 ao 82, menos os dois) ficam verde-claros,
+   um a um; dos 8 aos 13 s "A maioria é estável" e dos 16,5 s " – não
+   radioativo"; aos 19,3 s o Pb cresce, a piscar em verde, com "O chumbo" em
+   cima, e dos 21,5 aos 26 s " é o último elemento estável"; aos 32 s ele volta
+   ao tamanho (a piscar ainda) e o símbolo entra do 83 ao 118, um a um, até aos
+   37 s; dos 39 aos 41 s "do 83 até o 118 são todos radioativos" */
+const Q84 = { abre:1.0, tc:4.0, pm:5.0, verde:[6.0, 7.0], pb:19.3, pbVolta:32.0, radio:[32.0, 37.0] };
+const ESTAVEIS_84 = Array.from({ length:82 }, (_, i) => i + 1).filter(z => z !== 43 && z !== 61);
+const RADIO_84 = Array.from({ length:36 }, (_, i) => i + 83);
+const LINHAS_84 = [
+  { cor:'est84', partes:[{ de:8.0, ate:13.0, txt:'A maioria é estável' }, { de:16.5, ate:17.6, txt:' – não radioativo' }] },
+  { cor:'rad84', partes:[{ de:39.0, ate:41.0, txt:'do 83 até o 118 são todos radioativos' }] }
+];
+const ROTULO_PB_84 = [{ de:19.3, ate:19.9, txt:'O chumbo' }, { de:21.5, ate:26.0, txt:' é o último elemento estável' }];
+/* o símbolo da radioatividade, pequeno, para o canto das cartas */
+const TREVO_84 = (() => {
+  const pa = a => { const r1 = 46, r2 = 150, p = (r, g) => [200 + r * Math.cos(g * Math.PI / 180), 200 - r * Math.sin(g * Math.PI / 180)].map(v => v.toFixed(1)).join(' ');
+    return '<path d="M' + p(r1, a - 30) + ' L' + p(r2, a - 30) + ' A' + r2 + ' ' + r2 + ' 0 0 0 ' + p(r2, a + 30) +
+      ' L' + p(r1, a + 30) + ' A' + r1 + ' ' + r1 + ' 0 0 1 ' + p(r1, a - 30) + 'Z"/>'; };
+  return '<svg viewBox="0 0 400 400" aria-hidden="true"><circle cx="200" cy="200" r="190" fill="#FFD21F" stroke="#201C42" stroke-width="18"/>' +
+    '<g fill="#201C42">' + [30, 150, 270].map(pa).join('') + '<circle cx="200" cy="200" r="32"/></g></svg>';
+})();
 const EV8 = {
   vidaAte:15.0, pausa:18.7, /* (de 1,5 s) */ veuDe:20.0, abre820:6.5, aberta:false,
   /* A TABELA DE 32 COLUNAS do slide 9 (alvoLongo, a mesma do tópico 7): as
@@ -17865,7 +17914,7 @@ const EV8 = {
       c.style.zIndex = '';
     });
     /* (o baralho desfeito com ela; a "8.2" refá-lo, se for a hora) */
-    this.emBaralho = false; this.estado82 = '';
+    this.emBaralho = false; this.estado82 = ''; this.estado84 = '';
     if (ja) return;
     tocaEfeito('transition_cube');
     this.longaT = setTimeout(() => m.classList.remove('anda89', 'lento89'), lento ? 2550 : 950);
@@ -17924,6 +17973,61 @@ const EV8 = {
     this.escrito83 = '';
     slides[8].insertAdjacentHTML('beforeend', VEU_83);
     this.veu83 = slides[8].querySelector('.veu-radio');
+    /* a "8.4": as duas linhas do vão (no lugar das da "8.2", e como elas
+       crescem com a mesa encolhida), o rótulo do Pb e o símbolo nas cartas */
+    const q4 = document.createElement('div');
+    q4.className = 'quadro71 quadro82 quadro84';
+    q4.dataset.mont = 'texto-84';
+    q4.style.left = q.style.left;
+    q4.style.top  = q.style.top;
+    q4.innerHTML = LINHAS_84.map(L => '<div class="linha71 ' + L.cor + '">' + L.partes.map(() => '<span></span>').join('') + '</div>').join('');
+    m.appendChild(q4);
+    this.quadro84 = q4;
+    /* (o do Pb embaixo da tabela, debaixo dele e preso pela direita: a frase cresce para a esquerda.
+       Em cima dele, ela tapava o Tc e o símbolo dele) */
+    const pb = alvoLongo(82), r = document.createElement('div');
+    r.className = 'rotulo84';
+    r.dataset.mont = 'texto-chumbo-84';
+    r.style.left = (pb.x + LADO/2).toFixed(1) + 'px';
+    r.style.top  = (yDaLinha(7) + LADO/2 + 14).toFixed(1) + 'px';
+    r.innerHTML = ROTULO_PB_84.map(() => '<span></span>').join('');
+    m.appendChild(r);
+    this.rotulo84 = r;
+    this.escritos84 = {};
+    [43, 61, ...RADIO_84].forEach(z => this.cartas(z).insertAdjacentHTML('beforeend', '<span class="radio84">' + TREVO_84 + '</span>'));
+  },
+  /* A "8.4", função do tempo dela */
+  tick84(t){
+    const monta = naMontagem(), t84 = trilhaAtual === '8.4' ? t : -1, Q = Q84, tq = monta ? 60 : t84;
+    /* os textos, pedaço a pedaço (na montagem, inteiros) */
+    let bate = false;
+    const escreve = (chave, el, p) => {
+      const s = tq < p.de ? '' : p.txt.slice(0, Math.round(Math.min(1, (tq - p.de) / (p.ate - p.de)) * p.txt.length));
+      if (s === (this.escritos84[chave] || '')) return;
+      if (s.length > (this.escritos84[chave] || '').length && !monta) bate = true;
+      this.escritos84[chave] = s;
+      el.textContent = s;
+    };
+    LINHAS_84.forEach((L, i) => L.partes.forEach((p, j) => escreve('l' + i + j, this.quadro84.children[i].children[j], p)));
+    ROTULO_PB_84.forEach((p, j) => escreve('pb' + j, this.rotulo84.children[j], p));
+    if (bate) TECLAS.bate();
+    const fila = (de, ate, n) => t84 < de ? 0 : Math.min(n, Math.floor((t84 - de) / ((ate - de) / (n - 1))) + 1);
+    const est = JSON.stringify({ tc: t84 >= Q.tc, pm: t84 >= Q.pm, verde: fila(Q.verde[0], Q.verde[1], ESTAVEIS_84.length),
+      pb: t84 >= Q.pb, pbGrande: t84 >= Q.pb && t84 < Q.pbVolta, radio: fila(Q.radio[0], Q.radio[1], RADIO_84.length),
+      l1: monta || t84 >= LINHAS_84[0].partes[0].de, l2: monta || t84 >= LINHAS_84[1].partes[0].de, rot: monta || t84 >= Q.pb });
+    if (est === this.estado84) return;
+    this.estado84 = est;
+    const E = JSON.parse(est);
+    ESTAVEIS_84.forEach((z, k) => { const c = this.cartas(z); c.classList.toggle('cor84', k < E.verde); });
+    const pb = this.cartas(82);
+    pb.classList.toggle('pb84', E.pb);
+    pb.classList.toggle('cresce84', E.pbGrande);
+    this.cartas(43).classList.toggle('radio-on', E.tc);
+    this.cartas(61).classList.toggle('radio-on', E.pm);
+    RADIO_84.forEach((z, k) => this.cartas(z).classList.toggle('radio-on', k < E.radio));
+    this.quadro84.classList.toggle('on', E.l1);
+    this.quadro84.children[1].classList.toggle('on', E.l2);
+    this.rotulo84.classList.toggle('on', E.rot);
   },
   /* A "8.3", função do tempo dela */
   tick83(t){
@@ -18035,9 +18139,8 @@ const EV8 = {
     if (!this.esperaToque() || naMontagem()) return;
     estouraBolha(this.toque, '#F4F2F8');
     playDepois();
-    /* (o da "8.3", por ora, só desfaz a tela escura) */
-    if (trilhaAtual === '8.3'){ this.dispensou = true; return; }
-    tocaTrilha(trilhaAtual === '8' ? '8.1' : '8.2.0');
+    /* (o da "8.3", a "8.4", e a tela clareia) */
+    tocaTrilha(trilhaAtual === '8' ? '8.1' : trilhaAtual === '8.3' ? '8.4' : '8.2.0');
   },
   /* a frase F com n letras escritas (o termo colorido é o pedaço do meio) */
   escreve(F, n){
@@ -18077,9 +18180,10 @@ const EV8 = {
        "8.2" acontece com ela aberta */
     /* (e fecha aos 1,5 s da "8.3", devagar, até aos 4 s) */
     if (!naMontagem()) this.longa(trilhaAtual === '8.2.0' && t >= this.abre820 || trilhaAtual === '8.2' ||
-                                  trilhaAtual === '8.3' && t < Q83.junta, false, trilhaAtual === '8.3');
+                                  trilhaAtual === '8.3' && t < Q83.junta || trilhaAtual === '8.4' && t >= Q84.abre, false, trilhaAtual === '8.3');
     this.tick82(t);
     this.tick83(t);
+    this.tick84(t);
     /* a frase, letra a letra; na "8.1", antes, a dos naturais apaga-se */
     const F = this.frase() || FRASE_8, len = f => (f.antes + f.verde + f.depois).length;
     if (de81 && t < APAGA_81) this.escreve(FRASE_8, Math.round((1 - Math.max(0, t) / APAGA_81) * len(FRASE_8)));
@@ -18095,7 +18199,7 @@ const EV8 = {
     stage.classList.toggle('em-toque', pede);
   },
   /* chegar ao slide: a tela clara, a frase por escrever */
-  zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.estado82 = ''; this.estado83 = ''; this.t8ant = -1; clearTimeout(this.pausaT);
+  zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.estado82 = ''; this.estado83 = ''; this.estado84 = ''; this.t8ant = -1; clearTimeout(this.pausaT);
           this.longa(false, true); if (this.veu) this.tick(-1); },
   /* saindo do slide com o pedido em cena, o play volta */
   fora(){ clearTimeout(this.pausaT); clearTimeout(this.vai82); stage.classList.remove('sem-play8'); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }

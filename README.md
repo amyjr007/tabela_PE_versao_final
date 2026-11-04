@@ -671,7 +671,19 @@ radioterapia (`Imagens/radio1.jpeg`, "No tratamento de tumores"), e aos 33 s o
 carrossel passa à da usina (`radio2.jpeg`, "Na geração de eletricidade"); aos
 36 s tudo sai; aos 37,5 s a tela escurece de novo e digita "Como descobrir quem
 é radioativo pela tabela?" (`FRASE_83`, "radioativo" no amarelo do símbolo) e,
-acabada, "Toque na tela" — que, por ora, só desfaz a tela escura.
+acabada, "Toque na tela", que toca a `8.4`.
+
+A `8.4` (`Audios/audio_tabela_8.4.mp3`, 42,4 s; `EV8.tick84`, os segundos em
+`Q84`): a tela clareia; aos 1 s a tabela abre de novo em 32 colunas; aos 4 e 5 s
+o símbolo da radioatividade (`TREVO_84`, no canto de cima da carta) no Tc e no
+Pm; dos 6 aos 7 s os estáveis (do 1 ao 82, menos os dois) ficam verde-claros,
+um a um, no mesmo fade da `8.2`; dos 8 aos 13 s "A maioria é estável" e dos
+16,5 s " – não radioativo", no verde (`LINHAS_84`, peça `texto-84`); aos 19,3 s
+o Pb cresce, a piscar no verde, com "O chumbo" e dos 21,5 aos 26 s " é o último
+elemento estável" embaixo da tabela, debaixo dele (em cima, a frase tapava o
+Tc; peça `texto-chumbo-84`); aos 32 s o Pb volta ao tamanho, ainda a piscar, e
+o símbolo entra do 83 ao 118, um a um, até aos 37 s; dos 39 aos 41 s "do 83 até
+o 118 são todos radioativos", no amarelo do símbolo.
 
 No sumário: **a – Elementos naturais e artificiais** (a `8` aos 18,75 s, no fim
 da pausa, pouco antes da tela escurecer) e **b – Quais são os naturais e
