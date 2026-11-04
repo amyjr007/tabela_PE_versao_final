@@ -679,7 +679,9 @@ o símbolo da radioatividade (`TREVO_84`, no canto de cima da carta) no Tc e no
 Pm (e a carta passa ao âmbar dos radioativos, como as do 83 em diante quando o
 símbolo entra nelas); dos 6 aos 7 s os estáveis (do 1 ao 82, menos os dois) ficam verde-claros,
 um a um, no mesmo fade da `8.2`; dos 6,5 aos 13 s "Do nº atômico 1 ao 82, a maioria é estável" e dos
-16,5 s " – não radioativo", no verde (`LINHAS_84`, peça `texto-84`); aos 20,2 s
+16,5 s " – não radioativo", no verde (`LINHAS_84`; cada linha é uma peça da montagem,
+`texto-84` e `texto-radioativos-84`, no lugar que o professor deixou: no palco,
+626, 172, o centro das duas); aos 20,2 s
 o Pb cresce, a piscar no verde, com "O chumbo (Pb)" e dos 21,5 aos 26 s " é o último
 elemento estável" embaixo da tabela, debaixo dele (em cima, a frase tapava o
 Tc; peça `texto-chumbo-84`); aos 32 s o Pb volta ao tamanho, ainda a piscar, o Bi cresce com o brilho âmbar, e

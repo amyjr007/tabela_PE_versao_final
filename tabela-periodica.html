@@ -4414,7 +4414,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v40.9';
+const VERSAO = 'v41.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17982,14 +17982,21 @@ const EV8 = {
     this.veu83 = slides[8].querySelector('.veu-radio');
     /* a "8.4": as duas linhas do vão (no lugar das da "8.2", e como elas
        crescem com a mesa encolhida), o rótulo do Pb e o símbolo nas cartas */
-    const q4 = document.createElement('div');
-    q4.className = 'quadro71 quadro82 quadro84';
-    q4.dataset.mont = 'texto-84';
-    q4.style.left = q.style.left;
-    q4.style.top  = q.style.top;
-    q4.innerHTML = LINHAS_84.map(L => '<div class="linha71 ' + L.cor + '">' + L.partes.map(() => '<span></span>').join('') + '</div>').join('');
-    m.appendChild(q4);
-    this.quadro84 = q4;
+    /* (cada linha uma peça na montagem, para se mover sozinha; a segunda logo
+       abaixo da primeira — uma linha de 30 px com a margem, vezes 1,6. As duas
+       no lugar que o professor deixou na montagem, com a tabela aberta: no
+       palco, o centro das duas em 626, 172 — aqui, na medida da mesa) */
+    this.quadros84 = LINHAS_84.map((L, i) => {
+      const d = document.createElement('div');
+      d.className = 'quadro71 quadro82 quadro84';
+      d.dataset.mont = i ? 'texto-radioativos-84' : 'texto-84';
+      d.style.left = '-42.6px';
+      d.style.top  = (58.7 + i * (30 * 1.25 + 16) * 1.6).toFixed(1) + 'px';
+      d.innerHTML = '<div class="linha71 ' + L.cor + '">' + L.partes.map(() => '<span></span>').join('') + '</div>';
+      m.appendChild(d);
+      return d;
+    });
+    this.quadro84 = this.quadros84[0];
     /* (o do Pb embaixo da tabela, debaixo dele e preso pela direita: a frase cresce para a esquerda.
        Em cima dele, ela tapava o Tc e o símbolo dele) */
     const pb = alvoLongo(82), r = document.createElement('div');
@@ -18015,7 +18022,7 @@ const EV8 = {
       this.escritos84[chave] = s;
       el.textContent = s;
     };
-    LINHAS_84.forEach((L, i) => L.partes.forEach((p, j) => escreve('l' + i + j, this.quadro84.children[i].children[j], p)));
+    LINHAS_84.forEach((L, i) => L.partes.forEach((p, j) => escreve('l' + i + j, this.quadros84[i].firstChild.children[j], p)));
     ROTULO_PB_84.forEach((p, j) => escreve('pb' + j, this.rotulo84.children[j], p));
     if (bate) TECLAS.bate();
     const fila = (de, ate, n) => t84 < de ? 0 : Math.min(n, Math.floor((t84 - de) / ((ate - de) / (n - 1))) + 1);
@@ -18035,8 +18042,9 @@ const EV8 = {
     RADIO_84.forEach((z, k) => radio(z, k < E.radio));
     const bi = this.cartas(83);
     bi.classList.toggle('bi84', E.bi); bi.classList.toggle('cresce84', E.bi);
-    this.quadro84.classList.toggle('on', E.l1);
-    this.quadro84.children[1].classList.toggle('on', E.l2);
+    this.quadros84[0].classList.toggle('on', E.l1);
+    this.quadros84[1].classList.toggle('on', E.l2);
+    this.quadros84[1].firstChild.classList.toggle('on', E.l2);
     this.rotulo84.classList.toggle('on', E.rot);
   },
   /* A "8.3", função do tempo dela */
