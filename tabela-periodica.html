@@ -4414,7 +4414,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v40.8';
+const VERSAO = 'v40.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -21642,6 +21642,17 @@ const NAV_TOPICOS = [
   /* o começo da "8.2": a tabela abre em 32 colunas, e a narração começa */
   { titulo:'Quais são os naturais e artificiais', sub:'o começo da 8.2, com a tabela aberta', slide:8,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('8.2', 0, g)); } },
+  /* o começo da "8.3": a cena do fim da "8.2" sai, e a tabela junta-se */
+  { titulo:'A tabela e a radioatividade', sub:'o começo da 8.3', slide:8,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('8.3', 0, g)); } },
+  /* a "8.4" aos 1 s (a tabela a abrir) e aos 27 s (do 83 em diante); o
+     segundo já forçado, para a mesa aparecer como deve estar ali */
+  { titulo:'Quem tem núcleos estáveis', sub:'aos 1 s da 8.4, com a tabela a abrir', slide:8,
+    entra(v, g){ trilhaAtual = -1; carregaTrilha('8.4'); TEMPO_FORCADO = { id:'8.4', t:1 };
+                 depoisDaMesa(g, () => tocaDesde('8.4', 1, g)); } },
+  { titulo:'Quem são os radioativos', sub:'aos 27 s da 8.4', slide:8,
+    entra(v, g){ trilhaAtual = -1; carregaTrilha('8.4'); TEMPO_FORCADO = { id:'8.4', t:27 };
+                 depoisDaMesa(g, () => tocaDesde('8.4', 27, g)); } },
   /* ---- o slide 10 · A tabela e os elétrons de valência ---- */
   { titulo:'Início', sub:'o começo do slide', slide:9,
     entra(){ /* o recomeço do slide já é o tópico */ } },
