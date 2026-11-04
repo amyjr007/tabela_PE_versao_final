@@ -2800,7 +2800,11 @@ body.montagem .bloco72{pointer-events:auto}
 .rotulo82.on, body.montagem .rotulo82{opacity:1}
 body.montagem .rotulo82{pointer-events:auto}
 .rotulo82.art82{color:#2F7FD0}
-.rotulo82.amb82{color:#D98A0B}
+/* (o dos cisurânicos, âmbar brilhante, no tom do brilho do Tc e do Pm) */
+.rotulo82.amb82{color:#F29A0E;text-shadow:0 0 10px rgba(255,165,20,.85), 0 0 22px rgba(255,165,20,.5)}
+/* cada pedaço cresce na sua vez (pela letra: os vizinhos abrem espaço) */
+.rotulo82 span{font-size:30px;transition:font-size .4s cubic-bezier(.34,1.56,.64,1)}
+.rotulo82 span.grande82{font-size:40px}
 /* os azuis crescidos brilham — o Tc e o Pm em azul, os 26 juntos em
    vermelho —, numa camada que só muda de opacidade */
 .mesa.lisa .pc.cor82::after{content:'';position:absolute;inset:-2px;border-radius:5px;pointer-events:none;
@@ -4351,7 +4355,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v40.1';
+const VERSAO = 'v40.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17768,8 +17772,13 @@ const Q82 = { tc:0.9, pm:2.7, nat:[4.7, 6.0], u:10.0, volta:10.2, uPisca:12.0, a
               baralho:28.0, tcAmbar:39.0, pmAmbar:40.0 };
 const ROTULOS_82 = [
   { k:'trans', cor:'art82', partes:[{ de:34.1, ate:34.9, txt:'Transurânicos' }, { de:36.6, ate:37.6, txt:' = depois do urânio.' }] },
-  { k:'cis',   cor:'amb82', partes:[{ de:47.0, ate:47.8, txt:'Cisurânicos' }] }
+  { k:'cis',   cor:'amb82', partes:[{ de:47.0, ate:47.8, txt:'Cisurânicos' }, { de:49.0, ate:50.0, txt:' = antes do urânio.' }] }
 ];
+/* o fecho da "8.2": cada pedaço dos dois rótulos cresce na sua vez — o
+   "Cisurânicos" (51,8 s) e o "antes do urânio" (54 s), que voltam aos 55,3 s,
+   quando crescem o "Transurânicos" e, aos 57,5 s, o "depois do urânio"; aos
+   59,4 s (o fim da fala) tudo volta ao tamanho */
+const CRESCE_82 = { cis:[[51.8, 55.3], [54.0, 55.3]], trans:[[55.3, 59.4], [57.5, 59.4]] };
 const NATURAIS_82 = Array.from({ length:92 }, (_, i) => i + 1).filter(z => z !== 43 && z !== 61);
 const ARTIFICIAIS_82 = Array.from({ length:26 }, (_, i) => i + 93);
 const LINHAS_82 = [
@@ -17827,14 +17836,17 @@ const EV8 = {
     this.cartas = z => m.querySelector('.pc[data-z="' + z + '"]');
     /* os rótulos embaixo da linha 7 da tabela aberta: "Transurânicos" debaixo
        do baralho, "Cisurânicos" do lado esquerdo (peças na montagem) */
-    const y = yDaLinha(7) + LADO/2 + 14, x0 = this.xBaralho(0) - LADO/2, xe = alvoLongo(87).x - LADO/2;
+    /* (o "Cisurânicos" no lugar que o professor deixou na montagem — no palco,
+       com a tabela aberta, o centro em 335, 313: no vão das linhas 4 e 5, perto
+       do Pm —, aqui na medida da mesa) */
+    const lugar = { trans:{ x:this.xBaralho(0) - LADO/2, y:yDaLinha(7) + LADO/2 + 14 }, cis:{ x:-26.7, y:366.3 } };
     this.rotulos = {};
     ROTULOS_82.forEach(R => {
       const d = document.createElement('div');
       d.className = 'rotulo82 ' + R.cor;
       d.dataset.mont = 'texto-' + R.k + '-82';
-      d.style.left = (R.k === 'trans' ? x0 : xe).toFixed(1) + 'px';
-      d.style.top  = y.toFixed(1) + 'px';
+      d.style.left = lugar[R.k].x.toFixed(1) + 'px';
+      d.style.top  = lugar[R.k].y.toFixed(1) + 'px';
       d.innerHTML = R.partes.map(() => '<span></span>').join('');
       m.appendChild(d);
       this.rotulos[R.k] = d;
@@ -17891,6 +17903,7 @@ const EV8 = {
       art: fila(Q82.art[0], Q82.art[1], ARTIFICIAIS_82.length), juntos: t82 >= Q82.juntos && t82 < Q82.normal,
       baralho: t82 >= Q82.baralho && this.aberta, tcA: t82 >= Q82.tcAmbar, pmA: t82 >= Q82.pmAmbar,
       rot: { trans: monta || t82 >= ROTULOS_82[0].partes[0].de, cis: monta || t82 >= ROTULOS_82[1].partes[0].de },
+      grande: Object.fromEntries(Object.entries(CRESCE_82).map(([k, ps]) => [k, ps.map(([a, b]) => t82 >= a && t82 < b)])),
       quadro: monta || t82 >= LINHAS_82[0].de });
     if (est === this.estado82) return;
     this.estado82 = est;
@@ -17916,6 +17929,7 @@ const EV8 = {
     if (E.baralho !== !!this.emBaralho) this.baralho(E.baralho);
     this.rotulos.trans.classList.toggle('on', E.rot.trans);
     this.rotulos.cis.classList.toggle('on', E.rot.cis);
+    Object.entries(E.grande).forEach(([k, gs]) => gs.forEach((g, j) => this.rotulos[k].children[j].classList.toggle('grande82', g)));
     this.quadro.classList.toggle('on', E.quadro);
   },
   /* a tela escura à espera do toque (do fim da digitação, até ele) */

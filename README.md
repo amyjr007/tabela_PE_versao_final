@@ -709,8 +709,12 @@ forte e aos 12 s volta ao tamanho com o brilho a piscar; aos 28 s a fila depois
 dele (93 a 118) afasta-se duas casas e junta-se na mesma linha, como cartas
 num baralho (`EV8.baralho`); aos 34,1 s, embaixo dela, digita "Transurânicos" e
 aos 36,6 s " = depois do urânio.", no azul; aos 39 s o Tc e aos 40 s o Pm
-crescem com o brilho âmbar, e aos 47 s, embaixo do lado esquerdo, "Cisurânicos"
-no mesmo âmbar (`ROTULOS_82`, peças da montagem). As
+crescem com o brilho âmbar, e aos 47 s "Cisurânicos" e aos 49 s " = antes do urânio.", num âmbar
+brilhante (no tom do brilho do Tc e do Pm), no lugar da montagem (no palco,
+335, 313: o vão das linhas 4 e 5); aos 51,8 s cresce "Cisurânicos", aos 54 s
+"antes do urânio", aos 55,3 s os dois voltam e cresce "Transurânicos", aos
+57,5 s "depois do urânio", e aos 59,4 s (o fim) tudo volta ao tamanho; o U
+continua a piscar (`ROTULOS_82`, `CRESCE_82`, peças da montagem). As
 cores ficam até ao fim. As cores da natureza (o verde dos naturais até o urânio, o âmbar do
 Tc e do Pm, o brilho dos artificiais, os estáveis e os radioativos) ficam
 para depois.
