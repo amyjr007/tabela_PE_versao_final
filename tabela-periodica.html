@@ -4421,7 +4421,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v41.6';
+const VERSAO = 'v41.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17923,6 +17923,11 @@ const EV8 = {
     /* (lento: a volta da "8.3", em 2,5 s) */
     m.classList.toggle('lento89', !!lento && !ja);
     m.classList.toggle('longa89', sim);
+    /* (no celular a mesa tem uma medida aberta e outra fechada: anda com ela) */
+    const mc = this.medidaMesa(sim);
+    if (ehCelular()){
+      m.style.setProperty('--px', mc.x + 'px'); m.style.setProperty('--py', mc.y + 'px'); m.style.setProperty('--zoom', mc.e);
+    }
     m.querySelectorAll('.pc').forEach(c => {
       const a = sim ? alvoLongo(+c.dataset.z) : alvoDe(+c.dataset.z);
       c.style.left = a.x.toFixed(1) + 'px';
@@ -18025,9 +18030,17 @@ const EV8 = {
      em C + T + s·(m − c), com c o meio da caixa (o centro do transform) e C
      esse meio medido no palco */
   LUGAR_84: { linhas:[{ x:167, y:205 }, { x:749.5, y:454 }], chumbo:{ x:966, y:248 } },
+  /* a medida da mesa do slide 9, aberta ou fechada: no celular, a da montagem
+     dele; nas outras telas, a do CSS (a mesma nas duas) */
+  medidaMesa(aberta){
+    const c = ehCelular() && MESA_NO_CELULAR_POR_SLIDE[8];
+    if (c) return aberta && c.aberta ? c.aberta : c;
+    const cs = getComputedStyle(slides[8].querySelector('.mesa')), v = (n, d) => { const x = parseFloat(cs.getPropertyValue(n)); return isNaN(x) ? d : x; };
+    return { x:v('--px', 0), y:v('--py', 0), e:v('--zoom', 1) };
+  },
   posiciona84(){
-    const m = slides[8].querySelector('.mesa'), cs = getComputedStyle(m), v = (n, d) => { const x = parseFloat(cs.getPropertyValue(n)); return isNaN(x) ? d : x; };
-    const px = v('--px', 0), py = v('--py', 0), s = v('--zoom', 1) * 0.6, k = (1.6 * 0.564 / s).toFixed(3);
+    const m = slides[8].querySelector('.mesa'), A = this.medidaMesa(true);
+    const px = A.x, py = A.y, s = A.e * 0.6, k = (1.6 * 0.564 / s).toFixed(3);
     const cx = m.offsetWidth / 2, cy = m.offsetHeight / 2;
     let ox = cx, oy = cy;
     for (let e = m; e && e !== stage; e = e.offsetParent){ ox += e.offsetLeft; oy += e.offsetTop; }
@@ -18044,12 +18057,11 @@ const EV8 = {
        o canto de cima à esquerda no palco e a escala (a da peça, na mesa),
        com a mesa como ela está quando eles aparecem (aberta, a 0,6, ou não) */
     if (!ehCelular()) return;
-    const z = v('--zoom', 1);
     Object.entries(this.LUGAR_CEL).forEach(([nome, L]) => {
-      const el = m.querySelector('[data-mont="' + nome + '"]'), sm = z * (L.aberta ? 0.6 : 1);
+      const el = m.querySelector('[data-mont="' + nome + '"]'), M = this.medidaMesa(L.aberta), sm = M.e * (L.aberta ? 0.6 : 1);
       if (!el) return;
-      el.style.left = (cx + (L.x - ox - px) / sm).toFixed(1) + 'px';
-      el.style.top  = (cy + (L.y - oy - py) / sm).toFixed(1) + 'px';
+      el.style.left = (cx + (L.x - ox - M.x) / sm).toFixed(1) + 'px';
+      el.style.top  = (cy + (L.y - oy - M.y) / sm).toFixed(1) + 'px';
       el.style.setProperty(nome.endsWith('-84') ? '--esc84' : '--esc8', L.esc);
     });
   },
@@ -18059,8 +18071,8 @@ const EV8 = {
     'texto-trans-82':       { x:205.5, y:565,   esc:1.6,  aberta:true },
     'texto-cis-82':         { x:61.5,  y:383,   esc:1.6,  aberta:true },
     /* (o da "8.3" aparece com a tabela fechada, mas foi medido com ela aberta:
-       a escala 0,6 dá-lhe na tela o tamanho que tinha lá) */
-    'texto-83':             { x:116,   y:193.5, esc:0.6,  aberta:false },
+       a escala 0,656 — 1,17 × 0,6 / 1,07 — dá-lhe na tela o tamanho de lá) */
+    'texto-83':             { x:116,   y:193.5, esc:0.656, aberta:false },
     'texto-84':             { x:62,    y:279,   esc:1.44, aberta:true },
     'texto-radioativos-84': { x:665.5, y:519,   esc:1.49, aberta:true }
   },
@@ -22077,7 +22089,8 @@ var AJUSTE_LIGADO = false;
    celular: nas telas maiores a mesa não é tocada. */
 const MESA_NO_CELULAR = { x:2, y:-22, e:1.156 };
 /* e a de cada slide que tem a sua (no celular): o slide 9, a natureza */
-const MESA_NO_CELULAR_POR_SLIDE = { 8:{ x:-8, y:104, e:1.17 } };
+/* (no slide 9: fechada, ao entrar no tópico, e aberta em 32 colunas — EV8.longa troca uma pela outra) */
+const MESA_NO_CELULAR_POR_SLIDE = { 8:{ x:5, y:10, e:1.07, aberta:{ x:-8, y:104, e:1.17 } } };
 var AJUSTE = { ligado:false, x:MESA_NO_CELULAR.x, y:MESA_NO_CELULAR.y, e:MESA_NO_CELULAR.e,
                dedos:new Map(), ini:null };
 const limitaEscala = e => Math.max(0.4, Math.min(2.5, e));

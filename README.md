@@ -691,11 +691,13 @@ o play volta 1 s depois; aos 32 s o Pb volta ao tamanho, ainda a piscar, o Bi cr
 o símbolo entra do 83 ao 118, um a um, até aos 37 s; dos 39 aos 41 s "do 83 até
 o 118 são todos radioativos", no âmbar das cartas radioativas.
 
-No celular, no slide 9, a mesa tem a medida dela (`MESA_NO_CELULAR_POR_SLIDE`:
-x −8, y 104, a 1,17, a da montagem no celular), os textos do vão e os rótulos (`texto-82`,
+No celular, no slide 9, a mesa tem duas medidas, as da montagem no celular
+(`MESA_NO_CELULAR_POR_SLIDE`): fechada, ao entrar no tópico, x 5, y 10, a 1,07; aberta
+em 32 colunas, x −8, y 104, a 1,17 (`EV8.longa` passa de uma à outra, junto com a
+abertura); os textos do vão e os rótulos (`texto-82`,
 `texto-trans-82`, `texto-cis-82`, `texto-83`, `texto-84`, `texto-radioativos-84`) vão ao lugar e à
 escala da montagem do celular (`EV8.LUGAR_CEL`; o `texto-83`, medido com a tabela aberta,
-a 0,6 para ter na tela o tamanho de lá) e o botão do carrossel vai para a faixa da direita (o centro
+a 0,656 para ter na tela o tamanho de lá) e o botão do carrossel vai para a faixa da direita (o centro
 em 1351, 78; `#stage.no-slide9`).
 
 No sumário: **a – Elementos naturais e artificiais** (a `8` aos 18,75 s, no fim
