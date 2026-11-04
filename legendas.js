@@ -744,7 +744,9 @@ var LEGENDAS = {
     [0,4.82,"Já os produzidos em laboratório são chamados de elementos artificiais."]
   ],
   "audio_tabela_8.2.0": [
-    [0,3.16,"Tá, agora vamos pra tabela pra ver quem é quem."]
+    [0,5.64,"Tá, agora vamos pra tabela pra ver quem é quem, mas, pra facilitar a visualização,"],
+    [5.64,8.6,"vamos usar a versão aberta da tabela, tá bom?"],
+    [8.6,12.1,"É mais fácil de visualizar os naturais e artificiais."]
   ],
   "audio_tabela_8.2": [
     [0,4.22,"Com exceção do tecnécio, 43, e do promécio, 61,"],

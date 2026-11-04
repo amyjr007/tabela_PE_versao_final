@@ -2753,6 +2753,16 @@ body.montagem .bloco72{pointer-events:auto}
   border-color:rgba(255,255,255,.3)}
 .mesa.lisa .pc.cor5 .face b{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
 .mesa.lisa .pc.cor5 .face :is(i,u,em){color:rgba(255,255,255,.86)}
+/* a tabela de 32 colunas do slide 9 (EV8.longa) */
+.mesa.natureza.longa89{--abre:.6}
+.mesa.natureza.anda89{transition:transform .9s cubic-bezier(.3,.85,.3,1)}
+.mesa.natureza.anda89 .pc{transition:left .9s cubic-bezier(.3,.85,.3,1), top .9s cubic-bezier(.3,.85,.3,1),
+  transform var(--tsobe,.42s) var(--e-salto), opacity .45s ease}
+.mesa.natureza .casa{transition:opacity .45s ease}
+.mesa.natureza.longa89 .casa{opacity:0;pointer-events:none}
+/* (as duas linhas da 8.2 crescem com a mesa encolhida, para ficarem do tamanho de antes) */
+.mesa.natureza .quadro82{transform-origin:0 0;transition:transform .9s cubic-bezier(.3,.85,.3,1), opacity .6s ease}
+.mesa.natureza.longa89 .quadro82{transform:scale(1.6)}
 /* a onda colorida do slide 9 (EV8): duas cores só, as da 8.2 — o verde
    dos naturais e o azul dos artificiais */
 .mesa.lisa .pc.onda-cor{--c5:#2FA866}
@@ -4327,7 +4337,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v39.8';
+const VERSAO = 'v39.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5381,8 +5391,8 @@ const VIDA = {
     this.ligada = true;
     this.marcaCubo(700);
     this.marcaFamilia(1300);
-    /* nos slides 6 e 7, sem a cruz das coordenadas */
-    if (atual !== 5 && atual !== 6) this.marcaCruz(5200);
+    /* nos slides 6, 7 e 9, sem a cruz das coordenadas (a linha e a coluna destacadas) */
+    if (atual !== 5 && atual !== 6 && atual !== 8) this.marcaCruz(5200);
   },
   desliga(){
     /* a cruz só é apagada se era dela (a vida estava ligada): a da
@@ -17742,7 +17752,27 @@ const LINHAS_82 = [
   { de:13.0, ate:16.0, txt:'Do 93 em diante – artificiais',   cor:'art82' }
 ];
 const EV8 = {
-  vidaAte:15.0, pausa:18.7, /* (de 1,5 s) */ veuDe:20.0, dispensou:false, n:'', estado:'', t8ant:-1,
+  vidaAte:15.0, pausa:18.7, /* (de 1,5 s) */ veuDe:20.0, abre820:6.5, aberta:false,
+  /* A TABELA DE 32 COLUNAS do slide 9 (alvoLongo, a mesma do tópico 7): as
+     séries sobem para as linhas 6 e 7 e os grupos 4 a 18 vão para a direita;
+     as casas vazias somem e a mesa encolhe para caber. As cartas andam pelo
+     left/top só enquanto ela abre ou fecha (anda89). ja: sem a viagem */
+  longa(sim, ja){
+    const m = slides[8] && slides[8].querySelector('.mesa');
+    if (!m || this.aberta === sim) return;
+    this.aberta = sim;
+    clearTimeout(this.longaT);
+    m.classList.toggle('anda89', !ja);
+    m.classList.toggle('longa89', sim);
+    m.querySelectorAll('.pc').forEach(c => {
+      const a = sim ? alvoLongo(+c.dataset.z) : alvoDe(+c.dataset.z);
+      c.style.left = a.x.toFixed(1) + 'px';
+      c.style.top  = a.y.toFixed(1) + 'px';
+    });
+    if (ja) return;
+    tocaEfeito('transition_cube');
+    this.longaT = setTimeout(() => m.classList.remove('anda89'), 950);
+  }, dispensou:false, n:'', estado:'', t8ant:-1,
   /* a frase da trilha, e o segundo em que o pedido de toque aparece */
   frase(){ return trilhaAtual === '8' ? FRASE_8 : trilhaAtual === '8.1' ? FRASE_81 : null; },
   prepara(){
@@ -17851,6 +17881,9 @@ const EV8 = {
     this.t8ant = t8;
     /* durante a "8.2.0" (e no 1,5 s depois dela) o play fica fora */
     stage.classList.toggle('sem-play8', atual === 8 && trilhaAtual === '8.2.0');
+    /* aos 6,5 s da "8.2.0" a tabela abre em 32 colunas (a do tópico 7), e a
+       "8.2" acontece com ela aberta */
+    if (!naMontagem()) this.longa(trilhaAtual === '8.2.0' && t >= this.abre820 || trilhaAtual === '8.2');
     this.tick82(t);
     /* a frase, letra a letra; na "8.1", antes, a dos naturais apaga-se */
     const F = this.frase() || FRASE_8, len = f => (f.antes + f.verde + f.depois).length;
@@ -17867,7 +17900,8 @@ const EV8 = {
     stage.classList.toggle('em-toque', pede);
   },
   /* chegar ao slide: a tela clara, a frase por escrever */
-  zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.estado82 = ''; this.t8ant = -1; clearTimeout(this.pausaT); if (this.veu) this.tick(-1); },
+  zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.estado82 = ''; this.t8ant = -1; clearTimeout(this.pausaT);
+          this.longa(false, true); if (this.veu) this.tick(-1); },
   /* saindo do slide com o pedido em cena, o play volta */
   fora(){ clearTimeout(this.pausaT); clearTimeout(this.vai82); stage.classList.remove('sem-play8'); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
 };
