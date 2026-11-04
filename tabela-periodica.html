@@ -4308,7 +4308,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v39.5';
+const VERSAO = 'v39.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -18898,8 +18898,9 @@ const RESUMO_ITENS_2 = [
                                                                               op:['7 linhas e 18 colunas', '18 linhas e 7 colunas', '9 linhas e 18 colunas'] },
   { txt:'Segundo esses critérios, ao montar a tabela até aqui, o próximo elemento será',
                                                                               op:['28', '29', '30'], cartas:true, tabela:27, resp:'Ni, 28' },
+  /* (a 6 continua com a tabela da 5, já com o Ni: é nela que se acha o cloro, que acende no acerto) */
   { txt:'Ainda segundo esses critérios, um elemento quimicamente semelhante ao flúor é o',
-                                                                              op:['cloro', 'oxigênio', 'neônio'] }
+                                                                              op:['cloro', 'oxigênio', 'neônio'], mantemTabela:true, marca:17 }
 ];
 /* cada tópico com o seu resumo: o slide, as questões, as falas (prefixo +
    número da questão), a chave do sumário, a fala do cartão da nota, o
@@ -18985,7 +18986,7 @@ const RESUMO = {
     this.q('.resumo-marca').textContent = 'Questão ' + (this.passo + 1) + ' de ' + C.itens.length;
     this.el.classList.toggle('com-card', !!item.card && !item.cardDe);
     this.el.classList.toggle('sem-nome', !!item.card && this.passo <= 6);
-    this.el.classList.toggle('com-tabela', !!item.tabela);
+    this.el.classList.toggle('com-tabela', !!(item.tabela || item.mantemTabela));
     if (item.tabela) this.montaTabela(item.tabela);
     const txt = this.q('.resumo-frase .txt'), resp = this.q('.resumo-frase .resp'), cur = this.q('.resumo-frase .cursor');
     txt.textContent = ''; resp.textContent = ''; resp.className = 'resp';
@@ -19067,6 +19068,7 @@ const RESUMO = {
       o.disabled = true;
     });
     if (item.tabela) this.encaixa(b);
+    if (item.marca){ const m = this.q('.mini[data-z="' + item.marca + '"]'); if (m) m.classList.add('encaixou'); }
     /* a frase completa-se, com a resposta em verde */
     const txt = this.q('.resumo-frase .txt'), resp = this.q('.resumo-frase .resp');
     txt.textContent = item.txt + ' '; resp.textContent = (item.resp || certa) + '.'; resp.className = 'resp ok';
