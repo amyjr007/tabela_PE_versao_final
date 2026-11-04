@@ -4215,6 +4215,8 @@ body.montagem .solto.pego{outline:1.5px solid var(--ouro);background:rgba(226,16
   background:var(--ouro-luz);transform:scaleX(0);transform-origin:left;transition:transform .2s ease}
 #versao.segurando::after{transform:scaleX(1);transition:transform 1s linear}
 body.montagem #versao{color:var(--ouro)}
+/* no celular, 20 % maior (14,7 → 17,6 px) */
+html.celular #versao{font-size:17.6px}
 
 /* o aviso curto, quando alguma coisa precisa ser dita ao aluno */
 #aviso{
@@ -4419,7 +4421,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v41.3';
+const VERSAO = 'v41.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
