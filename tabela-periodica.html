@@ -2753,8 +2753,10 @@ body.montagem .bloco72{pointer-events:auto}
   border-color:rgba(255,255,255,.3)}
 .mesa.lisa .pc.cor5 .face b{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.3)}
 .mesa.lisa .pc.cor5 .face :is(i,u,em){color:rgba(255,255,255,.86)}
-/* a onda colorida do slide 9 (EV8): a cor da família de cada um */
-.mesa.lisa .pc.onda-cor{--c5:var(--cor)}
+/* a onda colorida do slide 9 (EV8): duas cores só, as da 8.2 — o verde
+   dos naturais e o azul dos artificiais */
+.mesa.lisa .pc.onda-cor{--c5:#2FA866}
+.mesa.lisa .pc.onda-cor.onda-art{--c5:#3B8EDB}
 /* a "8.2": os naturais em verde e os artificiais em azul (os mesmos das
    frases da tela escura), e quem cresce passa por cima dos vizinhos */
 /* (a mudança de cor do app do professor, no capítulo da natureza: cada
@@ -4325,7 +4327,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v39.7';
+const VERSAO = 'v39.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6932,7 +6934,7 @@ function ondaDos118(t, o = ONDA_118, cor){
     if (!dentro){
       c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe');
       c.style.removeProperty('filter'); c.classList.remove('sobe');
-      if (cor) c.classList.remove('cor5', 'onda-cor');
+      if (cor) c.classList.remove('cor5', 'onda-cor', 'onda-art');
       return;
     }
     const atraso = (+c.dataset.col - 1)*passo + (+c.dataset.linha - 1)*0.02;
@@ -6943,7 +6945,12 @@ function ondaDos118(t, o = ONDA_118, cor){
     if (k > 0) c.style.filter = 'brightness(' + (1 + o.brilho*k).toFixed(3) + ')';
     else c.style.removeProperty('filter');
     c.classList.toggle('sobe', k > .05);
-    if (cor){ c.classList.toggle('cor5', k > .05); c.classList.toggle('onda-cor', k > .05); }
+    if (cor){
+      const z = +c.dataset.z, on = k > .05;
+      c.classList.toggle('cor5', on); c.classList.toggle('onda-cor', on);
+      /* (os artificiais: do 93 em diante, e o Tc e o Pm) */
+      c.classList.toggle('onda-art', on && (z > 92 || z === 43 || z === 61));
+    }
   });
   o.suja = dentro;
 }

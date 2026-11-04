@@ -674,8 +674,9 @@ com o play à espera da narração `8` (`Audios/audio_tabela_8.mp3`, 25,7 s: os
 elementos naturais e os artificiais, em `EV8`). Até aos 15 s dela a vida solta
 da tabela (os pulinhos, as famílias, a cruz) continua; dos 7,5 aos 10 s passa
 a onda dos 118 da `1.1` (`ondaDos118` com `ONDA_8`), da esquerda para a
-direita, e cada elemento acende na cor da família dele enquanto ela passa
-(`.onda-cor`, sobre o `cor5` da mesa lisa); aos 18,7 s a narração
+direita, e cada elemento acende enquanto ela passa, em duas cores só: verde
+os naturais e azul os artificiais (do 93 em diante, o Tc e o Pm; `.onda-cor`,
+`.onda-art`, sobre o `cor5` da mesa lisa); aos 18,7 s a narração
 pára 1,5 s e segue (`EV8.pausa`); aos 20 s a tela escurece
 e, até aos 25 s, digita no meio "Os elementos encontrados na natureza são
 naturais." (`FRASE_8`, o termo em verde);
