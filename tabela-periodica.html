@@ -4414,7 +4414,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v41.1';
+const VERSAO = 'v41.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17883,7 +17883,8 @@ const VEU_83 = (() => {
    cima, e dos 21,5 aos 26 s " é o último elemento estável"; aos 32 s ele volta
    ao tamanho (a piscar ainda) e o símbolo entra do 83 ao 118, um a um, até aos
    37 s; dos 39 aos 41 s "do 83 até o 118 são todos radioativos" */
-const Q84 = { abre:1.0, tc:4.0, pm:5.0, verde:[6.0, 7.0], pb:20.2, pbVolta:32.0, bi:32.0, radio:[32.0, 37.0] };
+/* (aos 27 s a narração pára, e o botão vira "Saquei": tocado, ela segue) */
+const Q84 = { abre:1.0, tc:4.0, pm:5.0, verde:[6.0, 7.0], pb:19.3, pbVolta:32.0, bi:32.0, radio:[32.0, 37.0], saquei:27.0 };
 const ESTAVEIS_84 = Array.from({ length:82 }, (_, i) => i + 1).filter(z => z !== 43 && z !== 61);
 const RADIO_84 = Array.from({ length:36 }, (_, i) => i + 83);
 const LINHAS_84 = [
@@ -18012,9 +18013,30 @@ const EV8 = {
     this.escritos84 = {};
     [43, 61, ...RADIO_84].forEach(z => this.cartas(z).insertAdjacentHTML('beforeend', '<span class="radio84">' + TREVO_84 + '</span>'));
   },
+  /* o "Saquei" dos 27 s da "8.4": tocado, ele estoura, a narração segue de
+     onde parou, e o play volta 1 s depois, em fade (playDepois) */
+  saquei84(sim){
+    this.comSaquei = sim;
+    botaoVerde(sim ? 'Saquei' : null, () => {
+      if (somBtn.classList.contains('saquei-tocado')) return;
+      somBtn.classList.add('saquei-tocado');
+      setTimeout(() => {
+        this.saquei84(false);
+        if (atual === 8 && trilhaAtual === '8.4') som.play().catch(avisaSeNaoTocou);
+      }, 250);
+    });
+  },
   /* A "8.4", função do tempo dela */
   tick84(t){
     const monta = naMontagem(), t84 = trilhaAtual === '8.4' ? t : -1, Q = Q84, tq = monta ? 60 : t84;
+    /* aos 27 s: a pausa, com o "Saquei" no lugar do play */
+    if (t84 >= 0 && this.t84ant >= 0 && this.t84ant < Q.saquei && t84 >= Q.saquei && !som.paused && !som.ended && !monta){
+      som.pause();
+      this.saquei84(true);
+    }
+    this.t84ant = t84;
+    /* (saindo da "8.4" — o sumário, por exemplo —, o play volta) */
+    if (this.comSaquei && trilhaAtual !== '8.4') this.saquei84(false);
     /* os textos, pedaço a pedaço (na montagem, inteiros) */
     let bate = false;
     const escreve = (chave, el, p) => {
@@ -18219,10 +18241,10 @@ const EV8 = {
     stage.classList.toggle('em-toque', pede);
   },
   /* chegar ao slide: a tela clara, a frase por escrever */
-  zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.estado82 = ''; this.estado83 = ''; this.estado84 = ''; this.t8ant = -1; clearTimeout(this.pausaT);
+  zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.estado82 = ''; this.estado83 = ''; this.estado84 = ''; this.t84ant = -1; if (this.comSaquei) this.saquei84(false); this.t8ant = -1; clearTimeout(this.pausaT);
           this.longa(false, true); if (this.veu) this.tick(-1); },
   /* saindo do slide com o pedido em cena, o play volta */
-  fora(){ clearTimeout(this.pausaT); clearTimeout(this.vai82); stage.classList.remove('sem-play8'); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
+  fora(){ clearTimeout(this.pausaT); clearTimeout(this.vai82); if (this.comSaquei) this.saquei84(false); stage.classList.remove('sem-play8'); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
 };
 window.EV8 = EV8;
 
