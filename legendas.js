@@ -99,9 +99,9 @@ var LEGENDAS = {
     [0,3.6,"Tópico 10. A tabela e o diagrama de Pauling."]
   ],
   "audio_tabela_1_jogo_memória": [
-    [0,3.54,"Muito bem, você terminou o tópico aqui, mas antes de seguir,"],
-    [3.54,8.44,"vamos fazer um joguinho rapidinho que vai te ajudar a fixar esse tópico mais ainda."],
-    [8.44,10.6,"Clique no botão ali pra gente começar."]
+    [0,3.42,"Muito bem, você terminou o resumo interativo do tópico aqui."],
+    [3.42,9.56,"Agora, que tal fazer um joguinho rapidinho que vai te ajudar a fixar esse tópico mais ainda?"],
+    [9.56,11.8,"Clique no botão ali pra gente começar."]
   ],
   "audio_tabela_1_jogo_memória1": [
     [0,1.94,"Certo, o jogo é bem simples."],
