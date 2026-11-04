@@ -691,7 +691,8 @@ o play volta 1 s depois; aos 32 s o Pb volta ao tamanho, ainda a piscar, o Bi cr
 o símbolo entra do 83 ao 118, um a um, até aos 37 s; dos 39 aos 41 s "do 83 até
 o 118 são todos radioativos", no âmbar das cartas radioativas.
 
-No celular, no slide 9, o botão do carrossel vai para a faixa da direita (o centro
+No celular, no slide 9, a mesa tem a medida dela (`MESA_NO_CELULAR_POR_SLIDE`:
+x −23, y 8, a 1,11, a da montagem no celular) e o botão do carrossel vai para a faixa da direita (o centro
 em 1351, 78; `#stage.no-slide9`).
 
 No sumário: **a – Elementos naturais e artificiais** (a `8` aos 18,75 s, no fim

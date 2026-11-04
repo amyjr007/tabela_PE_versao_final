@@ -4421,7 +4421,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v41.4';
+const VERSAO = 'v41.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22053,6 +22053,8 @@ var AJUSTE_LIGADO = false;
    maior, a avançar pelas laterais que o celular tem a mais. Só no
    celular: nas telas maiores a mesa não é tocada. */
 const MESA_NO_CELULAR = { x:2, y:-22, e:1.156 };
+/* e a de cada slide que tem a sua (no celular): o slide 9, a natureza */
+const MESA_NO_CELULAR_POR_SLIDE = { 8:{ x:-23, y:8, e:1.11 } };
 var AJUSTE = { ligado:false, x:MESA_NO_CELULAR.x, y:MESA_NO_CELULAR.y, e:MESA_NO_CELULAR.e,
                dedos:new Map(), ini:null };
 const limitaEscala = e => Math.max(0.4, Math.min(2.5, e));
@@ -22118,10 +22120,12 @@ function tiraAjuste(){
 }
 function aplicaAjuste(){
   /* a medida vale para a mesa de todos os slides com tabela */
+  /* (a do slide 9 tem a medida dela, a que o professor deixou na montagem no celular) */
   document.querySelectorAll('#deck .mesa').forEach(m => {
-    m.style.setProperty('--px', AJUSTE.x.toFixed(1) + 'px');
-    m.style.setProperty('--py', AJUSTE.y.toFixed(1) + 'px');
-    m.style.setProperty('--zoom', AJUSTE.e.toFixed(3));
+    const p = MESA_NO_CELULAR_POR_SLIDE[m.dataset.slide] || AJUSTE;
+    m.style.setProperty('--px', p.x.toFixed(1) + 'px');
+    m.style.setProperty('--py', p.y.toFixed(1) + 'px');
+    m.style.setProperty('--zoom', p.e.toFixed(3));
   });
   const o = document.querySelector('#ajuste output');
   if (o) o.textContent = 'x ' + Math.round(AJUSTE.x) + ' · y ' + Math.round(AJUSTE.y) +
