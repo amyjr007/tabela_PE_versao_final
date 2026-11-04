@@ -661,7 +661,7 @@ com as séries já embaixo), **b – Os elementos de transição interna** (a `7
 
 ### Slide 9 · A Natureza dos elementos — Os naturais, os artificiais e os radioativos
 
-A `8.3` (`Audios/audio_tabela_8.3.mp3`, 43,5 s, no play do fim da `8.2`; em
+A `8.3` (`Audios/audio_tabela_8.3.mp3`, 40,4 s — cortada no fim da pergunta, no play do fim da `8.2`; em
 `EV8.tick83`, os segundos em `Q83`): aos 1,5 s os textos saem e a tabela junta-se
 de novo em 18 colunas, com as cores do começo (a volta, mais lenta, acaba aos
 4 s); dos 10 aos 14 s digita no vão "Dá pra saber quais elementos são

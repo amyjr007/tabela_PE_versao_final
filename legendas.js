@@ -764,8 +764,7 @@ var LEGENDAS = {
     [14.66,23.16,"Sim, você provavelmente associa a radioatividade a riscos ou acidentes, e é verdade que ela exige muito cuidado."],
     [23.16,27.32,"Mas ela também é uma ferramenta fantástica na medicina moderna."],
     [27.76,35.72,"Ela é usada no tratamento de tumores, em diagnósticos por imagem nos hospitais e até na geração de eletricidade em reatores nucleares."],
-    [35.72,40.3,"Tá, mas como descobrir quem é radioativo pela tabela?"],
-    [40.3,43.02,"É fácil. Vamos abrir a tabela de novo."]
+    [35.72,40.3,"Tá, mas como descobrir quem é radioativo pela tabela?"]
   ],
   "audio_tabela_8.2": [
     [0,4.22,"Com exceção do tecnécio, 43, e do promécio, 61,"],
