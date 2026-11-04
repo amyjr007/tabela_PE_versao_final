@@ -1031,7 +1031,11 @@ No cartão da nota do Quiz 2 (o da `1.4`), acabado o "statistics", toca a
 e **Resumo**. O Resumo (`RESUMO`, as questões em `RESUMO_ITENS`) escurece a
 tela, com **Resumo interativo** no alto; cada questão toca a `resumo_N` e
 digita a frase no meio (a primeira dos 0,8 s), e acabada a fala vêm três
-opções. O acerto e o erro são os dos quizzes: a frase completa-se com a
+opções (a questão 3, "Na tabela, há um total de...?", digita dos 5,5 s; na 4,
+"Cada card tem as iniciais do nome do elemento em...", o card do sódio entra
+em fade aos 2,5 s e a digitação começa aos 3,3 s). No celular, a tela escura
+vai até as bordas pela mesma camada das outras (`.resumo1::before`). O
+acerto e o erro são os dos quizzes: a frase completa-se com a
 resposta em verde, confete, fanfarra, aplausos e a voz do acerto
 ("perfeito" na última); no erro, a opção fica vermelha, o "error" e, no
 primeiro erro da questão, a voz de ânimo, e a questão só passa com o

@@ -134,11 +134,13 @@ html.palco-largo #stage::before, html.palco-largo #stage::after{display:none}
    saía como uma linha na borda do palco (no Tab S9). A cor delas passa
    para um ::before esticado até as bordas da tela, atrás do conteúdo (que
    fica no lugar); o breu do quiz, sem nada dentro, estica a caixa. */
-html:is(.palco-largo,.palco-alto) :is(.veu,.quiz,.memoria){background:none}
-html:is(.palco-largo,.palco-alto) :is(.veu,.quiz,.memoria)::before{content:'';position:absolute;z-index:-1;pointer-events:none}
-html.palco-largo :is(.veu,.quiz,.memoria)::before{inset:0 calc(-1 * var(--folga))}
-html.palco-alto  :is(.veu,.quiz,.memoria)::before{inset:calc(-1 * var(--folgav)) 0}
+html:is(.palco-largo,.palco-alto) :is(.veu,.quiz,.memoria,.resumo1){background:none}
+html:is(.palco-largo,.palco-alto) :is(.veu,.quiz,.memoria,.resumo1)::before{content:'';position:absolute;z-index:-1;pointer-events:none}
+html.palco-largo :is(.veu,.quiz,.memoria,.resumo1)::before{inset:0 calc(-1 * var(--folga))}
+html.palco-alto  :is(.veu,.quiz,.memoria,.resumo1)::before{inset:calc(-1 * var(--folgav)) 0}
 html:is(.palco-largo,.palco-alto) .veu::before {background:rgba(12,10,32,.87)}
+/* (o resumo interativo e o véu das terras-raras, mais escuros) */
+html:is(.palco-largo,.palco-alto) :is(.resumo1,.veu-terras)::before{background:rgba(12,10,32,.93)}
 html:is(.palco-largo,.palco-alto) .quiz::before{background:rgba(12,10,32,.55)}
 html:is(.palco-largo,.palco-alto) .memoria::before{background:radial-gradient(ellipse 92% 82% at 50% 46%,
   rgba(20,17,46,.95) 0%, rgba(11,9,30,.985) 62%, rgba(7,6,22,.995) 100%)}
@@ -2547,9 +2549,10 @@ body.montagem .bloco72{pointer-events:auto}
 .resumo-card{display:none;width:150px;height:150px;box-sizing:border-box;padding:10px 12px;border-radius:12px;
   flex-direction:column;align-items:center;color:#fff;
   background:linear-gradient(145deg,color-mix(in srgb,var(--cat-alcalinos) 84%,#fff),color-mix(in srgb,var(--cat-alcalinos) 86%,#000));
-  border:1px solid rgba(255,255,255,.3);box-shadow:0 14px 40px rgba(0,0,0,.45);animation:cartaResumo .5s var(--e-salto) both}
+  border:1px solid rgba(255,255,255,.3);box-shadow:0 14px 40px rgba(0,0,0,.45);animation:cartaResumo .6s ease both}
 .resumo1.com-card .resumo-card{display:flex}
-@keyframes cartaResumo{from{transform:scale(.6) rotateY(90deg);opacity:0}}
+/* (entra em fade) */
+@keyframes cartaResumo{from{opacity:0}}
 .resumo-card i{align-self:flex-start;font-family:var(--mono);font-style:normal;font-size:22px;line-height:1}
 .resumo-card b{flex:1;display:grid;place-items:center;font-family:var(--display);font-weight:600;font-size:58px;line-height:1}
 .resumo-card u{font-family:var(--mono);text-decoration:none;font-size:17px}
@@ -4278,7 +4281,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v39.2';
+const VERSAO = 'v39.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6033,8 +6036,9 @@ const LEGENDA = {
      tópico 3. Por fala: a frase que casar com o padrão fica sem legenda */
   NA_TELA: [
     [/^audio_tabela_\d+\.0$/, /./],
-    /* (as frases do resumo interativo são digitadas na tela) */
-    [/^resumo_[1-8]$/, /./],
+    /* (as perguntas do resumo interativo — o que acaba em "..." — são
+       digitadas na tela; o que vem antes delas na fala tem legenda) */
+    [/^resumo_[1-8]$/, /\.\.\.$/],
     [/^audio_tabela_1$/, /instrumento de|consulta e não foi feita/],
     [/^audio_tabela_2$/, /Critério 1|organizados em linhas|^em ordem crescente/],
     [/^audio_tabela_2\.3$/, /Critério 2/],
@@ -18840,10 +18844,9 @@ som.addEventListener('play', () => { if (QUIZ.mostrandoNota) QUIZ.saiDaNota(); }
 const RESUMO_ITENS = [
   { txt:'A tabela periódica é um instrumento de',                              op:['consulta', 'memorização', 'cálculo'], de:0.8 },
   { txt:'E não precisa ser',                                                   op:['memorizada', 'consultada', 'impressa'] },
-  { txt:'A tabela periódica atual contém todos os elementos químicos isolados pelos químicos, que são um total de',
-                                                                               op:['118 elementos', '92 elementos', '150 elementos'] },
-  { txt:'Cada elemento é representado por um card, como este aqui. Cada card tem as iniciais do nome do elemento em',
-                                                                               op:['latim', 'grego', 'inglês'], card:true },
+  /* (de: o segundo da fala em que a digitação começa; cardDe: o card do sódio entra em fade) */
+  { txt:'Na tabela, há um total de',                                           op:['118 elementos', '92 elementos', '150 elementos'], de:5.5, fim:'...?' },
+  { txt:'Cada card tem as iniciais do nome do elemento em',                    op:['latim', 'grego', 'inglês'], card:true, cardDe:2.5, de:3.3 },
   { txt:'Dos dois números que aparecem no card, o número atômico é sempre o',  op:['menor dos dois valores', 'maior dos dois valores', 'que fica embaixo'], card:true },
   { txt:'Nesse caso, o número atômico é',                                      op:['11', '23', '12'], card:true },
   { txt:'E o nome desse elemento é o',                                 op:['Sódio', 'Nitrogênio', 'Neônio'], card:true, nome:true },
@@ -18902,14 +18905,14 @@ const RESUMO = {
     const item = RESUMO_ITENS[this.passo];
     this.travado = true; this.errouAqui = false;
     this.q('.resumo-marca').textContent = 'Questão ' + (this.passo + 1) + ' de ' + RESUMO_ITENS.length;
-    this.el.classList.toggle('com-card', !!item.card);
+    this.el.classList.toggle('com-card', !!item.card && !item.cardDe);
     this.el.classList.toggle('sem-nome', !!item.card && this.passo <= 6);
     const txt = this.q('.resumo-frase .txt'), resp = this.q('.resumo-frase .resp'), cur = this.q('.resumo-frase .cursor');
     txt.textContent = ''; resp.textContent = ''; resp.className = 'resp';
     cur.classList.remove('pisca');
     const msg = this.q('.resumo-msg'); msg.textContent = ''; msg.className = 'resumo-msg';
     const ops = this.q('.resumo-ops'); ops.innerHTML = ''; ops.classList.remove('on');
-    const frase = item.txt + '...', a = this.fala1('resumo_' + (this.passo + 1)), de = item.de || 0.3;
+    const frase = item.txt + (item.fim || '...'), a = this.fala1('resumo_' + (this.passo + 1)), de = item.de || 0.3;
     let n = 0, mostrou = false;
     const opcoes = () => {
       if (mostrou || g !== this.g) return;
@@ -18928,6 +18931,7 @@ const RESUMO = {
     (function quadro(){
       if (g !== RESUMO.g || mostrou) return;
       const d = a.duration || 4, ate = Math.max(de + 0.6, d - 0.25), t = a.currentTime;
+      if (item.cardDe && (t >= item.cardDe || a.ended)) RESUMO.el.classList.add('com-card');
       const k = t < de ? 0 : Math.min(frase.length, Math.round((t - de) / (ate - de) * frase.length));
       if (k !== n){ if (k > n) TECLAS.bate(); n = k; txt.textContent = frase.slice(0, k); }
       if (a.ended || k >= frase.length) opcoes(); else requestAnimationFrame(quadro);
