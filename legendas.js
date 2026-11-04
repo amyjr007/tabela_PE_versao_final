@@ -748,6 +748,15 @@ var LEGENDAS = {
     [5.64,8.6,"vamos usar a versão aberta da tabela, tá bom?"],
     [8.6,12.1,"É mais fácil de visualizar os naturais e artificiais."]
   ],
+  "audio_tabela_8.3": [
+    [0,6.9,"Além da sua origem, a posição do elemento na tabela também nos dá pistas claras sobre a sua estabilidade nuclear."],
+    [6.9,14.66,"Ou seja, só de olhar pra tabela já dá pra prever quais elementos apresentam fenômenos relacionados à radioatividade."],
+    [14.66,23.16,"Sim, você provavelmente associa a radioatividade a riscos ou acidentes, e é verdade que ela exige muito cuidado."],
+    [23.16,27.32,"Mas ela também é uma ferramenta fantástica na medicina moderna."],
+    [27.76,35.72,"Ela é usada no tratamento de tumores, em diagnósticos por imagem nos hospitais e até na geração de eletricidade em reatores nucleares."],
+    [35.72,40.3,"Tá, mas como descobrir quem é radioativo pela tabela?"],
+    [40.3,43.02,"É fácil. Vamos abrir a tabela de novo."]
+  ],
   "audio_tabela_8.2": [
     [0,4.22,"Com exceção do tecnécio, 43, e do promécio, 61,"],
     [4.22,8.64,"do hidrogênio até o urânio, todos os elementos são naturais."],

@@ -661,6 +661,18 @@ com as séries já embaixo), **b – Os elementos de transição interna** (a `7
 
 ### Slide 9 · A Natureza dos elementos — Os naturais, os artificiais e os radioativos
 
+A `8.3` (`Audios/audio_tabela_8.3.mp3`, 43,5 s, no play do fim da `8.2`; em
+`EV8.tick83`, os segundos em `Q83`): aos 1,5 s os textos saem e a tabela junta-se
+de novo em 18 colunas, com as cores do começo (a volta, mais lenta, acaba aos
+4 s); dos 10 aos 14 s digita no vão "Dá pra saber quais elementos são
+radioativos"; aos 18 s a tela escurece com o símbolo da radioatividade no meio
+(`VEU_83`) e aos 19 s o sinal de perigo nele; aos 29 s, em fade, a foto da
+radioterapia (`Imagens/radio1.jpeg`, "No tratamento de tumores"), e aos 33 s o
+carrossel passa à da usina (`radio2.jpeg`, "Na geração de eletricidade"); aos
+36 s tudo sai; aos 37,5 s a tela escurece de novo e digita "Como descobrir quem
+é radioativo pela tabela?" (`FRASE_83`, "radioativo" no amarelo do símbolo) e,
+acabada, "Toque na tela" — que, por ora, só desfaz a tela escura.
+
 No sumário: **a – Elementos naturais e artificiais** (a `8` aos 18,75 s, no fim
 da pausa, pouco antes da tela escurecer) e **b – Quais são os naturais e
 artificiais** (o começo da `8.2`, com a tabela a abrir em 32 colunas).
