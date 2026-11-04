@@ -2767,8 +2767,8 @@ body.montagem .bloco72{pointer-events:auto}
 .mesa.natureza.anda89.lento89 .pc{transition:left 2.5s cubic-bezier(.4,0,.2,1), top 2.5s cubic-bezier(.4,0,.2,1),
   transform var(--tsobe,.42s) var(--e-salto), opacity .45s ease}
 .mesa.natureza.lento89 .face::after{transition-duration:1.2s}
-/* a linha da "8.3", na tinta, com a barrinha */
-.quadro83{color:var(--tinta)}
+/* a linha da "8.3", na tinta, com a barrinha (no celular, na escala da montagem dele) */
+.quadro83{color:var(--tinta);transform-origin:0 0;transform:scale(var(--esc8,1))}
 .quadro83 .cursor{display:none;width:3px;height:1em;margin-left:4px;vertical-align:-.14em;
   background:currentColor;animation:piscaCursor 1.05s steps(1) infinite}
 .quadro83.digitando83 .cursor{display:inline-block}
@@ -2821,7 +2821,7 @@ body.montagem .bloco72{pointer-events:auto}
 body.montagem .rotulo84{pointer-events:auto}
 /* (as duas linhas da 8.2 crescem com a mesa encolhida, para ficarem do tamanho de antes) */
 .mesa.natureza .quadro82{transform-origin:0 0;transition:transform .9s cubic-bezier(.3,.85,.3,1), opacity .6s ease}
-.mesa.natureza.longa89 .quadro82{transform:scale(1.6)}
+.mesa.natureza.longa89 .quadro82{transform:scale(var(--esc8,1.6))}
 /* (os da "8.4" na escala que dá o tamanho do computador também no celular: EV8.posiciona84) */
 .mesa.natureza.longa89 .quadro84{transform:scale(var(--esc84,1.6))}
 /* a onda colorida do slide 9 (EV8): duas cores só, as da 8.2 — o verde
@@ -2856,7 +2856,7 @@ body.montagem .rotulo84{pointer-events:auto}
 .mesa.lisa .pc.cor82.ambar82::after{box-shadow:0 0 0 3px #FFC34D, 0 0 26px 9px rgba(255,165,20,.85);opacity:1}
 /* "Transurânicos = depois do urânio." e "Cisurânicos", embaixo da linha 7
    (crescem com a mesa encolhida, como as linhas do vão) */
-.rotulo82{position:absolute;z-index:30;white-space:nowrap;pointer-events:none;transform-origin:0 0;transform:scale(1.6);
+.rotulo82{position:absolute;z-index:30;white-space:nowrap;pointer-events:none;transform-origin:0 0;transform:scale(var(--esc8,1.6));
   font-family:var(--display);font-weight:700;font-size:30px;line-height:1.2;opacity:0;transition:opacity .4s ease}
 .rotulo82.on, body.montagem .rotulo82{opacity:1}
 body.montagem .rotulo82{pointer-events:auto}
@@ -4421,7 +4421,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v41.5';
+const VERSAO = 'v41.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -18040,6 +18040,29 @@ const EV8 = {
       el.style.left = a.x; el.style.top = a.y;
       el.style.setProperty('--esc84', k);
     });
+    /* NO CELULAR, os textos que o professor arrumou na montagem do celular:
+       o canto de cima à esquerda no palco e a escala (a da peça, na mesa),
+       com a mesa como ela está quando eles aparecem (aberta, a 0,6, ou não) */
+    if (!ehCelular()) return;
+    const z = v('--zoom', 1);
+    Object.entries(this.LUGAR_CEL).forEach(([nome, L]) => {
+      const el = m.querySelector('[data-mont="' + nome + '"]'), sm = z * (L.aberta ? 0.6 : 1);
+      if (!el) return;
+      el.style.left = (cx + (L.x - ox - px) / sm).toFixed(1) + 'px';
+      el.style.top  = (cy + (L.y - oy - py) / sm).toFixed(1) + 'px';
+      el.style.setProperty(nome.endsWith('-84') ? '--esc84' : '--esc8', L.esc);
+    });
+  },
+  /* (no palco do celular: o centro que a montagem dá, menos meia largura e meia altura) */
+  LUGAR_CEL: {
+    'texto-82':             { x:93.5,  y:268,   esc:1.6,  aberta:true },
+    'texto-trans-82':       { x:205.5, y:565,   esc:1.6,  aberta:true },
+    'texto-cis-82':         { x:61.5,  y:383,   esc:1.6,  aberta:true },
+    /* (o da "8.3" aparece com a tabela fechada, mas foi medido com ela aberta:
+       a escala 0,6 dá-lhe na tela o tamanho que tinha lá) */
+    'texto-83':             { x:116,   y:193.5, esc:0.6,  aberta:false },
+    'texto-84':             { x:62,    y:279,   esc:1.44, aberta:true },
+    'texto-radioativos-84': { x:665.5, y:519,   esc:1.49, aberta:true }
   },
   /* o "Saquei" dos 27 s da "8.4": tocado, ele estoura, a narração segue de
      onde parou, e o play volta 1 s depois, em fade (playDepois) */
@@ -22054,7 +22077,7 @@ var AJUSTE_LIGADO = false;
    celular: nas telas maiores a mesa não é tocada. */
 const MESA_NO_CELULAR = { x:2, y:-22, e:1.156 };
 /* e a de cada slide que tem a sua (no celular): o slide 9, a natureza */
-const MESA_NO_CELULAR_POR_SLIDE = { 8:{ x:-23, y:8, e:1.11 } };
+const MESA_NO_CELULAR_POR_SLIDE = { 8:{ x:-8, y:104, e:1.17 } };
 var AJUSTE = { ligado:false, x:MESA_NO_CELULAR.x, y:MESA_NO_CELULAR.y, e:MESA_NO_CELULAR.e,
                dedos:new Map(), ini:null };
 const limitaEscala = e => Math.max(0.4, Math.min(2.5, e));
