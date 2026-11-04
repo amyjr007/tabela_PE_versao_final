@@ -661,6 +661,10 @@ com as séries já embaixo), **b – Os elementos de transição interna** (a `7
 
 ### Slide 9 · A Natureza dos elementos — Os naturais, os artificiais e os radioativos
 
+No sumário: **a – Elementos naturais e artificiais** (a `8` aos 18,75 s, no fim
+da pausa, pouco antes da tela escurecer) e **b – Quais são os naturais e
+artificiais** (o começo da `8.2`, com a tabela a abrir em 32 colunas).
+
 A mesa fica, no tópico inteiro, no lugar que o professor deixou na montagem
 (`{ el:'tabela', x:-5, y:42, esc:0.94 }`: `--px`/`--py` da `.mesa[data-slide="8"]`,
 fora do celular, que tem a medida dele).

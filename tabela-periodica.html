@@ -4337,7 +4337,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v39.9';
+const VERSAO = 'v40.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -21321,6 +21321,18 @@ const NAV_TOPICOS = [
   /* ---- o slide 9 · A Natureza dos elementos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:8,
     entra(){ /* o recomeço do slide já é o tópico */ } },
+  /* a "8" no fim da pausa dos 18,7 s, quando ela volta a falar, pouco antes
+     da tela escurecer (o segundo já forçado: a pausa não volta a acontecer) */
+  { titulo:'Elementos naturais e artificiais', sub:'aos 18,75 s da narração 8, no fim da pausa', slide:8,
+    entra(v, g){
+      trilhaAtual = -1;
+      carregaTrilha('8');
+      TEMPO_FORCADO = { id:'8', t:18.75 };
+      depoisDaMesa(g, () => tocaDesde('8', 18.75, g));
+    } },
+  /* o começo da "8.2": a tabela abre em 32 colunas, e a narração começa */
+  { titulo:'Quais são os naturais e artificiais', sub:'o começo da 8.2, com a tabela aberta', slide:8,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('8.2', 0, g)); } },
   /* ---- o slide 10 · A tabela e os elétrons de valência ---- */
   { titulo:'Início', sub:'o começo do slide', slide:9,
     entra(){ /* o recomeço do slide já é o tópico */ } },
