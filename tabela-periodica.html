@@ -4281,7 +4281,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v39.3';
+const VERSAO = 'v39.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6038,7 +6038,7 @@ const LEGENDA = {
     [/^audio_tabela_\d+\.0$/, /./],
     /* (as perguntas do resumo interativo — o que acaba em "..." — são
        digitadas na tela; o que vem antes delas na fala tem legenda) */
-    [/^resumo_[1-8]$/, /\.\.\.$/],
+    [/^resumo_1\.[1-8]$/, /\.\.\.$/],
     [/^audio_tabela_1$/, /instrumento de|consulta e não foi feita/],
     [/^audio_tabela_2$/, /Critério 1|organizados em linhas|^em ordem crescente/],
     [/^audio_tabela_2\.3$/, /Critério 2/],
@@ -18774,7 +18774,7 @@ const QUIZ = {
     /* no do Quiz 2, o Continuar vira "Resumo", e toca o convite ao resumo interativo */
     const doResumo = this.origem === '1.4';
     cx.querySelector('.nota-segue').textContent = doResumo ? 'Resumo →' : 'Continuar →';
-    if (doResumo) est.then(() => { if (g === this.geracao && this.mostrandoNota) RESUMO.fala1('resumo_0'); });
+    if (doResumo) est.then(() => { if (g === this.geracao && this.mostrandoNota) RESUMO.fala1('resumo_1'); });
     /* o play fica fora de cena: quem segue é o Continuar do cartão, que
        toca a narração seguinte, ou o Refazer, que abre outro quiz igual */
     cx.classList.toggle('sem-seguir', !DEPOIS_DO_QUIZ[this.origem]);
@@ -18831,9 +18831,9 @@ som.addEventListener('play', () => { if (QUIZ.mostrandoNota) QUIZ.saiDaNota(); }
 
 /* ============================================================
    O RESUMO INTERATIVO — depois do Quiz 2 e antes do jogo da memória
-   No cartão da nota do Quiz 2 toca a "resumo_0" e o Continuar vira
+   No cartão da nota do Quiz 2 toca a "resumo_1" e o Continuar vira
    "Resumo". Tocado, a tela escurece, com "Resumo interativo" no alto, e
-   cada questão é uma frase começada pela voz (resumo_N) e digitada no
+   cada questão é uma frase começada pela voz (resumo_1.N) e digitada no
    meio da tela, para o aluno completar com uma de três opções. O acerto e
    o erro são os dos quizzes: a festa e a voz do acerto, o "error" e a voz
    de ânimo no primeiro erro, e a questão só passa com o acerto. Da quarta
@@ -18912,7 +18912,7 @@ const RESUMO = {
     cur.classList.remove('pisca');
     const msg = this.q('.resumo-msg'); msg.textContent = ''; msg.className = 'resumo-msg';
     const ops = this.q('.resumo-ops'); ops.innerHTML = ''; ops.classList.remove('on');
-    const frase = item.txt + (item.fim || '...'), a = this.fala1('resumo_' + (this.passo + 1)), de = item.de || 0.3;
+    const frase = item.txt + (item.fim || '...'), a = this.fala1('resumo_1.' + (this.passo + 1)), de = item.de || 0.3;
     let n = 0, mostrou = false;
     const opcoes = () => {
       if (mostrou || g !== this.g) return;

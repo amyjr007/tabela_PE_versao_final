@@ -108,7 +108,7 @@ var LEGENDAS = {
     [1.94,6.2,"Você só precisa formar pares do símbolo com o nome nas cartas aí."],
     [6.2,7.2,"Boa sorte!"]
   ],
-  "resumo_0": [
+  "resumo_1": [
     [0,2.4,"Então, esse primeiro tópico termina aqui."],
     [2.4,4.08,"Vamos ver o que você aprendeu?"],
     [4.08,6.5,"Que tal fazer um resumo interativo?"],
@@ -116,14 +116,14 @@ var LEGENDAS = {
     [7.52,11.54,"Eu inicio a frase e você completa com a resposta correta, tá bom?"],
     [11.54,12.5,"Vamos lá."]
   ],
-  "resumo_1": [[0,3.96,"Certo. A tabela periódica é um instrumento de..."]],
-  "resumo_2": [[0,3.06,"E, para o estudante, ela não precisa ser..."]],
-  "resumo_3": [[0,5.14,"A tabela periódica atual contém todos os elementos químicos isolados pelos químicos,"],[5.14,7.14,"que são um total de..."]],
-  "resumo_4": [[0,3.16,"Cada elemento é representado por um card, como esse aqui."],[3.16,7.22,"Cada card tem as iniciais do nome do elemento em..."]],
-  "resumo_5": [[0,4.6,"Dos dois números que aparecem no card, o número atômico é sempre o..."]],
-  "resumo_6": [[0,2.74,"Neste exemplo, o número atômico é..."]],
-  "resumo_7": [[0,2.9,"Certo, e o nome desse elemento é o..."]],
-  "resumo_8": [[0,3.24,"Tem esse símbolo porque seu nome em latim é..."]],
+  "resumo_1.1": [[0,3.96,"Certo. A tabela periódica é um instrumento de..."]],
+  "resumo_1.2": [[0,3.06,"E, para o estudante, ela não precisa ser..."]],
+  "resumo_1.3": [[0,5.14,"A tabela periódica atual contém todos os elementos químicos isolados pelos químicos,"],[5.14,7.14,"que são um total de..."]],
+  "resumo_1.4": [[0,3.16,"Cada elemento é representado por um card, como esse aqui."],[3.16,7.22,"Cada card tem as iniciais do nome do elemento em..."]],
+  "resumo_1.5": [[0,4.6,"Dos dois números que aparecem no card, o número atômico é sempre o..."]],
+  "resumo_1.6": [[0,2.74,"Neste exemplo, o número atômico é..."]],
+  "resumo_1.7": [[0,2.9,"Certo, e o nome desse elemento é o..."]],
+  "resumo_1.8": [[0,3.24,"Tem esse símbolo porque seu nome em latim é..."]],
   "audio_tabela_1_jogo_memória_fim": [
     [0,4.1,"Pronto! Você pode refazer o jogo ou seguir pro próximo tópico."],
     [4.1,5.26,"A escolha é sua."]

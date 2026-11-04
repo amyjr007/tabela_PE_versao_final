@@ -1026,10 +1026,10 @@ função do tempo da narração.
 ### O resumo interativo (entre o Quiz 2 e o jogo da memória)
 
 No cartão da nota do Quiz 2 (o da `1.4`), acabado o "statistics", toca a
-`resumo_0` ("Que tal fazer um resumo interativo?"), e os botões são
+`resumo_1` ("Que tal fazer um resumo interativo?"), e os botões são
 **Refazer** (outro Quiz 2, com as seis questões que não saíram da última vez)
 e **Resumo**. O Resumo (`RESUMO`, as questões em `RESUMO_ITENS`) escurece a
-tela, com **Resumo interativo** no alto; cada questão toca a `resumo_N` e
+tela, com **Resumo interativo** no alto; cada questão toca a `resumo_1.N` e
 digita a frase no meio (a primeira dos 0,8 s), e acabada a fala vêm três
 opções (a questão 3, "Na tabela, há um total de...?", digita dos 5,5 s; na 4,
 "Cada card tem as iniciais do nome do elemento em...", o card do sódio entra

@@ -67,9 +67,9 @@ const CASCA = [
   './Audios/audio_tabela_1_jogo_memória1.mp3',
   './Audios/audio_tabela_1_jogo_memória_fim.mp3',
   /* o resumo interativo, depois do Quiz 2 */
-  './Audios/resumo_0.mp3', './Audios/resumo_1.mp3', './Audios/resumo_2.mp3',
-  './Audios/resumo_3.mp3', './Audios/resumo_4.mp3', './Audios/resumo_5.mp3',
-  './Audios/resumo_6.mp3', './Audios/resumo_7.mp3', './Audios/resumo_8.mp3',
+  './Audios/resumo_1.mp3', './Audios/resumo_1.1.mp3', './Audios/resumo_1.2.mp3',
+  './Audios/resumo_1.3.mp3', './Audios/resumo_1.4.mp3', './Audios/resumo_1.5.mp3',
+  './Audios/resumo_1.6.mp3', './Audios/resumo_1.7.mp3', './Audios/resumo_1.8.mp3',
   './Audios/audio_tabela_2.mp3',
   './Audios/audio_tabela_2.1.mp3',
   './Audios/audio_tabela_2.2.mp3',
