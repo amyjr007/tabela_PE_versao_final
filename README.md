@@ -1046,6 +1046,12 @@ os outros quizzes. Refazer recomeça o resumo; Continuar toca a narração do
 jogo da memória (`1.jogo`). A volta da aula (ONDE) reabre o resumo do
 começo; o sumário tem o tópico "Resumo interativo" (direto ao resumo).
 
+No cartão da nota de cada resumo, o botão da esquerda é **Copiar resumo** (o
+resumo não se refaz): abre por cima do cartão uma folha com as frases
+completas, a resposta em verde e negrito ("Copie no seu caderno"), que rola
+com o dedo; **Fechar** volta ao cartão. Uma frase que não se entende fora da
+questão tem a sua versão para a folha (`resumo` no item).
+
 O mesmo `RESUMO` serve a cada tópico (`RESUMOS[k]`: o slide, as questões, o
 prefixo das falas, a chave do sumário, a fala do cartão e o botão de
 seguir).

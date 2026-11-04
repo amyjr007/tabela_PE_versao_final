@@ -2589,6 +2589,23 @@ body.montagem .bloco72{pointer-events:auto}
 /* o cartão da nota do resumo */
 .resumo1 .resumo-nota{z-index:2}
 .resumo1.nota-on .resumo-nota{transform:translate(-50%,-50%);opacity:1;pointer-events:auto}
+/* a folha do "Copiar resumo": por cima do cartão, que se esconde; a lista rola */
+.resumo-folha{position:absolute;left:640px;top:380px;width:760px;max-height:580px;box-sizing:border-box;z-index:3;
+  display:flex;flex-direction:column;padding:26px 34px 22px;border-radius:24px;text-align:left;
+  background:#FFFDF8;border:1px solid var(--ouro-dim);box-shadow:0 30px 80px rgba(12,10,32,.45);
+  transform:translate(-50%,-50%) scale(.92);opacity:0;pointer-events:none;
+  transition:transform .45s var(--e-salto), opacity .3s ease}
+.resumo1.folha-on .resumo-folha{transform:translate(-50%,-50%);opacity:1;pointer-events:auto}
+.resumo1.folha-on .resumo-nota{opacity:0!important;pointer-events:none!important}
+.resumo-folha h3{margin:6px 0 2px;font-family:var(--display);font-weight:700;font-size:26px;color:var(--tinta)}
+.folha-dica{margin:0 0 14px;font-family:var(--display);font-size:16px;color:var(--tinta-dim)}
+.folha-lista{flex:1;min-height:0;margin:0;padding:0 10px 0 30px;overflow-y:auto;
+  touch-action:pan-y;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  user-select:text;-webkit-user-select:text;
+  font-family:var(--display);font-size:22px;line-height:1.45;color:var(--tinta)}
+.folha-lista li{margin:0 0 14px;padding-left:4px}
+.folha-lista b{color:#1F8A4C;font-weight:700}
+.resumo-folha .nota-botoes{margin-top:16px}
 
 /* o cubo da pergunta: à frente do cartão, e com um "?" no lugar do nome */
 .pc.pergunta{z-index:45;pointer-events:none}
@@ -4308,7 +4325,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v39.6';
+const VERSAO = 'v39.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -18877,14 +18894,19 @@ som.addEventListener('play', () => { if (QUIZ.mostrandoNota) QUIZ.saiDaNota(); }
    ============================================================ */
 const RESUMO_ITENS = [
   { txt:'A tabela periódica é um instrumento de',                              op:['consulta', 'memorização', 'cálculo'], de:0.8 },
-  { txt:'E não precisa ser',                                                   op:['memorizada', 'consultada', 'impressa'] },
+  /* (resumo: a frase na folha do "Copiar resumo", quando a da questão não se entende sozinha) */
+  { txt:'E não precisa ser',                                                   op:['memorizada', 'consultada', 'impressa'],
+    resumo:'A tabela periódica não precisa ser memorizada.' },
   /* (de: o segundo da fala em que a digitação começa; cardDe: o card do sódio entra em fade) */
   { txt:'Na tabela, há um total de',                                           op:['118 elementos', '92 elementos', '150 elementos'], de:5.5, fim:'...?' },
   { txt:'Cada card tem as iniciais do nome do elemento em',                    op:['latim', 'grego', 'inglês'], card:true, cardDe:2.5, de:3.3 },
   { txt:'Dos dois números que aparecem no card, o número atômico é sempre o',  op:['menor dos dois valores', 'maior dos dois valores', 'que fica embaixo'], card:true },
-  { txt:'Nesse caso, o número atômico é',                                      op:['11', '23', '12'], card:true },
-  { txt:'E o nome desse elemento é o',                                 op:['Sódio', 'Nitrogênio', 'Neônio'], card:true, nome:true },
-  { txt:'Tem esse símbolo porque, em latim, seu nome é',                       op:['Natrium', 'Sodium', 'Nitrum'], card:true }
+  { txt:'Nesse caso, o número atômico é',                                      op:['11', '23', '12'], card:true,
+    resumo:'No card do Na, o número atômico é 11.' },
+  { txt:'E o nome desse elemento é o',                                 op:['Sódio', 'Nitrogênio', 'Neônio'], card:true, nome:true,
+    resumo:'O nome do elemento Na é Sódio.' },
+  { txt:'Tem esse símbolo porque, em latim, seu nome é',                       op:['Natrium', 'Sodium', 'Nitrum'], card:true,
+    resumo:'O sódio tem o símbolo Na porque, em latim, seu nome é Natrium.' }
 ];
 /* O RESUMO DO TÓPICO 2 — no fim da "2.5A" o botão do canto diz "Resumo"
    (o quiz fica guardado para depois). As frases acabam em "...?!". A 5 tem
@@ -18897,10 +18919,12 @@ const RESUMO_ITENS_2 = [
   { txt:'Ao organizar os 118 elementos segundo esses dois critérios, teremos um total de',
                                                                               op:['7 linhas e 18 colunas', '18 linhas e 7 colunas', '9 linhas e 18 colunas'] },
   { txt:'Segundo esses critérios, ao montar a tabela até aqui, o próximo elemento será',
-                                                                              op:['28', '29', '30'], cartas:true, tabela:27, resp:'Ni, 28' },
+                                                                              op:['28', '29', '30'], cartas:true, tabela:27, resp:'Ni, 28',
+    resumo:'Montada a tabela até o cobalto (Co, 27), o próximo elemento é o Ni, 28.' },
   /* (a 6 continua com a tabela da 5, já com o Ni: é nela que se acha o cloro, que acende no acerto) */
   { txt:'Ainda segundo esses critérios, um elemento quimicamente semelhante ao flúor é o',
-                                                                              op:['cloro', 'oxigênio', 'neônio'], mantemTabela:true, marca:17 }
+                                                                              op:['cloro', 'oxigênio', 'neônio'], mantemTabela:true, marca:17,
+    resumo:'Um elemento quimicamente semelhante ao flúor (mesma coluna) é o cloro.' }
 ];
 /* cada tópico com o seu resumo: o slide, as questões, as falas (prefixo +
    número da questão), a chave do sumário, a fala do cartão da nota, o
@@ -18932,14 +18956,36 @@ const RESUMO = {
           '<div class="nota-rotulo">Resumo interativo · sua nota</div><div class="nota-nome"></div>' +
           '<div class="nota-valor"><span class="nota-num"></span><span class="nota-de">/10</span></div>' +
           '<div class="nota-acertos"></div><div class="nota-msg"></div>' +
-          '<div class="nota-botoes"><button type="button" class="nota-refaz">Refazer</button>' +
+          '<div class="nota-botoes"><button type="button" class="nota-copia">Copiar resumo</button>' +
           '<button type="button" class="nota-segue"></button></div></div>' +
+        /* a folha do resumo: as frases completas, para o aluno copiar no caderno */
+        '<div class="resumo-folha" role="dialog" aria-label="O resumo">' +
+          '<div class="nota-rotulo">Resumo interativo</div><h3></h3>' +
+          '<p class="folha-dica">Copie no seu caderno.</p><ol class="folha-lista"></ol>' +
+          '<div class="nota-botoes"><button type="button" class="folha-fecha">Fechar</button></div></div>' +
       '</div>');
     const el = [...sl.querySelectorAll('.resumo1')].pop(), k = this.k;
     C.el = el;
     el.querySelector('.nota-segue').textContent = C.segue;
-    el.querySelector('.nota-refaz').addEventListener('click', () => { if (this.mostrandoNota && this.k === k) this.abre(k); });
+    el.querySelector('.resumo-folha h3').textContent = 'Tópico ' + C.slide + ' · ' + SLIDES[C.slide].title;
+    /* cada frase com a resposta em destaque ('resumo': a frase que se entende
+       sozinha, fora da questão) */
+    const ol = el.querySelector('.folha-lista');
+    C.itens.forEach(it => {
+      const certa = it.resp || it.op[0], f = it.resumo || it.txt + ' ' + certa + '.', i = f.lastIndexOf(certa);
+      const li = document.createElement('li');
+      if (i < 0) li.textContent = f;
+      else { const b = document.createElement('b'); b.textContent = certa; li.append(f.slice(0, i), b, f.slice(i + certa.length)); }
+      ol.appendChild(li);
+    });
+    el.querySelector('.nota-copia').addEventListener('click', () => { if (this.mostrandoNota && this.k === k) this.folha(true); });
+    el.querySelector('.folha-fecha').addEventListener('click', () => this.folha(false));
     el.querySelector('.nota-segue').addEventListener('click', () => { if (this.k === k) this.continua(); });
+  },
+  /* a folha por cima do cartão da nota; Fechar volta ao cartão */
+  folha(sim){
+    this.el.classList.toggle('folha-on', sim);
+    if (sim) this.q('.folha-lista').scrollTop = 0;
   },
   q(s){ return this.el.querySelector(s); },
   /* a fala da questão (ou a do cartão da nota), uma de cada vez */
@@ -18964,7 +19010,7 @@ const RESUMO = {
     this.aberto = true; this.mostrandoNota = false;
     this.passo = 0; this.acertos = 0; this.erros = 0;
     stage.classList.add('em-quiz');
-    this.el.classList.remove('nota-on', 'com-card', 'com-tabela');
+    this.el.classList.remove('nota-on', 'com-card', 'com-tabela', 'folha-on');
     this.el.classList.add('on');
     this.apresenta(this.g);
   },
@@ -19116,7 +19162,7 @@ const RESUMO = {
     this.g++;
     this.cala();
     this.aberto = false; this.mostrandoNota = false; this.travado = true;
-    if (this.el) this.el.classList.remove('on', 'nota-on');
+    if (this.el) this.el.classList.remove('on', 'nota-on', 'folha-on');
     if (!QUIZ.aberto && !QUIZ3.aberto) stage.classList.remove('em-quiz');
   }
 };
