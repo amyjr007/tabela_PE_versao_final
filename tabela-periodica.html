@@ -4421,7 +4421,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v41.8';
+const VERSAO = 'v41.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17839,19 +17839,19 @@ const ONDA_8 = { de:7.5, ate:10.0, dura:0.6, cresce:0.45, brilho:0.75, suja:fals
    volta ao tamanho com o brilho a piscar; aos 28 s a fila depois dele (93 a
    118) afasta-se e junta-se na mesma linha, como cartas num baralho; aos
    34,1 s, embaixo dela, "Transurânicos", e aos 36,6 s " = depois do urânio.";
-   aos 39 s o Tc e aos 40 s o Pm crescem com o brilho âmbar, e aos 47 s,
-   embaixo do lado esquerdo, "Cisurânicos", no mesmo âmbar */
+   aos 39 s o Tc e aos 40 s o Pm crescem com o brilho âmbar, e aos 51 s
+   "Cisurânicos" e aos 53 s " = antes do urânio.", no mesmo âmbar */
 const Q82 = { tc:0.9, pm:2.7, nat:[4.7, 6.0], u:10.0, volta:10.2, uPisca:12.0, art:[13.0, 16.0], juntos:18.0, normal:25.5,
               baralho:28.0, tcAmbar:39.0, pmAmbar:40.0 };
 const ROTULOS_82 = [
   { k:'trans', cor:'art82', partes:[{ de:34.1, ate:34.9, txt:'Transurânicos' }, { de:36.6, ate:37.6, txt:' = depois do urânio.' }] },
-  { k:'cis',   cor:'amb82', partes:[{ de:47.0, ate:47.8, txt:'Cisurânicos' }, { de:49.0, ate:50.0, txt:' = antes do urânio.' }] }
+  { k:'cis',   cor:'amb82', partes:[{ de:51.0, ate:51.8, txt:'Cisurânicos' }, { de:53.0, ate:54.0, txt:' = antes do urânio.' }] }
 ];
 /* o fecho da "8.2": cada pedaço dos dois rótulos cresce na sua vez — o
-   "Cisurânicos" (51,8 s) e o "antes do urânio" (54 s), que voltam aos 55,3 s,
-   quando crescem o "Transurânicos" e, aos 57,5 s, o "depois do urânio"; aos
-   59,4 s (o fim da fala) tudo volta ao tamanho */
-const CRESCE_82 = { cis:[[51.8, 55.3], [54.0, 55.3]], trans:[[55.3, 59.4], [57.5, 59.4]] };
+   "Cisurânicos" (56 s) e o "antes do urânio" (58 s), que voltam aos 59,5 s,
+   quando crescem o "Transurânicos" e, aos 62 s, o "depois do urânio"; aos
+   63,5 s (o fim da fala) tudo volta ao tamanho */
+const CRESCE_82 = { cis:[[56.0, 59.5], [58.0, 59.5]], trans:[[59.5, 63.5], [62.0, 63.5]] };
 const NATURAIS_82 = Array.from({ length:92 }, (_, i) => i + 1).filter(z => z !== 43 && z !== 61);
 const ARTIFICIAIS_82 = Array.from({ length:26 }, (_, i) => i + 93);
 const LINHAS_82 = [
@@ -18177,7 +18177,7 @@ const EV8 = {
   /* A "8.2", função do tempo dela */
   tick82(t){
     /* (nos primeiros 1,5 s da "8.3" a cena da "8.2" fica como acabou) */
-    const monta = naMontagem(), t82 = trilhaAtual === '8.2' ? t : trilhaAtual === '8.3' && t < Q83.junta ? 59.7 : -1;
+    const monta = naMontagem(), t82 = trilhaAtual === '8.2' ? t : trilhaAtual === '8.3' && t < Q83.junta ? 63.9 : -1;
     /* as linhas, letra a letra (na montagem, inteiras) */
     const tq = monta ? 20 : t82;
     let bate = false;
