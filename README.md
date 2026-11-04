@@ -746,11 +746,11 @@ verde; aos 10,2 s o Tc e o Pm voltam ao tamanho (ficam azuis) e cresce o U;
 dos 13 aos 16 s os artificiais do 93 ao 118 ficam azuis, um a um, e digita
 "Do 93 em diante – artificiais", em azul (`LINHAS_82`, peça `texto-82`); aos
 18 s os 26 artificiais crescem juntos (a 1,2), com um brilho vermelho, e o Tc e o Pm com eles, até aos 25,5 s (o Tc e o
-Pm, crescidos, brilham em azul). Aos 10 s o U cresce com um brilho vermelho
+Pm, crescidos, brilham em azul). Aos 10,8 s o U cresce com um brilho vermelho
 forte e aos 12 s volta ao tamanho com o brilho a piscar; aos 28 s a fila depois
 dele (93 a 118) afasta-se duas casas e junta-se na mesma linha, como cartas
 num baralho (`EV8.baralho`); aos 34,1 s, embaixo dela, digita "Transurânicos" e
-aos 36,6 s " = depois do urânio.", no azul; aos 39 s o Tc e aos 40 s o Pm
+aos 36,6 s " = depois do urânio.", no azul; aos 40 s o Tc e aos 41 s o Pm
 crescem com o brilho âmbar, e aos 51 s "Cisurânicos" e aos 53 s " = antes do urânio.", num âmbar
 brilhante (no tom do brilho do Tc e do Pm), no lugar da montagem (no palco,
 335, 313: o vão das linhas 4 e 5); aos 56 s cresce "Cisurânicos", aos 58 s
