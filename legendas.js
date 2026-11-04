@@ -163,10 +163,19 @@ var LEGENDAS = {
     [17.28,19.26,"É isso. Simples assim."]
   ],
   "audio_tabela_2.5A": [
-    [0,2.73,"Pra fechar o tópico, toque na tabela pra rever"],
-    [2.73,5.7,"essa estrutura de organização em linhas e colunas,"],
-    [5.7,8.68,"e depois clique no quiz pra gente ver se você entendeu."]
+    [0,2.94,"Então, o tópico 2 acaba aqui."],
+    [2.94,7.22,"Clica na tabela aí pra ver a estrutura de linhas e colunas direitinho."],
+    [7.22,12.18,"Depois, quando quiser, clique no resumo ali pra relembrar o que foi visto até aqui."]
   ],
+  "audio_tabela_2.5A1": [
+    [0,4.08,"Muito bem! Você está pronto pra fazer o quiz desse tópico. Vamos lá!"]
+  ],
+  "resumo_2.1": [[0,1.2,"Tá, vamos começar."],[1.2,6.26,"O autor dos critérios que organizam a tabela moderna é o inglês..."]],
+  "resumo_2.2": [[0,4.48,"Segundo Moseley, a tabela moderna organiza os elementos em..."]],
+  "resumo_2.3": [[0,4.02,"E numa mesma coluna, todos os elementos são quimicamente..."]],
+  "resumo_2.4": [[0,5.78,"Ao organizar os 118 elementos segundo esses dois critérios, teremos um total de..."]],
+  "resumo_2.5": [[0,5.22,"Segundo esses critérios, ao montar a tabela até aqui, o próximo elemento será..."]],
+  "resumo_2.6": [[0,5.38,"Ainda segundo esses critérios, um elemento quimicamente semelhante ao flúor é o..."]],
   "audio_tabela_2.5B": [
     [0,3.24,"Tá, sobre a organização geral da tabela é isso."],
     [3.24,6.48,"Agora você pode refazer o quiz com questões novas"],

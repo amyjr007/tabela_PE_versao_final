@@ -1046,6 +1046,23 @@ os outros quizzes. Refazer recomeça o resumo; Continuar toca a narração do
 jogo da memória (`1.jogo`). A volta da aula (ONDE) reabre o resumo do
 começo; o sumário tem o tópico "Resumo interativo" (direto ao resumo).
 
+O mesmo `RESUMO` serve a cada tópico (`RESUMOS[k]`: o slide, as questões, o
+prefixo das falas, a chave do sumário, a fala do cartão e o botão de
+seguir).
+
+### O resumo interativo do tópico 2 (entre a 2.5A e o quiz)
+
+No fim da `2.5A` (regravada: "clique no resumo ali") o botão do canto diz
+**Resumo** (`viraQuiz(true, 'Resumo')`); o quiz fica guardado. Tocado, o
+resumo do tópico 2 (`RESUMO_ITENS_2`): a tela escurece e toca a `resumo_2.1`;
+seis questões com as frases acabadas em "...?!" e as falas `resumo_2.N`. A 5
+monta no meio uma tabela até ao 27, carta a carta, com a vaga do 28 a
+piscar; as opções são cards com o número atômico (Ni 28, Cu 29, Zn 30), e no
+acerto o Ni voa para a vaga. No fim, o cartão da nota, o "statistics", a
+`2.5A1` ("Você está pronto pra fazer o quiz") e o botão **Quiz →**, que abre
+o quiz do tópico (`QUIZ3`). No sumário: "c – Resumo interativo" (`q2-r`) e
+"d – Quiz".
+
 ### O jogo da memória
 
 Acabada a narração `audio_tabela_1_jogo_memória`, o botão do canto troca
