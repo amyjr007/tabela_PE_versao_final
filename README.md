@@ -703,8 +703,14 @@ um passa à cor nova em 0,35 s, e as letras clareiam junto (a cor numa camada
 verde; aos 10,2 s o Tc e o Pm voltam ao tamanho (ficam azuis) e cresce o U;
 dos 13 aos 16 s os artificiais do 93 ao 118 ficam azuis, um a um, e digita
 "Do 93 em diante – artificiais", em azul (`LINHAS_82`, peça `texto-82`); aos
-18 s o U volta e os 26 artificiais crescem juntos (a 1,2), com um brilho vermelho, e o Tc e o Pm com eles, até aos 25,5 s (o Tc e o
-Pm, crescidos, brilham em azul). As
+18 s os 26 artificiais crescem juntos (a 1,2), com um brilho vermelho, e o Tc e o Pm com eles, até aos 25,5 s (o Tc e o
+Pm, crescidos, brilham em azul). Aos 10 s o U cresce com um brilho vermelho
+forte e aos 12 s volta ao tamanho com o brilho a piscar; aos 28 s a fila depois
+dele (93 a 118) afasta-se duas casas e junta-se na mesma linha, como cartas
+num baralho (`EV8.baralho`); aos 34,1 s, embaixo dela, digita "Transurânicos" e
+aos 36,6 s " = depois do urânio.", no azul; aos 39 s o Tc e aos 40 s o Pm
+crescem com o brilho âmbar, e aos 47 s, embaixo do lado esquerdo, "Cisurânicos"
+no mesmo âmbar (`ROTULOS_82`, peças da montagem). As
 cores ficam até ao fim. As cores da natureza (o verde dos naturais até o urânio, o âmbar do
 Tc e do Pm, o brilho dos artificiais, os estáveis e os radioativos) ficam
 para depois.
