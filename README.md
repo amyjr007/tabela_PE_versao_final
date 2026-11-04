@@ -684,7 +684,7 @@ o Pb cresce, a piscar no verde, com "O chumbo (Pb)" e dos 21,5 aos 26 s " é o �
 elemento estável" embaixo da tabela, debaixo dele (em cima, a frase tapava o
 Tc; peça `texto-chumbo-84`); aos 32 s o Pb volta ao tamanho, ainda a piscar, o Bi cresce com o brilho âmbar, e
 o símbolo entra do 83 ao 118, um a um, até aos 37 s; dos 39 aos 41 s "do 83 até
-o 118 são todos radioativos", no amarelo do símbolo.
+o 118 são todos radioativos", no âmbar das cartas radioativas.
 
 No sumário: **a – Elementos naturais e artificiais** (a `8` aos 18,75 s, no fim
 da pausa, pouco antes da tela escurecer) e **b – Quais são os naturais e

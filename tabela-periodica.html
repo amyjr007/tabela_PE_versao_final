@@ -2807,9 +2807,10 @@ body.montagem .bloco72{pointer-events:auto}
   opacity:0;transform:scale(.6);transition:opacity .5s ease, transform .5s cubic-bezier(.34,1.56,.64,1)}
 .pc .radio84 svg{display:block;width:100%;height:100%;filter:drop-shadow(0 1px 2px rgba(0,0,0,.35))}
 .pc.radio-on .radio84{opacity:1;transform:none}
-/* as linhas do vão: a primeira no verde dos estáveis, a segunda no amarelo do símbolo */
+/* as linhas do vão: a primeira no verde dos estáveis, a segunda no âmbar dos radioativos */
 .quadro84 .est84{color:#2FA866}
-.quadro84 .rad84{color:#FFD21F;text-shadow:0 0 1px #201C42, 0 1px 2px rgba(32,28,66,.7), 0 0 10px rgba(255,210,31,.5);
+/* (a dos radioativos no âmbar das cartas deles, o mesmo do "Cisurânicos") */
+.quadro84 .rad84{color:#F29A0E;text-shadow:0 0 10px rgba(255,165,20,.85), 0 0 22px rgba(255,165,20,.5);
   opacity:0;transition:opacity .4s ease}
 .quadro84 .rad84.on, body.montagem .quadro84 .rad84{opacity:1}
 /* "O chumbo é o último elemento estável", embaixo da tabela, debaixo do Pb, preso pela direita */
@@ -4413,7 +4414,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v40.7';
+const VERSAO = 'v40.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
