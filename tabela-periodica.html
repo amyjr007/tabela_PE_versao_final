@@ -4414,7 +4414,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v41.0';
+const VERSAO = 'v41.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17983,27 +17983,29 @@ const EV8 = {
     /* a "8.4": as duas linhas do vão (no lugar das da "8.2", e como elas
        crescem com a mesa encolhida), o rótulo do Pb e o símbolo nas cartas */
     /* (cada linha uma peça na montagem, para se mover sozinha; a segunda logo
-       abaixo da primeira — uma linha de 30 px com a margem, vezes 1,6. As duas
-       no lugar que o professor deixou na montagem, com a tabela aberta: no
-       palco, o centro das duas em 626, 172 — aqui, na medida da mesa) */
+       no lugar que o professor deixou na montagem, com a tabela aberta — no
+       palco, o centro da primeira em 543, 229 e o da segunda em 991, 478 —,
+       aqui na medida da mesa) */
+    const lugar84 = [{ x:-189.8, y:203.2 }, { x:843.0, y:644.7 }];
     this.quadros84 = LINHAS_84.map((L, i) => {
       const d = document.createElement('div');
       d.className = 'quadro71 quadro82 quadro84';
       d.dataset.mont = i ? 'texto-radioativos-84' : 'texto-84';
-      d.style.left = '-42.6px';
-      d.style.top  = (58.7 + i * (30 * 1.25 + 16) * 1.6).toFixed(1) + 'px';
+      d.style.left = lugar84[i].x + 'px';
+      d.style.top  = lugar84[i].y + 'px';
       d.innerHTML = '<div class="linha71 ' + L.cor + '">' + L.partes.map(() => '<span></span>').join('') + '</div>';
       m.appendChild(d);
       return d;
     });
     this.quadro84 = this.quadros84[0];
-    /* (o do Pb embaixo da tabela, debaixo dele e preso pela direita: a frase cresce para a esquerda.
-       Em cima dele, ela tapava o Tc e o símbolo dele) */
-    const pb = alvoLongo(82), r = document.createElement('div');
+    /* (o do Pb preso pela direita: a frase cresce para a esquerda. No lugar que o
+       professor deixou na montagem — no palco, o centro em 678, 266 —, aqui na
+       medida da mesa: a ponta direita e o alto) */
+    const r = document.createElement('div');
     r.className = 'rotulo84';
     r.dataset.mont = 'texto-chumbo-84';
-    r.style.left = (pb.x + LADO/2).toFixed(1) + 'px';
-    r.style.top  = (yDaLinha(7) + LADO/2 + 14).toFixed(1) + 'px';
+    r.style.left = '1226.9px';
+    r.style.top  = '279.4px';
     r.innerHTML = ROTULO_PB_84.map(() => '<span></span>').join('');
     m.appendChild(r);
     this.rotulo84 = r;
