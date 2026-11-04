@@ -2517,6 +2517,49 @@ body.montagem .bloco72{pointer-events:auto}
 .nota-botoes .nota-segue:hover{background:var(--tinta)}
 .quiz.sem-seguir .nota-segue{display:none}
 
+/* ---- o resumo interativo (RESUMO), depois do Quiz 2 ----
+   A tela escura, o título no alto, e no meio a frase da questão, digitada,
+   com as três opções embaixo; da quarta em diante, o card do sódio */
+.resumo1{position:absolute;inset:0;z-index:50;background:rgba(12,10,32,.92);
+  opacity:0;pointer-events:none;transition:opacity .6s ease}
+.resumo1.on{opacity:1;pointer-events:auto}
+.resumo-titulo{position:absolute;left:0;right:0;top:92px;text-align:center;
+  font-family:var(--display);font-weight:700;font-size:40px;letter-spacing:-.01em;color:var(--ouro-luz)}
+.resumo-corpo{position:absolute;left:140px;right:140px;top:150px;bottom:30px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center;
+  transition:opacity .35s ease}
+.resumo1.nota-on .resumo-corpo{opacity:0;pointer-events:none}
+.resumo-marca{font-family:var(--mono);font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:rgba(244,242,248,.6)}
+.resumo-frase{margin:0;max-width:960px;text-wrap:balance;
+  font-family:var(--display);font-weight:600;font-size:42px;line-height:1.22;color:#F4F2F8}
+.resumo-frase .resp.ok{color:#4ADE80;font-weight:700}
+.resumo-frase .cursor{display:inline-block;width:4px;height:.9em;margin-left:6px;vertical-align:-.1em;
+  background:var(--ouro-luz);border-radius:1px}
+.resumo-frase .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
+.resumo-ops{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;
+  opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease}
+.resumo-ops.on{opacity:1;transform:none}
+.resumo-ops .quiz-op{min-width:220px;text-align:center}
+.resumo-msg{min-height:30px;font-family:var(--display);font-weight:600;font-size:24px}
+.resumo-msg.ok{color:#4ADE80}
+.resumo-msg.erro{color:#FF8A9E}
+/* o card do sódio, no laranja dos alcalinos, como na tabela */
+.resumo-card{display:none;width:150px;height:150px;box-sizing:border-box;padding:10px 12px;border-radius:12px;
+  flex-direction:column;align-items:center;color:#fff;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--cat-alcalinos) 84%,#fff),color-mix(in srgb,var(--cat-alcalinos) 86%,#000));
+  border:1px solid rgba(255,255,255,.3);box-shadow:0 14px 40px rgba(0,0,0,.45);animation:cartaResumo .5s var(--e-salto) both}
+.resumo1.com-card .resumo-card{display:flex}
+@keyframes cartaResumo{from{transform:scale(.6) rotateY(90deg);opacity:0}}
+.resumo-card i{align-self:flex-start;font-family:var(--mono);font-style:normal;font-size:22px;line-height:1}
+.resumo-card b{flex:1;display:grid;place-items:center;font-family:var(--display);font-weight:600;font-size:58px;line-height:1}
+.resumo-card u{font-family:var(--mono);text-decoration:none;font-size:17px}
+.resumo-card em{font-style:normal;font-family:var(--display);font-size:18px;transition:opacity .35s ease}
+/* (até a questão do nome, o nome fica escondido) */
+.resumo1.sem-nome .resumo-card em{opacity:0}
+/* o cartão da nota do resumo */
+.resumo1 .resumo-nota{z-index:2}
+.resumo1.nota-on .resumo-nota{transform:translate(-50%,-50%);opacity:1;pointer-events:auto}
+
 /* o cubo da pergunta: à frente do cartão, e com um "?" no lugar do nome */
 .pc.pergunta{z-index:45;pointer-events:none}
 .pc.pergunta .face{box-shadow:0 0 0 2px var(--ouro-luz), 0 18px 40px rgba(12,10,32,.4),
@@ -4235,7 +4278,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v39.0';
+const VERSAO = 'v39.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5990,6 +6033,8 @@ const LEGENDA = {
      tópico 3. Por fala: a frase que casar com o padrão fica sem legenda */
   NA_TELA: [
     [/^audio_tabela_\d+\.0$/, /./],
+    /* (as frases do resumo interativo são digitadas na tela) */
+    [/^resumo_[1-8]$/, /./],
     [/^audio_tabela_1$/, /instrumento de|consulta e não foi feita/],
     [/^audio_tabela_2$/, /Critério 1|organizados em linhas|^em ordem crescente/],
     [/^audio_tabela_2\.3$/, /Critério 2/],
@@ -6286,7 +6331,8 @@ const SEQ = {
       massaTxt.textContent = numTxt.textContent = '';
     }
     QUIZ.fecha();
-    JOGO_ENTROU = false;       /* voltando ao slide, a espera do jogo volta a valer */
+    RESUMO.fecha();
+    JOGO_ENTROU = false;      /* voltando ao slide, a espera do jogo volta a valer */
     if (DIG_VEU) DIG_VEU.limpa();
     ONDA_FAM.suja = ONDA_118.suja = false;
     this.quizDa = null;
@@ -6695,6 +6741,8 @@ function efeitosDoTempo(){
   if (atual !== 6) EV6.fora();
   if (atual !== 7) EV7.fora();
   if (atual !== 8) EV8.fora();
+  /* (o resumo interativo é do slide 2: saindo dele, fecha) */
+  if (atual !== 1 && RESUMO.aberto) RESUMO.fecha();
   /* o slide 3 tem os eventos dele */
   if (atual === 2){ efeitos2(t); return; }
   /* o slide 4 tem os eventos dele (a narração "3") */
@@ -18546,7 +18594,10 @@ const QUIZ = {
     this.origem = trilha;
     const lista = (trilha === '1.3A' ? QUIZ_UMA : trilha === '1.3B' ? QUIZ_DUAS : QUIZ_DIFERENTES)
       .filter(p => !c || p.z !== +c.dataset.z);
-    this.itens = embaralha(lista.slice()).slice(0, QUIZ_TOTAL);
+    /* no Refazer, primeiro as que não saíram da última vez, e só então as outras */
+    const ja = new Set(this.ultimos || []);
+    this.ultimos = null;
+    this.itens = [...embaralha(lista.filter(p => !ja.has(p.z))), ...embaralha(lista.filter(p => ja.has(p.z)))].slice(0, QUIZ_TOTAL);
     this.passo = 0;
     this.acertos = 0;
     this.erros = 0;
@@ -18715,7 +18766,11 @@ const QUIZ = {
     this.nota = nota;
     /* feito: o sumário pinta-o de verde, com a nota (o da 1.4 é o Quiz 2; o da 1.3, o 1) */
     QUIZ_FEITOS.marca(this.origem === '1.4' ? 'q1-2' : 'q1-1', nota);
-    tocaEfeito('statistics');
+    const est = tocaEfeito('statistics');
+    /* no do Quiz 2, o Continuar vira "Resumo", e toca o convite ao resumo interativo */
+    const doResumo = this.origem === '1.4';
+    cx.querySelector('.nota-segue').textContent = doResumo ? 'Resumo →' : 'Continuar →';
+    if (doResumo) est.then(() => { if (g === this.geracao && this.mostrandoNota) RESUMO.fala1('resumo_0'); });
     /* o play fica fora de cena: quem segue é o Continuar do cartão, que
        toca a narração seguinte, ou o Refazer, que abre outro quiz igual */
     cx.classList.toggle('sem-seguir', !DEPOIS_DO_QUIZ[this.origem]);
@@ -18725,11 +18780,17 @@ const QUIZ = {
   refaz(){
     if (!this.mostrandoNota) return;
     const o = this.origem;
+    /* (outras questões, no mesmo estilo: as que acabaram de sair ficam de fora) */
+    this.ultimos = this.itens.map(p => p.z);
+    RESUMO.cala();
     this.saiDaNota();
     this.abre(o);
   },
   continua(){
     if (!this.mostrandoNota) return;
+    RESUMO.cala();
+    /* o do Quiz 2 leva ao resumo interativo, que leva ao jogo */
+    if (this.origem === '1.4'){ this.saiDaNota(); RESUMO.abre(); return; }
     const p = DEPOIS_DO_QUIZ[this.origem];
     this.saiDaNota();
     stage.classList.remove('em-quiz');
@@ -18763,6 +18824,187 @@ function mensagemDaNota(n){
   return 'Você está começando — e é assim que se aprende. Vamos em frente!';
 }
 som.addEventListener('play', () => { if (QUIZ.mostrandoNota) QUIZ.saiDaNota(); });
+
+/* ============================================================
+   O RESUMO INTERATIVO — depois do Quiz 2 e antes do jogo da memória
+   No cartão da nota do Quiz 2 toca a "resumo_0" e o Continuar vira
+   "Resumo". Tocado, a tela escurece, com "Resumo interativo" no alto, e
+   cada questão é uma frase começada pela voz (resumo_N) e digitada no
+   meio da tela, para o aluno completar com uma de três opções. O acerto e
+   o erro são os dos quizzes: a festa e a voz do acerto, o "error" e a voz
+   de ânimo no primeiro erro, e a questão só passa com o acerto. Da quarta
+   em diante, o card do sódio, de que as frases falam. No fim, o cartão da
+   nota (a dos acertos de primeira), o "statistics", e o Continuar toca a
+   narração do jogo da memória.
+   ============================================================ */
+const RESUMO_ITENS = [
+  { txt:'A tabela periódica é um instrumento de',                              op:['consulta', 'memorização', 'cálculo'], de:0.8 },
+  { txt:'E não precisa ser',                                                   op:['memorizada', 'consultada', 'impressa'] },
+  { txt:'A tabela periódica atual contém todos os elementos químicos isolados pelos químicos, que são um total de',
+                                                                               op:['118 elementos', '92 elementos', '150 elementos'] },
+  { txt:'Cada elemento é representado por um card, como este aqui. Cada card tem as iniciais do nome do elemento em',
+                                                                               op:['latim', 'grego', 'inglês'], card:true },
+  { txt:'Dos dois números que aparecem no card, o número atômico é sempre o',  op:['menor dos dois valores', 'maior dos dois valores', 'que fica embaixo'], card:true },
+  { txt:'Nesse caso, o número atômico é',                                      op:['11', '23', '12'], card:true },
+  { txt:'Certo, e o nome desse elemento é o',                                  op:['Sódio', 'Nitrogênio', 'Neônio'], card:true, nome:true },
+  { txt:'Tem esse símbolo porque, em latim, seu nome é',                       op:['Natrium', 'Sodium', 'Nitrum'], card:true }
+];
+const RESUMO = {
+  aberto:false, g:0, passo:0, acertos:0, erros:0, travado:true, fala:null,
+  monta(){
+    if (this.el || !slides[1]) return;
+    const z = 11;
+    slides[1].insertAdjacentHTML('beforeend',
+      '<div class="resumo1" role="dialog" aria-label="Resumo interativo">' +
+        '<div class="resumo-titulo">Resumo interativo</div>' +
+        '<div class="resumo-corpo"><div class="resumo-marca"></div>' +
+          '<div class="resumo-card"><i>' + z + '</i><b>' + SIMBOLOS[z-1] + '</b><u>' + MASSAS[z-1] + '</u><em>' + NOMES[z-1] + '</em></div>' +
+          '<p class="resumo-frase"><span class="txt"></span><span class="resp"></span><i class="cursor"></i></p>' +
+          '<div class="resumo-ops"></div><div class="resumo-msg" aria-live="polite"></div></div>' +
+        '<div class="nota-card resumo-nota" role="status" aria-live="polite">' +
+          '<div class="nota-rotulo">Resumo interativo · sua nota</div><div class="nota-nome"></div>' +
+          '<div class="nota-valor"><span class="nota-num"></span><span class="nota-de">/10</span></div>' +
+          '<div class="nota-acertos"></div><div class="nota-msg"></div>' +
+          '<div class="nota-botoes"><button type="button" class="nota-refaz">Refazer</button>' +
+          '<button type="button" class="nota-segue">Continuar →</button></div></div>' +
+      '</div>');
+    this.el = slides[1].querySelector('.resumo1');
+    this.q = s => this.el.querySelector(s);
+    this.q('.nota-refaz').addEventListener('click', () => { if (this.mostrandoNota) this.abre(); });
+    this.q('.nota-segue').addEventListener('click', () => this.continua());
+  },
+  /* a fala da questão (ou a do cartão do Quiz 2), uma de cada vez */
+  fala1(nome){
+    this.cala();
+    const a = new Audio(encodeURI('Audios/' + nome + '.mp3'));
+    Velocidade.aplicar(a);
+    EFEITOS.add(a);
+    const fim = () => EFEITOS.delete(a);
+    a.addEventListener('ended', fim); a.addEventListener('error', fim);
+    a.play().catch(fim);
+    return (this.fala = a);
+  },
+  cala(){ if (this.fala){ this.fala.pause(); EFEITOS.delete(this.fala); this.fala = null; } },
+  abre(){
+    this.monta();
+    if (!this.el) return;
+    this.g++;
+    this.aberto = true; this.mostrandoNota = false;
+    this.passo = 0; this.acertos = 0; this.erros = 0;
+    stage.classList.add('em-quiz');
+    this.el.classList.remove('nota-on', 'com-card');
+    this.el.classList.add('on');
+    this.apresenta(this.g);
+  },
+  /* a questão: a voz, e a frase digitada com ela; acabada a fala, as opções */
+  apresenta(g){
+    if (g !== this.g) return;
+    const item = RESUMO_ITENS[this.passo];
+    this.travado = true; this.errouAqui = false;
+    this.q('.resumo-marca').textContent = 'Questão ' + (this.passo + 1) + ' de ' + RESUMO_ITENS.length;
+    this.el.classList.toggle('com-card', !!item.card);
+    this.el.classList.toggle('sem-nome', !!item.card && this.passo <= 6);
+    const txt = this.q('.resumo-frase .txt'), resp = this.q('.resumo-frase .resp'), cur = this.q('.resumo-frase .cursor');
+    txt.textContent = ''; resp.textContent = ''; resp.className = 'resp';
+    cur.classList.remove('pisca');
+    const msg = this.q('.resumo-msg'); msg.textContent = ''; msg.className = 'resumo-msg';
+    const ops = this.q('.resumo-ops'); ops.innerHTML = ''; ops.classList.remove('on');
+    const frase = item.txt + '...', a = this.fala1('resumo_' + (this.passo + 1)), de = item.de || 0.3;
+    let n = 0, mostrou = false;
+    const opcoes = () => {
+      if (mostrou || g !== this.g) return;
+      mostrou = true;
+      txt.textContent = frase; cur.classList.add('pisca');
+      embaralha(item.op.slice()).forEach(nome => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.className = 'quiz-op'; b.textContent = nome;
+        b.addEventListener('click', () => this.responde(b, nome, item, g));
+        ops.appendChild(b);
+      });
+      ops.classList.add('on');
+      this.travado = false;
+    };
+    /* a digitação acaba um pouco antes da fala */
+    (function quadro(){
+      if (g !== RESUMO.g || mostrou) return;
+      const d = a.duration || 4, ate = Math.max(de + 0.6, d - 0.25), t = a.currentTime;
+      const k = t < de ? 0 : Math.min(frase.length, Math.round((t - de) / (ate - de) * frase.length));
+      if (k !== n){ if (k > n) TECLAS.bate(); n = k; txt.textContent = frase.slice(0, k); }
+      if (a.ended || k >= frase.length) opcoes(); else requestAnimationFrame(quadro);
+    })();
+    a.addEventListener('error', opcoes);
+  },
+  async responde(b, nome, item, g){
+    if (!this.aberto || this.travado || g !== this.g) return;
+    this.travado = true;
+    const msg = this.q('.resumo-msg'), certa = item.op[0];
+    if (nome !== certa){
+      b.classList.add('errada'); b.disabled = true;
+      this.erros++;
+      const primeiro = !this.errouAqui;
+      this.errouAqui = true;
+      msg.textContent = 'Tudo bem. Tente de novo'; msg.className = 'resumo-msg erro';
+      tremeVermelho([this.q('.resumo-corpo')]);
+      const erro = tocaEfeito('error');
+      if (primeiro) erro.then(() => { if (g === this.g && this.aberto) tocaEfeito(vozDoErro()); });
+      await erro;
+      if (g === this.g) this.travado = false;
+      return;
+    }
+    this.cala();
+    this.q('.resumo-ops').querySelectorAll('.quiz-op').forEach(o => {
+      if (o === b) o.classList.add('certa'); else o.classList.add('fora');
+      o.disabled = true;
+    });
+    /* a frase completa-se, com a resposta em verde */
+    const txt = this.q('.resumo-frase .txt'), resp = this.q('.resumo-frase .resp');
+    txt.textContent = item.txt + ' '; resp.textContent = certa + '.'; resp.className = 'resp ok';
+    this.q('.resumo-frase .cursor').classList.remove('pisca');
+    if (item.nome) this.el.classList.remove('sem-nome');
+    if (!this.errouAqui) this.acertos++;
+    const ultima = this.passo === RESUMO_ITENS.length - 1, voz = vozDoAcerto(ultima);
+    msg.textContent = voz.frase; msg.className = 'resumo-msg ok';
+    confete();
+    const fanfarra = tocaEfeito('funfare');
+    tocaEfeito('applause');
+    await fanfarra;
+    if (g !== this.g) return;
+    await tocaEfeito(voz.som);
+    if (g !== this.g) return;
+    this.passo++;
+    if (this.passo >= RESUMO_ITENS.length){ this.resultado(g); return; }
+    this.apresenta(g);
+  },
+  /* o cartão da nota, pelos mesmos critérios dos quizzes */
+  resultado(g){
+    if (g !== this.g) return;
+    const total = RESUMO_ITENS.length, a = this.acertos, e = this.erros;
+    const nota = Math.max(1, Math.round(a / total * 10));
+    this.q('.nota-num').textContent = nota;
+    this.q('.nota-nome').textContent = NOME.le();
+    this.q('.nota-acertos').textContent = 'Você acertou ' + a + ' de ' + total + ' de primeira' +
+      (e ? ' · ' + e + (e === 1 ? ' erro' : ' erros') : '') + '.';
+    this.q('.nota-msg').textContent = mensagemDaNota(nota);
+    this.el.classList.add('nota-on');
+    this.mostrandoNota = true;
+    QUIZ_FEITOS.marca('q1-r', nota);
+    tocaEfeito('statistics');
+  },
+  /* Continuar: a tela clareia, e toca a narração do jogo da memória */
+  continua(){
+    if (!this.mostrandoNota) return;
+    this.fecha();
+    tocaTrilha('1.jogo');
+  },
+  fecha(){
+    this.g++;
+    this.cala();
+    this.aberto = false; this.mostrandoNota = false; this.travado = true;
+    if (this.el) this.el.classList.remove('on', 'nota-on');
+    if (!QUIZ.aberto) stage.classList.remove('em-quiz');
+  }
+};
+window.RESUMO = RESUMO;
 
 /* ============================================================
    O JOGO DA MEMÓRIA — o do slide 2 do app do professor (lá, o "quiz 2")
@@ -20711,6 +20953,18 @@ const NAV_TOPICOS = [
       eleitoDaNavegacao(0);
       depoisDaMesa(g, () => tocaDesde('1.4', QUIZ_NA_HORA['1.4'], g));
     } },
+  /* o resumo interativo direto: a "1.4" já passou (o quiz dela não abre), sem voz */
+  { titulo:'Resumo interativo', sub:'depois do Quiz 2: a tela escura e as oito frases', slide:1, quiz:'q1-r',
+    entra(v, g){
+      eleitoDaNavegacao(0);
+      depoisDaMesa(g, () => {
+        if (g !== NAV.geracao) return;
+        trilhaAtual = -1;
+        carregaTrilha('1.4');
+        SEQ.quizDa = '1.4';
+        RESUMO.abre();
+      });
+    } },
   /* ---- o slide 3 · Os critérios de Organização ---- */
   { titulo:'Início', sub:'o começo do slide', slide:2,
     entra(){ /* o recomeço do slide já é o tópico */ } },
@@ -21461,6 +21715,8 @@ const ONDE = {
     if (QUIZ.aberto) o.quiz = { origem:QUIZ.origem, itens:QUIZ.itens.map(i => i.z), passo:QUIZ.passo,
                                 acertos:QUIZ.acertos, erros:QUIZ.erros, nota:!!QUIZ.mostrandoNota };
     if (QUIZ3.aberto) o.quiz3 = true;
+    /* o resumo interativo volta do começo */
+    if (RESUMO.aberto) o.resumo = true;
     if (memAberto) o.jogo = { ordem:memCartas.map(c => c.dataset.z + ':' + c.dataset.tipo),
                               casadas:[...new Set(memCartas.filter(c => c.classList.contains('casada')).map(c => +c.dataset.z))],
                               pontos:memPontos, erros:memErros, ultimoG:memUltimoG };
@@ -21533,6 +21789,7 @@ const ONDE = {
       if (o.quiz) QUIZ.retoma(o.quiz);
       else if (o.jogo) this.jogo(o.jogo);
       else if (o.quiz3){ viraQuiz(true); QUIZ3.abre(); }
+      else if (o.resumo){ SEQ.quizDa = '1.4'; RESUMO.abre(); }
       /* acabada a narração, o que vinha a seguir (o véu à espera do toque,
          a escolha de um elemento, o botão do jogo…) */
       else if (fim) SEQ.acabou(tr);
