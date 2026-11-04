@@ -2794,6 +2794,12 @@ body.montagem .bloco72{pointer-events:auto}
    radioatividade no canto de cima das cartas */
 .mesa.lisa .pc.cor84{--c82:#6FD08F}
 .mesa.lisa .pc.cor84 .face::after{opacity:1}
+/* (os radioativos, no âmbar, quando o símbolo entra neles) */
+.mesa.lisa .pc.rad84c{--c82:#F2A93B}
+.mesa.lisa .pc.rad84c .face::after{opacity:1}
+/* o Bi, o primeiro radioativo: crescido, com o brilho âmbar */
+.mesa.lisa .pc.bi84::after{content:'';position:absolute;inset:-2px;border-radius:5px;pointer-events:none;
+  box-shadow:0 0 0 3px #FFC34D, 0 0 26px 9px rgba(255,165,20,.85)}
 .mesa.lisa .pc.cresce84{--onda:1.4!important;z-index:9}
 .mesa.lisa .pc.pb84::after{content:'';position:absolute;inset:-2px;border-radius:5px;pointer-events:none;
   box-shadow:0 0 0 3px #4ADE80, 0 0 26px 9px rgba(74,222,128,.85);animation:pisca82 .9s ease-in-out infinite}
@@ -4407,7 +4413,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v40.6';
+const VERSAO = 'v40.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17876,14 +17882,14 @@ const VEU_83 = (() => {
    cima, e dos 21,5 aos 26 s " é o último elemento estável"; aos 32 s ele volta
    ao tamanho (a piscar ainda) e o símbolo entra do 83 ao 118, um a um, até aos
    37 s; dos 39 aos 41 s "do 83 até o 118 são todos radioativos" */
-const Q84 = { abre:1.0, tc:4.0, pm:5.0, verde:[6.0, 7.0], pb:19.3, pbVolta:32.0, radio:[32.0, 37.0] };
+const Q84 = { abre:1.0, tc:4.0, pm:5.0, verde:[6.0, 7.0], pb:20.2, pbVolta:32.0, bi:32.0, radio:[32.0, 37.0] };
 const ESTAVEIS_84 = Array.from({ length:82 }, (_, i) => i + 1).filter(z => z !== 43 && z !== 61);
 const RADIO_84 = Array.from({ length:36 }, (_, i) => i + 83);
 const LINHAS_84 = [
-  { cor:'est84', partes:[{ de:8.0, ate:13.0, txt:'A maioria é estável' }, { de:16.5, ate:17.6, txt:' – não radioativo' }] },
+  { cor:'est84', partes:[{ de:6.5, ate:13.0, txt:'Do nº atômico 1 ao 82, a maioria é estável' }, { de:16.5, ate:17.6, txt:' – não radioativo' }] },
   { cor:'rad84', partes:[{ de:39.0, ate:41.0, txt:'do 83 até o 118 são todos radioativos' }] }
 ];
-const ROTULO_PB_84 = [{ de:19.3, ate:19.9, txt:'O chumbo' }, { de:21.5, ate:26.0, txt:' é o último elemento estável' }];
+const ROTULO_PB_84 = [{ de:20.2, ate:21.0, txt:'O chumbo (Pb)' }, { de:21.5, ate:26.0, txt:' é o último elemento estável' }];
 /* o símbolo da radioatividade, pequeno, para o canto das cartas */
 const TREVO_84 = (() => {
   const pa = a => { const r1 = 46, r2 = 150, p = (r, g) => [200 + r * Math.cos(g * Math.PI / 180), 200 - r * Math.sin(g * Math.PI / 180)].map(v => v.toFixed(1)).join(' ');
@@ -18013,7 +18019,7 @@ const EV8 = {
     if (bate) TECLAS.bate();
     const fila = (de, ate, n) => t84 < de ? 0 : Math.min(n, Math.floor((t84 - de) / ((ate - de) / (n - 1))) + 1);
     const est = JSON.stringify({ tc: t84 >= Q.tc, pm: t84 >= Q.pm, verde: fila(Q.verde[0], Q.verde[1], ESTAVEIS_84.length),
-      pb: t84 >= Q.pb, pbGrande: t84 >= Q.pb && t84 < Q.pbVolta, radio: fila(Q.radio[0], Q.radio[1], RADIO_84.length),
+      pb: t84 >= Q.pb, pbGrande: t84 >= Q.pb && t84 < Q.pbVolta, bi: t84 >= Q.bi, radio: fila(Q.radio[0], Q.radio[1], RADIO_84.length),
       l1: monta || t84 >= LINHAS_84[0].partes[0].de, l2: monta || t84 >= LINHAS_84[1].partes[0].de, rot: monta || t84 >= Q.pb });
     if (est === this.estado84) return;
     this.estado84 = est;
@@ -18022,9 +18028,12 @@ const EV8 = {
     const pb = this.cartas(82);
     pb.classList.toggle('pb84', E.pb);
     pb.classList.toggle('cresce84', E.pbGrande);
-    this.cartas(43).classList.toggle('radio-on', E.tc);
-    this.cartas(61).classList.toggle('radio-on', E.pm);
-    RADIO_84.forEach((z, k) => this.cartas(z).classList.toggle('radio-on', k < E.radio));
+    /* (o símbolo entra e a carta passa ao âmbar dos radioativos; o Bi, o primeiro, cresce e brilha) */
+    const radio = (z, sim) => { const c = this.cartas(z); c.classList.toggle('radio-on', sim); c.classList.toggle('rad84c', sim); };
+    radio(43, E.tc); radio(61, E.pm);
+    RADIO_84.forEach((z, k) => radio(z, k < E.radio));
+    const bi = this.cartas(83);
+    bi.classList.toggle('bi84', E.bi); bi.classList.toggle('cresce84', E.bi);
     this.quadro84.classList.toggle('on', E.l1);
     this.quadro84.children[1].classList.toggle('on', E.l2);
     this.rotulo84.classList.toggle('on', E.rot);
