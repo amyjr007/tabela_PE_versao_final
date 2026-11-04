@@ -2815,13 +2815,15 @@ body.montagem .bloco72{pointer-events:auto}
 .quadro84 .rad84.on, body.montagem .quadro84 .rad84{opacity:1}
 /* "O chumbo é o último elemento estável", embaixo da tabela, debaixo do Pb, preso pela direita */
 .rotulo84{position:absolute;z-index:30;white-space:nowrap;pointer-events:none;transform-origin:100% 0;
-  transform:translateX(-100%) scale(1.6);padding:2px 10px;border-radius:10px;background:rgba(255,253,248,.88);
+  transform:translateX(-100%) scale(var(--esc84,1.6));padding:2px 10px;border-radius:10px;background:rgba(255,253,248,.88);
   font-family:var(--display);font-weight:700;font-size:30px;line-height:1.2;color:#2FA866;opacity:0;transition:opacity .4s ease}
 .rotulo84.on, body.montagem .rotulo84{opacity:1}
 body.montagem .rotulo84{pointer-events:auto}
 /* (as duas linhas da 8.2 crescem com a mesa encolhida, para ficarem do tamanho de antes) */
 .mesa.natureza .quadro82{transform-origin:0 0;transition:transform .9s cubic-bezier(.3,.85,.3,1), opacity .6s ease}
 .mesa.natureza.longa89 .quadro82{transform:scale(1.6)}
+/* (os da "8.4" na escala que dá o tamanho do computador também no celular: EV8.posiciona84) */
+.mesa.natureza.longa89 .quadro84{transform:scale(var(--esc84,1.6))}
 /* a onda colorida do slide 9 (EV8): duas cores só, as da 8.2 — o verde
    dos naturais e o azul dos artificiais */
 .mesa.lisa .pc.onda-cor{--c5:#2FA866}
@@ -3894,6 +3896,9 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
    canto do palco, que está para dentro da folga */
 /* (na montagem ele fica: é peça a arrastar e a mudar de tamanho) */
 #stage.em-quiz #ver-slides, #stage.em-jogo #ver-slides, #stage.tela-escura #ver-slides{display:none}
+/* no slide 9 do celular, ele vai para a faixa da direita (a tabela aberta
+   chega ao canto do palco): o lugar da montagem, o centro em 1351, 78 */
+html.celular.palco-largo #stage.no-slide9 #ver-slides{translate:146px -2px}
 /* com o carrossel aberto, os botões do palco saem de cena */
 #stage.em-carrossel #som, #stage.em-carrossel #som-dica, #stage.em-carrossel #vel,
 #stage.em-carrossel #ver-slides{opacity:0;pointer-events:none;transition:opacity .2s}
@@ -4414,7 +4419,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v41.2';
+const VERSAO = 'v41.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6891,6 +6896,7 @@ function efeitosDoTempo(){
   if (atual !== 6) EV6.fora();
   if (atual !== 7) EV7.fora();
   if (atual !== 8) EV8.fora();
+  stage.classList.toggle('no-slide9', atual === 8);
   /* (cada resumo interativo é do seu slide: saindo dele, fecha) */
   if (RESUMO.aberto && atual !== RESUMO.cfg.slide) RESUMO.fecha();
   /* o slide 3 tem os eventos dele */
@@ -17987,13 +17993,10 @@ const EV8 = {
        no lugar que o professor deixou na montagem, com a tabela aberta — no
        palco, o centro da primeira em 543, 229 e o da segunda em 991, 478 —,
        aqui na medida da mesa) */
-    const lugar84 = [{ x:-189.8, y:203.2 }, { x:843.0, y:644.7 }];
     this.quadros84 = LINHAS_84.map((L, i) => {
       const d = document.createElement('div');
       d.className = 'quadro71 quadro82 quadro84';
       d.dataset.mont = i ? 'texto-radioativos-84' : 'texto-84';
-      d.style.left = lugar84[i].x + 'px';
-      d.style.top  = lugar84[i].y + 'px';
       d.innerHTML = '<div class="linha71 ' + L.cor + '">' + L.partes.map(() => '<span></span>').join('') + '</div>';
       m.appendChild(d);
       return d;
@@ -18005,13 +18008,36 @@ const EV8 = {
     const r = document.createElement('div');
     r.className = 'rotulo84';
     r.dataset.mont = 'texto-chumbo-84';
-    r.style.left = '1226.9px';
-    r.style.top  = '279.4px';
     r.innerHTML = ROTULO_PB_84.map(() => '<span></span>').join('');
     m.appendChild(r);
     this.rotulo84 = r;
     this.escritos84 = {};
     [43, 61, ...RADIO_84].forEach(z => this.cartas(z).insertAdjacentHTML('beforeend', '<span class="radio84">' + TREVO_84 + '</span>'));
+    this.posiciona84();
+  },
+  /* OS TEXTOS DA "8.4" NO LUGAR DO PALCO que o professor deixou na montagem,
+     com a tabela aberta — em qualquer aparelho: a posição na mesa sai da
+     medida dela (no celular a mesa é outra, MESA_NO_CELULAR), e a escala do
+     texto compensa o tamanho da mesa, para ele ter na tela o tamanho do
+     computador (1,6 × 0,564). Um lugar m dentro da caixa da mesa vai ao palco
+     em C + T + s·(m − c), com c o meio da caixa (o centro do transform) e C
+     esse meio medido no palco */
+  LUGAR_84: { linhas:[{ x:167, y:205 }, { x:749.5, y:454 }], chumbo:{ x:966, y:248 } },
+  posiciona84(){
+    const m = slides[8].querySelector('.mesa'), cs = getComputedStyle(m), v = (n, d) => { const x = parseFloat(cs.getPropertyValue(n)); return isNaN(x) ? d : x; };
+    const px = v('--px', 0), py = v('--py', 0), s = v('--zoom', 1) * 0.6, k = (1.6 * 0.564 / s).toFixed(3);
+    const cx = m.offsetWidth / 2, cy = m.offsetHeight / 2;
+    let ox = cx, oy = cy;
+    for (let e = m; e && e !== stage; e = e.offsetParent){ ox += e.offsetLeft; oy += e.offsetTop; }
+    const naMesa = P => ({ x:(cx + (P.x - ox - px) / s).toFixed(1) + 'px', y:(cy + (P.y - oy - py) / s).toFixed(1) + 'px' });
+    const chave = [px, py, s, ox, oy].join('|');
+    if (this.medida84 === chave) return;
+    this.medida84 = chave;
+    [...this.quadros84, this.rotulo84].forEach((el, i) => {
+      const a = naMesa(i < 2 ? this.LUGAR_84.linhas[i] : this.LUGAR_84.chumbo);
+      el.style.left = a.x; el.style.top = a.y;
+      el.style.setProperty('--esc84', k);
+    });
   },
   /* o "Saquei" dos 27 s da "8.4": tocado, ele estoura, a narração segue de
      onde parou, e o play volta 1 s depois, em fade (playDepois) */
@@ -18028,6 +18054,7 @@ const EV8 = {
   },
   /* A "8.4", função do tempo dela */
   tick84(t){
+    if (!naMontagem()) this.posiciona84();
     const monta = naMontagem(), t84 = trilhaAtual === '8.4' ? t : -1, Q = Q84, tq = monta ? 60 : t84;
     /* aos 27 s: a pausa, com o "Saquei" no lugar do play */
     if (t84 >= 0 && this.t84ant >= 0 && this.t84ant < Q.saquei && t84 >= Q.saquei && !som.paused && !som.ended && !monta){

@@ -684,11 +684,15 @@ um a um, no mesmo fade da `8.2`; dos 6,5 aos 13 s "Do nº atômico 1 ao 82, a ma
 o centro em 543, 229 e em 991, 478); aos 19,3 s
 o Pb cresce, a piscar no verde, com "O chumbo (Pb)" e dos 21,5 aos 26 s " é o último
 elemento estável" (peça `texto-chumbo-84`, presa pela direita, no lugar da
-montagem: no palco, o centro em 678, 266); aos 27 s a narração pára e o botão
+montagem: no palco, o centro em 678, 266; os três vão a esses pontos do palco também no celular, com o
+tamanho do computador: `EV8.posiciona84`); aos 27 s a narração pára e o botão
 vira "Saquei" (`EV8.saquei84`): tocado, estoura, a narração segue de onde parou e
 o play volta 1 s depois; aos 32 s o Pb volta ao tamanho, ainda a piscar, o Bi cresce com o brilho âmbar, e
 o símbolo entra do 83 ao 118, um a um, até aos 37 s; dos 39 aos 41 s "do 83 até
 o 118 são todos radioativos", no âmbar das cartas radioativas.
+
+No celular, no slide 9, o botão do carrossel vai para a faixa da direita (o centro
+em 1351, 78; `#stage.no-slide9`).
 
 No sumário: **a – Elementos naturais e artificiais** (a `8` aos 18,75 s, no fim
 da pausa, pouco antes da tela escurecer) e **b – Quais são os naturais e
