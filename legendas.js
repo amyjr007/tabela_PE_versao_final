@@ -170,6 +170,14 @@ var LEGENDAS = {
   "audio_tabela_2.5A1": [
     [0,4.08,"Muito bem! Você está pronto pra fazer o quiz desse tópico. Vamos lá!"]
   ],
+  "resumo_8.1": [[0,4.84,"Os elementos que encontramos prontos no nosso planeta são chamados de..."]],
+  "resumo_8.2": [[0,5.22,"Já os elementos produzidos pelos cientistas em laboratórios são chamados de..."]],
+  "resumo_8.3": [[0,6.1,"Com exceção do tecnécio e do promécio, os elementos naturais vão do hidrogênio até o..."]],
+  "resumo_8.4": [[0,4.6,"Do número atômico 93 em diante, todos os elementos são..."]],
+  "resumo_8.5": [[0,5.74,"Por ficarem depois do urânio, esses elementos artificiais são chamados de..."]],
+  "resumo_8.6": [[0,4.9,"O tecnécio e o promécio são artificiais, mas ficam antes do urânio."],[4.9,7.7,"Por isso, são chamados de..."]],
+  "resumo_8.7": [[0,6.1,"O último elemento da tabela com núcleos estáveis, ou seja, não radioativos, é o..."]],
+  "resumo_8.8": [[0,4.2,"A partir do bismuto, 83, todos os elementos são..."]],
   "resumo_2.1": [[0,1.2,"Tá, vamos começar."],[1.2,6.26,"O autor dos critérios que organizam a tabela moderna é o inglês..."]],
   "resumo_2.2": [[0,4.48,"Segundo Moseley, a tabela moderna organiza os elementos em..."]],
   "resumo_2.3": [[0,4.02,"E numa mesma coluna, todos os elementos são quimicamente..."]],

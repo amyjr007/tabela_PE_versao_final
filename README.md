@@ -691,6 +691,13 @@ o play volta 1 s depois; aos 32 s o Pb volta ao tamanho, ainda a piscar, o Bi cr
 o símbolo entra do 83 ao 118, um a um, até aos 37 s; dos 39 aos 41 s "do 83 até
 o 118 são todos radioativos", no âmbar das cartas radioativas.
 
+No fim da `8.4` o botão do canto diz **Resumo** e abre o resumo interativo do
+tópico 8 (`RESUMO_ITENS_8`): oito questões com as falas `resumo_8.1` a `8.8`; na 3
+(até o urânio) e na 7 (o último estável, o chumbo) as opções são cards com o
+número atômico. No fim, o cartão da nota (`q8-r` no sumário, "f – Resumo
+interativo"), o "Copiar resumo" e o "Continuar", que fecha o resumo e devolve o
+play (ainda não há quiz depois).
+
 No celular, no slide 9, a mesa tem duas medidas, as da montagem no celular
 (`MESA_NO_CELULAR_POR_SLIDE`): fechada, ao entrar no tópico, x 5, y 10, a 1,07; aberta
 em 32 colunas, x −8, y 104, a 1,17 (`EV8.longa` passa de uma à outra, junto com a

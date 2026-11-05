@@ -4421,7 +4421,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v42.0';
+const VERSAO = 'v42.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6384,7 +6384,11 @@ function tocaOuPara(){
   /* (o do slide 8 ainda espera as questões) */
   if (somBtn.classList.contains('botao-quiz') && atual === 7){ TP.diz('As questões deste quiz ainda vão chegar.'); return; }
   /* o "Resumo" do fim da "2.5A": o resumo interativo do tópico 2 */
-  if (somBtn.classList.contains('botao-quiz') && somBtn.dataset.resumo && atual === 2){ estouraEsegue(() => RESUMO.abre(2)); return; }
+  /* (e o do fim da "8.4": o resumo do slide em que se está) */
+  if (somBtn.classList.contains('botao-quiz') && somBtn.dataset.resumo){
+    const k = +Object.keys(RESUMOS).find(n => RESUMOS[n].slide === atual);
+    if (k){ estouraEsegue(() => RESUMO.abre(k)); return; }
+  }
   if (somBtn.classList.contains('botao-quiz')){ estouraEsegue(() => QUIZ3.abre()); return; }
   /* no quiz — e no cartão da nota, que segue pelos botões dele — e no
      jogo, nada toca, nem pela barra de espaço */
@@ -6559,6 +6563,8 @@ const SEQ = {
     else if (id === '7.2') carregaTrilha('7.3');
     else if (id === '7.3') EV7.pedeToque();
     else if (id === '7.4') viraQuiz(true);
+    /* o fim da "8.4": o botão do canto vira o do resumo interativo (EV8) */
+    else if (id === '8.4') viraQuiz(true, 'Resumo');
     /* o fim da "8.2": o play passa a tocar a "8.3" (EV8) */
     else if (id === '8.2') carregaTrilha('8.3');
     /* o fim da "8.2.0": 1,5 s depois, a "8.2", sem esperar o play (EV8) */
@@ -19372,6 +19378,22 @@ const RESUMO_ITENS_2 = [
                                                                               op:['cloro', 'oxigênio', 'neônio'], mantemTabela:true, marca:17,
     resumo:'Um elemento quimicamente semelhante ao flúor (mesma coluna) é o cloro.' }
 ];
+/* O RESUMO DO TÓPICO 8 — no fim da "8.4" o botão do canto diz "Resumo". Oito
+   questões (as falas resumo_8.1 a 8.8); a 3 e a 7 com as opções em cards, com
+   o número atômico */
+const RESUMO_ITENS_8 = [
+  { txt:'Os elementos que encontramos prontos no nosso planeta são chamados de', op:['elementos naturais', 'elementos artificiais', 'elementos radioativos'] },
+  { txt:'Já os elementos produzidos pelos cientistas em laboratórios são chamados de', op:['elementos artificiais', 'elementos naturais', 'elementos estáveis'] },
+  { txt:'Com exceção do tecnécio e do promécio, os elementos naturais vão do hidrogênio até o',
+    op:['92', '82', '26'], cartas:true, resp:'urânio (U, 92)' },
+  { txt:'Do número atômico 93 em diante, todos os elementos são',              op:['artificiais', 'naturais', 'estáveis'] },
+  { txt:'Por ficarem depois do urânio, esses elementos artificiais são chamados de', op:['transurânicos', 'cisurânicos', 'lantanídeos'] },
+  { txt:'O tecnécio e o promécio são artificiais, mas ficam antes do urânio. Por isso, são chamados de',
+    op:['cisurânicos', 'transurânicos', 'actinídeos'], de:0.5 },
+  { txt:'O último elemento da tabela com núcleos estáveis, ou seja, não radioativos, é o',
+    op:['82', '92', '83'], cartas:true, resp:'chumbo (Pb, 82)' },
+  { txt:'A partir do bismuto (83), todos os elementos são',                     op:['radioativos', 'estáveis', 'naturais'] }
+];
 /* cada tópico com o seu resumo: o slide, as questões, as falas (prefixo +
    número da questão), a chave do sumário, a fala do cartão da nota, o
    botão de seguir e o que ele faz */
@@ -19381,7 +19403,10 @@ const RESUMOS = {
   2: { slide:2, itens:RESUMO_ITENS_2, audio:'resumo_2.', chave:'q2-r', segue:'Quiz →', fim:'...?!',
        aoNota:'audio_tabela_2.5A1',
        /* o quiz guardado: o mesmo de antes, como se o botão Quiz fosse tocado */
-       depois(){ viraQuiz(true); QUIZ3.abre(); } }
+       depois(){ viraQuiz(true); QUIZ3.abre(); } },
+  /* (o do tópico 8: ainda sem quiz depois — o Continuar só fecha o resumo, e o play volta) */
+  8: { slide:8, itens:RESUMO_ITENS_8, audio:'resumo_8.', chave:'q8-r', segue:'Continuar →',
+       depois(){ viraQuiz(false); } }
 };
 const RESUMO = {
   aberto:false, g:0, k:1, passo:0, acertos:0, erros:0, travado:true, fala:null,
@@ -21749,6 +21774,13 @@ const NAV_TOPICOS = [
   { titulo:'Quem são os radioativos', sub:'aos 27 s da 8.4', slide:8,
     entra(v, g){ trilhaAtual = -1; carregaTrilha('8.4'); TEMPO_FORCADO = { id:'8.4', t:27 };
                  depoisDaMesa(g, () => tocaDesde('8.4', 27, g)); } },
+  /* o resumo interativo direto: como no fim da "8.4", com o botão "Resumo" */
+  { titulo:'Resumo interativo', sub:'o fim da 8.4: a tela escura e as oito frases', slide:8, quiz:'q8-r',
+    entra(v, g){
+      trilhaAtual = -1;
+      carregaTrilha('8.4');
+      depoisDaMesa(g, () => { if (g === NAV.geracao){ viraQuiz(true, 'Resumo'); RESUMO.abre(8); } });
+    } },
   /* ---- o slide 10 · A tabela e os elétrons de valência ---- */
   { titulo:'Início', sub:'o começo do slide', slide:9,
     entra(){ /* o recomeço do slide já é o tópico */ } },

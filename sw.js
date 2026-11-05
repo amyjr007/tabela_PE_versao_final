@@ -73,6 +73,8 @@ const CASCA = [
   './Audios/resumo_2.1.mp3', './Audios/resumo_2.2.mp3', './Audios/resumo_2.3.mp3',
   './Audios/resumo_2.4.mp3', './Audios/resumo_2.5.mp3', './Audios/resumo_2.6.mp3',
   './Audios/audio_tabela_2.5A1.mp3',
+  './Audios/resumo_8.1.mp3', './Audios/resumo_8.2.mp3', './Audios/resumo_8.3.mp3', './Audios/resumo_8.4.mp3',
+  './Audios/resumo_8.5.mp3', './Audios/resumo_8.6.mp3', './Audios/resumo_8.7.mp3', './Audios/resumo_8.8.mp3',
   './Audios/audio_tabela_2.mp3',
   './Audios/audio_tabela_2.1.mp3',
   './Audios/audio_tabela_2.2.mp3',
