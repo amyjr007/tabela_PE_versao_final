@@ -4428,7 +4428,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v43.0';
+const VERSAO = 'v43.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8586,7 +8586,10 @@ const EV4 = {
     const meio = (a, b) => (xDaColuna(a) + xDaColuna(b)) / 2;
     /* o título, em cima, no vazio acima dos metais de transição (linha 1,
        a partir da coluna 3) */
-    poe(f[0], xDaColuna(3) - LADO/2, yDaLinha(1));
+    /* (fora do celular, no lugar que o professor deu na montagem: o centro
+       em 518, 184 do palco, com 414 de largura) */
+    if (document.documentElement.classList.contains('celular')) poe(f[0], xDaColuna(3) - LADO/2, yDaLinha(1));
+    else poe(f[0], 518 - mede(FRASES_4[0].txt, 'titulo') / 2, 184);
     /* "Metais", centrado acima dos de transição (no vazio da linha 3) */
     poe(f[1], meio(3, 12) - mede(FRASES_4[1].txt) / 2, yDaLinha(3));
     /* "Ametais | Não Metais", o par centrado acima dos ametais (linha 1,
@@ -13192,15 +13195,19 @@ const molAgua4 = (px, x, y, cls) => '<g class="' + (cls || 'mol-mini') + '"' + (
 const molCO24 = (px, x, y, cls) => '<g class="' + (cls || 'mol-mini') + '"' + (x !== undefined ? ' transform="translate(' + x + ' ' + y + ')"' : '') + '>' +
   atomo4(px, 'O', -19, 0, 10, 'at-o') + atomo4(px, 'O', 19, 0, 10, 'at-o') + atomo4(px, 'C', 0, 0, 10, 'at-c') + '</g>';
 /* a lupa: o aro de metal, o cabo, o vidro com o reflexo, e o que se vê por
-   ela (dentro, recortado no círculo) */
-function lupa4(px, cx, cy, r, dentro){
+   ela (dentro, recortado no círculo). Posta em cima do objeto: 'mov' leva o
+   que se vê (desenhado em volta do lugar antigo) para o vidro, e 'giro' é a
+   direção do cabo (45: para baixo à esquerda; -45: para baixo à direita) */
+function lupa4(px, cx, cy, r, dentro, mov, giro){
+  if (mov) dentro = '<g transform="translate(' + mov[0] + ' ' + mov[1] + ')">' + dentro + '</g>';
+  giro = giro === undefined ? 45 : giro;
   return '<defs><clipPath id="' + px + '-vidro"><circle cx="' + cx + '" cy="' + cy + '" r="' + (r - 6) + '"/></clipPath>' +
       '<linearGradient id="' + px + '-aro" x1="0" y1="0" x2="1" y2="1">' +
         '<stop offset="0" stop-color="#F2F5F8"/><stop offset=".4" stop-color="#9AA6B2"/><stop offset=".7" stop-color="#5B6570"/><stop offset="1" stop-color="#C9D2DC"/></linearGradient>' +
       '<linearGradient id="' + px + '-cabo" x1="0" y1="0" x2="1" y2="0">' +
         '<stop offset="0" stop-color="#1A1410"/><stop offset=".45" stop-color="#4A3424"/><stop offset="1" stop-color="#140E0A"/></linearGradient></defs>' +
     /* o cabo, na diagonal de baixo à direita */
-    '<g transform="rotate(45 ' + cx + ' ' + cy + ')">' +
+    '<g transform="rotate(' + giro + ' ' + cx + ' ' + cy + ')">' +
       '<rect x="' + (cx - 9) + '" y="' + (cy + r) + '" width="18" height="16" rx="3" fill="url(#' + px + '-aro)"/>' +
       '<rect x="' + (cx - 12) + '" y="' + (cy + r + 14) + '" width="24" height="86" rx="11" fill="url(#' + px + '-cabo)"/></g>' +
     /* o que se vê, ampliado, num fundo claro */
@@ -13240,10 +13247,12 @@ function aguaSVG(){
     '<path d="M70,262 L80,388 Q82,394 92,394 L164,394 Q174,394 176,388 L186,262 Z" fill="url(#ag4-agua)"/>' +
     '<ellipse cx="128" cy="262" rx="58" ry="7" fill="#BFE4FF" fill-opacity=".75"/>' +
     '<path d="M76,226 L88,382" stroke="#fff" stroke-opacity=".5" stroke-width="4" stroke-linecap="round"/>' +
-    lupa4(px, 270, 220, 88, dentro) +
-    molSai4(px, molAgua4(px), 'mol-agua', 270, 220, 300, 104, 2.6) +
+    /* (a lupa em cima do copo, na água) */
+    lupa4(px, 128, 300, 88, dentro, [-142, 80], -45) +
+    molSai4(px, molAgua4(px), 'mol-agua', 128, 300, 300, 104, 2.6) +
     '<text class="form4 form-agua" x="300" y="52" text-anchor="middle"></text>' +
-    '<text class="po-nome" x="220" y="428" text-anchor="middle">Água</text>' +
+    /* (o nome embaixo do copo: o cabo da lupa passa à direita dele) */
+    '<text class="po-nome" x="128" y="428" text-anchor="middle">Água</text>' +
   '</svg>';
 }
 
@@ -13272,8 +13281,9 @@ function co2SVG(){
   return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Cilindro de gás carbônico, e a lupa mostrando as moléculas de CO2">' +
     '<defs>' + fundoFace4(px) + defsAtomos(px) + defsCil + '</defs>' +
     '<rect class="fundo4" width="440" height="440" fill="url(#cd4-fundo)"/>' + cil +
-    lupa4(px, 280, 230, 86, dentro) +
-    molSai4(px, molCO24(px), 'mol-co2', 280, 230, 300, 104, 2.4) +
+    /* (a lupa em cima do cilindro) */
+    lupa4(px, 118, 250, 86, dentro, [-162, 20], -45) +
+    molSai4(px, molCO24(px), 'mol-co2', 118, 250, 300, 104, 2.4) +
     '<text class="form4 form-co2" x="300" y="52" text-anchor="middle"></text>' +
   '</svg>';
 }
@@ -13290,7 +13300,7 @@ function cilindroNobresSVG(){
   return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Cilindro de gases nobres, e a lupa mostrando os átomos soltos">' +
     '<defs>' + fundoFace4(px) + defsAtomos(px) + defsCil + '</defs>' +
     '<rect class="fundo4" width="440" height="440" fill="url(#gn4-fundo)"/>' + cil +
-    lupa4(px, 280, 230, 86, dentro) +
+    lupa4(px, 118, 250, 86, dentro, [-162, 20], -45) +
   '</svg>';
 }
 
