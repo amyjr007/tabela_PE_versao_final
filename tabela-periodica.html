@@ -2726,7 +2726,29 @@ body.montagem .titulo9{pointer-events:auto}
   opacity:0;transition:opacity .4s ease}
 .veu-eletro .frase9.on9, body.montagem .veu-eletro .frase9{opacity:1}
 .veu-eletro .frase9.digitando9 .cursor{display:inline-block;background:var(--ouro-luz)}
-.veu.veu-eletro .toque-continuar{top:684px}
+/* a "9.1": o diagrama de Pauling no quadro, embaçado, com o Pauling recortado
+   por cima (a mesma moldura, a foto inteira); o título em cima e o
+   "Princípio de Aufbau" embaixo */
+.veu-pauling{background:rgba(12,10,32,.96)}
+html:is(.palco-largo,.palco-alto) .veu-pauling::before{background:rgba(12,10,32,.96)}
+.veu-pauling :is(.titulo91,.quadro91,.aufbau91){position:absolute;transform:translate(-50%,-50%);margin:0}
+.veu-pauling .titulo91{left:640px;top:64px;white-space:nowrap;
+  font-family:var(--display);font-weight:700;font-size:40px;letter-spacing:-.01em;color:#F4F2F8}
+.veu-pauling .quadro91{left:640px;top:372px;width:640px;aspect-ratio:1024/772;border-radius:16px;overflow:hidden;
+  box-shadow:0 18px 50px rgba(0,0,0,.5)}
+.veu-pauling .quadro91 img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.veu-pauling .diag91{filter:blur(6px) brightness(.8);transform:scale(1.04);transition:filter 1.2s ease, transform 1.2s ease}
+.veu-pauling.foco91 .diag91{filter:none;transform:none}
+.veu-pauling .paul91{transition:opacity 1s ease}
+.veu-pauling.sem-pauling .paul91{opacity:0}
+.veu-pauling .aufbau91{left:640px;top:664px;white-space:nowrap;
+  font-family:var(--display);font-weight:700;font-size:34px;color:var(--ouro-luz);opacity:0;transition:opacity .4s ease}
+.veu-pauling .aufbau91.on9, body.montagem .veu-pauling .aufbau91{opacity:1}
+.aufbau91 .falta{color:transparent}
+.aufbau91 .cursor{display:none;width:3px;height:.95em;margin:0 -3px 0 0;vertical-align:-.12em;background:currentColor;border-radius:1px}
+.aufbau91.digitando9 .cursor{display:inline-block}
+body.montagem .veu-pauling{opacity:1;background:rgba(12,10,32,.35);pointer-events:none}
+body.montagem .veu-pauling [data-mont]{pointer-events:auto}
 /* o átomo: as camadas e os elétrons; o brilho neon é uma camada à parte,
    borrada, que acende por cima (a da valência, ou as duas) */
 .atomo9 .orb9{fill:none;stroke:rgba(244,242,248,.5);stroke-width:2.5;transition:stroke 1s ease, opacity 1s ease}
@@ -4481,7 +4503,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v43.7';
+const VERSAO = 'v43.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6442,7 +6464,6 @@ function tocaOuPara(){
   if (SEQ.aguardaToque2){ SEQ.continua2(); return; }
   if (EV7.esperaToque){ EV7.continua(); return; }
   if (EV8.esperaToque()){ EV8.continua(); return; }
-  if (EV9.esperaToque()){ EV9.continua(); return; }
   /* o botão do jogo abre o jogo, e a fala das regras toca por cima */
   if (somBtn.classList.contains('jogo')){ estouraEsegue(entraNoJogo); return; }
   /* e o do quiz, o quiz do slide 3 */
@@ -6632,6 +6653,8 @@ const SEQ = {
     else if (id === '8.4') viraQuiz(true, 'Resumo');
     /* o fim da "8.2": o play passa a tocar a "8.3" (EV8) */
     else if (id === '8.2') carregaTrilha('8.3');
+    /* o fim da "9": a cena fica, e o play passa a tocar a "9.1" (EV9) */
+    else if (id === '9') carregaTrilha('9.1');
     /* o fim da "8.2.0": 1,5 s depois, a "8.2", sem esperar o play (EV8) */
     else if (id === '8.2.0'){
       clearTimeout(EV8.vai82);
@@ -18453,9 +18476,21 @@ window.EV8 = EV8;
    acendem no amarelo neon, e o resto apaga-se; aos 19 s tudo volta, em
    1 s. Aos 22,5 s a eletrosfera inteira acende no neon, e fica; dos 26,5
    aos 29 s, embaixo, a frase do comportamento químico. Acabada a
-   narração, a tela fica como está, com "Toque na tela" (que toca a "9.1").
+   narração, a tela fica como está, e o play toca a "9.1".
    Tudo função do tempo da "9".
+   A "9.1": começando, a tela escura da "9" sai em fade (a tabela fica à
+   vista); aos 7 s escurece de novo com o diagrama de Pauling embaçado, o
+   Pauling recortado por cima e "Diagrama de Linus Pauling" em cima; dos
+   13,2 aos 14,5 s, embaixo, "Princípio de Aufbau"; aos 15 s o Pauling sai,
+   e aos 22 s o diagrama desembaça (tudo em fade).
    ============================================================ */
+const T91 = { veu:7.0, aufbau:[13.2, 14.5], paulingSai:15.0, foco:22.0 };
+const AUFBAU_91 = 'Princípio de Aufbau';
+const VEU_91 = '<div class="veu veu-pauling" aria-live="polite">' +
+  '<h2 class="titulo91" data-mont="titulo-91">Diagrama de Linus Pauling</h2>' +
+  '<div class="quadro91" data-mont="diagrama-91"><img class="diag91" src="Imagens/diagrama.jpeg" alt="O diagrama de Pauling no quadro">' +
+  '<img class="paul91" src="Imagens/pauling_recorte.webp" alt="Linus Pauling"></div>' +
+  '<p class="aufbau91" data-mont="aufbau-91"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p></div>';
 const T9 = { vidaAte:7.0, titulo:[2.9, 3.9], elo:4.8, veu:9.5, atomo:11.8, valencia:15.0, valFim:19.0, toda:22.5, fim:33.3 };
 const TITULO_9 = 'Tabela periódica';
 const FRASE_9 = { de:26.5, ate:29.0, txt:'A forma como os elétrons se organizam na eletrosfera dita todo o comportamento químico de um átomo' };
@@ -18504,11 +18539,10 @@ const VEU_9 = (() => {
   return '<div class="veu veu-eletro" aria-live="polite">' +
     '<div class="icone9" data-mont="icone-tabela-9"><div class="dentro9">' + icone + '</div></div>' +
     '<div class="atomo9" data-mont="atomo-9"><div class="dentro9">' + atomo + '</div></div>' +
-    '<p class="frase9" data-mont="frase-9"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p>' +
-    '<div class="toque-continuar">Toque na tela</div></div>';
+    '<p class="frase9" data-mont="frase-9"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p></div>';
 })();
 const EV9 = {
-  estado:'', nt:-1, nf:-1, dispensou:false,
+  estado:'', estado91:'', nt:-1, nf:-1, na:-1,
   prepara(){
     if (this.veu || !slides[9]) return;
     /* o título no vão de cima da tabela (das colunas 3 a 12, na linha 2) */
@@ -18527,28 +18561,24 @@ const EV9 = {
     this.icone = this.veu.querySelector('.icone9');
     this.atomo = this.veu.querySelector('.atomo9');
     this.frase = this.veu.querySelector('.frase9');
-    this.toque = this.veu.querySelector('.toque-continuar');
-    this.veu.addEventListener('click', () => this.continua());
+    slides[9].insertAdjacentHTML('beforeend', VEU_91);
+    this.veu91 = slides[9].querySelector('.veu-pauling');
+    this.aufbau = this.veu91.querySelector('.aufbau91');
   },
   /* o texto t com n letras escritas: o resto no lugar, transparente */
   escreve(el, txt, n){ el.querySelector('.ja').textContent = txt.slice(0, n); el.querySelector('.falta').textContent = txt.slice(n); },
   letras(t, de, ate, txt){ return t < de ? 0 : Math.round(Math.min(1, (t - de) / (ate - de)) * txt.length); },
-  esperaToque(){ return atual === 9 && trilhaAtual === '9' && !this.dispensou && this.estado.endsWith('|true'); },
-  /* o toque no fim da "9": a "9.1", com a cena como está */
-  continua(){
-    if (!this.esperaToque() || naMontagem()) return;
-    estouraBolha(this.toque, '#F4F2F8');
-    playDepois();
-    tocaTrilha('9.1');
-  },
   tick(t){
     this.prepara();
     if (!this.veu) return;
     const de9 = trilhaAtual === '9', monta = naMontagem();
     /* a vida solta cala-se aos 7 s */
     if (VIDA.ligada && de9 && t >= T9.vidaAte && !som.paused) VIDA.desliga();
-    /* (na "9.1" a cena fica como a "9" a deixou) */
-    const t9 = monta ? 99 : de9 ? t : trilhaAtual === '9.1' ? 99 : -1;
+    /* (na "9.1" a cena é a que a "9" deixou; e, até o play, a tela escura
+       continua — tocado ele, sai em fade) */
+    const de91 = trilhaAtual === '9.1', comecou91 = de91 && (t > 0.05 || !som.paused);
+    const t9 = monta ? 99 : de9 ? t : de91 ? 99 : -1;
+    this.tick91(monta ? 99 : de91 ? t : -1, monta, de91);
     const nt = this.letras(t9, T9.titulo[0], T9.titulo[1], TITULO_9), F = FRASE_9, nf = this.letras(t9, F.de, F.ate, F.txt);
     if (nt !== this.nt || nf !== this.nf){
       if ((nt > this.nt && this.nt >= 0 || nf > this.nf && this.nf >= 0) && !monta && de9) TECLAS.bate();
@@ -18556,31 +18586,45 @@ const EV9 = {
       this.escreve(this.titulo, TITULO_9, nt);
       this.escreve(this.frase, F.txt, nf);
     }
-    const pede = de9 && !monta && t >= T9.fim && !this.dispensou;
     const est = [t9 >= T9.titulo[0], t9 >= T9.titulo[0] && t9 < T9.titulo[1], t9 >= T9.elo, t9 >= T9.veu, t9 >= T9.atomo,
-                 t9 >= T9.valencia && t9 < T9.valFim, t9 >= T9.toda, t9 >= F.de, t9 >= F.de && t9 < F.ate].join() + '|' + pede;
+                 t9 >= T9.valencia && t9 < T9.valFim, t9 >= T9.toda, t9 >= F.de, t9 >= F.de && t9 < F.ate, comecou91].join();
     if (est === this.estado) return;
     this.estado = est;
-    const [tit, digT, liga, veu, atomo, val, toda, frase, digF] = est.split('|')[0].split(',').map(v => v === 'true');
+    const [tit, digT, liga, veu, atomo, val, toda, frase, digF, sai] = est.split(',').map(v => v === 'true');
     /* (com a tela escura o título sai: o véu não o deixa transparecer) */
-    this.titulo.classList.toggle('on', tit && (!veu || monta));
+    this.titulo.classList.toggle('on', tit && (!veu || monta) && !de91);
     this.titulo.classList.toggle('digitando9', digT);
     this.titulo.classList.toggle('liga9', liga);
-    this.veu.classList.toggle('on', veu && !monta);
+    this.veu.classList.toggle('on', veu && !monta && !sai);
     this.icone.classList.toggle('on9', veu);
     this.atomo.classList.toggle('on9', atomo);
     this.atomo.classList.toggle('valencia9', val);
     this.atomo.classList.toggle('toda9', toda);
     this.frase.classList.toggle('on9', frase);
     this.frase.classList.toggle('digitando9', digF);
-    this.veu.classList.toggle('pede-toque', pede);
-    this.toque.classList.toggle('on', pede);
-    stage.classList.toggle('em-toque', pede);
+  },
+  /* A "9.1", função do tempo dela */
+  tick91(t, monta, de91){
+    const A = T91, n = this.letras(t, A.aufbau[0], A.aufbau[1], AUFBAU_91);
+    if (n !== this.na){
+      if (n > this.na && this.na >= 0 && !monta) TECLAS.bate();
+      this.na = n;
+      this.escreve(this.aufbau, AUFBAU_91, n);
+    }
+    const est = [t >= A.veu, t >= A.aufbau[0], t >= A.aufbau[0] && t < A.aufbau[1], t >= A.paulingSai, t >= A.foco].join();
+    if (est === this.estado91) return;
+    this.estado91 = est;
+    const [veu, auf, dig, saiP, foco] = est.split(',').map(v => v === 'true');
+    const V = this.veu91;
+    V.classList.toggle('on', veu && !monta);
+    V.classList.toggle('sem-pauling', saiP && !monta);
+    V.classList.toggle('foco91', foco && !monta);
+    this.aufbau.classList.toggle('on9', auf);
+    this.aufbau.classList.toggle('digitando9', dig);
   },
   /* chegar ao slide: a tela clara, nada escrito */
-  zera(){ this.dispensou = false; this.estado = ''; this.nt = -1; this.nf = -1; if (this.veu) this.tick(-1); },
-  /* saindo do slide com o pedido em cena, o play volta */
-  fora(){ if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
+  zera(){ this.estado = ''; this.estado91 = ''; this.nt = -1; this.nf = -1; this.na = -1; if (this.veu) this.tick(-1); },
+  fora(){}
 };
 window.EV9 = EV9;
 

@@ -787,9 +787,18 @@ a camada de valência e os seus elétrons acendem no amarelo neon e o resto
 apaga-se; aos 19 s tudo volta, em 1 s. Aos 22,5 s a eletrosfera inteira acende
 no neon, e fica, a respirar; dos 26,5 aos 29 s, embaixo, "A forma como os
 elétrons se organizam na eletrosfera dita todo o comportamento químico de um
-átomo" (`frase-9`). Acabada a narração, a tela fica como está, com "Toque na
-tela": o toque toca a `9.1` (`Audios/audio_tabela_9.1.mp3`, 46 s, o diagrama de
-Pauling), com a cena como está (os eventos dela ainda por fazer).
+átomo" (`frase-9`). Acabada a narração, a tela fica como está, e o play passa a
+tocar a `9.1`.
+
+A `9.1` (`Audios/audio_tabela_9.1.mp3`, 46 s, o diagrama de Pauling; em
+`EV9.tick91`, os segundos em `T91`): tocado o play, a tela escura da `9` sai em
+fade e a tabela fica à vista; aos 7 s a tela escurece de novo com a foto do
+diagrama no quadro (`Imagens/diagrama.jpeg`), embaçada, e por cima dela o
+Pauling recortado (`Imagens/pauling_recorte.webp`, tirado do
+`pauling_only.jpeg`, com o fundo branco transparente e a mesma moldura), e em
+cima "Diagrama de Linus Pauling" (peças `titulo-91` e `diagrama-91`); dos 13,2
+aos 14,5 s, embaixo, "Princípio de Aufbau" (`aufbau-91`); aos 15 s o Pauling
+sai em fade, e aos 22 s o diagrama desembaça.
 
 ### Slide 11 · A tabela e o subnível mais energético
 
