@@ -2749,14 +2749,21 @@ html:is(.palco-largo,.palco-alto) .veu-pauling::before{background:rgba(12,10,32,
 .veu-pauling .paul91{transition:opacity 1.2s ease}
 .veu-pauling.sem-pauling .paul91{opacity:0}
 /* (aos 35 s: o ícone da tabela entra pela esquerda e empurra o quadro para a
-   direita — os dois andam juntos, colados; o que sai apaga-se no fim) */
+   direita — os dois andam juntos e encolhem a 0,8125, e a tela fica dividida:
+   a tabela na metade esquerda, o diagrama na direita, com o "Princípio de
+   Aufbau" acompanhando o quadro, na mesma escala) */
 .veu-pauling .icone91{position:absolute;left:640px;top:372px;width:640px;transform:translate(-50%,-50%);
-  translate:-960px 0;opacity:0;transition:translate .9s cubic-bezier(.65,0,.35,1), opacity .5s ease}
+  translate:-960px 0;scale:.8125;opacity:0;
+  transition:translate .9s cubic-bezier(.65,0,.35,1), scale .9s cubic-bezier(.65,0,.35,1), opacity .5s ease}
 .veu-pauling .icone91 svg{display:block;width:100%;height:auto}
-.veu-pauling .quadro91{transition:translate .9s cubic-bezier(.65,0,.35,1), opacity .5s ease .4s}
-.veu-pauling.empurra91 .quadro91{translate:960px 0;opacity:0}
-.veu-pauling.empurra91 .icone91{translate:0 0;opacity:1}
-body.montagem .veu-pauling .icone91{translate:0 0;opacity:.5}
+.veu-pauling :is(.quadro91,.aufbau91){transition:translate .9s cubic-bezier(.65,0,.35,1), scale .9s cubic-bezier(.65,0,.35,1), opacity .4s ease}
+/* (a escala em torno do meio da peça: com o translate(-50%,-50%), o meio dela
+   é o canto de cima à esquerda da caixa) */
+.veu-pauling :is(.quadro91,.aufbau91,.icone91):not(.solto){transform-origin:0 0}
+.veu-pauling.empurra91 .quadro91{translate:320px 0;scale:.8125}
+.veu-pauling.empurra91 .aufbau91{translate:320px -56px;scale:.8125}
+.veu-pauling.empurra91 .icone91{translate:-320px 0;opacity:1}
+body.montagem .veu-pauling .icone91{translate:-320px 0;opacity:.5}
 .veu-pauling .aufbau91{left:640px;top:664px;white-space:nowrap;
   font-family:var(--display);font-weight:700;font-size:34px;color:var(--ouro-luz);opacity:0;transition:opacity .4s ease}
 .veu-pauling .aufbau91.on9, body.montagem .veu-pauling .aufbau91{opacity:1}
@@ -4519,7 +4526,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v43.9';
+const VERSAO = 'v44.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22122,6 +22129,9 @@ const NAV_TOPICOS = [
   /* ---- o slide 10 · A tabela e os elétrons de valência ---- */
   { titulo:'Início', sub:'o começo do slide', slide:9,
     entra(){ /* o recomeço do slide já é o tópico */ } },
+  /* o começo da "9", tocando */
+  { titulo:'Introdução', sub:'o começo da 9', slide:9,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('9', 0, g)); } },
   /* ---- o slide 11 · A tabela e o diagrama de Pauling ---- */
   { titulo:'Início', sub:'o começo do slide', slide:10,
     entra(){ /* o recomeço do slide já é o tópico */ } },

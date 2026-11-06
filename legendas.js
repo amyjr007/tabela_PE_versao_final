@@ -757,14 +757,16 @@ var LEGENDAS = {
     [8.6,12.1,"É mais fácil de visualizar os naturais e artificiais."]
   ],
   "audio_tabela_8.4": [
-    [0,2.26,"É fácil! Vamos abrir a tabela de novo."],
-    [2.26,7.52,"Com exceção do tecnécio e do promécio, do elemento 1 ao 82,"],
-    [7.52,13.9,"a maioria dos elementos dessa faixa possui seus isótopos mais comuns e abundantes estáveis."],
-    [13.9,18.78,"Ou seja, os núcleos desses átomos não sofrem decaimento radioativo."],
-    [18.78,26.64,"O chumbo é formalmente, portanto, o último elemento da tabela periódica a possuir núcleos perfeitamente estáveis."],
-    [27.58,30.84,"Do elemento 83 em diante, a história é outra."],
-    [30.84,38.06,"A partir do bismuto 83, todos os núcleos atômicos tornam-se pesados e instáveis demais."],
-    [38.06,42.0,"Logo, todos os elementos dessa faixa são radioativos."]
+    [0,2.21,"É fácil! Vamos abrir a tabela de novo."],
+    [3.38,7.88,"Com exceção do tecnécio e do promécio, do elemento 1 ao 82,"],
+    [8.16,13.98,"a maioria dos elementos dessa faixa possui seus isótopos mais comuns e abundantes estáveis."],
+    [14.55,18.96,"Ou seja, os núcleos desses átomos não sofrem decaimento radioativo."],
+    [19.62,24.0,"Resumindo, do hidrogênio ao chumbo, Pb 82,"],
+    [24.0,27.99,"os isótopos mais abundantes desses elementos são estáveis."],
+    [28.48,33.52,"Do bismuto, 83, até o 118, todos são radioativos."],
+    [33.92,35.19,"Pegou? Pronto!"],
+    [35.48,37.6,"Acabou o tópico."],
+    [37.6,41.8,"Mas antes do quiz, vamos fazer um resumo interativo para ajudar a fixar esses conceitos?"]
   ],
   "audio_tabela_8.3": [
     [0,6.9,"Além da sua origem, a posição do elemento na tabela também nos dá pistas claras sobre a sua estabilidade nuclear."],

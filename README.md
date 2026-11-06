@@ -799,8 +799,10 @@ Pauling recortado (`Imagens/pauling_recorte.webp`, tirado do
 cima "Diagrama de Linus Pauling" (peças `titulo-91` e `diagrama-91`); dos 13,2
 aos 14,5 s, embaixo, “Princípio de Aufbau” (`aufbau-91`), entre aspas; aos 22 s
 o Pauling sai e o diagrama desembaça, juntos, em fade; aos 35 s o ícone da
-tabela da `9` (`tabela-91`) entra pela esquerda empurrando o quadro para fora,
-à direita.
+tabela da `9` (`tabela-91`) entra pela esquerda empurrando o quadro para a
+direita, e a tela fica dividida: a tabela na metade esquerda, o diagrama na
+direita, os dois a 0,8125, e o “Princípio de Aufbau” acompanhando o quadro, na
+mesma escala. No sumário, "Introdução" vai ao começo da `9`.
 
 Na `9`, enquanto a camada de valência brilha (15–19 s), "camada de valência"
 aparece embaixo do átomo, no mesmo amarelo neon (`camada-valencia-9`), e sai com
