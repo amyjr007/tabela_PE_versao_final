@@ -797,8 +797,15 @@ diagrama no quadro (`Imagens/diagrama.jpeg`), embaçada, e por cima dela o
 Pauling recortado (`Imagens/pauling_recorte.webp`, tirado do
 `pauling_only.jpeg`, com o fundo branco transparente e a mesma moldura), e em
 cima "Diagrama de Linus Pauling" (peças `titulo-91` e `diagrama-91`); dos 13,2
-aos 14,5 s, embaixo, "Princípio de Aufbau" (`aufbau-91`); aos 15 s o Pauling
-sai em fade, e aos 22 s o diagrama desembaça.
+aos 14,5 s, embaixo, “Princípio de Aufbau” (`aufbau-91`), entre aspas; aos 22 s
+o Pauling sai e o diagrama desembaça, juntos, em fade; aos 35 s o ícone da
+tabela da `9` (`tabela-91`) entra pela esquerda empurrando o quadro para fora,
+à direita.
+
+Na `9`, enquanto a camada de valência brilha (15–19 s), "camada de valência"
+aparece embaixo do átomo, no mesmo amarelo neon (`camada-valencia-9`), e sai com
+o brilho, em fade; a frase dos 26,5 s fica entre aspas, com ponto final; e o
+anel do elo que era dourado é preto.
 
 ### Slide 11 · A tabela e o subnível mais energético
 

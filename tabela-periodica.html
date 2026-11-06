@@ -2715,7 +2715,14 @@ body.montagem .titulo9{pointer-events:auto}
    embaixo e o "Toque na tela" no pé */
 .veu-eletro{background:rgba(12,10,32,.96)}
 .titulo9:not(.on){transition-duration:.8s}
-.veu-eletro :is(.icone9,.atomo9,.frase9){position:absolute;transform:translate(-50%,-50%)}
+.veu-eletro :is(.icone9,.atomo9,.frase9,.rotulo9){position:absolute;transform:translate(-50%,-50%)}
+/* o "camada de valência", embaixo do átomo, no amarelo neon do brilho, que
+   vem e vai com ele */
+.veu-eletro .rotulo9{left:900px;top:482px;margin:0;white-space:nowrap;
+  font-family:var(--display);font-weight:700;font-size:30px;color:#F4FF3A;text-shadow:0 0 14px rgba(234,255,0,.55);
+  opacity:0;transition:opacity 1s ease}
+.veu-eletro .rotulo9.on9{opacity:1;transition-duration:.5s}
+body.montagem .veu-eletro .rotulo9{opacity:1}
 .veu-eletro .icone9{left:330px;top:300px;width:360px}
 .veu-eletro .atomo9{left:900px;top:300px;width:360px}
 .veu-eletro :is(.icone9,.atomo9) svg{display:block;width:100%;height:auto;overflow:visible}
@@ -2739,8 +2746,17 @@ html:is(.palco-largo,.palco-alto) .veu-pauling::before{background:rgba(12,10,32,
 .veu-pauling .quadro91 img{position:absolute;inset:0;width:100%;height:100%;display:block}
 .veu-pauling .diag91{filter:blur(6px) brightness(.8);transform:scale(1.04);transition:filter 1.2s ease, transform 1.2s ease}
 .veu-pauling.foco91 .diag91{filter:none;transform:none}
-.veu-pauling .paul91{transition:opacity 1s ease}
+.veu-pauling .paul91{transition:opacity 1.2s ease}
 .veu-pauling.sem-pauling .paul91{opacity:0}
+/* (aos 35 s: o ícone da tabela entra pela esquerda e empurra o quadro para a
+   direita — os dois andam juntos, colados; o que sai apaga-se no fim) */
+.veu-pauling .icone91{position:absolute;left:640px;top:372px;width:640px;transform:translate(-50%,-50%);
+  translate:-960px 0;opacity:0;transition:translate .9s cubic-bezier(.65,0,.35,1), opacity .5s ease}
+.veu-pauling .icone91 svg{display:block;width:100%;height:auto}
+.veu-pauling .quadro91{transition:translate .9s cubic-bezier(.65,0,.35,1), opacity .5s ease .4s}
+.veu-pauling.empurra91 .quadro91{translate:960px 0;opacity:0}
+.veu-pauling.empurra91 .icone91{translate:0 0;opacity:1}
+body.montagem .veu-pauling .icone91{translate:0 0;opacity:.5}
 .veu-pauling .aufbau91{left:640px;top:664px;white-space:nowrap;
   font-family:var(--display);font-weight:700;font-size:34px;color:var(--ouro-luz);opacity:0;transition:opacity .4s ease}
 .veu-pauling .aufbau91.on9, body.montagem .veu-pauling .aufbau91{opacity:1}
@@ -4503,7 +4519,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v43.8';
+const VERSAO = 'v43.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -18481,25 +18497,27 @@ window.EV8 = EV8;
    A "9.1": começando, a tela escura da "9" sai em fade (a tabela fica à
    vista); aos 7 s escurece de novo com o diagrama de Pauling embaçado, o
    Pauling recortado por cima e "Diagrama de Linus Pauling" em cima; dos
-   13,2 aos 14,5 s, embaixo, "Princípio de Aufbau"; aos 15 s o Pauling sai,
-   e aos 22 s o diagrama desembaça (tudo em fade).
+   13,2 aos 14,5 s, embaixo, “Princípio de Aufbau”; aos 22 s o Pauling sai
+   e o diagrama desembaça, juntos (em fade); aos 35 s o ícone da tabela da
+   "9" entra pela esquerda empurrando o quadro para fora, à direita.
    ============================================================ */
-const T91 = { veu:7.0, aufbau:[13.2, 14.5], paulingSai:15.0, foco:22.0 };
-const AUFBAU_91 = 'Princípio de Aufbau';
+const T91 = { veu:7.0, aufbau:[13.2, 14.5], paulingSai:22.0, foco:22.0, empurra:35.0 };
+const AUFBAU_91 = '“Princípio de Aufbau”';
 const VEU_91 = '<div class="veu veu-pauling" aria-live="polite">' +
   '<h2 class="titulo91" data-mont="titulo-91">Diagrama de Linus Pauling</h2>' +
   '<div class="quadro91" data-mont="diagrama-91"><img class="diag91" src="Imagens/diagrama.jpeg" alt="O diagrama de Pauling no quadro">' +
   '<img class="paul91" src="Imagens/pauling_recorte.webp" alt="Linus Pauling"></div>' +
+  '<div class="icone91" data-mont="tabela-91"></div>' +
   '<p class="aufbau91" data-mont="aufbau-91"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p></div>';
 const T9 = { vidaAte:7.0, titulo:[2.9, 3.9], elo:4.8, veu:9.5, atomo:11.8, valencia:15.0, valFim:19.0, toda:22.5, fim:33.3 };
 const TITULO_9 = 'Tabela periódica';
-const FRASE_9 = { de:26.5, ate:29.0, txt:'A forma como os elétrons se organizam na eletrosfera dita todo o comportamento químico de um átomo' };
+const FRASE_9 = { de:26.5, ate:29.0, txt:'“A forma como os elétrons se organizam na eletrosfera dita todo o comportamento químico de um átomo.”' };
 /* o elo: dois anéis de corrente, um preso no outro — o da tabela no dourado,
    o da eletrosfera no azul do nome dela */
 const ELO_9 = '<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke-width="7" stroke-linecap="round">' +
-  '<rect x="5" y="20" width="34" height="22" rx="11" transform="rotate(-40 22 31)" stroke="#C39B2E"/>' +
+  '<rect x="5" y="20" width="34" height="22" rx="11" transform="rotate(-40 22 31)" stroke="#16141F"/>' +
   '<rect x="25" y="22" width="34" height="22" rx="11" transform="rotate(-40 42 33)" stroke="#2F7FD0"/>' +
-  '<path d="M27.5 22.5 L33 28" stroke="#C39B2E"/></g></svg>';
+  '<path d="M27.5 22.5 L33 28" stroke="#16141F"/></g></svg>';
 const VEU_9 = (() => {
   /* o ícone da tabela: as casas no desenho dela, os A no dourado, os B no
      vermelho, e as duas séries embaixo, soltas */
@@ -18539,6 +18557,7 @@ const VEU_9 = (() => {
   return '<div class="veu veu-eletro" aria-live="polite">' +
     '<div class="icone9" data-mont="icone-tabela-9"><div class="dentro9">' + icone + '</div></div>' +
     '<div class="atomo9" data-mont="atomo-9"><div class="dentro9">' + atomo + '</div></div>' +
+    '<p class="rotulo9" data-mont="camada-valencia-9">camada de valência</p>' +
     '<p class="frase9" data-mont="frase-9"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p></div>';
 })();
 const EV9 = {
@@ -18564,6 +18583,9 @@ const EV9 = {
     slides[9].insertAdjacentHTML('beforeend', VEU_91);
     this.veu91 = slides[9].querySelector('.veu-pauling');
     this.aufbau = this.veu91.querySelector('.aufbau91');
+    /* (o ícone da tabela da "9", o mesmo, para empurrar o quadro aos 35 s) */
+    this.veu91.querySelector('.icone91').innerHTML = this.icone.querySelector('svg').outerHTML;
+    this.rotulo = this.veu.querySelector('.rotulo9');
   },
   /* o texto t com n letras escritas: o resto no lugar, transparente */
   escreve(el, txt, n){ el.querySelector('.ja').textContent = txt.slice(0, n); el.querySelector('.falta').textContent = txt.slice(n); },
@@ -18602,6 +18624,8 @@ const EV9 = {
     this.atomo.classList.toggle('toda9', toda);
     this.frase.classList.toggle('on9', frase);
     this.frase.classList.toggle('digitando9', digF);
+    /* (o "camada de valência" vem e vai com o brilho dela) */
+    this.rotulo.classList.toggle('on9', val);
   },
   /* A "9.1", função do tempo dela */
   tick91(t, monta, de91){
@@ -18611,11 +18635,12 @@ const EV9 = {
       this.na = n;
       this.escreve(this.aufbau, AUFBAU_91, n);
     }
-    const est = [t >= A.veu, t >= A.aufbau[0], t >= A.aufbau[0] && t < A.aufbau[1], t >= A.paulingSai, t >= A.foco].join();
+    const est = [t >= A.veu, t >= A.aufbau[0], t >= A.aufbau[0] && t < A.aufbau[1], t >= A.paulingSai, t >= A.foco, t >= A.empurra].join();
     if (est === this.estado91) return;
     this.estado91 = est;
-    const [veu, auf, dig, saiP, foco] = est.split(',').map(v => v === 'true');
+    const [veu, auf, dig, saiP, foco, empurra] = est.split(',').map(v => v === 'true');
     const V = this.veu91;
+    V.classList.toggle('empurra91', empurra && !monta);
     V.classList.toggle('on', veu && !monta);
     V.classList.toggle('sem-pauling', saiP && !monta);
     V.classList.toggle('foco91', foco && !monta);
