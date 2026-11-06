@@ -141,6 +141,7 @@ html.palco-alto  :is(.veu,.quiz,.memoria,.resumo1)::before{inset:calc(-1 * var(-
 html:is(.palco-largo,.palco-alto) .veu::before {background:rgba(12,10,32,.87)}
 /* (o resumo interativo e o véu das terras-raras, mais escuros) */
 html:is(.palco-largo,.palco-alto) :is(.resumo1,.veu-terras)::before{background:rgba(12,10,32,.93)}
+html:is(.palco-largo,.palco-alto) .veu-eletro::before{background:rgba(12,10,32,.96)}
 html:is(.palco-largo,.palco-alto) .quiz::before{background:rgba(12,10,32,.55)}
 html:is(.palco-largo,.palco-alto) .memoria::before{background:radial-gradient(ellipse 92% 82% at 50% 46%,
   rgba(20,17,46,.95) 0%, rgba(11,9,30,.985) 62%, rgba(7,6,22,.995) 100%)}
@@ -2083,13 +2084,10 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
    narração" — pelo top/bottom e por um --zoom da folha, que a ferramenta
    de ajuste, escrevendo o dela no style, ainda sobrepõe —, os números
    saem, e as casas 57–71 e 89–103 viram botão */
-/* O SLIDE 10 (os elétrons de valência): as cores A e B, mas os grupos
-   B — e as casas das séries — quase apagados; só os A ficam inteiros, e
-   em cima deles, no lugar dos números, os nomes 1A a 8A, no dourado */
+/* O SLIDE 10 (os elétrons de valência): as cores A e B, todas inteiras
+   (os de transição também, no vermelho deles), e em cima dos A, no lugar
+   dos números, os nomes 1A a 8A, no dourado */
 .mesa.valencia .eixo{opacity:0}
-.mesa.valencia .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
-  [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]),
-.mesa.valencia .casa.serie{opacity:.3}
 .rot-a{
   position:absolute;transform:translate(-50%,-50%);pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:.01em;
@@ -2691,6 +2689,61 @@ body.montagem .bloco72{pointer-events:auto}
   background:var(--ouro-luz);border-radius:1px}
 .veu-natureza .frase8 .cursor.pisca{animation:piscaCursor 1.05s steps(1) infinite}
 .veu.veu-natureza .toque-continuar{top:530px}
+
+/* ---- o slide 10 (EV9) ----
+   No vão de cima da tabela, "Tabela periódica" (digitado), o elo e
+   "Eletrosfera"; o texto todo já ocupa o lugar dele desde o começo (o que
+   falta escrever fica transparente), para nada andar enquanto é escrito */
+.titulo9{position:absolute;z-index:24;pointer-events:none;white-space:nowrap;transform:translate(-50%,-50%);
+  display:flex;align-items:center;gap:18px;
+  font-family:var(--display);font-weight:700;font-size:38px;line-height:1.2;color:var(--tinta);
+  opacity:0;transition:opacity .4s ease}
+.titulo9.on, body.montagem .titulo9{opacity:1}
+body.montagem .titulo9{pointer-events:auto}
+.titulo9 .falta, .frase9 .falta{color:transparent}
+.titulo9 .cursor, .frase9 .cursor{display:none;width:3px;height:.95em;margin:0 -3px 0 0;vertical-align:-.12em;
+  background:currentColor;border-radius:1px}
+.titulo9.digitando9 .cursor{display:inline-block}
+.titulo9 .elo9, .titulo9 .el9{opacity:0;transform:scale(.6);
+  transition:opacity .45s ease, transform .55s cubic-bezier(.34,1.56,.64,1)}
+.titulo9 .el9{color:#2F7FD0;transform-origin:0 50%}
+.titulo9.liga9 .elo9, .titulo9.liga9 .el9{opacity:1;transform:none}
+.titulo9 .elo9 svg{display:block;width:62px;height:62px}
+.titulo9.liga9 .elo9 svg{animation:elo9 1.8s ease-in-out .6s infinite}
+@keyframes elo9{50%{transform:scale(1.1)}}
+/* a tela escura: o ícone da tabela à esquerda, o átomo à direita, a frase
+   embaixo e o "Toque na tela" no pé */
+.veu-eletro{background:rgba(12,10,32,.96)}
+.titulo9:not(.on){transition-duration:.8s}
+.veu-eletro :is(.icone9,.atomo9,.frase9){position:absolute;transform:translate(-50%,-50%)}
+.veu-eletro .icone9{left:330px;top:300px;width:360px}
+.veu-eletro .atomo9{left:900px;top:300px;width:360px}
+.veu-eletro :is(.icone9,.atomo9) svg{display:block;width:100%;height:auto;overflow:visible}
+.veu-eletro .dentro9{opacity:0;transform:scale(.8);transition:opacity .7s ease, transform .8s cubic-bezier(.34,1.56,.64,1)}
+.veu-eletro .on9 .dentro9, body.montagem .veu-eletro .dentro9{opacity:1;transform:none}
+.veu-eletro .frase9{left:640px;top:575px;width:1040px;margin:0;text-align:center;text-wrap:balance;
+  font-family:var(--display);font-weight:600;font-size:36px;line-height:1.28;letter-spacing:-.01em;color:#F4F2F8;
+  opacity:0;transition:opacity .4s ease}
+.veu-eletro .frase9.on9, body.montagem .veu-eletro .frase9{opacity:1}
+.veu-eletro .frase9.digitando9 .cursor{display:inline-block;background:var(--ouro-luz)}
+.veu.veu-eletro .toque-continuar{top:684px}
+/* o átomo: as camadas e os elétrons; o brilho neon é uma camada à parte,
+   borrada, que acende por cima (a da valência, ou as duas) */
+.atomo9 .orb9{fill:none;stroke:rgba(244,242,248,.5);stroke-width:2.5;transition:stroke 1s ease, opacity 1s ease}
+.atomo9 .nuc9, .atomo9 .in9{transition:opacity 1s ease}
+.atomo9 .amarelo9{opacity:0;transition:opacity 1s ease}
+.atomo9 .neon9{opacity:0;transition:opacity 1s ease}
+/* (aos 15 s: a camada de valência e os elétrons dela no amarelo neon, e o resto apagado) */
+.atomo9.valencia9 :is(.nuc9, .in9){opacity:.3}
+.atomo9.valencia9 .ext9 .orb9{stroke:#F4FF3A}
+.atomo9.valencia9 .ext9 :is(.amarelo9, .neon9){opacity:1;transition-duration:.5s}
+/* (aos 22,5 s: a eletrosfera toda, e fica, a respirar) */
+.atomo9.toda9 .orb9{stroke:#F4FF3A}
+.atomo9.toda9 :is(.amarelo9, .neon9){opacity:1;transition-duration:.6s}
+.atomo9.toda9 .neon9{animation:neon9 2.4s ease-in-out .6s infinite}
+@keyframes neon9{50%{opacity:.55}}
+body.montagem .veu-eletro{opacity:1;background:rgba(12,10,32,.6);pointer-events:none}
+body.montagem .veu-eletro :is([data-mont],.toque-continuar){pointer-events:auto}
 
 /* ---- o slide 3 ---- */
 /* o brilho verde que atravessa a tabela aos 14 s: uma lavagem verde por
@@ -4428,7 +4481,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v43.6';
+const VERSAO = 'v43.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4784,7 +4837,7 @@ function recomecaMesa(i, semPouso){
   if (i === 1) SEQ.reinicia();
   else if (temMesa(i)){ SEQ.comecou = false; if (i === 2) SEQ.reinicia2(); if (i === 3) EV3.zera();
                         if (i === 4) EV4.zera(); if (i === 5) EV5.zera(); if (i === 6) EV6.zera(); if (i === 7){ SERIES8.zera(); EV7.zera(); }
-                        if (i === 8) EV8.zera(); }
+                        if (i === 8) EV8.zera(); if (i === 9) EV9.zera(); }
   else return;
   if (semPouso) TP.reinicia(); else pousaTabela();
   setTimeout(() => VIDA.liga(), 1500);
@@ -5715,7 +5768,8 @@ const TRILHAS = {
   '8.3':  'Audios/audio_tabela_8.3.mp3',   /* o play no fim da "8.2": a radioatividade (EV8) */
   '8.4':  'Audios/audio_tabela_8.4.mp3',   /* o toque no fim da "8.3": estáveis e radioativos (EV8) */
   '8.2':  'Audios/audio_tabela_8.2.mp3', /* o toque no fim da "8.1": do 1 ao 92, e do 93 em diante (EV8) */
-  '9':    'Audios/audio_tabela_9.mp3',     /* o slide 10: a valência (ainda por gravar) */
+  '9':    'Audios/audio_tabela_9.mp3',     /* o slide 10: a tabela e a eletrosfera (EV9) */
+  '9.1':  'Audios/audio_tabela_9.1.mp3',   /* o toque na tela escura do fim da "9": o diagrama de Pauling */
   '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: os blocos (ainda por gravar) */
 };
 /* a trilha com que cada slide começa */
@@ -5867,7 +5921,8 @@ const ROTEIROS = {
   '8.3':  [],
   '8.4':  [],
   '8.2':  [],
-  '9':    [],
+  '9':    [],   /* o slide 10: função do tempo, em EV9 */
+  '9.1':  [],
   '10':   []
 };
 
@@ -6387,6 +6442,7 @@ function tocaOuPara(){
   if (SEQ.aguardaToque2){ SEQ.continua2(); return; }
   if (EV7.esperaToque){ EV7.continua(); return; }
   if (EV8.esperaToque()){ EV8.continua(); return; }
+  if (EV9.esperaToque()){ EV9.continua(); return; }
   /* o botão do jogo abre o jogo, e a fala das regras toca por cima */
   if (somBtn.classList.contains('jogo')){ estouraEsegue(entraNoJogo); return; }
   /* e o do quiz, o quiz do slide 3 */
@@ -6913,6 +6969,7 @@ function efeitosDoTempo(){
   if (atual !== 6) EV6.fora();
   if (atual !== 7) EV7.fora();
   if (atual !== 8) EV8.fora();
+  if (atual !== 9) EV9.fora();
   stage.classList.toggle('no-slide9', atual === 8);
   /* (cada resumo interativo é do seu slide: saindo dele, fecha) */
   if (RESUMO.aberto && atual !== RESUMO.cfg.slide) RESUMO.fecha();
@@ -6930,6 +6987,8 @@ function efeitosDoTempo(){
   if (atual === 7){ EV7.tick(t); return; }
   /* e o slide 9 (a narração "8") */
   if (atual === 8){ EV8.tick(t); return; }
+  /* e o slide 10 (a narração "9") */
+  if (atual === 9){ EV9.tick(t); return; }
   if (atual !== 1 || !veu) return;
 
   /* a tela escura é da trilha "1", dos 14,8 s em diante — e continua
@@ -7489,6 +7548,8 @@ function vidaSegueNa2(){
   if (atual === 6) return trilhaAtual === '6' && (som.currentTime || 0) < EV6.vidaAte;
   /* e no slide 9, até aos 15 s da narração "8" (EV8 cala-a lá) */
   if (atual === 8) return trilhaAtual === '8' && (som.currentTime || 0) < EV8.vidaAte;
+  /* e no slide 10, até aos 7 s da narração "9" (EV9 cala-a lá) */
+  if (atual === 9) return trilhaAtual === '9' && (som.currentTime || 0) < T9.vidaAte;
   return atual === 2 && trilhaAtual === '2' && (som.currentTime || 0) < VIDA_ATE_2;
 }
 /* 'cauda' é quantas colunas o brilho leva a apagar-se atrás da frente */
@@ -18380,6 +18441,148 @@ const EV8 = {
   fora(){ clearTimeout(this.pausaT); clearTimeout(this.vai82); if (this.comSaquei) this.saquei84(false); stage.classList.remove('sem-play8'); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
 };
 window.EV8 = EV8;
+
+/* ============================================================
+   SLIDE 10 · A NARRAÇÃO "9" (EV9)
+   Até aos 7 s a vida solta da tabela (os pulinhos, as famílias)
+   continua com a narração; dos 2,9 s, no vão de cima da tabela, digita
+   "Tabela periódica", e aos 4,8 s entram o elo e "Eletrosfera"; aos 9,5 s
+   a tela escurece com o ícone da tabela à esquerda, e aos 11,8 s entra o
+   átomo de Rutherford à direita — 4 prótons e 4 elétrons parados, em
+   duas camadas (2 e 2). Aos 15 s a camada de valência e os elétrons dela
+   acendem no amarelo neon, e o resto apaga-se; aos 19 s tudo volta, em
+   1 s. Aos 22,5 s a eletrosfera inteira acende no neon, e fica; dos 26,5
+   aos 29 s, embaixo, a frase do comportamento químico. Acabada a
+   narração, a tela fica como está, com "Toque na tela" (que toca a "9.1").
+   Tudo função do tempo da "9".
+   ============================================================ */
+const T9 = { vidaAte:7.0, titulo:[2.9, 3.9], elo:4.8, veu:9.5, atomo:11.8, valencia:15.0, valFim:19.0, toda:22.5, fim:33.3 };
+const TITULO_9 = 'Tabela periódica';
+const FRASE_9 = { de:26.5, ate:29.0, txt:'A forma como os elétrons se organizam na eletrosfera dita todo o comportamento químico de um átomo' };
+/* o elo: dois anéis de corrente, um preso no outro — o da tabela no dourado,
+   o da eletrosfera no azul do nome dela */
+const ELO_9 = '<svg viewBox="0 0 64 64" aria-hidden="true"><g fill="none" stroke-width="7" stroke-linecap="round">' +
+  '<rect x="5" y="20" width="34" height="22" rx="11" transform="rotate(-40 22 31)" stroke="#C39B2E"/>' +
+  '<rect x="25" y="22" width="34" height="22" rx="11" transform="rotate(-40 42 33)" stroke="#2F7FD0"/>' +
+  '<path d="M27.5 22.5 L33 28" stroke="#C39B2E"/></g></svg>';
+const VEU_9 = (() => {
+  /* o ícone da tabela: as casas no desenho dela, os A no dourado, os B no
+     vermelho, e as duas séries embaixo, soltas */
+  const P = 16, casa = (c, l, cor) => '<rect x="' + (c - 1) * P + '" y="' + l + '" width="14" height="14" rx="3" fill="' + cor + '"/>';
+  let cel = '';
+  for (let lin = 1; lin <= 7; lin++) for (let col = 1; col <= 18; col++){
+    if (lin === 1 && col > 1 && col < 18) continue;
+    if (lin <= 3 && col > 2 && col < 13) continue;
+    const B = col >= 3 && col <= 12;
+    cel += casa(col, (lin - 1) * P, B ? '#A6382F' : '#C39B2E');
+  }
+  for (let s = 0; s < 2; s++) for (let k = 0; k < 15; k++) cel += casa(3.5 + k, 7 * P + 10 + s * P, '#C0574C');
+  const icone = '<svg viewBox="-6 -6 300 172" aria-hidden="true"><rect x="-6" y="-6" width="300" height="172" rx="14" fill="rgba(244,242,248,.06)" stroke="rgba(244,242,248,.18)" stroke-width="1.5"/>' + cel + '</svg>';
+  /* o átomo: o núcleo de 4 prótons, e as duas camadas com 2 elétrons cada */
+  /* o núcleo em 3D: os 4 prótons num tetraedro, um atrás do outro — o de trás
+     menor e mais escuro, o da frente maior e mais claro; cada um com a sombra
+     dele no de trás, e o "+" na escala do tamanho */
+  const prot = (x, y, r, escuro) => '<g transform="translate(' + x + ' ' + y + ')">' +
+    '<circle r="' + (r + 1.5) + '" cx="1.5" cy="3" fill="#2A0805" opacity=".45" filter="url(#s9)"/>' +
+    '<circle r="' + r + '" fill="url(#p9)"/>' + (escuro ? '<circle r="' + r + '" fill="#1A0503" opacity="' + escuro + '"/>' : '') +
+    '<path d="M' + (-r * .4).toFixed(1) + ' 0H' + (r * .4).toFixed(1) + 'M0 ' + (-r * .4).toFixed(1) + 'V' + (r * .4).toFixed(1) + '" stroke="#fff" stroke-width="' + (r * .17).toFixed(1) +
+    '" stroke-linecap="round" opacity="' + (1 - (escuro || 0)) + '"/></g>';
+  const elet = (r, g) => { const x = (r * Math.cos(g * Math.PI / 180)).toFixed(1), y = (-r * Math.sin(g * Math.PI / 180)).toFixed(1);
+    return '<g transform="translate(' + x + ' ' + y + ')"><circle r="11" fill="url(#e9)"/><circle class="amarelo9" r="11" fill="#F4FF3A"/>' +
+      '<path d="M-5 0H5" stroke="#1B2A4A" stroke-width="2.6" stroke-linecap="round" opacity=".75"/></g>'; };
+  const neon = (r, gs) => '<g class="neon9" filter="url(#n9)"><circle r="' + r + '" fill="none" stroke="#EAFF00" stroke-width="6"/>' +
+    gs.map(g => '<circle cx="' + (r * Math.cos(g * Math.PI / 180)).toFixed(1) + '" cy="' + (-r * Math.sin(g * Math.PI / 180)).toFixed(1) + '" r="14" fill="#EAFF00"/>').join('') + '</g>';
+  const camada = (cls, r, gs) => '<g class="' + cls + '">' + neon(r, gs) + '<circle class="orb9" r="' + r + '"/>' + gs.map(g => elet(r, g)).join('') + '</g>';
+  const atomo = '<svg viewBox="-180 -180 360 360" aria-hidden="true"><defs>' +
+    '<radialGradient id="p9" cx="35%" cy="32%" r="70%"><stop offset="0" stop-color="#FF9A8A"/><stop offset=".55" stop-color="#D93A2E"/><stop offset="1" stop-color="#7E1A13"/></radialGradient>' +
+    '<radialGradient id="e9" cx="35%" cy="32%" r="70%"><stop offset="0" stop-color="#CDEBFF"/><stop offset=".55" stop-color="#3E9BEA"/><stop offset="1" stop-color="#1D5FA8"/></radialGradient>' +
+    '<radialGradient id="h9"><stop offset="0" stop-color="#FF6B57" stop-opacity=".35"/><stop offset="1" stop-color="#FF6B57" stop-opacity="0"/></radialGradient>' +
+    '<filter id="n9" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>' +
+    '<filter id="s9" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter></defs>' +
+    camada('in9', 74, [200, 20]) + camada('ext9', 142, [115, 295]) +
+    '<g class="nuc9"><circle r="46" fill="url(#h9)"/>' + prot(2, -12, 13, .38) + prot(-12, 1, 15, .16) + prot(13, 2, 15, .12) + prot(0, 11, 17, 0) + '</g></svg>';
+  return '<div class="veu veu-eletro" aria-live="polite">' +
+    '<div class="icone9" data-mont="icone-tabela-9"><div class="dentro9">' + icone + '</div></div>' +
+    '<div class="atomo9" data-mont="atomo-9"><div class="dentro9">' + atomo + '</div></div>' +
+    '<p class="frase9" data-mont="frase-9"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p>' +
+    '<div class="toque-continuar">Toque na tela</div></div>';
+})();
+const EV9 = {
+  estado:'', nt:-1, nf:-1, dispensou:false,
+  prepara(){
+    if (this.veu || !slides[9]) return;
+    /* o título no vão de cima da tabela (das colunas 3 a 12, na linha 2) */
+    const m = slides[9].querySelector('.mesa');
+    const q = document.createElement('div');
+    q.className = 'titulo9';
+    q.dataset.mont = 'texto-9';
+    q.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
+    q.style.top  = yDaLinha(2).toFixed(1) + 'px';
+    q.innerHTML = '<span class="tp9"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span>' +
+      '<span class="elo9">' + ELO_9 + '</span><span class="el9">Eletrosfera</span>';
+    m.appendChild(q);
+    this.titulo = q;
+    slides[9].insertAdjacentHTML('beforeend', VEU_9);
+    this.veu = slides[9].querySelector('.veu-eletro');
+    this.icone = this.veu.querySelector('.icone9');
+    this.atomo = this.veu.querySelector('.atomo9');
+    this.frase = this.veu.querySelector('.frase9');
+    this.toque = this.veu.querySelector('.toque-continuar');
+    this.veu.addEventListener('click', () => this.continua());
+  },
+  /* o texto t com n letras escritas: o resto no lugar, transparente */
+  escreve(el, txt, n){ el.querySelector('.ja').textContent = txt.slice(0, n); el.querySelector('.falta').textContent = txt.slice(n); },
+  letras(t, de, ate, txt){ return t < de ? 0 : Math.round(Math.min(1, (t - de) / (ate - de)) * txt.length); },
+  esperaToque(){ return atual === 9 && trilhaAtual === '9' && !this.dispensou && this.estado.endsWith('|true'); },
+  /* o toque no fim da "9": a "9.1", com a cena como está */
+  continua(){
+    if (!this.esperaToque() || naMontagem()) return;
+    estouraBolha(this.toque, '#F4F2F8');
+    playDepois();
+    tocaTrilha('9.1');
+  },
+  tick(t){
+    this.prepara();
+    if (!this.veu) return;
+    const de9 = trilhaAtual === '9', monta = naMontagem();
+    /* a vida solta cala-se aos 7 s */
+    if (VIDA.ligada && de9 && t >= T9.vidaAte && !som.paused) VIDA.desliga();
+    /* (na "9.1" a cena fica como a "9" a deixou) */
+    const t9 = monta ? 99 : de9 ? t : trilhaAtual === '9.1' ? 99 : -1;
+    const nt = this.letras(t9, T9.titulo[0], T9.titulo[1], TITULO_9), F = FRASE_9, nf = this.letras(t9, F.de, F.ate, F.txt);
+    if (nt !== this.nt || nf !== this.nf){
+      if ((nt > this.nt && this.nt >= 0 || nf > this.nf && this.nf >= 0) && !monta && de9) TECLAS.bate();
+      this.nt = nt; this.nf = nf;
+      this.escreve(this.titulo, TITULO_9, nt);
+      this.escreve(this.frase, F.txt, nf);
+    }
+    const pede = de9 && !monta && t >= T9.fim && !this.dispensou;
+    const est = [t9 >= T9.titulo[0], t9 >= T9.titulo[0] && t9 < T9.titulo[1], t9 >= T9.elo, t9 >= T9.veu, t9 >= T9.atomo,
+                 t9 >= T9.valencia && t9 < T9.valFim, t9 >= T9.toda, t9 >= F.de, t9 >= F.de && t9 < F.ate].join() + '|' + pede;
+    if (est === this.estado) return;
+    this.estado = est;
+    const [tit, digT, liga, veu, atomo, val, toda, frase, digF] = est.split('|')[0].split(',').map(v => v === 'true');
+    /* (com a tela escura o título sai: o véu não o deixa transparecer) */
+    this.titulo.classList.toggle('on', tit && (!veu || monta));
+    this.titulo.classList.toggle('digitando9', digT);
+    this.titulo.classList.toggle('liga9', liga);
+    this.veu.classList.toggle('on', veu && !monta);
+    this.icone.classList.toggle('on9', veu);
+    this.atomo.classList.toggle('on9', atomo);
+    this.atomo.classList.toggle('valencia9', val);
+    this.atomo.classList.toggle('toda9', toda);
+    this.frase.classList.toggle('on9', frase);
+    this.frase.classList.toggle('digitando9', digF);
+    this.veu.classList.toggle('pede-toque', pede);
+    this.toque.classList.toggle('on', pede);
+    stage.classList.toggle('em-toque', pede);
+  },
+  /* chegar ao slide: a tela clara, nada escrito */
+  zera(){ this.dispensou = false; this.estado = ''; this.nt = -1; this.nf = -1; if (this.veu) this.tick(-1); },
+  /* saindo do slide com o pedido em cena, o play volta */
+  fora(){ if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
+};
+window.EV9 = EV9;
 
 /* A COR NEUTRA de quem está fora do lugar: um cinza morno que escurece
    devagar com o número atômico (o do professor). A cor da família volta

@@ -792,6 +792,34 @@ var LEGENDAS = {
   "audio_tabela_9.0": [
     [0,3.56,"Tópico 9. A tabela e os elétrons de valência."]
   ],
+  "audio_tabela_9": [
+    [0,2.98,"Muito bem! A partir de agora, vamos ver como"],
+    [2.98,5.96,"a tabela periódica se conecta com a eletrosfera"],
+    [5.96,8.93,"dos átomos. Na verdade,"],
+    [8.93,11.91,"a gente vai aprender a usar a tabela para mapear a forma"],
+    [11.91,14.89,"como os elétrons estão organizados, principalmente"],
+    [14.89,17.87,"na camada de valência, que é a camada mais externa."],
+    [17.87,20.85,"E sabe por que isso é tão importante?"],
+    [20.85,23.82,"É importante porque descobrir como os elétrons"],
+    [23.82,26.8,"se organizam na eletrosfera nos permite prever uma série"],
+    [26.8,29.78,"de propriedades e comportamentos químicos do elemento."],
+    [29.78,33.38,"Daí a importância fundamental desse assunto."]
+  ],
+  "audio_tabela_9.1": [
+    [0,2.98,"Para começar, vamos lembrar a forma clássica"],
+    [2.98,5.96,"que a gente usa na escola para mapear a eletrosfera:"],
+    [5.96,8.12,"o famoso diagrama de Pauling."],
+    [8.93,11.91,"Esse diagrama é a representação prática do princípio"],
+    [11.91,14.79,"da construção, o princípio de Aufbau,"],
+    [14.89,17.87,"que orienta a ordem em que os elétrons ocupam"],
+    [17.87,20.85,"os subníveis da eletrosfera, em ordem crescente de energia."],
+    [20.85,26.8,"É esse esquema aqui, que você já deve ter visto em algum momento nas suas aulas de Química."],
+    [26.8,29.78,"Lembra dele? Pois é."],
+    [29.78,32.76,"Mas o que nós vamos fazer a partir de agora é algo muito mais prático."],
+    [32.76,38.71,"Vamos aprender a usar a própria tabela periódica para descobrir os elétrons e as camadas"],
+    [38.71,44.67,"do átomo na hora, sem precisar fazer todo aquele traçado de diagonais do diagrama."],
+    [44.67,46.0,"Entendeu a grande vantagem?"]
+  ],
   "quiz1": [
     [0,1.94,"Certo, vamos pra primeira questão."]
   ],

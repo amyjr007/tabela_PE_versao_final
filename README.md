@@ -770,13 +770,26 @@ para depois.
 
 ### Slide 10 · A tabela e os elétrons de valência
 
-A tabela das cores dos grupos A e B (sem as séries), mas com os **grupos B e
-as casas das séries quase apagados** (`.mesa.valencia`, opacidade 0,3): só os
-grupos A ficam inteiros, no dourado. Os números das linhas e das colunas
-saem, e por cima das colunas 1, 2 e 13 a 18 ficam os nomes **1A a 8A**, no
-dourado (`.rot-a`). Chega-se pela seta de avançar do slide 9 (ou pela
-navegação, "1. Início"), com o play à espera da narração `9`
-(`Audios/audio_tabela_9.mp3`, ainda por gravar).
+A tabela das cores dos grupos A e B (sem as séries), **todas inteiras**: os A
+no dourado e os de transição no vermelho deles (`.mesa.valencia`). Os números
+das linhas e das colunas saem, e por cima das colunas 1, 2 e 13 a 18 ficam os
+nomes **1A a 8A**, no dourado (`.rot-a`). Chega-se pela seta de avançar do
+slide 9 (ou pela navegação, "1. Início"), com o play à espera da narração `9`.
+
+A `9` (`Audios/audio_tabela_9.mp3`, 33,4 s; tudo função do tempo dela, em
+`EV9`, os segundos em `T9`): até aos 7 s a vida solta da tabela continua; dos
+2,9 s, no vão de cima da tabela, digita "Tabela periódica" e aos 4,8 s entram o
+elo (dois anéis de corrente, dourado e azul) e "Eletrosfera" (peça `texto-9`);
+aos 9,5 s a tela escurece (o título sai) com o ícone da tabela à esquerda
+(`icone-tabela-9`), e aos 11,8 s entra o átomo de Rutherford à direita
+(`atomo-9`): 4 prótons e 4 elétrons parados, em duas camadas (2 e 2). Aos 15 s
+a camada de valência e os seus elétrons acendem no amarelo neon e o resto
+apaga-se; aos 19 s tudo volta, em 1 s. Aos 22,5 s a eletrosfera inteira acende
+no neon, e fica, a respirar; dos 26,5 aos 29 s, embaixo, "A forma como os
+elétrons se organizam na eletrosfera dita todo o comportamento químico de um
+átomo" (`frase-9`). Acabada a narração, a tela fica como está, com "Toque na
+tela": o toque toca a `9.1` (`Audios/audio_tabela_9.1.mp3`, 46 s, o diagrama de
+Pauling), com a cena como está (os eventos dela ainda por fazer).
 
 ### Slide 11 · A tabela e o subnível mais energético
 
