@@ -4428,7 +4428,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v43.4';
+const VERSAO = 'v43.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -13245,6 +13245,8 @@ function aguaSVG(){
         '<stop offset=".2" stop-color="#fff" stop-opacity=".06"/><stop offset=".85" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity=".3"/></linearGradient>' +
     '</defs>' +
     '<rect class="fundo4" width="440" height="440" fill="url(#ag4-fundo)"/>' +
+    /* (o copo, a lupa e as moléculas 20 % maiores, a partir do meio de baixo) */
+    '<g transform="translate(150 284) scale(1.2) translate(-150 -300)">' +
     '<ellipse cx="128" cy="392" rx="82" ry="10" fill="#000" opacity=".55" filter="url(#ag4-borra)"/>' +
     /* o copo de vidro, com a água e o menisco */
     '<path d="M64,214 L80,388 Q82,396 92,396 L164,396 Q174,396 176,388 L192,214 Z" fill="url(#ag4-copo)" stroke="#E6F2FC" stroke-opacity=".55" stroke-width="1.6"/>' +
@@ -13255,7 +13257,7 @@ function aguaSVG(){
     /* (menor, e na metade direita do copo: com o fundo escuro, cobri-lo todo
        apagava o copo) */
     lupa4(px, 182, 286, 70, dentro, [-88, 66], -45) +
-    molSai4(px, molAgua4(px), 'mol-agua', 182, 286, 300, 104, 2.6) +
+    molSai4(px, molAgua4(px), 'mol-agua', 182, 286, 300, 150, 2.6) + '</g>' +
     '<text class="form4 form-agua" x="300" y="52" text-anchor="middle"></text>' +
     /* (o nome embaixo do copo: o cabo da lupa passa à direita dele) */
     '<text class="po-nome" x="128" y="428" text-anchor="middle">Água</text>' +
@@ -13286,10 +13288,12 @@ function co2SVG(){
   const [defsCil, cil] = cilindro4(px, ['#C9CED6', '#8A929C', '#3E454E'], 'Gás carbônico').split('|');
   return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Cilindro de gás carbônico, e a lupa mostrando as moléculas de CO2">' +
     '<defs>' + fundoFace4(px) + defsAtomos(px) + defsCil + '</defs>' +
-    '<rect class="fundo4" width="440" height="440" fill="url(#cd4-fundo)"/>' + cil +
+    '<rect class="fundo4" width="440" height="440" fill="url(#cd4-fundo)"/>' +
+    /* (o cilindro, a lupa e as moléculas 20 % maiores) */
+    '<g transform="translate(150 260) scale(1.2) translate(-150 -260)">' + cil +
     /* (a lupa em cima do cilindro) */
     lupa4(px, 118, 250, 86, dentro, [-162, 20], -45) +
-    molSai4(px, molCO24(px), 'mol-co2', 118, 250, 300, 104, 2.4) +
+    molSai4(px, molCO24(px), 'mol-co2', 118, 250, 300, 132, 2.4) + '</g>' +
     '<text class="form4 form-co2" x="300" y="52" text-anchor="middle"></text>' +
   '</svg>';
 }
@@ -13305,8 +13309,9 @@ function cilindroNobresSVG(){
   const [defsCil, cil] = cilindro4(px, ['#E4DCFF', '#9C8BEA', '#4A3C9A'], 'Gases Nobres').split('|');
   return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Cilindro de gases nobres, e a lupa mostrando os átomos soltos">' +
     '<defs>' + fundoFace4(px) + defsAtomos(px) + defsCil + '</defs>' +
-    '<rect class="fundo4" width="440" height="440" fill="url(#gn4-fundo)"/>' + cil +
-    lupa4(px, 118, 250, 86, dentro, [-162, 20], -45) +
+    '<rect class="fundo4" width="440" height="440" fill="url(#gn4-fundo)"/>' +
+    '<g transform="translate(150 260) scale(1.2) translate(-150 -260)">' + cil +
+    lupa4(px, 118, 250, 86, dentro, [-162, 20], -45) + '</g>' +
   '</svg>';
 }
 
