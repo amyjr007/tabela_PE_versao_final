@@ -805,7 +805,12 @@ o Pauling sai e o diagrama desembaça, juntos, em fade; aos 35 s o ícone da
 tabela da `9` (`tabela-91`) entra pela esquerda empurrando o quadro para a
 direita, e a tela fica dividida: a tabela na metade esquerda, o diagrama na
 direita, os dois a 0,8125, e o “Princípio de Aufbau” acompanhando o quadro, na
-mesma escala. No sumário, "Introdução" vai ao começo da `9`.
+mesma escala. Dos 41,5 aos 43,5 s, por cima dos riscos de giz da foto e na
+ordem do diagrama (1s · 2s · 2p 3s · 3p 4s · 3d 4p 5s · 4d 5p 6s · 4f 5d 6p 7s
+· 5f 6d 7p), uma seta amarela neon de cada vez (`SETAS_91`, em pixels da foto)
+desenha-se da ponta de cima à direita até a de baixo à esquerda, com a cabeça
+no fim; quando uma entra, a anterior some, e a última fica. No sumário,
+"Introdução" vai ao começo da `9`.
 
 Na `9`, enquanto a camada de valência brilha (15–19 s), "camada de valência"
 aparece embaixo do átomo, no mesmo amarelo neon (`camada-valencia-9`), e sai com

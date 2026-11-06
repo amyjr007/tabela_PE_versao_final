@@ -2747,6 +2747,12 @@ html:is(.palco-largo,.palco-alto) .veu-pauling::before{background:rgba(12,10,32,
 .veu-pauling .diag91{filter:blur(6px) brightness(.8);transform:scale(1.04);transition:filter 1.2s ease, transform 1.2s ease}
 .veu-pauling.foco91 .diag91{filter:none;transform:none}
 .veu-pauling .paul91{transition:opacity 1.2s ease}
+/* as setas neon por cima dos riscos de giz (SETAS_91) */
+.veu-pauling .setas91{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.setas91 path{fill:none;stroke:#F4FF3A;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.setas91 .halo91{stroke:#EAFF00;stroke-width:18;opacity:.75;filter:url(#g91)}
+.setas91 .seta91{opacity:0}
+.setas91 .cab91{opacity:0}
 .veu-pauling.sem-pauling .paul91{opacity:0}
 /* (aos 35 s: o ícone da tabela entra pela esquerda e empurra o quadro para a
    direita — os dois andam juntos e encolhem a 0,8125, e a tela fica dividida:
@@ -4532,7 +4538,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v44.1';
+const VERSAO = 'v44.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -18516,10 +18522,28 @@ window.EV8 = EV8;
    ============================================================ */
 const T91 = { veu:7.0, aufbau:[13.2, 14.5], paulingSai:22.0, foco:22.0, empurra:35.0 };
 const AUFBAU_91 = '“Princípio de Aufbau”';
+/* AS SETAS DO DIAGRAMA (dos 41,5 aos 43,5 s da "9.1"): por cima de cada risco
+   de giz da foto, na ordem do diagrama — 1s · 2s · 2p 3s · 3p 4s · 3d 4p 5s ·
+   4d 5p 6s · 4f 5d 6p 7s · 5f 6d 7p —, uma seta amarela neon que se desenha
+   da ponta de cima à direita até a de baixo à esquerda (onde fica a cabeça).
+   Quando uma entra, a anterior some; a última fica. Em pixels da foto
+   (1024 × 772) */
+const SETAS_91 = { de:41.5, ate:43.5, riscos:[
+  [382, 92, 248, 162], [402, 162, 247, 250], [533, 172, 245, 335], [540, 247, 248, 423],
+  [683, 245, 252, 510], [683, 325, 262, 588], [838, 318, 288, 640], [840, 398, 440, 635]] };
+const SVG_SETAS_91 = '<svg class="setas91" viewBox="0 0 1024 772" aria-hidden="true"><defs>' +
+  '<filter id="g91" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="7"/></filter></defs>' +
+  SETAS_91.riscos.map(([x1, y1, x2, y2]) => {
+    const d = 'M' + x1 + ' ' + y1 + 'L' + x2 + ' ' + y2, a = Math.atan2(y2 - y1, x2 - x1), h = 26,
+          p = s => (x2 - h * Math.cos(a + s)).toFixed(1) + ' ' + (y2 - h * Math.sin(a + s)).toFixed(1),
+          cab = 'M' + p(0.5) + 'L' + x2 + ' ' + y2 + 'L' + p(-0.5);
+    return '<g class="seta91"><path class="halo91" d="' + d + '"/><path class="linha91" d="' + d + '"/>' +
+      '<g class="cab91"><path class="halo91" d="' + cab + '"/><path d="' + cab + '"/></g></g>';
+  }).join('') + '</svg>';
 const VEU_91 = '<div class="veu veu-pauling" aria-live="polite">' +
   '<h2 class="titulo91" data-mont="titulo-91">Diagrama de Linus Pauling</h2>' +
   '<div class="quadro91" data-mont="diagrama-91"><img class="diag91" src="Imagens/diagrama.jpeg" alt="O diagrama de Pauling no quadro">' +
-  '<img class="paul91" src="Imagens/pauling_recorte.webp" alt="Linus Pauling"></div>' +
+  '<img class="paul91" src="Imagens/pauling_recorte.webp" alt="Linus Pauling">' + SVG_SETAS_91 + '</div>' +
   '<div class="icone91" data-mont="tabela-91"></div>' +
   '<p class="aufbau91" data-mont="aufbau-91"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p></div>';
 const T9 = { vidaAte:7.0, titulo:[2.9, 3.9], elo:4.8, veu:9.5, atomo:11.8, valencia:15.0, valFim:19.0, toda:22.5, fim:33.3 };
@@ -18597,6 +18621,9 @@ const EV9 = {
     slides[9].insertAdjacentHTML('beforeend', VEU_91);
     this.veu91 = slides[9].querySelector('.veu-pauling');
     this.aufbau = this.veu91.querySelector('.aufbau91');
+    this.setas = [...this.veu91.querySelectorAll('.seta91')].map(g => ({ g, linhas:g.querySelectorAll(':scope > path'), cab:g.querySelector('.cab91') }));
+    this.setas.forEach((s, k) => { const [x1, y1, x2, y2] = SETAS_91.riscos[k]; s.len = Math.hypot(x2 - x1, y2 - y1);
+      s.linhas.forEach(l => l.style.strokeDasharray = s.len.toFixed(1)); });
     /* (o ícone da tabela da "9", o mesmo, para empurrar o quadro aos 35 s) */
     this.veu91.querySelector('.icone91').innerHTML = this.icone.querySelector('svg').outerHTML;
     this.rotulo = this.veu.querySelector('.rotulo9');
@@ -18642,7 +18669,25 @@ const EV9 = {
     this.rotulo.classList.toggle('on9', val);
   },
   /* A "9.1", função do tempo dela */
+  /* as setas, função do tempo: cada uma tem a sua vez (2 s ÷ 8), e desenha-se
+     nos primeiros 80 % dela; a cabeça entra no fim do traço */
+  setas91(t){
+    const S = SETAS_91, n = S.riscos.length, vez = (S.ate - S.de) / n;
+    const est = this.setas.map((s, k) => {
+      const ini = S.de + k * vez, vis = t >= ini && (t < ini + vez || k === n - 1);
+      return vis ? Math.min(1, (t - ini) / (vez * 0.8)).toFixed(2) : '-';
+    }).join();
+    if (est === this.estadoSetas) return;
+    this.estadoSetas = est;
+    est.split(',').forEach((p, k) => {
+      const s = this.setas[k], vis = p !== '-', f = vis ? +p : 0;
+      s.g.style.opacity = vis ? 1 : 0;
+      s.linhas.forEach(l => l.style.strokeDashoffset = (s.len * (1 - f)).toFixed(1));
+      s.cab.style.opacity = f >= 1 ? 1 : 0;
+    });
+  },
   tick91(t, monta, de91){
+    this.setas91(monta ? -1 : t);
     const A = T91, n = this.letras(t, A.aufbau[0], A.aufbau[1], AUFBAU_91);
     if (n !== this.na){
       if (n > this.na && this.na >= 0 && !monta) TECLAS.bate();
@@ -18662,7 +18707,7 @@ const EV9 = {
     this.aufbau.classList.toggle('digitando9', dig);
   },
   /* chegar ao slide: a tela clara, nada escrito */
-  zera(){ this.estado = ''; this.estado91 = ''; this.nt = -1; this.nf = -1; this.na = -1; if (this.veu) this.tick(-1); },
+  zera(){ this.estado = ''; this.estado91 = ''; this.estadoSetas = ''; this.nt = -1; this.nf = -1; this.na = -1; if (this.veu) this.tick(-1); },
   fora(){}
 };
 window.EV9 = EV9;
