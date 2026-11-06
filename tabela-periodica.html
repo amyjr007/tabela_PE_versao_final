@@ -1833,20 +1833,18 @@ body.montagem .alertaAm2{opacity:1!important;animation:none!important;pointer-ev
 .pc.mat-br .f1 :is(i,b,u,em){color:#fff;text-shadow:0 0 5px rgba(0,0,0,.7),0 1px 2px rgba(0,0,0,.8)}
 .pc:is(.realce4,.realceAm).mat-br .face{box-shadow:0 0 0 1.5px rgba(255,200,170,.6), 0 12px 26px rgba(0,0,0,.4), 0 0 26px 6px rgba(176,60,30,.6)}
 
-/* -- o SÓLIDO (os ametais sólidos): um cristal, as facetas na cor do
-   próprio elemento (o enxofre amarelo, o iodo violeta, o carbono grafite…),
-   o grão da pedra e três brilhos que piscam -- */
+/* -- o SÓLIDO (os ametais sólidos): opaco e fosco, como eles são — a cor do
+   próprio elemento (o enxofre amarelo, o iodo violeta, o carbono grafite…)
+   por igual, um sombreado suave de cima para baixo e um grão fino de pó,
+   sem facetas de cristal nem brilhos (não refletem a luz) -- */
 .mat.solido{
   background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2' seed='2'/%3E%3CfeColorMatrix values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 .5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
-    conic-gradient(from 200deg at 70% 72%,rgba(255,255,255,.22) 0 70deg,rgba(0,0,0,.28) 70deg 160deg,transparent 160deg 250deg,rgba(255,255,255,.14) 250deg),
-    conic-gradient(from 25deg at 36% 40%,color-mix(in srgb,var(--s) 62%,#fff) 0 62deg,var(--s) 62deg 138deg,
-      color-mix(in srgb,var(--s) 66%,#000) 138deg 214deg,color-mix(in srgb,var(--s) 84%,#fff) 214deg 292deg,
-      color-mix(in srgb,var(--s) 78%,#000) 292deg);
-  background-size:120px 120px,100% 100%,100% 100%;
-  background-blend-mode:overlay,normal,normal;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.6), inset 0 -2px 3px rgba(0,0,0,.35)}
-.mat.solido .faisca{width:12px;height:12px;left:22%;top:24%;
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1.6 -.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
+    radial-gradient(130% 115% at 32% 22%,color-mix(in srgb,var(--s) 86%,#fff) 0%,var(--s) 52%,color-mix(in srgb,var(--s) 80%,#000) 100%);
+  background-size:90px 90px,100% 100%;
+  background-blend-mode:soft-light,normal;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.14), inset 0 -2px 4px rgba(0,0,0,.22)}/* (as faíscas ficam no desenho, mas apagadas: o ametal é fosco) */
+.mat.solido .faisca{display:none;width:12px;height:12px;left:22%;top:24%;
   background:radial-gradient(circle,#fff 0 12%,transparent 13%),
              linear-gradient(0deg,transparent 46%,#fff 50%,transparent 54%),
              linear-gradient(90deg,transparent 46%,#fff 50%,transparent 54%);
@@ -4428,7 +4426,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v42.8';
+const VERSAO = 'v42.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
