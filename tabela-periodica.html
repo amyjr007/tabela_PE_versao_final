@@ -989,7 +989,7 @@ body.montagem .classes4 .frase{pointer-events:auto}
 .classes4{transition:opacity .7s ease}
 .mesa.tipos.arruma4 .pc:not([data-tipo="metais"]){opacity:0;pointer-events:none}
 .mesa.tipos.arruma4[data-luz] .eixo,.mesa.tipos.arruma4 .casa,.mesa.tipos.arruma4 .classes4{opacity:0}
-.mesa.tipos .pc.anda4{transition:left 90ms linear, top 90ms linear, transform 90ms linear, opacity .7s ease}
+.mesa.tipos .pc.anda4{transition:left 90ms linear, top 90ms linear, transform 90ms linear, opacity .7s ease, filter .8s ease}
 .pc.no-ar4{z-index:12}
 .pc.hg4{z-index:40}
 /* no fim da narração o tempo pára: a volta do Hg à grade é uma transição */
@@ -1165,7 +1165,12 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 .cubo4C.virou3 .face4C.esq{transform:none}
 /* o cubo da "4Ax": a poça (cópia) com o nome; os termômetros; o garimpo */
 .cuboAx .ax-poca{position:absolute;left:6%;right:6%;top:20%;height:52%}
-.cuboAx .ax-poca svg{width:100%;height:100%}
+.cuboAx .ax-poca svg{width:100%;height:100%;overflow:visible}
+/* (o cubo do mercúrio sem moldura: as faces sem o fundo, a borda e a sombra,
+   para a poça continuar como estava, solta no palco) */
+.cuboAx .face4C{background:none;border:0;box-shadow:none;overflow:visible}
+.cuboAx .face4C.esq{overflow:hidden}
+.cuboAx .fundo4{display:none}
 .cuboAx .ax-nome{position:absolute;left:0;right:0;bottom:34px;text-align:center;
   font:600 30px var(--display);color:#F4F2F8;text-shadow:0 2px 6px rgba(0,0,0,.6)}
 .cuboAx .ax-foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -4421,7 +4426,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v42.2';
+const VERSAO = 'v42.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -9178,8 +9183,16 @@ const EV4 = {
   /* a poça, como ela está agora, copiada para a face da frente (os ids do
      desenho trocados, para a cópia ter os filtros dela) */
   fotoPoca(){
-    const f = this.cuboAx.querySelector('.face4C.frente .ax-poca');
-    f.innerHTML = POCA4.el ? POCA4.el.querySelector('svg').outerHTML.replace(/poca4-/g, 'pz4-') : '';
+    const f = this.cuboAx.querySelector('.face4C.frente .ax-poca'), P = POCA4.el;
+    f.innerHTML = P ? P.querySelector('svg').outerHTML.replace(/poca4-/g, 'pz4-') : '';
+    /* (no lugar e no tamanho em que a poça estava na tela: a face da frente
+       fica no plano do cubo, que tem o meio em cx, cy e a escala esc) */
+    const x = parseFloat(P && P.style.left), y = parseFloat(P && P.style.top);
+    if (!P || isNaN(x) || isNaN(y)) return;
+    const X = this.AX, s = parseFloat(P.style.getPropertyValue('--s')) || 1;
+    const w = 340 * s / X.esc, h = 180 * s / X.esc;
+    Object.assign(f.style, { left:(220 + (x - X.cx) / X.esc - w/2).toFixed(1) + 'px', top:(220 + (y - X.cy) / X.esc - h/2).toFixed(1) + 'px',
+                             width:w.toFixed(1) + 'px', height:h.toFixed(1) + 'px', right:'auto' });
   },
   preparaAx(m){
     if (this.cuboAx) return;
@@ -13275,7 +13288,7 @@ function termometroSVG(){
       '<linearGradient id="tm4-vidro" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".32"/>' +
         '<stop offset=".22" stop-color="#fff" stop-opacity=".06"/><stop offset=".8" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#fff" stop-opacity=".25"/></linearGradient>' +
     '</defs>' +
-    '<rect width="440" height="440" fill="url(#tm4-fundo)"/>' +
+    '<rect class="fundo4" width="440" height="440" fill="url(#tm4-fundo)"/>' +
     '<g transform="rotate(-32 220 205)">' +
       '<ellipse cx="226" cy="392" rx="40" ry="7" fill="#000" opacity=".5" filter="url(#tm4-borra)"/>' +
       /* a faixa leitosa da escala, ao lado do capilar (à direita) */
@@ -13305,7 +13318,7 @@ function termometroDigitalSVG(){
       '<linearGradient id="td4-visor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C6D9C9"/><stop offset="1" stop-color="#8FA897"/></linearGradient>' +
       '<linearGradient id="td4-aco" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5B6570"/><stop offset=".4" stop-color="#F2F5F8"/><stop offset="1" stop-color="#4C555F"/></linearGradient>' +
     '</defs>' +
-    '<rect width="440" height="440" fill="url(#td4-fundo)"/>' +
+    '<rect class="fundo4" width="440" height="440" fill="url(#td4-fundo)"/>' +
     '<g transform="rotate(-32 220 205)">' +
       '<ellipse cx="226" cy="392" rx="46" ry="7" fill="#000" opacity=".5" filter="url(#td4-borra)"/>' +
       /* a ponta de metal, e o corpo que afina até ela */
