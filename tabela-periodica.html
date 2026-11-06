@@ -2468,7 +2468,8 @@ body.montagem .bloco72{pointer-events:auto}
 /* e com a tela escura também: ali o que faz a aula seguir é o toque na tela */
 #stage.tela-escura #som, #stage.tela-escura #som-dica, #stage.tela-escura #vel{display:none!important}
 /* e na fala curta da "8.2.0", que passa sozinha à "8.2" (EV8) */
-#stage.sem-play8 #som, #stage.sem-play8 #som-dica, #stage.sem-play8 #vel{display:none!important}
+#stage.sem-play8 #som, #stage.sem-play8 #som-dica, #stage.sem-play8 #vel,
+#stage.sem-play9 #som, #stage.sem-play9 #som-dica, #stage.sem-play9 #vel{display:none!important}
 
 /* ---- o cartão da nota, no fim do quiz ---- */
 .nota-card{
@@ -2724,6 +2725,58 @@ body.montagem .titulo9{pointer-events:auto}
 .mesa.valencia.apagaB92 .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
   [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]),
 .mesa.valencia.apagaB92 .casa.serie{opacity:.15}
+/* (33–36 s: o bloco de transição brilha em vermelho, e apaga) */
+.mesa.valencia.brilhoB92 .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
+  [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]) .face{
+  box-shadow:0 0 0 2px #FF6B57, 0 0 18px 4px rgba(229,57,53,.85);filter:brightness(1.15)}
+.mesa.valencia.brilhoB92 .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
+  [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]){animation:brilhoB92 1.4s ease-in-out infinite}
+@keyframes brilhoB92{50%{filter:brightness(1.12) drop-shadow(0 0 6px rgba(229,57,53,.7))}}
+
+/* ---- a "9.3": a regra na tela escura, e a lista 1A = 1e⁻ … 8A = 8e⁻ ---- */
+.veu-familia{background:rgba(12,10,32,.96)}
+html:is(.palco-largo,.palco-alto) .veu-familia::before{background:rgba(12,10,32,.96)}
+.veu-familia :is(.frase93,.lista93){position:absolute;left:640px;transform:translate(-50%,-50%);margin:0}
+.veu-familia .frase93{top:250px;width:1040px;text-align:center;text-wrap:balance;
+  font-family:var(--display);font-weight:600;font-size:44px;line-height:1.25;color:#F4F2F8}
+.veu-familia .falta{color:transparent;text-shadow:none}
+/* (o cursor é um inline vazio, com a borda: não abre uma quebra de linha no
+   meio da palavra, como um inline-block abriria) */
+.veu-familia .cursor{display:none;border-left:4px solid var(--ouro-luz);margin-left:-2px;margin-right:-2px}
+.veu-familia .frase93.digitando9 .cursor{display:inline}
+.veu-familia .lista93{top:450px;display:grid;grid-template-columns:repeat(4,auto);gap:22px 54px;white-space:nowrap;
+  font-family:var(--display);font-weight:700;font-size:38px;color:#F4FF3A;text-shadow:0 0 14px rgba(234,255,0,.35)}
+.veu.veu-familia .toque-continuar{top:640px}
+body.montagem .veu-familia{opacity:1;background:rgba(12,10,32,.6);pointer-events:none}
+body.montagem .veu-familia [data-mont]{pointer-events:auto}
+
+/* ---- a "9.3.1": as famílias que sobem (FAM93), como no app do professor ---- */
+/* (a mesa encolhe um fio e desce, para a família que sobe 1,3 linha caber) */
+.mesa.valencia{transition:scale .8s ease, translate .8s ease}
+.mesa.valencia.fam93{scale:.9;translate:0 26px}
+/* (no celular a mesa é maior: encolhe mais) */
+html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
+.mesa.valencia.fam93 .pc[data-z="2"]{opacity:.22;filter:grayscale(.9)}
+.mesa.toca93 .pc:is([data-col="1"],[data-col="2"],[data-col="13"],[data-col="14"],[data-col="15"],[data-col="16"],[data-col="17"],[data-col="18"]):not([data-z="2"]){cursor:pointer}
+@keyframes dica93{0%,100%{translate:0 0}50%{translate:0 -5px}}
+.mesa .pc.dica93{animation:dica93 1.4s ease-in-out infinite}
+.etq93{position:absolute;z-index:40;transform:translate(-50%,-50%);white-space:nowrap;cursor:pointer;
+  font-family:var(--display);font-weight:600;font-size:19px;color:#fff;border-radius:999px;padding:5px 16px;
+  border:1px solid rgba(255,255,255,.3);text-shadow:0 1px 4px rgba(0,0,0,.4);
+  opacity:0;pointer-events:none;translate:calc(var(--lado,1) * 60px) 0;transition:translate .24s ease-in, opacity .24s ease}
+.etq93[data-lado="-1"]{--lado:-1}
+.etq93.on{opacity:1;translate:0 0;pointer-events:auto;transition:translate .52s cubic-bezier(.34,1.56,.64,1), opacity .28s ease}
+.dist93{position:absolute;z-index:41;display:flex;flex-direction:column;padding:0 14px;box-sizing:content-box;
+  background:rgba(15,8,3,.94);border:2px solid rgba(255,225,170,.45);border-radius:10px;box-shadow:0 6px 28px rgba(0,0,0,.7);
+  opacity:0;transition:opacity .25s ease;pointer-events:none}
+.dist93.esq93{translate:-100% 0}
+.dist93.on{opacity:1}
+.dist93 .lin93{display:flex;align-items:center;gap:.12em;white-space:nowrap;font-family:var(--mono);font-size:19px;color:#fff}
+.dist93.esq93 .lin93{justify-content:flex-end}
+.dist93 .lin93 b{font-family:var(--display);font-weight:700;font-size:1.25em;color:#fde047;min-width:1.4em;text-align:center;margin:0 .6em 0 0}
+.dist93.esq93 .lin93 b{margin:0 0 0 .6em}
+.dist93 .lin93 span{opacity:.78;padding:.03em .06em}
+.dist93 .lin93 span.ult93{opacity:1;background:rgba(252,211,77,.22);border:1px solid rgba(252,211,77,.65);border-radius:5px;padding:.03em .18em;color:#fde047;font-weight:700}
 .titulo9.liga9 .elo9 svg{animation:elo9 1.8s ease-in-out .6s infinite}
 @keyframes elo9{50%{transform:scale(1.1)}}
 /* a tela escura: o ícone da tabela à esquerda, o átomo à direita, a frase
@@ -4554,7 +4607,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v44.3';
+const VERSAO = 'v44.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5046,6 +5099,7 @@ function montaTabela(i){
     [[1,'1A'],[2,'2A'],[13,'3A'],[14,'4A'],[15,'5A'],[16,'6A'],[17,'7A'],[18,'8A']].forEach(([col, txt]) => {
       const r = document.createElement('div');
       r.className = 'rot-a';
+      r.dataset.col = col;      /* (a família que sobe na "9.3.1" leva o nome junto: FAM93) */
       r.textContent = txt;
       r.style.left = xDaColuna(col).toFixed(1) + 'px';
       r.style.top  = (TAB_TOPO - 44) + 'px';
@@ -5844,6 +5898,8 @@ const TRILHAS = {
   '9':    'Audios/audio_tabela_9.mp3',     /* o slide 10: a tabela e a eletrosfera (EV9) */
   '9.1':  'Audios/audio_tabela_9.1.mp3',   /* o play no fim da "9": o diagrama de Pauling (EV9) */
   '9.2':  'Audios/audio_tabela_9.2.mp3',   /* o play no fim da "9.1": só os representativos (EV9) */
+  '9.3':  'Audios/audio_tabela_9.3.mp3',   /* 1,5 s depois da "9.2", sozinha: a regra (EV9) */
+  '9.3.1':'Audios/audio_tabela_9.3.1.mp3', /* o toque na tela escura da "9.3": as famílias que sobem (FAM93) */
   '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: os blocos (ainda por gravar) */
 };
 /* a trilha com que cada slide começa */
@@ -5998,6 +6054,8 @@ const ROTEIROS = {
   '9':    [],   /* o slide 10: função do tempo, em EV9 */
   '9.1':  [],
   '9.2':  [],
+  '9.3':  [],
+  '9.3.1':[],
   '10':   []
 };
 
@@ -6517,6 +6575,7 @@ function tocaOuPara(){
   if (SEQ.aguardaToque2){ SEQ.continua2(); return; }
   if (EV7.esperaToque){ EV7.continua(); return; }
   if (EV8.esperaToque()){ EV8.continua(); return; }
+  if (EV9.esperaToque()){ EV9.continua(); return; }
   /* o botão do jogo abre o jogo, e a fala das regras toca por cima */
   if (somBtn.classList.contains('jogo')){ estouraEsegue(entraNoJogo); return; }
   /* e o do quiz, o quiz do slide 3 */
@@ -6710,6 +6769,11 @@ const SEQ = {
     else if (id === '9') carregaTrilha('9.1');
     /* e o da "9.1", a "9.2" */
     else if (id === '9.1') carregaTrilha('9.2');
+    /* o da "9.2": 1,5 s depois, a "9.3", sem esperar o play (EV9) */
+    else if (id === '9.2'){
+      clearTimeout(EV9.vai93);
+      EV9.vai93 = setTimeout(() => { if (atual === 9 && trilhaAtual === '9.2') tocaTrilha('9.3'); }, T92.segue);
+    }
     /* o fim da "8.2.0": 1,5 s depois, a "8.2", sem esperar o play (EV8) */
     else if (id === '8.2.0'){
       clearTimeout(EV8.vai82);
@@ -18546,8 +18610,168 @@ const AUFBAU_91 = '“Princípio de Aufbau”';
    só a tabela; dos 27 aos 29 s, no vão de cima dela, digita "Só vale pros
    elementos representativos", no dourado deles, e eles brilham no mesmo
    dourado até aos 31 s; aos 38,4 s os de transição apagam-se (em fade) */
-const T92 = { limpa:9.0, texto:[27.0, 29.0], brilho:27.0, brilhoAte:31.0, apaga:38.4 };
+/* (a cena da "9.1" sai aos 6 s; e dos 33 aos 36 s o bloco de transição brilha
+   em vermelho; acabada, 1,5 s depois — sem o play —, a "9.3") */
+const T92 = { limpa:6.0, texto:[27.0, 29.0], brilho:27.0, brilhoAte:31.0, vermelho:[33.0, 36.0], apaga:38.4, segue:1500 };
 const TEXTO_92 = 'Só vale pros elementos representativos';
+/* A "9.3": aos 6,5 s a tela escurece e, até aos 11 s, digita a regra e, embaixo,
+   ao mesmo tempo, 1A = 1e⁻ … 8A = 8e⁻; acabada a narração, "Toque na tela" (sem
+   o play), que toca a "9.3.1" */
+const T93 = { veu:6.5, digita:[6.5, 11.0], fim:12.2 };
+const FRASE_93 = 'O nº da família coincide com o total de elétrons de valência';
+const LISTA_93 = [1, 2, 3, 4, 5, 6, 7, 8].map(n => n + 'A = ' + n + 'e⁻');
+const VEU_93 = '<div class="veu veu-familia" aria-live="polite">' +
+  '<p class="frase93" data-mont="frase-93"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p>' +
+  '<div class="lista93" data-mont="lista-93">' + LISTA_93.map(() => '<span class="item93"><span class="ja"></span><span class="falta"></span></span>').join('') + '</div>' +
+  '<div class="toque-continuar">Toque na tela</div></div>';
+/* A "9.3.1": aos 0,7 s a tela escura sai e fica a tabela; dos 2 s em diante, as
+   famílias A respondem ao toque (FAM93) */
+const T931 = { sai:0.7, toque:2.0 };
+
+/* AS FAMÍLIAS QUE SOBEM (a "9.3.1"), copiadas do app da tabela do professor (o
+   tópico dos elétrons de valência): tocada uma família A, ela sobe num salto
+   de mola (1,3 linha), com o nome dela em cima, e entra de lado a etiqueta com
+   o total de elétrons de valência, na cor da família; tocada a etiqueta, abre
+   ao lado a caixa escura com a distribuição eletrônica de cada elemento (na
+   ordem do diagrama de Pauling, a última camada no amarelo). Uma família de
+   cada vez: subir outra faz descer a que estava em cima; tocar a de cima
+   fá-la descer. As famílias abrem-se na ordem (1A, 2A, 3A…), e a próxima a
+   tocar balança de leve. O hélio (2 elétrons, embora na 8A) fica apagado. */
+const PAULING_93 = [[1,'s',2],[2,'s',2],[2,'p',6],[3,'s',2],[3,'p',6],[4,'s',2],[3,'d',10],[4,'p',6],[5,'s',2],[4,'d',10],
+  [5,'p',6],[6,'s',2],[4,'f',14],[5,'d',10],[6,'p',6],[7,'s',2],[5,'f',14],[6,'d',10],[7,'p',6]];
+function distPauling(z){
+  let r = z; const res = [];
+  for (const [n, l, cap] of PAULING_93){ if (r <= 0) break; const e = Math.min(r, cap); res.push({ n, l, e }); r -= e; }
+  const mx = Math.max(...res.map(s => s.n));
+  res.forEach(s => s.ultima = s.n === mx);
+  return res;
+}
+const SOBRESCRITO = n => String(n).replace(/\d/g, d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[d]);
+const FAM93 = {
+  GRUPOS:[1, 2, 13, 14, 15, 16, 17, 18],
+  TEXTOS:{ 1:'1 elétron', 2:'2 elétrons', 13:'3 elétrons', 14:'4 elétrons', 15:'5 elétrons', 16:'6 elétrons', 17:'7 elétrons', 18:'8 elétrons' },
+  /* as cores das famílias do app do professor (FAM_INFO), e a de quem não tem */
+  CORES:{ 1:['#fca5a5', '#dc2626', 'rgba(220,38,38,.5)'], 2:['#fed7aa', '#ea580c', 'rgba(234,88,12,.5)'],
+          16:['#6ee7b7', '#059669', 'rgba(5,150,105,.5)'], 17:['#c4b5fd', '#7c3aed', 'rgba(124,58,237,.5)'],
+          18:['#93c5fd', '#2563eb', 'rgba(37,99,235,.5)'] },
+  COR:['#d4a574', '#7c4010', 'rgba(124,64,16,.5)'],
+  ativo:false, sobe:null, etapa:0, dist:null, distG:null, dicaG:null,
+  prepara(m){
+    if (this.m) return;
+    this.m = m;
+    this.R = 1.3 * PASSO;
+    this.rot = {};
+    m.querySelectorAll('.rot-a').forEach(r => this.rot[+r.dataset.col] = r);
+    this.etq = {};
+    this.GRUPOS.forEach(g => {
+      const c = this.CORES[g] || this.COR, d = document.createElement('div');
+      /* (à esquerda da coluna a 1A e as do fim, como no app; as outras à direita —
+         embaixo, no vão que a família deixa ao subir) */
+      d.className = 'etq93';
+      d.dataset.lado = g === 1 || g >= 16 ? '-1' : '1';
+      d.textContent = this.TEXTOS[g];
+      d.style.left = xDaColuna(g).toFixed(1) + 'px';
+      d.style.top  = (yDaLinha(7) - 0.15 * PASSO).toFixed(1) + 'px';
+      d.style.background = 'linear-gradient(145deg,' + c[0] + ',' + c[1] + ')';
+      d.style.boxShadow = '0 3px 18px ' + c[2];
+      d.addEventListener('click', ev => { ev.stopPropagation(); this.alternaDist(g); });
+      m.appendChild(d);
+      this.etq[g] = d;
+    });
+    /* o toque nas cartas: só as das famílias A (menos o hélio) */
+    m.addEventListener('click', ev => {
+      if (!this.ativo) return;
+      const c = ev.target.closest && ev.target.closest('.pc');
+      if (!c) return;
+      const g = +c.dataset.col, z = +c.dataset.z;
+      if (!this.GRUPOS.includes(g) || z === 2 || ehDaSerie(z)) return;
+      ev.stopPropagation();
+      this.toca(g);
+    }, true);
+  },
+  cartas(g){ return [...this.m.querySelectorAll('.pc[data-col="' + g + '"]')].filter(c => +c.dataset.z !== 2 && !ehDaSerie(+c.dataset.z)); },
+  disponivel(g){ return this.GRUPOS.indexOf(g) <= this.etapa; },
+  toca(g){
+    if (!this.disponivel(g)) return;
+    this.paraDica();
+    if (this.sobe === g){ this.desce(g); this.dica(); return; }
+    this.levanta(g);
+    tocaEfeito('flip');
+    this.etapa = Math.max(this.etapa, this.GRUPOS.indexOf(g) + 1);
+    this.dica();
+  },
+  levanta(g){
+    if (this.sobe !== null && this.sobe !== g) this.desce(this.sobe);
+    this.sobe = g;
+    const mola = 'translate .32s cubic-bezier(.34,1.56,.64,1)';
+    [...this.cartas(g), this.rot[g]].forEach(el => { if (!el) return; el.style.transition = mola; el.style.translate = '0 ' + (-this.R).toFixed(1) + 'px'; });
+    this.etq[g].classList.add('on');
+  },
+  desce(g){
+    if (this.distG === g) this.fechaDist();
+    [...this.cartas(g), this.rot[g]].forEach(el => { if (!el) return; el.style.transition = 'translate .28s ease-out'; el.style.translate = ''; });
+    this.etq[g].classList.remove('on');
+    if (this.sobe === g) this.sobe = null;
+  },
+  /* a próxima família ainda não tocada, aberta, balança */
+  dica(){
+    const g = this.etapa < this.GRUPOS.length ? this.GRUPOS[this.etapa] : null;
+    this.paraDica();
+    if (!g || g === this.sobe) return;
+    this.dicaG = g;
+    this.cartas(g).forEach(c => c.classList.add('dica93'));
+  },
+  paraDica(){
+    if (this.dicaG) this.cartas(this.dicaG).forEach(c => c.classList.remove('dica93'));
+    this.dicaG = null;
+  },
+  /* a caixa da distribuição, ao lado da família (à direita da 1A e da 2A; à
+     esquerda das outras), uma linha por elemento, na altura da carta dele */
+  alternaDist(g){
+    if (this.sobe !== g) return;
+    if (this.distG === g){ this.fechaDist(); return; }
+    this.fechaDist();
+    const cs = this.cartas(g), linhas = cs.map(c => +c.dataset.z).sort((a, b) => a - b);
+    /* (a primeira linha: a do H na 1A; a 2 nas outras — na 8A, sem o hélio) */
+    const prim = g === 1 ? 1 : 2;
+    const d = document.createElement('div');
+    d.className = 'dist93' + (g <= 2 ? '' : ' esq93');
+    d.style.top = (yDaLinha(prim) - this.R - PASSO / 2).toFixed(1) + 'px';
+    d.style.left = (g <= 2 ? xDaColuna(g) + LADO / 2 + 6 : xDaColuna(g) - LADO / 2 - 6).toFixed(1) + 'px';
+    d.innerHTML = linhas.map(z => {
+      const sim = '<b>' + SIMBOLOS[z - 1] + '</b>';
+      const cam = distPauling(z).map(s => '<span' + (s.ultima ? ' class="ult93"' : '') + '>' + s.n + s.l + SOBRESCRITO(s.e) + '</span>').join('');
+      return '<div class="lin93" style="height:' + PASSO + 'px">' + (g <= 2 ? sim + cam : cam + sim) + '</div>';
+    }).join('');
+    this.m.appendChild(d);
+    this.dist = d; this.distG = g;
+    requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add('on')));
+  },
+  fechaDist(){
+    const d = this.dist;
+    this.dist = null; this.distG = null;
+    if (!d) return;
+    d.classList.remove('on');
+    setTimeout(() => d.remove(), 260);
+  },
+  liga(sim){
+    if (this.ativo === sim) return;
+    this.ativo = sim;
+    this.m.classList.toggle('toca93', sim);
+    if (sim) this.dica(); else this.paraDica();
+  },
+  /* tudo de volta (sair da "9.3.1", ou recomeçar o slide) */
+  reseta(){
+    this.liga(false);
+    this.fechaDist();
+    this.GRUPOS.forEach(g => {
+      [...this.cartas(g), this.rot[g]].forEach(el => { if (el){ el.style.transition = ''; el.style.translate = ''; } });
+      this.etq[g].classList.remove('on');
+    });
+    this.sobe = null; this.etapa = 0;
+  }
+};
+window.FAM93 = FAM93;
 /* AS SETAS DO DIAGRAMA (dos 41,5 aos 43,5 s da "9.1"): por cima de cada risco
    de giz da foto, na ordem do diagrama — 1s · 2s · 2p 3s · 3p 4s · 3d 4p 5s ·
    4d 5p 6s · 4f 5d 6p 7s · 5f 6d 7p —, uma seta amarela neon que se desenha
@@ -18663,6 +18887,22 @@ const EV9 = {
     /* (o ícone da tabela da "9", o mesmo, para empurrar o quadro aos 35 s) */
     this.veu91.querySelector('.icone91').innerHTML = this.icone.querySelector('svg').outerHTML;
     this.rotulo = this.veu.querySelector('.rotulo9');
+    /* a tela escura da "9.3", e as famílias que sobem, da "9.3.1" */
+    slides[9].insertAdjacentHTML('beforeend', VEU_93);
+    this.veu93 = slides[9].querySelector('.veu-familia');
+    this.frase93 = this.veu93.querySelector('.frase93');
+    this.itens93 = [...this.veu93.querySelectorAll('.item93')];
+    this.toque93 = this.veu93.querySelector('.toque-continuar');
+    this.veu93.addEventListener('click', () => this.continua());
+    FAM93.prepara(m);
+  },
+  /* o toque no fim da "9.3": a "9.3.1" (a tela escura sai aos 0,7 s dela) */
+  esperaToque(){ return atual === 9 && trilhaAtual === '9.3' && !naMontagem() && (som.ended || (som.currentTime || 0) >= T93.fim); },
+  continua(){
+    if (!this.esperaToque()) return;
+    estouraBolha(this.toque93, '#F4F2F8');
+    playDepois();
+    tocaTrilha('9.3.1');
   },
   /* o texto t com n letras escritas: o resto no lugar, transparente */
   escreve(el, txt, n){ el.querySelector('.ja').textContent = txt.slice(0, n); el.querySelector('.falta').textContent = txt.slice(n); },
@@ -18678,9 +18918,13 @@ const EV9 = {
     const de91 = trilhaAtual === '9.1', comecou91 = de91 && (t > 0.05 || !som.paused);
     const t9 = monta ? 99 : de9 ? t : de91 ? 99 : -1;
     /* (na "9.2" a cena da "9.1" fica como acabou, até aos 9 s dela) */
-    const de92 = trilhaAtual === '9.2';
+    const de92 = trilhaAtual === '9.2', de93 = trilhaAtual === '9.3', de931 = trilhaAtual === '9.3.1';
     this.tick91(monta ? 99 : de91 ? t : de92 ? 99 : -1, monta, de91, de92 && t >= T92.limpa);
-    this.tick92(monta ? 99 : de92 ? t : -1, monta);
+    /* (na "9.3" e na "9.3.1" os de transição continuam apagados; o texto sai) */
+    this.tick92(monta ? 99 : de92 ? t : de93 || de931 ? 99 : -1, monta, monta || de92);
+    this.tick93(monta ? 99 : de93 ? t : -1, monta, de93, de931 ? t : -1);
+    /* (entre o fim da "9.2" e a "9.3", sem o play) */
+    stage.classList.toggle('sem-play9', de92 && som.ended);
     const nt = this.letras(t9, T9.titulo[0], T9.titulo[1], TITULO_9), F = FRASE_9, nf = this.letras(t9, F.de, F.ate, F.txt);
     if (nt !== this.nt || nf !== this.nf){
       if ((nt > this.nt && this.nt >= 0 || nf > this.nf && this.nf >= 0) && !monta && de9) TECLAS.bate();
@@ -18728,21 +18972,53 @@ const EV9 = {
   },
   /* A "9.2", função do tempo dela: o texto no vão de cima da tabela, o brilho
      dos representativos e os de transição apagados */
-  tick92(t, monta){
+  tick92(t, monta, comTexto){
     const Q = T92, n = this.letras(t, Q.texto[0], Q.texto[1], TEXTO_92);
     if (n !== this.n92){
       if (n > this.n92 && this.n92 >= 0 && !monta) TECLAS.bate();
       this.n92 = n;
       this.escreve(this.texto92, TEXTO_92, n);
     }
-    const est = [t >= Q.texto[0], t >= Q.texto[0] && t < Q.texto[1], t >= Q.brilho && t < Q.brilhoAte, t >= Q.apaga].join();
+    const est = [t >= Q.texto[0] && comTexto, t >= Q.texto[0] && t < Q.texto[1], t >= Q.brilho && t < Q.brilhoAte,
+                 t >= Q.vermelho[0] && t < Q.vermelho[1], t >= Q.apaga].join();
     if (est === this.estado92) return;
     this.estado92 = est;
-    const [txt, dig, brilho, apaga] = est.split(',').map(v => v === 'true');
+    const [txt, dig, brilho, vermelho, apaga] = est.split(',').map(v => v === 'true');
     this.texto92.classList.toggle('on', txt);
     this.texto92.classList.toggle('digitando9', dig);
     this.mesa.classList.toggle('brilhoA92', brilho && !monta);
+    this.mesa.classList.toggle('brilhoB92', vermelho && !monta);
     this.mesa.classList.toggle('apagaB92', apaga && !monta);
+  },
+  /* A "9.3" (e o começo da "9.3.1"), função do tempo: a tela escura, a regra
+     e a lista digitadas juntas; e, na "9.3.1", as famílias que sobem */
+  tick93(t, monta, de93, t931){
+    const Q = T93, nf = this.letras(t, Q.digita[0], Q.digita[1], FRASE_93);
+    /* (a lista: um item depois do outro, no mesmo intervalo) */
+    const vez = (Q.digita[1] - Q.digita[0]) / LISTA_93.length;
+    const ns = LISTA_93.map((s, k) => this.letras(t, Q.digita[0] + k * vez, Q.digita[0] + (k + 1) * vez, s));
+    const chave = nf + '|' + ns.join();
+    if (chave !== this.n93){
+      if (this.n93 && !monta && de93 && nf > +this.n93.split('|')[0]) TECLAS.bate();
+      this.n93 = chave;
+      this.escreve(this.frase93, FRASE_93, t931 >= 0 ? FRASE_93.length : nf);
+      this.itens93.forEach((el, k) => this.escreve(el, LISTA_93[k], t931 >= 0 ? LISTA_93[k].length : ns[k]));
+    }
+    const pede = de93 && !monta && this.esperaToque();
+    const veu = (t >= Q.veu || t931 >= 0 && t931 < T931.sai) && !monta;
+    const est = [veu, t >= Q.digita[0] && t < Q.digita[1], pede, (t >= Q.veu || t931 >= 0) && !monta, t931 >= T931.toque].join();
+    if (est === this.estado93) return;
+    this.estado93 = est;
+    const [v, dig, p, encolhe, toca] = est.split(',').map(x => x === 'true');
+    this.veu93.classList.toggle('on', v);
+    this.frase93.classList.toggle('digitando9', dig);
+    this.veu93.classList.toggle('pede-toque', p);
+    this.toque93.classList.toggle('on', p);
+    stage.classList.toggle('em-toque', p);
+    /* (a mesa encolhe um fio, debaixo da tela escura, para a família que sobe caber) */
+    this.mesa.classList.toggle('fam93', encolhe);
+    if (toca) FAM93.liga(true);
+    else if (FAM93.ativo || FAM93.sobe !== null) FAM93.reseta();
   },
   tick91(t, monta, de91, limpa){
     this.setas91(monta ? -1 : t);
@@ -18765,8 +19041,11 @@ const EV9 = {
     this.aufbau.classList.toggle('digitando9', dig);
   },
   /* chegar ao slide: a tela clara, nada escrito */
-  zera(){ this.estado = ''; this.estado91 = ''; this.estadoSetas = ''; this.estado92 = ''; this.n92 = -1; this.nt = -1; this.nf = -1; this.na = -1; if (this.veu) this.tick(-1); },
-  fora(){}
+  zera(){ this.estado = ''; this.estado91 = ''; this.estadoSetas = ''; this.estado92 = ''; this.estado93 = ''; this.n93 = ''; this.n92 = -1; this.nt = -1; this.nf = -1; this.na = -1;
+          clearTimeout(this.vai93); if (FAM93.m) FAM93.reseta(); if (this.veu) this.tick(-1); },
+  /* saindo do slide com o pedido em cena, o play volta */
+  fora(){ clearTimeout(this.vai93); stage.classList.remove('sem-play9');
+          if (this.estado93 && this.estado93.split(',')[2] === 'true'){ stage.classList.remove('em-toque'); this.estado93 = ''; } }
 };
 window.EV9 = EV9;
 

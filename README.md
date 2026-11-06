@@ -813,11 +813,30 @@ no fim; quando uma entra, a anterior some, e a última, desenhada, some em fade.
 No sumário, "Introdução" vai ao começo da `9`.
 
 A `9.2` (`Audios/audio_tabela_9.2.mp3`, 43,7 s, o play no fim da `9.1`; em
-`EV9.tick92`, os segundos em `T92`): até aos 9 s a cena da `9.1` fica como
+`EV9.tick92`, os segundos em `T92`): até aos 6 s a cena da `9.1` fica como
 acabou, e aí sai em fade, deixando só a tabela; dos 27 aos 29 s, no vão de cima
 dela, digita "Só vale pros elementos representativos" no dourado deles (peça
-`texto-92`), e eles brilham no mesmo dourado até aos 31 s; aos 38,4 s os de
-transição (e as casas das séries) apagam-se em fade, e ficam apagados.
+`texto-92`), e eles brilham no mesmo dourado até aos 31 s; dos 33 aos 36 s o
+bloco de transição brilha em vermelho; aos 38,4 s os de transição (e as casas
+das séries) apagam-se em fade, e ficam apagados. Acabada, 1,5 s depois (sem o
+play), a `9.3`.
+
+A `9.3` (`Audios/audio_tabela_9.3.mp3`, 12,4 s; `EV9.tick93`, `T93`): aos 6,5 s
+a tela escurece e, até aos 11 s, digita "O nº da família coincide com o total de
+elétrons de valência" (`frase-93`) e, embaixo, ao mesmo tempo, um depois do
+outro, 1A = 1e⁻ … 8A = 8e⁻ no amarelo neon (`lista-93`); acabada, "Toque na
+tela" sem o play. O toque toca a `9.3.1` (`Audios/audio_tabela_9.3.1.mp3`,
+4,8 s): aos 0,7 s a tela escura sai, e dos 2 s em diante as famílias A
+respondem ao toque — **as famílias que sobem** (`FAM93`), copiadas do app da
+tabela do professor (o tópico dos elétrons de valência): tocada, a família
+sobe num salto de mola (1,3 linha) com o nome dela em cima, e entra de lado,
+no vão que ela deixa embaixo, a etiqueta "N elétrons" na cor da família (as
+do app); tocada a etiqueta, abre ao lado a caixa escura com a distribuição
+eletrônica de cada elemento, na ordem do diagrama de Pauling (`distPauling`),
+com a última camada no amarelo. Uma de cada vez (tocar a de cima fá-la
+descer); abrem-se na ordem 1A, 2A, 3A…, e a próxima balança de leve. O hélio
+fica apagado. Para caber a família que sobe, a mesa encolhe um fio e desce
+(0,9; no celular, 0,8).
 
 Na `9`, enquanto a camada de valência brilha (15–19 s), "camada de valência"
 aparece embaixo do átomo, no mesmo amarelo neon (`camada-valencia-9`), e sai com

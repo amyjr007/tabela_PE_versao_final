@@ -833,6 +833,15 @@ var LEGENDAS = {
     [31.44,36.89,"Os chamados elementos de transição seguem outra regra de preenchimento dos orbitais internos."],
     [37.33,43.7,"Por isso, deixamos eles apagadinhos aí na tela para focarmos onde essa regra é perfeita, combinado?"]
   ],
+  "audio_tabela_9.3": [
+    [0,2.64,"Tá, vamos para a regra. É muito simples."],
+    [2.98,7.6,"Para os elementos representativos, grupos A, o número da família coincide direitinho"],
+    [7.6,12.0,"com o total de elétrons de valência dos seus elementos."]
+  ],
+  "audio_tabela_9.3.1": [
+    [0,2.98,"Certo, vamos fazer um exemplo."],
+    [2.98,4.6,"Toque na família 1A primeiro."]
+  ],
   "quiz1": [
     [0,1.94,"Certo, vamos pra primeira questão."]
   ],
