@@ -1513,6 +1513,15 @@ body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
   font:700 22px var(--display);color:#F3F0FB;text-shadow:0 2px 6px rgba(0,0,0,.6)}
 /* as bandejas (Q3) e os quadros (Q5) */
 .bandeja5,.quadro5{border-radius:18px;border:2px dashed rgba(243,240,251,.35);background:rgba(255,255,255,.05)}
+/* (a Q3: o âmbar a piscar de leve nas fichas ainda soltas e nas bandejas; e,
+   largada a ficha numa bandeja, o brilho de confirmação nas duas) */
+@keyframes espera5{0%,100%{box-shadow:0 0 0 1px rgba(242,154,14,.35), 0 0 6px rgba(242,154,14,.2)}
+                   50%{box-shadow:0 0 0 2px rgba(242,154,14,.8), 0 0 16px 2px rgba(242,154,14,.45)}}
+.pc.ficha5.espera5:not(.pegando5) .face{animation:espera5 1.8s ease-in-out infinite}
+.bandeja5.espera5{animation:espera5 1.8s ease-in-out infinite}
+/* (o verde de confirmação, o mesmo do encaixe do quiz do tópico 6) */
+@keyframes encaixa5{0%{box-shadow:0 0 0 3px #fff, 0 0 26px 10px rgba(62,224,138,.95)} 100%{box-shadow:0 0 0 0 rgba(62,224,138,0)}}
+.pc.ficha5.encaixa5 .face, .bandeja5.encaixa5{animation:encaixa5 .7s ease-out}
 .bandeja5.ferve5[data-estado="solido"]{animation:vibra5 .12s linear 12}
 .bandeja5.ferve5[data-estado="liquido"]{animation:ondula5 .6s ease-in-out 3}
 .bandeja5.ferve5[data-estado="gas"]{animation:sobe5 .9s ease-in-out 2}
@@ -4607,7 +4616,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v44.4';
+const VERSAO = 'v44.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -11414,12 +11423,13 @@ const QUESTOES_5 = [
         const x = 327 + i * 82, y = 300;
         const c = Q.ficha(z, x, y, 1.06);
         c.style.setProperty('--c5', CORES_Q3[i]);
-        c.classList.add('cor5');
+        c.classList.add('cor5', 'espera5');
         c._casa = { x, y };
         c._estado = null;
         Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y));
         return c;
       });
+      this.bandejas.forEach(b => b.classList.add('espera5'));
       this.bt = Q.botao('Conferir', 1150, 628, () => this.confere(Q));
       this.bt.classList.add('some5');
       return 'Observe esses elementos. Olhe para a tabela de fundo para identificar suas posições e arraste cada um deles para o estado físico correto, à temperatura ambiente.';
@@ -11429,6 +11439,12 @@ const QUESTOES_5 = [
     solta(Q, c, x, y){
       const b = this.bandejas.find(b => Q.dentro(x, y, b));
       c._estado = b ? b.dataset.estado : null;
+      /* (largada numa bandeja: o brilho de confirmação, na ficha e na bandeja, e o "right") */
+      if (b){
+        [c, b].forEach(e => { e.classList.remove('encaixa5'); void e.offsetWidth; e.classList.add('encaixa5'); });
+        setTimeout(() => [c, b].forEach(e => e.classList.remove('encaixa5')), 700);
+        tocaEfeito('right');
+      }
       const z = +c.dataset.z, metal = tipoDe(z) === 'metais';
       Q.veste(c, !b ? null : b.dataset.estado === 'solido' ? (metal ? 'metal' : 'solido')
                            : b.dataset.estado === 'liquido' ? (metal ? 'hg' : 'br') : 'gas');
@@ -11443,6 +11459,9 @@ const QUESTOES_5 = [
       });
       this.fichas.filter(c => !c._estado).forEach(c => Q.poe(c, c._casa.x, c._casa.y, 1.06));
       this.bt.classList.toggle('some5', this.fichas.some(c => !c._estado));
+      /* o âmbar a piscar de leve: nas fichas ainda soltas, e nas bandejas enquanto houver alguma */
+      this.fichas.forEach(c => c.classList.toggle('espera5', !c._estado));
+      this.bandejas.forEach(b => b.classList.toggle('espera5', this.fichas.some(c => !c._estado)));
     },
     confere(Q){
       const erradas = this.fichas.filter(c => c._estado !== this.certo(+c.dataset.z));
@@ -15699,6 +15718,7 @@ const QUESTOES_7 = [
         e.style.scale = '.85';
       });
       this.bandejas = bandejas7(Q, 548);
+      this.bandejas.forEach(b => b.classList.add('espera5'));
       const zs = embaralha([...embaralha([11, 19, 12, 20, 13]).slice(0, 2), sorteia5([1, 6, 8, 17, 10]),
                             ...embaralha([26, 29, 47, 79, 28]).slice(0, 2), sorteia5([30, 80])]);
       this.acesas = zs.map((z, i) => {
@@ -15712,7 +15732,7 @@ const QUESTOES_7 = [
         const x = 327 + i * 82, y = 300;
         const c = Q.ficha(z, x, y, 1.06);
         c.style.setProperty('--c5', CORES_Q3[i]);
-        c.classList.add('cor7');
+        c.classList.add('cor7', 'espera5');
         c._casa = { x, y };
         c._bloco = null;
         Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y), () => this.pega(Q, c));
@@ -15742,6 +15762,9 @@ const QUESTOES_7 = [
       this.arruma(Q);
       if (b){
         c.classList.remove('encaixa7'); void c.offsetWidth; c.classList.add('encaixa7');
+        /* (e a bandeja também, como na Q3 do tópico 4) */
+        b.classList.remove('encaixa5'); void b.offsetWidth; b.classList.add('encaixa5');
+        setTimeout(() => b.classList.remove('encaixa5'), 700);
         tocaEfeito('right');
       }
     },
@@ -15753,6 +15776,9 @@ const QUESTOES_7 = [
       });
       this.fichas.filter(c => !c._bloco).forEach(c => Q.poe(c, c._casa.x, c._casa.y, 1.06));
       this.bt.classList.toggle('some5', this.fichas.some(c => !c._bloco));
+      /* o âmbar a piscar de leve: nos cards ainda soltos, e nas bandejas enquanto houver algum (como na Q3 do tópico 4) */
+      this.fichas.forEach(c => c.classList.toggle('espera5', !c._bloco));
+      this.bandejas.forEach(b => b.classList.toggle('espera5', this.fichas.some(c => !c._bloco)));
     },
     confere(Q){
       const erradas = this.fichas.filter(c => c._bloco !== bloco7(c));
