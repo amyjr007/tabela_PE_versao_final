@@ -3244,6 +3244,9 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
    montagem: { el:'pergunta-quiz-5', x:657, y:100, larg:915, alt:140, esc:1.18 }
    — o centro em 657 × 100, a mesma largura e a mesma escala) */
 .slide.quiz7 .quiz3.q4.q2.q5{left:269.3px;top:30px}
+/* (e na Q3 do quiz dos tipos — a da tabela de fundo, com o mesmo arranjo da Q2
+   dos grupos A e B, LUGAR_ARRASTA —, a caixa no mesmo lugar) */
+.slide.quiz5:has(.mesa.fundo5) .quiz3.q4.q2.q5:not(.sai){left:269.3px;top:30px}
 /* a folga do número atômico em cima do símbolo, sempre: a linha não
    pula quando ele chega, no fim da digitação */
 .quiz3.q4.q2 .q3-q{margin-top:12px}
@@ -4620,7 +4623,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v44.8';
+const VERSAO = 'v44.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -11340,7 +11343,8 @@ const sorteia5 = l => l[Math.floor(Math.random() * l.length)];
    cards ainda soltos andam juntos (x, y: o deslocamento da fila). O lugar que
    o professor deixar na montagem aparece no alto da tela, e vem para cá — um
    só, para as duas questões */
-const LUGAR_ARRASTA = { fundo:{ x:0, y:0, e:.85 }, cards:{ x:0, y:0 } };
+/* (o lugar que o professor deixou na montagem, na Q2 do quiz dos grupos A e B) */
+const LUGAR_ARRASTA = { fundo:{ x:-26, y:107, e:.45 }, cards:{ x:75, y:-79 } };
 const LUGAR_Q3_4 = LUGAR_ARRASTA, LUGAR_Q2_6 = LUGAR_ARRASTA;
 function encolheFundo(Q, els, p0){
   const m = Q.mesa(), r = m.getBoundingClientRect(), s = r.width / m.offsetWidth;
