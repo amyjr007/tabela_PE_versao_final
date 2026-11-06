@@ -4428,7 +4428,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v42.6';
+const VERSAO = 'v42.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -12514,14 +12514,16 @@ function fioDescascadoSVG(){
 /* A FIEIRA (a "4A3", aos 31,5 s), em corte: a barra grossa de cobre entra
    pela esquerda, afina no cone da fieira e sai fio do outro lado. O dedo
    puxa a ponta do fio (só para a direita: o fio não volta para dentro),
-   e A BARRA RECUA SÓ O QUE O VOLUME MANDA — o que sai em fio é o que a
-   barra perde, e com áreas na razão (7/44)² puxar 6,7 cm de fio encurta
-   a barra uns 0,17 cm. Encurtar 1:1 faria o metal desaparecer. */
+   e A BARRA ENTRA NA FIEIRA A OLHOS VISTOS (FR4.entraVisivel), com as
+   marcas do metal juntas nela e espaçadas no fio: o fio é a barra esticada.
+   (Na razão das áreas, (7/44)², ela encurtaria só 0,17 cm, e parecia parada.) */
 /* (pontaMax: a garra, com o anel, cabe inteira na face; a fieira mais à
    esquerda deixa ~6,8 cm de fio para puxar) */
 /* a fieira grande: o bloco com 90 de largura e 200 de altura, e o cone
    comprido (de 'entra' a 'sai') */
-const FR4 = { cy:190, R:22, r:3.5, entra:104, sai:166, barra0:14, ponta0:192, pontaMax:380, pxCm:30, H:100 };
+/* (entraVisivel: quanto a barra entra na fieira por unidade de fio puxado — a
+   mostra, e não a física, que dava 0,025) */
+const FR4 = { cy:190, R:22, r:3.5, entra:104, sai:166, barra0:14, ponta0:192, pontaMax:380, pxCm:30, H:100, entraVisivel:0.35 };
 function fieiraSVG(){
   const F = FR4, cy = F.cy, e = F.entra, s = F.sai, b0 = e - 10, b1 = s + 18;
   const bloco = sinal => b0 + ',' + (cy + sinal*F.H) + ' ' + b1 + ',' + (cy + sinal*F.H) + ' ' + b1 + ',' + (cy + sinal*6) + ' ' +
@@ -12552,6 +12554,9 @@ function fieiraSVG(){
     /* o fio que sai (um caminho: puxado depressa, afina no meio), e o
        pedaço que cai quando ele rompe */
     '<path class="fr-fio" fill="url(#fr4-cobre)"/>' +
+    /* as marcas do metal: juntas na barra, que entra devagar, e espaçadas no
+       fio, que sai depressa — é o mesmo metal, esticado */
+    '<g class="fr-marcas"></g>' +
     '<g class="fr-cai"><path class="fr-pedaco" fill="url(#fr4-cobre)"/></g>' +
     '</g>' +
     /* a fieira em corte: dois blocos de aço com o cone entre eles */
@@ -12644,10 +12649,14 @@ const FIEIRA4 = {
            ' L' + x1 + ',' + ty(-r) + ' L' + x1 + ',' + ty(r) + ' L' + (xm + w).toFixed(2) + ',' + ty(r) +
            ' Q' + xm.toFixed(2) + ',' + ty(rp) + ' ' + (xm - w).toFixed(2) + ',' + ty(r) + ' L' + x0 + ',' + ty(r) + ' Z';
   },
-  /* o volume: o que o fio ganha, a barra perde, na razão das áreas */
+  /* O QUE O FIO GANHA, A BARRA PERDE. Na razão das áreas, puxar todo o fio
+     encurtava a barra 0,17 cm: ela parecia parada, e o fio, a sair do nada,
+     como a teia de uma aranha. Aqui a barra entra na fieira a olhos vistos
+     (FR4.entraVisivel do que o fio anda), e as marcas do metal mostram o
+     fluxo: juntas na barra, espaçadas no fio na mesma razão — esticado */
   desenha(){
     if (!this.el) return;
-    const F = FR4, puxado = this.ponta - F.ponta0, razao = (F.r / F.R) ** 2;
+    const F = FR4, puxado = this.ponta - F.ponta0, razao = F.entraVisivel;
     const recua = puxado * razao, xb = F.barra0 + recua;
     const s = this.el.querySelector('svg');
     const b = s.querySelector('.fr-barra');
@@ -12664,6 +12673,14 @@ const FIEIRA4 = {
       s.querySelector('.fr-garra').style.opacity = 1;
     }
     /* a tensão avermelha o fio */
+    /* as marcas: na barra, de 12 em 12 a partir da ponta de trás (andam com
+       ela); no fio, de 12/razao em 12/razao a partir da garra (andam com ela) */
+    let mk = '';
+    for (let x = xb + 8; x < F.entra - 2; x += 12)
+      mk += '<path d="M' + x.toFixed(1) + ',' + (F.cy - F.R + 3) + ' V' + (F.cy + F.R - 3) + '" stroke="#3A1404" stroke-opacity=".6" stroke-width="2"/>';
+    if (!this.rompido) for (let x = this.ponta - 10; x > F.sai + 2; x -= 12 / razao)
+      mk += '<path d="M' + x.toFixed(1) + ',' + (F.cy - F.r) + ' V' + (F.cy + F.r) + '" stroke="#4A1C06" stroke-opacity=".7" stroke-width="1.8"/>';
+    s.querySelector('.fr-marcas').innerHTML = mk;
     fio.style.filter = this.tensao ? 'drop-shadow(0 0 ' + (2 + 6 * this.tensao).toFixed(1) + 'px rgba(255,60,30,' + (.9 * this.tensao).toFixed(2) + '))' : '';
     const cm = v => (v / F.pxCm).toFixed(2).replace('.', ',');
     const conta = s.querySelector('.fr-conta');
