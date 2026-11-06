@@ -4620,7 +4620,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v44.7';
+const VERSAO = 'v44.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -11367,7 +11367,7 @@ function grupoCards(fichas, p0, arruma){
 /* o gesto: um dedo arrasta o grupo; dois pinçam a tabela de fundo (e a roda
    do mouse também) */
 const QUIZ_MONT = {
-  ptr:new Map(), alvo:null, base:null, Q:null,
+  ptr:new Map(), alvo:null, base:null, Q:null, mexidos:new Set(),
   quiz(){ return [QUIZ5, QUIZ7].find(Q => Q && Q.aberto && Q.q && slides[atual].contains(Q.mesa())) || null; },
   /* o grupo debaixo do dedo: um card solto, ou a área da tabela de fundo */
   grupo(ev, soCards){
@@ -11402,6 +11402,7 @@ const QUIZ_MONT = {
     p.x = b.x + a.cx - b.cx; p.y = b.y + a.cy - b.cy;
     if (p.e !== undefined && this.ptr.size > 1 && b.d > 12) p.e = Math.max(.3, Math.min(1.5, b.e * a.d / b.d));
     this.alvo.aplica();
+    this.mexidos.add(this.alvo);
     this.mostra();
   },
   larga(ev){
@@ -11414,6 +11415,7 @@ const QUIZ_MONT = {
     if (!g || g.p.e === undefined) return false;
     g.p.e = Math.max(.3, Math.min(1.5, g.p.e * (1 - ev.deltaY * 0.0015)));
     g.aplica();
+    this.mexidos.add(g);
     this.alvo = g; this.mostra(); this.alvo = null;
     return true;
   },
@@ -22220,7 +22222,7 @@ function textoDoSlide(i){
   /* só as peças que a mão mexeu: as que ficaram como estavam não vão */
   const mexidas = medeSlide(i).filter(o => MEXIDAS.has(o.el));
   if (!mexidas.length && !(slides[i].querySelector('.mesa') && MESA_MONT.mexidas.has(slides[i].querySelector('.mesa'))) &&
-      ![...EDICAO.editados].some(el => slides[i].contains(el)))
+      ![...EDICAO.editados].some(el => slides[i].contains(el)) && !QUIZ_MONT.mexidos.size)
     out += '  /* nenhuma peça foi mexida */\n';
   mexidas.forEach(o => {
     out += '  { ' + ("el:'" + o.nome + "',").padEnd(16, ' ') +
@@ -22237,6 +22239,20 @@ function textoDoSlide(i){
     const p = MESA_MONT.le(mesaI);
     out += "  { el:'tabela',     x:" + pad(Math.round(p.x),4) + ", y:" + pad(Math.round(p.y),3) +
            ", esc:" + p.e.toFixed(2) + " },   /* o deslocamento da mesa inteira, em px do palco */\n";
+  }
+  /* e os grupos da questão de arrastar aberta (a tabela de fundo e os cards da
+     fila), se foram mexidos na montagem (QUIZ_MONT) */
+  const Qm = QUIZ_MONT.quiz();
+  if (Qm && slides[i].contains(Qm.mesa())){
+    const q = Qm.q;
+    if (q.fundo && QUIZ_MONT.mexidos.has(q.fundo)){
+      const p = q.fundo.p;
+      out += "  { el:'tabela-de-fundo', x:" + pad(Math.round(p.x),4) + ", y:" + pad(Math.round(p.y),3) + ", esc:" + p.e.toFixed(2) + " },\n";
+    }
+    if (q.cards && QUIZ_MONT.mexidos.has(q.cards)){
+      const p = q.cards.p;
+      out += "  { el:'cards-da-fila',   x:" + pad(Math.round(p.x),4) + ", y:" + pad(Math.round(p.y),3) + " },\n";
+    }
   }
   /* e os textos que foram editados neste slide, como estão agora (o <br>
      é cada Enter). 'linhas' é quantas linhas o texto mostra: editado, ele
