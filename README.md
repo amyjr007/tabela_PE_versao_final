@@ -773,7 +773,8 @@ para depois.
 A tabela das cores dos grupos A e B (sem as séries), **todas inteiras**: os A
 no dourado e os de transição no vermelho deles (`.mesa.valencia`). Os números
 das linhas e das colunas saem, e por cima das colunas 1, 2 e 13 a 18 ficam os
-nomes **1A a 8A**, no dourado (`.rot-a`). Chega-se pela seta de avançar do
+nomes **1A a 8A**, no dourado (`.rot-a`), cada um logo acima do primeiro card
+da coluna (o da linha 1 na 1A e na 8A; o da linha 2 nas outras), como no app. Chega-se pela seta de avançar do
 slide 9 (ou pela navegação, "1. Início"), com o play à espera da narração `9`.
 
 A `9` (`Audios/audio_tabela_9.mp3`, 33,4 s; tudo função do tempo dela, em
@@ -830,9 +831,9 @@ tela" sem o play. O toque toca a `9.3.1` (`Audios/audio_tabela_9.3.1.mp3`,
 respondem ao toque — **as famílias que sobem** (`FAM93`), copiadas do app da
 tabela do professor (o tópico dos elétrons de valência): tocada, a família
 sobe num salto de mola (1,3 linha) com o nome dela em cima, e entra de lado,
-em cima — ao lado do topo da coluna, acima da tabela, como no app (à esquerda
-as da 6A à 8A; à direita as outras, e a 1A, que à esquerda não tem lugar) —, a
-etiqueta "N elétrons" na cor da família (as do app); tocada a etiqueta, abre ao lado a caixa escura com a distribuição
+em cima — na mesma linha do nome da família já subido, bem ao lado dele (à
+direita na 1A e na 2A; à esquerda da 3A em diante) —, a etiqueta "N elétrons"
+na cor da família (as do app); tocada a etiqueta, abre ao lado a caixa escura com a distribuição
 eletrônica de cada elemento, na ordem do diagrama de Pauling (`distPauling`),
 com a última camada no amarelo. Uma de cada vez (tocar a de cima fá-la
 descer); abrem-se na ordem 1A, 2A, 3A…, e a próxima balança de leve. O hélio

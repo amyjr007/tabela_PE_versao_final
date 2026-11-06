@@ -4629,7 +4629,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v45.2';
+const VERSAO = 'v45.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5124,7 +5124,9 @@ function montaTabela(i){
       r.dataset.col = col;      /* (a família que sobe na "9.3.1" leva o nome junto: FAM93) */
       r.textContent = txt;
       r.style.left = xDaColuna(col).toFixed(1) + 'px';
-      r.style.top  = (TAB_TOPO - 44) + 'px';
+      /* (logo acima do primeiro card da coluna, como no app do professor: o da
+         linha 1 na 1A e na 8A, o da linha 2 nas outras) */
+      r.style.top  = (yDaLinha(col === 1 || col === 18 ? 1 : 2) - LADO / 2 - 20).toFixed(1) + 'px';
       mesa.appendChild(r);
     });
   }
@@ -18820,14 +18822,14 @@ const FAM93 = {
     this.etq = {};
     this.GRUPOS.forEach(g => {
       const c = this.CORES[g] || this.COR, d = document.createElement('div');
-      /* (EM CIMA, como no app: ao lado da coluna, acima da tabela e um fio acima
-         dos nomes 1A…8A — à esquerda as do fim, 6A a 8A, e à direita as outras;
-         a 1A também à direita, porque à esquerda dela não há lugar na tela) */
+      /* (EM CIMA, na mesma linha do nome da família (1A, 2A…) já subido, bem ao
+         lado dele: à direita na 1A e na 2A; à esquerda da 3A em diante) */
       d.className = 'etq93';
-      d.dataset.lado = g >= 16 ? '-1' : '1';
+      d.dataset.lado = g <= 2 ? '1' : '-1';
       d.textContent = this.TEXTOS[g];
-      d.style.left = (g >= 16 ? xDaColuna(g) - LADO / 2 - 10 : xDaColuna(g) + LADO / 2 + 10).toFixed(1) + 'px';
-      d.style.top  = (yDaLinha(1) - 1.75 * PASSO).toFixed(1) + 'px';
+      const yNome = yDaLinha(g === 1 || g === 18 ? 1 : 2) - LADO / 2 - 20;
+      d.style.left = (g <= 2 ? xDaColuna(g) + 26 : xDaColuna(g) - 26).toFixed(1) + 'px';
+      d.style.top  = (yNome - this.R).toFixed(1) + 'px';
       d.style.background = 'linear-gradient(145deg,' + c[0] + ',' + c[1] + ')';
       d.style.boxShadow = '0 3px 18px ' + c[2];
       d.addEventListener('click', ev => { ev.stopPropagation(); this.alternaDist(g); });
