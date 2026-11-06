@@ -4421,7 +4421,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v42.1';
+const VERSAO = 'v42.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -4772,6 +4772,8 @@ function slideDaMesa(){ return slides[temMesa(atual) ? atual : 1]; }
 /* semPouso: chegando pelo carrossel, a mesa já está posta na miniatura
    que cresceu até cobrir o palco — os cubos não caem outra vez */
 function recomecaMesa(i, semPouso){
+  /* (o slide recomeça: o resumo interativo que estivesse aberto fecha) */
+  if (window.RESUMO && RESUMO.aberto) RESUMO.fecha();
   if (i === 1) SEQ.reinicia();
   else if (temMesa(i)){ SEQ.comecou = false; if (i === 2) SEQ.reinicia2(); if (i === 3) EV3.zera();
                         if (i === 4) EV4.zera(); if (i === 5) EV5.zera(); if (i === 6) EV6.zera(); if (i === 7){ SERIES8.zera(); EV7.zera(); }
@@ -19638,6 +19640,9 @@ const RESUMO = {
   }
 };
 window.RESUMO = RESUMO;
+/* a narração do slide começou (um item do sumário, por exemplo): o resumo
+   aberto sai de cena — as falas dele tocam à parte, e não por aqui */
+som.addEventListener('play', () => { if (RESUMO.aberto) RESUMO.fecha(); });
 
 /* ============================================================
    O JOGO DA MEMÓRIA — o do slide 2 do app do professor (lá, o "quiz 2")
