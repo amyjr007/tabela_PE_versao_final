@@ -782,7 +782,10 @@ A `9` (`Audios/audio_tabela_9.mp3`, 33,4 s; tudo função do tempo dela, em
 elo (dois anéis de corrente, dourado e azul) e "Eletrosfera" (peça `texto-9`);
 aos 9,5 s a tela escurece (o título sai) com o ícone da tabela à esquerda
 (`icone-tabela-9`), e aos 11,8 s entra o átomo de Rutherford à direita
-(`atomo-9`): 4 prótons e 4 elétrons parados, em duas camadas (2 e 2). Aos 15 s
+(`atomo-9`): 4 prótons e 4 elétrons parados, em duas camadas (2 e 2). O núcleo é
+o do átomo do app de Eletroquímica, na escala deste (1,3×): os 4 prótons ciano
+num cachinho, com brilho, o "+" fino e branco, o halo ciano em volta, e cada um
+a tremer de leve, no seu compasso. Aos 15 s
 a camada de valência e os seus elétrons acendem no amarelo neon e o resto
 apaga-se; aos 19 s tudo volta, em 1 s. Aos 22,5 s a eletrosfera inteira acende
 no neon, e fica, a respirar; dos 26,5 aos 29 s, embaixo, "A forma como os

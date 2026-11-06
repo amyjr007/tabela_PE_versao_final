@@ -2776,6 +2776,12 @@ body.montagem .veu-pauling [data-mont]{pointer-events:auto}
    borrada, que acende por cima (a da valência, ou as duas) */
 .atomo9 .orb9{fill:none;stroke:rgba(244,242,248,.5);stroke-width:2.5;transition:stroke 1s ease, opacity 1s ease}
 .atomo9 .nuc9, .atomo9 .in9{transition:opacity 1s ease}
+/* (o tremor dos prótons, como no app de Eletroquímica: ±3,4 px em x e em y,
+   cada eixo no seu compasso — os dois movimentos somam-se) */
+.atomo9 .jig9{animation-name:jig9x,jig9y;animation-timing-function:ease-in-out;animation-iteration-count:infinite;animation-composition:add}
+@keyframes jig9x{0%,100%{transform:translateX(0)} 25%{transform:translateX(3.4px)} 75%{transform:translateX(-3.4px)}}
+@keyframes jig9y{0%,100%{transform:translateY(0)} 25%{transform:translateY(-3.4px)} 75%{transform:translateY(3.4px)}}
+@media (prefers-reduced-motion:reduce){.atomo9 .jig9{animation:none}}
 .atomo9 .amarelo9{opacity:0;transition:opacity 1s ease}
 .atomo9 .neon9{opacity:0;transition:opacity 1s ease}
 /* (aos 15 s: a camada de valência e os elétrons dela no amarelo neon, e o resto apagado) */
@@ -4526,7 +4532,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v44.0';
+const VERSAO = 'v44.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -18539,14 +18545,14 @@ const VEU_9 = (() => {
   for (let s = 0; s < 2; s++) for (let k = 0; k < 15; k++) cel += casa(3.5 + k, 7 * P + 10 + s * P, '#C0574C');
   const icone = '<svg viewBox="-6 -6 300 172" aria-hidden="true"><rect x="-6" y="-6" width="300" height="172" rx="14" fill="rgba(244,242,248,.06)" stroke="rgba(244,242,248,.18)" stroke-width="1.5"/>' + cel + '</svg>';
   /* o átomo: o núcleo de 4 prótons, e as duas camadas com 2 elétrons cada */
-  /* o núcleo em 3D: os 4 prótons num tetraedro, um atrás do outro — o de trás
-     menor e mais escuro, o da frente maior e mais claro; cada um com a sombra
-     dele no de trás, e o "+" na escala do tamanho */
-  const prot = (x, y, r, escuro) => '<g transform="translate(' + x + ' ' + y + ')">' +
-    '<circle r="' + (r + 1.5) + '" cx="1.5" cy="3" fill="#2A0805" opacity=".45" filter="url(#s9)"/>' +
-    '<circle r="' + r + '" fill="url(#p9)"/>' + (escuro ? '<circle r="' + r + '" fill="#1A0503" opacity="' + escuro + '"/>' : '') +
-    '<path d="M' + (-r * .4).toFixed(1) + ' 0H' + (r * .4).toFixed(1) + 'M0 ' + (-r * .4).toFixed(1) + 'V' + (r * .4).toFixed(1) + '" stroke="#fff" stroke-width="' + (r * .17).toFixed(1) +
-    '" stroke-linecap="round" opacity="' + (1 - (escuro || 0)) + '"/></g>';
+  /* o núcleo o mesmo do átomo do app de Eletroquímica (na escala deste, 1,3×):
+     4 prótons ciano num cachinho, com o brilho deles, o "+" fino e branco, o
+     halo ciano em volta, e cada um a tremer de leve, no seu compasso */
+  const K = 1.3;
+  const prot = (x, y, i) => '<g transform="translate(' + (x * K).toFixed(1) + ' ' + (y * K).toFixed(1) + ')">' +
+    '<g class="jig9" style="animation-duration:' + [2.9, 2.4, 2.1, 1.8][i] + 's,' + [3.4, 2.9, 2.6, 2.3][i] + 's;animation-delay:-' + (i * .7) + 's,-' + (i * 1.1) + 's">' +
+    '<circle r="' + (11 * K).toFixed(1) + '" fill="url(#p9)" filter="url(#s9)"/>' +
+    '<path d="M-4.4 0H4.4M0 -4.4V4.4" stroke="rgba(255,255,255,.85)" stroke-width="2.1"/></g></g>';
   const elet = (r, g) => { const x = (r * Math.cos(g * Math.PI / 180)).toFixed(1), y = (-r * Math.sin(g * Math.PI / 180)).toFixed(1);
     return '<g transform="translate(' + x + ' ' + y + ')"><circle r="11" fill="url(#e9)"/><circle class="amarelo9" r="11" fill="#F4FF3A"/>' +
       '<path d="M-5 0H5" stroke="#1B2A4A" stroke-width="2.6" stroke-linecap="round" opacity=".75"/></g>'; };
@@ -18554,13 +18560,14 @@ const VEU_9 = (() => {
     gs.map(g => '<circle cx="' + (r * Math.cos(g * Math.PI / 180)).toFixed(1) + '" cy="' + (-r * Math.sin(g * Math.PI / 180)).toFixed(1) + '" r="14" fill="#EAFF00"/>').join('') + '</g>';
   const camada = (cls, r, gs) => '<g class="' + cls + '">' + neon(r, gs) + '<circle class="orb9" r="' + r + '"/>' + gs.map(g => elet(r, g)).join('') + '</g>';
   const atomo = '<svg viewBox="-180 -180 360 360" aria-hidden="true"><defs>' +
-    '<radialGradient id="p9" cx="35%" cy="32%" r="70%"><stop offset="0" stop-color="#FF9A8A"/><stop offset=".55" stop-color="#D93A2E"/><stop offset="1" stop-color="#7E1A13"/></radialGradient>' +
+    '<radialGradient id="p9" fx="35%" fy="35%"><stop offset="0" stop-color="#bdf3ff"/><stop offset=".45" stop-color="#00e5ff"/><stop offset="1" stop-color="#0077a0"/></radialGradient>' +
     '<radialGradient id="e9" cx="35%" cy="32%" r="70%"><stop offset="0" stop-color="#CDEBFF"/><stop offset=".55" stop-color="#3E9BEA"/><stop offset="1" stop-color="#1D5FA8"/></radialGradient>' +
-    '<radialGradient id="h9"><stop offset="0" stop-color="#FF6B57" stop-opacity=".35"/><stop offset="1" stop-color="#FF6B57" stop-opacity="0"/></radialGradient>' +
+    '<radialGradient id="h9"><stop offset="0" stop-color="#00e5ff" stop-opacity=".45"/><stop offset="1" stop-color="#00e5ff" stop-opacity="0"/></radialGradient>' +
     '<filter id="n9" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>' +
-    '<filter id="s9" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter></defs>' +
+    '<filter id="s9" x="-80%" y="-80%" width="260%" height="260%"><feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#00e5ff"/></filter></defs>' +
     camada('in9', 74, [200, 20]) + camada('ext9', 142, [115, 295]) +
-    '<g class="nuc9"><circle r="46" fill="url(#h9)"/>' + prot(2, -12, 13, .38) + prot(-12, 1, 15, .16) + prot(13, 2, 15, .12) + prot(0, 11, 17, 0) + '</g></svg>';
+    '<g class="nuc9"><circle r="' + (48 * K).toFixed(1) + '" fill="url(#h9)"/>' +
+    [[-9, -6], [9, -6], [-9, 8], [9, 8]].map(([x, y], i) => prot(x, y, i)).join('') + '</g></svg>';
   return '<div class="veu veu-eletro" aria-live="polite">' +
     '<div class="icone9" data-mont="icone-tabela-9"><div class="dentro9">' + icone + '</div></div>' +
     '<div class="atomo9" data-mont="atomo-9"><div class="dentro9">' + atomo + '</div></div>' +
