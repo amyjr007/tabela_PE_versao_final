@@ -1629,7 +1629,8 @@ body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
 .mesa.tipos.fundo5 .pc:not(.ficha5) .face :is(i,b,u,em){opacity:0}
 .mesa.tipos.fundo5.fundo5 .pc[data-tipo].acesa5{--cor:var(--c5)!important;opacity:.7!important}
 .mesa.tipos.fundo5 .casa{opacity:.25!important;color:transparent!important}
-.mesa.tipos.mesa .pc.ficha5.cor5{--cor:var(--c5)!important}
+/* (segurado um card, as outras casas coloridas apagam; só a dele fica, a piscar — alvo5) */
+.mesa.tipos.fundo5.fundo5.segura5 .pc[data-tipo].acesa5:not(.ficha5):not(.alvo5){filter:saturate(0) brightness(.3);opacity:.55!important}.mesa.tipos.mesa .pc.ficha5.cor5{--cor:var(--c5)!important}
 /* Q4: os ametais da vitrine numa cor só, com o grão (sem as facetas do cristal) */
 .pc.ficha5.amostra5 .mat.solido{background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='2' seed='2'/%3E%3CfeColorMatrix values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 .5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
@@ -4627,7 +4628,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v45.0';
+const VERSAO = 'v45.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -8983,7 +8984,8 @@ const EV4 = {
     /* (nas narrações dos metais as classes estão escritas, mas escondidas
        pela grade; na volta da tabela, na "4A5", reaparecem) */
     this.dig.escreve(tr === '4' ? t : /^4[A-E]/.test(tr) ? 1e3 : -1);
-    if (tr === '4' && t < this.ate && !acabou && !this.miniaturas) this.destaques(m);
+    /* (nunca com o quiz aberto: o material dava a resposta na tabela de fundo) */
+    if (tr === '4' && t < this.ate && !acabou && !this.miniaturas && !QUIZ5.aberto) this.destaques(m);
     else this.soltaRealce();
   },
 
@@ -11348,7 +11350,9 @@ const sorteia5 = l => l[Math.floor(Math.random() * l.length)];
    o professor deixar na montagem aparece no alto da tela, e vem para cá — um
    só, para as duas questões */
 /* (o lugar que o professor deixou na montagem, na Q2 do quiz dos grupos A e B) */
-const LUGAR_ARRASTA = { fundo:{ x:-26, y:107, e:.45 }, cards:{ x:75, y:-79 } };
+/* (centradas no palco, a pedido do professor: a tabela de fundo pelo meio das
+   casas dela — centra —, e a fila dos cards, 108 px à direita da do começo) */
+const LUGAR_ARRASTA = { fundo:{ x:-26, y:107, e:.45, centra:true }, cards:{ x:108, y:-79 } };
 const LUGAR_Q3_4 = LUGAR_ARRASTA, LUGAR_Q2_6 = LUGAR_ARRASTA;
 function encolheFundo(Q, els, p0){
   const m = Q.mesa(), r = m.getBoundingClientRect(), s = r.width / m.offsetWidth;
@@ -11363,6 +11367,13 @@ function encolheFundo(Q, els, p0){
       });
     } };
   f.aplica();
+  /* centra: o meio das casas (sem os números das linhas) no meio do palco, 640 */
+  if (p0.centra){
+    const R = els.filter(e => e.matches('.pc, .casa')).reduce((a, e) => { const q = e.getBoundingClientRect(); if (!q.width) return a;
+      return a ? [Math.min(a[0], q.left), Math.max(a[1], q.right)] : [q.left, q.right]; }, null);
+    if (R){ f.p.x += 640 - ((R[0] + R[1]) / 2 - r.left) / s; f.aplica(); }
+    delete f.p.centra;
+  }
   return f;
 }
 function grupoCards(fichas, p0, arruma){
@@ -11516,7 +11527,8 @@ const QUESTOES_5 = [
         c.classList.add('acesa5');
         return c;
       });
-      this.bandejas = [['solido', 'Sólido', 300], ['liquido', 'Líquido', 600], ['gas', 'Gasoso', 900]].map(([k, nome, x]) => {
+      /* (as três bandejas centradas no palco: a do meio em 640) */
+      this.bandejas = [['solido', 'Sólido', 340], ['liquido', 'Líquido', 640], ['gas', 'Gasoso', 940]].map(([k, nome, x]) => {
         const b = Q.peca('bandeja5', '<span>' + nome + '</span>', x - 140, 548, 280, 160);
         b.dataset.estado = k;
         return b;
@@ -11547,9 +11559,12 @@ const QUESTOES_5 = [
       this.pegado = c;
       const casa = Q.carta(+c.dataset.z);
       (this.acesas || []).forEach(a => a.classList.toggle('alvo5', a === casa));
+      /* (e as outras casas coloridas apagam, como na Q2 do quiz dos grupos A e B) */
+      Q.mesa().classList.add('segura5');
     },
     solta(Q, c, x, y){
       this.pegado = null;
+      Q.mesa().classList.remove('segura5');
       (this.acesas || []).forEach(a => a.classList.remove('alvo5'));
       const b = this.bandejas.find(b => Q.dentro(x, y, b));
       c._estado = b ? b.dataset.estado : null;
@@ -11596,7 +11611,7 @@ const QUESTOES_5 = [
       setTimeout(() => { erradas.forEach(c => { c._estado = null; Q.veste(c, null); }); this.arruma(Q); }, 650);
     },
     limpa(Q){
-      Q.mesa().classList.remove('fundo5');
+      Q.mesa().classList.remove('fundo5', 'segura5');
       (this.acesas || []).forEach(c => { c.classList.remove('acesa5', 'alvo5'); c.style.removeProperty('--c5'); });
       (this.encolhidas || []).forEach(e => { e.style.removeProperty('translate'); e.style.removeProperty('scale'); });
       this.encolhidas = null;
