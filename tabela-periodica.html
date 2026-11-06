@@ -1137,9 +1137,12 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
   transition:opacity .6s ease, transform .7s var(--e-salto);perspective:1600px}
 .cubo4C.on{opacity:1;transform:scale(var(--esc,1))}
 .gira4{position:absolute;inset:0;transform-style:preserve-3d;transform:translateZ(-220px)}
-.face4C{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;overflow:hidden;
-  background:radial-gradient(120% 90% at 50% 30%,rgba(255,255,255,.07),rgba(255,255,255,.015) 70%),rgba(16,14,34,.55);
-  border:1px solid rgba(255,255,255,.14);box-shadow:inset 0 1px 0 rgba(255,255,255,.12), 0 24px 50px rgba(0,0,0,.35)}
+.face4C{position:absolute;inset:0;backface-visibility:hidden;border-radius:22px;overflow:hidden}
+/* (as faces sem moldura — sem o fundo de painel, a borda e a sombra —, e os
+   desenhos sem o fundo de estúdio, que fazia um quadrado: o objeto gira solto
+   no palco. Os fundos que são cena — a parede do letreiro, o céu do farol, a
+   mesa — ficam) */
+.face4C .fundo4{display:none}
 .face4C.frente{transform:translateZ(220px)}
 .face4C.lado{transform:rotateY(90deg) translateZ(220px)}
 .panela4{display:block;width:100%;height:100%}
@@ -1168,9 +1171,8 @@ html.celular .titulo4A{font-size:36px;margin-top:9px}
 .cuboAx .ax-poca svg{width:100%;height:100%;overflow:visible}
 /* (o cubo do mercúrio sem moldura: as faces sem o fundo, a borda e a sombra,
    para a poça continuar como estava, solta no palco) */
-.cuboAx .face4C{background:none;border:0;box-shadow:none;overflow:visible}
+.cuboAx .face4C{overflow:visible}
 .cuboAx .face4C.esq{overflow:hidden}
-.cuboAx .fundo4{display:none}
 .cuboAx .ax-nome{position:absolute;left:0;right:0;bottom:34px;text-align:center;
   font:600 30px var(--display);color:#F4F2F8;text-shadow:0 2px 6px rgba(0,0,0,.6)}
 .cuboAx .ax-foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -4426,7 +4428,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v42.4';
+const VERSAO = 'v42.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -9213,8 +9215,16 @@ const EV4 = {
   },
   desfazAx(m){
     if (this.cuboAx){
-      this.cuboAx.classList.remove('on', 'virou', 'virou2', 'virou3', 'mede');
-      this.cuboAx.querySelector('.gira4').style.transform = '';
+      /* (o cubo esmaece parado na face em que estava — o garimpo —, e só
+         depois volta ao começo: voltar já mostrava a poça durante o fade) */
+      const cb = this.cuboAx;
+      cb.classList.remove('on');
+      clearTimeout(this.axT);
+      this.axT = setTimeout(() => {
+        if (cb.classList.contains('on')) return;
+        cb.classList.remove('virou', 'virou2', 'virou3', 'mede');
+        cb.querySelector('.gira4').style.transform = '';
+      }, 700);
     }
     if (POCA4.el) POCA4.el.classList.remove('parada');
     this.fotoAx = false;
@@ -12910,7 +12920,7 @@ function poSVG(tipo){
         '<feMerge><feMergeNode in="cor"/><feMergeNode in="escuros"/><feMergeNode in="claros"/></feMerge></filter>' +
       '<filter id="' + id + '-borra" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>' +
     '</defs>' +
-    '<rect width="440" height="440" fill="url(#' + id + '-foco)" filter="url(#' + id + '-mesa)"/>' +
+    '<rect class="fundo4" width="440" height="440" fill="url(#' + id + '-foco)" filter="url(#' + id + '-mesa)"/>' +
     /* a sombra de contato, debaixo do monte */
     '<ellipse cx="226" cy="330" rx="168" ry="18" fill="#000" opacity=".7" filter="url(#' + id + '-borra)"/>' +
     /* a poeira assentada em volta do pé, na cor do pó */
@@ -13015,7 +13025,7 @@ const FRAG4 = {
           '<feComposite in="c" in2="SourceGraphic" operator="in"/></filter>' +
         '<filter id="fr4-borra" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="7"/></filter>' +
       '</defs>' +
-      '<rect width="440" height="440" fill="url(#fr4-mesa)"/>' +
+      '<rect class="fundo4" width="440" height="440" fill="url(#fr4-mesa)"/>' +
       '<text class="po-nome" x="220" y="62" text-anchor="middle">Fósforo vermelho</text>' +
       '<ellipse class="fr-sombra" cx="220" cy="' + (this.CHAO + 4) + '" rx="120" ry="12" fill="#000" opacity=".6" filter="url(#fr4-borra)"/>' +
       '<g class="fr-pecas" filter="url(#fr4-grao)"></g><g class="fr-po"></g><g class="fr-golpe"></g>' +
@@ -13206,7 +13216,7 @@ function aguaSVG(){
       '<linearGradient id="ag4-copo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".35"/>' +
         '<stop offset=".2" stop-color="#fff" stop-opacity=".06"/><stop offset=".85" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-color="#fff" stop-opacity=".3"/></linearGradient>' +
     '</defs>' +
-    '<rect width="440" height="440" fill="url(#ag4-fundo)"/>' +
+    '<rect class="fundo4" width="440" height="440" fill="url(#ag4-fundo)"/>' +
     '<ellipse cx="128" cy="392" rx="82" ry="10" fill="#000" opacity=".55" filter="url(#ag4-borra)"/>' +
     /* o copo de vidro, com a água e o menisco */
     '<path d="M64,214 L80,388 Q82,396 92,396 L164,396 Q174,396 176,388 L192,214 Z" fill="url(#ag4-copo)" stroke="#E6F2FC" stroke-opacity=".55" stroke-width="1.6"/>' +
@@ -13244,7 +13254,7 @@ function co2SVG(){
   const [defsCil, cil] = cilindro4(px, ['#C9CED6', '#8A929C', '#3E454E'], 'Gás carbônico').split('|');
   return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Cilindro de gás carbônico, e a lupa mostrando as moléculas de CO2">' +
     '<defs>' + fundoFace4(px) + defsAtomos(px) + defsCil + '</defs>' +
-    '<rect width="440" height="440" fill="url(#cd4-fundo)"/>' + cil +
+    '<rect class="fundo4" width="440" height="440" fill="url(#cd4-fundo)"/>' + cil +
     lupa4(px, 280, 230, 86, dentro) +
     molSai4(px, molCO24(px), 'mol-co2', 280, 230, 300, 104, 2.4) +
     '<text class="form4 form-co2" x="300" y="52" text-anchor="middle"></text>' +
@@ -13262,7 +13272,7 @@ function cilindroNobresSVG(){
   const [defsCil, cil] = cilindro4(px, ['#E4DCFF', '#9C8BEA', '#4A3C9A'], 'Gases Nobres').split('|');
   return '<svg class="po4" viewBox="0 0 440 440" role="img" aria-label="Cilindro de gases nobres, e a lupa mostrando os átomos soltos">' +
     '<defs>' + fundoFace4(px) + defsAtomos(px) + defsCil + '</defs>' +
-    '<rect width="440" height="440" fill="url(#gn4-fundo)"/>' + cil +
+    '<rect class="fundo4" width="440" height="440" fill="url(#gn4-fundo)"/>' + cil +
     lupa4(px, 280, 230, 86, dentro) +
   '</svg>';
 }
@@ -13396,7 +13406,7 @@ function lampadaArgonioSVG(){
       '<filter id="la4-halo" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>' +
       '<filter id="la4-largo" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="22"/></filter>' +
     '</defs>' +
-    '<rect width="440" height="440" fill="url(#la4-fundo)"/>' +
+    '<rect class="fundo4" width="440" height="440" fill="url(#la4-fundo)"/>' +
     /* a luz que vaza: larga e suave */
     '<circle class="la-bloom" cx="220" cy="180" r="190" fill="url(#la4-bloom)"/>' +
     /* o bulbo: o gás aceso dentro do vidro, com o brilho somado */
@@ -13441,8 +13451,8 @@ function farolXenonioSVG(){
       '<filter id="fx4-halo" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="6"/></filter>' +
       '<filter id="fx4-fino" x="-20%" y="-300%" width="140%" height="700%"><feGaussianBlur stdDeviation="1.4"/></filter>' +
     '</defs>' +
-    '<rect width="440" height="440" fill="url(#fx4-ceu)"/>' +
-    '<rect y="330" width="440" height="110" fill="#0C0F15"/>' +
+    '<rect class="fundo4" width="440" height="440" fill="url(#fx4-ceu)"/>' +
+    '<rect class="fundo4" y="330" width="440" height="110" fill="#0C0F15"/>' +
     /* o carro, de frente: o teto e o para-brisa, o capô, a grade e o para-choque */
     '<path d="M110,170 Q130,118 170,110 L270,110 Q310,118 330,170 Z" fill="url(#fx4-lata)"/>' +
     '<path d="M130,166 Q146,128 176,122 L264,122 Q294,128 310,166 Z" fill="url(#fx4-vidro)"/>' +
