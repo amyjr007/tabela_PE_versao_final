@@ -809,8 +809,15 @@ mesma escala. Dos 41,5 aos 43,5 s, por cima dos riscos de giz da foto e na
 ordem do diagrama (1s · 2s · 2p 3s · 3p 4s · 3d 4p 5s · 4d 5p 6s · 4f 5d 6p 7s
 · 5f 6d 7p), uma seta amarela neon de cada vez (`SETAS_91`, em pixels da foto)
 desenha-se da ponta de cima à direita até a de baixo à esquerda, com a cabeça
-no fim; quando uma entra, a anterior some, e a última fica. No sumário,
-"Introdução" vai ao começo da `9`.
+no fim; quando uma entra, a anterior some, e a última, desenhada, some em fade.
+No sumário, "Introdução" vai ao começo da `9`.
+
+A `9.2` (`Audios/audio_tabela_9.2.mp3`, 43,7 s, o play no fim da `9.1`; em
+`EV9.tick92`, os segundos em `T92`): até aos 9 s a cena da `9.1` fica como
+acabou, e aí sai em fade, deixando só a tabela; dos 27 aos 29 s, no vão de cima
+dela, digita "Só vale pros elementos representativos" no dourado deles (peça
+`texto-92`), e eles brilham no mesmo dourado até aos 31 s; aos 38,4 s os de
+transição (e as casas das séries) apagam-se em fade, e ficam apagados.
 
 Na `9`, enquanto a camada de valência brilha (15–19 s), "camada de valência"
 aparece embaixo do átomo, no mesmo amarelo neon (`camada-valencia-9`), e sai com

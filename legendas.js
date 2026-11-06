@@ -822,6 +822,17 @@ var LEGENDAS = {
     [38.71,44.67,"do átomo na hora, sem precisar fazer todo aquele traçado de diagonais do diagrama."],
     [44.67,46.0,"Entendeu a grande vantagem?"]
   ],
+  "audio_tabela_9.2": [
+    [0,5.0,"Certo, vamos começar por um dos padrões mais difíceis que podemos extrair da tabela."],
+    [7.95,12.0,"Você sabia que apenas olhando a posição do elemento"],
+    [12.0,15.6,"já dá para descobrir quantos elétrons ele tem na sua camada mais externa,"],
+    [15.6,18.42,"sem precisar traçar as diagonais do diagrama de Pauling?"],
+    [19.08,21.5,"Pois é, vamos já ver como."],
+    [21.91,23.96,"Mas antes, um detalhe fundamental."],
+    [24.4,30.76,"Essa leitura direta que vamos aprender vale apenas para os elementos representativos, blocos em amarelo."],
+    [31.44,36.89,"Os chamados elementos de transição seguem outra regra de preenchimento dos orbitais internos."],
+    [37.33,43.7,"Por isso, deixamos eles apagadinhos aí na tela para focarmos onde essa regra é perfeita, combinado?"]
+  ],
   "quiz1": [
     [0,1.94,"Certo, vamos pra primeira questão."]
   ],

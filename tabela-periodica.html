@@ -2709,6 +2709,21 @@ body.montagem .titulo9{pointer-events:auto}
 .titulo9 .el9{color:#2F7FD0;transform-origin:0 50%}
 .titulo9.liga9 .elo9, .titulo9.liga9 .el9{opacity:1;transform:none}
 .titulo9 .elo9 svg{display:block;width:62px;height:62px}
+/* a "9.2": o texto no dourado dos representativos; eles brilham no mesmo
+   dourado (27–31 s), e os de transição apagam-se (38,4 s) */
+.titulo9.texto92{color:#B8902A;font-size:31px}
+.mesa.valencia .pc .face{transition:box-shadow .6s ease, filter .6s ease}
+.mesa.valencia.brilhoA92 .pc:is([data-col="1"],[data-col="2"],[data-col="13"],[data-col="14"],[data-col="15"],[data-col="16"],[data-col="17"],[data-col="18"]) .face{
+  box-shadow:0 0 0 2px #FFD95A, 0 0 18px 4px rgba(255,201,40,.85);filter:brightness(1.18)}
+.mesa.valencia.brilhoA92 .pc:is([data-col="1"],[data-col="2"],[data-col="13"],[data-col="14"],[data-col="15"],[data-col="16"],[data-col="17"],[data-col="18"]){
+  animation:brilhoA92 1.4s ease-in-out infinite}
+@keyframes brilhoA92{50%{filter:brightness(1.12) drop-shadow(0 0 6px rgba(255,201,40,.7))}}
+.mesa.valencia .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
+  [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]),
+.mesa.valencia .casa.serie{transition:opacity 1.2s ease}
+.mesa.valencia.apagaB92 .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
+  [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]),
+.mesa.valencia.apagaB92 .casa.serie{opacity:.15}
 .titulo9.liga9 .elo9 svg{animation:elo9 1.8s ease-in-out .6s infinite}
 @keyframes elo9{50%{transform:scale(1.1)}}
 /* a tela escura: o ícone da tabela à esquerda, o átomo à direita, a frase
@@ -2752,6 +2767,7 @@ html:is(.palco-largo,.palco-alto) .veu-pauling::before{background:rgba(12,10,32,
 .setas91 path{fill:none;stroke:#F4FF3A;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
 .setas91 .halo91{stroke:#EAFF00;stroke-width:18;opacity:.75;filter:url(#g91)}
 .setas91 .seta91{opacity:0}
+.setas91 .seta91:last-of-type{transition:opacity .7s ease}
 .setas91 .cab91{opacity:0}
 .veu-pauling.sem-pauling .paul91{opacity:0}
 /* (aos 35 s: o ícone da tabela entra pela esquerda e empurra o quadro para a
@@ -4538,7 +4554,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v44.2';
+const VERSAO = 'v44.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5826,7 +5842,8 @@ const TRILHAS = {
   '8.4':  'Audios/audio_tabela_8.4.mp3',   /* o toque no fim da "8.3": estáveis e radioativos (EV8) */
   '8.2':  'Audios/audio_tabela_8.2.mp3', /* o toque no fim da "8.1": do 1 ao 92, e do 93 em diante (EV8) */
   '9':    'Audios/audio_tabela_9.mp3',     /* o slide 10: a tabela e a eletrosfera (EV9) */
-  '9.1':  'Audios/audio_tabela_9.1.mp3',   /* o toque na tela escura do fim da "9": o diagrama de Pauling */
+  '9.1':  'Audios/audio_tabela_9.1.mp3',   /* o play no fim da "9": o diagrama de Pauling (EV9) */
+  '9.2':  'Audios/audio_tabela_9.2.mp3',   /* o play no fim da "9.1": só os representativos (EV9) */
   '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: os blocos (ainda por gravar) */
 };
 /* a trilha com que cada slide começa */
@@ -5980,6 +5997,7 @@ const ROTEIROS = {
   '8.2':  [],
   '9':    [],   /* o slide 10: função do tempo, em EV9 */
   '9.1':  [],
+  '9.2':  [],
   '10':   []
 };
 
@@ -6690,6 +6708,8 @@ const SEQ = {
     else if (id === '8.2') carregaTrilha('8.3');
     /* o fim da "9": a cena fica, e o play passa a tocar a "9.1" (EV9) */
     else if (id === '9') carregaTrilha('9.1');
+    /* e o da "9.1", a "9.2" */
+    else if (id === '9.1') carregaTrilha('9.2');
     /* o fim da "8.2.0": 1,5 s depois, a "8.2", sem esperar o play (EV8) */
     else if (id === '8.2.0'){
       clearTimeout(EV8.vai82);
@@ -18522,6 +18542,12 @@ window.EV8 = EV8;
    ============================================================ */
 const T91 = { veu:7.0, aufbau:[13.2, 14.5], paulingSai:22.0, foco:22.0, empurra:35.0 };
 const AUFBAU_91 = '“Princípio de Aufbau”';
+/* A "9.2" (o play no fim da "9.1"): aos 9 s a cena da "9.1" sai em fade e fica
+   só a tabela; dos 27 aos 29 s, no vão de cima dela, digita "Só vale pros
+   elementos representativos", no dourado deles, e eles brilham no mesmo
+   dourado até aos 31 s; aos 38,4 s os de transição apagam-se (em fade) */
+const T92 = { limpa:9.0, texto:[27.0, 29.0], brilho:27.0, brilhoAte:31.0, apaga:38.4 };
+const TEXTO_92 = 'Só vale pros elementos representativos';
 /* AS SETAS DO DIAGRAMA (dos 41,5 aos 43,5 s da "9.1"): por cima de cada risco
    de giz da foto, na ordem do diagrama — 1s · 2s · 2p 3s · 3p 4s · 3d 4p 5s ·
    4d 5p 6s · 4f 5d 6p 7s · 5f 6d 7p —, uma seta amarela neon que se desenha
@@ -18613,6 +18639,16 @@ const EV9 = {
       '<span class="elo9">' + ELO_9 + '</span><span class="el9">Eletrosfera</span>';
     m.appendChild(q);
     this.titulo = q;
+    this.mesa = m;
+    /* o texto da "9.2", no mesmo vão (peça na montagem) */
+    const q2 = document.createElement('div');
+    q2.className = 'titulo9 texto92';
+    q2.dataset.mont = 'texto-92';
+    q2.style.left = q.style.left;
+    q2.style.top  = q.style.top;
+    q2.innerHTML = '<span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span>';
+    m.appendChild(q2);
+    this.texto92 = q2;
     slides[9].insertAdjacentHTML('beforeend', VEU_9);
     this.veu = slides[9].querySelector('.veu-eletro');
     this.icone = this.veu.querySelector('.icone9');
@@ -18641,7 +18677,10 @@ const EV9 = {
        continua — tocado ele, sai em fade) */
     const de91 = trilhaAtual === '9.1', comecou91 = de91 && (t > 0.05 || !som.paused);
     const t9 = monta ? 99 : de9 ? t : de91 ? 99 : -1;
-    this.tick91(monta ? 99 : de91 ? t : -1, monta, de91);
+    /* (na "9.2" a cena da "9.1" fica como acabou, até aos 9 s dela) */
+    const de92 = trilhaAtual === '9.2';
+    this.tick91(monta ? 99 : de91 ? t : de92 ? 99 : -1, monta, de91, de92 && t >= T92.limpa);
+    this.tick92(monta ? 99 : de92 ? t : -1, monta);
     const nt = this.letras(t9, T9.titulo[0], T9.titulo[1], TITULO_9), F = FRASE_9, nf = this.letras(t9, F.de, F.ate, F.txt);
     if (nt !== this.nt || nf !== this.nf){
       if ((nt > this.nt && this.nt >= 0 || nf > this.nf && this.nf >= 0) && !monta && de9) TECLAS.bate();
@@ -18673,8 +18712,9 @@ const EV9 = {
      nos primeiros 80 % dela; a cabeça entra no fim do traço */
   setas91(t){
     const S = SETAS_91, n = S.riscos.length, vez = (S.ate - S.de) / n;
+    /* (a última, desenhada, some em fade aos 43,5 s — .seta91:last-of-type) */
     const est = this.setas.map((s, k) => {
-      const ini = S.de + k * vez, vis = t >= ini && (t < ini + vez || k === n - 1);
+      const ini = S.de + k * vez, vis = t >= ini && t < ini + vez;
       return vis ? Math.min(1, (t - ini) / (vez * 0.8)).toFixed(2) : '-';
     }).join();
     if (est === this.estadoSetas) return;
@@ -18686,7 +18726,25 @@ const EV9 = {
       s.cab.style.opacity = f >= 1 ? 1 : 0;
     });
   },
-  tick91(t, monta, de91){
+  /* A "9.2", função do tempo dela: o texto no vão de cima da tabela, o brilho
+     dos representativos e os de transição apagados */
+  tick92(t, monta){
+    const Q = T92, n = this.letras(t, Q.texto[0], Q.texto[1], TEXTO_92);
+    if (n !== this.n92){
+      if (n > this.n92 && this.n92 >= 0 && !monta) TECLAS.bate();
+      this.n92 = n;
+      this.escreve(this.texto92, TEXTO_92, n);
+    }
+    const est = [t >= Q.texto[0], t >= Q.texto[0] && t < Q.texto[1], t >= Q.brilho && t < Q.brilhoAte, t >= Q.apaga].join();
+    if (est === this.estado92) return;
+    this.estado92 = est;
+    const [txt, dig, brilho, apaga] = est.split(',').map(v => v === 'true');
+    this.texto92.classList.toggle('on', txt);
+    this.texto92.classList.toggle('digitando9', dig);
+    this.mesa.classList.toggle('brilhoA92', brilho && !monta);
+    this.mesa.classList.toggle('apagaB92', apaga && !monta);
+  },
+  tick91(t, monta, de91, limpa){
     this.setas91(monta ? -1 : t);
     const A = T91, n = this.letras(t, A.aufbau[0], A.aufbau[1], AUFBAU_91);
     if (n !== this.na){
@@ -18694,20 +18752,20 @@ const EV9 = {
       this.na = n;
       this.escreve(this.aufbau, AUFBAU_91, n);
     }
-    const est = [t >= A.veu, t >= A.aufbau[0], t >= A.aufbau[0] && t < A.aufbau[1], t >= A.paulingSai, t >= A.foco, t >= A.empurra].join();
+    const est = [t >= A.veu, t >= A.aufbau[0], t >= A.aufbau[0] && t < A.aufbau[1], t >= A.paulingSai, t >= A.foco, t >= A.empurra].join() + '|' + !!limpa;
     if (est === this.estado91) return;
     this.estado91 = est;
-    const [veu, auf, dig, saiP, foco, empurra] = est.split(',').map(v => v === 'true');
+    const [veu, auf, dig, saiP, foco, empurra] = est.split('|')[0].split(',').map(v => v === 'true');
     const V = this.veu91;
     V.classList.toggle('empurra91', empurra && !monta);
-    V.classList.toggle('on', veu && !monta);
+    V.classList.toggle('on', veu && !monta && !limpa);
     V.classList.toggle('sem-pauling', saiP && !monta);
     V.classList.toggle('foco91', foco && !monta);
     this.aufbau.classList.toggle('on9', auf);
     this.aufbau.classList.toggle('digitando9', dig);
   },
   /* chegar ao slide: a tela clara, nada escrito */
-  zera(){ this.estado = ''; this.estado91 = ''; this.estadoSetas = ''; this.nt = -1; this.nf = -1; this.na = -1; if (this.veu) this.tick(-1); },
+  zera(){ this.estado = ''; this.estado91 = ''; this.estadoSetas = ''; this.estado92 = ''; this.n92 = -1; this.nt = -1; this.nf = -1; this.na = -1; if (this.veu) this.tick(-1); },
   fora(){}
 };
 window.EV9 = EV9;
