@@ -1519,6 +1519,10 @@ body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
                    50%{box-shadow:0 0 0 2px rgba(242,154,14,.8), 0 0 16px 2px rgba(242,154,14,.45)}}
 .pc.ficha5.espera5:not(.pegando5) .face{animation:espera5 1.8s ease-in-out infinite}
 .bandeja5.espera5{animation:espera5 1.8s ease-in-out infinite}
+/* (a casa da tabela de fundo do card segurado, no mesmo âmbar) */
+.mesa .pc.alvo5:not(.ficha5) .face{animation:espera5 1.8s ease-in-out infinite}
+/* (inteira, sem o apagado da tabela de fundo: brilha como os da frente) */
+.mesa.mesa.mesa.mesa .pc.pc.alvo5:not(.ficha5){opacity:1!important}
 /* (o verde de confirmação, o mesmo do encaixe do quiz do tópico 6) */
 @keyframes encaixa5{0%{box-shadow:0 0 0 3px #fff, 0 0 26px 10px rgba(62,224,138,.95)} 100%{box-shadow:0 0 0 0 rgba(62,224,138,0)}}
 .pc.ficha5.encaixa5 .face, .bandeja5.encaixa5{animation:encaixa5 .7s ease-out}
@@ -4623,7 +4627,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v44.9';
+const VERSAO = 'v45.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -11525,7 +11529,8 @@ const QUESTOES_5 = [
         c.classList.add('cor5', 'espera5');
         c._casa = { x, y };
         c._estado = null;
-        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y));
+        /* (segurado, a casa dele na tabela de fundo pisca no âmbar dos cards: alvo5) */
+        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y), () => this.pega(Q, c));
         return c;
       });
       this.bandejas.forEach(b => b.classList.add('espera5'));
@@ -11537,7 +11542,15 @@ const QUESTOES_5 = [
     },
     certo(z){ const t = material5(z); return t === 'hg' || t === 'br' ? 'liquido' : t === 'gas' ? 'gas' : 'solido'; },
     /* largada numa bandeja, fica lá, vestida do estado dela; fora, volta */
+    pega(Q, c){
+      if (this.pegado === c) return;
+      this.pegado = c;
+      const casa = Q.carta(+c.dataset.z);
+      (this.acesas || []).forEach(a => a.classList.toggle('alvo5', a === casa));
+    },
     solta(Q, c, x, y){
+      this.pegado = null;
+      (this.acesas || []).forEach(a => a.classList.remove('alvo5'));
       const b = this.bandejas.find(b => Q.dentro(x, y, b));
       c._estado = b ? b.dataset.estado : null;
       /* (largada numa bandeja: o brilho de confirmação, na ficha e na bandeja, e o "right") */
@@ -11584,7 +11597,7 @@ const QUESTOES_5 = [
     },
     limpa(Q){
       Q.mesa().classList.remove('fundo5');
-      (this.acesas || []).forEach(c => { c.classList.remove('acesa5'); c.style.removeProperty('--c5'); });
+      (this.acesas || []).forEach(c => { c.classList.remove('acesa5', 'alvo5'); c.style.removeProperty('--c5'); });
       (this.encolhidas || []).forEach(e => { e.style.removeProperty('translate'); e.style.removeProperty('scale'); });
       this.encolhidas = null;
       limpa5(Q);
@@ -15847,7 +15860,8 @@ const QUESTOES_7 = [
       if (this.pegado === c) return;
       this.pegado = c;
       const casa = Q.carta(+c.dataset.z);
-      (this.acesas || []).forEach(a => a.classList.toggle('alvo7', a === casa));
+      /* (e pisca no mesmo âmbar dos cards da frente: alvo5) */
+      (this.acesas || []).forEach(a => { a.classList.toggle('alvo7', a === casa); a.classList.toggle('alvo5', a === casa); });
       Q.mesa().classList.add('pegando7');
     },
     /* largado, as outras voltam em fade; encaixado numa bandeja, o card
@@ -15855,7 +15869,7 @@ const QUESTOES_7 = [
     solta(Q, c, x, y){
       this.pegado = null;
       Q.mesa().classList.remove('pegando7');
-      (this.acesas || []).forEach(a => a.classList.remove('alvo7'));
+      (this.acesas || []).forEach(a => a.classList.remove('alvo7', 'alvo5'));
       const b = this.bandejas.find(b => Q.dentro(x, y, b));
       c._bloco = b ? b.dataset.bloco : null;
       this.arruma(Q);
