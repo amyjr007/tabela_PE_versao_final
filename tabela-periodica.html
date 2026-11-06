@@ -4616,7 +4616,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v44.5';
+const VERSAO = 'v44.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -11330,6 +11330,99 @@ const sorteia5 = l => l[Math.floor(Math.random() * l.length)];
 
 /* AS QUESTÕES. monta(Q) arma a cena e devolve o enunciado; toca (cards da
    tabela) ou as peças da questão chamam Q.acerta / Q.erra; limpa desarma. */
+/* OS GRUPOS DAS QUESTÕES DE ARRASTAR, NA MONTAGEM (a Q3 do quiz dos tipos e a
+   Q2 do quiz dos grupos A e B): a tabela de fundo anda e cresce inteira (x, y
+   em px da mesa; esc é a escala, em volta do meio do alto, 640 × 170), e os
+   cards ainda soltos andam juntos (x, y: o deslocamento da fila). O lugar que
+   o professor deixar na montagem aparece no alto da tela, e vem para cá — um
+   só, para as duas questões */
+const LUGAR_ARRASTA = { fundo:{ x:0, y:0, e:.85 }, cards:{ x:0, y:0 } };
+const LUGAR_Q3_4 = LUGAR_ARRASTA, LUGAR_Q2_6 = LUGAR_ARRASTA;
+function encolheFundo(Q, els, p0){
+  const m = Q.mesa(), r = m.getBoundingClientRect(), s = r.width / m.offsetWidth;
+  els.forEach(e => { e.style.removeProperty('translate'); e.style.removeProperty('scale'); });
+  const cs = els.map(e => { const q = e.getBoundingClientRect(); return [(q.left + q.width / 2 - r.left) / s, (q.top + q.height / 2 - r.top) / s]; });
+  const f = { els, nome:'tabela de fundo', p:Object.assign({}, p0),
+    aplica(){
+      const { x, y, e } = this.p;
+      els.forEach((el, i) => {
+        el.style.translate = ((640 - cs[i][0]) * (1 - e) + x).toFixed(1) + 'px ' + ((170 - cs[i][1]) * (1 - e) + y).toFixed(1) + 'px';
+        el.style.scale = e.toFixed(3);
+      });
+    } };
+  f.aplica();
+  return f;
+}
+function grupoCards(fichas, p0, arruma){
+  fichas.forEach(c => c._casa0 = Object.assign({}, c._casa));
+  const g = { fichas, nome:'cards', p:Object.assign({}, p0),
+    aplica(){ fichas.forEach(c => c._casa = { x:c._casa0.x + this.p.x, y:c._casa0.y + this.p.y }); arruma(); } };
+  if (p0.x || p0.y) g.aplica();
+  return g;
+}
+/* o gesto: um dedo arrasta o grupo; dois pinçam a tabela de fundo (e a roda
+   do mouse também) */
+const QUIZ_MONT = {
+  ptr:new Map(), alvo:null, base:null, Q:null,
+  quiz(){ return [QUIZ5, QUIZ7].find(Q => Q && Q.aberto && Q.q && slides[atual].contains(Q.mesa())) || null; },
+  /* o grupo debaixo do dedo: um card solto, ou a área da tabela de fundo */
+  grupo(ev, soCards){
+    const Q = this.quiz(), q = Q && Q.q;
+    if (!q) return null;
+    /* (um card da fila debaixo do dedo, mesmo com outra peça por cima dele; só
+       os que ainda estão na fila: os já postos numa bandeja ficam) */
+    const c = q.cards && document.elementsFromPoint(ev.clientX, ev.clientY).map(e => e.closest('.pc')).find(e => e && q.cards.fichas.includes(e));
+    if (c && !c._estado && !c._bloco) return q.cards;
+    if (soCards) return null;
+    if (q.fundo && !(ev.target.closest && ev.target.closest('.ficha5, .peca5'))){
+      const R = q.fundo.els.reduce((a, e) => { const r = e.getBoundingClientRect(); if (!r.width) return a;
+        return a ? { l:Math.min(a.l, r.left), t:Math.min(a.t, r.top), r:Math.max(a.r, r.right), b:Math.max(a.b, r.bottom) } : { l:r.left, t:r.top, r:r.right, b:r.bottom }; }, null);
+      if (R && ev.clientX >= R.l && ev.clientX <= R.r && ev.clientY >= R.t && ev.clientY <= R.b) return q.fundo;
+    }
+    return null;
+  },
+  pega(ev, soCards){
+    const g = this.grupo(ev, soCards);
+    if (!g) return false;
+    if (this.alvo !== g){ this.ptr.clear(); this.alvo = g; this.Q = this.quiz(); }
+    this.ptr.set(ev.pointerId, this.Q.ponto(ev));
+    this.ancora();
+    this.mostra();
+    return true;
+  },
+  ancora(){ const c = centroDe(this.ptr); this.base = Object.assign({ cx:c.cx, cy:c.cy, d:c.d }, this.alvo.p); },
+  move(ev){
+    if (!this.alvo || !this.ptr.has(ev.pointerId)) return;
+    this.ptr.set(ev.pointerId, this.Q.ponto(ev));
+    const a = centroDe(this.ptr), b = this.base, p = this.alvo.p;
+    p.x = b.x + a.cx - b.cx; p.y = b.y + a.cy - b.cy;
+    if (p.e !== undefined && this.ptr.size > 1 && b.d > 12) p.e = Math.max(.3, Math.min(1.5, b.e * a.d / b.d));
+    this.alvo.aplica();
+    this.mostra();
+  },
+  larga(ev){
+    if (!this.ptr.has(ev.pointerId)) return;
+    this.ptr.delete(ev.pointerId);
+    if (this.ptr.size) this.ancora(); else this.alvo = null;
+  },
+  roda(ev){
+    const g = this.grupo(ev);
+    if (!g || g.p.e === undefined) return false;
+    g.p.e = Math.max(.3, Math.min(1.5, g.p.e * (1 - ev.deltaY * 0.0015)));
+    g.aplica();
+    this.alvo = g; this.mostra(); this.alvo = null;
+    return true;
+  },
+  mostra(){
+    const p = this.alvo.p;
+    coord.textContent = this.alvo.nome + ' · x: ' + Math.round(p.x) + '   y: ' + Math.round(p.y) + (p.e !== undefined ? '   esc: ' + p.e.toFixed(2) : '');
+    coord.style.left = '640px'; coord.style.top = '80px';
+    coord.classList.add('on');
+  }
+};
+document.addEventListener('pointermove', ev => QUIZ_MONT.move(ev), true);
+document.addEventListener('pointerup', ev => QUIZ_MONT.larga(ev), true);
+document.addEventListener('pointercancel', ev => QUIZ_MONT.larga(ev), true);
 const QUESTOES_5 = [
   /* Q1 · Lembrar · onde fica cada classe: a tabela em cinza, e o toque num
      card escolhe o bloco dele (o H é dos ametais) */
@@ -11397,14 +11490,10 @@ const QUESTOES_5 = [
   { monta(Q){
       const m = Q.mesa();
       m.classList.add('fundo5');
-      /* a tabela de fundo encolhe em volta do meio do alto (640, 170) */
-      const r = m.getBoundingClientRect(), s = r.width / m.offsetWidth;
+      /* a tabela de fundo encolhe em volta do meio do alto (640, 170) — na
+         montagem, ela anda e cresce como um grupo (LUGAR_Q3_4.fundo) */
       this.encolhidas = [...m.querySelectorAll('.pc:not(.ficha5), .casa')];
-      this.encolhidas.forEach(e => {
-        const q = e.getBoundingClientRect(), cx = (q.left + q.width / 2 - r.left) / s, cy = (q.top + q.height / 2 - r.top) / s;
-        e.style.translate = ((640 - cx) * .15).toFixed(1) + 'px ' + ((170 - cy) * .15).toFixed(1) + 'px';
-        e.style.scale = '.85';
-      });
+      this.fundo = encolheFundo(Q, this.encolhidas, LUGAR_Q3_4.fundo);
       const zs = embaralha([80, 35, sorteia5([26, 29, 79, 13]), sorteia5([6, 16, 15, 53]),
                             sorteia5([1, 7, 8, 9, 17]), sorteia5([2, 10, 18])]);
       this.acesas = zs.map((z, i) => {
@@ -11432,6 +11521,8 @@ const QUESTOES_5 = [
       this.bandejas.forEach(b => b.classList.add('espera5'));
       this.bt = Q.botao('Conferir', 1150, 628, () => this.confere(Q));
       this.bt.classList.add('some5');
+      /* (na montagem, as fichas ainda soltas andam juntas: LUGAR_Q3_4.cards) */
+      this.cards = grupoCards(this.fichas, LUGAR_Q3_4.cards, () => this.arruma(Q));
       return 'Observe esses elementos. Olhe para a tabela de fundo para identificar suas posições e arraste cada um deles para o estado físico correto, à temperatura ambiente.';
     },
     certo(z){ const t = material5(z); return t === 'hg' || t === 'br' ? 'liquido' : t === 'gas' ? 'gas' : 'solido'; },
@@ -15709,14 +15800,10 @@ const QUESTOES_7 = [
   { monta(Q){
       const m = Q.mesa();
       m.classList.add('fundo7', 'sem-linhas7');
-      /* a tabela de fundo encolhe em volta do meio do alto (640, 170) */
-      const r = m.getBoundingClientRect(), s = r.width / m.offsetWidth;
+      /* a tabela de fundo encolhe em volta do meio do alto (640, 170) — na
+         montagem, ela anda e cresce como um grupo (LUGAR_Q2_6.fundo) */
       this.encolhidas = [...m.querySelectorAll('.pc:not(.ficha5), .casa, .eixo[data-periodo]')];
-      this.encolhidas.forEach(e => {
-        const q = e.getBoundingClientRect(), cx = (q.left + q.width / 2 - r.left) / s, cy = (q.top + q.height / 2 - r.top) / s;
-        e.style.translate = ((640 - cx) * .15).toFixed(1) + 'px ' + ((170 - cy) * .15).toFixed(1) + 'px';
-        e.style.scale = '.85';
-      });
+      this.fundo = encolheFundo(Q, this.encolhidas, LUGAR_Q2_6.fundo);
       this.bandejas = bandejas7(Q, 548);
       this.bandejas.forEach(b => b.classList.add('espera5'));
       const zs = embaralha([...embaralha([11, 19, 12, 20, 13]).slice(0, 2), sorteia5([1, 6, 8, 17, 10]),
@@ -15740,6 +15827,8 @@ const QUESTOES_7 = [
       });
       this.bt = Q.botao('Conferir', 640, 660, () => this.confere(Q));
       this.bt.classList.add('some5');
+      /* (na montagem, os cards ainda soltos andam juntos: LUGAR_Q2_6.cards) */
+      this.cards = grupoCards(this.fichas, LUGAR_Q2_6.cards, () => this.arruma(Q));
       return 'Observe a tabela de fundo e posicione os cards a seguir nos blocos corretos.';
     },
     /* pegado um card, a casa da mesma cor na tabela de fundo brilha (âmbar,
@@ -21877,11 +21966,16 @@ stage.addEventListener('pointerdown', (ev) => {
     }
     EDICAO.ultimo = txt; EDICAO.tUlt = agora;
   }
+  /* (nas questões de arrastar, os cards da fila vêm antes das peças) */
+  if (QUIZ_MONT.pega(ev, true)){ ev.preventDefault(); ev.stopPropagation(); return; }
   const el = pecaDe(ev);
   if (!el){
     /* fora das peças, um cubo ou o vazio da tabela: é a mesa inteira que
        se pega — um dedo arrasta, dois pinçam */
     const mesa = ev.target.closest && ev.target.closest('.mesa');
+    /* (nas questões de arrastar, a tabela de fundo e os cards soltos são grupos:
+       QUIZ_MONT — a tabela de fundo não pega o dedo, e acha-se pela área dela) */
+    if (QUIZ_MONT.pega(ev)){ ev.preventDefault(); ev.stopPropagation(); return; }
     if (mesa && slides[atual].contains(mesa)){ MESA_MONT.pega(ev, mesa); ev.preventDefault(); ev.stopPropagation(); }
     return;
   }
@@ -21991,6 +22085,7 @@ stage.addEventListener('wheel', (ev) => {
   if (!naMontagem()) return;
   const el = pecaDe(ev);
   if (!el){
+    if (QUIZ_MONT.roda(ev)){ ev.preventDefault(); return; }
     const mesa = ev.target.closest && ev.target.closest('.mesa');
     if (mesa && slides[atual].contains(mesa)){
       const p = MESA_MONT.le(mesa);

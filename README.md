@@ -1327,6 +1327,13 @@ como uma linha na borda de cima e na de baixo do palco.
 | F | tela cheia |
 | Esc | fechar / esconder os controles |
 
+Nas duas questões de arrastar cards para bandejas (a Q3 do quiz dos tipos,
+estados físicos, e a Q2 do quiz dos grupos A e B, blocos), a montagem tem dois
+grupos (`QUIZ_MONT`): a **tabela de fundo** anda inteira (um dedo) e muda de
+tamanho (pinça ou roda), e os **cards ainda na fila** andam juntos (arrastando
+qualquer um deles). O lugar aparece no alto da tela ("tabela de fundo · x y
+esc", "cards · x y") e vai para `LUGAR_ARRASTA` — um só, para as duas questões.
+
 A visão geral — o botão de quadradinhos na barra, ou a tecla **O** —
 mostra os slides em miniatura. Não são desenhos deles: são os próprios
 slides copiados e postos em escala, com o que estiver dentro de cada um
