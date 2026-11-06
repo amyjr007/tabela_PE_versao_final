@@ -2778,7 +2778,8 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
   font-family:var(--display);font-weight:600;font-size:19px;color:#fff;border-radius:999px;padding:5px 16px;
   border:1px solid rgba(255,255,255,.3);text-shadow:0 1px 4px rgba(0,0,0,.4);
   opacity:0;pointer-events:none;translate:calc(var(--lado,1) * 60px) 0;transition:translate .24s ease-in, opacity .24s ease}
-.etq93[data-lado="-1"]{--lado:-1}
+.etq93[data-lado="1"]{transform:translate(0,-50%)}
+.etq93[data-lado="-1"]{--lado:-1;transform:translate(-100%,-50%)}
 .etq93.on{opacity:1;translate:0 0;pointer-events:auto;transition:translate .52s cubic-bezier(.34,1.56,.64,1), opacity .28s ease}
 .dist93{position:absolute;z-index:41;display:flex;flex-direction:column;padding:0 14px;box-sizing:content-box;
   background:rgba(15,8,3,.94);border:2px solid rgba(255,225,170,.45);border-radius:10px;box-shadow:0 6px 28px rgba(0,0,0,.7);
@@ -4628,7 +4629,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v45.1';
+const VERSAO = 'v45.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -18819,13 +18820,14 @@ const FAM93 = {
     this.etq = {};
     this.GRUPOS.forEach(g => {
       const c = this.CORES[g] || this.COR, d = document.createElement('div');
-      /* (à esquerda da coluna a 1A e as do fim, como no app; as outras à direita —
-         embaixo, no vão que a família deixa ao subir) */
+      /* (EM CIMA, como no app: ao lado da coluna, acima da tabela e um fio acima
+         dos nomes 1A…8A — à esquerda as do fim, 6A a 8A, e à direita as outras;
+         a 1A também à direita, porque à esquerda dela não há lugar na tela) */
       d.className = 'etq93';
-      d.dataset.lado = g === 1 || g >= 16 ? '-1' : '1';
+      d.dataset.lado = g >= 16 ? '-1' : '1';
       d.textContent = this.TEXTOS[g];
-      d.style.left = xDaColuna(g).toFixed(1) + 'px';
-      d.style.top  = (yDaLinha(7) - 0.15 * PASSO).toFixed(1) + 'px';
+      d.style.left = (g >= 16 ? xDaColuna(g) - LADO / 2 - 10 : xDaColuna(g) + LADO / 2 + 10).toFixed(1) + 'px';
+      d.style.top  = (yDaLinha(1) - 1.75 * PASSO).toFixed(1) + 'px';
       d.style.background = 'linear-gradient(145deg,' + c[0] + ',' + c[1] + ')';
       d.style.boxShadow = '0 3px 18px ' + c[2];
       d.addEventListener('click', ev => { ev.stopPropagation(); this.alternaDist(g); });

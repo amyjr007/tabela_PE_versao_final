@@ -830,8 +830,9 @@ tela" sem o play. O toque toca a `9.3.1` (`Audios/audio_tabela_9.3.1.mp3`,
 respondem ao toque — **as famílias que sobem** (`FAM93`), copiadas do app da
 tabela do professor (o tópico dos elétrons de valência): tocada, a família
 sobe num salto de mola (1,3 linha) com o nome dela em cima, e entra de lado,
-no vão que ela deixa embaixo, a etiqueta "N elétrons" na cor da família (as
-do app); tocada a etiqueta, abre ao lado a caixa escura com a distribuição
+em cima — ao lado do topo da coluna, acima da tabela, como no app (à esquerda
+as da 6A à 8A; à direita as outras, e a 1A, que à esquerda não tem lugar) —, a
+etiqueta "N elétrons" na cor da família (as do app); tocada a etiqueta, abre ao lado a caixa escura com a distribuição
 eletrônica de cada elemento, na ordem do diagrama de Pauling (`distPauling`),
 com a última camada no amarelo. Uma de cada vez (tocar a de cima fá-la
 descer); abrem-se na ordem 1A, 2A, 3A…, e a próxima balança de leve. O hélio
