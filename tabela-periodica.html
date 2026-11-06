@@ -3240,6 +3240,10 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
    915 × 98 já na escala de 1,18 — sem ela, 775 de largura, alto em 82) */
 .quiz3.q4.q2{left:257.3px;width:775.4px;top:82px}
 .quiz3.q4.q2 .q3-q{white-space:normal}
+/* (no quiz do slide 7, os grupos A e B, o lugar que o professor deixou na
+   montagem: { el:'pergunta-quiz-5', x:657, y:100, larg:915, alt:140, esc:1.18 }
+   — o centro em 657 × 100, a mesma largura e a mesma escala) */
+.slide.quiz7 .quiz3.q4.q2.q5{left:269.3px;top:30px}
 /* a folga do número atômico em cima do símbolo, sempre: a linha não
    pula quando ele chega, no fim da digitação */
 .quiz3.q4.q2 .q3-q{margin-top:12px}
@@ -4616,7 +4620,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v44.6';
+const VERSAO = 'v44.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -11523,7 +11527,7 @@ const QUESTOES_5 = [
       this.bt.classList.add('some5');
       /* (na montagem, as fichas ainda soltas andam juntas: LUGAR_Q3_4.cards) */
       this.cards = grupoCards(this.fichas, LUGAR_Q3_4.cards, () => this.arruma(Q));
-      return 'Observe esses elementos. Olhe para a tabela de fundo para identificar suas posições e arraste cada um deles para o estado físico correto, à temperatura ambiente.';
+      return 'Observe a tabela de fundo e posicione os cards de acordo com o estado físico à temperatura ambiente desses elementos.';
     },
     certo(z){ const t = material5(z); return t === 'hg' || t === 'br' ? 'liquido' : t === 'gas' ? 'gas' : 'solido'; },
     /* largada numa bandeja, fica lá, vestida do estado dela; fora, volta */
