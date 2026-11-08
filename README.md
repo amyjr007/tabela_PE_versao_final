@@ -841,22 +841,44 @@ Acabada a fala da 8A, a festa — os confetes, o funfare e os aplausos
 aos 5,8 s vai à etiqueta "N elétrons" da família de cima e toca-a — abre a
 distribuição eletrônica —, e afasta-se; aos 11,2 s volta ao mesmo botão e, aos
 11,8 s, toca-o outra vez — a caixa fecha —, e sai; aos 13 s o play vira o botão
-do **quiz do tópico 9** (`QUIZ9`, também no sumário, "Quiz"): as quatro questões
-do quiz do app do professor (o tópico dos elétrons de valência), só os textos,
-no ritual e com as peças daqui (o do `QUIZ5`) — 1) toque na família com 6
-elétrons de valência (a 6A); 2) toque num elemento com 2 elétrons na última
-camada (a 2A, e o hélio); 3) e 4) "Observando a eletrosfera do átomo a seguir,
-toque na família a qual ele pertence": o átomo do tópico (o núcleo ciano, as
-camadas e os elétrons parados) de um elemento sorteado do Li ao Ca, um em cada
-questão, com outro número de elétrons de valência (`QUESTAO_ATOMO9`), num
-painel escuro no lugar do bloco de transição; no erro, a tela treme, "Conte os
-elétrons da última camada. Ela é a camada de valência." e a última camada e os
-elétrons dela brilham em vermelho; 5) toque num elemento com 8 elétrons de
-valência (a 8A, menos o hélio); 6) o total de Mg + C + Cl — as três fichas no
-vão de cima e o carrossel "total" (13). No quiz, o bloco de transição fica num
-cinza claro meio transparente, e o hélio, inteiro. No fim, a nota, Refazer e Continuar (o slide 11); aos 13 s o play vira o botão do quiz (as
-questões ainda vão chegar). Dali em diante as famílias sobem e descem livres,
-sem fala.
+do **quiz do tópico 9** (`QUIZ9`, também no sumário, "Quiz"). Dali em diante as
+famílias sobem e descem livres, sem fala.
+
+O **quiz do tópico 9** (`QUIZ9`, `QUESTOES_9`) segue o documento do professor
+("Quiz do Tópico 9 · A tabela e a camada de valência"): oito questões pela
+taxonomia revisada de Bloom, no ritual do `QUIZ5` ("Questão N de 8"; acerto com
+confete, fanfarra, aplausos e a voz, "Perfeito" na última; erro com o alvo a
+balançar, a tela a tremer e a dica; no 2º erro, a resposta em âmbar; a nota,
+Refazer — que sorteia de novo — e Continuar, o slide 11). Na tabela, os de
+transição em cinza, mas tocáveis (armadilha); o hélio fora dos sorteios; os
+nomes 1A…8A escondidos, salvo os que a questão mostra.
+1. **Lembrar** — "Toque na camada de valência deste átomo." O **átomo em
+   camadas** (`ATOMO9`, peça nova: o núcleo ciano com o símbolo, anéis de 56 em
+   56 px — a faixa de toque —, os elétrons como bolinhas e o número ao lado de
+   cada anel), sorteado entre O, Na, Cl, Mg, K e Ca; o anel de fora acende os
+   elétrons e escreve "N elétrons de valência".
+2. **Lembrar** — "Toque na família que tem N elétrons de valência" (N de 1 a
+   7): a coluna inteira acende, com o nome dela e o N ao lado de cada card.
+3. **Entender** — seis cards para três bandejas (as da Q3 do tópico 4): três
+   famílias de 1A a 7A, dois elementos de cada, de períodos diferentes (um do
+   4º para baixo); no acerto, os cards voam para a coluna deles na tabela.
+4. **Aplicar** — o cubo girando e o carrossel de 1 a 8 (os do quiz das
+   coordenadas e do tópico 6), com a tabela escurecida; no 3º erro, a coluna do
+   elemento acende; no acerto, o cubo voa até ele, e o nome da família aparece.
+5. **Aplicar** — "Coloque os elétrons de valência do X": o átomo em camadas
+   com as de dentro prontas e a de fora vazia (tracejada); tocar no anel põe um
+   elétron, tocar num elétron tira-o; o card pequeno do elemento ao lado, e ele
+   aceso na tabela; no 2º erro, a quantidade certa em âmbar a piscar; no
+   acerto, o átomo gira e aparece a distribuição ("2 · 8 · 7").
+6. **Analisar** — marcar os de mesma valência do oxigênio (S, Se, Te, Po, Lv)
+   e Pronto; no acerto, a coluna acende com um 6 ao lado de cada um.
+7. **Avaliar** — o balão do colega (o do tópico 6), Concordo/Discordo, e o
+   carrossel de 1 a 8 e "A regra não vale" (a opção de texto, nova); cada
+   parte errada é um erro; no acerto, o balão ganha o ✔ ou é riscado e o
+   elemento acende na tabela.
+8. **Criar** — as etiquetas nos cabeçalhos (as do tópico 6): as oito famílias
+   A e o bloco B; 1 a 8, "A regra não vale", e as armadilhas 13 e 18; no
+   acerto, os números ao lado de todos os A e o bloco B apagado.
 As famílias A
 respondem ao toque — **as famílias que sobem** (`FAM93`), copiadas do app da
 tabela do professor (o tópico dos elétrons de valência): tocada, a família
