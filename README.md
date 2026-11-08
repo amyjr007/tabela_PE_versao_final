@@ -710,7 +710,8 @@ cards para Natural e Artificial (as bandejas), com as dicas de cada erro; 4) o
 cubo e dois carrosséis de palavras (origem e núcleo); 5) a **régua numérica**
 (`regua8`, nova: de 1 a 118, cursores de 60 px que se encaixam nos inteiros, o
 balão com o número, ◀ ▶) até o 83, com os radioativos acesos ao vivo, e depois
-os dois de fora (Tc e Pm); 6) o **quadro 2 × 2** (as bandejas em grade, novas) e
+os dois de fora (Tc e Pm: "Agora toque nos dois radioativos que não estão
+depois do chumbo, 82."); 6) o **quadro 2 × 2** (as bandejas em grade, novas) e
 o quadro que fica vazio ("✗ Nenhum artificial é estável"); 7) o colega,
 Concordo/Discordo, e o card que prova; 8) a régua com dois cursores (83 e 93),
 as ilhas 43 e 61 e as etiquetas das faixas — no acerto, a tabela inteira na cor
