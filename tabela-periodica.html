@@ -2840,6 +2840,12 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .atomo9c .leg9{position:absolute;left:0;right:0;bottom:14px;text-align:center;opacity:0;transition:opacity .4s ease;
   font:700 22px var(--display);color:#F4FF3A;text-shadow:0 0 12px rgba(234,255,0,.5)}
 .atomo9c .leg9.on{opacity:1}
+/* a instrução da Q5, embaixo do comando: amarela, a brilhar e a piscar (entra
+   depois de o comando acabar de ser digitado) */
+.instr9{margin-top:6px;font:600 19px var(--display);color:#F4FF3A;text-shadow:0 0 10px rgba(234,255,0,.6);
+  animation:instr9e .4s ease 2.4s both, instr9 1.6s ease-in-out 2.8s infinite}
+@keyframes instr9e{from{opacity:0}}
+@keyframes instr9{50%{opacity:.45;text-shadow:0 0 2px rgba(234,255,0,.2)}}
 /* o card pequeno do elemento (Q5) */
 .card9{position:absolute;z-index:35;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
   border-radius:12px;background:linear-gradient(145deg,#D9B44A,#A8821E);color:#fff;box-shadow:0 8px 22px rgba(0,0,0,.45);line-height:1}
@@ -4704,7 +4710,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v46.3';
+const VERSAO = 'v46.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16488,10 +16494,28 @@ function tremeCaixa9(b){
 const CAMADAS_9 = { 7:[2, 5], 8:[2, 6], 11:[2, 8, 1], 12:[2, 8, 2], 13:[2, 8, 3], 14:[2, 8, 4], 17:[2, 8, 7], 19:[2, 8, 8, 1], 20:[2, 8, 8, 2] };
 const ATOMO9 = {
   R(k){ return 60 + 56 * k; },
-  cria(Q, z, cs, cx, cy, noAnel, noEletron){
+  /* O NÚCLEO DE VERDADE: Z prótons num aglomerado em 3D — espalhados numa
+     bola (a espiral dourada), inclinada para dar perspectiva, e desenhados do
+     fundo para a frente: os de trás menores e mais escuros, os da frente
+     maiores e claros, com o "+" que se apaga com a profundidade */
+  nucleo(z){
+    const R = z === 1 ? 0 : 11 * Math.cbrt(z), ga = Math.PI * (3 - Math.sqrt(5)), inc = .45, pts = [];
+    for (let i = 0; i < z; i++){
+      const t = (i + .5) / z, r = R * Math.cbrt(t), phi = Math.acos(1 - 2 * ((i * .618034 + .31) % 1)), th = i * ga;
+      const x = r * Math.sin(phi) * Math.cos(th), y0 = r * Math.sin(phi) * Math.sin(th), z0 = r * Math.cos(phi);
+      pts.push([x, y0 * Math.cos(inc) - z0 * Math.sin(inc), y0 * Math.sin(inc) + z0 * Math.cos(inc)]);
+    }
+    pts.sort((a, b) => a[2] - b[2]);
+    return '<circle r="' + (R + 26).toFixed(1) + '" fill="url(#a9h)"/>' + pts.map(([x, y, d]) => {
+      const f = R ? (d + R) / (2 * R) : 1, r = 8.5 * (.8 + .32 * f), esc = (.5 * (1 - f)).toFixed(2), m = (r * .42).toFixed(1);
+      return '<g transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')"><circle r="' + (r + 1).toFixed(1) + '" fill="#03141A" opacity=".55"/>' +
+        '<circle r="' + r.toFixed(1) + '" fill="url(#a9p)"/><circle r="' + r.toFixed(1) + '" fill="#021016" opacity="' + esc + '"/>' +
+        '<path d="M-' + m + ' 0H' + m + 'M0 -' + m + 'V' + m + '" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="' + (1 - esc * 1.6).toFixed(2) + '"/></g>';
+    }).join('');
+  },
+  cria(Q, z, cs, cx, cy, noAnel, noEletron, semSimbolo){
     const n = cs.length, L = this.R(n - 1) + 42;
-    const prot = [[-9, -6], [9, -6], [-9, 8], [9, 8]].map(([x, y]) => '<g transform="translate(' + x * 1.3 + ' ' + y * 1.3 + ')">' +
-      '<circle r="14" fill="url(#a9p)" filter="url(#a9s)"/></g>').join('');
+    const prot = this.nucleo(z);
     const aneis = cs.map((e, k) => {
       const r = this.R(k), a = -0.42, cx2 = ((r + 20) * Math.cos(a)).toFixed(1), cy2 = ((r + 20) * Math.sin(a)).toFixed(1);
       return '<g class="anel9" data-k="' + k + '"><circle class="faixa9" r="' + r + '"/><circle class="orb9a" r="' + r + '"/>' +
@@ -16503,8 +16527,8 @@ const ATOMO9 = {
       '<radialGradient id="a9h"><stop offset="0" stop-color="#00e5ff" stop-opacity=".45"/><stop offset="1" stop-color="#00e5ff" stop-opacity="0"/></radialGradient>' +
       '<filter id="a9s" x="-80%" y="-80%" width="260%" height="260%"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00e5ff"/></filter>' +
       '<filter id="a9n" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter></defs>' +
-      '<g class="giro9">' + aneis + '<g class="nuc9a"><circle r="48" fill="url(#a9h)"/>' + prot +
-      '<text class="sim9a" y="10">' + SIMBOLOS[z - 1] + '</text></g></g></svg><div class="leg9"></div>',
+      '<g class="giro9">' + aneis + '<g class="nuc9a">' + prot +
+      (semSimbolo ? '' : '<text class="sim9a" y="10">' + SIMBOLOS[z - 1] + '</text>') + '</g></g></svg><div class="leg9"></div>',
       cx - L, cy - L, 2 * L, 2 * L);
     const at = { d, z, cs:cs.slice(), n, anel:k => d.querySelector('.anel9[data-k="' + k + '"]'), nucleo:d.querySelector('.nuc9a') };
     cs.forEach((e, k) => this.poe(at, k, e));
@@ -16695,7 +16719,8 @@ const QUESTOES_9 = [
   { monta(Q){
       const [z, internas, v] = sorteia5([[7, [2], 5], [8, [2], 6], [12, [2, 8], 2], [13, [2, 8], 3], [14, [2, 8], 4], [17, [2, 8], 7]]);
       Object.assign(this, { z, v, internas });
-      this.at = ATOMO9.cria(Q, z, [...internas, 0], 478, 452, k => this.anel(Q, k), i => this.tira(Q, i));
+      /* (o núcleo com os Z prótons à vista, sem o símbolo por cima: ele está no card ao lado) */
+      this.at = ATOMO9.cria(Q, z, [...internas, 0], 478, 452, k => this.anel(Q, k), i => this.tira(Q, i), true);
       this.ult = internas.length;
       this.at.anel(this.ult).classList.add('vazio9');
       /* o card pequeno do elemento, ao lado; e ele aceso na tabela, para achar a família */
@@ -16704,7 +16729,14 @@ const QUESTOES_9 = [
       this.c.classList.add('acende9');
       Q.marcados.push(this.c);
       this.bt = Q.botao('Pronto', 1100, 672, () => this.confere(Q));
-      return 'Coloque os elétrons de valência do ' + NOMES[z - 1].toLowerCase() + '.';
+      /* na linha de baixo do comando, a instrução em amarelo, a brilhar e a piscar
+         (a caixa da pergunta nasce logo depois deste monta) */
+      setTimeout(() => {
+        const cx = Q.caixa(), q = cx && cx.querySelector('.q3-q');
+        if (q && !cx.querySelector('.instr9'))
+          q.insertAdjacentHTML('afterend', '<div class="instr9">Toque na camada pra adicionar e toque no elétron se precisar retirar.</div>');
+      }, 0);
+      return 'Coloque os elétrons na camada de valência do ' + NOMES[z - 1].toLowerCase() + '.';
     },
     anel(Q, k){
       if (k !== this.ult || this.at.cs[k] >= 8) return;

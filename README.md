@@ -865,7 +865,10 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
 4. **Aplicar** — o cubo girando e o carrossel de 1 a 8 (os do quiz das
    coordenadas e do tópico 6), com a tabela escurecida; no 3º erro, a coluna do
    elemento acende; no acerto, o cubo voa até ele, e o nome da família aparece.
-5. **Aplicar** — "Coloque os elétrons de valência do X": o átomo em camadas
+5. **Aplicar** — "Coloque os elétrons na camada de valência do X", e embaixo,
+   em amarelo, a brilhar e a piscar, "Toque na camada pra adicionar e toque no
+   elétron se precisar retirar."; o átomo em camadas (o núcleo com os Z prótons
+   de verdade, em 3D — `ATOMO9.nucleo` —, sem o símbolo por cima)
    com as de dentro prontas e a de fora vazia (tracejada); tocar no anel põe um
    elétron, tocar num elétron tira-o; o card pequeno do elemento ao lado, e ele
    aceso na tabela; no 2º erro, a quantidade certa em âmbar a piscar; no
