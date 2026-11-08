@@ -880,9 +880,14 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
    7): a coluna inteira acende, com o nome dela e o N ao lado de cada card.
 3. **Entender** — seis cards para três bandejas (as da Q3 do tópico 4): três
    famílias de 1A a 7A, dois elementos de cada, de períodos diferentes (um do
-   4º para baixo); no acerto, os cards voam para a coluna deles na tabela.
+   4º para baixo). Como na Q3 do tópico 4: a tabela de fundo encolhida
+   (`LUGAR_ARRASTA`, móvel na montagem), escura e sem símbolos, com a casa de
+   cada card na cor dele (`fundo7`, `acesa7`, `CORES_Q3`); pegado um card, a
+   casa dele pisca em âmbar e as outras apagam; no acerto, a tabela volta
+   inteira e os cards voam para a casa deles.
 4. **Aplicar** — o cubo girando e o carrossel de 1 a 8 (os do quiz das
-   coordenadas e do tópico 6), com a tabela escurecida; no 3º erro, a coluna do
+   coordenadas e do tópico 6), com a tabela escurecida e o elemento do
+   carrossel aceso, a piscar, nela (`alvo9`); no 3º erro, a coluna do
    elemento acende; no acerto, o cubo voa até ele, e o nome da família aparece.
 5. **Aplicar** — "Coloque os elétrons na camada de valência do X", e embaixo,
    em amarelo, a brilhar e a piscar, "Toque na camada pra adicionar e toque no
@@ -893,17 +898,23 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
    que sai incha, brilha e estoura em faíscas laranja; o número de cada anel
    com o e⁻ ("1e⁻"), nas duas questões do átomo
    com as de dentro prontas e a de fora vazia (tracejada); tocar no anel põe um
-   elétron, tocar num elétron tira-o; o card pequeno do elemento ao lado, e ele
+   elétron — ele nasce no ponto tocado, explode em luz lá, e só depois todos se
+   reposicionam, igualmente espaçados (`fx.em` no `ATOMO9.poe`) —, tocar num
+   elétron tira-o; o card pequeno do elemento ao lado, e ele
    aceso na tabela; no 2º erro, a quantidade certa em âmbar a piscar; no
    acerto, o átomo gira e aparece a distribuição ("2 · 8 · 7").
 6. **Analisar** — marcar os de mesma valência do oxigênio (S, Se, Te, Po, Lv)
    e Pronto; no acerto, a coluna acende com um 6 ao lado de cada um.
 7. **Avaliar** — o balão do colega (o do tópico 6), Concordo/Discordo, e o
    carrossel de 1 a 8 e "A regra não vale" (a opção de texto, nova); cada
-   parte errada é um erro; no acerto, o balão ganha o ✔ ou é riscado e o
+   parte errada é um erro. A tabela fica ao fundo, escurecida, com o elemento
+   da frase a piscar; o bloco de transição sai (`vao9`) e o vão dele recebe o
+   balão, os botões e o carrossel (o ferro fica, quando é dele que se fala, entre
+   os dois botões); no acerto, o balão ganha o ✔ ou é riscado e o
    elemento acende na tabela.
 8. **Criar** — as etiquetas nos cabeçalhos (as do tópico 6): as oito famílias
-   A e o bloco B; 1 a 8, "A regra não vale", e as armadilhas 13 e 18; no
+   A e o bloco B; "1e⁻" a "8e⁻", "A regra não vale", e as armadilhas "13e⁻" e
+   "18e⁻" (as ainda não arrastadas piscam em âmbar); no
    acerto, os números ao lado de todos os A e o bloco B apagado.
 As famílias A
 respondem ao toque — **as famílias que sobem** (`FAM93`), copiadas do app da

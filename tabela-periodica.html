@@ -2781,9 +2781,14 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .aviso93.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
 /* o quiz do tópico 9: na sala escura, o bloco de transição apagado sumia — fica
    num cinza claro, sem a cor dele e meio transparente: à vista, mas inativo */
-.slide.quiz9 .mesa.grupos.valencia .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
+.slide.quiz9 .mesa.grupos.valencia:not(.fundo7) .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
   [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]){--cor:#A9A5BA!important;opacity:.4!important}
-.slide.quiz9 .mesa.valencia .casa.serie{opacity:.4!important;filter:grayscale(1) brightness(1.6)}
+.slide.quiz9 .mesa.valencia:not(.fundo7) .casa.serie{opacity:.4!important;filter:grayscale(1) brightness(1.6)}
+/* (Q7: o bloco de transição sai, e o vão dele recebe o colega, os botões e o
+   carrossel — menos o ferro, quando é dele que se fala) */
+.slide.quiz9 .mesa.mesa.vao9 .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
+  [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]):not(.alvo9):not(.ficha5),
+.slide.quiz9 .mesa.mesa.vao9 .casa.serie{opacity:0!important;pointer-events:none}
 /* (e o hélio, apagado nas famílias que sobem, volta inteiro na tabela do quiz) */
 .slide.quiz9 .mesa.valencia.fam93 .pc[data-z="2"]{opacity:1;filter:none}
 /* os nomes das famílias (1A…8A) saem no quiz; só voltam os que a questão mostra */
@@ -2791,7 +2796,8 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .slide.quiz9 .mesa .rot-a:not(.mostra9){opacity:0}
 /* a tabela sai (Q1, Q3, Q5 não precisa, Q7) ou escurece (Q4) */
 .slide.quiz9 .mesa.mesa.some9 :is(.pc:not(.ficha5),.casa,.rot-a){opacity:0!important;pointer-events:none}
-.slide.quiz9 .mesa.escura9 .pc:not(.ficha5), .slide.quiz9 .mesa.valencia.fam93.escura9 .pc[data-z="2"]{filter:brightness(.45)}
+.slide.quiz9 .mesa.escura9 .pc:not(.ficha5):not(.alvo9), .slide.quiz9 .mesa.valencia.fam93.escura9 .pc[data-z="2"]:not(.alvo9){filter:brightness(.45)}
+.slide.quiz9 .mesa.mesa.mesa .pc.alvo9:not(.ficha5){opacity:1!important}
 /* (Q8, no acerto: o bloco B ainda mais apagado) */
 .slide.quiz9 .mesa.mesa.apaga9 .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
   [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]){opacity:.15!important}
@@ -2810,6 +2816,9 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .roda9w .rd-roda{width:170px}
 .roda9w .rd-v{font-size:17px}
 .etiqueta5.etqT9{font-size:16px}
+/* (Q8: as etiquetas com o e⁻, e as ainda não arrastadas piscando) */
+.etiqueta5.etq7.etqE9{font-size:18px;padding:0}
+.etiqueta5.etq7.pisca9{animation:pisca8e 1.3s ease-in-out infinite}
 .slotB9{border-radius:10px}
 /* O ÁTOMO EM CAMADAS (Q1, Q5): o painel escuro, os anéis, os elétrons, o núcleo
    com o símbolo, o número de cada anel; aceso, de valência (amarelo neon),
@@ -4832,7 +4841,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v46.8';
+const VERSAO = 'v46.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -11628,7 +11637,7 @@ function grupoCards(fichas, p0, arruma){
    do mouse também) */
 const QUIZ_MONT = {
   ptr:new Map(), alvo:null, base:null, Q:null, mexidos:new Set(),
-  quiz(){ return [QUIZ5, QUIZ7].find(Q => Q && Q.aberto && Q.q && slides[atual].contains(Q.mesa())) || null; },
+  quiz(){ return [QUIZ5, QUIZ7, window.QUIZ9].find(Q => Q && Q.aberto && Q.q && slides[atual].contains(Q.mesa())) || null; },
   /* o grupo debaixo do dedo: um card solto, ou a área da tabela de fundo */
   grupo(ev, soCards){
     const Q = this.quiz(), q = Q && Q.q;
@@ -16559,7 +16568,7 @@ function limpa9(Q){
   (Q.marcados || []).forEach(c => { c.classList.remove('certa3', 'frente3', 'acende9'); c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe'); c.style.removeProperty('--atraso9'); });
   Q.marcados = [];
   const m = Q.mesa();
-  m.classList.remove('some9', 'escura9', 'apaga9');
+  m.classList.remove('some9', 'escura9', 'apaga9', 'vao9');
   m.querySelectorAll('.marca9, .acende9, .alvo9').forEach(c => c.classList.remove('marca9', 'acende9', 'alvo9'));
   m.querySelectorAll('.rot-a.mostra9').forEach(r => r.classList.remove('mostra9'));
   Q.sl().querySelectorAll('.q9p').forEach(e => e.remove());
@@ -16669,7 +16678,7 @@ const ATOMO9 = {
       }
       if (dist < this.R(0) - 28){ noAnel(-1); return; }
       const k = Math.round((dist - 60) / 56);
-      if (k >= 0 && k < n && Math.abs(dist - this.R(k)) <= 28) noAnel(k);
+      if (k >= 0 && k < n && Math.abs(dist - this.R(k)) <= 28) noAnel(k, x, y);
     });
     d.addEventListener('click', ev => ev.stopPropagation());
     return at;
@@ -16693,18 +16702,48 @@ const ATOMO9 = {
       setTimeout(() => el.remove(), 260);
     }
     while (els.length > e) els.pop().remove();
+    /* (fx.em: o ponto tocado — o novo entra na fila na ordem do ângulo dele,
+       para os outros andarem o mínimo) */
+    const r = this.R(k), a0 = k * .45 - Math.PI / 2, rel = (x, y) => ((Math.atan2(y, x) - a0) % (2 * Math.PI) + 4 * Math.PI) % (2 * Math.PI);
     while (els.length < e){
       const n = document.createElementNS(NS, 'g');
       n.setAttribute('class', 'e9');
       n.innerHTML = '<circle class="luz9e" r="17" filter="url(#a9n)"/><circle class="aura9e" r="20"/><circle r="10" fill="url(#a9e)"/>' +
         '<path d="M-4.5 0H4.5" stroke="#1B2A4A" stroke-width="2.4" stroke-linecap="round" opacity=".75"/>';
       n._novo = !!(fx && fx.entra);
-      box.appendChild(n);
-      els.push(n);
+      if (fx && fx.em){
+        const ra = rel(fx.em[0], fx.em[1]), i = els.filter(o => o._p && rel(o._p[0], o._p[1]) < ra).length;
+        box.insertBefore(n, els[i] || null);
+        els.splice(i, 0, n);
+        n._em = fx.em;
+      } else {
+        box.appendChild(n);
+        els.push(n);
+      }
     }
+    const vez = at._vez = (at._vez || 0) + 1;
     els.forEach((el, i) => {
       const [x, y] = ps[i], fim = 'translate(' + x.toFixed(1) + 'px, ' + y.toFixed(1) + 'px)';
       el._p = [x, y];
+      /* posto no ponto tocado (no anel, na direção do toque): explode em luz
+         lá, e só depois todos se reposicionam, igualmente espaçados */
+      if (el._novo && el._em){
+        el._novo = false;
+        const a = Math.atan2(el._em[1], el._em[0]), px = r * Math.cos(a), py = r * Math.sin(a);
+        const aqui = 'translate(' + px.toFixed(1) + 'px, ' + py.toFixed(1) + 'px)';
+        el._em = null;
+        el.style.transition = 'none';
+        el.style.transform = aqui + ' scale(2.6)';
+        el.style.opacity = '0';
+        el.classList.add('chega9e');
+        el.getBoundingClientRect();
+        el.style.transition = '';
+        requestAnimationFrame(() => { el.style.transform = aqui; el.style.opacity = '1'; });
+        setTimeout(() => this.estoura(at, px, py, 'entra'), 200);
+        setTimeout(() => { el.classList.remove('chega9e'); if (at._vez === vez) els.forEach(o => o.style.transform = 'translate(' + o._p[0].toFixed(1) + 'px, ' + o._p[1].toFixed(1) + 'px)'); }, 750);
+        return;
+      }
+      if (fx && fx.em){ if (!el.style.transform) el.style.transform = fim; return; }
       if (el._novo){
         el._novo = false;
         /* chega de longe, na direção dele, grande e aceso */
@@ -16788,35 +16827,68 @@ const QUESTOES_9 = [
     },
     limpa(Q){ limpa9(Q); } },
 
-  /* Q3 · Entender · mesma família, mesma valência: seis cards e três bandejas
-     (como a Q3 do quiz do tópico 4) */
+  /* Q3 · Entender · mesma família, mesma valência: seis cards e três bandejas.
+     Como a Q3 do quiz do tópico 4 (e a Q2 do 6): a tabela ao fundo, encolhida
+     (LUGAR_ARRASTA), escura e sem símbolos, com a casa de cada card na cor
+     dele; pegado um card, a casa dele pisca em âmbar e as outras apagam */
   { monta(Q){
-      Q.mesa().classList.add('some9');
+      const m = Q.mesa();
+      m.classList.add('fundo7');
+      this.encolhidas = [...m.querySelectorAll('.pc:not(.ficha5), .casa')];
+      this.fundo = encolheFundo(Q, this.encolhidas, LUGAR_ARRASTA.fundo);
       this.cols = embaralha([1, 2, 13, 14, 15, 16, 17]).slice(0, 3);
       const zs = [];
       this.cols.forEach(col => {
         const L = FAMILIAS9[col], baixo = sorteia5(L.filter(z => periodo9(z) >= 4));
         zs.push(baixo, sorteia5(L.filter(z => periodo9(z) !== periodo9(baixo))));
       });
+      const ordem = embaralha(zs);
+      this.acesas = ordem.map((z, i) => {
+        const c = Q.carta(z);
+        c.style.setProperty('--c5', CORES_Q3[i]);
+        c.classList.add('acesa7');
+        return c;
+      });
+      /* (as três bandejas centradas no palco: a do meio em 640) */
       this.bandejas = this.cols.map((col, i) => {
-        const b = Q.peca('bandeja5', '<span>' + eletrons9(A9[col]) + '</span>', 200 + i * 300, 470, 280, 160);
+        const b = Q.peca('bandeja5', '<span>' + eletrons9(A9[col]) + '</span>', 200 + i * 300, 548, 280, 160);
         b.dataset.col = col;
         b.classList.add('espera5');
         return b;
       });
-      this.fichas = embaralha(zs).map((z, i) => {
-        const x = 435 + i * 82, y = 300, c = Q.ficha(z, x, y, 1.06);
-        c.classList.add('espera5');
+      this.fichas = ordem.map((z, i) => {
+        const x = 327 + i * 82, y = 300, c = Q.ficha(z, x, y, 1.06);
+        c.style.setProperty('--c5', CORES_Q3[i]);
+        c.classList.add('cor7', 'espera5');
         c._casa = { x, y };
         c._col = null;
-        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y));
+        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y), () => this.pega(Q, c));
         return c;
       });
-      this.bt = Q.botao('Conferir', 1150, 560, () => this.confere(Q));
+      this.bt = Q.botao('Conferir', 1150, 628, () => this.confere(Q));
       this.bt.classList.add('some5');
+      /* (na montagem, os cards ainda soltos andam juntos: LUGAR_ARRASTA.cards) */
+      this.cards = grupoCards(this.fichas, LUGAR_ARRASTA.cards, () => this.arruma(Q));
       return 'Arraste cada elemento para o número de elétrons de valência dele.';
     },
+    pega(Q, c){
+      if (this.pegado === c) return;
+      this.pegado = c;
+      const casa = Q.carta(+c.dataset.z);
+      (this.acesas || []).forEach(a => { a.classList.toggle('alvo7', a === casa); a.classList.toggle('alvo5', a === casa); });
+      Q.mesa().classList.add('pegando7');
+    },
+    desfaz(Q){
+      Q.mesa().classList.remove('fundo7', 'pegando7');
+      this.pegado = null;
+      (this.acesas || []).forEach(c => { c.classList.remove('acesa7', 'alvo7', 'alvo5'); c.style.removeProperty('--c5'); });
+      (this.encolhidas || []).forEach(e => { e.style.removeProperty('translate'); e.style.removeProperty('scale'); });
+      this.acesas = this.encolhidas = null;
+    },
     solta(Q, c, x, y){
+      this.pegado = null;
+      Q.mesa().classList.remove('pegando7');
+      (this.acesas || []).forEach(a => a.classList.remove('alvo7', 'alvo5'));
       const b = this.bandejas.find(b => Q.dentro(x, y, b));
       c._col = b ? +b.dataset.col : null;
       if (b){
@@ -16843,12 +16915,13 @@ const QUESTOES_9 = [
       if (!erradas.length){
         this.fichas.forEach(c => c._preso = true);
         this.bt.classList.add('some5');
-        /* os cards voam para a coluna deles na tabela, empilhados na vertical */
-        Q.mesa().classList.remove('some9');
+        /* a tabela volta inteira, e os cards voam para a casa deles */
+        this.desfaz(Q);
         this.bandejas.forEach(b => b.classList.add('some5'));
         this.fichas.forEach((c, k) => {
           const o = Q.carta(+c.dataset.z);
           c.classList.add('voa9');
+          c.classList.remove('cor7');
           setTimeout(() => Q.poe(c, xDaColuna(+o.dataset.col), yDaLinha(+o.dataset.linha), 1), 80 + k * 60);
         });
         Q.acerta();
@@ -16859,13 +16932,15 @@ const QUESTOES_9 = [
       /* as erradas voltam para a fila; as certas ficam */
       setTimeout(() => { erradas.forEach(c => { c._col = null; }); this.arruma(Q); }, 650);
     },
-    limpa(Q){ limpa9(Q); } },
+    limpa(Q){ this.desfaz(Q); limpa9(Q); } },
 
   /* Q4 · Aplicar · quantos elétrons de valência: o cubo girando e o carrossel */
   { monta(Q){
       Q.mesa().classList.add('escura9');
       [this.z, this.v] = sorteia5([[13, 3], [16, 6], [56, 2], [53, 7], [50, 4], [83, 5], [10, 8], [37, 1]]);
       this.c = Q.carta(this.z);
+      /* (o elemento do carrossel aceso e piscando na tabela escurecida) */
+      this.c.classList.add('alvo9');
       this.caixa = caixa9(Q, [1, 2, 3, 4, 5, 6, 7, 8], 'elétrons', this.z, (xDaColuna(3) + xDaColuna(12)) / 2, yDaLinha(1) - 26);
       this.bt = Q.botao('Confirmar', 1100, 672, () => this.confirma(Q));
       return 'Gire o carrossel: quantos elétrons de valência tem este elemento?';
@@ -16877,6 +16952,7 @@ const QUESTOES_9 = [
         b.classList.add('certa');
         /* o cubo voa da caixa até o elemento na tabela, e o nome da família aparece */
         Q.mesa().classList.remove('escura9');
+        Q.mesa().querySelectorAll('.alvo9').forEach(c => c.classList.remove('alvo9'));
         const r = b.querySelector('.rd-el').getBoundingClientRect(), m = Q.mesa(), rm = m.getBoundingClientRect(), s = rm.width / m.offsetWidth;
         const f = Q.ficha(this.z, (r.left + r.width / 2 - rm.left) / s, (r.top + r.height / 2 - rm.top) / s, 1.3);
         f.classList.add('voa9');
@@ -16900,7 +16976,7 @@ const QUESTOES_9 = [
       const [z, internas, v] = sorteia5([[7, [2], 5], [8, [2], 6], [12, [2, 8], 2], [13, [2, 8], 3], [14, [2, 8], 4], [17, [2, 8], 7]]);
       Object.assign(this, { z, v, internas });
       /* (o núcleo com os Z prótons à vista, sem o símbolo por cima: ele está no card ao lado) */
-      this.at = ATOMO9.cria(Q, z, [...internas, 0], 478, 452, k => this.anel(Q, k), i => this.tira(Q, i), true);
+      this.at = ATOMO9.cria(Q, z, [...internas, 0], 478, 452, (k, x, y) => this.anel(Q, k, x, y),i => this.tira(Q, i), true);
       this.ult = internas.length;
       this.at.anel(this.ult).classList.add('vazio9');
       /* o card pequeno do elemento, ao lado; e ele aceso na tabela, para achar a família */
@@ -16918,9 +16994,9 @@ const QUESTOES_9 = [
       }, 0);
       return 'Coloque os elétrons na camada de valência do ' + NOMES[z - 1].toLowerCase() + '.';
     },
-    anel(Q, k){
+    anel(Q, k, x, y){
       if (k !== this.ult || this.at.cs[k] >= 8) return;
-      ATOMO9.poe(this.at, k, this.at.cs[k] + 1, { entra:true });
+      ATOMO9.poe(this.at, k, this.at.cs[k] + 1, { entra:true, em:x === undefined ? null : [x, y] });
       tocaEfeito('flip');
     },
     tira(Q, i){
@@ -16981,7 +17057,10 @@ const QUESTOES_9 = [
   /* Q7 · Avaliar · o colega acertou? Concordo/Discordo (o balão do quiz do
      tópico 6), e depois o carrossel com a valência certa (ou "A regra não vale") */
   { monta(Q){
-      Q.mesa().classList.add('some9');
+      /* a tabela fica, escurecida, com o elemento da frase piscando; o bloco de
+         transição sai e o vão dele recebe o colega, os botões e o carrossel */
+      Q.mesa().classList.add('escura9', 'vao9');
+      const cx = (xDaColuna(3) + xDaColuna(12)) / 2, larg = xDaColuna(12) - xDaColuna(3) + LADO;
       const [z, frase, julga, val] = sorteia5([
         [20, 'O cálcio tem 2 elétrons de valência, porque é do grupo 2A.', 'sim', '2'],
         [16, 'O enxofre tem 3 elétrons de valência, porque está no 3º período.', 'nao', '6'],
@@ -16990,9 +17069,12 @@ const QUESTOES_9 = [
         [35, 'O bromo tem a mesma valência do cloro: 7.', 'sim', '7']]);
       Object.assign(this, { z, julga, val, julgado:false });
       this.vals = ['1', '2', '3', '4', '5', '6', '7', '8', 'A regra não vale'];
-      this.balao = Q.pecaCentro('balao7', '<i>Um colega disse:</i><b>“' + frase + '”</b>', 640, 250, 680);
-      this.bts = [['sim', 'Concordo', 520], ['nao', 'Discordo', 760]].map(([k, txt, x]) => {
-        const b = Q.botao(txt, x, 360, () => this.julgar(Q, k, b));
+      this.c = Q.carta(z);
+      this.c.classList.add('alvo9');
+      this.cx = cx;
+      this.balao = Q.pecaCentro('balao7', '<i>Um colega disse:</i><b>“' + frase + '”</b>', cx, yDaLinha(2), larg);
+      this.bts = [['sim', 'Concordo', xDaColuna(4.5)], ['nao', 'Discordo', xDaColuna(10.5)]].map(([k, txt, x]) => {
+        const b = Q.botao(txt, x, yDaLinha(4), () => this.julgar(Q, k, b));
         b.classList.add('julga7');
         b.dataset.k = k;
         return b;
@@ -17007,7 +17089,7 @@ const QUESTOES_9 = [
       this.julgado = true;
       Q.tropecos = 0;
       this.bts.forEach(o => { o.classList.toggle('escolhido7', o === b); o.classList.remove('pista5'); });
-      this.caixa = caixa9(Q, this.vals, 'valência', null, 640, 420, true);
+      this.caixa = caixa9(Q, this.vals, 'valência', null, this.cx, yDaLinha(5) - 10, true);
       this.bt = Q.botao('Confirmar', 1100, 672, () => this.confirma(Q));
     },
     confirma(Q){
@@ -17017,8 +17099,9 @@ const QUESTOES_9 = [
         b.classList.add('certa');
         this.balao.classList.add(this.julga === 'sim' ? 'certo7' : 'risca7');
         /* e o elemento da afirmação acende na tabela */
-        Q.mesa().classList.remove('some9');
+        Q.mesa().classList.remove('escura9');
         const c = Q.carta(this.z);
+        c.classList.remove('alvo9');
         c.classList.add('certa3');
         QUIZ3.cresce.call(QUIZ3, c);
         Q.marcados.push(c);
@@ -17048,10 +17131,11 @@ const QUESTOES_9 = [
       this.slots.push(sb);
       this.bandeja = Q.peca('bandeja5 bandeja7 etiquetas7', '', 150, 636, 920, 72);
       let x = 175;
+      /* (os números com o e⁻: "1e⁻", "2e⁻"…; a ainda não arrastada pisca) */
       this.etqs = embaralha(['1', '2', '3', '4', '5', '6', '7', '8', 'A regra não vale', '13', '18']).map(t => {
-        const w = t.length > 2 ? 176 : 62;
+        const w = t.length > 2 ? 176 : 60;
         x += w / 2;
-        const e = Q.pecaCentro('etiqueta5 etq7' + (w > 100 ? ' etqT9' : ''), t, x, 672, w, 40);
+        const e = Q.pecaCentro('etiqueta5 etq7 pisca9' + (w > 100 ? ' etqT9' : ' etqE9'), w > 100 ? t : t + 'e⁻', x, 672, w, 40);
         e._casa = { x, y:672 };
         x += w / 2 + 12;
         e.dataset.t = t;
@@ -17076,11 +17160,14 @@ const QUESTOES_9 = [
       tocaEfeito('flip');
       this.pronto();
     },
-    pronto(){ this.bt.classList.toggle('some5', this.slots.some(s => !s._etq)); },
+    pronto(){
+      this.bt.classList.toggle('some5', this.slots.some(s => !s._etq));
+      this.etqs.forEach(e => e.classList.toggle('pisca9', !e._slot && !e._preso));
+    },
     confere(Q){
       const errados = this.slots.filter(s => s._etq.dataset.t !== s.dataset.certo);
       if (!errados.length){
-        this.etqs.forEach(e => e._preso = true);
+        this.etqs.forEach(e => { e._preso = true; e.classList.remove('pisca9'); });
         this.bt.classList.add('some5');
         /* os números ao lado de todos os elementos dos grupos A, e o bloco B apagado */
         setTimeout(() => {
