@@ -899,7 +899,9 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
    (o clarão, duas ondas de choque e faíscas amarelas — `ATOMO9.estoura`); o
    que sai incha, brilha e estoura em faíscas laranja; o número de cada anel
    com o e⁻ ("1e⁻"), nas duas questões do átomo
-   com as de dentro prontas e a de fora vazia (tracejada); tocar no anel põe um
+   com as de dentro prontas — escurecidas, com os elétrons delas, e sem o
+   número (`interna9`): só a última camada em destaque — e a de fora vazia
+   (tracejada); tocar no anel põe um
    elétron — ele nasce no ponto tocado, explode em luz lá, e só depois todos se
    reposicionam, igualmente espaçados (`fx.em` no `ATOMO9.poe`) —, tocar num
    elétron tira-o; o card pequeno do elemento ao lado, e ele

@@ -2841,6 +2841,8 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .atomo9c .nuc9a.errada3{filter:drop-shadow(0 0 10px #FF4D4D)}
 .atomo9c .anel9.pista5 .orb9a{animation:anel9 1s ease-in-out infinite}
 @keyframes anel9{50%{stroke:#FFB020;stroke-width:6}}
+.atomo9c .anel9.interna9{opacity:.28;filter:saturate(.4)}
+.atomo9c .anel9.interna9 .cont9{display:none}
 .atomo9c .anel9.vazio9 .orb9a{stroke:#FFD43B;stroke-dasharray:10 8;stroke-width:3}
 .atomo9c .fant9 circle{fill:#FFB020;animation:fant9 1s ease-in-out infinite}
 @keyframes fant9{50%{opacity:.25}}
@@ -4841,7 +4843,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v47.0';
+const VERSAO = 'v47.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16979,6 +16981,9 @@ const QUESTOES_9 = [
       this.at = ATOMO9.cria(Q, z, [...internas, 0], 478, 452, (k, x, y) => this.anel(Q, k, x, y),i => this.tira(Q, i), true);
       this.ult = internas.length;
       this.at.anel(this.ult).classList.add('vazio9');
+      /* (só a última camada em destaque: as de dentro escurecidas, com os
+         elétrons delas, e sem o número) */
+      internas.forEach((_, k) => this.at.anel(k).classList.add('interna9'));
       /* o card pequeno do elemento, ao lado; e ele aceso na tabela, para achar a família */
       peca9(Q, 'card9', '<span>' + z + '</span><b>' + SIMBOLOS[z - 1] + '</b><em>' + NOMES[z - 1] + '</em>', 702, 205, 96, 104);
       this.c = Q.carta(z);
