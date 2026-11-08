@@ -2779,7 +2779,14 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
   font-family:var(--display);font-weight:700;font-size:28px;opacity:0;
   transition:opacity .3s ease, transform .4s cubic-bezier(.34,1.56,.64,1)}
 .aviso93.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
-/* o quiz do tópico 9: os sinais entre as fichas da questão 4 (Mg + C + Cl =) */
+/* o quiz do tópico 9: na sala escura, o bloco de transição apagado sumia — fica
+   num cinza claro, sem a cor dele e meio transparente: à vista, mas inativo */
+.slide.quiz9 .mesa.grupos.valencia .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
+  [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]){--cor:#A9A5BA!important;opacity:.4!important}
+.slide.quiz9 .mesa.valencia .casa.serie{opacity:.4!important;filter:grayscale(1) brightness(1.6)}
+/* (e o hélio, apagado nas famílias que sobem, volta inteiro: ele é resposta na 2 e pegadinha na 3) */
+.slide.quiz9 .mesa.valencia.fam93 .pc[data-z="2"]{opacity:1;filter:none}
+/* os sinais entre as fichas da questão 4 (Mg + C + Cl =) */
 .sinal9{display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:40px;color:#F3F0FB;
   text-shadow:0 2px 10px rgba(0,0,0,.6)}
 .mesa .pc.dica93{animation:dica93 1.4s ease-in-out infinite}
@@ -4640,7 +4647,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v46.0';
+const VERSAO = 'v46.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
