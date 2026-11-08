@@ -845,9 +845,16 @@ do **quiz do tópico 9** (`QUIZ9`, também no sumário, "Quiz"): as quatro quest
 do quiz do app do professor (o tópico dos elétrons de valência), só os textos,
 no ritual e com as peças daqui (o do `QUIZ5`) — 1) toque na família com 6
 elétrons de valência (a 6A); 2) toque num elemento com 2 elétrons na última
-camada (a 2A, e o hélio); 3) toque num elemento com 8 elétrons de valência (a
-8A, menos o hélio); 4) o total de Mg + C + Cl — as três fichas no vão de cima e
-o carrossel "total" (13). No fim, a nota, Refazer e Continuar (o slide 11); aos 13 s o play vira o botão do quiz (as
+camada (a 2A, e o hélio); 3) e 4) "Observando a eletrosfera do átomo a seguir,
+toque na família a qual ele pertence": o átomo do tópico (o núcleo ciano, as
+camadas e os elétrons parados) de um elemento sorteado do Li ao Ca, um em cada
+questão, com outro número de elétrons de valência (`QUESTAO_ATOMO9`), num
+painel escuro no lugar do bloco de transição; no erro, a tela treme, "Conte os
+elétrons da última camada. Ela é a camada de valência." e a última camada e os
+elétrons dela brilham em vermelho; 5) toque num elemento com 8 elétrons de
+valência (a 8A, menos o hélio); 6) o total de Mg + C + Cl — as três fichas no
+vão de cima e o carrossel "total" (13). No quiz, o bloco de transição fica num
+cinza claro meio transparente, e o hélio, inteiro. No fim, a nota, Refazer e Continuar (o slide 11); aos 13 s o play vira o botão do quiz (as
 questões ainda vão chegar). Dali em diante as famílias sobem e descem livres,
 sem fala.
 As famílias A

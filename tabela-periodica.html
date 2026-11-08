@@ -2786,7 +2786,18 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .slide.quiz9 .mesa.valencia .casa.serie{opacity:.4!important;filter:grayscale(1) brightness(1.6)}
 /* (e o hélio, apagado nas famílias que sobem, volta inteiro: ele é resposta na 2 e pegadinha na 3) */
 .slide.quiz9 .mesa.valencia.fam93 .pc[data-z="2"]{opacity:1;filter:none}
-/* os sinais entre as fichas da questão 4 (Mg + C + Cl =) */
+/* o átomo das questões 3 e 4: um painel escuro sobre o bloco de transição */
+.atomo9q{display:grid;place-items:center;border-radius:16px;background:rgba(12,10,32,.94);
+  border:1px solid rgba(244,242,248,.14);box-shadow:0 12px 32px rgba(0,0,0,.5)}
+.atomo9q svg{display:block;overflow:visible}
+.atomo9q .orb9q{fill:none;stroke:rgba(244,242,248,.5);stroke-width:2.5;transition:stroke .5s ease}
+.atomo9q :is(.verm9,.v9){opacity:0;transition:opacity .5s ease}
+/* (o erro: a última camada e os elétrons dela no vermelho, e ficam) */
+.atomo9q.erro9 .ult9 .orb9q{stroke:#FF4D4D}
+.atomo9q.erro9 .ult9 :is(.verm9,.v9){opacity:1}
+.atomo9q.erro9 .ult9 .verm9{animation:verm9 1.6s ease-in-out .5s infinite}
+@keyframes verm9{50%{opacity:.5}}
+/* os sinais entre as fichas da questão 6 (Mg + C + Cl =) */
 .sinal9{display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:40px;color:#F3F0FB;
   text-shadow:0 2px 10px rgba(0,0,0,.6)}
 .mesa .pc.dica93{animation:dica93 1.4s ease-in-out infinite}
@@ -4647,7 +4658,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v46.1';
+const VERSAO = 'v46.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16363,6 +16374,64 @@ function acerta9(Q, cs){
   cs.forEach(c => { c.classList.add('certa3'); QUIZ3.cresce.call(QUIZ3, c); Q.marcados.push(c); });
   Q.acerta();
 }
+/* O ÁTOMO DAS QUESTÕES 3 E 4: o modelo do tópico (o núcleo ciano do app de
+   Eletroquímica, as camadas em círculo e os elétrons parados), com as camadas
+   de um elemento do Li ao Ca (2, 8, 8, 2), num painel escuro no lugar do
+   bloco de transição, que no quiz não é usado. A última camada e os elétrons
+   dela têm a camada de brilho vermelho, que acende no erro */
+const CAMADAS9 = z => { const c = []; let r = z; for (const cap of [2, 8, 8, 2]){ if (r <= 0) break; c.push(Math.min(r, cap)); r -= cap; } return c; };
+function atomo9SVG(z){
+  const cs = CAMADAS9(z), R = k => 46 + k * 30, ult = cs.length - 1;
+  const pos = (r, n, i, k) => { const a = (i / n) * Math.PI * 2 + k * .5 - Math.PI / 2; return [(r * Math.cos(a)).toFixed(1), (r * Math.sin(a)).toFixed(1)]; };
+  const camadas = cs.map((n, k) => {
+    const r = R(k), es = Array.from({ length:n }, (_, i) => pos(r, n, i, k));
+    const brilho = k === ult ? '<g class="verm9" filter="url(#q9n)"><circle r="' + r + '" fill="none" stroke="#FF3B3B" stroke-width="6"/>' +
+      es.map(([x, y]) => '<circle cx="' + x + '" cy="' + y + '" r="12" fill="#FF3B3B"/>').join('') + '</g>' : '';
+    return '<g class="cam9' + (k === ult ? ' ult9' : '') + '">' + brilho + '<circle class="orb9q" r="' + r + '"/>' +
+      es.map(([x, y]) => '<g transform="translate(' + x + ' ' + y + ')"><circle r="9" fill="url(#q9e)"/><circle class="v9" r="9" fill="#FF5A5A"/>' +
+        '<path d="M-4 0H4" stroke="#1B2A4A" stroke-width="2.2" stroke-linecap="round" opacity=".75"/></g>').join('') + '</g>';
+  }).join('');
+  /* o núcleo: o cachinho ciano (o mesmo do átomo da "9") */
+  const nuc = [[-9, -6], [9, -6], [-9, 8], [9, 8]].map(([x, y]) => '<g transform="translate(' + x + ' ' + y + ')">' +
+    '<circle r="11" fill="url(#q9p)" filter="url(#q9s)"/><path d="M-3.4 0H3.4M0 -3.4V3.4" stroke="rgba(255,255,255,.85)" stroke-width="1.6"/></g>').join('');
+  const L = R(ult) + 16;
+  return '<svg viewBox="' + -L + ' ' + -L + ' ' + 2 * L + ' ' + 2 * L + '" aria-hidden="true"><defs>' +
+    '<radialGradient id="q9p" fx="35%" fy="35%"><stop offset="0" stop-color="#bdf3ff"/><stop offset=".45" stop-color="#00e5ff"/><stop offset="1" stop-color="#0077a0"/></radialGradient>' +
+    '<radialGradient id="q9e" cx="35%" cy="32%" r="70%"><stop offset="0" stop-color="#CDEBFF"/><stop offset=".55" stop-color="#3E9BEA"/><stop offset="1" stop-color="#1D5FA8"/></radialGradient>' +
+    '<radialGradient id="q9h"><stop offset="0" stop-color="#00e5ff" stop-opacity=".45"/><stop offset="1" stop-color="#00e5ff" stop-opacity="0"/></radialGradient>' +
+    '<filter id="q9s" x="-80%" y="-80%" width="260%" height="260%"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00e5ff"/></filter>' +
+    '<filter id="q9n" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter></defs>' +
+    camadas + '<circle r="44" fill="url(#q9h)"/>' + nuc + '</svg>';
+}
+/* uma questão do átomo: sorteia um elemento (do Li ao Ca) ainda não usado
+   neste quiz, e com outro número de elétrons de valência */
+function QUESTAO_ATOMO9(){
+  return {
+    monta(Q){
+      const usados = Q.atomos9 || (Q.atomos9 = []);
+      const ult = z => CAMADAS9(z).slice(-1)[0];
+      const pool = Array.from({ length:18 }, (_, i) => i + 3).filter(z => !usados.some(u => ult(u) === ult(z)));
+      this.z = sorteia5(pool);
+      usados.push(this.z);
+      this.col = +Q.carta(this.z).dataset.col;
+      const xc = (xDaColuna(3) + xDaColuna(12)) / 2, yc = (yDaLinha(4) + yDaLinha(7)) / 2;
+      const h = 4 * PASSO - 6;
+      this.painel = Q.pecaCentro('atomo9q', atomo9SVG(this.z), xc, yc, xDaColuna(12) - xDaColuna(3) + LADO, h);
+      /* (o átomo na altura do painel, com folga) */
+      const sv = this.painel.querySelector('svg');
+      sv.style.height = sv.style.width = (h * .92).toFixed(1) + 'px';
+      return 'Observando a eletrosfera do átomo a seguir, toque na família a qual ele pertence.';
+    },
+    toca(Q, c){
+      if (+c.dataset.col === this.col && +c.dataset.z !== 2){ acerta9(Q, coluna9(Q, this.col).filter(x => +x.dataset.z !== 2)); return; }
+      /* o erro: a última camada e os elétrons dela brilham em vermelho */
+      this.painel.classList.add('erro9');
+      Q.erra('Conte os elétrons da última camada. Ela é a camada de valência.', [c],
+             () => coluna9(Q, this.col).filter(x => +x.dataset.z !== 2));
+    },
+    limpa(Q){ if (this.painel) this.painel.remove(); this.painel = null; limpa9(Q); }
+  };
+}
 const QUESTOES_9 = [
   /* 1 · a família com 6 elétrons de valência */
   { monta(){ return 'Toque na família cujos elementos tem 6 elétrons na camada de valência.'; },
@@ -16378,14 +16447,18 @@ const QUESTOES_9 = [
       Q.erra('Os elementos com 2 elétrons na última camada estão na família 2A.', [c], () => coluna9(Q, 2));
     },
     limpa(Q){ limpa9(Q); } },
-  /* 3 · um elemento com 8 elétrons de valência (a 8A, menos o hélio) */
+  /* 3 e 4 · o átomo (o modelo do tópico) e a família dele: um elemento ao
+     acaso, outro em cada uma */
+  QUESTAO_ATOMO9(),
+  QUESTAO_ATOMO9(),
+  /* 5 · um elemento com 8 elétrons de valência (a 8A, menos o hélio) */
   { monta(){ return 'Toque em qualquer elemento que tenha 8 elétrons de valência.'; },
     toca(Q, c){
       if (+c.dataset.col === 18 && +c.dataset.z !== 2){ acerta9(Q, [c]); return; }
       Q.erra('Os gases nobres (família 8A) têm 8 elétrons de valência, exceto o hélio.', [c], () => coluna9(Q, 18).filter(x => +x.dataset.z !== 2));
     },
     limpa(Q){ limpa9(Q); } },
-  /* 4 · o total de Mg + C + Cl: as três fichas no vão de cima, e o carrossel */
+  /* 6 · o total de Mg + C + Cl: as três fichas no vão de cima, e o carrossel */
   { monta(Q){
       const xc = (xDaColuna(3) + xDaColuna(12)) / 2, y = yDaLinha(2);
       [[12, -250], [6, -110], [17, 30]].forEach(([z, dx]) => Q.ficha(z, xc + dx, y, 1.15));
@@ -16440,7 +16513,7 @@ const QUIZ9 = Object.assign(Object.create(QUIZ5), {
     if (FAM93.m) FAM93.reseta();
     tiraMao();
     this.itens = QUESTOES_9.map(Q => Object.assign({}, Q));
-    this.passo = 0; this.erros = 0; this.aberto = true; this.marcados = [];
+    this.passo = 0; this.erros = 0; this.aberto = true; this.marcados = []; this.atomos9 = [];
     const g = ++this.g, sl = this.sl();
     stage.classList.add('em-quiz');
     let v = sl.querySelector(':scope > .breu-quiz');
