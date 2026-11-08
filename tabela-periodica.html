@@ -2852,6 +2852,90 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .card9 span{font:600 13px var(--mono);opacity:.85}
 .card9 b{font:800 38px var(--display)}
 .card9 em{font:500 12px var(--display);font-style:normal}
+
+/* ---- O QUIZ DO TÓPICO 8 (QUIZ8, no slide 9) ---- */
+/* a caixa da pergunta no alto (o mesmo lugar dos quizzes 6 e 9) e a linha da
+   segunda parte (Q5, Q6, Q7) */
+.slide.quiz8 .quiz3.q4.q2.q5{left:269.3px;top:30px}
+.instr8{margin-top:4px;font:600 19px var(--display);color:#F4FF3A;text-shadow:0 0 10px rgba(234,255,0,.55);
+  animation:instr9 1.6s ease-in-out .4s infinite}
+/* a tabela sai (Q3, Q6, Q8), escurece (Q4), ou se divide no U (Q1) */
+.slide.quiz8 .mesa.mesa.some8 :is(.pc:not(.ficha5),.casa){opacity:0!important;pointer-events:none}
+.slide.quiz8 .mesa .pc:not(.ficha5){transition:opacity .4s ease, filter .4s ease}
+.slide.quiz8 .mesa.escura8 .pc:not(.ficha5):not(.alvo8){filter:brightness(.45)}
+.slide.quiz8 .mesa.divide8 .pc.depois8:not(.ficha5){filter:brightness(.3)}
+.linha8{z-index:31;border-radius:3px;background:#FFE680;box-shadow:0 0 12px 4px rgba(255,214,90,.9), 0 0 30px 10px rgba(255,190,40,.5);
+  animation:val9 .5s ease both}
+/* Q2: os dois grupos (âmbar e azul), os seus lugares e as legendas */
+.mesa .pc.grupoA8 .face{box-shadow:0 0 0 3px #FFB020, 0 0 16px 4px rgba(255,176,32,.7)}
+.mesa .pc.grupoB8 .face{box-shadow:0 0 0 3px #4DA3FF, 0 0 14px 3px rgba(77,163,255,.6)}
+.slot8.slotA8{border-color:rgba(255,176,32,.85)}
+.slot8.slotB8{border-color:rgba(77,163,255,.85)}
+.leg8{position:absolute;z-index:31;text-align:center;font:700 16px var(--display);color:#F3F0FB;pointer-events:none}
+.leg8.a8{color:#FFB020}
+.leg8.b8{color:#7DBBFF}
+.leg8.l8a{color:#4ED088}
+.leg8.l8b{color:#F2B33D}
+.leg8.l8c{color:#6FB2FF}
+.leg8.l8d{color:#B48CFF}
+.etiqueta5.etq8{font-size:15px;line-height:1.1;text-align:center;white-space:normal;padding:0 8px}
+.fronteira8{position:absolute;z-index:33;display:grid;place-items:center;border-radius:999px;pointer-events:none;
+  background:#FFE680;color:#3A2A00;font:800 15px var(--display);box-shadow:0 0 14px 4px rgba(255,214,90,.7);animation:val9 .5s ease both}
+/* Q3, Q6: as bandejas e a grade 2 × 2 (nova); os cards que voam; os naturais radioativos pulsando */
+.bandeja8 > span, .grade8 > span{font-size:24px}
+.mesa .pc.ficha5.voa8{transition:left .7s cubic-bezier(.3,.8,.3,1), top .7s cubic-bezier(.3,.8,.3,1), transform .7s ease}
+.mesa .pc.ficha5.pulsa8 .face{animation:pulsa8 1.4s ease-in-out infinite}
+@keyframes pulsa8{50%{box-shadow:0 0 0 3px #F4FF3A, 0 0 18px 6px rgba(234,255,0,.6)}}
+.rot8{position:absolute;z-index:31;display:flex;align-items:center;font:700 22px var(--display);color:#F3F0FB;pointer-events:none}
+.rot8.col8{justify-content:center}
+.rot8.lin8{justify-content:flex-end}
+.grade8.toca8{pointer-events:auto;cursor:pointer}
+.grade8.vazia8{border-color:#FF6B6B;background:rgba(255,80,80,.08)}
+.nenhum8{position:absolute;inset:0;display:grid;place-items:center;font:700 19px var(--display);color:#FF8A8A;text-align:center;padding:0 10px}
+/* Q4: o carrossel de palavras, e o elemento aceso no 3º erro */
+.roda8 .rd-roda{width:118px}
+.roda8 .rd-v{font-size:15px}
+.mesa .pc.alvo8 .face{animation:espera5 1.8s ease-in-out infinite}
+/* Q5: os radioativos acesos ao vivo, conforme o cursor */
+.mesa .pc.rad8q .face{box-shadow:0 0 0 2px #FFC34D, 0 0 12px 3px rgba(255,165,20,.7)}
+/* A RÉGUA NUMÉRICA (Q5, Q8; nova) */
+.regua8{position:absolute;left:0;right:0;height:0;z-index:34;transition:opacity .4s ease}
+.regua8.sai8{opacity:0;pointer-events:none}
+.regua8 .linha8r{position:absolute;top:-3px;height:6px;border-radius:3px;background:rgba(243,240,251,.35)}
+.regua8 .fx8r{position:absolute;top:-6px;height:12px;border-radius:6px;opacity:.9}
+.regua8 .fx8r.a{background:#2FA866}
+.regua8 .fx8r.b{background:#E0A21E}
+.regua8 .fx8r.c{background:#3B8EDB}
+.regua8 > i{position:absolute;top:8px;width:1px;height:6px;background:rgba(243,240,251,.35)}
+.regua8 > i.g{height:12px;background:rgba(243,240,251,.8)}
+.regua8 > em{position:absolute;top:22px;translate:-50% 0;font:600 13px var(--mono);font-style:normal;color:rgba(243,240,251,.8)}
+.regua8 .cur8{position:absolute;top:-30px;width:60px;height:60px;translate:-50% 0;border-radius:50%;cursor:grab;touch-action:none;
+  background:radial-gradient(circle at 35% 30%,#FFF3C4,#F2B33D 60%,#B57A12);box-shadow:0 4px 14px rgba(0,0,0,.5);transition:left .08s linear}
+.regua8 .cur8.pega8{cursor:grabbing;transition:none;box-shadow:0 0 0 4px #FFE680, 0 6px 18px rgba(0,0,0,.55)}
+.regua8 .cur8 span{position:absolute;left:50%;bottom:68px;translate:-50% 0;min-width:44px;padding:4px 8px;border-radius:10px;text-align:center;
+  background:#F4F2F8;color:#1E1A3A;font:800 20px var(--display);box-shadow:0 4px 10px rgba(0,0,0,.4)}
+.regua8 .cur8.errada3{animation:naoTremeC .42s ease}
+.regua8 .seta8{position:absolute;top:-30px;width:60px;height:60px;border-radius:14px;border:0;cursor:pointer;
+  background:#4C3FBF;color:#fff;font-size:22px;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+.regua8 .seta8.menos{left:60px}
+.regua8 .seta8.mais{left:1160px}
+.regua8 .pista8r{position:absolute;top:-70px;translate:-50% 0;padding:2px 8px;border-radius:8px;background:#FFB020;color:#2A1A00;
+  font:800 16px var(--display);animation:fant9 1s ease-in-out infinite}
+/* Q8: as ilhas 43 e 61, e o mapa: cada elemento na cor da sua faixa */
+.ilha8{position:absolute;z-index:34;display:grid;place-items:center;border-radius:8px;background:#8B5CF6;color:#fff;
+  font:800 14px var(--display);box-shadow:0 0 12px 3px rgba(139,92,246,.6)}
+.slot8.slotF1{border-color:rgba(47,168,102,.9)}
+.slot8.slotF2{border-color:rgba(224,162,30,.9)}
+.slot8.slotF3{border-color:rgba(59,142,219,.9)}
+.slot8.slotF4{border-color:rgba(139,92,246,.9)}
+.mesa.lisa .pc.fx8a{--c82:#2FA866}
+.mesa.lisa .pc.fx8b{--c82:#E0A21E}
+.mesa.lisa .pc.fx8c{--c82:#3B8EDB}
+.mesa.lisa .pc.fx8d{--c82:#8B5CF6}
+/* Q7: o balão do colega, numa linha só, no vão de cima da tabela */
+.balao8{padding:10px 20px}
+.balao8 b{font-size:19px}
+.balao8 i{font-size:14px}
 .mesa .pc.dica93{animation:dica93 1.4s ease-in-out infinite}
 .etq93{position:absolute;z-index:40;transform:translate(-50%,-50%);white-space:nowrap;cursor:pointer;
   font-family:var(--display);font-weight:600;font-size:19px;color:#fff;border-radius:999px;padding:5px 16px;
@@ -4710,7 +4794,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v46.4';
+const VERSAO = 'v46.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5268,8 +5352,9 @@ function montaTabela(i){
       if (i === 5 && EV5.toca(c)) return;
       /* no slide 7, dos 23 s da "6.2", o toque sobe a família da vez */
       if (i === 6 && QUIZ7.aberto){ QUIZ7.toca(c); return; }
-      /* no slide 10, no quiz, responde-se tocando na tabela */
+      /* no slide 10, no quiz, responde-se tocando na tabela (e no 9 também) */
       if (i === 9 && QUIZ9.aberto){ QUIZ9.toca(c); return; }
+      if (i === 8 && QUIZ8.aberto){ QUIZ8.toca(c); return; }
       if (i === 6 && EV6.toca(c)) return;
       /* no slide 8, tocada a carta de uma série que já desceu, a série
          inteira volta para o bilhete (e a mesa desce, se era a última) —
@@ -6721,6 +6806,8 @@ function tocaOuPara(){
     const k = +Object.keys(RESUMOS).find(n => RESUMOS[n].slide === atual);
     if (k){ estouraEsegue(() => RESUMO.abre(k)); return; }
   }
+  /* (o do slide 9, depois do resumo: o quiz do tópico 8) */
+  if (somBtn.classList.contains('botao-quiz') && atual === 8){ estouraEsegue(() => QUIZ8.abre()); return; }
   if (somBtn.classList.contains('botao-quiz')){ estouraEsegue(() => QUIZ3.abre()); return; }
   /* no quiz — e no cartão da nota, que segue pelos botões dele — e no
      jogo, nada toca, nem pela barra de espaço */
@@ -16979,6 +17066,656 @@ const QUIZ9 = Object.assign(Object.create(QUIZ5), {
 window.QUIZ9 = QUIZ9;
 
 /* ============================================================
+   O QUIZ DO TÓPICO 8 (QUIZ8, no slide 9) — oito questões pela taxonomia
+   revisada de Bloom (o documento do professor, "Quiz · A natureza dos
+   elementos"). É o QUIZ5 com as questões daqui: o mesmo ritual ("Questão N
+   de 8"; acerto: confete, fanfarra, aplausos e a voz, "Perfeito" na última;
+   erro: o alvo balança, a tela treme e vem a dica; no 2º erro, a resposta em
+   âmbar; a nota, Refazer — que sorteia de novo — e Continuar). A tabela é a
+   de 18 colunas com as duas séries embaixo, todas tocáveis, e sem as cores
+   de natural/artificial e estável/radioativo (aberto o quiz, a narração sai e
+   o EV8 desliga as cores dela).
+     1  Lembrar     toque no último natural (o U)
+     2  Lembrar     as etiquetas Cisurânicos e Transurânicos nos dois grupos
+     3  Entender    seis cards para Natural e Artificial
+     4  Aplicar     dois carrosséis: a origem e o núcleo
+     5  Aplicar     a régua (nova): onde começam os radioativos, e as duas ilhas
+     6  Analisar    o quadro 2 × 2 (novo), e o quadro que fica vazio
+     7  Avaliar     o colega, Concordo/Discordo, e o card que prova
+     8  Criar       a régua com dois cursores e as etiquetas das faixas
+   ============================================================ */
+const NAT8 = z => z <= 92 && z !== 43 && z !== 61;          /* natural */
+const RAD8 = z => z >= 83 || z === 43 || z === 61;           /* radioativo */
+/* um ponto do palco (do slide) em px da mesa — a mesa do slide 9 tem escala e
+   deslocamento próprios (e outros no celular) */
+function M8(Q, sx, sy){
+  const m = Q.mesa(), mr = m.getBoundingClientRect(), sr = Q.sl().getBoundingClientRect(), s = mr.width / m.offsetWidth;
+  return { x:(sr.left + sx * fitScale - mr.left) / s, y:(sr.top + sy * fitScale - mr.top) / s };
+}
+/* e o contrário: o centro de um elemento da página, em px do palco */
+function P8(Q, el){ const r = el.getBoundingClientRect(), sr = Q.sl().getBoundingClientRect(); return { x:(r.left + r.width / 2 - sr.left) / fitScale, y:(r.top + r.height / 2 - sr.top) / fitScale }; }
+function limpa8(Q){
+  (Q.marcados || []).forEach(c => { c.classList.remove('certa3', 'frente3'); c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe'); });
+  Q.marcados = [];
+  const m = Q.mesa();
+  m.classList.remove('some8', 'escura8', 'divide8', 'mapa8');
+  m.querySelectorAll('.pc').forEach(c => c.classList.remove('grupoA8', 'grupoB8', 'acende8', 'alvo8', 'rad8q', 'pulsa8', 'cor82', 'nat82', 'art82', 'radio-on', 'fx8a', 'fx8b', 'fx8c', 'fx8d', 'depois8'));
+  if (Q.fundo8){ Q.fundo8.els.forEach(e => { e.style.removeProperty('translate'); e.style.removeProperty('scale'); }); Q.fundo8 = null; }
+  Q.sl().querySelectorAll('.q8p').forEach(e => e.remove());
+  limpa5(Q);
+}
+/* a tabela encolhe para o alto (o espaço de baixo fica para a régua e as
+   etiquetas), e volta: a da Q3 do tópico 4 (encolheFundo), em volta de 640 × 170 */
+function encolhe8(Q, sim){
+  if (sim){ Q.fundo8 = encolheFundo(Q, [...Q.mesa().querySelectorAll('.pc:not(.ficha5), .casa')], { x:0, y:-8, e:.6, centra:true }); return; }
+  if (Q.fundo8){ Q.fundo8.p = { x:0, y:0, e:1 }; Q.fundo8.aplica(); }
+}
+/* um botão no palco (fora da mesa: não encolhe com ela) */
+function botao8(Q, txt, x, y, faz){
+  const b = document.createElement('div');
+  b.className = 'q8p peca5 bt5';
+  b.textContent = txt;
+  Object.assign(b.style, { left:x + 'px', top:y + 'px' });
+  b.addEventListener('pointerdown', ev => ev.stopPropagation());
+  b.addEventListener('click', ev => { ev.stopPropagation(); if (Q.aberto && !Q.travado) faz(); });
+  Q.sl().appendChild(b);
+  return b;
+}
+/* uma linha de instrução embaixo do comando (na caixa da pergunta) */
+function instrucao8(Q, txt){
+  const cx = Q.caixa(), q = cx && cx.querySelector('.q3-q');
+  if (!q) return;
+  let i = cx.querySelector('.instr8');
+  if (!i){ q.insertAdjacentHTML('afterend', '<div class="instr8"></div>'); i = cx.querySelector('.instr8'); }
+  i.textContent = txt;
+  cx.querySelector('.q3-msg').textContent = '';
+}
+
+/* A RÉGUA NUMÉRICA (peça nova, Q5 e Q8): de 1 a 118, no palco, com um ou dois
+   cursores grandes (60 px) que se encaixam nos inteiros, o balão com o número
+   de cada um, e os botões ◀ ▶ (60 px) que acertam o último cursor mexido.
+   mexe(valores) é chamado a cada mudança (a tabela muda ao vivo) */
+function regua8(Q, y, iniciais, mexe, faixas){
+  const X0 = 150, X1 = 1130, u = (X1 - X0) / 117, xDe = v => X0 + (v - 1) * u;
+  const d = document.createElement('div');
+  d.className = 'q8p regua8';
+  d.style.top = y + 'px';
+  let marcas = '';
+  for (let v = 1; v <= 118; v++){
+    const grande = v === 1 || v % 10 === 0 || v === 118;
+    marcas += '<i class="' + (grande ? 'g' : '') + '" style="left:' + xDe(v).toFixed(1) + 'px"></i>' +
+      (grande ? '<em style="left:' + xDe(v).toFixed(1) + 'px">' + v + '</em>' : '');
+  }
+  d.innerHTML = '<div class="linha8r" style="left:' + X0 + 'px;width:' + (X1 - X0) + 'px"></div>' + (faixas ? '<div class="fx8r a"></div><div class="fx8r b"></div><div class="fx8r c"></div>' : '<div class="fx8r b"></div>') +
+    marcas + iniciais.map((v, i) => '<div class="cur8" data-i="' + i + '"><span></span></div>').join('') +
+    '<button type="button" class="seta8 menos">◀</button><button type="button" class="seta8 mais">▶</button>';
+  Q.sl().appendChild(d);
+  const R = { el:d, vals:iniciais.slice(), ultimo:iniciais.length - 1, xDe };
+  const curs = [...d.querySelectorAll('.cur8')];
+  R.poe = (i, v) => {
+    R.vals[i] = Math.max(1, Math.min(118, v));
+    curs[i].style.left = xDe(R.vals[i]).toFixed(1) + 'px';
+    curs[i].querySelector('span').textContent = R.vals[i];
+    /* as faixas coloridas entre os cursores (Q8), ou do cursor ao fim (Q5) */
+    const vs = R.vals.slice().sort((a, b) => a - b), fx = d.querySelectorAll('.fx8r');
+    const faixa = (el, a, b) => { el.style.left = xDe(a).toFixed(1) + 'px'; el.style.width = Math.max(0, xDe(b) - xDe(a)).toFixed(1) + 'px'; };
+    if (faixas){ faixa(fx[0], 1, vs[0]); faixa(fx[1], vs[0], vs[1]); faixa(fx[2], vs[1], 118); }
+    else faixa(fx[0], vs[0], 118);
+    if (mexe) mexe(R.vals.slice());
+  };
+  iniciais.forEach((v, i) => R.poe(i, v));
+  curs.forEach((c, i) => {
+    c.addEventListener('pointerdown', ev => {
+      ev.stopPropagation(); ev.preventDefault();
+      if (!Q.aberto || Q.travado || R.travada) return;
+      R.ultimo = i;
+      try { c.setPointerCapture(ev.pointerId); } catch (_) {}
+      c._pega = true;
+      c.classList.add('pega8');
+    });
+    c.addEventListener('pointermove', ev => {
+      if (!c._pega) return;
+      const sr = Q.sl().getBoundingClientRect(), x = (ev.clientX - sr.left) / fitScale;
+      const v = Math.round((x - X0) / u) + 1;
+      if (v !== R.vals[i]){ R.poe(i, v); tocaEfeito('flip'); }
+    });
+    const larga = () => { c._pega = false; c.classList.remove('pega8'); };
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => c.addEventListener(n, larga));
+  });
+  d.querySelectorAll('.seta8').forEach(b => {
+    b.addEventListener('pointerdown', ev => ev.stopPropagation());
+    b.addEventListener('click', ev => {
+      ev.stopPropagation();
+      if (!Q.aberto || Q.travado || R.travada) return;
+      R.poe(R.ultimo, R.vals[R.ultimo] + (b.classList.contains('mais') ? 1 : -1));
+      tocaEfeito('flip');
+    });
+  });
+  /* a marca de um número na régua (a pista: pisca) */
+  R.marca = v => {
+    const m = document.createElement('b');
+    m.className = 'pista8r';
+    m.style.left = xDe(v).toFixed(1) + 'px';
+    m.textContent = v;
+    d.appendChild(m);
+    return m;
+  };
+  return R;
+}
+
+/* as caixas de carrossel com palavras (Q4): uma ou duas colunas */
+function caixa8(Q, cols, z, x, y){
+  const b = document.createElement('div');
+  b.className = 'roda4 roda7 roda8';
+  const p = M8(Q, x, y);
+  b.style.left = p.x + 'px';
+  b.style.top = p.y + 'px';
+  b.innerHTML = (z ? '<div class="rd-el"><span>' + z + '</span><b>' + SIMBOLOS[z - 1] + '</b><em>' + NOMES[z - 1] + '</em></div>' : '') +
+    '<div class="rd-colunas">' + cols.map(([tit, vals]) => '<div class="rd-col"><div class="rd-tit">' + tit + '</div><div class="rd-roda">' +
+      '<div class="rd-pad"></div>' + vals.map(v => '<div class="rd-v">' + v + '</div>').join('') + '<div class="rd-pad"></div></div></div>').join('') + '</div>';
+  Q.mesa().appendChild(b);
+  b.addEventListener('pointerdown', ev => ev.stopPropagation());
+  b.addEventListener('click', ev => ev.stopPropagation());
+  b.querySelectorAll('.rd-roda').forEach(r => QUIZ4.giravel.call(QUIZ4, r));
+  setTimeout(() => b.classList.add('pousada'), 950);
+  return b;
+}
+const valorRoda8 = r => (r._alvo !== undefined && r._alvo !== null) ? r._alvo : Math.round(r.scrollTop / 36);
+
+/* as etiquetas e os seus lugares (Q2, Q8): as do quiz do tópico 6, no palco
+   convertido para a mesa. slots: [{ x, y, w, certo, el? }] em px do palco */
+function etiquetas8(Q, q, nomes, ys, slots){
+  q.slots = slots.map(s => {
+    const p = M8(Q, s.x, s.y);
+    const el = Q.pecaCentro('slot5 slot7 slot8' + (s.cls ? ' ' + s.cls : ''), '', p.x, p.y, s.w, 44);
+    el.dataset.certo = s.certo;
+    el._meia = s.w / 2;
+    el._etq = null;
+    return el;
+  });
+  const larg = 214, gap = 12, tot = nomes.length * larg + (nomes.length - 1) * gap;
+  q.bandeja = Q.pecaCentro('bandeja5 bandeja7 etiquetas7', '', M8(Q, 640, ys).x, M8(Q, 640, ys).y, tot + 40, 64);
+  q.etqs = embaralha(nomes.slice()).map((t, i) => {
+    const p = M8(Q, 640 - tot / 2 + larg / 2 + i * (larg + gap), ys);
+    const e = Q.pecaCentro('etiqueta5 etq7 etq8', t, p.x, p.y, larg, 42);
+    e._casa = { x:p.x, y:p.y };
+    e.dataset.t = t;
+    e._slot = null;
+    Q.arrastavel(e, (x, y) => q.solta(Q, e, x, y));
+    return e;
+  });
+  q.tira = e => { if (e._slot){ e._slot._etq = null; e._slot.classList.remove('ocupado5'); e._slot = null; } };
+  q.volta = (Q, e) => { q.tira(e); Q.poe(e, e._casa.x, e._casa.y); };
+  q.solta = (Q, e, x, y) => {
+    q.tira(e);
+    const s = q.slots.find(s => Math.abs(x - s._x) < s._meia + 6 && Math.abs(y - s._y) < 40);
+    if (!s){ q.volta(Q, e); q.pronto && q.pronto(); return; }
+    if (s._etq) q.volta(Q, s._etq);
+    s._etq = e; e._slot = s;
+    s.classList.add('ocupado5');
+    Q.poe(e, s._x, s._y);
+    tocaEfeito('flip');
+    q.pronto && q.pronto();
+  };
+}
+
+const QUESTOES_8 = [
+  /* Q1 · Lembrar · o último natural */
+  { monta(){ return 'Toque no último elemento natural da tabela.'; },
+    toca(Q, c){
+      const z = +c.dataset.z;
+      if (z === 92){
+        c.classList.add('certa3'); QUIZ3.cresce.call(QUIZ3, c); Q.marcados.push(c);
+        /* a linha luminosa logo depois do U: antes, claro; depois, escuro */
+        const m = Q.mesa();
+        m.querySelectorAll('.pc').forEach(x => x.classList.toggle('depois8', +x.dataset.z > 92));
+        m.classList.add('divide8');
+        const a = alvoDe(92);
+        Q.pecaCentro('linha8', '', a.x + PASSO / 2, a.y, 6, LADO + 22);
+        Q.acerta();
+        return;
+      }
+      Q.erra('É o elemento que dá nome aos transurânicos.', [c], () => [Q.carta(92)]);
+    },
+    limpa(Q){ limpa8(Q); } },
+
+  /* Q2 · Lembrar · cis ou trans: os dois grupos acesos, e as etiquetas */
+  { monta(Q){
+      encolhe8(Q, true);
+      const m = Q.mesa();
+      [43, 61].forEach(z => Q.carta(z).classList.add('grupoA8'));
+      for (let z = 93; z <= 118; z++) Q.carta(z).classList.add('grupoB8');
+      /* os rótulos vazios dos grupos, com a legenda de cada um, embaixo da tabela */
+      etiquetas8(Q, this, ['Cisurânicos', 'Transurânicos', 'Naturais'], 664,
+        [{ x:420, y:552, w:230, certo:'Cisurânicos', cls:'slotA8' }, { x:860, y:552, w:230, certo:'Transurânicos', cls:'slotB8' }]);
+      peca9.call(null, Q, 'q8p leg8 a8', 'Tc e Pm', 420 - 115, 505, 230, 24);
+      peca9.call(null, Q, 'q8p leg8 b8', 'do 93 ao 118', 860 - 115, 505, 230, 24);
+      this.bt = botao8(Q, 'Pronto', 1205, 664, () => this.confere(Q));
+      this.bt.classList.add('some5');
+      this.pronto = () => this.bt.classList.toggle('some5', this.slots.some(s => !s._etq));
+      return 'Arraste cada nome para o grupo dele.';
+    },
+    confere(Q){
+      const errados = this.slots.filter(s => s._etq.dataset.t !== s.dataset.certo);
+      if (!errados.length){
+        this.etqs.forEach(e => e._preso = true);
+        this.bt.classList.add('some5');
+        /* o urânio acende entre os dois grupos, a fronteira: "antes · depois" */
+        const u = Q.carta(92);
+        u.classList.add('certa3'); QUIZ3.cresce.call(QUIZ3, u); Q.marcados.push(u);
+        const p = P8(Q, u);
+        peca9(Q, 'q8p fronteira8', 'antes · depois', p.x - 80, p.y - 52, 160, 28);
+        Q.acerta();
+        return;
+      }
+      const erradas = errados.map(s => s._etq);
+      Q.erra('Cis é antes do urânio; trans é depois. E os dois grupos são artificiais.', erradas, () => {
+        const livres = this.etqs.filter(e => !e._slot || errados.includes(e._slot));
+        return errados.flatMap(s => [s, livres.find(e => e.dataset.t === s.dataset.certo)]);
+      });
+      setTimeout(() => { erradas.forEach(e => this.volta(Q, e)); this.pronto(); }, 650);
+    },
+    limpa(Q){ limpa8(Q); } },
+
+  /* Q3 · Entender · radioativo não quer dizer artificial: seis cards e duas bandejas */
+  { monta(Q){
+      Q.mesa().classList.add('some8');
+      const zs = [sorteia5([26, 8, 79, 11, 82]), ...embaralha([92, 88, 84, 86, 90]).slice(0, 2), sorteia5([43, 61]), ...embaralha([93, 94, 95, 118]).slice(0, 2)];
+      this.bandejas = [['nat', 'Natural', 420], ['art', 'Artificial', 860]].map(([k, nome, x]) => {
+        const p = M8(Q, x - 200, 360);
+        const b = Q.peca('bandeja5 bandeja8', '<span>' + nome + '</span>', p.x, p.y, 400, 210);
+        b.dataset.k = k;
+        b.classList.add('espera5');
+        return b;
+      });
+      this.fichas = embaralha(zs).map((z, i) => {
+        const p = M8(Q, 640 + (i - 2.5) * 92, 240), c = Q.ficha(z, p.x, p.y, 1.15);
+        c.classList.add('espera5');
+        c._casa = p; c._k = null;
+        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y));
+        return c;
+      });
+      this.bt = botao8(Q, 'Conferir', 1205, 640, () => this.confere(Q));
+      this.bt.classList.add('some5');
+      return 'Arraste cada elemento para a origem dele.';
+    },
+    solta(Q, c, x, y){
+      const b = this.bandejas.find(b => Q.dentro(x, y, b));
+      c._k = b ? b.dataset.k : null;
+      if (b){
+        [c, b].forEach(e => { e.classList.remove('encaixa5'); void e.offsetWidth; e.classList.add('encaixa5'); });
+        setTimeout(() => [c, b].forEach(e => e.classList.remove('encaixa5')), 700);
+        tocaEfeito('right');
+      }
+      this.arruma(Q);
+    },
+    arruma(Q){
+      this.bandejas.forEach(b => {
+        const l = parseFloat(b.style.left), t = parseFloat(b.style.top);
+        this.fichas.filter(c => c._k === b.dataset.k).forEach((c, k) => Q.poe(c, l + 70 + (k % 4) * 88, t + 70 + Math.floor(k / 4) * 84, 1));
+      });
+      this.fichas.filter(c => !c._k).forEach(c => Q.poe(c, c._casa.x, c._casa.y, 1.15));
+      this.bt.classList.toggle('some5', this.fichas.some(c => !c._k));
+      this.fichas.forEach(c => c.classList.toggle('espera5', !c._k));
+      this.bandejas.forEach(b => b.classList.toggle('espera5', this.fichas.some(c => !c._k)));
+    },
+    confere(Q){
+      const certo = c => NAT8(+c.dataset.z) ? 'nat' : 'art';
+      const erradas = this.fichas.filter(c => c._k !== certo(c));
+      if (!erradas.length){
+        this.fichas.forEach(c => c._preso = true);
+        this.bt.classList.add('some5');
+        /* os cards voam para a casa deles, e os naturais radioativos pulsam de leve */
+        Q.mesa().classList.remove('some8');
+        this.bandejas.forEach(b => b.classList.add('some5'));
+        this.fichas.forEach((c, k) => {
+          const z = +c.dataset.z, a = alvoDe(z);
+          c.classList.add('voa8');
+          setTimeout(() => { Q.poe(c, a.x, a.y, 1); if (NAT8(z) && RAD8(z)) c.classList.add('pulsa8'); }, 80 + k * 60);
+        });
+        Q.acerta();
+        return;
+      }
+      const zs = erradas.map(c => +c.dataset.z);
+      const dica = zs.some(z => NAT8(z) && RAD8(z)) ? 'Ser radioativo não decide a origem. O urânio, por exemplo, é encontrado na natureza.'
+        : zs.some(z => z === 43 || z === 61) ? 'Vir antes do urânio não garante que seja natural. Lembra das duas exceções?'
+        : 'A origem é onde o elemento é encontrado: na natureza ou só em laboratório.';
+      Q.erra(dica, erradas, () => erradas.flatMap(c => [c, this.bandejas.find(b => b.dataset.k === certo(c))]));
+      setTimeout(() => { erradas.forEach(c => { c._k = null; }); this.arruma(Q); }, 650);
+    },
+    limpa(Q){ limpa8(Q); } },
+
+  /* Q4 · Aplicar · classifique o elemento: o cubo e dois carrosséis */
+  { monta(Q){
+      Q.mesa().classList.add('escura8');
+      [this.z, this.o, this.n] = sorteia5([[29, 0, 0], [82, 0, 0], [83, 0, 1], [84, 0, 1], [92, 0, 1], [43, 1, 1], [95, 1, 1]]);
+      this.c = Q.carta(this.z);
+      this.caixa = caixa8(Q, [['origem', ['Natural', 'Artificial']], ['núcleo', ['Estável', 'Radioativo']]], this.z, 540, 158);
+      this.bt = botao8(Q, 'Confirmar', 1205, 640, () => this.confirma(Q));
+      return 'Gire os carrosséis e classifique este elemento.';
+    },
+    confirma(Q){
+      const b = this.caixa, rs = b.querySelectorAll('.rd-roda');
+      if (valorRoda8(rs[0]) === this.o && valorRoda8(rs[1]) === this.n){
+        this.bt.classList.add('some5');
+        b.classList.add('certa');
+        /* o cubo voa até a casa do elemento, que ganha a cor da origem e o ☢ se for radioativo */
+        Q.mesa().classList.remove('escura8');
+        const r = b.querySelector('.rd-el').getBoundingClientRect(), m = Q.mesa(), rm = m.getBoundingClientRect(), s = rm.width / m.offsetWidth, a = alvoDe(this.z);
+        const f = Q.ficha(this.z, (r.left + r.width / 2 - rm.left) / s, (r.top + r.height / 2 - rm.top) / s, 1.3);
+        f.classList.add('voa8');
+        setTimeout(() => Q.poe(f, a.x, a.y, 1), 60);
+        setTimeout(() => { f.remove(); this.c.classList.add('cor82', this.o ? 'art82' : 'nat82'); if (this.n) this.c.classList.add('radio-on'); }, 820);
+        Q.acerta();
+        return;
+      }
+      b.classList.remove('treme'); void b.offsetWidth; b.classList.add('treme', 'errada');
+      clearTimeout(b._erroT); b._erroT = setTimeout(() => b.classList.remove('errada'), 900);
+      Q.erra('São duas fronteiras diferentes: uma para a origem (urânio), outra para a estabilidade (chumbo).', [], () => {
+        if (Q.tropecos >= 3) this.c.classList.add('alvo8');
+        return [rs[0].querySelectorAll('.rd-v')[this.o], rs[1].querySelectorAll('.rd-v')[this.n]];
+      });
+    },
+    limpa(Q){ if (this.caixa) this.caixa.remove(); this.caixa = null; limpa8(Q); } },
+
+  /* Q5 · Aplicar · onde começa a radioatividade: a régua, e as duas ilhas */
+  { monta(Q){
+      encolhe8(Q, true);
+      this.passo = 1;
+      this.regua = regua8(Q, 560, [100], ([v]) => Q.mesa().querySelectorAll('.pc:not(.ficha5)').forEach(c => c.classList.toggle('rad8q', +c.dataset.z >= v)));
+      this.bt = botao8(Q, 'Confirmar', 640, 668, () => this.confirma(Q));
+      this.ilhas = [];
+      return 'Arraste o cursor até onde começam os radioativos.';
+    },
+    confirma(Q){
+      if (this.passo !== 1) return;
+      const v = this.regua.vals[0];
+      if (v === 83){
+        /* o passo 2: a régua sai, a tabela volta ao tamanho, e as ilhas */
+        this.passo = 2;
+        Q.tropecos = 0;
+        this.regua.travada = true;
+        this.regua.el.classList.add('sai8');
+        this.bt.classList.add('some5');
+        encolhe8(Q, false);
+        tocaEfeito('right');
+        instrucao8(Q, 'Agora toque nos dois radioativos que ficaram de fora.');
+        return;
+      }
+      Q.erra('Os radioativos começam logo depois do chumbo, o 82.', [this.regua.el.querySelector('.cur8')], () => [this.regua.marca(83)]);
+    },
+    toca(Q, c){
+      if (this.passo !== 2) return;
+      const z = +c.dataset.z;
+      if (z === 43 || z === 61){
+        if (this.ilhas.includes(z)) return;
+        this.ilhas.push(z);
+        c.classList.add('certa3'); QUIZ3.cresce.call(QUIZ3, c); Q.marcados.push(c);
+        tocaEfeito('right');
+        if (this.ilhas.length === 2){
+          /* a faixa do 83 ao 118 e as duas ilhas acesas juntas, com o ☢ */
+          Q.mesa().querySelectorAll('.pc:not(.ficha5)').forEach(x => { const zz = +x.dataset.z; if (RAD8(zz)) x.classList.add('radio-on'); });
+          Q.acerta();
+        }
+        return;
+      }
+      Q.erra('Antes do chumbo também tem radioativo: são os dois artificiais escondidos ali.', [c], () => [Q.carta(43), Q.carta(61)]);
+    },
+    limpa(Q){ limpa8(Q); } },
+
+  /* Q6 · Analisar · o quadro 2 × 2 (as bandejas em grade, novas): cinco cards, e
+     o quadro que fica vazio */
+  { monta(Q){
+      Q.mesa().classList.add('some8');
+      const zs = [...embaralha([26, 8, 6, 20]).slice(0, 2), sorteia5([92, 88, 86]), ...embaralha([43, 61, 94, 118]).slice(0, 2)];
+      this.passo = 1;
+      /* a grade: as linhas (Natural, Artificial) e as colunas (Estável, Radioativo) */
+      const X = [520, 820], Y = [370, 530];
+      this.celulas = [];
+      [['nat', 'Natural'], ['art', 'Artificial']].forEach(([o, no], i) => [['est', 'Estável'], ['rad', 'Radioativo']].forEach(([n, nn], j) => {
+        const p = M8(Q, X[j] - 140, Y[i] - 70);
+        const b = Q.peca('bandeja5 grade8', '', p.x, p.y, 280, 140);
+        b.dataset.k = o + '-' + n;
+        b.classList.add('espera5');
+        this.celulas.push(b);
+      }));
+      peca9(Q, 'q8p rot8 col8', 'Estável', X[0] - 140, 270, 280, 30);
+      peca9(Q, 'q8p rot8 col8', 'Radioativo', X[1] - 140, 270, 280, 30);
+      peca9(Q, 'q8p rot8 lin8', 'Natural', X[0] - 340, Y[0] - 16, 180, 32);
+      peca9(Q, 'q8p rot8 lin8', 'Artificial', X[0] - 340, Y[1] - 16, 180, 32);
+      this.fichas = embaralha(zs).map((z, i) => {
+        const p = M8(Q, 640 + (i - 2) * 92, 226), c = Q.ficha(z, p.x, p.y, 1.1);
+        c.classList.add('espera5');
+        c._casa = p; c._k = null;
+        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y));
+        return c;
+      });
+      this.bt = botao8(Q, 'Conferir', 1205, 640, () => this.confere(Q));
+      this.bt.classList.add('some5');
+      return 'Arraste cada elemento para o quadro certo.';
+    },
+    certo(z){ return (NAT8(z) ? 'nat' : 'art') + '-' + (RAD8(z) ? 'rad' : 'est'); },
+    solta(Q, c, x, y){
+      const b = this.celulas.find(b => Q.dentro(x, y, b));
+      c._k = b ? b.dataset.k : null;
+      if (b){
+        [c, b].forEach(e => { e.classList.remove('encaixa5'); void e.offsetWidth; e.classList.add('encaixa5'); });
+        setTimeout(() => [c, b].forEach(e => e.classList.remove('encaixa5')), 700);
+        tocaEfeito('right');
+      }
+      this.arruma(Q);
+    },
+    arruma(Q){
+      this.celulas.forEach(b => {
+        const l = parseFloat(b.style.left), t = parseFloat(b.style.top);
+        this.fichas.filter(c => c._k === b.dataset.k).forEach((c, k) => Q.poe(c, l + 60 + k * 80, t + 74, .95));
+      });
+      this.fichas.filter(c => !c._k).forEach(c => Q.poe(c, c._casa.x, c._casa.y, 1.1));
+      this.bt.classList.toggle('some5', this.passo !== 1 || this.fichas.some(c => !c._k));
+      this.fichas.forEach(c => c.classList.toggle('espera5', !c._k));
+      this.celulas.forEach(b => b.classList.toggle('espera5', this.passo === 1 && this.fichas.some(c => !c._k)));
+    },
+    confere(Q){
+      const erradas = this.fichas.filter(c => c._k !== this.certo(+c.dataset.z));
+      if (!erradas.length){
+        /* o passo 2: os cards ficam; tocar no quadro vazio */
+        this.passo = 2;
+        Q.tropecos = 0;
+        this.fichas.forEach(c => c._preso = true);
+        this.bt.classList.add('some5');
+        tocaEfeito('right');
+        this.celulas.forEach(b => {
+          b.classList.add('toca8');
+          b.addEventListener('pointerdown', ev => ev.stopPropagation());
+          b.addEventListener('click', ev => { ev.stopPropagation(); if (Q.aberto && !Q.travado) this.tocaCelula(Q, b); });
+        });
+        instrucao8(Q, 'Toque no quadro que ficou vazio.');
+        return;
+      }
+      Q.erra('Os artificiais têm algo em comum no núcleo.', erradas,
+             () => erradas.flatMap(c => [c, this.celulas.find(b => b.dataset.k === this.certo(+c.dataset.z))]));
+      setTimeout(() => { erradas.forEach(c => { c._k = null; }); this.arruma(Q); }, 650);
+    },
+    tocaCelula(Q, b){
+      if (this.passo !== 2) return;
+      if (b.dataset.k === 'art-est'){
+        this.passo = 3;
+        b.classList.add('vazia8');
+        const t = document.createElement('div');
+        t.className = 'nenhum8';
+        b.appendChild(t);
+        digita5(t, '✗ Nenhum artificial é estável');
+        Q.acerta();
+        return;
+      }
+      Q.erra('Procure a combinação que não existe.', [b], () => [this.celulas.find(c => c.dataset.k === 'art-est')]);
+    },
+    limpa(Q){ limpa8(Q); } },
+
+  /* Q7 · Avaliar · o colega, e a prova na tabela */
+  { monta(Q){
+      const [frase, julga, prova] = sorteia5([
+        ['Todo elemento radioativo é artificial.', 'nao', z => z >= 83 && z <= 92],
+        ['Todo elemento antes do urânio é natural.', 'nao', z => z === 43 || z === 61],
+        ['Todo elemento até o chumbo é estável.', 'nao', z => z === 43 || z === 61],
+        ['Todo elemento depois do urânio é artificial.', 'sim', z => z >= 93],
+        ['Todo elemento artificial é radioativo.', 'sim', z => z >= 93 || z === 43 || z === 61]]);
+      Object.assign(this, { julga, prova, julgado:false });
+      const p = M8(Q, 543, 222);
+      this.balao = Q.pecaCentro('balao7 balao8', '<i>Um colega disse:</i><b>“' + frase + '”</b>', p.x, p.y, 540);
+      this.bts = [['sim', 'Concordo', 440], ['nao', 'Discordo', 650]].map(([k, txt, x]) => {
+        const b = botao8(Q, txt, x, 278, () => this.julgar(Q, k, b));
+        b.classList.add('julga7');
+        b.dataset.k = k;
+        return b;
+      });
+      return 'Um colega disse isto. Ele está certo? Mostre na tabela.';
+    },
+    julgar(Q, k, b){
+      if (this.julgado) return;
+      if (k !== this.julga){ Q.erra('Basta um exemplo contrário para a frase estar errada.', [b], () => [this.bts.find(o => o.dataset.k === this.julga)]); return; }
+      this.julgado = true;
+      Q.tropecos = 0;
+      this.bts.forEach(o => { o.classList.toggle('escolhido7', o === b); o.classList.remove('pista5'); });
+      tocaEfeito('right');
+      instrucao8(Q, 'Agora toque num elemento que prove isso.');
+    },
+    toca(Q, c){
+      if (!this.julgado || this.feito) return;
+      const z = +c.dataset.z;
+      if (this.prova(z)){
+        this.feito = true;
+        /* o card sobe até o balão como prova, e o balão ganha o ✔ ou é riscado */
+        const a = alvoDe(z), f = Q.ficha(z, a.x, a.y, 1);
+        f.classList.add('voa8');
+        const pb = M8(Q, 845, 160);
+        setTimeout(() => Q.poe(f, pb.x, pb.y, 1.3), 60);
+        this.balao.classList.add(this.julga === 'sim' ? 'certo7' : 'risca7');
+        c.classList.add('certa3'); Q.marcados.push(c);
+        Q.acerta();
+        return;
+      }
+      Q.erra('Esse elemento não prova o que você escolheu. Procure outro.', [c],
+             () => [...Q.mesa().querySelectorAll('.pc:not(.ficha5)')].filter(x => this.prova(+x.dataset.z)));
+    },
+    limpa(Q){ this.feito = false; limpa8(Q); } },
+
+  /* Q8 · Criar · o mapa: a régua com dois cursores, as ilhas 43 e 61, e as etiquetas */
+  { monta(Q){
+      Q.mesa().classList.add('some8');
+      this.regua = regua8(Q, 430, [40, 110], null, true);
+      /* as ilhas 43 e 61, acima da régua */
+      [43, 61].forEach(z => peca9(Q, 'q8p ilha8', String(z), this.regua.xDe(z) - 16, 368, 32, 28));
+      etiquetas8(Q, this, ['Naturais e estáveis', 'Naturais e radioativos', 'Artificiais e radioativos', 'Exceções: artificiais e radioativos', 'Artificiais e estáveis'], 676,
+        [{ x:300, y:560, w:236, certo:'Naturais e estáveis', cls:'slotF1' }, { x:640, y:560, w:236, certo:'Naturais e radioativos', cls:'slotF2' },
+         { x:980, y:560, w:236, certo:'Artificiais e radioativos', cls:'slotF3' }, { x:this.regua.xDe(52), y:322, w:236, certo:'Exceções: artificiais e radioativos', cls:'slotF4' }]);
+      peca9(Q, 'q8p leg8 l8a', 'faixa da esquerda', 300 - 118, 510, 236, 22);
+      peca9(Q, 'q8p leg8 l8b', 'faixa do meio', 640 - 118, 510, 236, 22);
+      peca9(Q, 'q8p leg8 l8c', 'faixa da direita', 980 - 118, 510, 236, 22);
+      peca9(Q, 'q8p leg8 l8d', 'as ilhas', this.regua.xDe(52) - 118, 274, 236, 22);
+      this.bt = botao8(Q, 'Pronto', 1205, 590, () => this.confere(Q));
+      this.bt.classList.add('some5');
+      this.pronto = () => this.bt.classList.toggle('some5', this.slots.some(s => !s._etq));
+      return 'Monte o resumo: marque as fronteiras e dê nome a cada faixa.';
+    },
+    confere(Q){
+      const vs = this.regua.vals.slice().sort((a, b) => a - b);
+      if (vs[0] !== 83 || vs[1] !== 93){
+        Q.erra('Uma fronteira vem logo depois do chumbo; a outra, logo depois do urânio.', [...this.regua.el.querySelectorAll('.cur8')],
+               () => [this.regua.marca(83), this.regua.marca(93)]);
+        return;
+      }
+      const errados = this.slots.filter(s => s._etq.dataset.t !== s.dataset.certo);
+      if (!errados.length){
+        this.etqs.forEach(e => e._preso = true);
+        this.bt.classList.add('some5');
+        this.regua.travada = true;
+        /* as faixas sobem para a tabela: cada elemento na cor da sua faixa */
+        setTimeout(() => {
+          this.regua.el.classList.add('sai8');
+          Q.sl().querySelectorAll('.ilha8, .leg8').forEach(e => e.remove());
+          this.bandeja.classList.add('some5');
+          this.etqs.forEach(e => e.classList.add('some5'));
+          this.slots.forEach(s => s.classList.add('some5'));
+          const m = Q.mesa();
+          m.classList.remove('some8');
+          m.classList.add('mapa8');
+          m.querySelectorAll('.pc:not(.ficha5)').forEach(c => {
+            const z = +c.dataset.z;
+            c.classList.add('cor82', z === 43 || z === 61 ? 'fx8d' : z <= 82 ? 'fx8a' : z <= 92 ? 'fx8b' : 'fx8c');
+          });
+        }, 500);
+        Q.acerta();
+        return;
+      }
+      const erradas = errados.map(s => s._etq);
+      Q.erra('Lembra do quadro que ficou vazio na questão anterior?', erradas, () => {
+        const livres = this.etqs.filter(e => !e._slot || errados.includes(e._slot));
+        return errados.flatMap(s => [s, livres.find(e => e.dataset.t === s.dataset.certo)]);
+      });
+      setTimeout(() => { erradas.forEach(e => this.volta(Q, e)); this.pronto(); }, 650);
+    },
+    limpa(Q){ limpa8(Q); } }
+];
+const QUIZ8 = Object.assign(Object.create(QUIZ5), {
+  aberto:false, passo:0, itens:[], erros:0, tropecos:0, travado:false, g:0, q:null, marcados:[],
+  sl(){ return slides[8]; },
+  mesa(){ return slides[8].querySelector('.mesa'); },
+  carta(z){ return this.mesa().querySelector('.pc[data-z="' + z + '"]:not(.ficha5)'); },
+  abre(){
+    if (atual !== 8) return;
+    this.fecha(true);
+    som.pause();
+    VIDA.desliga();
+    /* a narração sai: o EV8 desliga as cores dela (natural/artificial, estável/
+       radioativo), e a tabela fica a de 18 colunas, com as séries embaixo */
+    if (window.RESUMO && RESUMO.aberto) RESUMO.fecha();
+    trilhaAtual = -1;
+    EV8.longa(false, true);
+    this.itens = QUESTOES_8.map(Q => Object.assign({}, Q));
+    this.passo = 0; this.erros = 0; this.aberto = true; this.marcados = [];
+    const g = ++this.g, sl = this.sl();
+    stage.classList.add('em-quiz');
+    let v = sl.querySelector(':scope > .breu-quiz');
+    if (!v){ v = document.createElement('div'); v.className = 'breu-quiz'; sl.insertBefore(v, sl.firstChild); v.getBoundingClientRect(); }
+    v.classList.add('on');
+    sl.classList.add('quiz-escuro', 'quiz8');
+    cabecaDoQuiz(sl, true, 'Quiz', 'quiz-cabeca');
+    if (!sl.querySelector('.confete'))
+      sl.insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
+    this.travado = true;
+    tocaEfeito('Audios/quiz1.mp3').then(() => { if (g === this.g) this.apresenta(g); });
+  },
+  resultado(){
+    this.sl().querySelectorAll('.quiz3.q5').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
+    const n = this.itens.length, e = this.erros, nota = Math.round(Math.max(0, n - e) / n * 100) / 10;
+    QUIZ_FEITOS.marca('q8', nota);      /* feito: verde no sumário */
+    cartaoDoResultado(nota, n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
+      this.sl(), () => this.abre(), () => { this.fecha(); go(9); });
+  },
+  fecha(reabre){
+    this.g++;
+    clearInterval(this.digT);
+    if (this.q && this.q.limpa) this.q.limpa(this);
+    else if (this.mesa()) limpa8(this);
+    this.q = null;
+    this.aberto = false; this.travado = false;
+    const sl = this.sl();
+    if (!sl) return;
+    sl.querySelectorAll('.quiz3.q5, .quiz-cartao, .q8p').forEach(e => e.remove());
+    const m = this.mesa();
+    if (m) m.querySelectorAll('.pista5, .errada3, .certa3, .roda8').forEach(e => e.classList.contains('roda8') ? e.remove() : e.classList.remove('pista5', 'errada3', 'certa3'));
+    if (reabre) return;
+    stage.classList.remove('em-quiz');
+    const v = sl.querySelector(':scope > .breu-quiz');
+    if (v) v.classList.remove('on');
+    sl.classList.remove('quiz-escuro', 'quiz8');
+    cabecaDoQuiz(sl, false, 'Quiz', 'quiz-cabeca');
+  }
+});
+window.QUIZ8 = QUIZ8;
+
+/* ============================================================
    O QUIZ DO SLIDE 4 — as perguntas das coordenadas, da "3.3" à "3.6"
    Começadas as perguntas, a sala escurece (o véu do quiz) e cada uma vem
    no quadro padrão (Questão 01, 02…), com a troca da esteira e o giro da
@@ -19425,7 +20162,8 @@ const EV8 = {
   zera(){ this.dispensou = false; this.n = ''; this.estado = ''; this.estado82 = ''; this.estado83 = ''; this.estado84 = ''; this.t84ant = -1; if (this.comSaquei) this.saquei84(false); this.t8ant = -1; clearTimeout(this.pausaT);
           this.longa(false, true); if (this.veu) this.tick(-1); },
   /* saindo do slide com o pedido em cena, o play volta */
-  fora(){ clearTimeout(this.pausaT); clearTimeout(this.vai82); if (this.comSaquei) this.saquei84(false); stage.classList.remove('sem-play8'); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
+  fora(){ if (window.QUIZ8 && QUIZ8.aberto) QUIZ8.fecha();
+          clearTimeout(this.pausaT); clearTimeout(this.vai82); if (this.comSaquei) this.saquei84(false); stage.classList.remove('sem-play8'); if (this.estado.endsWith('|true')){ stage.classList.remove('em-toque'); this.estado = ''; } }
 };
 window.EV8 = EV8;
 
@@ -21057,9 +21795,9 @@ const RESUMOS = {
        aoNota:'audio_tabela_2.5A1',
        /* o quiz guardado: o mesmo de antes, como se o botão Quiz fosse tocado */
        depois(){ viraQuiz(true); QUIZ3.abre(); } },
-  /* (o do tópico 8: ainda sem quiz depois — o Continuar só fecha o resumo, e o play volta) */
-  8: { slide:8, itens:RESUMO_ITENS_8, audio:'resumo_8.', chave:'q8-r', segue:'Continuar →',
-       depois(){ viraQuiz(false); } }
+  /* (o do tópico 8: depois dele, o quiz do tópico — o botão vira o do quiz, e ele abre) */
+  8: { slide:8, itens:RESUMO_ITENS_8, audio:'resumo_8.', chave:'q8-r', segue:'Quiz →',
+       depois(){ viraQuiz(true); QUIZ8.abre(); } }
 };
 const RESUMO = {
   aberto:false, g:0, k:1, passo:0, acertos:0, erros:0, travado:true, fala:null,
@@ -23456,6 +24194,17 @@ const NAV_TOPICOS = [
       trilhaAtual = -1;
       carregaTrilha('8.4');
       depoisDaMesa(g, () => { if (g === NAV.geracao){ viraQuiz(true, 'Resumo'); RESUMO.abre(8); } });
+    } },
+  /* o quiz direto: a mesa sem as cores da narração, e o quiz abre */
+  { titulo:'Quiz', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:8, quiz:'q8',
+    entra(v, g){
+      depoisDaMesa(g, () => {
+        if (g !== NAV.geracao) return;
+        trilhaAtual = -1;
+        carregaTrilha('8.4');
+        viraQuiz(true);
+        QUIZ8.abre();
+      });
     } },
   /* ---- o slide 10 · A tabela e os elétrons de valência ---- */
   { titulo:'Início', sub:'o começo do slide', slide:9,

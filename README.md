@@ -695,8 +695,23 @@ No fim da `8.4` o botão do canto diz **Resumo** e abre o resumo interativo do
 tópico 8 (`RESUMO_ITENS_8`): oito questões com as falas `resumo_8.1` a `8.8`; na 3
 (até o urânio) e na 7 (o último estável, o chumbo) as opções são cards com o
 número atômico. No fim, o cartão da nota (`q8-r` no sumário, "f – Resumo
-interativo"), o "Copiar resumo" e o "Continuar", que fecha o resumo e devolve o
-play (ainda não há quiz depois).
+interativo"), o "Copiar resumo" e o "Quiz →", que abre o **quiz do tópico 8**
+(`QUIZ8`, `QUESTOES_8`; também no sumário, "g – Quiz"), do documento do
+professor ("Quiz · A natureza dos elementos"): oito questões pela taxonomia
+revisada de Bloom, no ritual do `QUIZ5`, na tabela de 18 colunas com as séries
+embaixo, todas tocáveis, e sem as cores da narração (aberto o quiz, a trilha sai
+e o EV8 as desliga). 1) toque no último natural (o U; a tabela divide-se numa
+linha luminosa depois dele); 2) as etiquetas Cisurânicos e Transurânicos (e a
+armadilha Naturais) nos dois grupos acesos, com a tabela encolhida; 3) seis
+cards para Natural e Artificial (as bandejas), com as dicas de cada erro; 4) o
+cubo e dois carrosséis de palavras (origem e núcleo); 5) a **régua numérica**
+(`regua8`, nova: de 1 a 118, cursores de 60 px que se encaixam nos inteiros, o
+balão com o número, ◀ ▶) até o 83, com os radioativos acesos ao vivo, e depois
+os dois de fora (Tc e Pm); 6) o **quadro 2 × 2** (as bandejas em grade, novas) e
+o quadro que fica vazio ("✗ Nenhum artificial é estável"); 7) o colega,
+Concordo/Discordo, e o card que prova; 8) a régua com dois cursores (83 e 93),
+as ilhas 43 e 61 e as etiquetas das faixas — no acerto, a tabela inteira na cor
+da sua faixa.
 
 No celular, no slide 9, a mesa tem duas medidas, as da montagem no celular
 (`MESA_NO_CELULAR_POR_SLIDE`): fechada, ao entrar no tópico, x 5, y 10, a 1,07; aberta
