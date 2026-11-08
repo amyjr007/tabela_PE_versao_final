@@ -1526,11 +1526,16 @@ body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
 /* (o verde de confirmação, o mesmo do encaixe do quiz do tópico 6) */
 @keyframes encaixa5{0%{box-shadow:0 0 0 3px #fff, 0 0 26px 10px rgba(62,224,138,.95)} 100%{box-shadow:0 0 0 0 rgba(62,224,138,0)}}
 .pc.ficha5.encaixa5 .face, .bandeja5.encaixa5{animation:encaixa5 .7s ease-out}
-/* tocada sem arrastar, a peça fica selecionada (TOQUE5), em azul, à espera do lugar */
+/* tocada sem arrastar, a peça fica selecionada (TOQUE5), em verde, à espera do lugar */
 .pc.ficha5.sel5{z-index:39}
-.pc.ficha5.sel5.sel5 .face{animation:none;box-shadow:0 0 0 3px #4DA3FF, 0 0 22px 7px rgba(77,163,255,.75)}
-.peca5.sel5.sel5{z-index:39;animation:none;box-shadow:0 0 0 3px #4DA3FF, 0 0 22px 7px rgba(77,163,255,.75)}
+.pc.ficha5.sel5.sel5 .face{animation:none;box-shadow:0 0 0 3px #3EE08A, 0 0 22px 7px rgba(62,224,138,.8)}
+.peca5.sel5.sel5{z-index:39;animation:none;box-shadow:0 0 0 3px #3EE08A, 0 0 22px 7px rgba(62,224,138,.8)}
 .etiqueta5.encaixa5, .peca5.moldura7.encaixa5{animation:encaixa5 .7s ease-out}
+/* o encaixe rápido: chegada ao lugar, a peça cresce e assenta (um "clique") */
+@keyframes encaixeRap5{0%{scale:1} 35%{scale:1.2} 70%{scale:.93} 100%{scale:1}}
+.pc.ficha5.encaixa5{animation:encaixeRap5 .34s ease-out .18s}
+.etiqueta5.encaixa5.encaixa5, .peca5.moldura7.encaixa5.encaixa5{animation:encaixa5 .7s ease-out, encaixeRap5 .34s ease-out .18s}
+.barra5.encaixa5.encaixa5{animation:encaixaBarra5 .8s ease-out, encaixeRap5 .34s ease-out .18s}
 .bandeja5.ferve5[data-estado="solido"]{animation:vibra5 .12s linear 12}
 .bandeja5.ferve5[data-estado="liquido"]{animation:ondula5 .6s ease-in-out 3}
 .bandeja5.ferve5[data-estado="gas"]{animation:sobe5 .9s ease-in-out 2}
@@ -2837,6 +2842,8 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
    as órbitas e os elétrons com brilho) */
 .slide.quiz9 .mesa.mesa.valencia.escura9.breu9 .pc.pc:not(.ficha5):not(.alvo9){filter:brightness(.22)}
 .slide.quiz9 .mesa.mesa.valencia.breu9 .casa.casa{opacity:.12!important}
+.atomo9c .nome9{position:absolute;left:0;right:0;text-align:center;pointer-events:none;
+  font:700 26px var(--display);color:#F4F2F8;text-shadow:0 0 12px rgba(110,190,255,.7), 0 2px 6px rgba(0,0,0,.9)}
 .atomo9c.solto9{background:radial-gradient(circle closest-side, rgba(0,0,0,.8) 78%, rgba(0,0,0,0));border:none;box-shadow:none}
 .atomo9c.solto9 .orb9a{stroke:rgba(214,240,255,.85);filter:drop-shadow(0 0 5px rgba(120,200,255,.9))}
 .atomo9c.solto9 .e9{filter:drop-shadow(0 0 7px rgba(110,190,255,.95))}
@@ -4856,7 +4863,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v47.3';
+const VERSAO = 'v47.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -11388,12 +11395,17 @@ const TOQUE5 = {
     const p = Q.ponto(ev);
     this.seleciona(null);
     solta(p.x, p.y);
-    /* foi para um lugar (e não de volta para a fila): o brilho de encaixe */
+    this.encaixe(c);
+  },
+  /* foi para um lugar (e não de volta para a fila): a animação de encaixe
+     (o brilho e o "clique" rápido), se o solta não a pôs */
+  encaixe(c){
     const casa = c._casa;
-    if (casa && Math.hypot(c._x - casa.x, c._y - casa.y) > 4 && !c.classList.contains('encaixa5') && !c.classList.contains('encaixa7')){
-      c.classList.add('encaixa5');
-      setTimeout(() => c.classList.remove('encaixa5'), 700);
-    }
+    if (!casa || Math.hypot(c._x - casa.x, c._y - casa.y) <= 4) return;
+    c.classList.remove('encaixa7');
+    c.classList.remove('encaixa5'); void c.offsetWidth; c.classList.add('encaixa5');
+    clearTimeout(c._encT);
+    c._encT = setTimeout(() => c.classList.remove('encaixa5'), 700);
   }
 };
 document.addEventListener('pointerdown', ev => TOQUE5.toque(ev), true);
@@ -11632,6 +11644,7 @@ const QUIZ5 = {
       void c.offsetWidth;
       c.classList.remove('pegando5');
       solta(c._x, c._y);
+      TOQUE5.encaixe(c);
     };
     ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(n => c.addEventListener(n, larga));
     c.addEventListener('click', ev => ev.stopPropagation());
@@ -16868,8 +16881,17 @@ const QUESTOES_9 = [
       Q.mesa().classList.add('escura9', 'breu9');
       this.z = sorteia5([8, 11, 17, 12, 19, 20]);
       this.cs = CAMADAS_9[this.z];
-      this.at = ATOMO9.cria(Q, this.z, this.cs, 640, 452, k => this.anel(Q, k));
+      /* (sem o símbolo no núcleo: o nome do elemento embaixo do modelo, e a
+         legenda do acerto logo abaixo do nome) */
+      this.at = ATOMO9.cria(Q, this.z, this.cs, 640, 410, k => this.anel(Q, k), null, true);
       this.at.d.classList.add('solto9');
+      const n = this.cs.length, L = ATOMO9.R(n - 1) + 42, yN = L + ATOMO9.R(n - 1) + 14;
+      const nm = document.createElement('div');
+      nm.className = 'nome9';
+      nm.textContent = NOMES[this.z - 1];
+      nm.style.top = yN + 'px';
+      this.at.d.appendChild(nm);
+      Object.assign(this.at.d.querySelector('.leg9').style, { top:(yN + 34) + 'px', bottom:'auto' });
       return 'Toque na camada de valência deste átomo.';
     },
     anel(Q, k){
