@@ -840,7 +840,14 @@ Acabada a fala da 8A, a festa — os confetes, o funfare e os aplausos
 (`Audios/audio_tabela_9.3.9.mp3`, 16,3 s; sem o play): aos 4 s a mão aparece,
 aos 5,8 s vai à etiqueta "N elétrons" da família de cima e toca-a — abre a
 distribuição eletrônica —, e afasta-se; aos 11,2 s volta ao mesmo botão e, aos
-11,8 s, toca-o outra vez — a caixa fecha —, e sai; aos 13 s o play vira o botão do quiz (as
+11,8 s, toca-o outra vez — a caixa fecha —, e sai; aos 13 s o play vira o botão
+do **quiz do tópico 9** (`QUIZ9`, também no sumário, "Quiz"): as quatro questões
+do quiz do app do professor (o tópico dos elétrons de valência), só os textos,
+no ritual e com as peças daqui (o do `QUIZ5`) — 1) toque na família com 6
+elétrons de valência (a 6A); 2) toque num elemento com 2 elétrons na última
+camada (a 2A, e o hélio); 3) toque num elemento com 8 elétrons de valência (a
+8A, menos o hélio); 4) o total de Mg + C + Cl — as três fichas no vão de cima e
+o carrossel "total" (13). No fim, a nota, Refazer e Continuar (o slide 11); aos 13 s o play vira o botão do quiz (as
 questões ainda vão chegar). Dali em diante as famílias sobem e descem livres,
 sem fala.
 As famílias A

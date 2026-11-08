@@ -2779,6 +2779,9 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
   font-family:var(--display);font-weight:700;font-size:28px;opacity:0;
   transition:opacity .3s ease, transform .4s cubic-bezier(.34,1.56,.64,1)}
 .aviso93.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+/* o quiz do tópico 9: os sinais entre as fichas da questão 4 (Mg + C + Cl =) */
+.sinal9{display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:40px;color:#F3F0FB;
+  text-shadow:0 2px 10px rgba(0,0,0,.6)}
 .mesa .pc.dica93{animation:dica93 1.4s ease-in-out infinite}
 .etq93{position:absolute;z-index:40;transform:translate(-50%,-50%);white-space:nowrap;cursor:pointer;
   font-family:var(--display);font-weight:600;font-size:19px;color:#fff;border-radius:999px;padding:5px 16px;
@@ -3256,6 +3259,8 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
    montagem: { el:'pergunta-quiz-5', x:657, y:100, larg:915, alt:140, esc:1.18 }
    — o centro em 657 × 100, a mesma largura e a mesma escala) */
 .slide.quiz7 .quiz3.q4.q2.q5{left:269.3px;top:30px}
+/* (e no quiz do slide 10, o mesmo lugar: acima dos nomes 1A e 8A) */
+.slide.quiz9 .quiz3.q4.q2.q5{left:269.3px;top:30px}
 /* (e na Q3 do quiz dos tipos — a da tabela de fundo, com o mesmo arranjo da Q2
    dos grupos A e B, LUGAR_ARRASTA —, a caixa no mesmo lugar) */
 .slide.quiz5:has(.mesa.fundo5) .quiz3.q4.q2.q5:not(.sai){left:269.3px;top:30px}
@@ -4635,7 +4640,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v45.8';
+const VERSAO = 'v45.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5193,6 +5198,8 @@ function montaTabela(i){
       if (i === 5 && EV5.toca(c)) return;
       /* no slide 7, dos 23 s da "6.2", o toque sobe a família da vez */
       if (i === 6 && QUIZ7.aberto){ QUIZ7.toca(c); return; }
+      /* no slide 10, no quiz, responde-se tocando na tabela */
+      if (i === 9 && QUIZ9.aberto){ QUIZ9.toca(c); return; }
       if (i === 6 && EV6.toca(c)) return;
       /* no slide 8, tocada a carta de uma série que já desceu, a série
          inteira volta para o bilhete (e a mesa desce, se era a última) —
@@ -6636,8 +6643,8 @@ function tocaOuPara(){
   /* e o do quiz, o quiz do slide 3 */
   /* (o do slide 8 ainda espera as questões) */
   if (somBtn.classList.contains('botao-quiz') && atual === 7){ TP.diz('As questões deste quiz ainda vão chegar.'); return; }
-  /* (e o do slide 10, o do fim da "9.3.9", também) */
-  if (somBtn.classList.contains('botao-quiz') && atual === 9){ TP.diz('As questões deste quiz ainda vão chegar.'); return; }
+  /* (e o do slide 10, o do fim da "9.3.9": o quiz do tópico 9) */
+  if (somBtn.classList.contains('botao-quiz') && atual === 9){ estouraEsegue(() => QUIZ9.abre()); return; }
   /* o "Resumo" do fim da "2.5A": o resumo interativo do tópico 2 */
   /* (e o do fim da "8.4": o resumo do slide em que se está) */
   if (somBtn.classList.contains('botao-quiz') && somBtn.dataset.resumo){
@@ -16327,6 +16334,148 @@ const QUIZ7 = Object.assign(Object.create(QUIZ5), {
 window.QUIZ7 = QUIZ7;
 
 /* ============================================================
+   O QUIZ DO TÓPICO 9 (QUIZ9, no slide 10) — as quatro questões do quiz
+   do app do professor (o tópico dos elétrons de valência), só os textos;
+   o ritual e as peças são os daqui (o QUIZ5: a sala escura, "Questão N de
+   4" digitada; acerto: confete, fanfarra, aplausos e a voz; erro: a
+   questão fica, o alvo balança, a tela treme e vem a dica do app; no 2º
+   erro, a resposta pulsa em âmbar; a nota, Refazer e Continuar).
+     1  toque na família com 6 elétrons de valência (a 6A)
+     2  toque num elemento com 2 elétrons na última camada (a 2A, e o hélio)
+     3  toque num elemento com 8 elétrons de valência (a 8A, menos o hélio)
+     4  o total de elétrons de valência de Mg + C + Cl (13), no carrossel
+   ============================================================ */
+const coluna9 = (Q, col) => [...Q.mesa().querySelectorAll('.pc[data-col="' + col + '"]:not(.ficha5)')].filter(c => !ehDaSerie(+c.dataset.z));
+function limpa9(Q){
+  (Q.marcados || []).forEach(c => { c.classList.remove('certa3', 'frente3'); c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe'); });
+  Q.marcados = [];
+  limpa5(Q);
+}
+/* o acerto num card (ou numa família inteira): crescem e acendem */
+function acerta9(Q, cs){
+  cs.forEach(c => { c.classList.add('certa3'); QUIZ3.cresce.call(QUIZ3, c); Q.marcados.push(c); });
+  Q.acerta();
+}
+const QUESTOES_9 = [
+  /* 1 · a família com 6 elétrons de valência */
+  { monta(){ return 'Toque na família cujos elementos tem 6 elétrons na camada de valência.'; },
+    toca(Q, c){
+      if (+c.dataset.col === 16){ acerta9(Q, coluna9(Q, 16)); return; }
+      Q.erra('A família com 6 elétrons na camada de valência é a 6A (calcogênios).', [c], () => coluna9(Q, 16));
+    },
+    limpa(Q){ limpa9(Q); } },
+  /* 2 · um elemento com 2 elétrons na última camada (o hélio também tem) */
+  { monta(){ return 'Agora toque em qualquer elemento que tem 2 elétrons na última camada.'; },
+    toca(Q, c){
+      if (+c.dataset.col === 2 || +c.dataset.z === 2){ acerta9(Q, [c]); return; }
+      Q.erra('Os elementos com 2 elétrons na última camada estão na família 2A.', [c], () => coluna9(Q, 2));
+    },
+    limpa(Q){ limpa9(Q); } },
+  /* 3 · um elemento com 8 elétrons de valência (a 8A, menos o hélio) */
+  { monta(){ return 'Toque em qualquer elemento que tenha 8 elétrons de valência.'; },
+    toca(Q, c){
+      if (+c.dataset.col === 18 && +c.dataset.z !== 2){ acerta9(Q, [c]); return; }
+      Q.erra('Os gases nobres (família 8A) têm 8 elétrons de valência, exceto o hélio.', [c], () => coluna9(Q, 18).filter(x => +x.dataset.z !== 2));
+    },
+    limpa(Q){ limpa9(Q); } },
+  /* 4 · o total de Mg + C + Cl: as três fichas no vão de cima, e o carrossel */
+  { monta(Q){
+      const xc = (xDaColuna(3) + xDaColuna(12)) / 2, y = yDaLinha(2);
+      [[12, -250], [6, -110], [17, 30]].forEach(([z, dx]) => Q.ficha(z, xc + dx, y, 1.15));
+      [[-180, '+'], [-40, '+'], [100, '=']].forEach(([dx, s]) => Q.pecaCentro('sinal9', s, xc + dx, y, 40, 50));
+      const b = document.createElement('div');
+      b.className = 'roda4 roda7 roda9';
+      b.style.left = (xc + 200).toFixed(1) + 'px';
+      b.style.top = (y - 78).toFixed(1) + 'px';
+      const vs = Array.from({ length:24 }, (_, i) => i + 1);
+      b.innerHTML = '<div class="rd-colunas"><div class="rd-col"><div class="rd-tit">total</div><div class="rd-roda" data-tipo="t">' +
+        '<div class="rd-pad"></div>' + vs.map(v => '<div class="rd-v">' + v + '</div>').join('') + '<div class="rd-pad"></div></div></div></div>';
+      Q.mesa().appendChild(b);
+      b.addEventListener('pointerdown', ev => ev.stopPropagation());
+      b.addEventListener('click', ev => ev.stopPropagation());
+      b.querySelectorAll('.rd-roda').forEach(r => QUIZ4.giravel.call(QUIZ4, r));
+      setTimeout(() => b.classList.add('pousada'), 950);
+      this.roda = b;
+      this.bt = Q.botao('Confirmar', 1100, 672, () => this.confirma(Q));
+      return 'Qual o total de elétrons de valência dos átomos a seguir?';
+    },
+    valor(){
+      const r = this.roda.querySelector('.rd-roda');
+      return ((r._alvo !== undefined && r._alvo !== null) ? r._alvo : Math.round(r.scrollTop / 36)) + 1;
+    },
+    confirma(Q){
+      const b = this.roda;
+      if (this.valor() === 13){
+        this.bt.classList.add('some5');
+        b.classList.add('certa');
+        Q.acerta('Mg (2A) 2 + C (4A) 4 + Cl (7A) 7 = 13.');
+        return;
+      }
+      b.classList.remove('treme'); void b.offsetWidth; b.classList.add('treme', 'errada');
+      clearTimeout(b._erroT);
+      b._erroT = setTimeout(() => b.classList.remove('errada'), 900);
+      Q.erra('Para os grupos A, os elétrons de valência coincidem com o número da família.', [],
+             () => [b.querySelectorAll('.rd-v')[12]]);
+    },
+    limpa(Q){ if (this.roda) this.roda.remove(); this.roda = null; limpa9(Q); } }
+];
+const QUIZ9 = Object.assign(Object.create(QUIZ5), {
+  aberto:false, passo:0, itens:[], erros:0, tropecos:0, travado:false, g:0, q:null, marcados:[],
+  sl(){ return slides[9]; },
+  mesa(){ return slides[9].querySelector('.mesa'); },
+  carta(z){ return this.mesa().querySelector('.pc[data-z="' + z + '"]:not(.ficha5)'); },
+  abre(){
+    if (atual !== 9) return;
+    this.fecha(true);
+    som.pause();
+    VIDA.desliga();
+    /* (as famílias que sobem descem, e o toque nelas sai: quem responde é o quiz) */
+    if (FAM93.m) FAM93.reseta();
+    tiraMao();
+    this.itens = QUESTOES_9.map(Q => Object.assign({}, Q));
+    this.passo = 0; this.erros = 0; this.aberto = true; this.marcados = [];
+    const g = ++this.g, sl = this.sl();
+    stage.classList.add('em-quiz');
+    let v = sl.querySelector(':scope > .breu-quiz');
+    if (!v){ v = document.createElement('div'); v.className = 'breu-quiz'; sl.insertBefore(v, sl.firstChild); v.getBoundingClientRect(); }
+    v.classList.add('on');
+    sl.classList.add('quiz-escuro', 'quiz9');
+    cabecaDoQuiz(sl, true, 'Quiz', 'quiz-cabeca');
+    if (!sl.querySelector('.confete'))
+      sl.insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
+    this.travado = true;
+    tocaEfeito('Audios/quiz1.mp3').then(() => { if (g === this.g) this.apresenta(g); });
+  },
+  resultado(){
+    this.sl().querySelectorAll('.quiz3.q5').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
+    const n = this.itens.length, e = this.erros, nota = Math.round(Math.max(0, n - e) / n * 100) / 10;
+    QUIZ_FEITOS.marca('q9', nota);      /* feito: verde no sumário */
+    cartaoDoResultado(nota, n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
+      this.sl(), () => this.abre(), () => { this.fecha(); go(10); });
+  },
+  fecha(reabre){
+    this.g++;
+    clearInterval(this.digT);
+    if (this.q && this.q.limpa) this.q.limpa(this);
+    else if (this.mesa()) limpa9(this);
+    this.q = null;
+    this.aberto = false; this.travado = false;
+    const sl = this.sl();
+    if (!sl) return;
+    sl.querySelectorAll('.quiz3.q5, .quiz-cartao').forEach(e => e.remove());
+    const m = this.mesa();
+    if (m) m.querySelectorAll('.pista5, .errada3, .certa3, .roda9').forEach(e => e.classList.contains('roda9') ? e.remove() : e.classList.remove('pista5', 'errada3', 'certa3'));
+    if (reabre) return;
+    stage.classList.remove('em-quiz');
+    const v = sl.querySelector(':scope > .breu-quiz');
+    if (v) v.classList.remove('on');
+    sl.classList.remove('quiz-escuro', 'quiz9');
+    cabecaDoQuiz(sl, false, 'Quiz', 'quiz-cabeca');
+  }
+});
+window.QUIZ9 = QUIZ9;
+
+/* ============================================================
    O QUIZ DO SLIDE 4 — as perguntas das coordenadas, da "3.3" à "3.6"
    Começadas as perguntas, a sala escurece (o véu do quiz) e cada uma vem
    no quadro padrão (Questão 01, 02…), com a troca da esteira e o giro da
@@ -19313,6 +19462,7 @@ const EV9 = {
           clearTimeout(this.vai93); this.festaG++; if (FAM93.m) FAM93.reseta(); if (this.veu) this.tick(-1); },
   /* saindo do slide com o pedido em cena, o play volta */
   fora(){ clearTimeout(this.vai93); stage.classList.remove('sem-play9');
+          if (window.QUIZ9 && QUIZ9.aberto) QUIZ9.fecha();
           if (this.estado93 && this.estado93.split(',')[2] === 'true'){ stage.classList.remove('em-toque'); this.estado93 = ''; } }
 };
 window.EV9 = EV9;
@@ -22812,6 +22962,16 @@ const NAV_TOPICOS = [
   /* o começo da "9.3" (a regra na tela escura; os de transição já apagados) */
   { titulo:'As famílias "A" e a camada de valência', sub:'o começo da 9.3', slide:9,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('9.3', 0, g)); } },
+  /* o quiz direto: a mesa como no fim da "9.3.9" (os de transição apagados), e o quiz abre */
+  { titulo:'Quiz', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:9, quiz:'q9',
+    entra(v, g){
+      depoisDaMesa(g, () => {
+        if (g !== NAV.geracao) return;
+        trilhaAtual = -1;
+        carregaTrilha('9.3.9');
+        QUIZ9.abre();
+      });
+    } },
   /* ---- o slide 11 · A tabela e o diagrama de Pauling ---- */
   { titulo:'Início', sub:'o começo do slide', slide:10,
     entra(){ /* o recomeço do slide já é o tópico */ } },
