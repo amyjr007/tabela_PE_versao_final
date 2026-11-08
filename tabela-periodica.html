@@ -4863,7 +4863,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v47.4';
+const VERSAO = 'v47.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16724,8 +16724,8 @@ const ATOMO9 = {
     pts.sort((a, b) => a[2] - b[2]);
     return '<circle r="' + (R + 26).toFixed(1) + '" fill="url(#a9h)"/>' + pts.map(([x, y, d]) => {
       const f = R ? (d + R) / (2 * R) : 1, r = 8.5 * (.8 + .32 * f), esc = (.5 * (1 - f)).toFixed(2), m = (r * .42).toFixed(1);
-      return '<g transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')"><circle r="' + (r + 1).toFixed(1) + '" fill="#03141A" opacity=".55"/>' +
-        '<circle r="' + r.toFixed(1) + '" fill="url(#a9p)"/><circle r="' + r.toFixed(1) + '" fill="#021016" opacity="' + esc + '"/>' +
+      return '<g transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')"><circle r="' + (r + 1).toFixed(1) + '" fill="#1E1200" opacity=".55"/>' +
+        '<circle r="' + r.toFixed(1) + '" fill="url(#a9p)"/><circle r="' + r.toFixed(1) + '" fill="#160C00" opacity="' + esc + '"/>' +
         '<path d="M-' + m + ' 0H' + m + 'M0 -' + m + 'V' + m + '" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="' + (1 - esc * 1.6).toFixed(2) + '"/></g>';
     }).join('');
   },
@@ -16738,9 +16738,9 @@ const ATOMO9 = {
         '<g class="fant9"></g><g class="els9"></g><text class="cont9" x="' + cx2 + '" y="' + cy2 + '"></text></g>';
     }).join('');
     const d = peca9(Q, 'atomo9c', '<svg viewBox="' + -L + ' ' + -L + ' ' + 2 * L + ' ' + 2 * L + '" width="' + 2 * L + '" height="' + 2 * L + '" aria-hidden="true"><defs>' +
-      '<radialGradient id="a9p" fx="35%" fy="35%"><stop offset="0" stop-color="#bdf3ff"/><stop offset=".45" stop-color="#00e5ff"/><stop offset="1" stop-color="#0077a0"/></radialGradient>' +
+      '<radialGradient id="a9p" fx="35%" fy="35%"><stop offset="0" stop-color="#FFF4C2"/><stop offset=".45" stop-color="#FFB020"/><stop offset="1" stop-color="#B86A00"/></radialGradient>' +
       '<radialGradient id="a9e" cx="35%" cy="32%" r="70%"><stop offset="0" stop-color="#CDEBFF"/><stop offset=".55" stop-color="#3E9BEA"/><stop offset="1" stop-color="#1D5FA8"/></radialGradient>' +
-      '<radialGradient id="a9h"><stop offset="0" stop-color="#00e5ff" stop-opacity=".45"/><stop offset="1" stop-color="#00e5ff" stop-opacity="0"/></radialGradient>' +
+      '<radialGradient id="a9h"><stop offset="0" stop-color="#FFB020" stop-opacity=".45"/><stop offset="1" stop-color="#FFB020" stop-opacity="0"/></radialGradient>' +
       '<filter id="a9s" x="-80%" y="-80%" width="260%" height="260%"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00e5ff"/></filter>' +
       '<filter id="a9n" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter></defs>' +
       '<g class="giro9">' + aneis + '<g class="nuc9a">' + prot +

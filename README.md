@@ -908,7 +908,7 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
 5. **Aplicar** — "Coloque os elétrons na camada de valência do X", e embaixo,
    em amarelo, a brilhar e a piscar, "Toque na camada pra adicionar e toque no
    elétron se precisar retirar."; o átomo em camadas (o núcleo com os Z prótons
-   de verdade, em 3D — `ATOMO9.nucleo` —, sem o símbolo por cima); o elétron
+   de verdade, em amarelo-âmbar (nas duas questões do átomo), em 3D — `ATOMO9.nucleo` —, sem o símbolo por cima); o elétron
    que entra chega voando de fora, grande e aceso, e explode em luz ao pousar
    (o clarão, duas ondas de choque e faíscas amarelas — `ATOMO9.estoura`); o
    que sai incha, brilha e estoura em faíscas laranja; o número de cada anel
