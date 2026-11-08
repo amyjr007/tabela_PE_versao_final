@@ -4841,7 +4841,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v46.9';
+const VERSAO = 'v47.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17221,7 +17221,9 @@ const QUIZ9 = Object.assign(Object.create(QUIZ5), {
     const n = this.itens.length, e = this.erros, nota = Math.round(Math.max(0, n - e) / n * 100) / 10;
     QUIZ_FEITOS.marca('q9', nota);      /* feito: verde no sumário */
     cartaoDoResultado(nota, n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
-      this.sl(), () => this.abre(), () => { this.fecha(); go(10); });
+      this.sl(), () => this.abre(), () => { this.fecha(); go(10); },
+      /* depois do "statistics", a fala do fim do tópico 9 */
+      'Audios/audio_tabela_9.3.10.mp3');
   },
   fecha(reabre){
     this.g++;
@@ -22505,7 +22507,9 @@ const RECADOS_FRACOS = ['Continue praticando!', 'Quase lá, não desista!', 'Pra
 const PULSOS_DA_FALA = {
   'Audios/audio_tabela_3.7B.mp3': [ { t:3.5, botao:'.refaz' }, { t:6.5, botao:'.segue' } ],
   /* na 5.2: "refazer o quiz" e "passar para o tópico 6" */
-  'Audios/audio_tabela_5.2.mp3': [ { t:5.2, botao:'.refaz' }, { t:8.8, botao:'.segue' } ]
+  'Audios/audio_tabela_5.2.mp3': [ { t:5.2, botao:'.refaz' }, { t:8.8, botao:'.segue' } ],
+  /* na 9.3.10 (o fim do quiz do tópico 9): o Refazer aos 15,5 s e o Continuar aos 18,6 s */
+  'Audios/audio_tabela_9.3.10.mp3': [ { t:15.5, botao:'.refaz' }, { t:18.6, botao:'.segue' } ]
 };
 function cartaoDoResultado(nota, contaHTML, onde, refazer, seguir, fala){
   if (!onde) return;

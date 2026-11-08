@@ -863,6 +863,12 @@ var LEGENDAS = {
     [10.03,11.81,"de cada elemento, só pra você ver se a informação bate."],
     [12.24,16.27,"Ou, quando quiser, toque no quiz ali, pra gente ver se você entendeu."]
   ],
+  "audio_tabela_9.3.10": [
+    [0,3.6,"Pronto. Sobre as famílias e as camadas de valência, é isso."],
+    [4.62,11.37,"Lá na frente, quando for estudar ligações químicas, a tabela vai ser uma excelente ferramenta para desenvolver esse conhecimento."],
+    [11.84,13.64,"Guarde bem essas informações."],
+    [14.61,20.3,"Você pode refazer o exercício com questões diferentes ou pode continuar para o próximo tópico."]
+  ],
   "quiz1": [
     [0,1.94,"Certo, vamos pra primeira questão."]
   ],

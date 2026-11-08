@@ -868,7 +868,9 @@ O **quiz do tópico 9** (`QUIZ9`, `QUESTOES_9`) segue o documento do professor
 taxonomia revisada de Bloom, no ritual do `QUIZ5` ("Questão N de 8"; acerto com
 confete, fanfarra, aplausos e a voz, "Perfeito" na última; erro com o alvo a
 balançar, a tela a tremer e a dica; no 2º erro, a resposta em âmbar; a nota,
-Refazer — que sorteia de novo — e Continuar, o slide 11). Na tabela, os de
+Refazer — que sorteia de novo — e Continuar, o slide 11; depois do "statistics",
+a fala do fim, a `9.3.10`, com o Refazer a pulsar aos 15,5 s e o Continuar aos
+18,6 s — `PULSOS_DA_FALA`). Na tabela, os de
 transição em cinza, mas tocáveis (armadilha); o hélio fora dos sorteios; os
 nomes 1A…8A escondidos, salvo os que a questão mostra.
 1. **Lembrar** — "Toque na camada de valência deste átomo." O **átomo em
