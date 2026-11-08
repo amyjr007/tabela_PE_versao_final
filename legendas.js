@@ -838,10 +838,24 @@ var LEGENDAS = {
     [2.98,7.6,"Para os elementos representativos, grupos A, o número da família coincide direitinho"],
     [7.6,12.0,"com o total de elétrons de valência dos seus elementos."]
   ],
-  "audio_tabela_9.3.1": [
+  "audio_tabela_9.3.0": [
     [0,2.98,"Certo, vamos fazer um exemplo."],
     [2.98,4.6,"Toque na família 1A primeiro."]
   ],
+  "audio_tabela_9.3.1": [
+    [0,3.0,"Todos os membros dessa família têm um elétron em suas camadas de valência."],
+    [3.0,6.9,"Agora toque na família 2A."]
+  ],
+  "audio_tabela_9.3.2": [
+    [0,3.0,"Os membros aqui têm 2 elétrons na camada de valência."],
+    [3.0,6.7,"Agora toque na 3A, e assim por diante."]
+  ],
+  "audio_tabela_9.3.3": [[0,1.88,"3 elétrons de valência."]],
+  "audio_tabela_9.3.4": [[0,1.96,"4 elétrons de valência."]],
+  "audio_tabela_9.3.5": [[0,2.04,"5 elétrons de valência."]],
+  "audio_tabela_9.3.6": [[0,1.96,"6 elétrons de valência."]],
+  "audio_tabela_9.3.7": [[0,2.04,"7 elétrons de valência."]],
+  "audio_tabela_9.3.8": [[0,1.96,"8 elétrons de valência."]],
   "quiz1": [
     [0,1.94,"Certo, vamos pra primeira questão."]
   ],

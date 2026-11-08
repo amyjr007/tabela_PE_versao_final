@@ -827,8 +827,12 @@ A `9.3` (`Audios/audio_tabela_9.3.mp3`, 12,4 s; `EV9.tick93`, `T93`): aos 6,5 s
 a tela escurece e, até aos 11 s, digita "O nº da família coincide com o total de
 elétrons de valência" (`frase-93`) e, embaixo, ao mesmo tempo, um depois do
 outro, 1A = 1e⁻ … 8A = 8e⁻ no amarelo neon (`lista-93`); acabada, "Toque na
-tela" sem o play. O toque toca a `9.3.1` (`Audios/audio_tabela_9.3.1.mp3`,
-4,8 s): aos 0,7 s a tela escura sai, e dos 2 s em diante as famílias A
+tela" sem o play. O toque toca a `9.3.0` (`Audios/audio_tabela_9.3.0.mp3`,
+4,8 s): aos 0,7 s a tela escura sai, e dos 2 s em diante a 1A responde ao
+toque. Subida, cada família toca a fala dela — `9.3.1` a 1A … `9.3.8` a 8A —,
+cortando a que estiver a tocar; e a seguinte abre-se: na 1A aos 3 s da fala,
+na 2A aos 2 s, e da 3A em diante logo (sempre na sequência; `FAM93.libera`).
+As famílias A
 respondem ao toque — **as famílias que sobem** (`FAM93`), copiadas do app da
 tabela do professor (o tópico dos elétrons de valência): tocada, a família
 sobe num salto de mola (1,3 linha) com o nome dela em cima, e entra de lado,

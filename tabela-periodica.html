@@ -4629,7 +4629,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v45.4';
+const VERSAO = 'v45.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5923,7 +5923,16 @@ const TRILHAS = {
   '9.1':  'Audios/audio_tabela_9.1.mp3',   /* o play no fim da "9": o diagrama de Pauling (EV9) */
   '9.2':  'Audios/audio_tabela_9.2.mp3',   /* o play no fim da "9.1": só os representativos (EV9) */
   '9.3':  'Audios/audio_tabela_9.3.mp3',   /* 1,5 s depois da "9.2", sozinha: a regra (EV9) */
-  '9.3.1':'Audios/audio_tabela_9.3.1.mp3', /* o toque na tela escura da "9.3": as famílias que sobem (FAM93) */
+  '9.3.0':'Audios/audio_tabela_9.3.0.mp3', /* o toque na tela escura da "9.3": as famílias que sobem (FAM93) */
+  /* e a de cada família, quando ela sobe: 9.3.1 a 1A … 9.3.8 a 8A (FAM93) */
+  '9.3.1':'Audios/audio_tabela_9.3.1.mp3',
+  '9.3.2':'Audios/audio_tabela_9.3.2.mp3',
+  '9.3.3':'Audios/audio_tabela_9.3.3.mp3',
+  '9.3.4':'Audios/audio_tabela_9.3.4.mp3',
+  '9.3.5':'Audios/audio_tabela_9.3.5.mp3',
+  '9.3.6':'Audios/audio_tabela_9.3.6.mp3',
+  '9.3.7':'Audios/audio_tabela_9.3.7.mp3',
+  '9.3.8':'Audios/audio_tabela_9.3.8.mp3',
   '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: os blocos (ainda por gravar) */
 };
 /* a trilha com que cada slide começa */
@@ -6079,7 +6088,7 @@ const ROTEIROS = {
   '9.1':  [],
   '9.2':  [],
   '9.3':  [],
-  '9.3.1':[],
+  '9.3.0':[], '9.3.1':[], '9.3.2':[], '9.3.3':[], '9.3.4':[], '9.3.5':[], '9.3.6':[], '9.3.7':[], '9.3.8':[],
   '10':   []
 };
 
@@ -18855,7 +18864,22 @@ const FAM93 = {
     if (this.sobe === g){ this.desce(g); this.dica(); return; }
     this.levanta(g);
     tocaEfeito('flip');
-    this.etapa = Math.max(this.etapa, this.GRUPOS.indexOf(g) + 1);
+    /* a fala da família ("9.3.1" a 1A … "9.3.8" a 8A): corta a que estiver a tocar */
+    const i = this.GRUPOS.indexOf(g);
+    tocaTrilha('9.3.' + (i + 1));
+    /* e a seguinte abre-se: na 1A aos 3 s da fala, na 2A aos 2 s; da 3A em
+       diante, logo — só na sequência */
+    const ESPERA = [3, 2];
+    if (i < ESPERA.length && this.etapa <= i) this.espera = { i:i + 1, trilha:'9.3.' + (i + 1), t:ESPERA[i] };
+    else this.etapa = Math.max(this.etapa, i + 1);
+    this.dica();
+  },
+  /* (a cada tique da fala que está a tocar: chegou o segundo, abre a seguinte) */
+  libera(t){
+    const E = this.espera;
+    if (!E || trilhaAtual !== E.trilha || (t < E.t && !som.ended)) return;
+    this.espera = null;
+    this.etapa = Math.max(this.etapa, E.i);
     this.dica();
   },
   levanta(g){
@@ -18926,7 +18950,7 @@ const FAM93 = {
       [...this.cartas(g), this.rot[g]].forEach(el => { if (el){ el.style.transition = ''; el.style.translate = ''; } });
       this.etq[g].classList.remove('on');
     });
-    this.sobe = null; this.etapa = 0;
+    this.sobe = null; this.etapa = 0; this.espera = null;
   }
 };
 window.FAM93 = FAM93;
@@ -19060,7 +19084,7 @@ const EV9 = {
     if (!this.esperaToque()) return;
     estouraBolha(this.toque93, '#F4F2F8');
     playDepois();
-    tocaTrilha('9.3.1');
+    tocaTrilha('9.3.0');
   },
   /* o texto t com n letras escritas: o resto no lugar, transparente */
   escreve(el, txt, n){ el.querySelector('.ja').textContent = txt.slice(0, n); el.querySelector('.falta').textContent = txt.slice(n); },
@@ -19076,11 +19100,15 @@ const EV9 = {
     const de91 = trilhaAtual === '9.1', comecou91 = de91 && (t > 0.05 || !som.paused);
     const t9 = monta ? 99 : de9 ? t : de91 ? 99 : -1;
     /* (na "9.2" a cena da "9.1" fica como acabou, até aos 9 s dela) */
-    const de92 = trilhaAtual === '9.2', de93 = trilhaAtual === '9.3', de931 = trilhaAtual === '9.3.1';
+    /* (de931: a abertura das famílias, "9.3.0", ou a fala de uma delas, "9.3.1" a "9.3.8") */
+    const de92 = trilhaAtual === '9.2', de93 = trilhaAtual === '9.3', de930 = trilhaAtual === '9.3.0',
+          de931 = /^9\.3\.[0-8]$/.test(trilhaAtual);
     this.tick91(monta ? 99 : de91 ? t : de92 ? 99 : -1, monta, de91, de92 && t >= T92.limpa);
-    /* (na "9.3" e na "9.3.1" os de transição continuam apagados; o texto sai) */
+    /* (na "9.3" e nas das famílias os de transição continuam apagados; o texto sai) */
     this.tick92(monta ? 99 : de92 ? t : de93 || de931 ? 99 : -1, monta, monta || de92);
-    this.tick93(monta ? 99 : de93 ? t : -1, monta, de93, de931 ? t : -1);
+    this.tick93(monta ? 99 : de93 ? t : -1, monta, de93, de930 ? t : de931 ? 99 : -1);
+    /* (a família seguinte abre-se no segundo certo da fala da que subiu) */
+    if (de931 && !monta) FAM93.libera(t);
     /* (entre o fim da "9.2" e a "9.3", sem o play) */
     stage.classList.toggle('sem-play9', de92 && som.ended);
     const nt = this.letras(t9, T9.titulo[0], T9.titulo[1], TITULO_9), F = FRASE_9, nf = this.letras(t9, F.de, F.ate, F.txt);
