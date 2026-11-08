@@ -1526,6 +1526,11 @@ body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
 /* (o verde de confirmação, o mesmo do encaixe do quiz do tópico 6) */
 @keyframes encaixa5{0%{box-shadow:0 0 0 3px #fff, 0 0 26px 10px rgba(62,224,138,.95)} 100%{box-shadow:0 0 0 0 rgba(62,224,138,0)}}
 .pc.ficha5.encaixa5 .face, .bandeja5.encaixa5{animation:encaixa5 .7s ease-out}
+/* tocada sem arrastar, a peça fica selecionada (TOQUE5), em azul, à espera do lugar */
+.pc.ficha5.sel5{z-index:39}
+.pc.ficha5.sel5.sel5 .face{animation:none;box-shadow:0 0 0 3px #4DA3FF, 0 0 22px 7px rgba(77,163,255,.75)}
+.peca5.sel5.sel5{z-index:39;animation:none;box-shadow:0 0 0 3px #4DA3FF, 0 0 22px 7px rgba(77,163,255,.75)}
+.etiqueta5.encaixa5, .peca5.moldura7.encaixa5{animation:encaixa5 .7s ease-out}
 .bandeja5.ferve5[data-estado="solido"]{animation:vibra5 .12s linear 12}
 .bandeja5.ferve5[data-estado="liquido"]{animation:ondula5 .6s ease-in-out 3}
 .bandeja5.ferve5[data-estado="gas"]{animation:sobe5 .9s ease-in-out 2}
@@ -4851,7 +4856,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v47.2';
+const VERSAO = 'v47.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -11353,6 +11358,48 @@ const EV4 = {
    CÓPIAS dos da tabela (ficha5), postas na mesa: a tabela fica intacta.
    ============================================================ */
 const CLASSE_5 = { metais:'metais', ametais:'ametais', nobres:'nobres', hidrogenio:'ametais' };
+/* TOCAR NO CARD E DEPOIS NO LUGAR (todas as questões de arrastar, em todos
+   os quizzes): tocada sem arrastar, a peça fica selecionada (em azul); o
+   toque seguinte, fora das peças, é o lugar — a peça vai para lá como se
+   tivesse sido largada ali (o solta dela decide: bandeja, encaixe, ou volta
+   para a fila), com a animação de encaixe. O clique desse toque não chega à
+   tabela (não conta como resposta) */
+const TOQUE5 = {
+  Q:null, c:null, solta:null, engole:0,
+  seleciona(Q, c, solta){
+    const era = this.c;
+    if (era) era.classList.remove('sel5');
+    if (!Q || era === c){ this.Q = this.c = this.solta = null; return; }
+    Object.assign(this, { Q, c, solta });
+    c.classList.add('sel5');
+    tocaEfeito('flip');
+  },
+  toque(ev){
+    const { Q, c, solta } = this;
+    if (!c) return;
+    if (!Q.aberto || Q.travado || !c.isConnected || c._preso || c.classList.contains('some5')){ this.seleciona(null); return; }
+    const t = ev.target;
+    /* noutra peça de arrastar: é ela quem responde (troca a seleção); num
+       botão (Conferir, Pronto…): a seleção sai e o botão funciona */
+    if (t.closest && t.closest('.arrasta5')) return;
+    if (!t.closest || !stage.contains(t) || t.closest('button, .bt5, .roda4, .quiz-cartao')){ this.seleciona(null); return; }
+    ev.preventDefault(); ev.stopPropagation();
+    this.engole = Date.now();
+    const p = Q.ponto(ev);
+    this.seleciona(null);
+    solta(p.x, p.y);
+    /* foi para um lugar (e não de volta para a fila): o brilho de encaixe */
+    const casa = c._casa;
+    if (casa && Math.hypot(c._x - casa.x, c._y - casa.y) > 4 && !c.classList.contains('encaixa5') && !c.classList.contains('encaixa7')){
+      c.classList.add('encaixa5');
+      setTimeout(() => c.classList.remove('encaixa5'), 700);
+    }
+  }
+};
+document.addEventListener('pointerdown', ev => TOQUE5.toque(ev), true);
+document.addEventListener('click', ev => {
+  if (TOQUE5.engole && Date.now() - TOQUE5.engole < 700){ TOQUE5.engole = 0; ev.stopPropagation(); ev.preventDefault(); }
+}, true);
 const QUIZ5 = {
   aberto:false, passo:0, itens:[], erros:0, tropecos:0, travado:false, g:0, q:null,
   sl(){ return slides[4]; },
@@ -11550,13 +11597,14 @@ const QUIZ5 = {
       ev.preventDefault(); ev.stopPropagation();
       const m = this.mesa(), r = m.getBoundingClientRect(), s = r.width / m.offsetWidth;
       const p = { x:(ev.clientX - r.left) / s, y:(ev.clientY - r.top) / s };
-      c._pega = { dx:c._x - p.x, dy:c._y - p.y, r, s, bx:c._x, by:c._y };
+      c._pega = { dx:c._x - p.x, dy:c._y - p.y, r, s, bx:c._x, by:c._y, cx:ev.clientX, cy:ev.clientY, mov:0 };
       try { c.setPointerCapture(ev.pointerId); } catch (_) {}
       c.classList.add('pegando5');
     });
     c.addEventListener('pointermove', ev => {
       const P = c._pega;
       if (!P) return;
+      P.mov = Math.max(P.mov, Math.hypot(ev.clientX - P.cx, ev.clientY - P.cy));
       c._x = (ev.clientX - P.r.left) / P.s + P.dx;
       c._y = (ev.clientY - P.r.top) / P.s + P.dy;
       c.style.setProperty('--vx', (c._x - P.bx).toFixed(1) + 'px');
@@ -11564,11 +11612,22 @@ const QUIZ5 = {
       if (mexe) mexe(c._x, c._y);
     });
     const larga = () => {
-      if (!c._pega) return;
+      const P = c._pega;
+      if (!P) return;
       c._pega = null;
       /* o lugar passa para left/top ainda sem transição (pegando5), e só
          depois a peça volta a animar o que o solta pedir */
       c.style.removeProperty('--vx'); c.style.removeProperty('--vy');
+      /* TOCAR SEM ARRASTAR: a peça fica selecionada (e o toque seguinte, no
+         lugar, leva-a para lá — TOQUE5); tocar de novo nela desfaz */
+      if (P.mov < 8){
+        this.poe(c, P.bx, P.by);
+        void c.offsetWidth;
+        c.classList.remove('pegando5');
+        TOQUE5.seleciona(this, c, solta);
+        return;
+      }
+      TOQUE5.seleciona(null);
       this.poe(c, c._x, c._y);
       void c.offsetWidth;
       c.classList.remove('pegando5');

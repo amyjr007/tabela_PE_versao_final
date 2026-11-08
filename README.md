@@ -32,6 +32,14 @@ as três partes (Quiz 1, 2 e 3) são um quiz só, com um cartão no fim, e
 ficam verdes juntas. O jogo da memória também: vermelho com "(falta fazer)";
 acabado (o cartão da nota), verde, só com a nota.
 
+Em todas as questões de arrastar (cards para bandejas, etiquetas para
+lugares, barras, a moldura…), dá também para **tocar na peça e depois no
+lugar** (`TOQUE5`, no `arrastavel` comum aos quizzes): tocada sem arrastar, a
+peça fica selecionada, em azul (tocar de novo desfaz; tocar noutra troca); o
+toque seguinte é o lugar — a peça vai para lá como se tivesse sido largada
+ali, com a animação de encaixe; num botão (Conferir, Pronto) a seleção sai. O
+clique desse toque não chega à tabela (não conta como resposta).
+
 ## Os cubos
 
 Cada elemento é um **cubo de seis faces iguais**: número atômico,
