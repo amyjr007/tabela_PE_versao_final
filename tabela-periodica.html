@@ -2828,6 +2828,14 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
   animation:atomo9c .7s cubic-bezier(.3,1.4,.5,1) both}
 @keyframes atomo9c{from{scale:.3;opacity:0}}
 .atomo9c svg{display:block;overflow:visible}
+/* (Q1: sem o painel — o átomo solto sobre a tabela bem escurecida, aceso:
+   as órbitas e os elétrons com brilho) */
+.slide.quiz9 .mesa.mesa.valencia.escura9.breu9 .pc.pc:not(.ficha5):not(.alvo9){filter:brightness(.22)}
+.slide.quiz9 .mesa.mesa.valencia.breu9 .casa.casa{opacity:.12!important}
+.atomo9c.solto9{background:radial-gradient(circle closest-side, rgba(0,0,0,.8) 78%, rgba(0,0,0,0));border:none;box-shadow:none}
+.atomo9c.solto9 .orb9a{stroke:rgba(214,240,255,.85);filter:drop-shadow(0 0 5px rgba(120,200,255,.9))}
+.atomo9c.solto9 .e9{filter:drop-shadow(0 0 7px rgba(110,190,255,.95))}
+.atomo9c.solto9 .cont9{opacity:1;filter:drop-shadow(0 0 4px rgba(0,0,0,.9))}
 .atomo9c .faixa9{fill:none;stroke:transparent;stroke-width:56}
 .atomo9c .orb9a{fill:none;stroke:rgba(244,242,248,.5);stroke-width:2.5;transition:stroke .3s ease, stroke-width .3s ease}
 .atomo9c .cont9{font:700 17px var(--display);fill:#F4F2F8;opacity:.85}
@@ -4843,7 +4851,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v47.1';
+const VERSAO = 'v47.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16570,7 +16578,7 @@ function limpa9(Q){
   (Q.marcados || []).forEach(c => { c.classList.remove('certa3', 'frente3', 'acende9'); c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe'); c.style.removeProperty('--atraso9'); });
   Q.marcados = [];
   const m = Q.mesa();
-  m.classList.remove('some9', 'escura9', 'apaga9', 'vao9');
+  m.classList.remove('some9', 'escura9', 'apaga9', 'vao9', 'breu9');
   m.querySelectorAll('.marca9, .acende9, .alvo9').forEach(c => c.classList.remove('marca9', 'acende9', 'alvo9'));
   m.querySelectorAll('.rot-a.mostra9').forEach(r => r.classList.remove('mostra9'));
   Q.sl().querySelectorAll('.q9p').forEach(e => e.remove());
@@ -16797,10 +16805,12 @@ const periodo9 = z => +posFull(z).row;
 const QUESTOES_9 = [
   /* Q1 · Lembrar · onde fica a camada de valência */
   { monta(Q){
-      Q.mesa().classList.add('some9');
+      /* (sem o painel: a tabela escurece ao fundo e o átomo fica em destaque, aceso) */
+      Q.mesa().classList.add('escura9', 'breu9');
       this.z = sorteia5([8, 11, 17, 12, 19, 20]);
       this.cs = CAMADAS_9[this.z];
       this.at = ATOMO9.cria(Q, this.z, this.cs, 640, 452, k => this.anel(Q, k));
+      this.at.d.classList.add('solto9');
       return 'Toque na camada de valência deste átomo.';
     },
     anel(Q, k){
