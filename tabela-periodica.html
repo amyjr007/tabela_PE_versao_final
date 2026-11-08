@@ -4629,7 +4629,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v45.5';
+const VERSAO = 'v45.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5933,6 +5933,7 @@ const TRILHAS = {
   '9.3.6':'Audios/audio_tabela_9.3.6.mp3',
   '9.3.7':'Audios/audio_tabela_9.3.7.mp3',
   '9.3.8':'Audios/audio_tabela_9.3.8.mp3',
+  '9.3.9':'Audios/audio_tabela_9.3.9.mp3', /* sozinha, no fim da 8A: a mão abre a distribuição, e o quiz (EV9) */
   '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: os blocos (ainda por gravar) */
 };
 /* a trilha com que cada slide começa */
@@ -6089,6 +6090,18 @@ const ROTEIROS = {
   '9.2':  [],
   '9.3':  [],
   '9.3.0':[], '9.3.1':[], '9.3.2':[], '9.3.3':[], '9.3.4':[], '9.3.5':[], '9.3.6':[], '9.3.7':[], '9.3.8':[],
+  /* a "9.3.9" (sozinha, no fim da 8A): aos 4 s a mão aparece, aos 5,8 s vai à
+     etiqueta "N elétrons" da família de cima e toca-a — abre a distribuição
+     eletrônica —, e sai; aos 11,8 s a caixa fecha; aos 13 s o play vira o
+     botão do quiz (sem o play até lá) */
+  '9.3.9':[
+    { t:4.0,  faz(){ EV9.mao939('aparece'); } },
+    { t:5.8,  faz(){ EV9.mao939('vai'); } },
+    { t:6.4,  faz(){ EV9.mao939('toca'); } },
+    { t:7.3,  faz(){ tiraMao(); } },
+    { t:11.8, faz(){ FAM93.fechaDist(); } },
+    { t:13.0, faz(){ if (atual === 9) viraQuiz(true); } }
+  ],
   '10':   []
 };
 
@@ -6614,6 +6627,8 @@ function tocaOuPara(){
   /* e o do quiz, o quiz do slide 3 */
   /* (o do slide 8 ainda espera as questões) */
   if (somBtn.classList.contains('botao-quiz') && atual === 7){ TP.diz('As questões deste quiz ainda vão chegar.'); return; }
+  /* (e o do slide 10, o do fim da "9.3.9", também) */
+  if (somBtn.classList.contains('botao-quiz') && atual === 9){ TP.diz('As questões deste quiz ainda vão chegar.'); return; }
   /* o "Resumo" do fim da "2.5A": o resumo interativo do tópico 2 */
   /* (e o do fim da "8.4": o resumo do slide em que se está) */
   if (somBtn.classList.contains('botao-quiz') && somBtn.dataset.resumo){
@@ -6802,6 +6817,8 @@ const SEQ = {
     else if (id === '9') carregaTrilha('9.1');
     /* e o da "9.1", a "9.2" */
     else if (id === '9.1') carregaTrilha('9.2');
+    /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
+    else if (id === '9.3.8'){ if (atual === 9) tocaTrilha('9.3.9'); }
     /* o da "9.2": 1,5 s depois, a "9.3", sem esperar o play (EV9) */
     else if (id === '9.2'){
       clearTimeout(EV9.vai93);
@@ -18864,6 +18881,9 @@ const FAM93 = {
     if (this.sobe === g){ this.desce(g); this.dica(); return; }
     this.levanta(g);
     tocaEfeito('flip');
+    /* (na "9.3.9" e depois dela, as famílias sobem e descem livres, sem fala:
+       a narração e o botão do quiz ficam como estão) */
+    if (trilhaAtual === '9.3.9'){ this.dica(); return; }
     /* a fala da família ("9.3.1" a 1A … "9.3.8" a 8A): corta a que estiver a tocar */
     const i = this.GRUPOS.indexOf(g);
     tocaTrilha('9.3.' + (i + 1));
@@ -19079,6 +19099,16 @@ const EV9 = {
     FAM93.prepara(m);
   },
   /* o toque no fim da "9.3": a "9.3.1" (a tela escura sai aos 0,7 s dela) */
+  /* a mão da "9.3.9": aparece embaixo à direita da etiqueta da família de cima
+     (sem nenhuma em cima, a 8A sobe), vai até ela e toca-a — abre a caixa */
+  mao939(passo){
+    if (atual !== 9 || !FAM93.m) return;
+    if (FAM93.sobe === null) FAM93.levanta(18);
+    const g = FAM93.sobe, e = FAM93.etq[g];
+    if (passo === 'aparece') levaMao(e, { fx:1.6, fy:2.6 });
+    else if (passo === 'vai') levaMao(e, { fx:.5, fy:.6 });
+    else { bateMao(); if (FAM93.distG !== g) FAM93.alternaDist(g); }
+  },
   esperaToque(){ return atual === 9 && trilhaAtual === '9.3' && !naMontagem() && (som.ended || (som.currentTime || 0) >= T93.fim); },
   continua(){
     if (!this.esperaToque()) return;
@@ -19102,7 +19132,7 @@ const EV9 = {
     /* (na "9.2" a cena da "9.1" fica como acabou, até aos 9 s dela) */
     /* (de931: a abertura das famílias, "9.3.0", ou a fala de uma delas, "9.3.1" a "9.3.8") */
     const de92 = trilhaAtual === '9.2', de93 = trilhaAtual === '9.3', de930 = trilhaAtual === '9.3.0',
-          de931 = /^9\.3\.[0-8]$/.test(trilhaAtual);
+          de931 = /^9\.3\.[0-9]$/.test(trilhaAtual);
     this.tick91(monta ? 99 : de91 ? t : de92 ? 99 : -1, monta, de91, de92 && t >= T92.limpa);
     /* (na "9.3" e nas das famílias os de transição continuam apagados; o texto sai) */
     this.tick92(monta ? 99 : de92 ? t : de93 || de931 ? 99 : -1, monta, monta || de92);
@@ -19110,7 +19140,8 @@ const EV9 = {
     /* (a família seguinte abre-se no segundo certo da fala da que subiu) */
     if (de931 && !monta) FAM93.libera(t);
     /* (entre o fim da "9.2" e a "9.3", sem o play) */
-    stage.classList.toggle('sem-play9', de92 && som.ended);
+    /* (e na "9.3.9", até o botão do quiz, aos 13 s) */
+    stage.classList.toggle('sem-play9', de92 && som.ended || trilhaAtual === '9.3.9' && t < 13 && !som.ended);
     const nt = this.letras(t9, T9.titulo[0], T9.titulo[1], TITULO_9), F = FRASE_9, nf = this.letras(t9, F.de, F.ate, F.txt);
     if (nt !== this.nt || nf !== this.nf){
       if ((nt > this.nt && this.nt >= 0 || nf > this.nf && this.nf >= 0) && !monta && de9) TECLAS.bate();

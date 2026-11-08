@@ -179,6 +179,7 @@ const CASCA = [
   './Audios/audio_tabela_9.3.6.mp3',
   './Audios/audio_tabela_9.3.7.mp3',
   './Audios/audio_tabela_9.3.8.mp3',
+  './Audios/audio_tabela_9.3.9.mp3',
   './Imagens/diagrama.jpeg',
   './Imagens/pauling_recorte.webp',
   './Audios/audio_tabela_10.0.mp3',

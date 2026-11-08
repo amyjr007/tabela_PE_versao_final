@@ -856,6 +856,13 @@ var LEGENDAS = {
   "audio_tabela_9.3.6": [[0,1.96,"6 elétrons de valência."]],
   "audio_tabela_9.3.7": [[0,2.04,"7 elétrons de valência."]],
   "audio_tabela_9.3.8": [[0,1.96,"8 elétrons de valência."]],
+  "audio_tabela_9.3.9": [
+    [0,1.14,"Pronto, é isso."],
+    [1.63,2.28,"Só um detalhe:"],
+    [2.64,9.65,"você pode clicar no número de elétrons que aparece ao lado de cada família e conferir a distribuição eletrônica"],
+    [10.03,11.81,"de cada elemento, só pra você ver se a informação bate."],
+    [12.24,16.27,"Ou, quando quiser, toque no quiz ali, pra gente ver se você entendeu."]
+  ],
   "quiz1": [
     [0,1.94,"Certo, vamos pra primeira questão."]
   ],
