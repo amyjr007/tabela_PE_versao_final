@@ -701,8 +701,11 @@ professor ("Quiz · A natureza dos elementos"): oito questões pela taxonomia
 revisada de Bloom, no ritual do `QUIZ5`, na tabela de 18 colunas com as séries
 embaixo, todas tocáveis, e sem as cores da narração (aberto o quiz, a trilha sai
 e o EV8 as desliga). 1) toque no último natural (o U; a tabela divide-se numa
-linha luminosa depois dele); 2) as etiquetas Cisurânicos e Transurânicos (e a
-armadilha Naturais) nos dois grupos acesos, com a tabela encolhida; 3) seis
+linha luminosa depois dele); 2) "Arraste o card pro espaço correspondente": as
+etiquetas Cisurânicos e Transurânicos (e a armadilha Naturais) nos dois grupos
+acesos, com a tabela encolhida — as etiquetas soltas e os lugares vazios piscam,
+e dá também para tocar na etiqueta (fica selecionada, em azul) e depois no lugar
+(isso vale para as etiquetas da Q8 também); 3) seis
 cards para Natural e Artificial (as bandejas), com as dicas de cada erro; 4) o
 cubo e dois carrosséis de palavras (origem e núcleo); 5) a **régua numérica**
 (`regua8`, nova: de 1 a 118, cursores de 60 px que se encaixam nos inteiros, o

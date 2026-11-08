@@ -2905,6 +2905,18 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .leg8.l8c{color:#6FB2FF}
 .leg8.l8d{color:#B48CFF}
 .etiqueta5.etq8{font-size:15px;line-height:1.1;text-align:center;white-space:normal;padding:0 8px}
+/* as etiquetas soltas e os lugares vazios piscam (âmbar); a etiqueta tocada fica
+   selecionada (azul), e os lugares vazios a chamam; os lugares pegam o toque */
+@keyframes pisca8e{0%,100%{box-shadow:0 6px 14px rgba(0,0,0,.5), 0 0 0 2px rgba(255,190,60,.35)}
+                   50%{box-shadow:0 6px 14px rgba(0,0,0,.5), 0 0 0 3px rgba(255,190,60,.95), 0 0 20px 6px rgba(255,170,30,.6)}}
+.etiqueta5.etq8.pisca8{animation:pisca8e 1.3s ease-in-out infinite}
+@keyframes pisca8s{0%,100%{border-color:rgba(255,212,59,.35);background:rgba(255,212,59,.04)}
+                   50%{border-color:rgba(255,190,60,1);background:rgba(255,190,60,.2);box-shadow:0 0 18px 4px rgba(255,170,30,.45)}}
+.slot5.slot8.pisca8{animation:pisca8s 1.3s ease-in-out infinite}
+.slot5.slot8{pointer-events:auto;cursor:pointer}
+.etiqueta5.etq8.sel8{animation:none;scale:1.08;box-shadow:0 0 0 4px #4DA3FF, 0 0 22px 6px rgba(77,163,255,.7)}
+.slot5.slot8.alvo8s{animation:pisca8s .7s ease-in-out infinite}
+.etiqueta5.etq8.encaixa5{animation:encaixa7 .7s ease-out}
 .fronteira8{position:absolute;z-index:33;display:grid;place-items:center;border-radius:999px;pointer-events:none;
   background:#FFE680;color:#3A2A00;font:800 15px var(--display);box-shadow:0 0 14px 4px rgba(255,214,90,.7);animation:val9 .5s ease both}
 /* Q3, Q6: as bandejas e a grade 2 × 2 (nova); os cards que voam; os naturais radioativos pulsando */
@@ -4820,7 +4832,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v46.6';
+const VERSAO = 'v46.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17308,25 +17320,57 @@ const valorRoda8 = r => (r._alvo !== undefined && r._alvo !== null) ? r._alvo : 
 function etiquetas8(Q, q, nomes, ys, slots){
   q.slots = slots.map(s => {
     const p = M8(Q, s.x, s.y);
-    const el = Q.pecaCentro('slot5 slot7 slot8' + (s.cls ? ' ' + s.cls : ''), '', p.x, p.y, s.w, 44);
+    const el = Q.pecaCentro('slot5 slot7 slot8 pisca8' + (s.cls ? ' ' + s.cls : ''), '', p.x, p.y, s.w, 44);
     el.dataset.certo = s.certo;
     el._meia = s.w / 2;
     el._etq = null;
+    /* (tocar no lugar, com uma etiqueta selecionada, leva-a para lá) */
+    el.addEventListener('pointerdown', ev => ev.stopPropagation());
+    el.addEventListener('click', ev => {
+      ev.stopPropagation();
+      if (!Q.aberto || Q.travado || !q.sel) return;
+      const e = q.sel;
+      q.seleciona(null);
+      q.solta(Q, e, el._x, el._y);
+    });
     return el;
   });
+  /* tocar numa etiqueta (sem arrastar) seleciona-a; tocar de novo desfaz */
+  q.sel = null;
+  q.seleciona = e => {
+    if (q.sel) q.sel.classList.remove('sel8');
+    q.sel = e && e !== q.sel ? e : null;
+    if (q.sel) q.sel.classList.add('sel8');
+    q.slots.forEach(s => s.classList.toggle('alvo8s', !!q.sel && !s._etq));
+  };
+  /* o pisca: as etiquetas soltas, e os lugares ainda vazios */
+  q.pisca = () => {
+    q.etqs.forEach(e => e.classList.toggle('pisca8', !e._slot && !e._preso));
+    q.slots.forEach(s => s.classList.toggle('pisca8', !s._etq));
+  };
   const larg = 214, gap = 12, tot = nomes.length * larg + (nomes.length - 1) * gap;
   q.bandeja = Q.pecaCentro('bandeja5 bandeja7 etiquetas7', '', M8(Q, 640, ys).x, M8(Q, 640, ys).y, tot + 40, 64);
   q.etqs = embaralha(nomes.slice()).map((t, i) => {
     const p = M8(Q, 640 - tot / 2 + larg / 2 + i * (larg + gap), ys);
-    const e = Q.pecaCentro('etiqueta5 etq7 etq8', t, p.x, p.y, larg, 42);
+    const e = Q.pecaCentro('etiqueta5 etq7 etq8 pisca8', t, p.x, p.y, larg, 42);
     e._casa = { x:p.x, y:p.y };
     e.dataset.t = t;
     e._slot = null;
-    Q.arrastavel(e, (x, y) => q.solta(Q, e, x, y));
+    Q.arrastavel(e, (x, y) => {
+      /* largada quase onde foi pega: foi um toque, e não um arrasto — seleciona */
+      if (e._antes && Math.hypot(x - e._antes.x, y - e._antes.y) < 8){
+        Q.poe(e, e._antes.x, e._antes.y);
+        q.seleciona(e);
+        return;
+      }
+      q.seleciona(null);
+      q.solta(Q, e, x, y);
+    });
+    e.addEventListener('pointerdown', () => { e._antes = { x:e._x, y:e._y }; });
     return e;
   });
   q.tira = e => { if (e._slot){ e._slot._etq = null; e._slot.classList.remove('ocupado5'); e._slot = null; } };
-  q.volta = (Q, e) => { q.tira(e); Q.poe(e, e._casa.x, e._casa.y); };
+  q.volta = (Q, e) => { q.tira(e); Q.poe(e, e._casa.x, e._casa.y); q.pisca(); };
   q.solta = (Q, e, x, y) => {
     q.tira(e);
     const s = q.slots.find(s => Math.abs(x - s._x) < s._meia + 6 && Math.abs(y - s._y) < 40);
@@ -17335,7 +17379,11 @@ function etiquetas8(Q, q, nomes, ys, slots){
     s._etq = e; e._slot = s;
     s.classList.add('ocupado5');
     Q.poe(e, s._x, s._y);
-    tocaEfeito('flip');
+    /* o encaixe: o brilho de confirmação e o "right" */
+    e.classList.remove('encaixa5'); void e.offsetWidth; e.classList.add('encaixa5');
+    setTimeout(() => e.classList.remove('encaixa5'), 700);
+    tocaEfeito('right');
+    q.pisca();
     q.pronto && q.pronto();
   };
 }
@@ -17374,13 +17422,14 @@ const QUESTOES_8 = [
       this.bt = botao8(Q, 'Pronto', 1205, 664, () => this.confere(Q));
       this.bt.classList.add('some5');
       this.pronto = () => this.bt.classList.toggle('some5', this.slots.some(s => !s._etq));
-      return 'Arraste cada nome para o grupo dele.';
+      return 'Arraste o card pro espaço correspondente.';
     },
     confere(Q){
       const errados = this.slots.filter(s => s._etq.dataset.t !== s.dataset.certo);
       if (!errados.length){
         this.etqs.forEach(e => e._preso = true);
         this.bt.classList.add('some5');
+        this.etqs.forEach(e => e.classList.remove('pisca8'));
         /* o urânio acende entre os dois grupos, a fronteira: "antes · depois" */
         const u = Q.carta(92);
         u.classList.add('certa3'); QUIZ3.cresce.call(QUIZ3, u); Q.marcados.push(u);
@@ -17457,11 +17506,7 @@ const QUESTOES_8 = [
         Q.acerta();
         return;
       }
-      const zs = erradas.map(c => +c.dataset.z);
-      const dica = zs.some(z => NAT8(z) && RAD8(z)) ? 'Ser radioativo não decide a origem. O urânio, por exemplo, é encontrado na natureza.'
-        : zs.some(z => z === 43 || z === 61) ? 'Vir antes do urânio não garante que seja natural. Lembra das duas exceções?'
-        : 'A origem é onde o elemento é encontrado: na natureza ou só em laboratório.';
-      Q.erra(dica, erradas, () => erradas.flatMap(c => [c, this.bandejas.find(b => b.dataset.k === certo(c))]));
+      Q.erra('Lembre-se que do 1 ao 92 são os naturais (exceto o Tc e Pm).', erradas, () => erradas.flatMap(c => [c, this.bandejas.find(b => b.dataset.k === certo(c))]));
       setTimeout(() => { erradas.forEach(c => { c._k = null; }); this.arruma(Q); }, 650);
     },
     limpa(Q){ limpa8(Q); } },
@@ -17471,6 +17516,8 @@ const QUESTOES_8 = [
       Q.mesa().classList.add('escura8');
       [this.z, this.o, this.n] = sorteia5([[29, 0, 0], [82, 0, 0], [83, 0, 1], [84, 0, 1], [92, 0, 1], [43, 1, 1], [95, 1, 1]]);
       this.c = Q.carta(this.z);
+      /* (o elemento pisca na tabela de fundo, para o aluno achá-lo) */
+      this.c.classList.add('alvo8');
       this.caixa = caixa8(Q, [['origem', ['Natural', 'Artificial']], ['núcleo', ['Estável', 'Radioativo']]], this.z, 540, 158);
       this.bt = botao8(Q, 'Confirmar', 1205, 640, () => this.confirma(Q));
       return 'Gire os carrosséis e classifique este elemento.';
@@ -17638,7 +17685,7 @@ const QUESTOES_8 = [
       const [frase, julga, prova] = sorteia5([
         ['Todo elemento radioativo é artificial.', 'nao', z => z >= 83 && z <= 92],
         ['Todo elemento antes do urânio é natural.', 'nao', z => z === 43 || z === 61],
-        ['Todo elemento até o chumbo é estável.', 'nao', z => z === 43 || z === 61],
+        ['Todo elemento até o chumbo, 82, é estável.', 'nao', z => z === 43 || z === 61],
         ['Todo elemento depois do urânio é artificial.', 'sim', z => z >= 93],
         ['Todo elemento artificial é radioativo.', 'sim', z => z >= 93 || z === 43 || z === 61]]);
       Object.assign(this, { julga, prova, julgado:false });
@@ -17711,6 +17758,7 @@ const QUESTOES_8 = [
         this.etqs.forEach(e => e._preso = true);
         this.bt.classList.add('some5');
         this.regua.travada = true;
+        this.etqs.forEach(e => e.classList.remove('pisca8'));
         /* as faixas sobem para a tabela: cada elemento na cor da sua faixa */
         setTimeout(() => {
           this.regua.el.classList.add('sai8');
