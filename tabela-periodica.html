@@ -4640,7 +4640,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v45.9';
+const VERSAO = 'v46.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -19023,7 +19023,8 @@ const FAM93 = {
     });
     /* o toque nas cartas: só as das famílias A (menos o hélio) */
     m.addEventListener('click', ev => {
-      if (!this.ativo) return;
+      /* (com o quiz aberto, quem responde ao toque é o quiz) */
+      if (!this.ativo || QUIZ9.aberto) return;
       const c = ev.target.closest && ev.target.closest('.pc');
       if (!c) return;
       const g = +c.dataset.col, z = +c.dataset.z;
@@ -19434,7 +19435,7 @@ const EV9 = {
     stage.classList.toggle('em-toque', p);
     /* (a mesa encolhe um fio, debaixo da tela escura, para a família que sobe caber) */
     this.mesa.classList.toggle('fam93', encolhe);
-    if (toca) FAM93.liga(true);
+    if (toca && !QUIZ9.aberto) FAM93.liga(true);
     else if (FAM93.ativo || FAM93.sobe !== null) FAM93.reseta();
   },
   tick91(t, monta, de91, limpa){
