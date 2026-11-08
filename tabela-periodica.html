@@ -4629,7 +4629,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v45.6';
+const VERSAO = 'v45.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6090,16 +6090,19 @@ const ROTEIROS = {
   '9.2':  [],
   '9.3':  [],
   '9.3.0':[], '9.3.1':[], '9.3.2':[], '9.3.3':[], '9.3.4':[], '9.3.5':[], '9.3.6':[], '9.3.7':[], '9.3.8':[],
-  /* a "9.3.9" (sozinha, no fim da 8A): aos 4 s a mão aparece, aos 5,8 s vai à
-     etiqueta "N elétrons" da família de cima e toca-a — abre a distribuição
-     eletrônica —, e sai; aos 11,8 s a caixa fecha; aos 13 s o play vira o
-     botão do quiz (sem o play até lá) */
+  /* a "9.3.9" (no fim da 8A, depois da festa): aos 4 s a mão aparece, aos 5,8 s
+     vai à etiqueta "N elétrons" da família de cima e toca-a — abre a
+     distribuição eletrônica —, e afasta-se; aos 11,2 s volta ao mesmo botão e,
+     aos 11,8 s, toca-o outra vez — a caixa fecha —, e sai; aos 13 s o play vira
+     o botão do quiz (sem o play até lá) */
   '9.3.9':[
     { t:4.0,  faz(){ EV9.mao939('aparece'); } },
     { t:5.8,  faz(){ EV9.mao939('vai'); } },
     { t:6.4,  faz(){ EV9.mao939('toca'); } },
-    { t:7.3,  faz(){ tiraMao(); } },
-    { t:11.8, faz(){ FAM93.fechaDist(); } },
+    { t:7.3,  faz(){ EV9.mao939('aparece'); } },
+    { t:11.2, faz(){ EV9.mao939('vai'); } },
+    { t:11.8, faz(){ EV9.mao939('fecha'); } },
+    { t:12.6, faz(){ tiraMao(); } },
     { t:13.0, faz(){ if (atual === 9) viraQuiz(true); } }
   ],
   '10':   []
@@ -6818,7 +6821,8 @@ const SEQ = {
     /* e o da "9.1", a "9.2" */
     else if (id === '9.1') carregaTrilha('9.2');
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
-    else if (id === '9.3.8'){ if (atual === 9) tocaTrilha('9.3.9'); }
+    /* (antes dela, a festa: os confetes, o funfare e os aplausos) */
+    else if (id === '9.3.8'){ if (atual === 9) EV9.festa93(); }
     /* o da "9.2": 1,5 s depois, a "9.3", sem esperar o play (EV9) */
     else if (id === '9.2'){
       clearTimeout(EV9.vai93);
@@ -18883,7 +18887,7 @@ const FAM93 = {
     tocaEfeito('flip');
     /* (na "9.3.9" e depois dela, as famílias sobem e descem livres, sem fala:
        a narração e o botão do quiz ficam como estão) */
-    if (trilhaAtual === '9.3.9'){ this.dica(); return; }
+    if (trilhaAtual === '9.3.9' || trilhaAtual === '9.3.8' && som.ended){ this.dica(); return; }
     /* a fala da família ("9.3.1" a 1A … "9.3.8" a 8A): corta a que estiver a tocar */
     const i = this.GRUPOS.indexOf(g);
     tocaTrilha('9.3.' + (i + 1));
@@ -19101,12 +19105,26 @@ const EV9 = {
   /* o toque no fim da "9.3": a "9.3.1" (a tela escura sai aos 0,7 s dela) */
   /* a mão da "9.3.9": aparece embaixo à direita da etiqueta da família de cima
      (sem nenhuma em cima, a 8A sobe), vai até ela e toca-a — abre a caixa */
+  /* a festa da última família (no fim da fala da 8A): os confetes, o funfare e
+     os aplausos; acabado o funfare, a "9.3.9" (os aplausos seguem por baixo) */
+  festa93(){
+    if (!slides[9].querySelector('.confete'))
+      slides[9].insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
+    const g = ++this.festaG;
+    stage.classList.add('sem-play9');
+    confete();
+    tocaEfeito('applause');
+    tocaEfeito('funfare').then(() => { if (g === this.festaG && atual === 9 && trilhaAtual === '9.3.8') tocaTrilha('9.3.9'); });
+  },
+  festaG:0,
   mao939(passo){
     if (atual !== 9 || !FAM93.m) return;
     if (FAM93.sobe === null) FAM93.levanta(18);
     const g = FAM93.sobe, e = FAM93.etq[g];
     if (passo === 'aparece') levaMao(e, { fx:1.6, fy:2.6 });
     else if (passo === 'vai') levaMao(e, { fx:.5, fy:.6 });
+    /* (toca: abre a caixa; fecha: o mesmo botão, outra vez, fecha-a) */
+    else if (passo === 'fecha'){ bateMao(); if (FAM93.distG === g) FAM93.alternaDist(g); }
     else { bateMao(); if (FAM93.distG !== g) FAM93.alternaDist(g); }
   },
   esperaToque(){ return atual === 9 && trilhaAtual === '9.3' && !naMontagem() && (som.ended || (som.currentTime || 0) >= T93.fim); },
@@ -19141,7 +19159,8 @@ const EV9 = {
     if (de931 && !monta) FAM93.libera(t);
     /* (entre o fim da "9.2" e a "9.3", sem o play) */
     /* (e na "9.3.9", até o botão do quiz, aos 13 s) */
-    stage.classList.toggle('sem-play9', de92 && som.ended || trilhaAtual === '9.3.9' && t < 13 && !som.ended);
+    stage.classList.toggle('sem-play9', de92 && som.ended || trilhaAtual === '9.3.9' && t < 13 && !som.ended ||
+                                        trilhaAtual === '9.3.8' && som.ended);   /* (e na festa, antes dela) */
     const nt = this.letras(t9, T9.titulo[0], T9.titulo[1], TITULO_9), F = FRASE_9, nf = this.letras(t9, F.de, F.ate, F.txt);
     if (nt !== this.nt || nf !== this.nf){
       if ((nt > this.nt && this.nt >= 0 || nf > this.nf && this.nf >= 0) && !monta && de9) TECLAS.bate();
@@ -19259,7 +19278,7 @@ const EV9 = {
   },
   /* chegar ao slide: a tela clara, nada escrito */
   zera(){ this.estado = ''; this.estado91 = ''; this.estadoSetas = ''; this.estado92 = ''; this.estado93 = ''; this.n93 = ''; this.n92 = -1; this.nt = -1; this.nf = -1; this.na = -1;
-          clearTimeout(this.vai93); if (FAM93.m) FAM93.reseta(); if (this.veu) this.tick(-1); },
+          clearTimeout(this.vai93); this.festaG++; if (FAM93.m) FAM93.reseta(); if (this.veu) this.tick(-1); },
   /* saindo do slide com o pedido em cena, o play volta */
   fora(){ clearTimeout(this.vai93); stage.classList.remove('sem-play9');
           if (this.estado93 && this.estado93.split(',')[2] === 'true'){ stage.classList.remove('em-toque'); this.estado93 = ''; } }

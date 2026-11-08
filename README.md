@@ -832,10 +832,12 @@ tela" sem o play. O toque toca a `9.3.0` (`Audios/audio_tabela_9.3.0.mp3`,
 toque. Subida, cada família toca a fala dela — `9.3.1` a 1A … `9.3.8` a 8A —,
 cortando a que estiver a tocar; e a seguinte abre-se: na 1A aos 3 s da fala,
 na 2A aos 2 s, e da 3A em diante logo (sempre na sequência; `FAM93.libera`).
-Acabada a fala da 8A, sozinha, a `9.3.9` (`Audios/audio_tabela_9.3.9.mp3`,
-16,3 s; sem o play): aos 4 s a mão aparece, aos 5,8 s vai à etiqueta "N
-elétrons" da família de cima e toca-a — abre a distribuição eletrônica —, e
-sai; aos 11,8 s a caixa fecha; aos 13 s o play vira o botão do quiz (as
+Acabada a fala da 8A, a festa — os confetes, o funfare e os aplausos
+(`EV9.festa93`) —, e, acabado o funfare, a `9.3.9`
+(`Audios/audio_tabela_9.3.9.mp3`, 16,3 s; sem o play): aos 4 s a mão aparece,
+aos 5,8 s vai à etiqueta "N elétrons" da família de cima e toca-a — abre a
+distribuição eletrônica —, e afasta-se; aos 11,2 s volta ao mesmo botão e, aos
+11,8 s, toca-o outra vez — a caixa fecha —, e sai; aos 13 s o play vira o botão do quiz (as
 questões ainda vão chegar). Dali em diante as famílias sobem e descem livres,
 sem fala.
 As famílias A
