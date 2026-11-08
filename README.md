@@ -832,6 +832,9 @@ tela" sem o play. O toque toca a `9.3.0` (`Audios/audio_tabela_9.3.0.mp3`,
 toque. Subida, cada família toca a fala dela — `9.3.1` a 1A … `9.3.8` a 8A —,
 cortando a que estiver a tocar; e a seguinte abre-se: na 1A aos 3 s da fala,
 na 2A aos 2 s, e da 3A em diante logo (sempre na sequência; `FAM93.libera`).
+Depois da 1A, o toque numa família fora da vez (além da próxima) faz a tela
+tremer em vermelho e aparecer, no vão de cima da tabela, "Toque na sequência.
+Agora é a NA" (`FAM93.avisa`).
 Acabada a fala da 8A, a festa — os confetes, o funfare e os aplausos
 (`EV9.festa93`) —, e, acabado o funfare, a `9.3.9`
 (`Audios/audio_tabela_9.3.9.mp3`, 16,3 s; sem o play): aos 4 s a mão aparece,

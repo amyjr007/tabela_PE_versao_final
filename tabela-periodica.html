@@ -2773,6 +2773,12 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .mesa.valencia.fam93 .pc[data-z="2"]{opacity:.22;filter:grayscale(.9)}
 .mesa.toca93 .pc:is([data-col="1"],[data-col="2"],[data-col="13"],[data-col="14"],[data-col="15"],[data-col="16"],[data-col="17"],[data-col="18"]):not([data-z="2"]){cursor:pointer}
 @keyframes dica93{0%,100%{translate:0 0}50%{translate:0 -5px}}
+/* o aviso do toque fora da vez */
+.aviso93{position:absolute;z-index:45;transform:translate(-50%,-50%) scale(.85);white-space:nowrap;pointer-events:none;
+  padding:12px 26px;border-radius:14px;background:#E5484D;color:#fff;box-shadow:0 10px 28px rgba(229,72,77,.45);
+  font-family:var(--display);font-weight:700;font-size:28px;opacity:0;
+  transition:opacity .3s ease, transform .4s cubic-bezier(.34,1.56,.64,1)}
+.aviso93.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .mesa .pc.dica93{animation:dica93 1.4s ease-in-out infinite}
 .etq93{position:absolute;z-index:40;transform:translate(-50%,-50%);white-space:nowrap;cursor:pointer;
   font-family:var(--display);font-weight:600;font-size:19px;color:#fff;border-radius:999px;padding:5px 16px;
@@ -4629,7 +4635,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v45.7';
+const VERSAO = 'v45.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -18880,7 +18886,17 @@ const FAM93 = {
   cartas(g){ return [...this.m.querySelectorAll('.pc[data-col="' + g + '"]')].filter(c => +c.dataset.z !== 2 && !ehDaSerie(+c.dataset.z)); },
   disponivel(g){ return this.GRUPOS.indexOf(g) <= this.etapa; },
   toca(g){
-    if (!this.disponivel(g)) return;
+    if (!this.disponivel(g)){
+      /* (depois da 1A, o toque numa família fora da vez — além da próxima —:
+         a tela treme em vermelho, e o aviso diz qual é a próxima) */
+      const prox = this.espera ? this.espera.i : this.etapa;
+      if (this.comecou && this.GRUPOS.indexOf(g) > prox && prox < this.GRUPOS.length){
+        tremeVermelho();
+        this.avisa('Toque na sequência. Agora é a ' + (prox + 1) + 'A');
+      }
+      return;
+    }
+    this.comecou = true;
     this.paraDica();
     if (this.sobe === g){ this.desce(g); this.dica(); return; }
     this.levanta(g);
@@ -18897,6 +18913,22 @@ const FAM93 = {
     if (i < ESPERA.length && this.etapa <= i) this.espera = { i:i + 1, trilha:'9.3.' + (i + 1), t:ESPERA[i] };
     else this.etapa = Math.max(this.etapa, i + 1);
     this.dica();
+  },
+  /* o aviso do toque fora da vez: no vão de cima da tabela, grande, no
+     vermelho do erro; some sozinho */
+  avisa(txt){
+    let a = this.m.querySelector('.aviso93');
+    if (!a){
+      a = document.createElement('div');
+      a.className = 'aviso93';
+      a.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
+      a.style.top  = yDaLinha(2).toFixed(1) + 'px';
+      this.m.appendChild(a);
+    }
+    a.textContent = txt;
+    a.classList.remove('on'); void a.offsetWidth; a.classList.add('on');
+    clearTimeout(this.avisoT);
+    this.avisoT = setTimeout(() => a.classList.remove('on'), 2600);
   },
   /* (a cada tique da fala que está a tocar: chegou o segundo, abre a seguinte) */
   libera(t){
@@ -18974,7 +19006,7 @@ const FAM93 = {
       [...this.cartas(g), this.rot[g]].forEach(el => { if (el){ el.style.transition = ''; el.style.translate = ''; } });
       this.etq[g].classList.remove('on');
     });
-    this.sobe = null; this.etapa = 0; this.espera = null;
+    this.sobe = null; this.etapa = 0; this.espera = null; this.comecou = false;
   }
 };
 window.FAM93 = FAM93;
