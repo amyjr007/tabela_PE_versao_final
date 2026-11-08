@@ -883,7 +883,11 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
 5. **Aplicar** — "Coloque os elétrons na camada de valência do X", e embaixo,
    em amarelo, a brilhar e a piscar, "Toque na camada pra adicionar e toque no
    elétron se precisar retirar."; o átomo em camadas (o núcleo com os Z prótons
-   de verdade, em 3D — `ATOMO9.nucleo` —, sem o símbolo por cima)
+   de verdade, em 3D — `ATOMO9.nucleo` —, sem o símbolo por cima); o elétron
+   que entra chega voando de fora, grande e aceso, e explode em luz ao pousar
+   (o clarão, duas ondas de choque e faíscas amarelas — `ATOMO9.estoura`); o
+   que sai incha, brilha e estoura em faíscas laranja; o número de cada anel
+   com o e⁻ ("1e⁻"), nas duas questões do átomo
    com as de dentro prontas e a de fora vazia (tracejada); tocar no anel põe um
    elétron, tocar num elétron tira-o; o card pequeno do elemento ao lado, e ele
    aceso na tabela; no 2º erro, a quantidade certa em âmbar a piscar; no

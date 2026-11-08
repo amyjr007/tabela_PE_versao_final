@@ -2835,6 +2835,32 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .atomo9c .anel9.vazio9 .orb9a{stroke:#FFD43B;stroke-dasharray:10 8;stroke-width:3}
 .atomo9c .fant9 circle{fill:#FFB020;animation:fant9 1s ease-in-out infinite}
 @keyframes fant9{50%{opacity:.25}}
+/* O VFX DO ELÉTRON (Q5): ele chega voando de fora, grande, branco e aceso, e
+   ao pousar explode em luz (o clarão, duas ondas de choque, faíscas); tocado,
+   ele incha, brilha e estoura em faíscas laranja; o anel pisca em neon */
+.atomo9c .e9{transform-box:fill-box;transform-origin:center;transition:transform .5s cubic-bezier(.2,1.35,.4,1), opacity .35s ease}
+.atomo9c .e9 .aura9e{fill:none;stroke:#F4FF3A;stroke-width:3;opacity:0;transition:opacity .3s ease}
+.atomo9c .e9.chega9e{filter:drop-shadow(0 0 12px #EAFF00) brightness(1.6)}
+.atomo9c .e9.chega9e .luz9e{opacity:1;fill:#FFFFFF}
+.atomo9c .e9.chega9e .aura9e{opacity:1}
+.atomo9c .e9.sai9e{animation:sai9e .26s ease-in forwards}
+@keyframes sai9e{40%{scale:1.9;filter:brightness(3) drop-shadow(0 0 14px #FF7A2F)} 100%{scale:.1;opacity:0}}
+.boom9{pointer-events:none}
+.boom9 .clarao9{transform-box:fill-box;transform-origin:center;filter:url(#a9n);animation:clarao9 .55s ease-out forwards}
+@keyframes clarao9{0%{scale:.3;opacity:1} 100%{scale:2.6;opacity:0}}
+.boom9 .onda9{fill:none;stroke-width:4;transform-box:fill-box;transform-origin:center;animation:onda9 .7s ease-out forwards}
+.boom9 .onda9.b{stroke-width:2;animation-delay:.13s;opacity:0}
+@keyframes onda9{0%{scale:.4;opacity:1} 100%{scale:5.2;opacity:0}}
+.boom9 .faisca9{animation:faisca9 .85s cubic-bezier(.15,.85,.3,1) forwards}
+@keyframes faisca9{0%{transform:translate(0,0);opacity:1} 100%{transform:translate(var(--dx),var(--dy));opacity:0}}
+.boom9.entra .clarao9{fill:#F8FFB0}
+.boom9.entra .onda9{stroke:#EAFF00}
+.boom9.entra .faisca9{fill:#F4FF3A}
+.boom9.sai .clarao9{fill:#FFD0A0}
+.boom9.sai .onda9{stroke:#FF6A2B}
+.boom9.sai .faisca9{fill:#FF8A3D}
+.atomo9c .anel9.pulso9 .orb9a{animation:pulso9 .6s ease-out}
+@keyframes pulso9{30%{stroke:#F4FF3A;stroke-width:7}}
 .atomo9c.gira9 .giro9{animation:giro9 1.2s ease-in-out}
 @keyframes giro9{to{transform:rotate(360deg)}}
 .atomo9c .leg9{position:absolute;left:0;right:0;bottom:14px;text-align:center;opacity:0;transition:opacity .4s ease;
@@ -4794,7 +4820,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v46.5';
+const VERSAO = 'v46.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16615,7 +16641,7 @@ const ATOMO9 = {
       '<filter id="a9s" x="-80%" y="-80%" width="260%" height="260%"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00e5ff"/></filter>' +
       '<filter id="a9n" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter></defs>' +
       '<g class="giro9">' + aneis + '<g class="nuc9a">' + prot +
-      (semSimbolo ? '' : '<text class="sim9a" y="10">' + SIMBOLOS[z - 1] + '</text>') + '</g></g></svg><div class="leg9"></div>',
+      (semSimbolo ? '' : '<text class="sim9a" y="10">' + SIMBOLOS[z - 1] + '</text>') + '</g><g class="fx9"></g></g></svg><div class="leg9"></div>',
       cx - L, cy - L, 2 * L, 2 * L);
     const at = { d, z, cs:cs.slice(), n, anel:k => d.querySelector('.anel9[data-k="' + k + '"]'), nucleo:d.querySelector('.nuc9a') };
     cs.forEach((e, k) => this.poe(at, k, e));
@@ -16625,7 +16651,8 @@ const ATOMO9 = {
       const r = d.getBoundingClientRect(), s = r.width / (2 * L);
       const x = (ev.clientX - r.left) / s - L, y = (ev.clientY - r.top) / s - L, dist = Math.hypot(x, y);
       if (noEletron){
-        const i = this.posicoes(n - 1, at.cs[n - 1]).findIndex(([px, py]) => Math.hypot(px - x, py - y) < 18);
+        const i = [...at.anel(n - 1).querySelector('.els9').children].filter(el => !el.classList.contains('sai9e'))
+          .findIndex(el => el._p && Math.hypot(el._p[0] - x, el._p[1] - y) < 18);
         if (i >= 0){ noEletron(i); return; }
       }
       if (dist < this.R(0) - 28){ noAnel(-1); return; }
@@ -16639,13 +16666,67 @@ const ATOMO9 = {
     const r = this.R(k);
     return Array.from({ length:e }, (_, i) => { const a = i / e * Math.PI * 2 + k * .45 - Math.PI / 2; return [r * Math.cos(a), r * Math.sin(a)]; });
   },
-  poe(at, k, e){
+  /* os elétrons de um anel: cada um é um elemento que fica (anda para o lugar
+     novo, quando o anel ganha ou perde um); fx.entra: o novo chega voando, de
+     fora, grande e aceso, e explode em luz ao pousar; fx.sai: o tocado brilha,
+     incha e estoura em faíscas. O número ao lado do anel com o e⁻ */
+  poe(at, k, e, fx){
     at.cs[k] = e;
-    const g = at.anel(k);
-    g.querySelector('.els9').innerHTML = this.posicoes(k, e).map(([x, y]) => '<g transform="translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')">' +
-      '<circle class="luz9e" r="17" filter="url(#a9n)"/><circle r="10" fill="url(#a9e)"/>' +
-      '<path d="M-4.5 0H4.5" stroke="#1B2A4A" stroke-width="2.4" stroke-linecap="round" opacity=".75"/></g>').join('');
-    g.querySelector('.cont9').textContent = e;
+    const g = at.anel(k), box = g.querySelector('.els9'), ps = this.posicoes(k, e), NS = 'http://www.w3.org/2000/svg';
+    const els = [...box.children].filter(el => !el.classList.contains('sai9e'));
+    if (fx && fx.sai !== undefined && els[fx.sai]){
+      const el = els.splice(fx.sai, 1)[0], [x, y] = el._p;
+      this.estoura(at, x, y, 'sai');
+      el.classList.add('sai9e');
+      setTimeout(() => el.remove(), 260);
+    }
+    while (els.length > e) els.pop().remove();
+    while (els.length < e){
+      const n = document.createElementNS(NS, 'g');
+      n.setAttribute('class', 'e9');
+      n.innerHTML = '<circle class="luz9e" r="17" filter="url(#a9n)"/><circle class="aura9e" r="20"/><circle r="10" fill="url(#a9e)"/>' +
+        '<path d="M-4.5 0H4.5" stroke="#1B2A4A" stroke-width="2.4" stroke-linecap="round" opacity=".75"/>';
+      n._novo = !!(fx && fx.entra);
+      box.appendChild(n);
+      els.push(n);
+    }
+    els.forEach((el, i) => {
+      const [x, y] = ps[i], fim = 'translate(' + x.toFixed(1) + 'px, ' + y.toFixed(1) + 'px)';
+      el._p = [x, y];
+      if (el._novo){
+        el._novo = false;
+        /* chega de longe, na direção dele, grande e aceso */
+        const a = Math.atan2(y, x), d = 170;
+        el.style.transition = 'none';
+        el.style.transform = 'translate(' + (x + Math.cos(a) * d).toFixed(1) + 'px, ' + (y + Math.sin(a) * d).toFixed(1) + 'px) scale(3)';
+        el.style.opacity = '0';
+        el.classList.add('chega9e');
+        el.getBoundingClientRect();
+        el.style.transition = '';
+        requestAnimationFrame(() => { el.style.transform = fim; el.style.opacity = '1'; });
+        setTimeout(() => { this.estoura(at, x, y, 'entra'); el.classList.remove('chega9e'); }, 420);
+        return;
+      }
+      el.style.transform = fim;
+    });
+    g.querySelector('.cont9').textContent = e + 'e⁻';
+    if (fx){ g.classList.remove('pulso9'); g.getBoundingClientRect(); g.classList.add('pulso9'); }
+  },
+  /* A EXPLOSÃO DE LUZ (o vfx do elétron): o clarão, duas ondas de choque e
+     faíscas que voam para fora — no amarelo neon quando ele chega, no laranja
+     e vermelho quando ele sai */
+  estoura(at, x, y, tipo){
+    const fx = at.d.querySelector('.fx9'), NS = 'http://www.w3.org/2000/svg', g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', 'boom9 ' + tipo);
+    g.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
+    let h = '<circle class="clarao9" r="26"/><circle class="onda9" r="14"/><circle class="onda9 b" r="14"/>';
+    for (let i = 0; i < 12; i++){
+      const a = i / 12 * Math.PI * 2 + Math.random() * .4, d = 46 + Math.random() * 34;
+      h += '<circle class="faisca9" r="' + (2 + Math.random() * 2.5).toFixed(1) + '" style="--dx:' + (Math.cos(a) * d).toFixed(1) + 'px;--dy:' + (Math.sin(a) * d).toFixed(1) + 'px;animation-delay:' + (Math.random() * 60).toFixed(0) + 'ms"/>';
+    }
+    g.innerHTML = h;
+    fx.appendChild(g);
+    setTimeout(() => g.remove(), 1100);
   },
   /* as bolinhas âmbar da quantidade certa (a pista do 2º erro da Q5) */
   fantasmas(at, k, e){
@@ -16827,12 +16908,12 @@ const QUESTOES_9 = [
     },
     anel(Q, k){
       if (k !== this.ult || this.at.cs[k] >= 8) return;
-      ATOMO9.poe(this.at, k, this.at.cs[k] + 1);
+      ATOMO9.poe(this.at, k, this.at.cs[k] + 1, { entra:true });
       tocaEfeito('flip');
     },
-    tira(Q){
+    tira(Q, i){
       if (this.at.cs[this.ult] <= 0) return;
-      ATOMO9.poe(this.at, this.ult, this.at.cs[this.ult] - 1);
+      ATOMO9.poe(this.at, this.ult, this.at.cs[this.ult] - 1, { sai:i });
       tocaEfeito('flip');
     },
     confere(Q){
