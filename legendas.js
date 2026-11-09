@@ -98,6 +98,30 @@ var LEGENDAS = {
   "audio_tabela_10.0": [
     [0,3.6,"Tópico 10. A tabela e o diagrama de Pauling."]
   ],
+  "audio_tabela_10": [
+    [0,5.96,"Então, amigos, chegamos a um dos momentos mais fascinantes da tabela periódica."],
+    [5.96,11.91,"É aqui que a gente escancara de vez a relação que existe entre a organização da tabela"],
+    [11.91,14.27,"e a distribuição eletrônica dos átomos."],
+    [14.27,17.87,"Sim, aquela mesma que você aprendeu com o diagrama de Pauling."],
+    [17.87,20.85,"Por exemplo, você sabia que..."],
+    [20.85,26.8,"só de bater o olho na posição de um átomo na tabela, já dá pra saber exatamente qual o seu subnível"],
+    [26.8,31.46,"mais energético, sem precisar fazer nenhuma distribuição de setas no papel?"],
+    [31.46,35.74,"Ou melhor ainda: você sabia que dá pra montar a distribuição eletrônica"],
+    [35.74,41.69,"inteira de um elemento apenas decodificando a sua posição na tabela periódica?"],
+    [41.69,44.67,"Pois é, dá pra fazer tudo isso."],
+    [44.67,50.62,"Mas antes, a gente precisa construir a lógica: amarrar os blocos da tabela aos subníveis de energia."],
+    [50.62,51.62,"Tá bom?"],
+    [51.62,56.84,"Depois, nós vamos testar juntos todas as possibilidades práticas dessa união. E aí?"]
+  ],
+  "audio_tabela_10.1": [
+    [0,3.8,"Muito bem, a base lógica dessa relação é muito simples."],
+    [3.8,8.93,"Lembra lá das aulas de átomos, que os elétrons se distribuem em quatro subníveis"],
+    [8.93,13.87,"de energia? Sim, o s, o p, o d e o f?"],
+    [13.87,21.93,"Então, esses quatro subníveis estão escondidos nesses quatro grandes blocos aqui, separados por cores."],
+    [21.93,30.78,"E cada bloco desses corresponde a exatamente um dos quatro subníveis de energia do átomo: s, p, d e f."],
+    [30.78,35.74,"Sua primeira tarefa é posicionar os cards dos subníveis nos blocos correspondentes."],
+    [35.74,36.84,"Vai lá!"]
+  ],
   "audio_tabela_1_jogo_memória": [
     [0,3.42,"Muito bem, você terminou o resumo interativo do tópico aqui."],
     [3.42,9.56,"Agora, que tal fazer um joguinho rapidinho que vai te ajudar a fixar esse tópico mais ainda?"],

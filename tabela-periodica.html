@@ -3181,6 +3181,47 @@ body.montagem .veu-pauling .icone91{translate:-320px 0;opacity:.5}
 .aufbau91 .falta{color:transparent}
 .aufbau91 .cursor{display:none;width:3px;height:.95em;margin:0 -3px 0 0;vertical-align:-.12em;background:currentColor;border-radius:1px}
 .aufbau91.digitando9 .cursor{display:inline-block}
+/* a "10" (EV10): a tabela na metade esquerda e a foto do Pauling no quadro na
+   direita (como a "9.1" acaba); o Mg que cresce e brilha, o círculo do 3s², e
+   a distribuição desenhada embaixo da tabela, com as setas no quadro */
+.veu-mg10{background:rgba(12,10,32,.96)}
+html:is(.palco-largo,.palco-alto) .veu-mg10::before{background:rgba(12,10,32,.96)}
+.veu-mg10 :is(.icone10,.quadro10,.aufbau10,.dist10){position:absolute;transform:translate(-50%,-50%);margin:0;
+  opacity:0;transition:opacity 1s ease}
+.veu-mg10.fotos10 :is(.icone10,.quadro10,.aufbau10), body.montagem .veu-mg10 :is(.icone10,.quadro10,.aufbau10){opacity:1}
+.veu-mg10 .icone10{left:320px;top:372px;width:520px}
+.veu-mg10 .icone10 svg{display:block;width:100%;height:auto;overflow:visible}
+.veu-mg10 .quadro10{left:960px;top:372px;width:520px;aspect-ratio:1024/772;border-radius:13px;overflow:hidden;
+  box-shadow:0 18px 50px rgba(0,0,0,.5)}
+.veu-mg10 .quadro10 img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.veu-mg10 .aufbau10{left:960px;top:608px;white-space:nowrap;
+  font-family:var(--display);font-weight:700;font-size:28px;color:var(--ouro-luz)}
+/* o Mg: por cima da casa dele, cresce num salto de mola e brilha, pulsando */
+.mg10{transform-box:fill-box;transform-origin:center;opacity:0;
+  transition:opacity .4s ease, transform .7s cubic-bezier(.34,1.56,.64,1)}
+.mg10 .luz10{fill:#EAFF00;opacity:.9;animation:luz10 1.6s ease-in-out infinite}
+.mg10 text{font-family:var(--display);font-weight:700;font-size:7.4px;fill:#1B1A10}
+@keyframes luz10{50%{opacity:.45}}
+.veu-mg10.mg10on .mg10, body.montagem .veu-mg10 .mg10{opacity:1;transform:scale(2.3)}
+/* as setas e o círculo, no amarelo neon das setas da "9.1" */
+.veu-mg10 .setas10{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.setas10 :is(path,ellipse){fill:none;stroke:#F4FF3A;stroke-width:7;stroke-linecap:round;stroke-linejoin:round}
+.setas10 .seta10 > path, .setas10 .circ10 ellipse{stroke-dasharray:1 1;stroke-dashoffset:1}
+.setas10 .halo10{stroke:#EAFF00;stroke-width:18;opacity:.75;filter:url(#g10)}
+.setas10 .seta10{opacity:0}
+.setas10 .circ10{opacity:0;transition:opacity .6s ease}
+.veu-mg10.circ10on .circ10{opacity:1;transition-duration:.1s}
+/* a distribuição: as letras desenham-se pelo contorno (o traço anda) e
+   enchem-se no fim; o "Mg:" entra em fade; o 3s², o mais energético, no neon */
+.veu-mg10 .dist10{left:320px;top:600px;width:520px;overflow:visible}
+.veu-mg10.dist10on .dist10, body.montagem .veu-mg10 .dist10{opacity:1}
+.dist10 text{font-family:var(--display);font-weight:700;font-size:48px}
+.dist10 .mgd10{fill:#F4F2F8}
+.dist10 .sub10{fill:#F4F2F8;fill-opacity:0;stroke:#F4F2F8;stroke-width:1.6;stroke-dasharray:260;stroke-dashoffset:260;opacity:0}
+.dist10 .sub10.ult10{fill:#F4FF3A;stroke:#F4FF3A;filter:drop-shadow(0 0 8px rgba(234,255,0,.55))}
+body.montagem .veu-mg10 .sub10{opacity:1!important;fill-opacity:1!important;stroke-dashoffset:0!important}
+body.montagem .veu-mg10{opacity:1;background:rgba(12,10,32,.35);pointer-events:none}
+body.montagem .veu-mg10 [data-mont]{pointer-events:auto}
 body.montagem .veu-pauling{opacity:1;background:rgba(12,10,32,.35);pointer-events:none}
 body.montagem .veu-pauling [data-mont]{pointer-events:auto}
 /* o átomo: as camadas e os elétrons; o brilho neon é uma camada à parte,
@@ -4952,7 +4993,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v48.4';
+const VERSAO = 'v48.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5308,7 +5349,7 @@ function recomecaMesa(i, semPouso){
   if (i === 1) SEQ.reinicia();
   else if (temMesa(i)){ SEQ.comecou = false; if (i === 2) SEQ.reinicia2(); if (i === 3) EV3.zera();
                         if (i === 4) EV4.zera(); if (i === 5) EV5.zera(); if (i === 6) EV6.zera(); if (i === 7){ SERIES8.zera(); EV7.zera(); }
-                        if (i === 8) EV8.zera(); if (i === 9) EV9.zera(); }
+                        if (i === 8) EV8.zera(); if (i === 9) EV9.zera(); if (i === 10) EV10.zera(); }
   else return;
   if (semPouso) TP.reinicia(); else pousaTabela();
   setTimeout(() => VIDA.liga(), 1500);
@@ -6265,7 +6306,7 @@ const TRILHAS = {
   '9.3.7':'Audios/audio_tabela_9.3.7.mp3',
   '9.3.8':'Audios/audio_tabela_9.3.8.mp3',
   '9.3.9':'Audios/audio_tabela_9.3.9.mp3', /* sozinha, no fim da 8A: a mão abre a distribuição, e o quiz (EV9) */
-  '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: os blocos (ainda por gravar) */
+  '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: o Mg e o diagrama de Pauling (EV10) */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -7518,6 +7559,8 @@ function efeitosDoTempo(){
   if (atual === 8){ EV8.tick(t); return; }
   /* e o slide 10 (a narração "9") */
   if (atual === 9){ EV9.tick(t); return; }
+  /* e o slide 11 (a narração "10") */
+  if (atual === 10){ EV10.tick(t); return; }
   if (atual !== 1 || !veu) return;
 
   /* a tela escura é da trilha "1", dos 14,8 s em diante — e continua
@@ -21799,6 +21842,116 @@ const EV9 = {
           if (this.estado93 && this.estado93.split(',')[2] === 'true'){ stage.classList.remove('em-toque'); this.estado93 = ''; } }
 };
 window.EV9 = EV9;
+
+/* ============================================================
+   SLIDE 11 · A "10" (EV10), função do tempo dela
+   Aos 10 s a tela escurece; aos 11 s, em fade, a tabela (o ícone da "9") na
+   metade esquerda e a foto do Pauling no quadro na direita, com o
+   "Princípio de Aufbau" embaixo — como a "9.1" acaba. Aos 22 s o Mg cresce e
+   brilha no amarelo neon das setas; aos 26 s o "3s²" do quadro é circulado
+   no mesmo amarelo, e aos 32 s o círculo sai. Dos 35 aos 40 s, embaixo da
+   tabela, a distribuição do Mg desenha-se um subnível de cada vez, e no
+   quadro a seta corre junto, em tempo real (o 2p e o 3s na mesma diagonal).
+   ============================================================ */
+const T10 = { veu:10.0, fotos:11.0, mg:22.0, circulo:26.0, circuloSai:32.0, dist:[35.0, 40.0] };
+/* os subníveis do Mg, e por onde a seta vai em cada um: o risco do diagrama
+   (SETAS_91) e o trecho dele, de 0 a 1 */
+const DIST_10 = [
+  { n:'1s', e:'2', risco:0, de:0, ate:1 },
+  { n:'2s', e:'2', risco:1, de:0, ate:1 },
+  { n:'2p', e:'6', risco:2, de:0, ate:0.42 },
+  { n:'3s', e:'2', risco:2, de:0.42, ate:1 }];
+const VEU_10 = (() => {
+  const riscos = [0, 1, 2].map(k => {
+    const [x1, y1, x2, y2] = SETAS_91.riscos[k], d = 'M' + x1 + ' ' + y1 + 'L' + x2 + ' ' + y2;
+    return '<g class="seta10"><path class="halo10" pathLength="1" d="' + d + '"/><path class="linha10" pathLength="1" d="' + d + '"/>' +
+      '<g class="cab10"><path class="halo10" d="M-23 -12.5L0 0L-23 12.5"/><path d="M-23 -12.5L0 0L-23 12.5"/></g></g>';
+  }).join('');
+  /* o círculo do "3s²" (na foto, 1024 × 772) */
+  const circ = '<g class="circ10"><ellipse class="halo10" pathLength="1" cx="318" cy="294" rx="74" ry="46" transform="rotate(-8 318 294)"/>' +
+    '<ellipse pathLength="1" cx="318" cy="294" rx="74" ry="46" transform="rotate(-8 318 294)"/></g>';
+  /* a distribuição: "Mg:" e os quatro subníveis, cada um com o expoente */
+  const X = [118, 218, 318, 418];
+  const subs = DIST_10.map((s, k) => '<text class="sub10' + (k === 3 ? ' ult10' : '') + '" x="' + X[k] + '" y="62">' + s.n +
+    '<tspan dy="-20" font-size="28">' + s.e + '</tspan></text>').join('');
+  return '<div class="veu veu-mg10" aria-live="polite">' +
+    '<div class="icone10" data-mont="tabela-10"></div>' +
+    '<div class="quadro10" data-mont="diagrama-10"><img src="Imagens/linus_pauling.jpeg" alt="Linus Pauling no quadro do diagrama">' +
+    '<svg class="setas10" viewBox="0 0 1024 772" aria-hidden="true"><defs>' +
+    '<filter id="g10" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="7"/></filter></defs>' + circ + riscos + '</svg></div>' +
+    '<p class="aufbau10" data-mont="aufbau-10">“Princípio de Aufbau”</p>' +
+    '<svg class="dist10" data-mont="distribuicao-10" viewBox="0 0 520 90" aria-label="Mg: 1s² 2s² 2p⁶ 3s²">' +
+    '<text class="mgd10" x="10" y="62">Mg:</text>' + subs + '</svg></div>';
+})();
+const EV10 = {
+  estado:'', estadoT:'',
+  prepara(){
+    if (this.veu || !slides[10]) return;
+    slides[10].insertAdjacentHTML('beforeend', VEU_10);
+    const V = this.veu = slides[10].querySelector('.veu-mg10');
+    /* a tabela: o ícone da "9", com o Mg à parte, por cima da casa dele (linha 3, coluna 2) */
+    const ic = document.createElement('div');
+    ic.innerHTML = VEU_9;
+    const svg = ic.querySelector('.icone9 svg');
+    svg.insertAdjacentHTML('beforeend', '<defs><filter id="b10" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation="4"/></filter></defs>' +
+      '<g class="mg10"><rect class="luz10" x="16" y="32" width="14" height="14" rx="3" filter="url(#b10)"/>' +
+      '<rect x="16" y="32" width="14" height="14" rx="3" fill="#F4FF3A"/>' +
+      '<text x="23" y="42.2" text-anchor="middle">Mg</text></g>');
+    V.querySelector('.icone10').appendChild(svg);
+    this.setas = [...V.querySelectorAll('.seta10')].map((g, k) => {
+      const [x1, y1, x2, y2] = SETAS_91.riscos[k];
+      return { g, linhas:g.querySelectorAll(':scope > path'), cab:g.querySelector('.cab10'), x1, y1, x2, y2, a:Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI };
+    });
+    this.circ = [...V.querySelectorAll('.circ10 ellipse')];
+    this.subs = [...V.querySelectorAll('.sub10')];
+  },
+  /* quanto de cada subnível já se desenhou (0 a 1), aos t s */
+  fracoes(t){
+    const [de, ate] = T10.dist, vez = (ate - de) / DIST_10.length;
+    return DIST_10.map((s, k) => Math.max(0, Math.min(1, (t - de - k * vez) / (vez * 0.85))));
+  },
+  tick(t){
+    this.prepara();
+    if (!this.veu) return;
+    const monta = naMontagem(), t10 = monta ? 99 : trilhaAtual === '10' ? t : -1;
+    /* o desenho: as setas e os subníveis, e o círculo (traçado em 0,7 s) */
+    const fr = this.fracoes(t10), fc = Math.max(0, Math.min(1, (t10 - T10.circulo) / 0.7));
+    const chave = fr.map(f => f.toFixed(3)).join() + '|' + fc.toFixed(3);
+    if (chave !== this.estadoT){
+      this.estadoT = chave;
+      /* o quanto cada risco andou: o fim do trecho do subnível mais adiantado nele */
+      const anda = [0, 0, 0];
+      DIST_10.forEach((s, k) => { if (fr[k] > 0) anda[s.risco] = s.de + (s.ate - s.de) * fr[k]; });
+      this.setas.forEach((s, k) => {
+        const f = anda[k];
+        s.g.style.opacity = f > 0 ? 1 : 0;
+        s.linhas.forEach(l => l.style.strokeDashoffset = (1 - f).toFixed(3));
+        /* (a cabeça vai na ponta do traço) */
+        s.cab.setAttribute('transform', 'translate(' + (s.x1 + (s.x2 - s.x1) * f).toFixed(1) + ' ' + (s.y1 + (s.y2 - s.y1) * f).toFixed(1) + ') rotate(' + s.a.toFixed(1) + ')');
+      });
+      /* o subnível desenha-se pelo contorno das letras, e enche-se no fim */
+      this.subs.forEach((el, k) => {
+        const f = fr[k];
+        el.style.opacity = f > 0 ? 1 : 0;
+        el.style.strokeDashoffset = (260 * (1 - f)).toFixed(1);
+        el.style.fillOpacity = Math.max(0, (f - 0.6) / 0.4).toFixed(2);
+      });
+      this.circ.forEach(e => e.style.strokeDashoffset = (1 - fc).toFixed(3));
+    }
+    const est = [t10 >= T10.veu, t10 >= T10.fotos, t10 >= T10.mg, t10 >= T10.circulo && t10 < T10.circuloSai, t10 >= T10.dist[0]].join() + '|' + monta;
+    if (est === this.estado) return;
+    this.estado = est;
+    const [veu, fotos, mg, circ, dist] = est.split('|')[0].split(',').map(v => v === 'true');
+    const V = this.veu;
+    V.classList.toggle('on', veu && !monta);
+    V.classList.toggle('fotos10', fotos);
+    V.classList.toggle('mg10on', mg);
+    V.classList.toggle('circ10on', circ);
+    V.classList.toggle('dist10on', dist);
+  },
+  zera(){ this.estado = ''; this.estadoT = ''; if (this.veu) this.tick(-1); }
+};
+window.EV10 = EV10;
 
 /* A COR NEUTRA de quem está fora do lugar: um cinza morno que escurece
    devagar com o número atômico (o do professor). A cor da família volta
