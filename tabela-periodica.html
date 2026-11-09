@@ -2852,7 +2852,12 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .atomo9c.solto9 .cont9{opacity:1;filter:drop-shadow(0 0 4px rgba(0,0,0,.9))}
 .atomo9c .faixa9{fill:none;stroke:transparent;stroke-width:56}
 .atomo9c .orb9a{fill:none;stroke:rgba(244,242,248,.5);stroke-width:2.5;transition:stroke .3s ease, stroke-width .3s ease}
-.atomo9c .cont9{font:700 17px var(--display);fill:#F4F2F8;opacity:.85}
+/* (o número de cada anel na cor do elétron) */
+.atomo9c .cont9{font:700 17px var(--display);fill:#5AAEF2;opacity:1}
+/* a festa da Q5: os anéis e os elétrons parados somem, e entram os que orbitam (ATOMO9.orbita) */
+.atomo9c .anel9{transition:opacity .45s ease}
+.atomo9c.orbita9 .anel9{opacity:0!important}
+.atomo9c .orb3d9{opacity:0;filter:drop-shadow(0 0 6px rgba(255,240,0,.9));pointer-events:none}
 .atomo9c .sim9a{font:800 26px var(--display);fill:#fff;text-anchor:middle;paint-order:stroke;stroke:#05303A;stroke-width:4}
 .atomo9c .luz9e{fill:#EAFF00;opacity:0;transition:opacity .4s ease}
 .atomo9c .anel9.acende9a .orb9a{stroke:#FFD43B;stroke-width:4}
@@ -4865,7 +4870,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v47.7';
+const VERSAO = 'v47.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16863,6 +16868,64 @@ const ATOMO9 = {
     fx.appendChild(g);
     setTimeout(() => g.remove(), 1100);
   },
+  /* A FESTA DO ACERTO DA Q5 (copiada do átomo do app de Eletroquímica,
+     drawOrbitElectron): os anéis somem e cada elétron corre numa elipse
+     inclinada em volta do núcleo — o átomo "em 3D" —, de cabeça amarela neon
+     e com um rastro que afina (a fita); as elipses de cada camada repartidas
+     em leque, no tamanho dela, e os sentidos alternados, nas velocidades de lá */
+  orbita(at){
+    const NS = 'http://www.w3.org/2000/svg', VEL = [0.2784, -0.2460, 0.3114, -0.2214];
+    at.d.classList.add('orbita9');
+    const g = document.createElementNS(NS, 'g');
+    g.setAttribute('class', 'orb3d9');
+    at.d.querySelector('.giro9').appendChild(g);
+    const es = [];
+    let n = 0;
+    at.cs.forEach((ne, k) => {
+      for (let i = 0; i < ne; i++, n++){
+        const o = { tilt:(i * 180 / ne + k * 23) % 180, rx:this.R(k) + 6, ry:(this.R(k) + 6) * .372, speed:VEL[n % 4] * (k ? 1 : 1.15) };
+        const id = 'r9g' + n + '_' + Date.now();
+        const el = document.createElementNS(NS, 'g');
+        el.setAttribute('transform', 'rotate(' + o.tilt + ')');
+        el.innerHTML = '<defs><linearGradient id="' + id + '" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(255,255,170)"/>' +
+          '<stop offset=".4" stop-color="rgb(255,240,0)" stop-opacity=".7"/><stop offset="1" stop-color="rgb(255,240,0)" stop-opacity="0"/></linearGradient></defs>' +
+          '<path fill="url(#' + id + ')"/><circle r="7.5" fill="url(#r9c)"/>';
+        g.appendChild(el);
+        es.push({ o, el, ang:n * 1.7, path:el.querySelector('path'), cab:el.querySelector('circle'), gr:el.querySelector('linearGradient') });
+      }
+    });
+    /* (o gradiente da cabeça: branco no meio, amarelo neon, e some na borda) */
+    g.insertAdjacentHTML('afterbegin', '<defs><radialGradient id="r9c"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#fff35a"/>' +
+      '<stop offset=".7" stop-color="#ffee00"/><stop offset="1" stop-color="#fff000" stop-opacity="0"/></radialGradient></defs>');
+    const TAIL = 1.9, SEG = 26, HW = 5;
+    let ult = 0, t0 = 0;
+    const passo = ts => {
+      if (!at.d.isConnected) return;
+      const dt = ult ? Math.min(60, ts - ult) : 16;
+      ult = ts; if (!t0) t0 = ts;
+      g.style.opacity = Math.min(1, (ts - t0) / 450).toFixed(2);
+      es.forEach(e => {
+        const o = e.o;
+        e.ang += o.speed * dt / 16.67;
+        const dir = o.speed >= 0 ? 1 : -1, L = [], Rr = [];
+        for (let s = 0; s <= SEG; s++){
+          const f = s / SEG, a = e.ang - dir * TAIL * f, px = Math.cos(a) * o.rx, py = Math.sin(a) * o.ry;
+          let tx = -o.rx * Math.sin(a), ty = o.ry * Math.cos(a);
+          const tl = Math.hypot(tx, ty) || 1; tx /= tl; ty /= tl;
+          const w = HW * (1 - f) * (1 - f);
+          L.push((px - ty * w).toFixed(1) + ' ' + (py + tx * w).toFixed(1));
+          Rr.push((px + ty * w).toFixed(1) + ' ' + (py - tx * w).toFixed(1));
+        }
+        e.path.setAttribute('d', 'M' + L.join('L') + 'L' + Rr.reverse().join('L') + 'Z');
+        const hx = Math.cos(e.ang) * o.rx, hy = Math.sin(e.ang) * o.ry;
+        e.gr.setAttribute('x1', hx.toFixed(1)); e.gr.setAttribute('y1', hy.toFixed(1));
+        e.gr.setAttribute('x2', (Math.cos(e.ang - dir * TAIL) * o.rx).toFixed(1)); e.gr.setAttribute('y2', (Math.sin(e.ang - dir * TAIL) * o.ry).toFixed(1));
+        e.cab.setAttribute('cx', hx.toFixed(1)); e.cab.setAttribute('cy', hy.toFixed(1));
+      });
+      requestAnimationFrame(passo);
+    };
+    requestAnimationFrame(passo);
+  },
   /* as bolinhas âmbar da quantidade certa (a pista do 2º erro da Q5) */
   fantasmas(at, k, e){
     at.anel(k).querySelector('.fant9').innerHTML = this.posicoes(k, e).map(([x, y]) =>
@@ -17110,8 +17173,9 @@ const QUESTOES_9 = [
         this.bt.classList.add('some5');
         this.at.anel(this.ult).classList.remove('vazio9');
         this.at.anel(this.ult).querySelector('.fant9').innerHTML = '';
-        /* o átomo gira, e aparece a distribuição completa */
-        this.at.d.classList.add('gira9');
+        /* os elétrons correm em volta do núcleo, em 3D (a festa do átomo do
+           app de Eletroquímica), e aparece a distribuição completa */
+        ATOMO9.orbita(this.at);
         ATOMO9.legenda(this.at, [...this.internas, this.v].join(' · '));
         Q.acerta();
         return;

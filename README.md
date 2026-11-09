@@ -922,7 +922,11 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
    reposicionam, igualmente espaçados (`fx.em` no `ATOMO9.poe`) —, tocar num
    elétron tira-o; o card pequeno do elemento ao lado, e ele
    aceso na tabela; no 2º erro, a quantidade certa em âmbar a piscar; no
-   acerto, o átomo gira e aparece a distribuição ("2 · 8 · 7").
+   acerto, os anéis somem e os elétrons correm em volta do núcleo em 3D —
+   cada um numa elipse inclinada, de cabeça amarela neon e com o rastro que
+   afina, copiado do átomo do app de Eletroquímica (`ATOMO9.orbita`) — e
+   aparece a distribuição ("2 · 8 · 7"). O número de cada anel ("5e⁻") na cor
+   do elétron.
 6. **Analisar** — marcar os de mesma valência do oxigênio (S, Se, Te, Po, Lv)
    e Pronto; no acerto, a coluna acende com um 6 ao lado de cada um.
 7. **Avaliar** — o balão do colega (o do tópico 6), Concordo/Discordo, e o
