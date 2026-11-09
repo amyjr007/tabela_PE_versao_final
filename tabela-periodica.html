@@ -3242,6 +3242,8 @@ body.montagem .veu-mg10 .sub10{opacity:1!important;fill-opacity:1!important;stro
 .card101.on101, body.montagem .card101{opacity:1;scale:1}
 .card101.pega101{pointer-events:auto;cursor:grab}
 .card101.cresce101{scale:1.22}
+.card101.brilha101{scale:1.1;filter:brightness(1.15);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--cor) 45%,#fff), 0 0 30px 10px color-mix(in srgb,var(--cor) 75%,transparent)}
 .card101.pego101{z-index:28;scale:1.12;cursor:grabbing;transition:opacity .3s ease, scale .2s ease, box-shadow .2s ease;
   box-shadow:0 18px 36px rgba(32,28,66,.4)}
 .card101.erro101{animation:erro101 .45s ease}
@@ -5065,7 +5067,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v49.1';
+const VERSAO = 'v49.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22047,16 +22049,17 @@ window.EV10 = EV10;
    para o meio dos de transição, o f para a frente das duas séries. Dos 19
    aos 21,5 s os blocos ganham a cor, um depois do outro (s, p, d, f); e dos
    22,7 aos 27,5 s cada bloco cresce junto com o card dele, um de cada vez,
-   e volta. */
+   e volta; e o brilho passa de card em card: o s aos 28,6, o p aos 29, o d
+   aos 29,7 e o f dos 30 aos 31 s. */
 const T101 = { sai:1.0, texto:[7.8, 9.0], aumenta:[15.5, 16.5], arrasta:17.8, cor:[19.0, 21.5], destaque:[22.7, 27.5] };
 /* (o bloco crescido: o quanto, em torno do meio dele) */
 const ESC_BLOCO_101 = 1.1;
 const TEXTO_101 = 'São 4 subníveis:';
 const CARDS_101 = [
-  { b:'s', e:2,  cor:'var(--cat-alcalinos)',  entra:11.0 },
-  { b:'p', e:6,  cor:'var(--cat-ametais)',    entra:11.9 },
-  { b:'d', e:10, cor:'var(--cat-transicao)',  entra:13.0 },
-  { b:'f', e:14, cor:'var(--cat-lantanideos)', entra:13.5 }];
+  { b:'s', e:2,  cor:'var(--cat-alcalinos)',  entra:11.0, vez:[28.6, 29.0] },
+  { b:'p', e:6,  cor:'var(--cat-ametais)',    entra:11.9, vez:[29.0, 29.7] },
+  { b:'d', e:10, cor:'var(--cat-transicao)',  entra:13.0, vez:[29.7, 30.0] },
+  { b:'f', e:14, cor:'var(--cat-lantanideos)', entra:13.5, vez:[30.0, 31.0] }];
 const CARDS101 = {
   C:92, postos:new Set(), estado:'', nt:-1,
   prepara(){
@@ -22212,7 +22215,8 @@ const CARDS101 = {
     const cor = CARDS_101.map((K, k) => !de || monta || T >= C[0] + k * qc);
     const vez = CARDS_101.map((K, k) => !monta && dentro([D[0] + k * qd, D[0] + (k + 1) * qd]));
     const aumenta = dentro(T101.aumenta) && !monta;
-    const est = [T >= T101.texto[0], dentro(T101.texto), T >= T101.arrasta, aumenta, ...cor, ...vez,
+    const brilha = CARDS_101.map(K => !monta && dentro(K.vez));
+    const est = [T >= T101.texto[0], dentro(T101.texto), T >= T101.arrasta, aumenta, ...cor, ...vez, ...brilha,
                  ...CARDS_101.map(K => T >= K.entra), [...this.postos].join('')].join();
     if (est === this.estado) return;
     this.estado = est;
@@ -22228,6 +22232,7 @@ const CARDS101 = {
       o.c.classList.toggle('on101', T >= o.K.entra || posto);
       o.c.classList.toggle('pega101', solta && !posto);
       o.c.classList.toggle('cresce101', aumenta || vez[k]);
+      o.c.classList.toggle('brilha101', brilha[k]);
       o.s.classList.toggle('on101', solta && !posto);
     });
   },
