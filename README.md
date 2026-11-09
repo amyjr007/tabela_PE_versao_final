@@ -665,11 +665,52 @@ inteira à espera do dedo.
 O toque toca a `7.4`: aos 0,2 s a tabela volta às 18 colunas, com as séries para
 dentro dos bilhetes. Aos 5,5 s a narração pára 1 s e segue; aos 6,7 s pára de
 novo, as duas séries descem, e ela segue quando a última carta pousa. No fim,
-o play vira o botão **Quiz** (as questões ainda vão chegar: por ora ele só avisa).
+o play vira o botão **Quiz**, que abre o **quiz do tópico 7**.
 
 No sumário do slide 8: **a – As séries dos lantanídeos e actinídeos** (a `7.1`,
 com as séries já embaixo), **b – Os elementos de transição interna** (a `7.2`) e
-**c – Quiz** (em breve).
+**c – Quiz** (o quiz direto).
+
+O **quiz do tópico 7** (`QUIZ7L`, `QUESTOES_7L`; feito, `q7` no sumário) segue o
+documento do professor ("Quiz do Tópico 7 · Lantanídeos e actinídeos"): oito
+questões pela taxonomia revisada de Bloom, no ritual do `QUIZ5` (o mesmo do
+`QUIZ8`), na tabela do slide, de 18 colunas, com as séries recolhidas nos
+bilhetes. Aberto, a narração sai e o `EV7` fica parado (o `tick` não mexe na
+mesa); as festas usam as animações da aula: a série que desce (`SERIES8.desce`)
+e a tabela de 32 colunas (`EV7.longa`).
+1. **Lembrar** — "Toque na casa que guarda os lantanídeos" (ou os actinídeos,
+   sorteado): os bilhetes com "?"; o toque num card ou no bilhete errado dá a
+   dica do vizinho da esquerda (57, ou 89); no acerto, a série desce.
+2. **Lembrar** — "Arraste o intervalo certo para cada casa": os bilhetes vazios
+   e tracejados, e as etiquetas (as do tópico 6, aqui curtas: `etiquetas8` com a
+   largura) 57–71, 89–103 e as armadilhas 58–71 e 90–103; encaixada, a etiqueta
+   encolhe para o tamanho do bilhete; no acerto, as séries descem, o La e o Ac
+   acendem e "← Os nomes vêm daqui".
+3. **Entender** — a vitrine (a do tópico 4): o celular, a tela de TV e o fone (as
+   artes do véu da `7.1`) e o lápis, o letreiro de neon e a panela (as dos cubos
+   do tópico 4), com os ids renomeados (`semIdsL7`); no acerto, faíscas voam dos
+   certos até a casa dos lantanídeos, e "O Brasil tem uma das maiores reservas
+   do mundo". Marcar o neon dá a dica do gás nobre.
+4. **Entender** — seis cards para Representativos, Transição externa e
+   Transição interna (`separaL7`, as bandejas do tópico 4; sempre com o La, o
+   Ac, o Sc ou o Y); no acerto, os três blocos acendem na tabela, cada um com a
+   sua cor e o seu nome.
+5. **Aplicar** — seis cards para Lantanídeos, Actinídeos e Corpo da tabela
+   (sempre com uma borda — La, Lu, Ac, Lr — e um vizinho de borda — Ba, Hf, Ra,
+   Rf); no acerto, os cards voam para a sua casa, com as séries abertas.
+6. **Analisar** — cinco cards de uma série (sorteada) e a **área de descarte**
+   (nova, "Fora da série"); o intruso para lá; no acerto, ele voa para a sua casa
+   verdadeira (aceso em vermelho) e os membros se juntam na série.
+7. **Avaliar** — três frases do colega (o balão do tópico 6), uma de cada vez,
+   com "N de 3"; cada julgamento errado é um erro e a frase fica; no fim, os três
+   balões lado a lado, com o ✔ ou riscados.
+8. **Criar** — a tabela já aberta em 32 colunas, sem as séries, com três
+   encaixes (6º e 7º períodos, e a armadilha no 5º, entre o Y e o Zr); as **fitas
+   das séries** (novas) se arrastam (ou se tocam) até um encaixe, e ali se abrem
+   nos 15 cards; a fita, apagada, fica na fila (arrastada de novo, a série sai do
+   encaixe); no acerto, a tabela aberta fica completa, recolhe-se às 18 colunas,
+   as séries descem e "Bem melhor assim, né?" — e isso fica por trás do cartão
+   da nota.
 
 ### Slide 9 · A Natureza dos elementos — Os naturais, os artificiais e os radioativos
 

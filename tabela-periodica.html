@@ -2922,6 +2922,75 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .card9 b{font:800 38px var(--display)}
 .card9 em{font:500 12px var(--display);font-style:normal}
 
+/* ---- O QUIZ DO TÓPICO 7 (QUIZ7L, no slide 8) ---- */
+.slide.quiz7l .quiz3.q4.q2.q5{left:269.3px;top:30px}
+/* (a tabela sai: Q3 a Q7, enquanto o aluno separa) */
+.slide.quiz7l .mesa.mesa.someL7 :is(.pc:not(.ficha5),.casa){opacity:0!important;pointer-events:none}
+.slide.quiz7l .mesa .pc:not(.ficha5){transition:opacity .4s ease, filter .4s ease}
+/* os bilhetes: com "?" (Q1), vazios e contornados (Q2), o certo aceso, e a pista */
+.slide.quiz7l .mesa .casa.serie{font-size:15px}
+.slide.quiz7l .mesa .casa.serie.vaziaL7{background:transparent;border:2px dashed rgba(255,212,59,.7)}
+.slide.quiz7l .mesa .casa.serie.certaL7{box-shadow:0 0 0 3px #7CF5A8, 0 0 22px 8px rgba(46,214,113,.85)}
+.slide.quiz7l .mesa .casa.serie.pista5{animation:espera5 .9s ease-in-out infinite}
+.slide.quiz7l .mesa .casa.serie.errada3{animation:naoTreme .42s ease;box-shadow:0 0 0 3px #FF4D4D, 0 0 16px 4px rgba(255,46,76,.8)}
+/* Q2: as etiquetas curtas dos intervalos, e os seus lugares (os bilhetes) */
+.etiqueta5.etq8.etqL7{font-size:19px;white-space:nowrap;transition:left .25s ease, top .25s ease, scale .25s ease}
+.etiqueta5.etq8.etqL7.dentroL7{scale:.52}
+.etiqueta5.etq8.etqL7.encaixa5.encaixa5.encaixa5{animation:encaixa7 .7s ease-out}
+.slot8.slotL7{border-radius:10px}
+/* textos de festa */
+.textoL7{position:absolute;z-index:44;display:grid;place-items:center;pointer-events:none;white-space:nowrap;
+  font:800 26px var(--display);color:#F4FF3A;text-shadow:0 0 14px rgba(234,255,0,.55), 0 2px 8px rgba(0,0,0,.9);animation:val9 .5s ease both}
+/* Q3: a vitrine dos objetos (a figura, o nome; marcado em verde) */
+.objL7{position:absolute;z-index:32;display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 8px 10px;
+  border-radius:18px;background:rgba(244,242,248,.07);border:2px solid rgba(244,242,248,.18);cursor:pointer;pointer-events:auto;
+  transition:box-shadow .25s ease, border-color .25s ease, opacity .5s ease, transform .25s ease}
+.objL7 .figL7{width:124px;height:124px;display:grid;place-items:center}
+.objL7 .figL7 svg{max-width:124px;max-height:124px;width:auto;height:auto}
+.objL7 span{font:700 15px var(--display);color:#F3F0FB;text-align:center;line-height:1.15}
+.objL7.marcadaL7{border-color:#3EE08A;box-shadow:0 0 0 3px #3EE08A, 0 0 22px 7px rgba(62,224,138,.6);transform:scale(1.04)}
+.objL7.errada3{animation:naoTreme .42s ease;border-color:#FF4D4D}
+.objL7.pista5{animation:espera5 .9s ease-in-out infinite}
+.objL7.apagaL7{opacity:0!important;pointer-events:none}
+.objL7.certoL7{opacity:.6}
+.faiscaL7{position:absolute;z-index:45;border-radius:50%;pointer-events:none;background:#FFF6B0;
+  box-shadow:0 0 10px 4px #FFE14D, 0 0 26px 10px rgba(255,200,40,.7);transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1)}
+/* Q4: os três blocos, cada um na sua cor, e os nomes */
+.slide.quiz7l .mesa.blocosL7 .pc.repL7:not(.ficha5){--cor:#C39B2E!important}
+.slide.quiz7l .mesa.blocosL7 .pc.extL7:not(.ficha5){--cor:#A6382F!important}
+.slide.quiz7l .mesa.blocosL7 .pc.intL7:not(.ficha5){--cor:#D9724F!important}
+.nomeBlocoL7{position:absolute;z-index:44;display:grid;place-items:center;pointer-events:none;white-space:nowrap;
+  font:800 22px var(--display);text-shadow:0 2px 8px rgba(0,0,0,.9);animation:val9 .5s ease both}
+.nomeBlocoL7.repN{color:#F0C75A}
+.nomeBlocoL7.extN{color:#FF8A7E}
+.nomeBlocoL7.intN{color:#FFB08A}
+/* Q6: o rótulo da série e a área de descarte (nova); o intruso, na casa dele */
+.rotSerieL7{position:absolute;z-index:31;display:grid;place-items:center;pointer-events:none;font:800 26px var(--display);color:#FFB08A}
+.bandeja5.descarteL7{border-color:rgba(255,107,107,.8);background:rgba(255,80,80,.07)}
+.bandeja5.descarteL7 > span{color:#FF9C9C;font-size:20px}
+.mesa .pc.ficha5.intrusoL7 .face{box-shadow:0 0 0 3px #FF6B6B, 0 0 18px 6px rgba(255,80,80,.7)}
+/* Q7: o marcador "N de 3", o balão que sai, e os três lado a lado */
+.marcaL7{position:absolute;z-index:31;display:grid;place-items:center;pointer-events:none;
+  font:700 18px var(--mono);letter-spacing:.12em;color:#F2B33D}
+.balao7.balaoL7{animation:val9 .45s ease both}
+.balao7.balaoL7.saiL7{opacity:0;transition:opacity .35s ease}
+.balao7.miniL7 b{font-size:17px}
+/* Q8: os encaixes vazios na tabela aberta, as séries escondidas, e as fitas (novas) */
+.slide.quiz7l .mesa .pc.escL7:not(.ficha5){opacity:0!important;pointer-events:none}
+.slot5.encaixeL7{border-radius:10px;animation:pisca8s 1.3s ease-in-out infinite}
+.slot5.encaixeL7.ocupadoL7{animation:none;opacity:0;transition:opacity .4s ease}
+.slot5.encaixeL7.pista5{animation:pisca8s .7s ease-in-out infinite;opacity:1}
+.fitaL7{display:flex;align-items:center;justify-content:center;gap:calc(14px * var(--kL7,1));border-radius:calc(16px * var(--kL7,1));
+  color:#fff;cursor:grab;touch-action:none;box-shadow:0 8px 20px rgba(0,0,0,.5);z-index:36;
+  transition:left .3s ease, top .3s ease, transform .3s ease, opacity .3s ease}
+.fitaL7 b{font:800 calc(24px * var(--kL7,1)) var(--display)}
+.fitaL7 em{font:700 calc(20px * var(--kL7,1)) var(--mono);font-style:normal;opacity:.9}
+.fitaL7.fita-lan{background:linear-gradient(135deg,#E07A52,#B8462C)}
+.fitaL7.fita-act{background:linear-gradient(135deg,#9B7BE6,#6A49C2)}
+.fitaL7.espera5{animation:pisca8e 1.3s ease-in-out infinite}
+.fitaL7.abertaL7{opacity:.4}
+.mesa .pc.ficha5.naFitaL7{z-index:34}
+
 /* ---- O QUIZ DO TÓPICO 8 (QUIZ8, no slide 9) ---- */
 /* a caixa da pergunta no alto (o mesmo lugar dos quizzes 6 e 9) e a linha da
    segunda parte (Q5, Q6, Q7) */
@@ -4875,7 +4944,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v48.2';
+const VERSAO = 'v48.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5408,7 +5477,11 @@ function montaTabela(i){
   /* no slide 8 o bilhete é botão: tocado, a série desce (ver SERIES8) —
      dos 18 s da "7" em diante (EV7.podeTocar) */
   if (i === 7) mesa.querySelectorAll('.casa.serie').forEach(d =>
-    d.addEventListener('click', () => { if (!naMontagem() && EV7.podeTocar()) SERIES8.toca(d.classList.contains('act') ? 'act' : 'lan'); }));
+    d.addEventListener('click', () => {
+      /* (no quiz do tópico 7, o bilhete é uma resposta) */
+      if (window.QUIZ7L && QUIZ7L.aberto){ QUIZ7L.tocaCasa(d); return; }
+      if (!naMontagem() && EV7.podeTocar()) SERIES8.toca(d.classList.contains('act') ? 'act' : 'lan');
+    }));
 
   /* --- os 118 cubos --- */
   const cubos = [];
@@ -5436,6 +5509,7 @@ function montaTabela(i){
       /* no slide 10, no quiz, responde-se tocando na tabela (e no 9 também) */
       if (i === 9 && QUIZ9.aberto){ QUIZ9.toca(c); return; }
       if (i === 8 && QUIZ8.aberto){ QUIZ8.toca(c); return; }
+      if (i === 7 && window.QUIZ7L && QUIZ7L.aberto){ QUIZ7L.toca(c); return; }
       if (i === 6 && EV6.toca(c)) return;
       /* no slide 8, tocada a carta de uma série que já desceu, a série
          inteira volta para o bilhete (e a mesa desce, se era a última) —
@@ -6877,8 +6951,8 @@ function tocaOuPara(){
   /* o botão do jogo abre o jogo, e a fala das regras toca por cima */
   if (somBtn.classList.contains('jogo')){ estouraEsegue(entraNoJogo); return; }
   /* e o do quiz, o quiz do slide 3 */
-  /* (o do slide 8 ainda espera as questões) */
-  if (somBtn.classList.contains('botao-quiz') && atual === 7){ TP.diz('As questões deste quiz ainda vão chegar.'); return; }
+  /* (o do slide 8: o quiz do tópico 7) */
+  if (somBtn.classList.contains('botao-quiz') && atual === 7){ estouraEsegue(() => QUIZ7L.abre()); return; }
   /* (e o do slide 10, o do fim da "9.3.9": o quiz do tópico 9) */
   if (somBtn.classList.contains('botao-quiz') && atual === 9){ estouraEsegue(() => QUIZ9.abre()); return; }
   /* o "Resumo" do fim da "2.5A": o resumo interativo do tópico 2 */
@@ -17584,7 +17658,8 @@ const valorRoda8 = r => (r._alvo !== undefined && r._alvo !== null) ? r._alvo : 
 
 /* as etiquetas e os seus lugares (Q2, Q8): as do quiz do tópico 6, no palco
    convertido para a mesa. slots: [{ x, y, w, certo, el? }] em px do palco */
-function etiquetas8(Q, q, nomes, ys, slots){
+/* (larg: a largura de cada etiqueta — a Q2 do quiz do tópico 7 usa etiquetas curtas) */
+function etiquetas8(Q, q, nomes, ys, slots, largE){
   q.slots = slots.map(s => {
     const p = M8(Q, s.x, s.y);
     const el = Q.pecaCentro('slot5 slot7 slot8 pisca8' + (s.cls ? ' ' + s.cls : ''), '', p.x, p.y, s.w, 44);
@@ -17615,7 +17690,7 @@ function etiquetas8(Q, q, nomes, ys, slots){
     q.etqs.forEach(e => e.classList.toggle('pisca8', !e._slot && !e._preso));
     q.slots.forEach(s => s.classList.toggle('pisca8', !s._etq));
   };
-  const larg = 214, gap = 12, tot = nomes.length * larg + (nomes.length - 1) * gap;
+  const larg = largE || 214, gap = 12, tot = nomes.length * larg + (nomes.length - 1) * gap;
   q.bandeja = Q.pecaCentro('bandeja5 bandeja7 etiquetas7', '', M8(Q, 640, ys).x, M8(Q, 640, ys).y, tot + 40, 64);
   q.etqs = embaralha(nomes.slice()).map((t, i) => {
     const p = M8(Q, 640 - tot / 2 + larg / 2 + i * (larg + gap), ys);
@@ -19778,7 +19853,8 @@ const EV7 = {
     stage.classList.remove('em-toque');
   },
   /* saindo do slide com o pedido em cena, o play volta */
-  fora(){ if (this.esperaToque) this.tiraToque(); clearTimeout(this.pausaT); this.esperaDesce = false; },
+  fora(){ if (this.esperaToque) this.tiraToque(); clearTimeout(this.pausaT); this.esperaDesce = false;
+          if (window.QUIZ7L && QUIZ7L.aberto) QUIZ7L.fecha(); },
   /* A TABELA DE 32 COLUNAS: abre (as séries saem dos bilhetes para a linha
      delas, o resto vai para os lados, e a mesa encolhe para caber) e fecha
      (tudo de volta, e as séries para dentro dos bilhetes). Só a ida e a
@@ -19847,6 +19923,8 @@ const EV7 = {
     const m = this.mesa();
     if (!m) return;
     this.prepara();
+    /* (no quiz do tópico 7, a narração está fora: a mesa é do quiz) */
+    if (window.QUIZ7L && QUIZ7L.aberto) return;
     const t7 = this.relogio(t), monta = naMontagem();
     /* os nomes, digitados (na montagem, inteiros) */
     let bate = false;
@@ -20065,6 +20143,577 @@ const EV7 = {
   }
 };
 window.EV7 = EV7;
+
+/* ============================================================
+   O QUIZ DO TÓPICO 7 (QUIZ7L, no slide 8 · Lantanídeos e actinídeos) — oito
+   questões pela taxonomia revisada de Bloom (o documento do professor, "Quiz
+   do Tópico 7 · Lantanídeos e actinídeos"). É o QUIZ5 com as questões daqui,
+   no mesmo ritual (o do QUIZ8). A tabela é a do slide, de 18 colunas, com as
+   séries recolhidas nos bilhetes (SERIES8.zera); as festas reaproveitam as
+   animações da aula: a série que desce (SERIES8.desce) e a tabela de 32
+   colunas (EV7.longa). Aberto o quiz, a narração sai e o EV7 fica parado.
+     1  Lembrar     tocar no bilhete da série sorteada (com "?" no lugar do intervalo)
+     2  Lembrar     as etiquetas dos intervalos nos bilhetes (e as armadilhas)
+     3  Entender    a vitrine: os objetos com terras raras (as artes da "7.1")
+     4  Aplicar*    seis cards para os três blocos
+     5  Aplicar     seis cards para Lantanídeos, Actinídeos e Corpo da tabela
+     6  Analisar    o intruso para a área de descarte (nova)
+     7  Avaliar     três frases do colega, uma de cada vez
+     8  Criar       as fitas das séries (novas) nos encaixes da tabela aberta
+   ============================================================ */
+/* as artes da vitrine: o celular, a tela e o fone (os do véu da "7.1") e o
+   lápis, a panela e o letreiro (os dos cubos do tópico 4), com os ids
+   renomeados — as mesmas figuras já estão noutros lugares da página */
+function semIdsL7(svg, suf){
+  return svg.replace(/id="([^"]+)"/g, 'id="$1' + suf + '"').replace(/url\(#([^)]+)\)/g, 'url(#$1' + suf + ')')
+            .replace(/href="#([^"]+)"/g, 'href="#$1' + suf + '"');
+}
+function artesL7(){
+  const s = VEU_71.match(/<svg[\s\S]*?<\/svg>/g);
+  return { cel:s[0], tv:s[1], fone:s[2], lapis:lapisSVG(), neon:letreiroSVG(), panela:panelaSVG() };
+}
+function limpaL7(Q){
+  (Q.marcados || []).forEach(c => { c.classList.remove('certa3', 'frente3'); c.style.removeProperty('--onda'); c.style.removeProperty('--tsobe'); });
+  Q.marcados = [];
+  const m = Q.mesa();
+  m.classList.remove('someL7', 'blocosL7');
+  m.querySelectorAll('.pc').forEach(c => c.classList.remove('repL7', 'extL7', 'intL7', 'escL7', 'real71', 'pista5', 'errada3'));
+  m.querySelectorAll('.casa.serie').forEach(d => {
+    if (d.dataset.origL7 !== undefined){ d.innerHTML = d.dataset.origL7; delete d.dataset.origL7; }
+    d.classList.remove('vaziaL7', 'certaL7', 'pista5', 'errada3');
+  });
+  EV7.longa(false, true);
+  SERIES8.zera();
+  Q.sl().querySelectorAll('.q7p').forEach(e => e.remove());
+  limpa5(Q);
+}
+/* o bilhete de uma série ('lan' ou 'act') */
+const bilheteL7 = (Q, q) => Q.mesa().querySelector('.casa.serie' + (q === 'act' ? '.act' : ':not(.act)'));
+/* as duas séries descem juntas (a festa de várias questões) */
+function abreSeriesL7(){ ['lan', 'act'].forEach(q => SERIES8.desce(q, true)); }
+/* um texto de festa no palco */
+function textoL7(Q, txt, x, y, w){ return peca9(Q, 'q7p textoL7', txt, x - w / 2, y - 20, w, 40); }
+
+/* AS QUESTÕES DE SEPARAR (Q4, Q5): seis cards em fila e três bandejas, o
+   Conferir quando os seis estão nelas; as erradas voltam, as certas ficam */
+function separaL7(op){
+  return {
+    monta(Q){
+      Q.mesa().classList.add('someL7');
+      const zs = op.sorteia();
+      this.bandejas = op.grupos.map(([k, nome], i) => {
+        const p = M8(Q, 300 + i * 340 - 160, 370);
+        const b = Q.peca('bandeja5 bandeja8', '<span>' + nome + '</span>', p.x, p.y, 320, 220);
+        b.dataset.k = k;
+        b.classList.add('espera5');
+        return b;
+      });
+      this.fichas = embaralha(zs).map((z, i) => {
+        const p = M8(Q, 640 + (i - 2.5) * 96, 236), c = Q.ficha(z, p.x, p.y, 1.2);
+        c.classList.add('espera5');
+        c._casa = p; c._k = null;
+        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y));
+        return c;
+      });
+      this.bt = botao8(Q, 'Conferir', 1205, 650, () => this.confere(Q));
+      this.bt.classList.add('some5');
+      return op.enunciado;
+    },
+    solta(Q, c, x, y){
+      const b = this.bandejas.find(b => Q.dentro(x, y, b));
+      c._k = b ? b.dataset.k : null;
+      if (b){
+        [c, b].forEach(e => { e.classList.remove('encaixa5'); void e.offsetWidth; e.classList.add('encaixa5'); });
+        setTimeout(() => [c, b].forEach(e => e.classList.remove('encaixa5')), 700);
+        tocaEfeito('right');
+      }
+      this.arruma(Q);
+    },
+    arruma(Q){
+      this.bandejas.forEach(b => {
+        const l = parseFloat(b.style.left), t = parseFloat(b.style.top);
+        this.fichas.filter(c => c._k === b.dataset.k).forEach((c, k) => Q.poe(c, l + 70 + (k % 3) * 90, t + 70 + Math.floor(k / 3) * 84, 1));
+      });
+      this.fichas.filter(c => !c._k).forEach(c => Q.poe(c, c._casa.x, c._casa.y, 1.2));
+      this.bt.classList.toggle('some5', this.fichas.some(c => !c._k));
+      this.fichas.forEach(c => c.classList.toggle('espera5', !c._k));
+      this.bandejas.forEach(b => b.classList.toggle('espera5', this.fichas.some(c => !c._k)));
+    },
+    confere(Q){
+      const erradas = this.fichas.filter(c => c._k !== op.certo(+c.dataset.z));
+      if (!erradas.length){
+        this.fichas.forEach(c => c._preso = true);
+        this.bt.classList.add('some5');
+        op.festa(Q, this);
+        Q.acerta();
+        return;
+      }
+      Q.erra(op.dica, erradas, () => erradas.flatMap(c => [c, this.bandejas.find(b => b.dataset.k === op.certo(+c.dataset.z))]));
+      setTimeout(() => { erradas.forEach(c => { c._k = null; }); this.arruma(Q); }, 650);
+    },
+    limpa(Q){ limpaL7(Q); }
+  };
+}
+/* sorteios: n de uma lista */
+const deL7 = (L, n) => embaralha(L.slice()).slice(0, n);
+
+const QUESTOES_7L = [
+  /* Q1 · Lembrar · onde moram os lantanídeos (ou os actinídeos): os
+     bilhetes com "?"; o toque no certo abre a série, como na aula */
+  { monta(Q){
+      this.q = sorteia5(['lan', 'act']);
+      ['lan', 'act'].forEach(k => { const d = bilheteL7(Q, k); d.dataset.origL7 = d.innerHTML; d.innerHTML = '?'; });
+      return this.q === 'lan' ? 'Toque na casa que guarda os lantanídeos.' : 'Toque na casa que guarda os actinídeos.';
+    },
+    dica(){ return this.q === 'lan' ? 'O lantânio é o 57. Olhe o número do vizinho da esquerda.' : 'O actínio é o 89. Olhe o número do vizinho da esquerda.'; },
+    tocaCasa(Q, d){
+      const k = d.classList.contains('act') ? 'act' : 'lan';
+      if (k === this.q){
+        d.innerHTML = d.dataset.origL7;
+        d.classList.add('certaL7');
+        /* a casa se abre e a série sai deslizando para baixo */
+        SERIES8.desce(k);
+        Q.acerta();
+        return;
+      }
+      Q.erra(this.dica(), [d], () => [bilheteL7(Q, this.q)]);
+    },
+    toca(Q, c){ Q.erra(this.dica(), [c], () => [bilheteL7(Q, this.q)]); },
+    limpa(Q){ limpaL7(Q); } },
+
+  /* Q2 · Lembrar · os intervalos: as etiquetas (as do tópico 6) nos bilhetes vazios */
+  { monta(Q){
+      ['lan', 'act'].forEach(k => { const d = bilheteL7(Q, k); d.dataset.origL7 = d.innerHTML; d.innerHTML = ''; d.classList.add('vaziaL7'); });
+      const pl = P8(Q, bilheteL7(Q, 'lan')), pa = P8(Q, bilheteL7(Q, 'act'));
+      etiquetas8(Q, this, ['57–71', '89–103', '58–71', '90–103'], 676,
+        [{ x:pl.x, y:pl.y, w:96, certo:'57–71', cls:'slotL7' }, { x:pa.x, y:pa.y, w:96, certo:'89–103', cls:'slotL7' }], 120);
+      this.etqs.forEach(e => e.classList.add('etqL7'));
+      this.bt = botao8(Q, 'Pronto', 1205, 676, () => this.confere(Q));
+      this.bt.classList.add('some5');
+      /* (encaixada, a etiqueta encolhe para o tamanho do bilhete) */
+      this.pronto = () => {
+        this.bt.classList.toggle('some5', this.slots.some(s => !s._etq));
+        this.etqs.forEach(e => e.classList.toggle('dentroL7', !!e._slot));
+      };
+      return 'Arraste o intervalo certo para cada casa.';
+    },
+    confere(Q){
+      const errados = this.slots.filter(s => s._etq.dataset.t !== s.dataset.certo);
+      if (!errados.length){
+        this.etqs.forEach(e => { e._preso = true; e.classList.remove('pisca8'); });
+        this.bt.classList.add('some5');
+        /* as séries descem, e o La e o Ac acendem no começo delas */
+        setTimeout(() => {
+          this.bandeja.classList.add('some5');
+          this.etqs.filter(e => !e._slot).forEach(e => e.classList.add('some5'));
+          abreSeriesL7();
+        }, 300);
+        setTimeout(() => {
+          [57, 89].forEach(z => Q.carta(z).classList.add('real71'));
+          const p = P8(Q, Q.carta(57)), pa = P8(Q, Q.carta(89));
+          textoL7(Q, '← Os nomes vêm daqui', p.x + 150, pa.y + 56, 320);
+        }, 1300);
+        Q.acerta();
+        return;
+      }
+      const erradas = errados.map(s => s._etq);
+      Q.erra('A série começa no elemento que dá nome a ela.', erradas, () => {
+        const livres = this.etqs.filter(e => !e._slot || errados.includes(e._slot));
+        return errados.flatMap(s => [s, livres.find(e => e.dataset.t === s.dataset.certo)]);
+      });
+      setTimeout(() => { erradas.forEach(e => this.volta(Q, e)); this.pronto(); }, 650);
+    },
+    limpa(Q){ limpaL7(Q); } },
+
+  /* Q3 · Entender · terras raras no seu bolso: a vitrine (a do tópico 4) com
+     seis objetos; marcar os que usam terras raras e tocar em Pronto */
+  { monta(Q){
+      Q.mesa().classList.add('someL7');
+      const A = artesL7();
+      const objs = embaralha([['cel', 'Celular', true], ['tv', 'Tela de TV', true], ['fone', 'Fone de ouvido', true],
+                              ['lapis', 'Lápis', false], ['neon', 'Letreiro de neon', false], ['panela', 'Panela de alumínio', false]]);
+      this.objs = objs.map(([k, nome, certo], i) => {
+        const x = 640 + (i - 2.5) * 178;
+        const d = peca9(Q, 'q7p objL7', '<div class="figL7">' + semIdsL7(A[k], '-q7' + i) + '</div><span>' + nome + '</span>', x - 78, 300, 156, 196);
+        d.dataset.k = k;
+        d._certo = certo;
+        d.addEventListener('pointerdown', ev => ev.stopPropagation());
+        d.addEventListener('click', ev => {
+          ev.stopPropagation();
+          if (!Q.aberto || Q.travado || this.feito) return;
+          d.classList.toggle('marcadaL7');
+          tocaEfeito('flip');
+        });
+        return d;
+      });
+      this.bt = botao8(Q, 'Pronto', 640, 560, () => this.confere(Q));
+      return 'Toque nos objetos que usam terras raras e depois em Pronto.';
+    },
+    confere(Q){
+      const erradas = this.objs.filter(d => d.classList.contains('marcadaL7') !== d._certo);
+      if (!erradas.length){
+        this.feito = true;
+        this.bt.classList.add('some5');
+        /* a tabela volta, e de cada objeto certo sai uma faísca até a casa dos lantanídeos */
+        Q.mesa().classList.remove('someL7');
+        this.objs.forEach(d => d.classList.add(d._certo ? 'certoL7' : 'apagaL7'));
+        const alvo = P8(Q, bilheteL7(Q, 'lan'));
+        this.objs.filter(d => d._certo).forEach((d, k) => {
+          const p = P8(Q, d.querySelector('.figL7'));
+          const f = peca9(Q, 'q7p faiscaL7', '', p.x - 9, p.y - 9, 18, 18);
+          setTimeout(() => { f.style.left = (alvo.x - 9) + 'px'; f.style.top = (alvo.y - 9) + 'px'; }, 150 + k * 180);
+          setTimeout(() => { f.remove(); bilheteL7(Q, 'lan').classList.add('certaL7'); d.classList.add('apagaL7'); }, 1150 + k * 180);
+        });
+        setTimeout(() => textoL7(Q, 'O Brasil tem uma das maiores reservas do mundo', 640, 640, 720), 1400);
+        Q.acerta();
+        return;
+      }
+      const neon = erradas.find(d => d.dataset.k === 'neon');
+      Q.erra(neon ? 'O neon é um gás nobre, lembra?' : 'As terras raras estão nas tecnologias que você carrega: na tela, no som, no aparelho.',
+             erradas, () => this.objs.filter(d => d._certo));
+    },
+    limpa(Q){ this.feito = false; limpaL7(Q); } },
+
+  /* Q4 · Entender · os três blocos: seis cards para três bandejas */
+  separaL7({
+    enunciado:'Arraste cada elemento para o bloco dele.',
+    grupos:[['rep', 'Representativos'], ['ext', 'Transição externa'], ['int', 'Transição interna']],
+    sorteia(){
+      let zs;
+      do zs = [...deL7([11, 20, 13, 6, 17, 10], 2), ...deL7([26, 29, 79, 30, 21, 39], 2), ...deL7([57, 60, 63, 89, 92, 94], 2)];
+      while (!zs.some(z => [57, 89, 21, 39].includes(z)));
+      return zs;
+    },
+    certo(z){ return ehDaSerie(z) ? 'int' : (posDe(z).col >= 3 && posDe(z).col <= 12) ? 'ext' : 'rep'; },
+    dica:'Transição interna são só os elementos que moram nas duas séries de baixo.',
+    /* os três blocos acendem na tabela, cada um com a sua cor e o seu nome */
+    festa(Q, q){
+      setTimeout(() => {
+        q.bandejas.forEach(b => b.classList.add('some5'));
+        q.fichas.forEach(c => c.classList.add('some5'));
+        const m = Q.mesa();
+        m.classList.remove('someL7');
+        m.classList.add('blocosL7');
+        m.querySelectorAll('.pc:not(.ficha5)').forEach(c => {
+          const z = +c.dataset.z;
+          c.classList.add(ehDaSerie(z) ? 'intL7' : (posDe(z).col >= 3 && posDe(z).col <= 12) ? 'extL7' : 'repL7');
+        });
+        abreSeriesL7();
+      }, 500);
+      setTimeout(() => {
+        const ce = P8(Q, Q.carta(6)), sc = P8(Q, Q.carta(21)), zn = P8(Q, Q.carta(30)), la = P8(Q, Q.carta(57)), ac = P8(Q, Q.carta(89));
+        peca9(Q, 'q7p nomeBlocoL7 repN', 'Representativos', ce.x - 30 - 110, ce.y - 66, 220, 30);
+        peca9(Q, 'q7p nomeBlocoL7 extN', 'Transição externa', (sc.x + zn.x) / 2 - 120, sc.y - 64, 240, 30);
+        const lu = P8(Q, Q.carta(71));
+        peca9(Q, 'q7p nomeBlocoL7 intN', 'Transição interna', (la.x + lu.x) / 2 - 120, ac.y + 40, 240, 30);
+      }, 1500);
+    }
+  }),
+
+  /* Q5 · Aplicar · para onde vai este elemento? Pelo número atômico */
+  separaL7({
+    enunciado:'Pelo número atômico, arraste cada elemento para o seu lugar.',
+    grupos:[['lan', 'Lantanídeos'], ['act', 'Actinídeos'], ['corpo', 'Corpo da tabela']],
+    sorteia(){
+      let zs;
+      do zs = [...deL7([57, 58, 60, 63, 64, 71], 2), ...deL7([89, 90, 92, 94, 103], 2), ...deL7([56, 72, 88, 104, 39], 2)];
+      while (!zs.some(z => [57, 71, 89, 103].includes(z)) || !zs.some(z => [56, 72, 88, 104].includes(z)));
+      return zs;
+    },
+    certo(z){ return z >= 57 && z <= 71 ? 'lan' : z >= 89 && z <= 103 ? 'act' : 'corpo'; },
+    dica:'Lantanídeos vão do 57 ao 71; actinídeos, do 89 ao 103. Confira o número com calma.',
+    /* os cards voam para a sua posição na tabela, com as séries abertas */
+    festa(Q, q){
+      setTimeout(() => {
+        q.bandejas.forEach(b => b.classList.add('some5'));
+        Q.mesa().classList.remove('someL7');
+        abreSeriesL7();
+      }, 400);
+      q.fichas.forEach((c, k) => setTimeout(() => {
+        const a = alvoDe(+c.dataset.z);
+        c.classList.add('voa8');
+        Q.poe(c, a.x, a.y, 1);
+      }, 1200 + k * 90));
+    }
+  }),
+
+  /* Q6 · Analisar · ache o intruso: cinco cards e a área de descarte (nova) */
+  { monta(Q){
+      Q.mesa().classList.add('someL7');
+      this.serie = sorteia5(['lan', 'act']);
+      const membros = this.serie === 'lan' ? [57, 58, 59, 60, 62, 63, 64, 65, 71] : [89, 90, 91, 92, 93, 94, 95, 103];
+      const intrusos = this.serie === 'lan' ? [56, 72, 39, 92] : [88, 104, 60];
+      this.intruso = sorteia5(intrusos);
+      const zs = embaralha([...deL7(membros, 4), this.intruso]);
+      peca9(Q, 'q7p rotSerieL7', this.serie === 'lan' ? 'Lantanídeos' : 'Actinídeos', 520 - 200, 236, 400, 34);
+      this.fichas = zs.map((z, i) => {
+        const p = M8(Q, 520 + (i - 2) * 104, 330), c = Q.ficha(z, p.x, p.y, 1.35);
+        c.classList.add('espera5');
+        c._casa = p;
+        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y));
+        return c;
+      });
+      const pd = M8(Q, 1010 - 85, 245);
+      this.descarte = Q.peca('bandeja5 descarteL7', '<span>Fora da série</span>', pd.x, pd.y, 170, 170);
+      this.descarte.classList.add('espera5');
+      return 'Um desses não é da série. Arraste o intruso para fora.';
+    },
+    solta(Q, c, x, y){
+      if (!Q.dentro(x, y, this.descarte)){ Q.poe(c, c._casa.x, c._casa.y, 1.35); return; }
+      if (+c.dataset.z === this.intruso){
+        const d = this.descarte;
+        Q.poe(c, parseFloat(d.style.left) + 85, parseFloat(d.style.top) + 95, 1.35);
+        this.fichas.forEach(f => { f._preso = true; f.classList.remove('espera5'); });
+        d.classList.remove('espera5');
+        tocaEfeito('right');
+        /* o intruso voa até a sua casa verdadeira, e os quatro membros se juntam na série */
+        setTimeout(() => {
+          Q.mesa().classList.remove('someL7'); abreSeriesL7(); d.classList.add('some5');
+          Q.sl().querySelectorAll('.rotSerieL7').forEach(e => e.remove());
+        }, 500);
+        this.fichas.forEach((f, k) => setTimeout(() => {
+          const a = alvoDe(+f.dataset.z);
+          f.classList.add('voa8');
+          Q.poe(f, a.x, a.y, 1);
+          if (f === c) f.classList.add('intrusoL7');
+        }, 1300 + (f === c ? 0 : 300 + k * 90)));
+        Q.acerta();
+        return;
+      }
+      Q.erra('Compare os números com o intervalo da série. O primeiro elemento faz parte dela.', [c], () => [this.fichas.find(f => +f.dataset.z === this.intruso)]);
+      setTimeout(() => Q.poe(c, c._casa.x, c._casa.y, 1.35), 450);
+    },
+    limpa(Q){ limpaL7(Q); } },
+
+  /* Q7 · Avaliar · três frases do colega: o balão (o do tópico 6), uma de cada vez */
+  { monta(Q){
+      Q.mesa().classList.add('someL7');
+      const NUM = 'Lembra dos números das casas?', DIA = 'Lembra onde as terras raras estão no seu dia a dia?', MOT = 'Lembra dos dois motivos da aula?';
+      this.frases = deL7([
+        ['O lantânio não é lantanídeo: ele só dá nome à série.', 'nao', NUM],
+        ['Lantanoides e lantanídeos são a mesma coisa.', 'sim', NUM],
+        ['As terras raras quase não existem na Terra.', 'nao', DIA],
+        ['Lantanídeos e actinídeos são representativos, porque ficam fora do bloco do meio.', 'nao', NUM],
+        ['As séries ficam separadas porque são elementos sem importância.', 'nao', MOT],
+        ['Se as séries entrassem na tabela, ela ficaria comprida demais.', 'sim', MOT],
+        ['Os elementos de cada série são tão parecidos que cabem numa casa só.', 'sim', MOT]], 3);
+      this.i = 0;
+      this.feitos = [];
+      this.marca = peca9(Q, 'q7p marcaL7', '', 640 - 80, 196, 160, 30);
+      this.bts = [['sim', 'Concordo', 520], ['nao', 'Discordo', 760]].map(([k, txt, x]) => {
+        const b = botao8(Q, txt, x, 450, () => this.julgar(Q, k, b));
+        b.classList.add('julga7');
+        b.dataset.k = k;
+        return b;
+      });
+      this.mostra(Q);
+      return 'O colega disse três coisas. Julgue cada uma.';
+    },
+    mostra(Q){
+      const [frase] = this.frases[this.i];
+      this.marca.textContent = (this.i + 1) + ' de 3';
+      const p = M8(Q, 640, 330);
+      this.balao = Q.pecaCentro('balao7 balaoL7', '<i>Um colega disse:</i><b>“' + frase + '”</b>', p.x, p.y, 720);
+      this.bts.forEach(o => o.classList.remove('escolhido7', 'pista5'));
+      this.ocupado = false;
+    },
+    julgar(Q, k, b){
+      if (this.ocupado) return;
+      const [frase, certo, dica] = this.frases[this.i];
+      if (k !== certo){ Q.erra(dica, [b], () => [this.bts.find(o => o.dataset.k === certo)]); return; }
+      this.ocupado = true;
+      Q.tropecos = 0;
+      b.classList.add('escolhido7');
+      this.balao.classList.add(certo === 'sim' ? 'certo7' : 'risca7');
+      this.feitos.push([frase, certo]);
+      if (this.i < 2){
+        tocaEfeito('right');
+        setTimeout(() => {
+          if (!Q.aberto) return;
+          this.balao.classList.add('saiL7');
+          const velho = this.balao;
+          setTimeout(() => velho.remove(), 400);
+          this.i++;
+          this.mostra(Q);
+        }, 1100);
+        return;
+      }
+      /* depois do terceiro, os três balões lado a lado, com as marcas */
+      setTimeout(() => {
+        this.balao.remove();
+        this.bts.forEach(o => o.classList.add('some5'));
+        this.marca.remove();
+        this.feitos.forEach(([f, c], j) => {
+          const p = M8(Q, 640 + (j - 1) * 400, 360);
+          const bl = Q.pecaCentro('balao7 balaoL7 miniL7 ' + (c === 'sim' ? 'certo7' : 'risca7'), '<b>“' + f + '”</b>', p.x, p.y, 360);
+          bl.style.animationDelay = (j * 120) + 'ms';
+        });
+      }, 700);
+      Q.acerta();
+    },
+    limpa(Q){ limpaL7(Q); } },
+
+  /* Q8 · Criar · monte a tabela aberta: as fitas das séries (novas) nos
+     encaixes; a fita solta no encaixe se abre nos 15 cards da série */
+  { monta(Q){
+      const m = Q.mesa();
+      /* a tabela já esticada, sem as séries: três encaixes vazios */
+      EV7.longa(true, true);
+      m.querySelectorAll('.pc:not(.ficha5)').forEach(c => { if (ehDaSerie(+c.dataset.z)) c.classList.add('escL7'); });
+      const linha = (row, c0, c1) => {
+        const esq = TAB_CX - (32 * LADO + 31 * VAO) / 2, x0 = esq + (c0 - 1) * PASSO, x1 = esq + (c1 - 1) * PASSO + LADO;
+        return { x:(x0 + x1) / 2, y:yDaLinha(row), w:x1 - x0, c0 };
+      };
+      this.encaixes = [['lan', linha(6, 3, 17)], ['act', linha(7, 3, 17)], ['arm', linha(5, 4, 17)]].map(([k, L]) => {
+        const s = Q.pecaCentro('slot5 encaixeL7', '', L.x, L.y, L.w, LADO + 6);
+        s.dataset.k = k;
+        s._L = L;
+        s._fita = null;
+        return s;
+      });
+      /* as fitas, embaixo (no tamanho de tela de sempre: a mesa está encolhida) */
+      const mr = m.getBoundingClientRect(), k = mr.width / m.offsetWidth / fitScale;
+      this.k = k;
+      this.fitas = [['lan', 'Lantanídeos', '57–71', 460], ['act', 'Actinídeos', '89–103', 820]].map(([q, nome, faixa, sx]) => {
+        const p = M8(Q, sx, 640);
+        const f = Q.pecaCentro('fitaL7 fita-' + q, '<b>' + nome + '</b><em>' + faixa + '</em>', p.x, p.y, 300 / k, 64 / k);
+        f.style.setProperty('--kL7', (1 / k).toFixed(3));
+        f.dataset.q = q;
+        f._casa = { x:p.x, y:p.y };
+        f._slot = null;
+        f._cards = [];
+        f.classList.add('espera5');
+        Q.arrastavel(f, (x, y) => this.solta(Q, f, x, y), () => this.desencaixa(f));
+        return f;
+      });
+      this.bt = botao8(Q, 'Pronto', 1205, 640, () => this.confere(Q));
+      this.bt.classList.add('some5');
+      return 'Monte a tabela aberta: encaixe cada série no seu lugar.';
+    },
+    /* a fita sai do encaixe: os 15 cards dela somem */
+    desencaixa(f){
+      if (!f._slot) return;
+      f._slot._fita = null;
+      f._slot.classList.remove('ocupadoL7');
+      f._slot = null;
+      f._cards.forEach(c => c.remove());
+      f._cards = [];
+      f.classList.remove('abertaL7');
+    },
+    solta(Q, f, x, y){
+      this.desencaixa(f);
+      const s = this.encaixes.find(s => Math.abs(x - s._x) < s._L.w / 2 + 10 && Math.abs(y - s._y) < LADO);
+      if (!s){ Q.poe(f, f._casa.x, f._casa.y); f.classList.add('espera5'); this.pronto(); return; }
+      if (s._fita){ const o = s._fita; this.desencaixa(o); Q.poe(o, o._casa.x, o._casa.y); o.classList.add('espera5'); }
+      s._fita = f; f._slot = s;
+      s.classList.add('ocupadoL7');
+      f.classList.remove('espera5');
+      /* a fita se abre nos 15 cards da série, no encaixe; ela mesma volta
+         para a fila, apagada (arrastada de novo, a série sai do encaixe) */
+      Q.poe(f, f._casa.x, f._casa.y);
+      f.classList.add('abertaL7');
+      const z0 = f.dataset.q === 'act' ? 89 : 57;
+      for (let i = 0; i < 15; i++){
+        const c = Q.ficha(z0 + i, s._x, s._y, .4);
+        c.classList.add('voa8', 'naFitaL7');
+        f._cards.push(c);
+        setTimeout(() => { if (f._slot === s) Q.poe(c, s._L.x - s._L.w / 2 + LADO / 2 + i * PASSO, s._y, 1); }, 30 + i * 35);
+      }
+      tocaEfeito('flipcard');
+      this.pronto();
+    },
+    pronto(){ this.bt.classList.toggle('some5', this.fitas.some(f => !f._slot)); },
+    confere(Q){
+      const erradas = this.fitas.filter(f => f._slot.dataset.k !== f.dataset.q);
+      if (!erradas.length){
+        this.fitas.forEach(f => f._preso = true);
+        this.bt.classList.add('some5');
+        /* (a última: a festa segue por trás do cartão da nota — o limpa a deixa) */
+        this.feito = true;
+        /* a tabela aberta completa por um instante; depois se recolhe para as
+           18 colunas, com as séries embaixo (a animação da aula) */
+        const m = Q.mesa();
+        setTimeout(() => {
+          this.fitas.forEach(f => { f._cards.forEach(c => c.remove()); f.classList.add('some5'); });
+          this.encaixes.forEach(s => s.classList.add('some5'));
+          m.querySelectorAll('.pc.escL7').forEach(c => c.classList.remove('escL7'));
+        }, 700);
+        setTimeout(() => EV7.longa(false), 1700);
+        setTimeout(() => { abreSeriesL7(); textoL7(Q, 'Bem melhor assim, né?', 640, 200, 520); }, 2750);
+        Q.acerta();
+        return;
+      }
+      Q.erra('Olhe os números dos vizinhos de cada encaixe. A série tem de continuar a contagem.', erradas,
+             () => this.fitas.flatMap(f => [f, this.encaixes.find(s => s.dataset.k === f.dataset.q)]));
+      setTimeout(() => { erradas.forEach(f => { this.desencaixa(f); Q.poe(f, f._casa.x, f._casa.y); f.classList.add('espera5'); }); this.pronto(); }, 650);
+    },
+    limpa(Q){ if (this.feito){ this.feito = false; Q.sl().querySelectorAll('.textoL7').forEach(e => e.remove()); return; } limpaL7(Q); } }
+];
+const QUIZ7L = Object.assign(Object.create(QUIZ5), {
+  aberto:false, passo:0, itens:[], erros:0, tropecos:0, travado:false, g:0, q:null, marcados:[],
+  sl(){ return slides[7]; },
+  mesa(){ return slides[7].querySelector('.mesa'); },
+  carta(z){ return this.mesa().querySelector('.pc[data-z="' + z + '"]:not(.ficha5)'); },
+  /* o toque num bilhete (a Q1) */
+  tocaCasa(d){
+    if (!this.aberto || this.travado || !this.q || !this.q.tocaCasa) return;
+    this.q.tocaCasa(this, d);
+  },
+  abre(){
+    if (atual !== 7) return;
+    /* (a abertura do capítulo a tocar — o quiz direto do sumário: ela se cala,
+       e o título volta inteiro antes de virar "Quiz") */
+    if (ABERTURA){ calaAbertura(); requestAnimationFrame(() => requestAnimationFrame(() => this.abre())); return; }
+    this.fecha(true);
+    som.pause();
+    VIDA.desliga();
+    /* a narração sai: o EV7 fica parado, e a tabela, a de 18 colunas com as séries recolhidas */
+    trilhaAtual = -1;
+    EV7.tiraToque();
+    EV7.zera();
+    SERIES8.zera();
+    this.itens = QUESTOES_7L.map(Q => Object.assign({}, Q));
+    this.passo = 0; this.erros = 0; this.aberto = true; this.marcados = [];
+    const g = ++this.g, sl = this.sl();
+    stage.classList.add('em-quiz');
+    let v = sl.querySelector(':scope > .breu-quiz');
+    if (!v){ v = document.createElement('div'); v.className = 'breu-quiz'; sl.insertBefore(v, sl.firstChild); v.getBoundingClientRect(); }
+    v.classList.add('on');
+    sl.classList.add('quiz-escuro', 'quiz7l');
+    cabecaDoQuiz(sl, true, 'Quiz', 'quiz-cabeca');
+    if (!sl.querySelector('.confete'))
+      sl.insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
+    this.travado = true;
+    tocaEfeito('Audios/quiz1.mp3').then(() => { if (g === this.g) this.apresenta(g); });
+  },
+  resultado(){
+    this.sl().querySelectorAll('.quiz3.q5').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
+    const n = this.itens.length, e = this.erros, nota = Math.round(Math.max(0, n - e) / n * 100) / 10;
+    QUIZ_FEITOS.marca('q7', nota);      /* feito: verde no sumário */
+    cartaoDoResultado(nota, n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
+      this.sl(), () => this.abre(), () => { this.fecha(); go(8); });
+  },
+  fecha(reabre){
+    this.g++;
+    clearInterval(this.digT);
+    if (this.q && this.q.limpa) this.q.limpa(this);
+    else if (this.mesa()) limpaL7(this);
+    this.q = null;
+    this.aberto = false; this.travado = false;
+    const sl = this.sl();
+    if (!sl) return;
+    sl.querySelectorAll('.quiz3.q5, .quiz-cartao, .q7p').forEach(e => e.remove());
+    const m = this.mesa();
+    if (m) m.querySelectorAll('.pista5, .errada3, .certa3').forEach(e => e.classList.remove('pista5', 'errada3', 'certa3'));
+    if (reabre) return;
+    stage.classList.remove('em-quiz');
+    const v = sl.querySelector(':scope > .breu-quiz');
+    if (v) v.classList.remove('on');
+    sl.classList.remove('quiz-escuro', 'quiz7l');
+    cabecaDoQuiz(sl, false, 'Quiz', 'quiz-cabeca');
+  }
+});
+window.QUIZ7L = QUIZ7L;
 
 /* ============================================================
    SLIDE 9 · A NARRAÇÃO "8" (EV8)
@@ -24558,9 +25207,17 @@ const NAV_TOPICOS = [
   /* (as séries guardadas, como no fim da "7.1") */
   { titulo:'Os elementos de transição interna', sub:'o começo da 7.2', slide:7,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('7.2', 0, g)); } },
-  /* (as questões ainda vão chegar: por ora, "em breve") */
-  { titulo:'Quiz', sub:'o quiz do slide 8, à espera das questões', slide:7, engatilhado:true,
-    entra(){} },
+  /* o quiz direto: a tabela como no fim da "7.4", sem voz, e o quiz abre */
+  { titulo:'Quiz', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:7, quiz:'q7',
+    entra(v, g){
+      depoisDaMesa(g, () => {
+        if (g !== NAV.geracao) return;
+        trilhaAtual = -1;
+        carregaTrilha('7.4');
+        viraQuiz(true);
+        QUIZ7L.abre();
+      });
+    } },
   /* ---- o slide 9 · A Natureza dos elementos ---- */
   { titulo:'Início', sub:'o começo do slide', slide:8,
     entra(){ /* o recomeço do slide já é o tópico */ } },
