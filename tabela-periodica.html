@@ -2147,7 +2147,7 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
    --dy8, somados ao --px/--py da ferramenta de ajuste do celular): andar
    pelo top/left refazia o layout dos 118 cubos a cada quadro, e a subida
    engasgava. (Na montagem, o x/y da tabela deste slide conta a partir daqui) */
-.mesa.series8,.mesa.natureza{top:-108px;bottom:108px;--zoom:.94}
+.mesa.series8,.mesa.natureza,.mesa.blocos{top:-108px;bottom:108px;--zoom:.94}
 .mesa.series8{--dx8:1px;--dy8:92px;will-change:transform;
   transform:translate(calc(var(--px,0px) + var(--dx8)),calc(var(--py,0px) + var(--dy8))) scale(calc(var(--zoom,1) * var(--abre,1)))}
 .mesa.series8.subida{--dx8:0px;--dy8:0px}
@@ -3221,6 +3221,44 @@ html:is(.palco-largo,.palco-alto) .veu-mg10::before{background:rgba(12,10,32,.96
 .dist10 .sub10{fill:#F4F2F8;fill-opacity:0;stroke:#F4F2F8;stroke-width:1.1;stroke-dasharray:260;stroke-dashoffset:260;opacity:0}
 .dist10 .sub10.ult10{fill:#F4FF3A;stroke:#F4FF3A;filter:drop-shadow(0 0 8px rgba(234,255,0,.55))}
 body.montagem .veu-mg10 .sub10{opacity:1!important;fill-opacity:1!important;stroke-dashoffset:0!important}
+/* a "10.1" (CARDS101): os cards dos subníveis, no desenho das cartas da mesa
+   (o degradê da cor do bloco, a borda clara e o vidro em cima), e os
+   encaixes tracejados, que piscam enquanto vazios */
+.titulo9.texto101{font-size:34px}
+.card101{position:absolute;z-index:26;width:92px;height:92px;transform:translate(-50%,-50%);box-sizing:border-box;
+  border-radius:18px;overflow:hidden;display:flex;justify-content:center;align-items:center;color:#fff;font-family:var(--display);
+  background:linear-gradient(145deg,color-mix(in srgb,var(--cor) 84%,#fff),color-mix(in srgb,var(--cor) 86%,#000));
+  border:1px solid rgba(255,255,255,.28);box-shadow:0 10px 24px rgba(32,28,66,.28);
+  opacity:0;scale:.3;pointer-events:none;touch-action:none;user-select:none;-webkit-user-select:none;
+  transition:opacity .3s ease, scale .55s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease, filter .3s ease,
+             left .4s cubic-bezier(.3,.85,.3,1), top .4s cubic-bezier(.3,.85,.3,1)}
+.card101::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.18),transparent 46%)}
+/* (a letra e o expoente centrados juntos: o 10 e o 14 não encostam na letra) */
+.card101 b{font-size:60px;font-weight:700;line-height:1;margin-top:-8px;text-shadow:0 2px 6px rgba(0,0,0,.25)}
+.card101 sup{align-self:flex-start;margin:13px 0 0 3px;font-size:22px;font-weight:700;line-height:1;letter-spacing:-.02em}
+.card101.on101, body.montagem .card101{opacity:1;scale:1}
+.card101.pega101{pointer-events:auto;cursor:grab}
+.card101.cresce101{scale:1.22}
+.card101.brilha101{scale:1.1;filter:brightness(1.15);
+  box-shadow:0 0 0 3px color-mix(in srgb,var(--cor) 45%,#fff), 0 0 30px 10px color-mix(in srgb,var(--cor) 75%,transparent)}
+.card101.pego101{z-index:28;scale:1.12;cursor:grabbing;transition:opacity .3s ease, scale .2s ease, box-shadow .2s ease;
+  box-shadow:0 18px 36px rgba(32,28,66,.4)}
+.card101.erro101{animation:erro101 .45s ease}
+@keyframes erro101{20%{translate:-9px 0} 40%{translate:8px 0} 60%{translate:-6px 0} 80%{translate:4px 0}}
+.slot101{position:absolute;z-index:25;width:92px;height:92px;transform:translate(-50%,-50%);box-sizing:border-box;
+  border-radius:18px;border:3px dashed rgba(255,255,255,.95);background:rgba(20,17,46,.32);
+  box-shadow:0 0 0 2px rgba(20,17,46,.25);opacity:0;pointer-events:none;transition:opacity .4s ease, background .2s ease}
+.slot101.on101{opacity:1;animation:pisca101 1.1s ease-in-out infinite}
+.slot101.perto101{background:rgba(255,255,255,.35);animation:none;opacity:1}
+.slot101.cheio101{opacity:0;animation:none}
+@keyframes pisca101{50%{opacity:.4}}
+/* os blocos da tabela brilham, cada um na sua cor (a das cartas dele) */
+.mesa.blocos .pc .face, .mesa.blocos .casa.serie{transition:box-shadow .6s ease, filter .6s ease}
+.mesa.blocos.brilho101 .pc .face{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--cor) 45%,#fff), 0 0 16px 4px color-mix(in srgb,var(--cor) 80%,transparent);
+  filter:brightness(1.15)}
+.mesa.blocos.brilho101 .pc{animation:brilho101 1.4s ease-in-out infinite}
+@keyframes brilho101{50%{filter:brightness(1.12)}}
 body.montagem .veu-mg10{opacity:1;background:rgba(12,10,32,.35);pointer-events:none}
 body.montagem .veu-mg10 [data-mont]{pointer-events:auto}
 body.montagem .veu-pauling{opacity:1;background:rgba(12,10,32,.35);pointer-events:none}
@@ -4472,6 +4510,9 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
 /* no slide 9 do celular, ele vai para a faixa da direita (a tabela aberta
    chega ao canto do palco): o lugar da montagem, o centro em 1351, 78 */
 html.celular.palco-largo #stage.no-slide9 #ver-slides{translate:146px -2px}
+/* no slide 11 (a mesa mais acima, com as séries embaixo), o lugar da montagem:
+   o centro em 1200, 47, a 0,81 */
+#stage.no-slide11 #ver-slides{translate:-5px -33px;scale:.81}
 /* com o carrossel aberto, os botões do palco saem de cena */
 #stage.em-carrossel #som, #stage.em-carrossel #som-dica, #stage.em-carrossel #vel,
 #stage.em-carrossel #ver-slides{opacity:0;pointer-events:none;transition:opacity .2s}
@@ -4994,7 +5035,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v48.7';
+const VERSAO = 'v48.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5449,7 +5490,8 @@ function montaTabela(i){
      séries) as mesmas cores, com a mesa mais acima; no slide 9 (a
      natureza) o liso de novo, e as séries já à vista, embaixo; no slide
      10 (a valência) as cores A e B, com os B apagados */
-  const comSeries = i === 8;
+  /* (e o slide 11 também: o card do f vai para a frente delas, na "10.1") */
+  const comSeries = i === 8 || i === 10;
   mesa.className = 'mesa' + (i === 3 || i === 5 || i === 8 ? ' lisa' : '') + (i === 4 ? ' tipos' : '')
                  + (i === 6 || i === 7 || i === 9 ? ' grupos' : '') + (i === 7 ? ' series8' : '')
                  + (comSeries ? ' natureza' : '') + (i === 9 ? ' valencia' : '')
@@ -6307,7 +6349,8 @@ const TRILHAS = {
   '9.3.7':'Audios/audio_tabela_9.3.7.mp3',
   '9.3.8':'Audios/audio_tabela_9.3.8.mp3',
   '9.3.9':'Audios/audio_tabela_9.3.9.mp3', /* sozinha, no fim da 8A: a mão abre a distribuição, e o quiz (EV9) */
-  '10':   'Audios/audio_tabela_10.mp3'     /* o slide 11: o Mg e o diagrama de Pauling (EV10) */
+  '10':   'Audios/audio_tabela_10.mp3',    /* o slide 11: o Mg e o diagrama de Pauling (EV10) */
+  '10.1': 'Audios/audio_tabela_10.1.mp3'    /* o play no fim da "10": os cards dos subníveis (CARDS101) */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -6478,7 +6521,8 @@ const ROTEIROS = {
     { t:12.6, faz(){ tiraMao(); } },
     { t:13.0, faz(){ if (atual === 9) viraQuiz(true); } }
   ],
-  '10':   []
+  '10':   [],
+  '10.1': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -7195,6 +7239,8 @@ const SEQ = {
     else if (id === '9') carregaTrilha('9.1');
     /* e o da "9.1", a "9.2" */
     else if (id === '9.1') carregaTrilha('9.2');
+    /* o fim da "10": a cena fica, e o play passa a tocar a "10.1" (EV10) */
+    else if (id === '10') carregaTrilha('10.1');
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
     /* (antes dela, a festa: os confetes, o funfare e os aplausos) */
     else if (id === '9.3.8'){ if (atual === 9) EV9.festa93(); }
@@ -7542,6 +7588,7 @@ function efeitosDoTempo(){
   if (atual !== 8) EV8.fora();
   if (atual !== 9) EV9.fora();
   stage.classList.toggle('no-slide9', atual === 8);
+  stage.classList.toggle('no-slide11', atual === 10);
   /* (cada resumo interativo é do seu slide: saindo dele, fecha) */
   if (RESUMO.aberto && atual !== RESUMO.cfg.slide) RESUMO.fecha();
   /* o slide 3 tem os eventos dele */
@@ -21915,7 +21962,10 @@ const EV10 = {
   tick(t){
     this.prepara();
     if (!this.veu) return;
-    const monta = naMontagem(), t10 = monta ? 99 : trilhaAtual === '10' ? t : -1;
+    CARDS101.tick(t);
+    /* (na "10.1" a cena é a que a "10" deixou, até ao 1 s dela: aí sai em fade) */
+    const monta = naMontagem(), de101 = trilhaAtual === '10.1', t10 = monta ? 99 : trilhaAtual === '10' ? t : de101 ? 99 : -1;
+    const sai = de101 && t >= T101.sai;
     /* o desenho: as setas e os subníveis, e o círculo (traçado em 0,7 s) */
     const fr = this.fracoes(t10), fc = Math.max(0, Math.min(1, (t10 - T10.circulo) / 0.7));
     const chave = fr.map(f => f.toFixed(3)).join() + '|' + fc.toFixed(3);
@@ -21940,21 +21990,181 @@ const EV10 = {
       });
       this.circ.forEach(e => e.style.strokeDashoffset = (1 - fc).toFixed(3));
     }
-    const est = [t10 >= T10.veu, t10 >= T10.tabela, t10 >= T10.foto, t10 >= T10.mg, t10 >= T10.circulo && t10 < T10.circuloSai, t10 >= T10.dist[0]].join() + '|' + monta;
+    const est = [t10 >= T10.veu, t10 >= T10.tabela, t10 >= T10.foto, t10 >= T10.mg, t10 >= T10.circulo && t10 < T10.circuloSai, t10 >= T10.dist[0]].join() + '|' + monta + '|' + sai;
     if (est === this.estado) return;
     this.estado = est;
     const [veu, tabela, foto, mg, circ, dist] = est.split('|')[0].split(',').map(v => v === 'true');
     const V = this.veu;
-    V.classList.toggle('on', veu && !monta);
+    V.classList.toggle('on', veu && !monta && !sai);
     V.classList.toggle('tabela10on', tabela);
     V.classList.toggle('foto10on', foto);
     V.classList.toggle('mg10on', mg);
     V.classList.toggle('circ10on', circ);
     V.classList.toggle('dist10on', dist);
   },
-  zera(){ this.estado = ''; this.estadoT = ''; if (this.veu) this.tick(-1); }
+  zera(){ this.estado = ''; this.estadoT = ''; CARDS101.zera(); if (this.veu) this.tick(-1); }
 };
 window.EV10 = EV10;
+
+/* A "10.1" (o play no fim da "10"), função do tempo dela: aos 1 s a cena da
+   "10" sai em fade e fica a tabela (com as séries embaixo); dos 7,8 aos 9 s,
+   no vão de cima, digita "São 4 subníveis:"; aos 11, 11,9, 13 e 13,5 s
+   entram, embaixo do texto, os cards do s, do p, do d e do f (com o máximo de
+   elétrons de cada um), nas cores dos blocos da tabela. Aos 17 s aparecem os
+   encaixes (piscando) e os cards passam a ser arrastados: o s para os
+   alcalinos, o p para o bloco p, o d para o meio dos de transição, o f para a
+   frente das duas séries. Dos 19 aos 22 s e dos 23 aos 28 s os blocos da
+   tabela brilham, cada um na sua cor; dos 25,5 aos 28 s os cards crescem; e
+   o brilho passa de card em card: o s aos 28,6, o p aos 29, o d aos 29,7 e o
+   f dos 30 aos 31 s. */
+const T101 = { sai:1.0, texto:[7.8, 9.0], arrasta:17.0, brilho:[[19.0, 22.0], [23.0, 28.0]], cresce:[25.5, 28.0] };
+const TEXTO_101 = 'São 4 subníveis:';
+const CARDS_101 = [
+  { b:'s', e:2,  cor:'var(--cat-alcalinos)',  entra:11.0, vez:[28.6, 29.0] },
+  { b:'p', e:6,  cor:'var(--cat-ametais)',    entra:11.9, vez:[29.0, 29.7] },
+  { b:'d', e:10, cor:'var(--cat-transicao)',  entra:13.0, vez:[29.7, 30.0] },
+  { b:'f', e:14, cor:'var(--cat-lantanideos)', entra:13.5, vez:[30.0, 31.0] }];
+const CARDS101 = {
+  C:92, postos:new Set(), estado:'', nt:-1,
+  prepara(){
+    if (this.m || !slides[10]) return;
+    const m = this.m = slides[10].querySelector('.mesa');
+    if (!m) return;
+    const xv = (xDaColuna(3) + xDaColuna(12)) / 2;
+    /* o texto, no vão de cima (na linha 1) */
+    const q = this.texto = document.createElement('div');
+    q.className = 'titulo9 texto101';
+    q.dataset.mont = 'texto-101';
+    q.style.left = xv.toFixed(1) + 'px';
+    q.style.top  = yDaLinha(1).toFixed(1) + 'px';
+    q.innerHTML = '<span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span>';
+    m.appendChild(q);
+    /* os encaixes: o s nos alcalinos (colunas 1 e 2, entre as linhas 4 e 5),
+       o p no bloco p (15 e 16), o d no meio dos de transição (7 e 8, na
+       linha 5), e o f na frente das duas séries, à esquerda */
+    const sr = z => { const c = m.querySelector('.pc[data-z="' + z + '"]'); return { x:parseFloat(c.style.left), y:parseFloat(c.style.top) }; };
+    const la = sr(57), ac = sr(89);
+    const y45 = (yDaLinha(4) + yDaLinha(5)) / 2;
+    const ENC = { s:[(xDaColuna(1) + xDaColuna(2)) / 2, y45], p:[(xDaColuna(15) + xDaColuna(16)) / 2, y45],
+                  d:[(xDaColuna(7) + xDaColuna(8)) / 2, yDaLinha(5)], f:[la.x - LADO * 0.45, (la.y + ac.y) / 2] };
+    /* a casa de cada card: lado a lado, embaixo do texto (entre as linhas 2 e 3) */
+    const vao = 34, larg = 4 * this.C + 3 * vao, y23 = (yDaLinha(2) + yDaLinha(3)) / 2 + 6;
+    this.cards = CARDS_101.map((K, k) => {
+      const s = document.createElement('div');
+      s.className = 'slot101';
+      s.style.left = ENC[K.b][0].toFixed(1) + 'px';
+      s.style.top  = ENC[K.b][1].toFixed(1) + 'px';
+      m.appendChild(s);
+      const c = document.createElement('div');
+      c.className = 'card101';
+      c.dataset.b = K.b;
+      c.style.setProperty('--cor', K.cor);
+      c.innerHTML = '<b>' + K.b + '</b><sup>' + K.e + '</sup>';
+      m.appendChild(c);
+      const o = { K, c, s, casa:[xv - larg / 2 + this.C / 2 + k * (this.C + vao), y23], enc:ENC[K.b] };
+      this.poe(o, ...o.casa);
+      this.arrastavel(o);
+      return o;
+    });
+  },
+  poe(o, x, y){ o.x = x; o.y = y; o.c.style.left = x.toFixed(1) + 'px'; o.c.style.top = y.toFixed(1) + 'px'; },
+  podeArrastar(){ return atual === 10 && trilhaAtual === '10.1' && !naMontagem() && ((som.currentTime || 0) >= T101.arrasta || som.ended); },
+  /* o arraste: o card segue o dedo (na medida da mesa); largado perto do
+     encaixe dele, assenta; perto de outro, treme e volta; longe, só volta */
+  arrastavel(o){
+    const c = o.c;
+    c.addEventListener('click', ev => ev.stopPropagation());
+    c.addEventListener('pointerdown', ev => {
+      ev.stopPropagation();
+      if (!this.podeArrastar() || this.postos.has(o.K.b)) return;
+      ev.preventDefault();
+      const r = this.m.getBoundingClientRect(), esc = r.width / this.m.offsetWidth;
+      const x0 = ev.clientX, y0 = ev.clientY, ox = o.x, oy = o.y;
+      try { c.setPointerCapture(ev.pointerId); } catch (_) {}
+      c.classList.add('pego101');
+      tocaEfeito('flip');
+      const perto = (x, y) => {
+        let melhor = null, dm = this.C * 0.8;
+        this.cards.forEach(p => { if (this.postos.has(p.K.b)) return;
+          const d = Math.hypot(p.enc[0] - x, p.enc[1] - y); if (d < dm){ dm = d; melhor = p; } });
+        return melhor;
+      };
+      const move = e => {
+        this.poe(o, ox + (e.clientX - x0) / esc, oy + (e.clientY - y0) / esc);
+        const p = perto(o.x, o.y);
+        this.cards.forEach(q => q.s.classList.toggle('perto101', q === p));
+      };
+      const solta = () => {
+        c.removeEventListener('pointermove', move);
+        c.removeEventListener('pointerup', solta);
+        c.removeEventListener('pointercancel', solta);
+        c.classList.remove('pego101');
+        this.cards.forEach(q => q.s.classList.remove('perto101'));
+        const p = perto(o.x, o.y);
+        if (p === o){ this.assenta(o); tocaEfeito('right'); return; }
+        if (p){
+          tocaEfeito('error');
+          c.classList.remove('erro101'); void c.offsetWidth; c.classList.add('erro101');
+          setTimeout(() => c.classList.remove('erro101'), 500);
+        }
+        this.poe(o, ...o.casa);
+      };
+      c.addEventListener('pointermove', move);
+      c.addEventListener('pointerup', solta);
+      c.addEventListener('pointercancel', solta);
+    });
+  },
+  assenta(o){
+    this.postos.add(o.K.b);
+    this.poe(o, ...o.enc);
+    o.c.classList.add('posto101');
+    o.s.classList.add('cheio101');
+    ONDE.guarda();
+  },
+  /* (a volta guardada: os cards que já estavam nos encaixes) */
+  poeJa(bs){
+    this.prepara();
+    if (!this.cards) return;
+    this.cards.forEach(o => { if (bs.includes(o.K.b)){ o.c.style.transition = 'none'; this.assenta(o); void o.c.offsetWidth; o.c.style.transition = ''; } });
+  },
+  tick(t){
+    this.prepara();
+    if (!this.cards) return;
+    const monta = naMontagem(), de = trilhaAtual === '10.1', T = monta ? 99 : de ? t : -1;
+    const n = EV9.letras(T, T101.texto[0], T101.texto[1], TEXTO_101);
+    if (n !== this.nt){
+      if (n > this.nt && this.nt >= 0 && !monta && de) TECLAS.bate();
+      this.nt = n;
+      EV9.escreve(this.texto, TEXTO_101, n);
+    }
+    const dentro = ([a, b]) => T >= a && T < b;
+    const brilho = T101.brilho.some(dentro) && !monta, cresce = dentro(T101.cresce) && !monta;
+    const est = [T >= T101.texto[0], dentro(T101.texto), T >= T101.arrasta, brilho, cresce,
+                 ...CARDS_101.map(K => T >= K.entra), ...CARDS_101.map(K => dentro(K.vez) && !monta), [...this.postos].join('')].join();
+    if (est === this.estado) return;
+    this.estado = est;
+    this.texto.classList.toggle('on', T >= T101.texto[0]);
+    this.texto.classList.toggle('digitando9', dentro(T101.texto));
+    this.m.classList.toggle('brilho101', brilho);
+    const solta = T >= T101.arrasta && !monta;
+    this.cards.forEach(o => {
+      const posto = this.postos.has(o.K.b);
+      o.c.classList.toggle('on101', T >= o.K.entra || posto);
+      o.c.classList.toggle('pega101', solta && !posto);
+      o.c.classList.toggle('cresce101', cresce);
+      o.c.classList.toggle('brilha101', dentro(o.K.vez) && !monta);
+      o.s.classList.toggle('on101', solta && !posto);
+    });
+  },
+  zera(){
+    this.postos.clear(); this.estado = ''; this.nt = -1;
+    if (!this.cards) return;
+    this.cards.forEach(o => { o.c.style.transition = 'none'; o.c.classList.remove('posto101', 'pego101'); o.s.classList.remove('cheio101');
+      this.poe(o, ...o.casa); void o.c.offsetWidth; o.c.style.transition = ''; });
+    this.tick(-1);
+  }
+};
+window.CARDS101 = CARDS101;
 
 /* A COR NEUTRA de quem está fora do lugar: um cinza morno que escurece
    devagar com o número atômico (o do professor). A cor da família volta
@@ -26092,6 +26302,8 @@ const ONDE = {
     if (QUIZ.aberto) o.quiz = { origem:QUIZ.origem, itens:QUIZ.itens.map(i => i.z), passo:QUIZ.passo,
                                 acertos:QUIZ.acertos, erros:QUIZ.erros, nota:!!QUIZ.mostrandoNota };
     if (QUIZ3.aberto) o.quiz3 = true;
+    /* no slide 11, os cards dos subníveis já nos encaixes */
+    if (atual === 10 && CARDS101.postos.size) o.blocos10 = [...CARDS101.postos];
     /* o resumo interativo volta do começo */
     if (RESUMO.aberto) o.resumo = RESUMO.k;
     if (memAberto) o.jogo = { ordem:memCartas.map(c => c.dataset.z + ':' + c.dataset.tipo),
@@ -26163,6 +26375,7 @@ const ONDE = {
     const vai = () => {
       if (trilhaAtual !== tr){ this.restaurando = false; return; }
       som.currentTime = Math.min(t, som.duration || t);
+      if (o.blocos10) CARDS101.poeJa(o.blocos10);
       if (o.quiz) QUIZ.retoma(o.quiz);
       else if (o.jogo) this.jogo(o.jogo);
       else if (o.quiz3){ viraQuiz(true); QUIZ3.abre(); }
