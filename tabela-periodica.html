@@ -3249,6 +3249,27 @@ body.montagem .veu-mg10 .sub10{opacity:1!important;fill-opacity:1!important;stro
 .card101.pego101{z-index:28;scale:1.12;cursor:grabbing;transition:opacity .3s ease, scale .2s ease, box-shadow .2s ease;
   box-shadow:0 18px 36px rgba(32,28,66,.4)}
 .card101.erro101{animation:erro101 .45s ease}
+/* a "10.2": o card s crescido (por cima de tudo), o "2" que pulsa, o card
+   que sai de cena para as famílias aparecerem, o bloco s que brilha, e as
+   etiquetas s¹ e s² das famílias */
+.card101{transition:opacity .3s ease, scale .55s cubic-bezier(.34,1.56,.64,1), translate .55s cubic-bezier(.34,1.56,.64,1),
+  box-shadow .3s ease, filter .3s ease, left .4s cubic-bezier(.3,.85,.3,1), top .4s cubic-bezier(.3,.85,.3,1)}
+.card101.grande102{z-index:30}
+.card101.pulsa102 sup{animation:pulsa102 .9s ease-in-out infinite;transform-origin:50% 60%}
+@keyframes pulsa102{50%{transform:scale(1.55);color:#FFF6A8;text-shadow:0 0 10px rgba(255,240,140,.9)}}
+.card101.some102{opacity:0!important;pointer-events:none}
+.titulo9.texto101.sai102{opacity:0}
+.mesa.blocos .pc[data-b101="s"] .face{transition:box-shadow .5s ease, filter .5s ease, border-color .5s ease}
+.mesa.blocos.brilhoS102 .pc[data-b101="s"] .face{filter:brightness(1.15);
+  box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--cor) 45%,#fff), 0 0 18px 5px color-mix(in srgb,var(--cor) 80%,transparent)}
+.mesa.blocos.brilhoS102 .pc[data-b101="s"]{z-index:7}
+.etq102{position:absolute;z-index:27;transform:translate(-50%,-50%);padding:4px 10px 5px;border-radius:11px;
+  font-family:var(--display);font-weight:700;font-size:24px;line-height:1;color:#fff;white-space:nowrap;pointer-events:none;
+  background:linear-gradient(145deg,color-mix(in srgb,var(--cat-alcalinos) 84%,#fff),color-mix(in srgb,var(--cat-alcalinos) 86%,#000));
+  border:2px solid #fff;outline:2px solid rgba(32,28,66,.7);box-shadow:0 6px 16px rgba(32,28,66,.3);
+  opacity:0;transition:opacity .3s ease, top .42s cubic-bezier(.3,.85,.3,1)}
+.etq102 sup{font-size:14px;margin-left:2px;vertical-align:10px}
+.etq102.on{opacity:1}
 .aviso101{position:absolute;z-index:45;transform:translate(-50%,-50%) scale(.85);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:34px;color:#E5484D;
   text-shadow:0 0 2px #fff, 0 0 12px rgba(255,255,255,.9);opacity:0;
@@ -5075,7 +5096,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v49.6';
+const VERSAO = 'v49.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6390,7 +6411,8 @@ const TRILHAS = {
   '9.3.8':'Audios/audio_tabela_9.3.8.mp3',
   '9.3.9':'Audios/audio_tabela_9.3.9.mp3', /* sozinha, no fim da 8A: a mão abre a distribuição, e o quiz (EV9) */
   '10':   'Audios/audio_tabela_10.mp3',    /* o slide 11: o Mg e o diagrama de Pauling (EV10) */
-  '10.1': 'Audios/audio_tabela_10.1.mp3'    /* o play no fim da "10": os cards dos subníveis (CARDS101) */
+  '10.1': 'Audios/audio_tabela_10.1.mp3',   /* o play no fim da "10": os cards dos subníveis (CARDS101) */
+  '10.2': 'Audios/audio_tabela_10.2.mp3'    /* sozinha, depois da festa dos quatro cards: o bloco s (CARDS101) */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -6562,7 +6584,8 @@ const ROTEIROS = {
     { t:13.0, faz(){ if (atual === 9) viraQuiz(true); } }
   ],
   '10':   [],
-  '10.1': []
+  '10.1': [],
+  '10.2': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -7281,6 +7304,8 @@ const SEQ = {
     else if (id === '9.1') carregaTrilha('9.2');
     /* o fim da "10": a cena fica, e o play passa a tocar a "10.1" (EV10) */
     else if (id === '10') carregaTrilha('10.1');
+    /* o fim da "10.1": com os quatro cards já encaixados (e a festa feita), a "10.2" */
+    else if (id === '10.1'){ if (atual === 10) CARDS101.fim101(); }
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
     /* (antes dela, a festa: os confetes, o funfare e os aplausos) */
     else if (id === '9.3.8'){ if (atual === 9) EV9.festa93(); }
@@ -22065,6 +22090,20 @@ const T101 = { sai:1.0, texto:[7.8, 9.0], aumenta:[15.5, 16.5], arrasta:18.6, co
 /* (o bloco crescido: o quanto, em torno do meio dele) */
 const ESC_BLOCO_101 = 1.1;
 const TEXTO_101 = 'São 4 subníveis:';
+/* A "10.2" (sozinha, depois da festa dos quatro cards — ou no fim da "10.1",
+   se a festa veio antes): dos 5 aos 10 s, no lugar do "São 4 subníveis:",
+   digita a regra; aos 12,7 s o bloco s cresce com o card dentro; aos 14,3 s
+   o bloco volta e o card s² cresce sozinho; dos 15,5 s o "2" dele pulsa; aos
+   18 s tudo volta e o bloco s inteiro brilha (até aos 20,5); aos 20,5 s as
+   duas famílias do s sobem e voltam (o card s sai de cena, para elas
+   aparecerem, e volta aos 28 s); aos 22 s a 1A sobe, aos 24 s a 2A; aos 25 s
+   a etiqueta "s¹" desce até à 1A, e as duas descem juntas; aos 26,6 s a "s²"
+   faz o mesmo na 2A. As etiquetas ficam em cima das famílias. */
+const T102 = { texto:[5.0, 10.0], bloco:[12.7, 14.3], card:[14.3, 18.0], pulsa:[15.5, 18.0], brilho:[18.0, 20.5],
+               pulo:[20.5, 21.1], some:[20.4, 28.0], sobe:[22.0, 24.0], etq:[25.0, 26.6] };
+const TEXTO_102 = 'O nº de colunas no bloco = nº de e⁻ do subnível';
+/* (o bloco s crescido com o card dentro, e o card s sozinho) */
+const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
 const CARDS_101 = [
   { b:'s', e:2,  cor:'var(--cat-alcalinos)',  entra:11.0, vez:[28.0, 28.5] },
   { b:'p', e:6,  cor:'var(--cat-ametais)',    entra:11.9, vez:[28.5, 29.0] },
@@ -22126,8 +22165,8 @@ const CARDS101 = {
   },
   poe(o, x, y){ o.x = x; o.y = y; o.c.style.left = x.toFixed(1) + 'px'; o.c.style.top = y.toFixed(1) + 'px'; },
   /* o bloco b crescido (ou de volta): cada carta afasta-se do meio dele na mesma proporção */
-  cresceBloco(b, sim){
-    const B = this.blocos[b], k = ESC_BLOCO_101;
+  cresceBloco(b, sim, k = ESC_BLOCO_101){
+    const B = this.blocos[b];
     B.forEach(p => {
       p.c.classList.toggle('grande101', sim);
       p.c.style.translate = sim ? ((p.x - B.cx) * (k - 1)).toFixed(1) + 'px ' + ((p.y - B.cy) * (k - 1)).toFixed(1) + 'px' : '';
@@ -22212,7 +22251,20 @@ const CARDS101 = {
       slides[10].insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
     confete();
     tocaEfeito('applause');
-    tocaEfeito('funfare');
+    const g = ++this.festaG;
+    tocaEfeito('funfare').then(() => {
+      if (g !== this.festaG || atual !== 10 || trilhaAtual !== '10.1') return;
+      this.festaFeita = true;
+      /* (a "10.1" já no fim: mesmo parada ali, sem o ended) */
+      if (som.ended || (som.duration && som.currentTime >= som.duration - 0.15)) tocaTrilha('10.2');
+    });
+  },
+  festaG:0, festaFeita:false,
+  /* o fim da "10.1": a festa já feita, a "10.2" toca; os quatro no lugar, mas
+     sem festa (a volta ao app), o play fica com ela */
+  fim101(){
+    if (this.festaFeita) tocaTrilha('10.2');
+    else if (this.postos.size === CARDS_101.length) carregaTrilha('10.2');
   },
   assenta(o){
     this.postos.add(o.K.b);
@@ -22230,6 +22282,7 @@ const CARDS101 = {
   tick(t){
     this.prepara();
     if (!this.cards) return;
+    this.tick102(t);
     const monta = naMontagem(), de = trilhaAtual === '10.1', T = monta ? 99 : de ? t : -1;
     const n = EV9.letras(T, T101.texto[0], T101.texto[1], TEXTO_101);
     if (n !== this.nt){
@@ -22267,8 +22320,76 @@ const CARDS101 = {
       o.s.classList.toggle('on101', solta && !posto && cor[k]);
     });
   },
+  /* A "10.2", função do tempo dela (T102) */
+  tick102(t){
+    const monta = naMontagem(), de = trilhaAtual === '10.2', T = monta ? -1 : de ? t : -1;
+    /* (na "10.2" os quatro cards estão nos encaixes, mesmo chegando a ela pelo sumário) */
+    if (de && this.postos.size < CARDS_101.length) this.poeJa(CARDS_101.map(K => K.b));
+    if (!this.texto102){
+      const q = this.texto102 = document.createElement('div');
+      q.className = 'titulo9 texto101';
+      q.dataset.mont = 'texto-102';
+      /* (centrado entre as colunas 3 e 17: longe da etiqueta da 2A) */
+      q.style.left = ((xDaColuna(3) + xDaColuna(17)) / 2).toFixed(1) + 'px';
+      q.style.top  = this.texto.style.top;
+      q.innerHTML = '<span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span>';
+      this.m.appendChild(q);
+      /* as etiquetas das duas famílias (s¹ e s²), em cima de cada uma */
+      this.etq102 = [1, 2].map(g => {
+        const d = document.createElement('div');
+        d.className = 'etq102';
+        d.innerHTML = 's<sup>' + g + '</sup>';
+        d.style.left = xDaColuna(g).toFixed(1) + 'px';
+        this.m.appendChild(d);
+        /* (assentada na borda de cima da família: acima do H e do Be) */
+        return { d, park:yDaLinha(g) - LADO / 2 - 6 };
+      });
+    }
+    const n = EV9.letras(T, T102.texto[0], T102.texto[1], TEXTO_102);
+    if (n !== this.nt102){
+      if (n > this.nt102 && this.nt102 >= 0 && de) TECLAS.bate();
+      this.nt102 = n;
+      EV9.escreve(this.texto102, TEXTO_102, n);
+    }
+    const dentro = ([a, b]) => T >= a && T < b;
+    const R = 0.6 * PASSO;
+    /* a etiqueta: escondida lá em cima; desce até à família subida; e desce com ela */
+    const etq = k => T < T102.etq[k] ? 0 : T < T102.etq[k] + 0.45 ? 1 : 2;
+    const est = [T >= T102.texto[0], dentro(T102.texto), dentro(T102.bloco), dentro(T102.card), dentro(T102.pulsa),
+                 dentro(T102.brilho), dentro(T102.pulo), dentro(T102.some), T >= 0 && T < T102.etq[0] + 0.45 && T >= T102.sobe[0],
+                 T >= T102.sobe[1] && T < T102.etq[1] + 0.45, etq(0), etq(1)].join();
+    if (est === this.estado102) return;
+    this.estado102 = est;
+    const [txt, dig, bloco, card, pulsa, brilho, pulo, some, up1, up2, e1, e2] = est.split(',').map(v => v === 'true' ? true : v === 'false' ? false : +v);
+    this.texto102.classList.toggle('on', txt);
+    this.texto102.classList.toggle('digitando9', dig);
+    /* (o texto da "10.1" sai na "10.2") */
+    this.texto.classList.toggle('sai102', de);
+    this.m.classList.toggle('brilhoS102', brilho);
+    /* o bloco s: crescido com o card dentro, ou as famílias que sobem */
+    const B = this.blocos.s, K = ESC_S_102;
+    B.forEach(p => {
+      const col = +p.c.dataset.col, sobe = pulo || (col === 1 && up1) || (col === 2 && up2);
+      p.c.classList.toggle('grande101', bloco || sobe);
+      p.c.style.translate = bloco ? ((p.x - B.cx) * (K - 1)).toFixed(1) + 'px ' + ((p.y - B.cy) * (K - 1)).toFixed(1) + 'px'
+                          : sobe ? '0 ' + (-R).toFixed(1) + 'px' : '';
+      p.c.style.scale = bloco ? String(K) : '';
+    });
+    const o = this.cards[0];
+    o.c.style.translate = bloco ? ((o.x - B.cx) * (K - 1)).toFixed(1) + 'px ' + ((o.y - B.cy) * (K - 1)).toFixed(1) + 'px' : '';
+    o.c.style.scale = bloco ? String(K) : card ? String(ESC_CARD_102) : '';
+    o.c.classList.toggle('grande102', bloco || card);
+    o.c.classList.toggle('pulsa102', pulsa);
+    o.c.classList.toggle('some102', some);
+    this.etq102.forEach((E, k) => {
+      const f = [e1, e2][k];
+      E.d.classList.toggle('on', f > 0);
+      E.d.style.top = (f === 2 ? E.park : f === 1 ? E.park - R : E.park - R - 60).toFixed(1) + 'px';
+    });
+  },
   zera(){
-    this.postos.clear(); this.estado = ''; this.nt = -1;
+    this.postos.clear(); this.estado = ''; this.nt = -1; this.estado102 = ''; this.nt102 = -1;
+    this.festaG++; this.festaFeita = false;
     if (!this.cards) return;
     this.cards.forEach(o => { o.c.style.transition = 'none'; o.c.classList.remove('posto101', 'pego101'); o.s.classList.remove('cheio101');
       this.poe(o, ...o.casa); void o.c.offsetWidth; o.c.style.transition = ''; });

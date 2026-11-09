@@ -122,6 +122,15 @@ var LEGENDAS = {
     [29.78,35.74,"Sua primeira tarefa é posicionar os cards dos subníveis nos blocos correspondentes."],
     [36.34,39.08,"Use as cores como guia de encaixe dos cards. E aí?"]
   ],
+  "audio_tabela_10.2": [
+    [0,5.96,"Excelente! Agora repare que a harmonia é perfeita."],
+    [5.96,10.83,"A quantidade de colunas de cada bloco coincide com o número máximo de elétrons que aquele subnível suporta."],
+    [10.83,13.87,"Quer ver? Por exemplo, o bloco s aqui."],
+    [13.87,16.83,"No subnível s cabem até 2 elétrons, certo?"],
+    [16.83,20.85,"Então, aqui no bloco s tem precisamente duas famílias."],
+    [20.85,26.8,"Nessa aqui a distribuição termina em s¹, e nessa outra aqui termina em s²."],
+    [26.8,28.62,"Sacou a lógica?"]
+  ],
   "audio_tabela_1_jogo_memória": [
     [0,3.42,"Muito bem, você terminou o resumo interativo do tópico aqui."],
     [3.42,9.56,"Agora, que tal fazer um joguinho rapidinho que vai te ajudar a fixar esse tópico mais ainda?"],
