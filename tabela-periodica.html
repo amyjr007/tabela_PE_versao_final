@@ -5075,7 +5075,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v49.5';
+const VERSAO = 'v49.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22048,27 +22048,28 @@ window.EV10 = EV10;
 
 /* A "10.1" (o play no fim da "10"), função do tempo dela: aos 1 s a cena da
    "10" sai em fade e fica a tabela (com as séries embaixo); dos 7,8 aos 9 s,
-   no vão de cima, digita "São 4 subníveis:"; aos 11, 11,9, 13 e 13,5 s
+   no vão de cima, digita "São 4 subníveis:"; aos 11, 11,9, 12,6 e 13 s
    entram, embaixo do texto, os cards do s, do p, do d e do f (com o máximo de
    elétrons de cada um), nas cores dos blocos da tabela — que fica sem cor (o
    tabuleiro liso) no começo da "10.1". Dos 15,5 aos 16,5 s os quatro cards
-   crescem um pouco. Dos 19 aos 21,5 s os blocos ganham a cor, um depois do
-   outro (s, p, d, f), e cada encaixe aparece (piscando) junto com a cor do
-   bloco dele: o s nos alcalinos, o p no bloco p, o d no meio dos de
-   transição, o f na frente das duas séries. Os cards passam a ser
-   arrastados dos 19 s em diante (só para os encaixes já à vista); e dos
-   22,7 aos 27,5 s cada bloco cresce junto com o card dele, um de cada vez,
-   e volta; e o brilho passa de card em card: o s aos 28,6, o p aos 29, o d
-   aos 29,7 e o f dos 30 aos 31 s. */
-const T101 = { sai:1.0, texto:[7.8, 9.0], aumenta:[15.5, 16.5], arrasta:19.0, cor:[19.0, 21.5], destaque:[22.7, 27.5] };
+   crescem um pouco. Aos 18,6, 19,6, 20,25 e 20,9 s os blocos ganham a cor,
+   um depois do outro (s, p, d, f), e cada encaixe aparece (piscando) junto
+   com a cor do bloco dele: o s nos alcalinos, o p no bloco p, o d no meio
+   dos de transição, o f na frente das duas séries. Os cards passam a ser
+   arrastados dos 18,6 s em diante (só para os encaixes já à vista); dos 22
+   aos 27,5 s cada bloco cresce junto com o card dele, um de cada vez, e
+   volta; e o brilho passa de card em card (o anterior apaga quando o
+   seguinte acende): o s aos 28, o p aos 28,5, o d aos 29 e o f dos 29,5
+   aos 30,5 s. */
+const T101 = { sai:1.0, texto:[7.8, 9.0], aumenta:[15.5, 16.5], arrasta:18.6, cor:[18.6, 19.625, 20.25, 20.875], destaque:[22.0, 27.5] };
 /* (o bloco crescido: o quanto, em torno do meio dele) */
 const ESC_BLOCO_101 = 1.1;
 const TEXTO_101 = 'São 4 subníveis:';
 const CARDS_101 = [
-  { b:'s', e:2,  cor:'var(--cat-alcalinos)',  entra:11.0, vez:[28.6, 29.0] },
-  { b:'p', e:6,  cor:'var(--cat-ametais)',    entra:11.9, vez:[29.0, 29.7] },
-  { b:'d', e:10, cor:'var(--cat-transicao)',  entra:13.0, vez:[29.7, 30.0] },
-  { b:'f', e:14, cor:'var(--cat-lantanideos)', entra:13.5, vez:[30.0, 31.0] }];
+  { b:'s', e:2,  cor:'var(--cat-alcalinos)',  entra:11.0, vez:[28.0, 28.5] },
+  { b:'p', e:6,  cor:'var(--cat-ametais)',    entra:11.9, vez:[28.5, 29.0] },
+  { b:'d', e:10, cor:'var(--cat-transicao)',  entra:12.6, vez:[29.0, 29.5] },
+  { b:'f', e:14, cor:'var(--cat-lantanideos)', entra:13.0, vez:[29.5, 30.5] }];
 const CARDS101 = {
   C:92, postos:new Set(), estado:'', nt:-1,
   prepara(){
@@ -22237,11 +22238,11 @@ const CARDS101 = {
       EV9.escreve(this.texto, TEXTO_101, n);
     }
     const dentro = ([a, b]) => T >= a && T < b;
-    /* (a vez de cada bloco: na cor, um quarto do intervalo para cada um; no
-       destaque, idem) */
-    const C = T101.cor, D = T101.destaque, qc = (C[1] - C[0]) / 4, qd = (D[1] - D[0]) / 4;
+    /* (a vez de cada bloco: na cor, o segundo de cada um; no destaque, um
+       quarto do intervalo para cada um) */
+    const C = T101.cor, D = T101.destaque, qd = (D[1] - D[0]) / 4;
     /* (sem cor desde a chegada ao slide: na "10" e até a vez de cada bloco na "10.1") */
-    const cor = CARDS_101.map((K, k) => monta || (de ? T >= C[0] + k * qc : !['10'].includes(trilhaAtual)));
+    const cor =CARDS_101.map((K, k) => monta || (de ? T >= C[k] : !['10'].includes(trilhaAtual)));
     const vez = CARDS_101.map((K, k) => !monta && dentro([D[0] + k * qd, D[0] + (k + 1) * qd]));
     const aumenta = dentro(T101.aumenta) && !monta;
     const brilha = CARDS_101.map(K => !monta && dentro(K.vez));
