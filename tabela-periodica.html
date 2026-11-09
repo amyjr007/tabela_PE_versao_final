@@ -2132,6 +2132,8 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
 .mesa.blocos .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
   [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]){--cor:var(--cat-transicao)!important}
 .mesa.blocos .pc:is([data-fam="lantanideos"],[data-fam="actinideos"]){--cor:var(--cat-lantanideos)!important}
+/* (o lantânio e o actínio são do bloco d: a cor dos de transição) */
+.mesa.blocos .pc:is([data-z="57"],[data-z="89"]){--cor:var(--cat-transicao)!important}
 .mesa.blocos .casa.serie,.mesa.blocos .casa.serie.act{
   background:linear-gradient(145deg,color-mix(in srgb,var(--cat-lantanideos) 84%,#fff),
                                     color-mix(in srgb,var(--cat-lantanideos) 86%,#000));
@@ -3247,6 +3249,12 @@ body.montagem .veu-mg10 .sub10{opacity:1!important;fill-opacity:1!important;stro
 .card101.pego101{z-index:28;scale:1.12;cursor:grabbing;transition:opacity .3s ease, scale .2s ease, box-shadow .2s ease;
   box-shadow:0 18px 36px rgba(32,28,66,.4)}
 .card101.erro101{animation:erro101 .45s ease}
+.aviso101{position:absolute;z-index:45;transform:translate(-50%,-50%) scale(.85);white-space:nowrap;pointer-events:none;
+  font-family:var(--display);font-weight:700;font-size:34px;color:#E5484D;
+  text-shadow:0 0 2px #fff, 0 0 12px rgba(255,255,255,.9);opacity:0;
+  transition:opacity .3s ease, transform .4s cubic-bezier(.34,1.56,.64,1)}
+.aviso101.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.titulo9.texto101.cede101{opacity:0}
 .card101.confirma101{animation:confirma101 .9s ease-out}
 @keyframes confirma101{
   0%{scale:1;filter:brightness(1)}
@@ -5067,7 +5075,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v49.2';
+const VERSAO = 'v49.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22089,9 +22097,9 @@ const CARDS101 = {
     this.blocos = { s:[], p:[], d:[], f:[] };
     m.querySelectorAll('.pc').forEach(c => {
       const z = +c.dataset.z, col = +c.dataset.col;
-      const b = ehDaSerie(z) ? 'f' : (col <= 2 || z === 2) ? 's' : col <= 12 ? 'd' : 'p';
+      const b = (z === 57 || z === 89) ? 'd' : ehDaSerie(z) ? 'f' : (col <= 2 || z === 2) ? 's' : col <= 12 ? 'd' : 'p';
       c.dataset.b101 = b;
-      if (z !== 2) this.blocos[b].push({ c, x:parseFloat(c.style.left), y:parseFloat(c.style.top) });
+      if (z !== 2 && z !== 57 && z !== 89) this.blocos[b].push({ c, x:parseFloat(c.style.left), y:parseFloat(c.style.top) });
     });
     m.querySelectorAll('.casa.serie').forEach(c => c.dataset.b101 = 'f');
     Object.values(this.blocos).forEach(B => { B.cx = B.reduce((s, p) => s + p.x, 0) / B.length; B.cy = B.reduce((s, p) => s + p.y, 0) / B.length; });
@@ -22168,8 +22176,10 @@ const CARDS101 = {
         }
         if (p){
           tocaEfeito('error');
+          tremeVermelho();
           c.classList.remove('erro101'); void c.offsetWidth; c.classList.add('erro101');
           setTimeout(() => c.classList.remove('erro101'), 500);
+          this.avisa();
         }
         this.poe(o, ...o.casa);
       };
@@ -22177,6 +22187,23 @@ const CARDS101 = {
       c.addEventListener('pointerup', solta);
       c.addEventListener('pointercancel', solta);
     });
+  },
+  /* o aviso do encaixe errado: no lugar do "São 4 subníveis:", em vermelho;
+     some sozinho, e o texto volta */
+  avisa(){
+    let a = this.aviso;
+    if (!a){
+      a = this.aviso = document.createElement('div');
+      a.className = 'aviso101';
+      a.textContent = 'O card se encaixa na mesma cor do bloco';
+      a.style.left = this.texto.style.left;
+      a.style.top  = this.texto.style.top;
+      this.m.appendChild(a);
+    }
+    a.classList.remove('on'); void a.offsetWidth; a.classList.add('on');
+    this.texto.classList.add('cede101');
+    clearTimeout(this.avisoT);
+    this.avisoT = setTimeout(() => { a.classList.remove('on'); this.texto.classList.remove('cede101'); }, 2600);
   },
   festa(){
     if (!slides[10].querySelector('.confete'))
@@ -22212,7 +22239,8 @@ const CARDS101 = {
     /* (a vez de cada bloco: na cor, um quarto do intervalo para cada um; no
        destaque, idem) */
     const C = T101.cor, D = T101.destaque, qc = (C[1] - C[0]) / 4, qd = (D[1] - D[0]) / 4;
-    const cor = CARDS_101.map((K, k) => !de || monta || T >= C[0] + k * qc);
+    /* (sem cor desde a chegada ao slide: na "10" e até a vez de cada bloco na "10.1") */
+    const cor = CARDS_101.map((K, k) => monta || (de ? T >= C[0] + k * qc : !['10'].includes(trilhaAtual)));
     const vez = CARDS_101.map((K, k) => !monta && dentro([D[0] + k * qd, D[0] + (k + 1) * qd]));
     const aumenta = dentro(T101.aumenta) && !monta;
     const brilha = CARDS_101.map(K => !monta && dentro(K.vez));
@@ -22222,8 +22250,8 @@ const CARDS101 = {
     this.estado = est;
     this.texto.classList.toggle('on', T >= T101.texto[0]);
     this.texto.classList.toggle('digitando9', dentro(T101.texto));
-    /* (a tabela sem cor: só na "10.1", até a vez de cada bloco) */
-    this.m.classList.toggle('sem101', de && !monta);
+    /* (a tabela sem cor: desde a chegada ao slide, até a vez de cada bloco) */
+    this.m.classList.toggle('sem101', !monta);
     CARDS_101.forEach((K, k) => this.m.classList.toggle('c' + K.b + '101', cor[k]));
     const solta = T >= T101.arrasta && !monta;
     this.cards.forEach((o, k) => {
