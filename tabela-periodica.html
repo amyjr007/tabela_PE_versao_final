@@ -3217,6 +3217,7 @@ html:is(.palco-largo,.palco-alto) .veu-mg10::before{background:rgba(12,10,32,.96
 .veu-mg10.dist10on .dist10, body.montagem .veu-mg10 .dist10{opacity:1}
 .dist10 text{font-family:'Caveat',cursive;font-weight:500;font-size:64px}
 .dist10 .mgd10{fill:#F4F2F8}
+.dist10 .z10{font-size:34px}
 .dist10 .sub10{fill:#F4F2F8;fill-opacity:0;stroke:#F4F2F8;stroke-width:1.1;stroke-dasharray:260;stroke-dashoffset:260;opacity:0}
 .dist10 .sub10.ult10{fill:#F4FF3A;stroke:#F4FF3A;filter:drop-shadow(0 0 8px rgba(234,255,0,.55))}
 body.montagem .veu-mg10 .sub10{opacity:1!important;fill-opacity:1!important;stroke-dashoffset:0!important}
@@ -4993,7 +4994,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v48.6';
+const VERSAO = 'v48.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -21871,7 +21872,7 @@ const VEU_10 = (() => {
   const circ = '<g class="circ10"><ellipse class="halo10" pathLength="1" cx="318" cy="294" rx="74" ry="46" transform="rotate(-8 318 294)"/>' +
     '<ellipse pathLength="1" cx="318" cy="294" rx="74" ry="46" transform="rotate(-8 318 294)"/></g>';
   /* a distribuição: "Mg:" e os quatro subníveis, cada um com o expoente */
-  const X = [118, 218, 318, 418];
+  const X = [148, 242, 336, 430];
   const subs = DIST_10.map((s, k) => '<text class="sub10' + (k === 3 ? ' ult10' : '') + '" x="' + X[k] + '" y="62">' + s.n +
     '<tspan dy="-24" font-size="38">' + s.e + '</tspan></text>').join('');
   return '<div class="veu veu-mg10" aria-live="polite">' +
@@ -21880,8 +21881,9 @@ const VEU_10 = (() => {
     '<svg class="setas10" viewBox="0 0 1024 772" aria-hidden="true"><defs>' +
     '<filter id="g10" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="7"/></filter></defs>' + circ + riscos + '</svg></div>' +
     '<p class="aufbau10" data-mont="aufbau-10">“Princípio de Aufbau”</p>' +
-    '<svg class="dist10" data-mont="distribuicao-10" viewBox="0 0 520 90" aria-label="Mg: 1s² 2s² 2p⁶ 3s²">' +
-    '<text class="mgd10" x="10" y="62">Mg:</text>' + subs + '</svg></div>';
+    '<svg class="dist10" data-mont="distribuicao-10" viewBox="0 0 520 90" aria-label="₁₂Mg: 1s² 2s² 2p⁶ 3s²">' +
+    /* (o número atômico embaixo, no canto esquerdo do símbolo: ₁₂Mg) */
+    '<text class="mgd10 z10" x="0" y="80">12</text><text class="mgd10" x="42" y="62">Mg:</text>' + subs + '</svg></div>';
 })();
 const EV10 = {
   estado:'', estadoT:'',
