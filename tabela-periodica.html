@@ -3259,6 +3259,10 @@ body.montagem .veu-mg10 .sub10{opacity:1!important;fill-opacity:1!important;stro
 @keyframes pulsa102{50%{transform:scale(1.55);color:#FFF6A8;text-shadow:0 0 10px rgba(255,240,140,.9)}}
 .card101.some102{opacity:0!important;pointer-events:none}
 .titulo9.texto101.sai102{opacity:0}
+/* na montagem: na cena da "10.2" em diante, o texto das colunas aparece e
+   o "São 4 subníveis:" sai; antes, o das colunas (vazio) não pega o dedo */
+body.montagem .titulo9.texto101.mont102:not([data-mont="texto-102"]),
+body.montagem .titulo9.texto101[data-mont="texto-102"]:not(.mont102){opacity:0;pointer-events:none}
 .mesa.blocos .pc[data-b101="s"] .face{transition:box-shadow .5s ease, filter .5s ease, border-color .5s ease}
 .mesa.blocos.brilhoS102 .pc[data-b101="s"] .face{filter:brightness(1.15);
   box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--cor) 45%,#fff), 0 0 18px 5px color-mix(in srgb,var(--cor) 80%,transparent)}
@@ -5102,7 +5106,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v50.1';
+const VERSAO = 'v50.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22316,7 +22320,7 @@ const CARDS101 = {
     this.tick103(t);
     const monta = naMontagem(), de = trilhaAtual === '10.1', T = monta ? 99 : de ? t : -1;
     const n = EV9.letras(T, T101.texto[0], T101.texto[1], TEXTO_101);
-    if (n !== this.nt){
+    if (n !== this.nt && !this.texto.classList.contains('texto-livre')){
       if (n > this.nt && this.nt >= 0 && !monta && de) TECLAS.bate();
       this.nt = n;
       EV9.escreve(this.texto, TEXTO_101, n);
@@ -22377,8 +22381,14 @@ const CARDS101 = {
         return { d, park:yDaLinha(g) - LADO / 2 - 6 };
       });
     }
-    const n = EV9.letras(T, T102.texto[0], T102.texto[1], TEXTO_102);
-    if (n !== this.nt102){
+    /* (na montagem, o texto da "10.2" aparece inteiro — e editável — na cena
+       dela e nas seguintes; nas de antes, fica escondido e não pega o dedo) */
+    const cena102 = trilhaAtual === '10.2' || depoisDe('10.2');
+    const n = monta ? (cena102 ? TEXTO_102.length : 0) : EV9.letras(T, T102.texto[0], T102.texto[1], TEXTO_102);
+    this.texto102.classList.toggle('mont102', monta && cena102);
+    this.texto.classList.toggle('mont102', monta && cena102);
+    /* (editado na montagem: o relógio não o reescreve mais) */
+    if (n !== this.nt102 && !this.texto102.classList.contains('texto-livre')){
       if (n > this.nt102 && this.nt102 >= 0 && de) TECLAS.bate();
       this.nt102 = n;
       EV9.escreve(this.texto102, TEXTO_102, n);
@@ -25098,7 +25108,9 @@ const TEXTOS = '.capa .marca, .capa h1, .capa .autor, .capa .email, .tira .title
                ' .texto-colunas .frase .txt, .veu-moseley figcaption b, .dica-final, .entendi3, .coords-el,' +
                ' .conta-lc25 .txt, .alerta4C, .alerta4E, .alertaAm2, .alertaAm3, .classes4 .frase .txt, .propAm .frase .txt, .propAm1 .frase .txt, .propAm2 .frase .txt,' +
                /* os textos do slide 7 (cada pedaço de um texto) */
-               ' .texto6 .p6';
+               ' .texto6 .p6,' +
+               /* os textos do tópico 10 ("São 4 subníveis:" e o das colunas) */
+               ' .titulo9.texto101';
 const EDICAO = {
   el:null, ultimo:null, tUlt:0, editados:new Set(),
   /* o bloco de linhas a que um texto pertence, dentro da peça */
