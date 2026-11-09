@@ -906,7 +906,8 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
    coordenadas e do tópico 6), com a tabela escurecida e o elemento do
    carrossel aceso, a piscar, nela (`alvo9`); no 3º erro, a coluna do
    elemento acende; no acerto, o cubo voa até ele, e o nome da família aparece.
-5. **Aplicar** — "Coloque os elétrons na camada de valência do X", e embaixo,
+5. **Aplicar** — "Coloque os elétrons na camada de valência do X" (X sorteado
+   do lítio ao magnésio, Z de 3 a 12, para não serem elétrons demais), e embaixo,
    em amarelo, a brilhar e a piscar, "Toque na camada pra adicionar e toque no
    elétron se precisar retirar."; o átomo sem o painel, como na Q1 (`solto9`,
    a tabela bem escurecida, o card do elemento aceso nela); o átomo em camadas (o núcleo com os Z prótons
@@ -923,8 +924,9 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
    elétron tira-o; o card pequeno do elemento ao lado, e ele
    aceso na tabela; no 2º erro, a quantidade certa em âmbar a piscar; no
    acerto, os anéis somem e os elétrons correm em volta do núcleo em 3D —
-   cada um numa elipse inclinada, de cabeça amarela neon e com o rastro que
-   afina, copiado do átomo do app de Eletroquímica (`ATOMO9.orbita`) — e
+   cada um numa elipse inclinada, no azul dos elétrons parados, com o rastro
+   que afina, copiado do átomo do app de Eletroquímica (`ATOMO9.orbita`; as
+   velocidades de lá, 20% mais lentas) — e
    aparece a distribuição ("2 · 8 · 7"). O número de cada anel ("5e⁻") na cor
    do elétron.
 6. **Analisar** — marcar os de mesma valência do oxigênio (S, Se, Te, Po, Lv)

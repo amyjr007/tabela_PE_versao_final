@@ -2857,7 +2857,7 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 /* a festa da Q5: os anéis e os elétrons parados somem, e entram os que orbitam (ATOMO9.orbita) */
 .atomo9c .anel9{transition:opacity .45s ease}
 .atomo9c.orbita9 .anel9{opacity:0!important}
-.atomo9c .orb3d9{opacity:0;filter:drop-shadow(0 0 6px rgba(255,240,0,.9));pointer-events:none}
+.atomo9c .orb3d9{opacity:0;filter:drop-shadow(0 0 6px rgba(110,190,255,.9));pointer-events:none}
 .atomo9c .sim9a{font:800 26px var(--display);fill:#fff;text-anchor:middle;paint-order:stroke;stroke:#05303A;stroke-width:4}
 .atomo9c .luz9e{fill:#EAFF00;opacity:0;transition:opacity .4s ease}
 .atomo9c .anel9.acende9a .orb9a{stroke:#FFD43B;stroke-width:4}
@@ -4870,7 +4870,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v47.9';
+const VERSAO = 'v48.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16874,7 +16874,8 @@ const ATOMO9 = {
      e com um rastro que afina (a fita); as elipses de cada camada repartidas
      em leque, no tamanho dela, e os sentidos alternados, nas velocidades de lá */
   orbita(at){
-    const NS = 'http://www.w3.org/2000/svg', VEL = [0.2784, -0.2460, 0.3114, -0.2214];
+    /* (as velocidades de lá, 20% mais lentas, a pedido do professor) */
+    const NS = 'http://www.w3.org/2000/svg', VEL = [0.2784, -0.2460, 0.3114, -0.2214].map(v => v * .8);
     at.d.classList.add('orbita9');
     const g = document.createElementNS(NS, 'g');
     g.setAttribute('class', 'orb3d9');
@@ -16887,16 +16888,16 @@ const ATOMO9 = {
         const id = 'r9g' + n + '_' + Date.now();
         const el = document.createElementNS(NS, 'g');
         el.setAttribute('transform', 'rotate(' + o.tilt + ')');
-        el.innerHTML = '<defs><linearGradient id="' + id + '" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgb(255,255,170)"/>' +
-          '<stop offset=".4" stop-color="rgb(255,240,0)" stop-opacity=".7"/><stop offset="1" stop-color="rgb(255,240,0)" stop-opacity="0"/></linearGradient></defs>' +
-          '<path fill="url(#' + id + ')"/><circle r="7.5" fill="url(#r9c)"/>';
+        /* (na cor dos elétrons parados: a cabeça é o próprio elétron azul, com o
+           "−", e o rastro no azul dele) */
+        el.innerHTML = '<defs><linearGradient id="' + id + '" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#CDEBFF"/>' +
+          '<stop offset=".4" stop-color="#3E9BEA" stop-opacity=".75"/><stop offset="1" stop-color="#1D5FA8" stop-opacity="0"/></linearGradient></defs>' +
+          '<path fill="url(#' + id + ')"/><g class="cab9"><circle r="10" fill="url(#a9e)"/>' +
+          '<path d="M-4.5 0H4.5" stroke="#1B2A4A" stroke-width="2.4" stroke-linecap="round" opacity=".75"/></g>';
         g.appendChild(el);
-        es.push({ o, el, ang:n * 1.7, path:el.querySelector('path'), cab:el.querySelector('circle'), gr:el.querySelector('linearGradient') });
+        es.push({ o, el, ang:n * 1.7, path:el.querySelector('path'), cab:el.querySelector('.cab9'), gr:el.querySelector('linearGradient') });
       }
     });
-    /* (o gradiente da cabeça: branco no meio, amarelo neon, e some na borda) */
-    g.insertAdjacentHTML('afterbegin', '<defs><radialGradient id="r9c"><stop offset="0" stop-color="#fff"/><stop offset=".35" stop-color="#fff35a"/>' +
-      '<stop offset=".7" stop-color="#ffee00"/><stop offset="1" stop-color="#fff000" stop-opacity="0"/></radialGradient></defs>');
     const TAIL = 1.9, SEG = 26, HW = 5;
     let ult = 0, t0 = 0;
     const passo = ts => {
@@ -16920,7 +16921,8 @@ const ATOMO9 = {
         const hx = Math.cos(e.ang) * o.rx, hy = Math.sin(e.ang) * o.ry;
         e.gr.setAttribute('x1', hx.toFixed(1)); e.gr.setAttribute('y1', hy.toFixed(1));
         e.gr.setAttribute('x2', (Math.cos(e.ang - dir * TAIL) * o.rx).toFixed(1)); e.gr.setAttribute('y2', (Math.sin(e.ang - dir * TAIL) * o.ry).toFixed(1));
-        e.cab.setAttribute('cx', hx.toFixed(1)); e.cab.setAttribute('cy', hy.toFixed(1));
+        /* (a cabeça desfaz a inclinação da elipse, para o "−" ficar sempre deitado) */
+        e.cab.setAttribute('transform', 'translate(' + hx.toFixed(1) + ' ' + hy.toFixed(1) + ') rotate(' + (-o.tilt) + ')');
       });
       requestAnimationFrame(passo);
     };
@@ -17131,7 +17133,9 @@ const QUESTOES_9 = [
   /* Q5 · Aplicar · complete a camada de valência: tocar no anel de fora põe um
      elétron, tocar num elétron tira-o; e Pronto */
   { monta(Q){
-      const [z, internas, v] = sorteia5([[7, [2], 5], [8, [2], 6], [12, [2, 8], 2], [13, [2, 8], 3], [14, [2, 8], 4], [17, [2, 8], 7]]);
+      /* (no máximo até o magnésio, Z 12, para não serem elétrons demais) */
+      const [z, internas, v] = sorteia5([[3, [2], 1], [4, [2], 2], [5, [2], 3], [6, [2], 4], [7, [2], 5], [8, [2], 6],
+                                         [9, [2], 7], [10, [2], 8], [11, [2, 8], 1], [12, [2, 8], 2]]);
       Object.assign(this, { z, v, internas });
       /* (o núcleo com os Z prótons à vista, sem o símbolo por cima: ele está no card ao lado) */
       this.at = ATOMO9.cria(Q, z, [...internas, 0], 478, 452, (k, x, y) => this.anel(Q, k, x, y), i => this.tira(Q, i), true);
