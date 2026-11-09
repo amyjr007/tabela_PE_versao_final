@@ -5042,7 +5042,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v48.9';
+const VERSAO = 'v49.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25717,6 +25717,12 @@ const NAV_TOPICOS = [
   /* ---- o slide 11 · A tabela e o diagrama de Pauling ---- */
   { titulo:'Início', sub:'o começo do slide', slide:10,
     entra(){ /* o recomeço do slide já é o tópico */ } },
+  /* o começo da "10", tocando */
+  { titulo:'Introdução', sub:'o começo da 10', slide:10,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10', 0, g)); } },
+  /* o começo da "10.1": a cena da "10" sai aos 1 s, e vêm os cards dos subníveis */
+  { titulo:'Os subníveis e os blocos', sub:'o começo da 10.1', slide:10,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.1', 0, g)); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
