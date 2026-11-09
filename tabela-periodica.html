@@ -4870,7 +4870,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v47.8';
+const VERSAO = 'v47.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16829,7 +16829,7 @@ const ATOMO9 = {
         el.style.transition = '';
         requestAnimationFrame(() => { el.style.transform = aqui; el.style.opacity = '1'; });
         setTimeout(() => this.estoura(at, px, py, 'entra'), 200);
-        setTimeout(() => { el.classList.remove('chega9e'); if (at._vez === vez) els.forEach(o => o.style.transform = 'translate(' + o._p[0].toFixed(1) + 'px, ' + o._p[1].toFixed(1) + 'px)'); }, 750);
+        setTimeout(() => { el.classList.remove('chega9e'); if (at._vez === vez) els.forEach(o => o.style.transform = 'translate(' + o._p[0].toFixed(1) + 'px, ' + o._p[1].toFixed(1) + 'px)'); }, 1000);
         return;
       }
       if (fx && fx.em){ if (!el.style.transform) el.style.transform = fim; return; }

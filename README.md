@@ -918,7 +918,7 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
    com as de dentro prontas — escurecidas, com os elétrons delas, e sem o
    número (`interna9`): só a última camada em destaque — e a de fora vazia
    (tracejada); tocar no anel põe um
-   elétron — ele nasce no ponto tocado, explode em luz lá, e só depois todos se
+   elétron — ele nasce no ponto tocado, explode em luz lá, e só 1 s depois todos se
    reposicionam, igualmente espaçados (`fx.em` no `ATOMO9.poe`) —, tocar num
    elétron tira-o; o card pequeno do elemento ao lado, e ele
    aceso na tabela; no 2º erro, a quantidade certa em âmbar a piscar; no
