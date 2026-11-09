@@ -5075,7 +5075,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v49.4';
+const VERSAO = 'v49.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22052,14 +22052,15 @@ window.EV10 = EV10;
    entram, embaixo do texto, os cards do s, do p, do d e do f (com o máximo de
    elétrons de cada um), nas cores dos blocos da tabela — que fica sem cor (o
    tabuleiro liso) no começo da "10.1". Dos 15,5 aos 16,5 s os quatro cards
-   crescem um pouco. Aos 17,8 s aparecem os encaixes (piscando) e os cards
-   passam a ser arrastados: o s para os alcalinos, o p para o bloco p, o d
-   para o meio dos de transição, o f para a frente das duas séries. Dos 19
-   aos 21,5 s os blocos ganham a cor, um depois do outro (s, p, d, f); e dos
+   crescem um pouco. Dos 19 aos 21,5 s os blocos ganham a cor, um depois do
+   outro (s, p, d, f), e cada encaixe aparece (piscando) junto com a cor do
+   bloco dele: o s nos alcalinos, o p no bloco p, o d no meio dos de
+   transição, o f na frente das duas séries. Os cards passam a ser
+   arrastados dos 19 s em diante (só para os encaixes já à vista); e dos
    22,7 aos 27,5 s cada bloco cresce junto com o card dele, um de cada vez,
    e volta; e o brilho passa de card em card: o s aos 28,6, o p aos 29, o d
    aos 29,7 e o f dos 30 aos 31 s. */
-const T101 = { sai:1.0, texto:[7.8, 9.0], aumenta:[15.5, 16.5], arrasta:17.8, cor:[19.0, 21.5], destaque:[22.7, 27.5] };
+const T101 = { sai:1.0, texto:[7.8, 9.0], aumenta:[15.5, 16.5], arrasta:19.0, cor:[19.0, 21.5], destaque:[22.7, 27.5] };
 /* (o bloco crescido: o quanto, em torno do meio dele) */
 const ESC_BLOCO_101 = 1.1;
 const TEXTO_101 = 'São 4 subníveis:';
@@ -22149,7 +22150,7 @@ const CARDS101 = {
       tocaEfeito('flip');
       const perto = (x, y) => {
         let melhor = null, dm = this.C * 0.8;
-        this.cards.forEach(p => { if (this.postos.has(p.K.b)) return;
+        this.cards.forEach(p => { if (this.postos.has(p.K.b) || !p.s.classList.contains('on101')) return;
           const d = Math.hypot(p.enc[0] - x, p.enc[1] - y); if (d < dm){ dm = d; melhor = p; } });
         return melhor;
       };
@@ -22261,7 +22262,8 @@ const CARDS101 = {
       o.c.classList.toggle('pega101', solta && !posto);
       o.c.classList.toggle('cresce101', aumenta || vez[k]);
       o.c.classList.toggle('brilha101', brilha[k]);
-      o.s.classList.toggle('on101', solta && !posto);
+      /* (o encaixe vem com a cor do bloco dele) */
+      o.s.classList.toggle('on101', solta && !posto && cor[k]);
     });
   },
   zera(){
