@@ -114,13 +114,13 @@ var LEGENDAS = {
     [51.62,56.84,"Depois, nós vamos testar juntos todas as possibilidades práticas dessa união. E aí?"]
   ],
   "audio_tabela_10.1": [
-    [0,3.8,"Muito bem, a base lógica dessa relação é muito simples."],
-    [3.8,8.93,"Lembra lá das aulas de átomos, que os elétrons se distribuem em quatro subníveis"],
-    [8.93,13.87,"de energia? Sim, o s, o p, o d e o f?"],
-    [13.87,21.93,"Então, esses quatro subníveis estão escondidos nesses quatro grandes blocos aqui, separados por cores."],
-    [21.93,30.78,"E cada bloco desses corresponde a exatamente um dos quatro subníveis de energia do átomo: s, p, d e f."],
-    [30.78,35.74,"Sua primeira tarefa é posicionar os cards dos subníveis nos blocos correspondentes."],
-    [35.74,36.84,"Vai lá!"]
+    [0,3.76,"Muito bem, a base lógica dessa relação é muito simples."],
+    [3.76,8.93,"Lembra lá das aulas de átomos, que os elétrons se distribuem em quatro subníveis de energia?"],
+    [8.93,14.89,"Sim, o s, o p, o d e o f?"],
+    [14.89,20.85,"Esses quatro subníveis estão escondidos na tabela, nesses quatro grandes blocos aqui."],
+    [20.85,29.78,"E cada bloco desses corresponde a exatamente um dos quatro subníveis de energia do átomo: s, p, d e f."],
+    [29.78,35.74,"Sua primeira tarefa é posicionar os cards dos subníveis nos blocos correspondentes."],
+    [36.34,39.08,"Use as cores como guia de encaixe dos cards. E aí?"]
   ],
   "audio_tabela_1_jogo_memória": [
     [0,3.42,"Muito bem, você terminou o resumo interativo do tópico aqui."],
