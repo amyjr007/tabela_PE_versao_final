@@ -3228,7 +3228,9 @@ body.montagem .veu-mg10 .sub10{opacity:1!important;fill-opacity:1!important;stro
 .card101{position:absolute;z-index:26;width:92px;height:92px;transform:translate(-50%,-50%);box-sizing:border-box;
   border-radius:18px;overflow:hidden;display:flex;justify-content:center;align-items:center;color:#fff;font-family:var(--display);
   background:linear-gradient(145deg,color-mix(in srgb,var(--cor) 84%,#fff),color-mix(in srgb,var(--cor) 86%,#000));
-  border:1px solid rgba(255,255,255,.28);box-shadow:0 10px 24px rgba(32,28,66,.28);
+  /* (o contorno: a borda branca e, por fora dela, um fio escuro — destaca o
+     card na tabela da mesma cor e no fundo claro) */
+  border:3px solid #fff;outline:2px solid rgba(32,28,66,.7);box-shadow:0 10px 24px rgba(32,28,66,.28);
   opacity:0;scale:.3;pointer-events:none;touch-action:none;user-select:none;-webkit-user-select:none;
   transition:opacity .3s ease, scale .55s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease, filter .3s ease,
              left .4s cubic-bezier(.3,.85,.3,1), top .4s cubic-bezier(.3,.85,.3,1)}
@@ -3245,6 +3247,11 @@ body.montagem .veu-mg10 .sub10{opacity:1!important;fill-opacity:1!important;stro
 .card101.pego101{z-index:28;scale:1.12;cursor:grabbing;transition:opacity .3s ease, scale .2s ease, box-shadow .2s ease;
   box-shadow:0 18px 36px rgba(32,28,66,.4)}
 .card101.erro101{animation:erro101 .45s ease}
+.card101.confirma101{animation:confirma101 .9s ease-out}
+@keyframes confirma101{
+  0%{scale:1;filter:brightness(1)}
+  25%{scale:1.22;filter:brightness(1.35);box-shadow:0 0 0 6px color-mix(in srgb,var(--cor) 40%,#fff), 0 0 44px 20px color-mix(in srgb,var(--cor) 85%,transparent)}
+  100%{scale:1;filter:brightness(1);box-shadow:0 0 0 0 transparent, 0 0 0 0 transparent}}
 @keyframes erro101{20%{translate:-9px 0} 40%{translate:8px 0} 60%{translate:-6px 0} 80%{translate:4px 0}}
 .slot101{position:absolute;z-index:25;width:92px;height:92px;transform:translate(-50%,-50%);box-sizing:border-box;
   border-radius:18px;border:3px dashed rgba(255,255,255,.95);background:rgba(20,17,46,.32);
@@ -5035,7 +5042,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v48.8';
+const VERSAO = 'v48.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22101,7 +22108,15 @@ const CARDS101 = {
         c.classList.remove('pego101');
         this.cards.forEach(q => q.s.classList.remove('perto101'));
         const p = perto(o.x, o.y);
-        if (p === o){ this.assenta(o); tocaEfeito('right'); return; }
+        if (p === o){
+          this.assenta(o); tocaEfeito('right');
+          /* o brilho de confirmação, na cor do bloco */
+          o.c.classList.remove('confirma101'); void o.c.offsetWidth; o.c.classList.add('confirma101');
+          setTimeout(() => o.c.classList.remove('confirma101'), 1000);
+          /* os quatro no lugar: a festa (os aplausos, os confetes e o funfare) */
+          if (this.postos.size === this.cards.length) this.festa();
+          return;
+        }
         if (p){
           tocaEfeito('error');
           c.classList.remove('erro101'); void c.offsetWidth; c.classList.add('erro101');
@@ -22113,6 +22128,13 @@ const CARDS101 = {
       c.addEventListener('pointerup', solta);
       c.addEventListener('pointercancel', solta);
     });
+  },
+  festa(){
+    if (!slides[10].querySelector('.confete'))
+      slides[10].insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
+    confete();
+    tocaEfeito('applause');
+    tocaEfeito('funfare');
   },
   assenta(o){
     this.postos.add(o.K.b);
