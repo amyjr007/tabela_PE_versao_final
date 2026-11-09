@@ -5096,7 +5096,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v49.8';
+const VERSAO = 'v49.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22096,11 +22096,11 @@ const TEXTO_101 = 'São 4 subníveis:';
    o bloco volta e o card s² cresce sozinho; dos 15,5 s o "2" dele pulsa; aos
    18 s tudo volta e o bloco s inteiro brilha (até aos 20,5); aos 20,5 s as
    duas famílias do s sobem e voltam (o card s sai de cena, para elas
-   aparecerem, e volta aos 28 s); aos 22 s a 1A sobe, aos 24 s a 2A; aos 25 s
-   a etiqueta "s¹" desce até à 1A, e as duas descem juntas; aos 26,6 s a "s²"
-   faz o mesmo na 2A. As etiquetas ficam em cima das famílias. */
+   aparecerem, e volta aos 28 s); aos 22 s a 1A sobe; aos 25 s a etiqueta
+   "s¹" (chegada um instante antes) desce com a 1A, e a 2A sobe; aos 26,6 s
+   a "s²" faz o mesmo na 2A. As etiquetas ficam em cima das famílias. */
 const T102 = { texto:[5.0, 10.0], bloco:[12.7, 14.3], card:[14.3, 18.0], pulsa:[15.5, 18.0], brilho:[18.0, 20.5],
-               pulo:[20.5, 21.1], some:[20.4, 28.0], sobe:[22.0, 24.0], etq:[25.0, 26.6] };
+               pulo:[20.5, 21.1], some:[20.4, 28.0], sobe:[22.0, 25.0], etq:[25.0, 26.6] };
 const TEXTO_102 = 'O nº de colunas no bloco = nº de e⁻ do subnível';
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -22354,10 +22354,11 @@ const CARDS101 = {
     const dentro = ([a, b]) => T >= a && T < b;
     const R = 0.6 * PASSO;
     /* a etiqueta: escondida lá em cima; desce até à família subida; e desce com ela */
-    const etq = k => T < T102.etq[k] ? 0 : T < T102.etq[k] + 0.45 ? 1 : 2;
+    /* (a etiqueta chega à família subida 0,45 s antes, e as duas descem no segundo dela) */
+    const etq = k => T < T102.etq[k] - 0.45 ? 0 : T < T102.etq[k] ? 1 : 2;
     const est = [T >= T102.texto[0], dentro(T102.texto), dentro(T102.bloco), dentro(T102.card), dentro(T102.pulsa),
-                 dentro(T102.brilho), dentro(T102.pulo), dentro(T102.some), T >= 0 && T < T102.etq[0] + 0.45 && T >= T102.sobe[0],
-                 T >= T102.sobe[1] && T < T102.etq[1] + 0.45, etq(0), etq(1)].join();
+                 dentro(T102.brilho), dentro(T102.pulo), dentro(T102.some), T >= T102.sobe[0] && T < T102.etq[0],
+                 T >= T102.sobe[1] && T < T102.etq[1], etq(0), etq(1)].join();
     if (est === this.estado102) return;
     this.estado102 = est;
     const [txt, dig, bloco, card, pulsa, brilho, pulo, some, up1, up2, e1, e2] = est.split(',').map(v => v === 'true' ? true : v === 'false' ? false : +v);
