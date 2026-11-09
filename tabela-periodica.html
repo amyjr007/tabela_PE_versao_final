@@ -2955,6 +2955,14 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .objL7.certoL7{opacity:.6}
 .faiscaL7{position:absolute;z-index:45;border-radius:50%;pointer-events:none;background:#FFF6B0;
   box-shadow:0 0 10px 4px #FFE14D, 0 0 26px 10px rgba(255,200,40,.7);transition:left .9s cubic-bezier(.4,0,.2,1), top .9s cubic-bezier(.4,0,.2,1)}
+/* Q4: a tabela de fundo (a da Q3 do quiz do tópico 4): escura e sem símbolos, a
+   casa de cada card na cor dele; com um card pegado, só a dele fica, a piscar */
+.slide.quiz7l .mesa.fundoL7.fundoL7 .pc:not(.ficha5){--cor:#2C2A38!important;opacity:.55!important;pointer-events:none}
+.slide.quiz7l .mesa.fundoL7 .pc:not(.ficha5) .face :is(i,b,u,em){opacity:0}
+.slide.quiz7l .mesa.fundoL7.fundoL7 .pc.acesaL7:not(.ficha5){--cor:var(--c5)!important;opacity:.75!important}
+.slide.quiz7l .mesa.fundoL7 .casa{opacity:.12!important;color:transparent!important;filter:grayscale(1)}
+.slide.quiz7l .mesa.fundoL7.pegandoL7 .pc.acesaL7:not(.ficha5):not(.alvo5){filter:saturate(0) brightness(.3);opacity:.55!important}
+.mesa .pc.ficha5.corL7.corL7{--cor:var(--c5)!important}
 /* Q4: os três blocos, cada um na sua cor, e os nomes */
 .slide.quiz7l .mesa.blocosL7 .pc.repL7:not(.ficha5){--cor:#C39B2E!important}
 .slide.quiz7l .mesa.blocosL7 .pc.extL7:not(.ficha5){--cor:#A6382F!important}
@@ -4944,7 +4952,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v48.3';
+const VERSAO = 'v48.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -11807,7 +11815,7 @@ function grupoCards(fichas, p0, arruma){
    do mouse também) */
 const QUIZ_MONT = {
   ptr:new Map(), alvo:null, base:null, Q:null, mexidos:new Set(),
-  quiz(){ return [QUIZ5, QUIZ7, window.QUIZ9].find(Q => Q && Q.aberto && Q.q && slides[atual].contains(Q.mesa())) || null; },
+  quiz(){ return [QUIZ5, QUIZ7, window.QUIZ9, window.QUIZ7L].find(Q => Q && Q.aberto && Q.q && slides[atual].contains(Q.mesa())) || null; },
   /* o grupo debaixo do dedo: um card solto, ou a área da tabela de fundo */
   grupo(ev, soCards){
     const Q = this.quiz(), q = Q && Q.q;
@@ -20196,30 +20204,63 @@ function textoL7(Q, txt, x, y, w){ return peca9(Q, 'q7p textoL7', txt, x - w / 2
 
 /* AS QUESTÕES DE SEPARAR (Q4, Q5): seis cards em fila e três bandejas, o
    Conferir quando os seis estão nelas; as erradas voltam, as certas ficam */
+const LUGAR_FUNDO_L7 = { x:LUGAR_ARRASTA.fundo.x, y:LUGAR_ARRASTA.fundo.y + 48, e:LUGAR_ARRASTA.fundo.e, centra:true };
 function separaL7(op){
+  /* op.fundo: a tabela de fundo da Q3 do quiz do tópico 4 (encolhida, escura e
+     sem símbolos, com a casa de cada card na cor dele; pegado um card, a casa
+     dele pisca em âmbar e as outras apagam), com as séries já embaixo */
   return {
     monta(Q){
-      Q.mesa().classList.add('someL7');
-      const zs = op.sorteia();
+      const m = Q.mesa(), zs = embaralha(op.sorteia()), F = op.fundo;
+      if (F){
+        SERIES8.abreJa({ lan:true, act:true });
+        m.classList.add('fundoL7');
+        this.encolhidas = [...m.querySelectorAll('.pc:not(.ficha5), .casa')];
+        /* (um pouco mais baixa que a do tópico 4: aqui as séries estão embaixo, e a
+           fila dos cards fica no alto, sem tapar a tabela) */
+        this.fundo = encolheFundo(Q, this.encolhidas, LUGAR_FUNDO_L7);
+        this.acesas = zs.map((z, i) => { const c = Q.carta(z); c.style.setProperty('--c5', CORES_Q3[i]); c.classList.add('acesaL7'); return c; });
+      } else m.classList.add('someL7');
       this.bandejas = op.grupos.map(([k, nome], i) => {
-        const p = M8(Q, 300 + i * 340 - 160, 370);
-        const b = Q.peca('bandeja5 bandeja8', '<span>' + nome + '</span>', p.x, p.y, 320, 220);
+        const p = F ? M8(Q, 200 + i * 300, 548) : M8(Q, 300 + i * 340 - 160, 370);
+        const b = Q.peca('bandeja5 bandeja8', '<span>' + nome + '</span>', p.x, p.y, F ? 280 : 320, F ? 160 : 220);
         b.dataset.k = k;
         b.classList.add('espera5');
         return b;
       });
-      this.fichas = embaralha(zs).map((z, i) => {
-        const p = M8(Q, 640 + (i - 2.5) * 96, 236), c = Q.ficha(z, p.x, p.y, 1.2);
+      this.fichas = zs.map((z, i) => {
+        const p = F ? M8(Q, 435 + i * 82, 178) : M8(Q, 640 + (i - 2.5) * 96, 236), c = Q.ficha(z, p.x, p.y, F ? 1.06 : 1.2);
         c.classList.add('espera5');
+        if (F){ c.style.setProperty('--c5', CORES_Q3[i]); c.classList.add('corL7'); }
         c._casa = p; c._k = null;
-        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y));
+        Q.arrastavel(c, (x, y) => this.solta(Q, c, x, y), F ? () => this.pega(Q, c) : undefined);
         return c;
       });
-      this.bt = botao8(Q, 'Conferir', 1205, 650, () => this.confere(Q));
+      this.bt = botao8(Q, 'Conferir', 1205, F ? 628 : 650, () => this.confere(Q));
       this.bt.classList.add('some5');
+      /* (na montagem, a fila dos cards anda junta: LUGAR_ARRASTA.cards) */
+      if (F) this.cards = grupoCards(this.fichas, { x:0, y:0 }, () => this.arruma(Q));
       return op.enunciado;
     },
+    pega(Q, c){
+      if (this.pegado === c) return;
+      this.pegado = c;
+      const casa = Q.carta(+c.dataset.z);
+      (this.acesas || []).forEach(a => a.classList.toggle('alvo5', a === casa));
+      Q.mesa().classList.add('pegandoL7');
+    },
+    /* a tabela de fundo volta a ser a tabela */
+    desfaz(Q){
+      Q.mesa().classList.remove('fundoL7', 'pegandoL7');
+      this.pegado = null;
+      (this.acesas || []).forEach(c => { c.classList.remove('acesaL7', 'alvo5'); c.style.removeProperty('--c5'); });
+      (this.encolhidas || []).forEach(e => { e.style.removeProperty('translate'); e.style.removeProperty('scale'); });
+      this.acesas = this.encolhidas = null;
+    },
     solta(Q, c, x, y){
+      this.pegado = null;
+      Q.mesa().classList.remove('pegandoL7');
+      (this.acesas || []).forEach(a => a.classList.remove('alvo5'));
       const b = this.bandejas.find(b => Q.dentro(x, y, b));
       c._k = b ? b.dataset.k : null;
       if (b){
@@ -20230,11 +20271,13 @@ function separaL7(op){
       this.arruma(Q);
     },
     arruma(Q){
+      const F = op.fundo;
       this.bandejas.forEach(b => {
         const l = parseFloat(b.style.left), t = parseFloat(b.style.top);
-        this.fichas.filter(c => c._k === b.dataset.k).forEach((c, k) => Q.poe(c, l + 70 + (k % 3) * 90, t + 70 + Math.floor(k / 3) * 84, 1));
+        this.fichas.filter(c => c._k === b.dataset.k).forEach((c, k) => F ? Q.poe(c, l + 55 + (k % 3) * 85, t + 48 + Math.floor(k / 3) * 64, .85)
+                                                                           : Q.poe(c, l + 70 + (k % 3) * 90, t + 70 + Math.floor(k / 3) * 84, 1));
       });
-      this.fichas.filter(c => !c._k).forEach(c => Q.poe(c, c._casa.x, c._casa.y, 1.2));
+      this.fichas.filter(c => !c._k).forEach(c => Q.poe(c, c._casa.x, c._casa.y, F ? 1.06 : 1.2));
       this.bt.classList.toggle('some5', this.fichas.some(c => !c._k));
       this.fichas.forEach(c => c.classList.toggle('espera5', !c._k));
       this.bandejas.forEach(b => b.classList.toggle('espera5', this.fichas.some(c => !c._k)));
@@ -20244,6 +20287,7 @@ function separaL7(op){
       if (!erradas.length){
         this.fichas.forEach(c => c._preso = true);
         this.bt.classList.add('some5');
+        if (op.fundo) setTimeout(() => this.desfaz(Q), 450);
         op.festa(Q, this);
         Q.acerta();
         return;
@@ -20251,7 +20295,7 @@ function separaL7(op){
       Q.erra(op.dica, erradas, () => erradas.flatMap(c => [c, this.bandejas.find(b => b.dataset.k === op.certo(+c.dataset.z))]));
       setTimeout(() => { erradas.forEach(c => { c._k = null; }); this.arruma(Q); }, 650);
     },
-    limpa(Q){ limpaL7(Q); }
+    limpa(Q){ this.desfaz(Q); limpaL7(Q); }
   };
 }
 /* sorteios: n de uma lista */
@@ -20377,6 +20421,7 @@ const QUESTOES_7L = [
   /* Q4 · Entender · os três blocos: seis cards para três bandejas */
   separaL7({
     enunciado:'Arraste cada elemento para o bloco dele.',
+    fundo:true,
     grupos:[['rep', 'Representativos'], ['ext', 'Transição externa'], ['int', 'Transição interna']],
     sorteia(){
       let zs;

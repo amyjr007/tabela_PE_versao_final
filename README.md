@@ -693,8 +693,12 @@ e a tabela de 32 colunas (`EV7.longa`).
    do mundo". Marcar o neon dá a dica do gás nobre.
 4. **Entender** — seis cards para Representativos, Transição externa e
    Transição interna (`separaL7`, as bandejas do tópico 4; sempre com o La, o
-   Ac, o Sc ou o Y); no acerto, os três blocos acendem na tabela, cada um com a
-   sua cor e o seu nome.
+   Ac, o Sc ou o Y), com a tabela de fundo da Q3 do quiz do tópico 4 (`op.fundo`:
+   encolhida, escura e sem símbolos, as séries já embaixo, a casa de cada card
+   na cor dele; pegado um card, a casa dele pisca e as outras apagam; um pouco
+   mais baixa que lá, `LUGAR_FUNDO_L7`, com a fila dos cards no alto); no
+   acerto, a tabela volta e os três blocos acendem, cada um com a sua cor e o
+   seu nome.
 5. **Aplicar** — seis cards para Lantanídeos, Actinídeos e Corpo da tabela
    (sempre com uma borda — La, Lu, Ac, Lr — e um vizinho de borda — Ba, Hf, Ra,
    Rf); no acerto, os cards voam para a sua casa, com as séries abertas.
