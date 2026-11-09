@@ -131,6 +131,14 @@ var LEGENDAS = {
     [20.85,26.8,"Nessa aqui a distribuição termina em s¹, e nessa outra aqui termina em s²."],
     [26.8,28.62,"Sacou a lógica?"]
   ],
+  "audio_tabela_10.3": [
+    [0,2.56,"Agora, vamos para o bloco p, aqui na direita."],
+    [2.98,7.92,"Você lembra que o subnível p comporta até 6 elétrons no total?"],
+    [7.92,10.75,"Agora, veja: quantas colunas temos nesse bloco?"],
+    [10.75,16.91,"Uma, duas, três, quatro, cinco, seis colunas."],
+    [16.91,23.82,"Ou seja, a distribuição eletrônica desses elementos vai avançando em p¹, p², e por aí vai."],
+    [23.82,29.3,"Continue a sequência tocando nas próximas colunas na tela, até completar o restante."]
+  ],
   "audio_tabela_1_jogo_memória": [
     [0,3.42,"Muito bem, você terminou o resumo interativo do tópico aqui."],
     [3.42,9.56,"Agora, que tal fazer um joguinho rapidinho que vai te ajudar a fixar esse tópico mais ainda?"],
