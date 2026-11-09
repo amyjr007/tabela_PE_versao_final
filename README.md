@@ -35,7 +35,9 @@ acabado (o cartão da nota), verde, só com a nota.
 Em todas as questões de arrastar (cards para bandejas, etiquetas para
 lugares, barras, a moldura…), dá também para **tocar na peça e depois no
 lugar** (`TOQUE5`, no `arrastavel` comum aos quizzes): tocada sem arrastar, a
-peça fica selecionada, em verde (tocar de novo desfaz; tocar noutra troca); o
+peça fica selecionada, em verde (tocar de novo desfaz; tocar noutra troca) —
+enquanto isso, as outras peças param de piscar e só os lugares vazios piscam
+(`#stage.escolhendo5`); o
 toque seguinte é o lugar — a peça vai para lá como se tivesse sido largada
 ali; num botão (Conferir, Pronto) a seleção sai. O clique desse toque não
 chega à tabela (não conta como resposta). Encaixada num lugar — tocada ou

@@ -1529,6 +1529,10 @@ body.montagem .estante4.on .estante4-titulo{pointer-events:auto}
 /* tocada sem arrastar, a peça fica selecionada (TOQUE5), em verde, à espera do lugar */
 .pc.ficha5.sel5{z-index:39}
 .pc.ficha5.sel5.sel5 .face{animation:none;box-shadow:0 0 0 3px #3EE08A, 0 0 22px 7px rgba(62,224,138,.8)}
+/* com uma peça selecionada, as outras param de piscar, e os lugares vazios piscam mais */
+#stage.escolhendo5 .pc.ficha5.espera5:not(.sel5) .face,
+#stage.escolhendo5 .peca5:is(.pisca8,.pisca9,.espera5):not(.sel5):not(.slot5):not(.bandeja5){animation:none!important}
+#stage.escolhendo5 .slot5:not(.ocupado5){animation:pisca8s .7s ease-in-out infinite!important}
 .peca5.sel5.sel5.sel5.sel5.sel5{z-index:39;animation:none;box-shadow:0 0 0 3px #3EE08A, 0 0 22px 7px rgba(62,224,138,.8)}
 .etiqueta5.encaixa5, .peca5.moldura7.encaixa5{animation:encaixa5 .7s ease-out}
 /* o encaixe rápido: chegada ao lugar, a peça cresce e assenta (um "clique") */
@@ -4870,7 +4874,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v48.0';
+const VERSAO = 'v48.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -11383,9 +11387,11 @@ const TOQUE5 = {
   seleciona(Q, c, solta){
     const era = this.c;
     if (era) era.classList.remove('sel5');
-    if (!Q || era === c){ this.Q = this.c = this.solta = null; return; }
+    if (!Q || era === c){ this.Q = this.c = this.solta = null; stage.classList.remove('escolhendo5'); return; }
     Object.assign(this, { Q, c, solta });
     c.classList.add('sel5');
+    /* (com uma selecionada, as outras peças param de piscar; só os lugares piscam) */
+    stage.classList.add('escolhendo5');
     tocaEfeito('flip');
   },
   toque(ev){
