@@ -2858,6 +2858,7 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .atomo9c .orb9a{fill:none;stroke:rgba(244,242,248,.5);stroke-width:2.5;transition:stroke .3s ease, stroke-width .3s ease}
 /* (o número de cada anel na cor do elétron) */
 .atomo9c .cont9{font:700 17px var(--display);fill:#5AAEF2;opacity:1}
+.atomo9c.conta9g .cont9{font-size:24px}
 /* a festa da Q5: os anéis e os elétrons parados somem, e entram os que orbitam (ATOMO9.orbita) */
 .atomo9c .anel9{transition:opacity .45s ease}
 .atomo9c.orbita9 .anel9{opacity:0!important}
@@ -4874,7 +4875,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v48.1';
+const VERSAO = 'v48.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -17145,8 +17146,9 @@ const QUESTOES_9 = [
       Object.assign(this, { z, v, internas });
       /* (o núcleo com os Z prótons à vista, sem o símbolo por cima: ele está no card ao lado) */
       this.at = ATOMO9.cria(Q, z, [...internas, 0], 478, 452, (k, x, y) => this.anel(Q, k, x, y), i => this.tira(Q, i), true);
-      /* (sem o painel, como na Q1: a tabela escurecida ao fundo e o átomo aceso) */
-      this.at.d.classList.add('solto9');
+      /* (sem o painel, como na Q1: a tabela escurecida ao fundo e o átomo aceso;
+         e o número de elétrons da camada 40% maior — conta9g) */
+      this.at.d.classList.add('solto9', 'conta9g');
       Q.mesa().classList.add('escura9', 'breu9');
       this.ult = internas.length;
       this.at.anel(this.ult).classList.add('vazio9');
@@ -17240,7 +17242,8 @@ const QUESTOES_9 = [
         [20, 'O cálcio tem 2 elétrons de valência, porque é do grupo 2A.', 'sim', '2'],
         [16, 'O enxofre tem 3 elétrons de valência, porque está no 3º período.', 'nao', '6'],
         [13, 'O alumínio tem 13 elétrons de valência, porque está na coluna 13.', 'nao', '3'],
-        [26, 'O ferro tem 8 elétrons de valência, porque é do grupo 8B.', 'nao', 'A regra não vale'],
+        /* (sem exemplos de transição, a pedido do professor: o do ferro saiu) */
+        [53, 'O iodo tem 5 elétrons de valência, porque está no 5º período.', 'nao', '7'],
         [35, 'O bromo tem a mesma valência do cloro: 7.', 'sim', '7']]);
       Object.assign(this, { z, julga, val, julgado:false });
       this.vals = ['1', '2', '3', '4', '5', '6', '7', '8', 'A regra não vale'];
@@ -17256,7 +17259,7 @@ const QUESTOES_9 = [
       });
       return 'Um colega disse isto. Ele está certo?';
     },
-    dica:'Confira se o elemento é do grupo A antes de usar a regra.',
+    dica:'Olhe a família do elemento: é ela que diz a valência, e não o período nem a coluna.',
     julgar(Q, k, b){
       if (this.julgado) return;
       if (k !== this.julga){ Q.erra(this.dica, [b], () => [this.bts.find(o => o.dataset.k === this.julga)]); return; }

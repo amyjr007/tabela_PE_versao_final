@@ -930,15 +930,16 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
    que afina, copiado do átomo do app de Eletroquímica (`ATOMO9.orbita`; as
    velocidades de lá, 20% mais lentas) — e
    aparece a distribuição ("2 · 8 · 7"). O número de cada anel ("5e⁻") na cor
-   do elétron.
+   do elétron, e o da camada de valência, aqui, 40% maior (`conta9g`).
 6. **Analisar** — marcar os de mesma valência do oxigênio (S, Se, Te, Po, Lv)
    e Pronto; no acerto, a coluna acende com um 6 ao lado de cada um.
 7. **Avaliar** — o balão do colega (o do tópico 6), Concordo/Discordo, e o
    carrossel de 1 a 8 e "A regra não vale" (a opção de texto, nova); cada
    parte errada é um erro. A tabela fica ao fundo, escurecida, com o elemento
    da frase a piscar; o bloco de transição sai (`vao9`) e o vão dele recebe o
-   balão, os botões e o carrossel (o ferro fica, quando é dele que se fala, entre
-   os dois botões); no acerto, o balão ganha o ✔ ou é riscado e o
+   balão, os botões e o carrossel. Sem exemplos de transição (as frases: o
+   cálcio, o enxofre, o alumínio, o iodo e o bromo; "A regra não vale" fica só
+   como armadilha no carrossel); no acerto, o balão ganha o ✔ ou é riscado e o
    elemento acende na tabela.
 8. **Criar** — as etiquetas nos cabeçalhos (as do tópico 6): as oito famílias
    A e o bloco B; "1e⁻" a "8e⁻", "A regra não vale", e as armadilhas "13e⁻" e
