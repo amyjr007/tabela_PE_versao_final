@@ -3188,7 +3188,7 @@ body.montagem .veu-pauling .icone91{translate:-320px 0;opacity:.5}
 html:is(.palco-largo,.palco-alto) .veu-mg10::before{background:rgba(12,10,32,.96)}
 .veu-mg10 :is(.icone10,.quadro10,.aufbau10,.dist10){position:absolute;transform:translate(-50%,-50%);margin:0;
   opacity:0;transition:opacity 1s ease}
-.veu-mg10.fotos10 :is(.icone10,.quadro10,.aufbau10), body.montagem .veu-mg10 :is(.icone10,.quadro10,.aufbau10){opacity:1}
+.veu-mg10.tabela10on .icone10, .veu-mg10.foto10on :is(.quadro10,.aufbau10), body.montagem .veu-mg10 :is(.icone10,.quadro10,.aufbau10){opacity:1}
 .veu-mg10 .icone10{left:320px;top:372px;width:520px}
 .veu-mg10 .icone10 svg{display:block;width:100%;height:auto;overflow:visible}
 .veu-mg10 .quadro10{left:960px;top:372px;width:520px;aspect-ratio:1024/772;border-radius:13px;overflow:hidden;
@@ -3215,9 +3215,9 @@ html:is(.palco-largo,.palco-alto) .veu-mg10::before{background:rgba(12,10,32,.96
    enchem-se no fim; o "Mg:" entra em fade; o 3s², o mais energético, no neon */
 .veu-mg10 .dist10{left:320px;top:600px;width:520px;overflow:visible}
 .veu-mg10.dist10on .dist10, body.montagem .veu-mg10 .dist10{opacity:1}
-.dist10 text{font-family:var(--display);font-weight:700;font-size:48px}
+.dist10 text{font-family:'Caveat',cursive;font-weight:500;font-size:64px}
 .dist10 .mgd10{fill:#F4F2F8}
-.dist10 .sub10{fill:#F4F2F8;fill-opacity:0;stroke:#F4F2F8;stroke-width:1.6;stroke-dasharray:260;stroke-dashoffset:260;opacity:0}
+.dist10 .sub10{fill:#F4F2F8;fill-opacity:0;stroke:#F4F2F8;stroke-width:1.1;stroke-dasharray:260;stroke-dashoffset:260;opacity:0}
 .dist10 .sub10.ult10{fill:#F4FF3A;stroke:#F4FF3A;filter:drop-shadow(0 0 8px rgba(234,255,0,.55))}
 body.montagem .veu-mg10 .sub10{opacity:1!important;fill-opacity:1!important;stroke-dashoffset:0!important}
 body.montagem .veu-mg10{opacity:1;background:rgba(12,10,32,.35);pointer-events:none}
@@ -4993,7 +4993,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v48.5';
+const VERSAO = 'v48.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -21846,14 +21846,14 @@ window.EV9 = EV9;
 /* ============================================================
    SLIDE 11 · A "10" (EV10), função do tempo dela
    Aos 10 s a tela escurece; aos 11 s, em fade, a tabela (o ícone da "9") na
-   metade esquerda e a foto do Pauling no quadro na direita, com o
+   metade esquerda, e aos 15 s a foto do Pauling no quadro na direita, com o
    "Princípio de Aufbau" embaixo — como a "9.1" acaba. Aos 22 s o Mg cresce e
    brilha no amarelo neon das setas; aos 26 s o "3s²" do quadro é circulado
    no mesmo amarelo, e aos 32 s o círculo sai. Dos 35 aos 40 s, embaixo da
    tabela, a distribuição do Mg desenha-se um subnível de cada vez, e no
    quadro a seta corre junto, em tempo real (o 2p e o 3s na mesma diagonal).
    ============================================================ */
-const T10 = { veu:10.0, fotos:11.0, mg:22.0, circulo:26.0, circuloSai:32.0, dist:[35.0, 40.0] };
+const T10 = { veu:10.0, tabela:11.0, foto:15.0, mg:22.0, circulo:26.0, circuloSai:32.0, dist:[35.0, 40.0] };
 /* os subníveis do Mg, e por onde a seta vai em cada um: o risco do diagrama
    (SETAS_91) e o trecho dele, de 0 a 1 */
 const DIST_10 = [
@@ -21873,7 +21873,7 @@ const VEU_10 = (() => {
   /* a distribuição: "Mg:" e os quatro subníveis, cada um com o expoente */
   const X = [118, 218, 318, 418];
   const subs = DIST_10.map((s, k) => '<text class="sub10' + (k === 3 ? ' ult10' : '') + '" x="' + X[k] + '" y="62">' + s.n +
-    '<tspan dy="-20" font-size="28">' + s.e + '</tspan></text>').join('');
+    '<tspan dy="-24" font-size="38">' + s.e + '</tspan></text>').join('');
   return '<div class="veu veu-mg10" aria-live="polite">' +
     '<div class="icone10" data-mont="tabela-10"></div>' +
     '<div class="quadro10" data-mont="diagrama-10"><img src="Imagens/linus_pauling.jpeg" alt="Linus Pauling no quadro do diagrama">' +
@@ -21938,13 +21938,14 @@ const EV10 = {
       });
       this.circ.forEach(e => e.style.strokeDashoffset = (1 - fc).toFixed(3));
     }
-    const est = [t10 >= T10.veu, t10 >= T10.fotos, t10 >= T10.mg, t10 >= T10.circulo && t10 < T10.circuloSai, t10 >= T10.dist[0]].join() + '|' + monta;
+    const est = [t10 >= T10.veu, t10 >= T10.tabela, t10 >= T10.foto, t10 >= T10.mg, t10 >= T10.circulo && t10 < T10.circuloSai, t10 >= T10.dist[0]].join() + '|' + monta;
     if (est === this.estado) return;
     this.estado = est;
-    const [veu, fotos, mg, circ, dist] = est.split('|')[0].split(',').map(v => v === 'true');
+    const [veu, tabela, foto, mg, circ, dist] = est.split('|')[0].split(',').map(v => v === 'true');
     const V = this.veu;
     V.classList.toggle('on', veu && !monta);
-    V.classList.toggle('fotos10', fotos);
+    V.classList.toggle('tabela10on', tabela);
+    V.classList.toggle('foto10on', foto);
     V.classList.toggle('mg10on', mg);
     V.classList.toggle('circ10on', circ);
     V.classList.toggle('dist10on', dist);

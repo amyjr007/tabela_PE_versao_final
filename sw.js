@@ -195,6 +195,7 @@ const CASCA = [
   './Audios/vfx/transition_cube.mp3',
   './fontes/fontes.css',
   './fontes/space-grotesk-normal-latin.woff2',
+  './fontes/caveat-normal-latin.woff2',
   './fontes/space-grotesk-normal-latin-ext.woff2',
   './fontes/ibm-plex-sans-normal-latin.woff2',
   './fontes/ibm-plex-sans-normal-latin-ext.woff2',
