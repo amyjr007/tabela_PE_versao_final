@@ -2793,6 +2793,8 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
    num cinza claro, sem a cor dele e meio transparente: à vista, mas inativo */
 .slide.quiz9 .mesa.grupos.valencia:not(.fundo7) .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
   [data-col="8"],[data-col="9"],[data-col="10"],[data-col="11"],[data-col="12"]){--cor:#A9A5BA!important;opacity:.4!important}
+/* (Q3: na tabela de fundo, as casas 57–71 e 89–103 em cinza, e não avermelhadas) */
+.slide.quiz9 .mesa.valencia.fundo7 .casa{filter:grayscale(1) brightness(.8)}
 .slide.quiz9 .mesa.valencia:not(.fundo7) .casa.serie{opacity:.4!important;filter:grayscale(1) brightness(1.6)}
 /* (Q7: o bloco de transição sai, e o vão dele recebe o colega, os botões e o
    carrossel — menos o ferro, quando é dele que se fala) */
@@ -2806,7 +2808,7 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .slide.quiz9 .mesa .rot-a:not(.mostra9){opacity:0}
 /* a tabela sai (Q1, Q3, Q5 não precisa, Q7) ou escurece (Q4) */
 .slide.quiz9 .mesa.mesa.some9 :is(.pc:not(.ficha5),.casa,.rot-a){opacity:0!important;pointer-events:none}
-.slide.quiz9 .mesa.escura9 .pc:not(.ficha5):not(.alvo9), .slide.quiz9 .mesa.valencia.fam93.escura9 .pc[data-z="2"]:not(.alvo9){filter:brightness(.45)}
+.slide.quiz9 .mesa.escura9 .pc:not(.ficha5):not(.alvo9):not(.acende9), .slide.quiz9 .mesa.valencia.fam93.escura9 .pc[data-z="2"]:not(.alvo9):not(.acende9){filter:brightness(.45)}
 .slide.quiz9 .mesa.mesa.mesa .pc.alvo9:not(.ficha5){opacity:1!important}
 /* (Q8, no acerto: o bloco B ainda mais apagado) */
 .slide.quiz9 .mesa.mesa.apaga9 .pc:is([data-col="3"],[data-col="4"],[data-col="5"],[data-col="6"],[data-col="7"],
@@ -2840,7 +2842,7 @@ html.celular .mesa.valencia.fam93{scale:.8;translate:0 40px}
 .atomo9c svg{display:block;overflow:visible}
 /* (Q1: sem o painel — o átomo solto sobre a tabela bem escurecida, aceso:
    as órbitas e os elétrons com brilho) */
-.slide.quiz9 .mesa.mesa.valencia.escura9.breu9 .pc.pc:not(.ficha5):not(.alvo9){filter:brightness(.22)}
+.slide.quiz9 .mesa.mesa.valencia.escura9.breu9 .pc.pc:not(.ficha5):not(.alvo9):not(.acende9){filter:brightness(.22)}
 .slide.quiz9 .mesa.mesa.valencia.breu9 .casa.casa{opacity:.12!important}
 .atomo9c .nome9{position:absolute;left:0;right:0;text-align:center;pointer-events:none;
   font:700 26px var(--display);color:#F4F2F8;text-shadow:0 0 12px rgba(110,190,255,.7), 0 2px 6px rgba(0,0,0,.9)}
@@ -4863,7 +4865,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v47.6';
+const VERSAO = 'v47.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -16741,7 +16743,7 @@ const ATOMO9 = {
       '<radialGradient id="a9p" fx="35%" fy="35%"><stop offset="0" stop-color="#FFF4C2"/><stop offset=".45" stop-color="#FFB020"/><stop offset="1" stop-color="#B86A00"/></radialGradient>' +
       '<radialGradient id="a9e" cx="35%" cy="32%" r="70%"><stop offset="0" stop-color="#CDEBFF"/><stop offset=".55" stop-color="#3E9BEA"/><stop offset="1" stop-color="#1D5FA8"/></radialGradient>' +
       '<radialGradient id="a9h"><stop offset="0" stop-color="#FFB020" stop-opacity=".45"/><stop offset="1" stop-color="#FFB020" stop-opacity="0"/></radialGradient>' +
-      '<filter id="a9s" x="-80%" y="-80%" width="260%" height="260%"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#00e5ff"/></filter>' +
+      '<filter id="a9s" x="-80%" y="-80%" width="260%" height="260%"><feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#FFB020"/></filter>' +
       '<filter id="a9n" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter></defs>' +
       '<g class="giro9">' + aneis + '<g class="nuc9a">' + prot +
       (semSimbolo ? '' : '<text class="sim9a" y="10">' + SIMBOLOS[z - 1] + '</text>') + '</g><g class="fx9"></g></g></svg><div class="leg9"></div>',
@@ -17069,7 +17071,10 @@ const QUESTOES_9 = [
       const [z, internas, v] = sorteia5([[7, [2], 5], [8, [2], 6], [12, [2, 8], 2], [13, [2, 8], 3], [14, [2, 8], 4], [17, [2, 8], 7]]);
       Object.assign(this, { z, v, internas });
       /* (o núcleo com os Z prótons à vista, sem o símbolo por cima: ele está no card ao lado) */
-      this.at = ATOMO9.cria(Q, z, [...internas, 0], 478, 452, (k, x, y) => this.anel(Q, k, x, y),i => this.tira(Q, i), true);
+      this.at = ATOMO9.cria(Q, z, [...internas, 0], 478, 452, (k, x, y) => this.anel(Q, k, x, y), i => this.tira(Q, i), true);
+      /* (sem o painel, como na Q1: a tabela escurecida ao fundo e o átomo aceso) */
+      this.at.d.classList.add('solto9');
+      Q.mesa().classList.add('escura9', 'breu9');
       this.ult = internas.length;
       this.at.anel(this.ult).classList.add('vazio9');
       /* (só a última camada em destaque: as de dentro escurecidas, com os
@@ -20763,8 +20768,9 @@ const VEU_9 = (() => {
   const icone = '<svg viewBox="-6 -6 300 172" aria-hidden="true"><rect x="-6" y="-6" width="300" height="172" rx="14" fill="rgba(244,242,248,.06)" stroke="rgba(244,242,248,.18)" stroke-width="1.5"/>' + cel + '</svg>';
   /* o átomo: o núcleo de 4 prótons, e as duas camadas com 2 elétrons cada */
   /* o núcleo o mesmo do átomo do app de Eletroquímica (na escala deste, 1,3×):
-     4 prótons ciano num cachinho, com o brilho deles, o "+" fino e branco, o
-     halo ciano em volta, e cada um a tremer de leve, no seu compasso */
+     4 prótons num cachinho — em amarelo-âmbar, como os do quiz, a pedido do
+     professor —, com o brilho deles, o "+" fino e branco, o halo âmbar em
+     volta, e cada um a tremer de leve, no seu compasso */
   const K = 1.3;
   const prot = (x, y, i) => '<g transform="translate(' + (x * K).toFixed(1) + ' ' + (y * K).toFixed(1) + ')">' +
     '<g class="jig9" style="animation-duration:' + [2.9, 2.4, 2.1, 1.8][i] + 's,' + [3.4, 2.9, 2.6, 2.3][i] + 's;animation-delay:-' + (i * .7) + 's,-' + (i * 1.1) + 's">' +
@@ -20777,11 +20783,11 @@ const VEU_9 = (() => {
     gs.map(g => '<circle cx="' + (r * Math.cos(g * Math.PI / 180)).toFixed(1) + '" cy="' + (-r * Math.sin(g * Math.PI / 180)).toFixed(1) + '" r="14" fill="#EAFF00"/>').join('') + '</g>';
   const camada = (cls, r, gs) => '<g class="' + cls + '">' + neon(r, gs) + '<circle class="orb9" r="' + r + '"/>' + gs.map(g => elet(r, g)).join('') + '</g>';
   const atomo = '<svg viewBox="-180 -180 360 360" aria-hidden="true"><defs>' +
-    '<radialGradient id="p9" fx="35%" fy="35%"><stop offset="0" stop-color="#bdf3ff"/><stop offset=".45" stop-color="#00e5ff"/><stop offset="1" stop-color="#0077a0"/></radialGradient>' +
+    '<radialGradient id="p9" fx="35%" fy="35%"><stop offset="0" stop-color="#FFF4C2"/><stop offset=".45" stop-color="#FFB020"/><stop offset="1" stop-color="#B86A00"/></radialGradient>' +
     '<radialGradient id="e9" cx="35%" cy="32%" r="70%"><stop offset="0" stop-color="#CDEBFF"/><stop offset=".55" stop-color="#3E9BEA"/><stop offset="1" stop-color="#1D5FA8"/></radialGradient>' +
-    '<radialGradient id="h9"><stop offset="0" stop-color="#00e5ff" stop-opacity=".45"/><stop offset="1" stop-color="#00e5ff" stop-opacity="0"/></radialGradient>' +
+    '<radialGradient id="h9"><stop offset="0" stop-color="#FFB020" stop-opacity=".45"/><stop offset="1" stop-color="#FFB020" stop-opacity="0"/></radialGradient>' +
     '<filter id="n9" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>' +
-    '<filter id="s9" x="-80%" y="-80%" width="260%" height="260%"><feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#00e5ff"/></filter></defs>' +
+    '<filter id="s9" x="-80%" y="-80%" width="260%" height="260%"><feDropShadow dx="0" dy="0" stdDeviation="7" flood-color="#FFB020"/></filter></defs>' +
     camada('in9', 74, [200, 20]) + camada('ext9', 142, [115, 295]) +
     '<g class="nuc9"><circle r="' + (48 * K).toFixed(1) + '" fill="url(#h9)"/>' +
     [[-9, -6], [9, -6], [-9, 8], [9, 8]].map(([x, y], i) => prot(x, y, i)).join('') + '</g></svg>';

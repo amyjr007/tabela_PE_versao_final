@@ -898,7 +898,8 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
    famílias de 1A a 7A, dois elementos de cada, de períodos diferentes (um do
    4º para baixo). Como na Q3 do tópico 4: a tabela de fundo encolhida
    (`LUGAR_ARRASTA`, móvel na montagem), escura e sem símbolos, com a casa de
-   cada card na cor dele (`fundo7`, `acesa7`, `CORES_Q3`); pegado um card, a
+   cada card na cor dele (`fundo7`, `acesa7`, `CORES_Q3`; as casas 57–71 e
+   89–103 em cinza); pegado um card, a
    casa dele pisca em âmbar e as outras apagam; no acerto, a tabela volta
    inteira e os cards voam para a casa deles.
 4. **Aplicar** — o cubo girando e o carrossel de 1 a 8 (os do quiz das
@@ -907,7 +908,8 @@ nomes 1A…8A escondidos, salvo os que a questão mostra.
    elemento acende; no acerto, o cubo voa até ele, e o nome da família aparece.
 5. **Aplicar** — "Coloque os elétrons na camada de valência do X", e embaixo,
    em amarelo, a brilhar e a piscar, "Toque na camada pra adicionar e toque no
-   elétron se precisar retirar."; o átomo em camadas (o núcleo com os Z prótons
+   elétron se precisar retirar."; o átomo sem o painel, como na Q1 (`solto9`,
+   a tabela bem escurecida, o card do elemento aceso nela); o átomo em camadas (o núcleo com os Z prótons
    de verdade, em amarelo-âmbar (nas duas questões do átomo), em 3D — `ATOMO9.nucleo` —, sem o símbolo por cima); o elétron
    que entra chega voando de fora, grande e aceso, e explode em luz ao pousar
    (o clarão, duas ondas de choque e faíscas amarelas — `ATOMO9.estoura`); o
