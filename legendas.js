@@ -176,6 +176,16 @@ var LEGENDAS = {
     [46.34,50.43,"Vai desde o f¹ até fechar completamente no último elemento."],
     [51.0,52.04,"Complete o resto."]
   ],
+  "audio_tabela_10.5.1": [
+    [0,5.84,"Muito bem! Conseguimos mapear toda a tabela periódica com as informações dos subníveis de energia."],
+    [6.21,6.91,"Parabéns!"],
+    [7.92,12.91,"Agora você tem em mãos um método poderoso para descobrir o subnível mais energético"],
+    [13.17,18.59,"e a distribuição dos elementos com muita rapidez, sem precisar desenhar o diagrama de Pauling."],
+    [19.51,22.59,"Mas antes de avançar, vamos testar seus reflexos."],
+    [23.17,27.12,"Você vai tocar no bloco s da tabela, depois no bloco p,"],
+    [27.63,31.16,"em seguida no bloco d e, por último, no bloco f."],
+    [31.48,34.19,"Nessa ordem. Vai lá!"]
+  ],
   "audio_tabela_1_jogo_memória": [
     [0,3.42,"Muito bem, você terminou o resumo interativo do tópico aqui."],
     [3.42,9.56,"Agora, que tal fazer um joguinho rapidinho que vai te ajudar a fixar esse tópico mais ainda?"],

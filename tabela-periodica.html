@@ -3293,6 +3293,12 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
 .mesa[data-slide="10"] .pc.escuro105 .face{filter:brightness(.42) saturate(.6)}
 .mesa[data-slide="10"] .pc.aceso105{z-index:8}
 .mesa[data-slide="10"] .pc.aceso105 .face{filter:brightness(1.3);box-shadow:0 0 14px 4px rgba(255,214,120,.95),0 0 26px 8px rgba(255,170,90,.55)}
+/* a "10.5.1": o bloco tocado certo brilha; completo, a tabela toda brilha forte */
+.mesa.blocos.bl1051-s .pc[data-b101="s"] .face, .mesa.blocos.bl1051-p .pc[data-b101="p"] .face,
+.mesa.blocos.bl1051-d .pc[data-b101="d"] .face, .mesa.blocos.bl1051-f .pc[data-b101="f"] .face{
+  filter:brightness(1.25);box-shadow:0 0 14px 4px rgba(255,214,120,.9),0 0 26px 8px rgba(255,170,90,.5)}
+.mesa.blocos.bl1051-tudo .pc .face{filter:brightness(1.45) saturate(1.15);
+  box-shadow:0 0 20px 7px rgba(255,224,140,1),0 0 44px 14px rgba(255,170,90,.65)}
 /* a "10.3.1": o hélio crescido (por cima das etiquetas do p) e o brilho dele, duas vezes */
 .mesa[data-slide="10"] .pc.grande1031{z-index:28}
 .pc.brilha1031 .face{animation:brilha1031 .8s ease-in-out 2}
@@ -5132,7 +5138,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v51.8';
+const VERSAO = 'v51.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6453,7 +6459,8 @@ const TRILHAS = {
   '10.3.1': 'Audios/audio_tabela_10.3.1.mp3', /* sozinha, depois da festa das colunas: o hélio; no fim, o Saquei */
   '10.4': 'Audios/audio_tabela_10.4.mp3',   /* o Saquei no fim da "10.3.1": o bloco d e as colunas (CARDS101) */
   '10.4.1': 'Audios/audio_tabela_10.4.1.mp3', /* sozinha, depois da festa das colunas do d: o bloco f cresce */
-  '10.5': 'Audios/audio_tabela_10.5.mp3'    /* o Saquei no fim da "10.4.1": o bloco f (CARDS101) */
+  '10.5': 'Audios/audio_tabela_10.5.mp3',   /* o Saquei no fim da "10.4.1": o bloco f (CARDS101) */
+  '10.5.1': 'Audios/audio_tabela_10.5.1.mp3' /* sozinha, depois da festa do f: os toques nos blocos s, p, d, f */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -6631,7 +6638,8 @@ const ROTEIROS = {
   '10.3.1': [],
   '10.4': [],
   '10.4.1': [],
-  '10.5': []
+  '10.5': [],
+  '10.5.1': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -7362,6 +7370,8 @@ const SEQ = {
     else if (id === '10.4'){ if (atual === 10 && CARDS101.festa104) tocaTrilha('10.4.1'); }
     /* o fim da "10.4.1": o "Saquei", que leva à "10.5" (o bloco f) */
     else if (id === '10.4.1'){ if (atual === 10) CARDS101.saquei(true, '10.5'); }
+    /* o fim da "10.5": com as colunas do f completas (e a festa feita), a "10.5.1" */
+    else if (id === '10.5'){ if (atual === 10 && CARDS101.festa105) tocaTrilha('10.5.1'); }
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
     /* (antes dela, a festa: os confetes, o funfare e os aplausos) */
     else if (id === '9.3.8'){ if (atual === 9) EV9.festa93(); }
@@ -22216,13 +22226,18 @@ const ESC_F_1041 = 1.08;
 const T105 = { lan:[3.4, 4.5], act:[4.5, 5.5], card:[[7.0, 10.4], [12.0, 15.5], [36.5, 38.0]], texto:[9.0, 10.2], some:11.0,
                pulsa:[13.4, 15.2], la:19.0, ac:20.0, ambas:[[25.0, 28.0], [38.0, 39.0]], luzL:[29.0, 30.0, 31.2], luzA:[31.2, 32.0, 33.0],
                sobe:[40.0, 43.2, 46.4, 49.4], pousa:0.6, desce:51.0, toque:51.0 };
-const SIMB_F_105 = ['Ce', 'Pr', 'Nd', 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu'];
+/* A "10.5.1" (sozinha, depois da festa das colunas do f): aos 6 s aplausos e
+   confetes; aos 21 s os blocos perdem a cor (o tabuleiro liso) e o aluno toca
+   os blocos na ordem s, p, d, f: o certo brilha e ganha a cor de volta; o
+   errado treme. Completo o f, a festa e um brilho forte na tabela toda. */
+const T1051 = { festa:6.0, neutro:21.0 };
+const SIMB_F_105 =['Ce', 'Pr', 'Nd', 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu'];
 const TEXTO_105 = 'elementos de transição interna';
 const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
-const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5'];
+const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -22384,10 +22399,10 @@ const CARDS101 = {
     /* (a festa das colunas do p ou do d: acabado o funfare, a "10.3.1" ou a
        "10.4.1" — ou, se a narração ainda fala, no fim dela) */
     if (!segue){
-      const de = trilhaAtual, prox = { '10.3':'10.3.1', '10.4':'10.4.1' }[de];
+      const de = trilhaAtual, prox = { '10.3':'10.3.1', '10.4':'10.4.1', '10.5':'10.5.1' }[de];
       tocaEfeito('funfare').then(() => {
         if (g !== this.festaG || atual !== 10 || trilhaAtual !== de || !prox) return;
-        if (de === '10.3') this.festa103 = true; else this.festa104 = true;
+        this['festa' + de.replace('.', '')] = true;
         if (som.ended || (som.duration && som.currentTime >= som.duration - 0.15)) tocaTrilha(prox);
       });
       return;
@@ -22399,7 +22414,7 @@ const CARDS101 = {
       if (som.ended || (som.duration && som.currentTime >= som.duration - 0.15)) tocaTrilha('10.2');
     });
   },
-  festaG:0, festaFeita:false, festa103:false, festa104:false,
+  festaG:0, festaFeita:false, festa103:false, festa104:false, festa105:false,
   /* o fim da "10.1": a festa já feita, a "10.2" toca; os quatro no lugar, mas
      sem festa (a volta ao app), o play fica com ela */
   fim101(){
@@ -22426,12 +22441,12 @@ const CARDS101 = {
        sumário, por exemplo —, os cards saem dos encaixes e as colunas do p
        se desfazem: a cena começa limpa */
     const antes = trilhaAtual === '10' || (trilhaAtual === '10.1' && t < T101.arrasta);
-    if (antes && !naMontagem() && (this.postos.size || this.passo103 || this.feito103 || this.passo104 || this.feito104 || this.passo105 || this.feito105 || this.festaFeita)){ this.zera(); return; }
+    if (antes && !naMontagem() && (this.postos.size || this.passo103 || this.feito103 || this.passo104 || this.feito104 || this.passo105 || this.feito105 || this.passo1051 || this.festaFeita)){ this.zera(); return; }
     /* de volta (pelo sumário) a uma narração com toques — ou a uma anterior
        a ela —, os toques dela se desfazem: o aluno refaz as colunas */
     const idx = ORDEM_10.indexOf(trilhaAtual);
     slides[10].classList.toggle('mont-blocos10', idx >= 1);
-    if (idx >= 0 && !naMontagem()) [['10.3', T103.toque, '103'], ['10.4', T104.toque, '104'], ['10.5', T105.toque, '105']].forEach(([id, toque, s]) => {
+    if (idx >= 0 && !naMontagem()) [['10.3', T103.toque, '103'], ['10.4', T104.toque, '104'], ['10.5', T105.toque, '105'], ['10.5.1', T1051.neutro, '1051']].forEach(([id, toque, s]) => {
       const i = ORDEM_10.indexOf(id);
       if ((idx < i || (idx === i && t < toque)) && (this['passo' + s] || this['feito' + s])) this.limpaToques(s);
     });
@@ -22441,6 +22456,7 @@ const CARDS101 = {
     this.tick104(t);
     this.tick1041(t);
     this.tick105(t);
+    this.tick1051(t);
     const monta = naMontagem(), de = trilhaAtual === '10.1', T = monta ? 99 : de ? t : -1;
     const n = EV9.letras(T, T101.texto[0], T101.texto[1], TEXTO_101);
     if (n !== this.nt && !this.texto.classList.contains('texto-livre')){
@@ -22453,7 +22469,9 @@ const CARDS101 = {
        quarto do intervalo para cada um) */
     const C = T101.cor, D = T101.destaque, qd = (D[1] - D[0]) / 4;
     /* (sem cor desde a chegada ao slide: na "10" e até a vez de cada bloco na "10.1") */
-    const cor =CARDS_101.map((K, k) => monta || (de ? T >= C[k] : !['10'].includes(trilhaAtual)));
+    /* (na "10.5.1", dos 21 s, só os blocos já tocados pelo aluno têm cor) */
+    const neutro = k => !monta && trilhaAtual === '10.5.1' && t >= T1051.neutro && k >= this.passo1051;
+    const cor =CARDS_101.map((K, k) => monta || ((de ? T >= C[k] : !['10'].includes(trilhaAtual)) && !neutro(k)));
     const vez = CARDS_101.map((K, k) => !monta && dentro([D[0] + k * qd, D[0] + (k + 1) * qd]));
     const aumenta = dentro(T101.aumenta) && !monta;
     const brilha = CARDS_101.map(K => !monta && dentro(K.vez));
@@ -22811,6 +22829,50 @@ const CARDS101 = {
     const E = this['etq' + s]; if (E) E.forEach(e => e.est = 0);
     this['estado' + s] = '';
   },
+  /* A "10.5.1": a festa dos 6 s e os toques nos blocos */
+  passo1051:0, sel1051:null, feito1051:false, festa1051:false,
+  aplauso(){
+    if (!slides[10].querySelector('.confete'))
+      slides[10].insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
+    confete();
+    tocaEfeito('applause');
+  },
+  podeTocar1051(){ return atual === 10 && trilhaAtual === '10.5.1' && !naMontagem() && !this.feito1051 &&
+                          ((som.currentTime || 0) >= T1051.neutro || som.ended); },
+  tick1051(t){
+    const de = trilhaAtual === '10.5.1' && !naMontagem();
+    /* aos 6 s, aplausos e confetes (tocando, passando pelo segundo) */
+    if (de && !som.paused && this.t1051ant >= 0 && this.t1051ant < T1051.festa && t >= T1051.festa && t < T1051.festa + 0.6) this.aplauso();
+    this.t1051ant = de ? t : -1;
+    if (this.ouve1051) return;
+    this.ouve1051 = true;
+    /* o toque num bloco (a carta, o card dele ou o bilhete das séries) */
+    this.m.addEventListener('click', ev => {
+      if (!this.podeTocar1051()) return;
+      const c = ev.target.closest && ev.target.closest('.pc, .card101, .casa.serie');
+      const b = c && (c.classList.contains('card101') ? c.dataset.b : c.dataset.b101);
+      if (!b) return;
+      ev.stopPropagation();
+      if (b !== CARDS_101[this.passo1051].b){ tremeVermelho(); tocaEfeito('error'); return; }
+      this.passo1051++;
+      tocaEfeito('right');
+      /* o bloco certo brilha (e a cor dele volta, pelo tick da "10.1") */
+      const cl = 'bl1051-' + b;
+      this.m.classList.add(cl);
+      setTimeout(() => this.m.classList.remove(cl), 1200);
+      this.estado = '';
+      if (this.passo1051 === CARDS_101.length){
+        this.feito1051 = true;
+        clearTimeout(this.fim1051T);
+        this.fim1051T = setTimeout(() => {
+          this.festa(false);
+          this.m.classList.add('bl1051-tudo');
+          setTimeout(() => this.m.classList.remove('bl1051-tudo'), 2200);
+        }, 700);
+      }
+      ONDE.guarda();
+    }, true);
+  },
   passo105:0, sel105:null, feito105:false,
   podeTocar105(){ return atual === 10 && trilhaAtual === '10.5' && !naMontagem() && !this.feito105 &&
                          ((som.currentTime || 0) >= T105.toque || som.ended); },
@@ -22906,7 +22968,8 @@ const CARDS101 = {
     this.estado103 = ''; this.passo103 = 0; this.sel103 = null; this.feito103 = false; clearTimeout(this.fim103T);
     if (this.etq103) this.etq103.forEach(E => E.est = 0);
     this.fora();
-    this.festaG++; this.festaFeita = false; this.festa103 = false; this.festa104 = false;
+    this.festaG++; this.festaFeita = false; this.festa103 = false; this.festa104 = false; this.festa105 = false;
+    this.passo1051 = 0; this.feito1051 = false; clearTimeout(this.fim1051T); this.t1051ant = -1;
     this.f1041 = false; clearTimeout(this.f1041T); if (this.cards) this.cresceF1041(false);
     if (!this.cards) return;
     this.cards.forEach(o => { o.c.style.transition = 'none'; o.c.classList.remove('posto101', 'pego101'); o.s.classList.remove('cheio101');
@@ -27077,6 +27140,7 @@ const ONDE = {
     if (atual === 10 && CARDS101.passo103) o.colunas103 = CARDS101.passo103;
     if (atual === 10 && CARDS101.passo104) o.colunas104 = CARDS101.passo104;
     if (atual === 10 && CARDS101.passo105) o.colunas105 = CARDS101.passo105;
+    if (atual === 10 && CARDS101.passo1051) o.blocos1051 = CARDS101.passo1051;
     /* o resumo interativo volta do começo */
     if (RESUMO.aberto) o.resumo = RESUMO.k;
     if (memAberto) o.jogo = { ordem:memCartas.map(c => c.dataset.z + ':' + c.dataset.tipo),
@@ -27152,6 +27216,7 @@ const ONDE = {
       if (o.colunas103) CARDS101.poeColunas(o.colunas103);
       if (o.colunas104) CARDS101.poeColunas104(o.colunas104);
       if (o.colunas105) CARDS101.poeColunas105(o.colunas105);
+      if (o.blocos1051){ CARDS101.passo1051 = o.blocos1051; CARDS101.feito1051 = o.blocos1051 >= 4; CARDS101.estado = ''; }
       if (o.quiz) QUIZ.retoma(o.quiz);
       else if (o.jogo) this.jogo(o.jogo);
       else if (o.quiz3){ viraQuiz(true); QUIZ3.abre(); }
