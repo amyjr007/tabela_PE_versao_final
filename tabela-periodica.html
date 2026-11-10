@@ -3306,7 +3306,10 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
    as faixas em fade (sem a corrida da cruz) e piscando; o número do período
    à vista; o "3s²" que se monta e pisca em verde */
 .mesa[data-slide="10"] :is(.pc[data-b101="d"], .etq102.d104){transition:opacity .8s ease, scale .55s ease, translate .55s ease}
-.mesa.semB106 :is(.pc[data-b101="d"], .etq102.d104){opacity:.12!important}
+.mesa.semB106 :is(.pc[data-b101="d"], .etq102.d104, .casa.serie){opacity:.12!important}
+/* (e os lantanídeos e actinídeos voltam de uma vez para as casas do 3B: as
+   duas fileiras de baixo, e as etiquetas delas, somem sem fade) */
+.mesa.semB106 :is(.pc[data-b101="f"], .pc[data-z="57"], .pc[data-z="89"], .etq102.f105, .casaF106){visibility:hidden!important;transition:none!important}
 .veu106{flex-direction:column}
 .regra106{width:1000px;margin:0;text-align:center;text-wrap:balance;
   font-family:var(--display);font-weight:600;font-size:46px;line-height:1.2;letter-spacing:-.015em;color:#F4F2F8}
@@ -5192,7 +5195,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v52.3';
+const VERSAO = 'v52.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22115,7 +22118,7 @@ const TEXTO_MAIS_1052 = 'subnível mais energético';
    pisca 3 vezes, aos 44 s a coluna; aos 46,3 s aparece o "3s", aos 48 s o
    "²" em cima do s; aos 48,5 s o 3s² cresce e pisca em verde, com aplausos,
    funfare e confetes; aos 53 s a narração pára 1,5 s e segue. */
-const T106 = { sai:1.0, brilhoSP:[12.0, 13.0], semB:16.0, regra:[21.7, 30.0], regraSai:33.0, mg:35.0,
+const T106 = { sai:1.0, brilhoSP:[12.0, 13.0], semB:16.0, regra:[21.7, 30.0], toque:31.6, regraSai:33.0, mg:35.0,
                linha:38.9, coluna:41.0, piscaL:[42.0, 43.8], piscaC:[44.0, 45.8], tres:46.3, dois:48.0, festa:48.5, pausa:53.0 };
 const REGRA_106 = 'O subnível mais energético é o período acompanhado do bloco e da coluna onde ele se encontra.';
 /* os subníveis do Mg, e por onde a seta vai em cada um: o risco do diagrama
@@ -22713,7 +22716,8 @@ const CARDS101 = {
     this.comSaquei = sim;
     botaoVerde(sim ? 'Saquei' : null, () => { this.saquei(false); if (atual === 10 && prox) tocaTrilha(prox); });
   },
-  fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051'); },
+  fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051');
+          if (this.pede106){ this.pede106 = false; this.estado106 = ''; stage.classList.remove('em-toque'); } },
   passo103:0, sel103:null, feito103:false,
   /* as etiquetas do p (p¹ a p⁶) em cima das colunas 13 a 18, na linha 1 */
   prepara103(){
@@ -22971,9 +22975,17 @@ const CARDS101 = {
     if (!this.r106){
       const m = this.m;
       /* a tela escura da regra (no slide, por cima da mesa) */
-      slides[10].insertAdjacentHTML('beforeend', '<div class="veu veu106" aria-live="polite"><p class="regra106"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p></div>');
+      slides[10].insertAdjacentHTML('beforeend', '<div class="veu veu106" aria-live="polite"><p class="regra106"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p>' +
+        '<div class="toque-continuar">Toque na tela</div></div>');
       this.veu106 = slides[10].querySelector('.veu106');
       this.regra106 = this.veu106.querySelector('.regra106');
+      this.toque106 = this.veu106.querySelector('.toque-continuar');
+      /* aos 31,6 s a narração pára e pede um toque: tocada a tela, segue */
+      this.veu106.addEventListener('click', () => {
+        if (!this.pede106) return;
+        this.pede106 = false; this.estado106 = '';
+        if (atual === 10 && trilhaAtual === '10.6') som.play().catch(avisaSeNaoTocou);
+      });
       /* as faixas da linha 3 e da coluna 2 (por baixo dos cubos), no padrão das da cruz */
       const faixa = (cls, l, tp, w, h) => {
         const b = document.createElement('div');
@@ -22986,6 +22998,8 @@ const CARDS101 = {
       this.faixaL106 = faixa('banda-linha', TAB_ESQ - 32, yDaLinha(3) - alt / 2, TAB_LARG + 64, alt);
       this.faixaC106 = faixa('banda-col', xDaColuna(2) - larg / 2, topoC, larg, yDaLinha(7) + LADO / 2 + 8 - topoC);
       this.p3106 = m.querySelector('.eixo[data-periodo="3"]');
+      /* (as casas vazias das duas fileiras de baixo: somem com elas) */
+      m.querySelectorAll('.casa:not(.serie)').forEach(c => { if (parseFloat(c.style.top) > yDaLinha(7) + LADO / 2) c.classList.add('casaF106'); });
       this.mg106 = m.querySelector('.pc[data-z="12"]');
       /* o "3s²": o 3 na cor da linha, o s na do bloco s, o 2 na da coluna */
       const r = this.r106 = document.createElement('div');
@@ -22999,6 +23013,9 @@ const CARDS101 = {
     const passa = s => de && !som.paused && this.t106ant >= 0 && this.t106ant < s && t >= s && t < s + 0.6;
     if (passa(T106.festa)){ this.aplauso(); tocaEfeito('funfare'); }
     if (passa(T106.pausa)) pausaPor('10.6', 1500);
+    if (passa(T106.toque)){ som.pause(); this.pede106 = true; }
+    /* (fora da "10.6", ou voltando para antes do pedido, ele se desfaz) */
+    if (this.pede106 && (!de || t < T106.toque - 0.1)) this.pede106 = false;
     this.t106ant = de ? t : -1;
     const n = EV9.letras(T, T106.regra[0], T106.regra[1], REGRA_106);
     if (n !== this.nt106){
@@ -23008,13 +23025,17 @@ const CARDS101 = {
     }
     const dentro = ([a, b]) => T >= a && T < b;
     const chave = [dentro(T106.brilhoSP), T >= T106.semB, dentro([T106.regra[0], T106.regraSai]), dentro(T106.regra), T >= T106.mg,
-                   T >= T106.linha, T >= T106.coluna, dentro(T106.piscaL), dentro(T106.piscaC), T >= T106.tres, T >= T106.dois, T >= T106.festa].join();
+                   T >= T106.linha, T >= T106.coluna, dentro(T106.piscaL), dentro(T106.piscaC), T >= T106.tres, T >= T106.dois, T >= T106.festa,
+                   de && !!this.pede106].join();
     if (chave === this.estado106) return;
     this.estado106 = chave;
-    const [sp, semB, veu, dig, mg, lin, col, pL, pC, tres, dois, festa] = chave.split(',').map(v => v === 'true');
+    const [sp, semB, veu, dig, mg, lin, col, pL, pC, tres, dois, festa, pede] = chave.split(',').map(v => v === 'true');
+    this.veu106.classList.toggle('pede-toque', pede);
+    this.toque106.classList.toggle('on', pede);
+    stage.classList.toggle('em-toque', pede);
     this.m.classList.toggle('bl1051-s', sp); this.m.classList.toggle('bl1051-p', sp);
     this.m.classList.toggle('semB106', semB);
-    this.veu106.classList.toggle('on', veu);
+    this.veu106.classList.toggle('on', veu || pede);
     this.regra106.classList.toggle('digitando106', dig);
     if (this.mg106){ this.mg106.classList.toggle('mg106', mg); this.mg106.style.scale = mg ? '1.35' : ''; }
     this.faixaL106.classList.toggle('on', lin); this.faixaL106.classList.toggle('pisca106', pL);
@@ -23212,6 +23233,7 @@ const CARDS101 = {
     this.passo1051 = 0; this.feito1051 = false; clearTimeout(this.fim1051T); this.t1051ant = -1; this.fora1051 = false;
     this.festa1051 = false; this.t1052ant = -1; this.nt1052 = -1;
     this.estado106 = ''; this.t106ant = -1; this.nt106 = -1;
+    if (this.pede106){ this.pede106 = false; stage.classList.remove('em-toque'); }
     this.f1041 = false; clearTimeout(this.f1041T); if (this.cards) this.cresceF1041(false);
     if (!this.cards) return;
     this.cards.forEach(o => { o.c.style.transition = 'none'; o.c.classList.remove('posto101', 'pego101'); o.s.classList.remove('cheio101');
@@ -26773,6 +26795,9 @@ const NAV_TOPICOS = [
   /* o começo da "10.5.2": o subnível mais energético pelo diagrama */
   { titulo:'O subnível mais energético sem tabela', sub:'o começo da 10.5.2', slide:10,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.5.2', 0, g)); } },
+  /* o começo da "10.6": o subnível mais energético pela tabela */
+  { titulo:'Subnível mais energético com tabela', sub:'o começo da 10.6', slide:10,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.6', 0, g)); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
