@@ -3276,8 +3276,8 @@ body.montagem .titulo9.texto101[data-mont="texto-102"]:not(.mont102){opacity:0;p
 .etq102.p103{background:linear-gradient(145deg,color-mix(in srgb,var(--cat-ametais) 84%,#fff),color-mix(in srgb,var(--cat-ametais) 86%,#000))}
 /* o "6" do p⁶ pulsa 3 vezes */
 .card101.pulsa103 sup{animation:pulsa102 .9s ease-in-out 3;transform-origin:50% 60%}
-/* o texto da "10.2", na "10.3", no vão dos de transição */
-.titulo9.texto101.estreito103{font-size:27px;transition:opacity .4s ease, left .6s cubic-bezier(.3,.85,.3,1), font-size .6s ease}
+/* o texto da "10.2" (e na "10.3"), no vão dos de transição */
+.titulo9.texto101[data-mont="texto-102"]{font-size:27px}
 .etq102 sup{font-size:14px;margin-left:2px;vertical-align:10px}
 .etq102.on{opacity:1}
 .aviso101{position:absolute;z-index:45;transform:translate(-50%,-50%) scale(.85);white-space:nowrap;pointer-events:none;
@@ -5106,7 +5106,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v50.2';
+const VERSAO = 'v50.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22365,8 +22365,9 @@ const CARDS101 = {
       const q = this.texto102 = document.createElement('div');
       q.className = 'titulo9 texto101';
       q.dataset.mont = 'texto-102';
-      /* (centrado entre as colunas 3 e 17: longe da etiqueta da 2A) */
-      q.style.left = ((xDaColuna(3) + xDaColuna(17)) / 2).toFixed(1) + 'px';
+      /* (no vão dos de transição, entre as colunas 3 e 12, a 27px — o lugar
+         que o professor deixou, na "10.2" e na "10.3") */
+      q.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
       q.style.top  = this.texto.style.top;
       q.innerHTML = '<span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span>';
       this.m.appendChild(q);
@@ -22505,11 +22506,6 @@ const CARDS101 = {
     const chave = [T >= 0, bloco, card, pulsa, some, esc18, up, dica, ...ets].join();
     if (chave === this.estado103) return;
     this.estado103 = chave;
-    /* o texto da "10.2" muda para o vão dos de transição, menor */
-    if (this.texto102){
-      this.texto102.classList.toggle('estreito103', T >= 0);
-      this.texto102.style.left = (T >= 0 ? (xDaColuna(3) + xDaColuna(12)) / 2 : (xDaColuna(3) + xDaColuna(17)) / 2).toFixed(1) + 'px';
-    }
     const B = this.blocos.p, K = ESC_P_103, R = 0.6 * PASSO, C18 = this.cartas103[18];
     const c18y = C18.reduce((s, p) => s + p.y, 0) / C18.length, k18 = 1.12;
     B.forEach(p => {
