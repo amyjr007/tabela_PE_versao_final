@@ -5217,7 +5217,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v53.4';
+const VERSAO = 'v53.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22338,14 +22338,15 @@ const TEXTO_102 = 'O nº de colunas no bloco = nº de e⁻ do subnível';
    (para as colunas aparecerem) até a festa; aos 11, 12, 13, 14 e 15 s sobem
    a 3A, a 4A, a 5A, a 6A e a 7A, uma de cada vez (a anterior desce), e aos
    15,9 s a 8A cresce por 1 s; aos 21 s a 3A sobe de novo, aos 21,5 s a
-   etiqueta "p¹" cai em cima dela, e aos 22 s as duas descem e a "p²" cai em
-   cima da 4A. Dos 23 s em diante o aluno toca as colunas seguintes, na
+   etiqueta "p¹" cai em cima dela, e aos 22 s as duas descem e a 4A sobe; aos
+   22,5 s a "p²" cai em cima dela, e aos 23 s as duas descem. Dos 23 s em diante o aluno toca as colunas seguintes, na
    ordem (5A, 6A, 7A, 8A): a tocada sobe e recebe a etiqueta dela; a
    anterior desce com a sua. Completa a 8A, a festa. O texto da "10.2" vai
    para o vão dos de transição (as etiquetas do p ficam na linha 1). */
 const T103 = { bloco:[1.5, 3.2], card:[4.5, 9.2], pulsa:[6.0, 8.7], some:10.9, esc18:[15.9, 16.9],
-               sobe:[[11, 12, 13], [12, 13, 14], [13, 14, 15], [14, 15, 16], [15, 15.9, 17], [21, 22, 13]],
-               p1:[21.5, 22.0], p2:22.0, toque:23.0 };
+               sobe:[[11, 12, 13], [12, 13, 14], [13, 14, 15], [14, 15, 16], [15, 15.9, 17], [21, 22, 13], [22, 23, 14]],
+               /* (a 4A sobe aos 22 s, recebe o p² aos 22,5 s e desce com ele aos 23 s) */
+               p1:[21.5, 22.0], p2:[22.5, 23.0], toque:23.0 };
 const ESC_P_103 = 1.15;
 /* A "10.4" (o Saquei no fim da "10.3.1"): aos 1,5 s o bloco d cresce com o
    card dentro (volta aos 5,2 s); aos 7,4 s o card d¹⁰ cresce sozinho, e aos
@@ -22815,7 +22816,7 @@ const CARDS101 = {
     /* as etiquetas: a p¹ e a p² pelo tempo; as outras pelo toque */
     /* (numa narração seguinte — pelo sumário, por exemplo — as seis já no lugar) */
     const est = k => T < 0 ? 0 : T >= 99 ? 2 : k === 0 ? (T < T103.p1[0] ? 0 : T < T103.p1[1] ? 1 : 2)
-                   : k === 1 ? (T < T103.p2 ? 0 : 2) : this.etq103[k].est;
+                   : k === 1 ? (T < T103.p2[0] ? 0 : T < T103.p2[1] ? 1 : 2) : this.etq103[k].est;
     const ets = [0, 1, 2, 3, 4, 5].map(est);
     const dica = this.podeTocar103() ? 15 + this.passo103 : 0;
     const chave = [T >= 0, bloco, card, pulsa, some, esc18, up, dica, ...ets].join();
