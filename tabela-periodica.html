@@ -3280,6 +3280,7 @@ body.montagem .titulo9.texto101[data-mont="texto-102"]:not(.mont102){opacity:0;p
    Ac escurecidos, e o brilho que corre pelas fileiras */
 .titulo9.texto105{font-size:30px;color:color-mix(in srgb,var(--cat-lantanideos) 80%,#000)}
 .etq102.f105{background:linear-gradient(145deg,color-mix(in srgb,var(--cat-lantanideos) 84%,#fff),color-mix(in srgb,var(--cat-lantanideos) 86%,#000))}
+body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
 .card101.pulsa105 sup{animation:pulsa102 .9s ease-in-out 2;transform-origin:50% 60%}
 .mesa[data-slide="10"] .pc .face{transition:filter .6s ease, box-shadow .3s ease}
 .mesa[data-slide="10"] .pc.escuro105 .face{filter:brightness(.42) saturate(.6)}
@@ -5124,7 +5125,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v51.5';
+const VERSAO = 'v51.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22715,6 +22716,7 @@ const CARDS101 = {
       this.etq105 = this.act105.map((p, k) => {
         const d = document.createElement('div');
         d.className = 'etq102 f105';
+        d.dataset.mont = 'etiqueta-f' + (k + 1);   /* na montagem, peça: anda */
         d.innerHTML = 'f<sup>' + (k + 1) + '</sup>';
         d.style.left = p.x.toFixed(1) + 'px';
         this.m.appendChild(d);
@@ -22752,7 +22754,8 @@ const CARDS101 = {
     const S = T105.sobe, kT = T < S[0] || T >= T105.desce ? -1 : S.reduce((a, s, k) => T >= s ? k : a, -1);
     const up = this.sel105 !== null && T >= 0 ? this.sel105 : kT;
     /* as etiquetas: as 4 primeiras pelo tempo; as outras pelo toque */
-    const ets = this.etq105.map((E, k) => T < 0 ? 0 : T >= 99 ? 2 : k < 4 ? (T < S[k] + T105.pousa ? 0 : k === kT ? 1 : 2) : E.est);
+    /* (na montagem, as catorze no lugar, para serem arrumadas) */
+    const ets = this.etq105.map((E, k) => monta ? 2 : T < 0 ? 0 : T >= 99 ? 2 : k < 4 ? (T < S[k] + T105.pousa ? 0 : k === kT ? 1 : 2) : E.est);
     const dica = this.podeTocar105() ? 4 + this.passo105 : -1;
     const chave = [gL, gA, card, pulsa, txt, dig, T >= T105.la, T >= T105.ac, ...lL, ...lA, up, dica, ...ets].join();
     if (chave === this.estado105) return;
