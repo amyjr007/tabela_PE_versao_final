@@ -5207,7 +5207,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v52.8';
+const VERSAO = 'v52.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23096,8 +23096,10 @@ const CARDS101 = {
       const q = this.texto1052 = document.createElement('div');
       q.className = 'titulo9 texto1052';
       q.dataset.mont = 'texto-1052';       /* na montagem, peça que anda */
-      q.style.left = ((xDaColuna(2) + xDaColuna(17)) / 2).toFixed(1) + 'px';
-      q.style.top  = yDaLinha(1).toFixed(1) + 'px';
+      /* (o lugar que o professor deixou na montagem — no palco, x 437, y 187 —,
+         na medida da mesa; ele desce com ela aos 16 s da "10.6") */
+      q.style.left = '423px';
+      q.style.top  = '251.5px';
       q.innerHTML = '<span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span>';
       this.m.appendChild(q);
     }
