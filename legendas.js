@@ -139,6 +139,15 @@ var LEGENDAS = {
     [16.91,23.82,"Ou seja, a distribuição eletrônica desses elementos vai avançando em p¹, p², e por aí vai."],
     [23.82,29.3,"Continue a sequência tocando nas próximas colunas na tela, até completar o restante."]
   ],
+  "audio_tabela_10.3.1": [
+    [0,1.5,"Pronto. Viu que legal?"],
+    [2.12,4.09,"Só guarde um detalhe fundamental:"],
+    [4.65,7.43,"o hélio é a grande exceção visual desse bloco."],
+    [8.02,12.39,"Ele fica posicionado lá no topo com os gases nobres pela sua estabilidade,"],
+    [12.8,19.12,"mas possui apenas dois elétrons no subnível s, não tendo, portanto, nenhum elétron no subnível p."],
+    [19.59,20.02,"É isso."],
+    [20.59,22.36,"O próximo bloco é o d."]
+  ],
   "audio_tabela_1_jogo_memória": [
     [0,3.42,"Muito bem, você terminou o resumo interativo do tópico aqui."],
     [3.42,9.56,"Agora, que tal fazer um joguinho rapidinho que vai te ajudar a fixar esse tópico mais ainda?"],
