@@ -5106,7 +5106,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v50.3';
+const VERSAO = 'v50.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22316,6 +22316,11 @@ const CARDS101 = {
   tick(t){
     this.prepara();
     if (!this.cards) return;
+    /* de volta à "10", ou ao começo da "10.1" (antes do arrasto) — pelo
+       sumário, por exemplo —, os cards saem dos encaixes e as colunas do p
+       se desfazem: a cena começa limpa */
+    const antes = trilhaAtual === '10' || (trilhaAtual === '10.1' && t < T101.arrasta);
+    if (antes && !naMontagem() && (this.postos.size || this.passo103 || this.feito103 || this.festaFeita)){ this.zera(); return; }
     this.tick102(t);
     this.tick103(t);
     const monta = naMontagem(), de = trilhaAtual === '10.1', T = monta ? 99 : de ? t : -1;
