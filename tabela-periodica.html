@@ -3293,6 +3293,8 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
 .mesa[data-slide="10"] .pc.escuro105 .face{filter:brightness(.42) saturate(.6)}
 .mesa[data-slide="10"] .pc.aceso105{z-index:8}
 .mesa[data-slide="10"] .pc.aceso105 .face{filter:brightness(1.3);box-shadow:0 0 14px 4px rgba(255,214,120,.95),0 0 26px 8px rgba(255,170,90,.55)}
+/* a "10.5.1": dos 21 s só a tabela fica (os cards, as etiquetas e o texto saem em fade) */
+.mesa.so1051 :is(.card101,.etq102,.titulo9){opacity:0!important;pointer-events:none!important;transition:opacity .8s ease!important}
 /* a "10.5.1": o bloco tocado certo brilha; completo, a tabela toda brilha forte */
 .mesa.blocos.bl1051-s .pc[data-b101="s"] .face, .mesa.blocos.bl1051-p .pc[data-b101="p"] .face,
 .mesa.blocos.bl1051-d .pc[data-b101="d"] .face, .mesa.blocos.bl1051-f .pc[data-b101="f"] .face{
@@ -5138,7 +5140,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v51.9';
+const VERSAO = 'v52.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22844,6 +22846,9 @@ const CARDS101 = {
     /* aos 6 s, aplausos e confetes (tocando, passando pelo segundo) */
     if (de && !som.paused && this.t1051ant >= 0 && this.t1051ant < T1051.festa && t >= T1051.festa && t < T1051.festa + 0.6) this.aplauso();
     this.t1051ant = de ? t : -1;
+    /* aos 21 s, com a tabela sem cor, os cards, as etiquetas e o texto saem
+       em fade: só a tabela fica, para ser tocada */
+    this.m.classList.toggle('so1051', de && t >= T1051.neutro);
     if (this.ouve1051) return;
     this.ouve1051 = true;
     /* o toque num bloco (a carta, o card dele ou o bilhete das séries) */
