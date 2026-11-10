@@ -3276,6 +3276,11 @@ body.montagem .titulo9.texto101[data-mont="texto-102"]:not(.mont102){opacity:0;p
   border:2px solid #fff;outline:2px solid rgba(32,28,66,.7);box-shadow:0 6px 16px rgba(32,28,66,.3);
   opacity:0;transition:opacity .3s ease, top .42s cubic-bezier(.3,.85,.3,1)}
 /* (a etiqueta do p, no verde do bloco p) */
+/* a "10.3.1": o hélio crescido (por cima das etiquetas do p) e o brilho dele, duas vezes */
+.mesa[data-slide="10"] .pc.grande1031{z-index:28}
+.pc.brilha1031 .face{animation:brilha1031 .8s ease-in-out 2}
+@keyframes brilha1031{0%,100%{filter:none;box-shadow:none}
+  50%{filter:brightness(1.35);box-shadow:0 0 18px 6px rgba(255,214,120,.95),0 0 36px 10px rgba(255,170,90,.6)}}
 .etq102.d104{background:linear-gradient(145deg,color-mix(in srgb,var(--cat-transicao) 84%,#fff),color-mix(in srgb,var(--cat-transicao) 86%,#000))}
 .etq102.p103{background:linear-gradient(145deg,color-mix(in srgb,var(--cat-ametais) 84%,#fff),color-mix(in srgb,var(--cat-ametais) 86%,#000))}
 /* o "6" do p⁶ pulsa 3 vezes */
@@ -5110,7 +5115,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v50.9';
+const VERSAO = 'v51.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22160,6 +22165,12 @@ const T104 = { bloco:[1.5, 5.2], card:[7.4, 12.4], pulsa:[9.7, 12.4], some:18.0,
                      [24.3, 25.2, 9], [25.2, 26.1, 10], [26.1, 27.0, 11], [27.0, 27.9, 12], [38.0, 39.0, 3]],
                d1:[38.5, 39.0], toque:39.0 };
 const ESC_D_104 = 1.1;
+/* A "10.3.1" (o hélio): aos 4,5 s o He cresce; aos 9 s brilha duas vezes;
+   aos 13,8 s volta ao tamanho normal enquanto a etiqueta "s²" desce em cima
+   dele (e fica); aos 20 s a narração pára 1 s e segue; aos 21,8 s o card d
+   cresce e volta. */
+const T1031 = { he:[4.5, 13.8], brilho:[9.0, 10.6], s2:13.8, pausa:20.0, cardD:[21.8, 22.3] };
+const ESC_HE_1031 = 1.45;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
@@ -22365,6 +22376,7 @@ const CARDS101 = {
     if (antes && !naMontagem() && (this.postos.size || this.passo103 || this.feito103 || this.passo104 || this.feito104 || this.festaFeita)){ this.zera(); return; }
     this.tick102(t);
     this.tick103(t);
+    this.tick1031(t);
     this.tick104(t);
     const monta = naMontagem(), de = trilhaAtual === '10.1', T = monta ? 99 : de ? t : -1;
     const n = EV9.letras(T, T101.texto[0], T101.texto[1], TEXTO_101);
@@ -22579,6 +22591,43 @@ const CARDS101 = {
       E.d.style.top = (f === 2 ? E.park : f === 1 ? E.park - R : E.park - R - 60).toFixed(1) + 'px';
     });
   },
+  /* A "10.3.1": o hélio, a etiqueta s² dele e o card d */
+  tick1031(t){
+    if (!this.he1031){
+      this.he1031 = this.m.querySelector('.pc[data-z="2"]');
+      const d = this.etqHe1031 = document.createElement('div');
+      d.className = 'etq102';
+      d.innerHTML = 's<sup>2</sup>';
+      d.style.left = xDaColuna(18).toFixed(1) + 'px';
+      this.parkHe1031 = yDaLinha(1) - LADO / 2 - 6;
+      d.style.top = (this.parkHe1031 - 60).toFixed(1) + 'px';
+      this.m.appendChild(d);
+    }
+    const monta = naMontagem(), de = trilhaAtual === '10.3.1', T = monta ? -1 : de ? t : depoisDe('10.3.1') ? 99 : -1;
+    /* aos 20 s, um segundo de silêncio (só tocando, passando pelo segundo) */
+    if (de && !monta && !som.paused && this.t1031ant >= 0 && this.t1031ant < T1031.pausa && t >= T1031.pausa && t < T1031.pausa + 0.5)
+      pausaUmSegundo('10.3.1');
+    this.t1031ant = de ? t : -1;
+    const dentro = ([a, b]) => T >= a && T < b;
+    const he = dentro(T1031.he), brilho = dentro(T1031.brilho), s2 = T >= T1031.s2, cardD = dentro(T1031.cardD);
+    const chave = [he, brilho, s2, cardD].join();
+    if (chave === this.estado1031) return;
+    this.estado1031 = chave;
+    const H = this.he1031;
+    if (H){
+      H.style.scale = he ? String(ESC_HE_1031) : '';
+      H.classList.toggle('grande1031', he);
+      H.classList.toggle('brilha1031', brilho);
+    }
+    this.etqHe1031.classList.toggle('on', s2);
+    this.etqHe1031.style.top = (s2 ? this.parkHe1031 : this.parkHe1031 - 60).toFixed(1) + 'px';
+    /* (o card d: só na "10.3.1" — a "10.4" cuida dele dali em diante) */
+    if (de){
+      const o = this.cards[2];
+      o.c.style.scale = cardD ? String(1.35) : '';
+      o.c.classList.toggle('grande102', cardD);
+    }
+  },
   /* A "10.4": o bloco d, como o p na "10.3" */
   passo104:0, sel104:null, feito104:false,
   /* as etiquetas do d (d¹ a d¹⁰) em cima das colunas 3 a 12, acima da linha 4 */
@@ -22668,6 +22717,7 @@ const CARDS101 = {
     });
   },
   zera(){
+    this.estado1031 = ''; this.t1031ant = -1;
     this.estado104 = ''; this.passo104 = 0; this.sel104 = null; this.feito104 = false; clearTimeout(this.fim104T);
     if (this.etq104) this.etq104.forEach(E => E.est = 0);
     this.postos.clear(); this.estado = ''; this.nt = -1; this.estado102 = ''; this.nt102 = -1;
