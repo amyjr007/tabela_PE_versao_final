@@ -3327,8 +3327,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .mesa[data-slide="10"] .pc.mg106 .face{filter:brightness(1.15);
   box-shadow:0 0 0 3px rgba(80,220,120,.95),0 0 18px 6px rgba(60,210,110,.85),0 0 36px 12px rgba(60,210,110,.45)}
 .banda.b106.on{animation:none}
-/* (a faixa da linha, num azul escuro que dá contraste com os cards) */
-.banda.banda-linha.b106{background:rgba(28,74,140,.34);border:2px solid rgba(47,127,209,.9)}
+/* (a da coluna num âmbar escuro, que contrasta com o laranja do bloco s) */
+.banda.banda-col.b106{background:rgba(120,52,12,.32);border:2px solid rgba(150,66,14,.9)}
 .banda.b106.on.pisca106{animation:pisca106 .6s ease-in-out 3}
 @keyframes pisca106{50%{opacity:.12}}
 /* (da "10.6" em diante, os números das linhas: as bolinhas cheias azuis do
@@ -23017,10 +23017,9 @@ const CARDS101 = {
         m.insertBefore(b, m.querySelector('.banda') || m.firstChild);
         return b;
       };
-      const alt = LADO + 14, larg = LADO + 14, topoC = yDaLinha(2) - LADO / 2 - 30;
-      /* (a da linha passa do número do período, à esquerda, e é mais alta que a linha) */
-      const altL = LADO + 30;
-      this.faixaL106 = faixa('banda-linha', TAB_ESQ - 62, yDaLinha(3) - altL / 2, TAB_LARG + 94, altL);
+      /* (a da linha passa do número do período, à esquerda; a da coluna sobe além da etiqueta s²) */
+      const alt = LADO + 14, larg = LADO + 14, topoC = yDaLinha(2) - LADO / 2 - 66;
+      this.faixaL106 = faixa('banda-linha', TAB_ESQ - 64, yDaLinha(3) - alt / 2, TAB_LARG + 96, alt);
       this.faixaC106 = faixa('banda-col', xDaColuna(2) - larg / 2, topoC, larg, yDaLinha(7) + LADO / 2 + 8 - topoC);
       this.p3106 = m.querySelector('.eixo[data-periodo="3"]');
       /* (as casas vazias das duas fileiras de baixo: somem com elas) */
