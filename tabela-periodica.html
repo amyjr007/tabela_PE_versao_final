@@ -3325,12 +3325,12 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
 .banda.b106.on{animation:none}
 .banda.b106.on.pisca106{animation:pisca106 .6s ease-in-out 3}
 @keyframes pisca106{50%{opacity:.12}}
-/* (da "10.6" em diante, os números das linhas: as bolinhas cheias verdes do
-   quiz do tópico 9; o do período em destaque cresce e brilha) */
+/* (da "10.6" em diante, os números das linhas: as bolinhas cheias azuis do
+   tópico 3 — a cor das linhas; o do período em destaque cresce e brilha) */
 .mesa.linhas106 .eixo[data-periodo]{opacity:1!important;width:24px;height:24px;font:700 12px var(--display);
-  background:#1F9D55;border-color:#1F9D55;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3);transition:opacity .6s ease, transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease}
+  background:var(--cor-linha);border-color:transparent;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3);transition:opacity .6s ease, transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease}
 .mesa.linhas106 .eixo[data-periodo].p106{z-index:15;transform:translate(-50%,-50%) scale(1.5);
-  box-shadow:0 0 0 2px #7CF5A8, 0 0 16px 6px rgba(46,214,113,.85)}
+  box-shadow:0 0 0 2px rgba(111,174,240,.95), 0 0 16px 6px rgba(47,127,209,.75)}
 .r106{position:absolute;z-index:27;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:76px;line-height:1;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
 .r106 > *{opacity:0;transition:opacity .6s ease, color .4s ease, text-shadow .4s ease}
@@ -5203,7 +5203,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v52.6';
+const VERSAO = 'v52.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
