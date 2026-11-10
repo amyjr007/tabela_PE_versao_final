@@ -163,6 +163,19 @@ var LEGENDAS = {
     [3.21,5.5,"Vamos para os elementos do último bloco agora."],
     [5.77,6.69,"O bloco f."]
   ],
+  "audio_tabela_10.5": [
+    [0,5.58,"Para fechar, vamos lá para baixo da tabela, lá para os lantanídeos e actinídeos."],
+    [6.06,10.81,"É aqui que está o bloco f, o lar dos chamados metais de transição interna."],
+    [11.92,15.53,"O subnível f comporta 14 elétrons no total."],
+    [16.5,18.02,"Agora veja que coisa legal."],
+    [18.51,23.48,"Se excluirmos o lantânio e o actínio, que têm seu elétron mais energético no bloco d,"],
+    [23.94,28.4,"cada uma dessas duas fileiras possui exatamente 14 elementos:"],
+    [29.0,33.43,"do cério ao lutécio na primeira, e do tório ao laurêncio na segunda."],
+    [33.88,37.81,"É uma simetria impressionante, não é? 14 elétrons, 14 elementos."],
+    [38.11,45.93,"À medida que caminhamos da esquerda para a direita, os elétrons vão entrando e completando o subnível."],
+    [46.34,50.43,"Vai desde o f¹ até fechar completamente no último elemento."],
+    [51.0,52.04,"Complete o resto."]
+  ],
   "audio_tabela_1_jogo_memória": [
     [0,3.42,"Muito bem, você terminou o resumo interativo do tópico aqui."],
     [3.42,9.56,"Agora, que tal fazer um joguinho rapidinho que vai te ajudar a fixar esse tópico mais ainda?"],
