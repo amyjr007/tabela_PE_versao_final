@@ -3302,6 +3302,37 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
    crescido com o "subnível mais energético" embaixo */
 .titulo9.texto1052{font-size:30px}
 .veu-mg10.modo1052 .aufbau10{display:none}
+/* a "10.6": o bloco B em segundo plano; a tela escura da regra; o Mg verde;
+   as faixas em fade (sem a corrida da cruz) e piscando; o número do período
+   à vista; o "3s²" que se monta e pisca em verde */
+.mesa[data-slide="10"] :is(.pc[data-b101="d"], .etq102.d104){transition:opacity .8s ease, scale .55s ease, translate .55s ease}
+.mesa.semB106 :is(.pc[data-b101="d"], .etq102.d104){opacity:.12!important}
+.veu106{flex-direction:column}
+.regra106{width:1000px;margin:0;text-align:center;text-wrap:balance;
+  font-family:var(--display);font-weight:600;font-size:46px;line-height:1.2;letter-spacing:-.015em;color:#F4F2F8}
+.regra106 .falta{color:transparent}
+.regra106 .cursor{display:none;width:4px;height:.9em;margin:0 -4px 0 0;vertical-align:-.1em;background:var(--ouro-luz);border-radius:1px}
+.regra106.digitando106 .cursor{display:inline-block}
+.mesa[data-slide="10"] .pc.mg106{z-index:12}
+.mesa[data-slide="10"] .pc.mg106 .face{filter:brightness(1.15);
+  box-shadow:0 0 0 3px rgba(80,220,120,.95),0 0 18px 6px rgba(60,210,110,.85),0 0 36px 12px rgba(60,210,110,.45)}
+.banda.b106.on{animation:none}
+.banda.b106.on.pisca106{animation:pisca106 .6s ease-in-out 3}
+@keyframes pisca106{50%{opacity:.12}}
+.mesa .eixo[data-periodo].p106{opacity:1!important;z-index:15}
+.r106{position:absolute;z-index:27;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
+  font-family:var(--display);font-weight:700;font-size:76px;line-height:1;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+.r106 > *{opacity:0;transition:opacity .6s ease, color .4s ease, text-shadow .4s ease}
+.r106 .r3{color:var(--cor-linha)}
+.r106 .rs{color:color-mix(in srgb,var(--cat-alcalinos) 82%,#000)}
+.r106 .r2{color:var(--cor-coluna);font-size:.5em;vertical-align:.9em;margin-left:2px}
+.r106.tres :is(.r3,.rs), .r106.dois .r2{opacity:1}
+.r106.festa{transform:translate(-50%,-50%) scale(1.3)}
+.r106.festa > *{color:#1FA35A;text-shadow:0 0 12px rgba(60,210,110,.9),0 0 26px rgba(60,210,110,.55);animation:pisca106v .5s ease-in-out 3}
+@keyframes pisca106v{50%{opacity:.25}}
+/* (na "10.5.2" as entradas e as saídas são em fade: o Mg já crescido, só aparece) */
+.veu-mg10.modo1052 .mg10{transform:scale(2.3);transition:opacity 1s ease}
+.veu-mg10.modo1052{transition:opacity 1s ease}
 .veu-mg10 .dist10{transition:opacity .6s ease, filter .6s ease}
 .veu-mg10.brilho1052 .dist10{filter:drop-shadow(0 0 8px rgba(234,255,0,.95)) drop-shadow(0 0 22px rgba(234,255,0,.6))}
 .dist10 .sub10.ult10{transform-box:fill-box;transform-origin:50% 60%;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
@@ -5161,7 +5192,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v52.2';
+const VERSAO = 'v52.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6484,7 +6515,8 @@ const TRILHAS = {
   '10.4.1': 'Audios/audio_tabela_10.4.1.mp3', /* sozinha, depois da festa das colunas do d: o bloco f cresce */
   '10.5': 'Audios/audio_tabela_10.5.mp3',   /* o Saquei no fim da "10.4.1": o bloco f (CARDS101) */
   '10.5.1': 'Audios/audio_tabela_10.5.1.mp3', /* sozinha, depois da festa do f: os toques nos blocos s, p, d, f */
-  '10.5.2': 'Audios/audio_tabela_10.5.2.mp3' /* sozinha, depois da festa dos blocos: o subnível mais energético (EV10) */
+  '10.5.2': 'Audios/audio_tabela_10.5.2.mp3', /* sozinha, depois da festa dos blocos: o subnível mais energético (EV10) */
+  '10.6': 'Audios/audio_tabela_10.6.mp3'    /* o Saquei no fim da "10.5.2": a regra pela tabela, com o Mg (CARDS101) */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -6664,7 +6696,8 @@ const ROTEIROS = {
   '10.4.1': [],
   '10.5': [],
   '10.5.1': [],
-  '10.5.2': []
+  '10.5.2': [],
+  '10.6': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -7400,7 +7433,7 @@ const SEQ = {
     /* o fim da "10.5.1": com os quatro blocos tocados (e a festa feita), a "10.5.2" */
     else if (id === '10.5.1'){ if (atual === 10 && CARDS101.festa1051) tocaTrilha('10.5.2'); }
     /* o fim da "10.5.2": o "Saquei" (a cena já saiu) */
-    else if (id === '10.5.2'){ if (atual === 10) CARDS101.saquei(true, null); }
+    else if (id === '10.5.2'){ if (atual === 10) CARDS101.saquei(true, '10.6'); }
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
     /* (antes dela, a festa: os confetes, o funfare e os aplausos) */
     else if (id === '9.3.8'){ if (atual === 9) EV9.festa93(); }
@@ -22072,6 +22105,19 @@ const T10 = { veu:10.0, tabela:11.0, foto:15.0, mg:22.0, circulo:26.0, circuloSa
 const T1052 = { festa:2.0, texto:[13.0, 14.6], veu:23.0, foto:30.0, dist:[34.0, 38.0], brilho:[40.2, 42.2], mais:[52.0, 53.6] };
 const TEXTO_1052 = 'O subnível mais energético';
 const TEXTO_MAIS_1052 = 'subnível mais energético';
+/* A "10.6" (o Saquei no fim da "10.5.2"): aos 1 s a cena escura sai em fade e
+   fica a tabela pronta; aos 12 s os blocos s e p brilham por 1 s; aos 16 s o
+   bloco B (o d) fica em segundo plano, quase apagado; aos 21,7 s a tela
+   escurece e digita a regra (até aos 30 s); aos 33 s a regra e a tela escura
+   saem em fade; aos 35 s o Mg cresce e brilha em verde; aos 38,9 s a faixa da
+   linha 3 entra em fade (com o número do período aceso), e aos 41 s a da
+   coluna 2 (sem número: a etiqueta s² fica em cima dela); aos 42 s a linha
+   pisca 3 vezes, aos 44 s a coluna; aos 46,3 s aparece o "3s", aos 48 s o
+   "²" em cima do s; aos 48,5 s o 3s² cresce e pisca em verde, com aplausos,
+   funfare e confetes; aos 53 s a narração pára 1,5 s e segue. */
+const T106 = { sai:1.0, brilhoSP:[12.0, 13.0], semB:16.0, regra:[21.7, 30.0], regraSai:33.0, mg:35.0,
+               linha:38.9, coluna:41.0, piscaL:[42.0, 43.8], piscaC:[44.0, 45.8], tres:46.3, dois:48.0, festa:48.5, pausa:53.0 };
+const REGRA_106 = 'O subnível mais energético é o período acompanhado do bloco e da coluna onde ele se encontra.';
 /* os subníveis do Mg, e por onde a seta vai em cada um: o risco do diagrama
    (SETAS_91) e o trecho dele, de 0 a 1 */
 const DIST_10 = [
@@ -22135,21 +22181,25 @@ const EV10 = {
     CARDS101.tick(t);
     /* (na "10.1" a cena é a que a "10" deixou, até ao 1 s dela: aí sai em fade) */
     const monta = naMontagem(), de101 = trilhaAtual === '10.1', t10 = monta ? 99 : trilhaAtual === '10' ? t : de101 ? 99 : -1;
-    /* (na "10.5.2" a mesma cena volta, nos tempos dela: o quadro é o diagrama sem o Pauling) */
-    const m1052 = !monta && trilhaAtual === '10.5.2';
-    if (m1052 !== !!this.m1052){
-      this.m1052 = m1052; this.estado = ''; this.estadoT = '';
-      this.veu.querySelector('.quadro10 img').src = m1052 ? 'Imagens/diagrama.jpeg' : 'Imagens/linus_pauling.jpeg';
-      this.veu.classList.toggle('modo1052', m1052);
-      this.veu.classList.remove('brilho1052', 'mais1052on');
-      if (this.mais1052) this.mais1052.textContent = '';
+    /* (na "10.5.2" a mesma cena volta, nos tempos dela: o quadro é o diagrama
+       sem o Pauling; acabada, fica inteira, até 1 s da "10.6", quando sai em
+       fade. O quadro e os detalhes dela ficam até a cena da "10" voltar) */
+    const modo = !monta && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.5.2');
+    if (modo !== !!this.modo1052){
+      this.modo1052 = modo;
+      this.veu.querySelector('.quadro10 img').src = modo ? 'Imagens/diagrama.jpeg' : 'Imagens/linus_pauling.jpeg';
+      this.veu.classList.toggle('modo1052', modo);
+      if (!modo){ this.veu.classList.remove('brilho1052', 'mais1052on'); if (this.mais1052) this.mais1052.textContent = ''; }
     }
-    if (m1052) return this.tick1052(t);
+    const m1052 = !monta && (trilhaAtual === '10.5.2' || (trilhaAtual === '10.6' && t < T106.sai));
+    if (m1052 !== !!this.m1052){ this.m1052 = m1052; this.estado = ''; this.estadoT = ''; }
+    if (m1052) return this.tick1052(trilhaAtual === '10.5.2' ? t : 99);
     const sai = de101 && t >= T101.sai;
     /* o desenho: as setas e os subníveis, e o círculo (traçado em 0,7 s) */
     const fr = this.fracoes(t10), fc = Math.max(0, Math.min(1, (t10 - T10.circulo) / 0.7));
     const chave = fr.map(f => f.toFixed(3)).join() + '|' + fc.toFixed(3);
-    if (chave !== this.estadoT){
+    /* (depois da "10.5.2" o desenho fica como ela deixou, enquanto a cena sai em fade) */
+    if (chave !== this.estadoT && !modo){
       this.estadoT = chave;
       /* (o quanto cada risco andou: o fim do trecho do subnível mais adiantado
          nele; a cabeça vai na ponta do traço; o subnível desenha-se pelo
@@ -22184,10 +22234,10 @@ const EV10 = {
      crescido e aceso; aos 30 s o diagrama na direita; dos 34 aos 38 s a
      distribuição do Mg desenha-se com as setas correndo no quadro; aos 40,2 s
      ela brilha; aos 52 s o "3s²" cresce e embaixo dele escreve-se, no mesmo
-     amarelo, "subnível mais energético"; no fim da fala tudo sai em fade (fica
-     a tabela, e o Saquei) */
+     amarelo, "subnível mais energético"; no fim da fala a cena fica, com o
+     Saquei (que leva à "10.6", e ela sai aos 1 s dessa) */
   tick1052(t){
-    const T = T1052, dur = som.duration || 99, fim = som.ended || t >= dur - 0.25;
+    const T = T1052;
     const fr = this.fracoes(t, T.dist);
     const n = Math.round(Math.max(0, Math.min(1, (t - T.mais[0]) / (T.mais[1] - T.mais[0]))) * TEXTO_MAIS_1052.length);
     const chave = fr.map(f => f.toFixed(3)).join() + '|' + n;
@@ -22201,7 +22251,7 @@ const EV10 = {
       }
       this.mais1052.textContent = TEXTO_MAIS_1052.slice(0, n);
     }
-    const est = [t >= T.veu && !fim, t >= T.veu, t >= T.foto, t >= T.dist[0], t >= T.brilho[0] && t < T.brilho[1], t >= T.mais[0]].join();
+    const est = [t >= T.veu, t >= T.veu, t >= T.foto, t >= T.dist[0], t >= T.brilho[0] && t < T.brilho[1], t >= T.mais[0]].join();
     if (est === this.estado) return;
     this.estado = est;
     const [veu, tabela, foto, dist, brilho, mais] = est.split(',').map(v => v === 'true');
@@ -22321,7 +22371,7 @@ const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
-const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.2'];
+const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.2', '10.6'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -22541,6 +22591,7 @@ const CARDS101 = {
     this.tick1041(t);
     this.tick105(t);
     this.tick1051(t);
+    this.tick106(t);
     const monta = naMontagem(), de = trilhaAtual === '10.1', T = monta ? 99 : de ? t : -1;
     const n = EV9.letras(T, T101.texto[0], T101.texto[1], TEXTO_101);
     if (n !== this.nt && !this.texto.classList.contains('texto-livre')){
@@ -22914,6 +22965,65 @@ const CARDS101 = {
     const E = this['etq' + s]; if (E) E.forEach(e => e.est = 0);
     this['estado' + s] = '';
   },
+  /* A "10.6": a regra pela tabela, com o Mg */
+  tick106(t){
+    const monta = naMontagem(), de = trilhaAtual === '10.6' && !monta, T = de ? t : !monta && depoisDe('10.6') ? 99 : -1;
+    if (!this.r106){
+      const m = this.m;
+      /* a tela escura da regra (no slide, por cima da mesa) */
+      slides[10].insertAdjacentHTML('beforeend', '<div class="veu veu106" aria-live="polite"><p class="regra106"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p></div>');
+      this.veu106 = slides[10].querySelector('.veu106');
+      this.regra106 = this.veu106.querySelector('.regra106');
+      /* as faixas da linha 3 e da coluna 2 (por baixo dos cubos), no padrão das da cruz */
+      const faixa = (cls, l, tp, w, h) => {
+        const b = document.createElement('div');
+        b.className = 'banda ' + cls + ' b106';
+        Object.assign(b.style, { left:l + 'px', top:tp + 'px', width:w + 'px', height:h + 'px' });
+        m.insertBefore(b, m.querySelector('.banda') || m.firstChild);
+        return b;
+      };
+      const alt = LADO + 14, larg = LADO + 14, topoC = yDaLinha(2) - LADO / 2 - 30;
+      this.faixaL106 = faixa('banda-linha', TAB_ESQ - 32, yDaLinha(3) - alt / 2, TAB_LARG + 64, alt);
+      this.faixaC106 = faixa('banda-col', xDaColuna(2) - larg / 2, topoC, larg, yDaLinha(7) + LADO / 2 + 8 - topoC);
+      this.p3106 = m.querySelector('.eixo[data-periodo="3"]');
+      this.mg106 = m.querySelector('.pc[data-z="12"]');
+      /* o "3s²": o 3 na cor da linha, o s na do bloco s, o 2 na da coluna */
+      const r = this.r106 = document.createElement('div');
+      r.className = 'r106';
+      r.innerHTML = '<span class="r3">3</span><span class="rs">s</span><sup class="r2">2</sup>';
+      r.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
+      r.style.top  = ((yDaLinha(2) + yDaLinha(3)) / 2 + 4).toFixed(1) + 'px';
+      m.appendChild(r);
+    }
+    /* a festa dos 48,5 s e a pausa dos 53 s (tocando, passando pelo segundo) */
+    const passa = s => de && !som.paused && this.t106ant >= 0 && this.t106ant < s && t >= s && t < s + 0.6;
+    if (passa(T106.festa)){ this.aplauso(); tocaEfeito('funfare'); }
+    if (passa(T106.pausa)) pausaPor('10.6', 1500);
+    this.t106ant = de ? t : -1;
+    const n = EV9.letras(T, T106.regra[0], T106.regra[1], REGRA_106);
+    if (n !== this.nt106){
+      if (n > this.nt106 && this.nt106 >= 0 && de) TECLAS.bate();
+      this.nt106 = n;
+      EV9.escreve(this.regra106, REGRA_106, n);
+    }
+    const dentro = ([a, b]) => T >= a && T < b;
+    const chave = [dentro(T106.brilhoSP), T >= T106.semB, dentro([T106.regra[0], T106.regraSai]), dentro(T106.regra), T >= T106.mg,
+                   T >= T106.linha, T >= T106.coluna, dentro(T106.piscaL), dentro(T106.piscaC), T >= T106.tres, T >= T106.dois, T >= T106.festa].join();
+    if (chave === this.estado106) return;
+    this.estado106 = chave;
+    const [sp, semB, veu, dig, mg, lin, col, pL, pC, tres, dois, festa] = chave.split(',').map(v => v === 'true');
+    this.m.classList.toggle('bl1051-s', sp); this.m.classList.toggle('bl1051-p', sp);
+    this.m.classList.toggle('semB106', semB);
+    this.veu106.classList.toggle('on', veu);
+    this.regra106.classList.toggle('digitando106', dig);
+    if (this.mg106){ this.mg106.classList.toggle('mg106', mg); this.mg106.style.scale = mg ? '1.35' : ''; }
+    this.faixaL106.classList.toggle('on', lin); this.faixaL106.classList.toggle('pisca106', pL);
+    this.faixaC106.classList.toggle('on', col); this.faixaC106.classList.toggle('pisca106', pC);
+    if (this.p3106){ this.p3106.classList.toggle('acesa', lin); this.p3106.classList.toggle('p106', lin); }
+    this.r106.classList.toggle('tres', tres);
+    this.r106.classList.toggle('dois', dois);
+    this.r106.classList.toggle('festa', festa);
+  },
   /* A "10.5.1": a festa dos 6 s e os toques nos blocos */
   passo1051:0, sel1051:null, feito1051:false, festa1051:false,
   aplauso(){
@@ -23101,6 +23211,7 @@ const CARDS101 = {
     this.festaG++; this.festaFeita = false; this.festa103 = false; this.festa104 = false; this.festa105 = false;
     this.passo1051 = 0; this.feito1051 = false; clearTimeout(this.fim1051T); this.t1051ant = -1; this.fora1051 = false;
     this.festa1051 = false; this.t1052ant = -1; this.nt1052 = -1;
+    this.estado106 = ''; this.t106ant = -1; this.nt106 = -1;
     this.f1041 = false; clearTimeout(this.f1041T); if (this.cards) this.cresceF1041(false);
     if (!this.cards) return;
     this.cards.forEach(o => { o.c.style.transition = 'none'; o.c.classList.remove('posto101', 'pego101'); o.s.classList.remove('cheio101');

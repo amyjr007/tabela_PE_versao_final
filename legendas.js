@@ -201,6 +201,26 @@ var LEGENDAS = {
     [55.39,63.88,"Pois agora, a gente vai descobrir exatamente a mesma informação em 2 segundos, usando apenas a posição do elemento na tabela periódica."],
     [64.41,66.04,"É isso que vamos ver a seguir."]
   ],
+  "audio_tabela_10.6": [
+    [0,6.82,"Certo, agora vamos aprender a descobrir o subnível mais energético dos elementos direto pela tabela periódica."],
+    [7.94,12.96,"Vamos começar pelos elementos representativos, que são aqueles das famílias A, aqui."],
+    [13.47,16.55,"Depois a gente vê como fazer com os elementos de transição."],
+    [17.28,19.27,"Então, a regra é a seguinte:"],
+    [19.7,27.25,"para qualquer elemento representativo, o subnível mais energético é o formado pelo número do seu período, que indica a camada,"],
+    [27.52,31.36,"acompanhado do bloco e da coluna onde ele se encontra na tabela."],
+    [32.05,32.9,"Pareceu difícil?"],
+    [33.26,36.53,"Nada. Vamos pegar o mesmo magnésio aqui como exemplo."],
+    [37.24,41.58,"Veja: o magnésio está no terceiro período, nessa coluna bem aqui."],
+    [42.2,45.97,"Terceiro período… nessa coluna bem aqui:"],
+    [46.49,49.91,"3s… 3s²."],
+    [50.35,52.65,"Facinho, né? E bem mais prático."],
+    [53.3,59.33,"Só um detalhe: saber o subnível mais energético dos átomos é um excelente atalho dentro da química."],
+    [59.71,60.38,"E sabe por quê?"],
+    [60.92,67.83,"Porque esse único dado revela a posição do átomo na tabela, dita se ele é metal, ametal ou gás nobre"],
+    [68.11,72.18,"e orienta todo o seu comportamento nas reações químicas."],
+    [72.56,79.39,"Em resumo, quem domina o subnível mais energético de um átomo decodifica a tabela inteira sem precisar decorar listas, sacou?"],
+    [80.65,82.68,"Vamos para um segundo exemplo."]
+  ],
   "audio_tabela_1_jogo_memória": [
     [0,3.42,"Muito bem, você terminou o resumo interativo do tópico aqui."],
     [3.42,9.56,"Agora, que tal fazer um joguinho rapidinho que vai te ajudar a fixar esse tópico mais ainda?"],
