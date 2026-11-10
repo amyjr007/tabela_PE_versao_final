@@ -3333,6 +3333,9 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
    tópico 3 — a cor das linhas; o do período em destaque cresce e brilha) */
 .mesa.linhas106 .eixo[data-periodo]{opacity:1!important;width:24px;height:24px;font:700 12px var(--display);
   background:var(--cor-linha);border-color:transparent;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3);transition:opacity .6s ease, transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease}
+.etq102{transition:opacity .3s ease, top .42s cubic-bezier(.3,.85,.3,1), transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease}
+.etq102.destaque106{z-index:28;transform:translate(-50%,-50%) scale(1.4);
+  box-shadow:0 0 0 3px var(--cor-coluna), 0 0 16px 6px rgba(224,120,43,.7)}
 .mesa.linhas106 .eixo[data-periodo].p106{z-index:15;transform:translate(-50%,-50%) scale(1.5);
   box-shadow:0 0 0 2px rgba(111,174,240,.95), 0 0 16px 6px rgba(47,127,209,.75)}
 .r106{position:absolute;z-index:27;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
@@ -5207,7 +5210,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v52.9';
+const VERSAO = 'v53.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23061,6 +23064,8 @@ const CARDS101 = {
     if (this.mg106){ this.mg106.classList.toggle('mg106', mg); this.mg106.style.scale = mg ? '1.35' : ''; }
     this.faixaL106.classList.toggle('on', lin); this.faixaL106.classList.toggle('pisca106', pL);
     this.faixaC106.classList.toggle('on', col); this.faixaC106.classList.toggle('pisca106', pC);
+    /* (a etiqueta s² em cima da coluna acende com ela, como o número do grupo no tópico 3) */
+    if (this.etq102) this.etq102[1].d.classList.toggle('destaque106', col);
     if (this.p3106) this.p3106.classList.toggle('p106', lin);
     this.m.classList.toggle('linhas106', T >= 0);
     this.r106.classList.toggle('tres', tres);
