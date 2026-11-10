@@ -5124,7 +5124,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v51.4';
+const VERSAO = 'v51.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22415,6 +22415,13 @@ const CARDS101 = {
        se desfazem: a cena começa limpa */
     const antes = trilhaAtual === '10' || (trilhaAtual === '10.1' && t < T101.arrasta);
     if (antes && !naMontagem() && (this.postos.size || this.passo103 || this.feito103 || this.passo104 || this.feito104 || this.passo105 || this.feito105 || this.festaFeita)){ this.zera(); return; }
+    /* de volta (pelo sumário) a uma narração com toques — ou a uma anterior
+       a ela —, os toques dela se desfazem: o aluno refaz as colunas */
+    const idx = ORDEM_10.indexOf(trilhaAtual);
+    if (idx >= 0 && !naMontagem()) [['10.3', T103.toque, '103'], ['10.4', T104.toque, '104'], ['10.5', T105.toque, '105']].forEach(([id, toque, s]) => {
+      const i = ORDEM_10.indexOf(id);
+      if ((idx < i || (idx === i && t < toque)) && (this['passo' + s] || this['feito' + s])) this.limpaToques(s);
+    });
     this.tick102(t);
     this.tick103(t);
     this.tick1031(t);
@@ -22603,7 +22610,8 @@ const CARDS101 = {
     const sobeT = (T103.sobe.find(([a, b]) => T >= a && T < b) || [])[2] || null;
     const up = this.sel103 !== null && T >= 0 ? this.sel103 : sobeT;
     /* as etiquetas: a p¹ e a p² pelo tempo; as outras pelo toque */
-    const est = k => T < 0 ? 0 : k === 0 ? (T < T103.p1[0] ? 0 : T < T103.p1[1] ? 1 : 2)
+    /* (numa narração seguinte — pelo sumário, por exemplo — as seis já no lugar) */
+    const est = k => T < 0 ? 0 : T >= 99 ? 2 : k === 0 ? (T < T103.p1[0] ? 0 : T < T103.p1[1] ? 1 : 2)
                    : k === 1 ? (T < T103.p2 ? 0 : 2) : this.etq103[k].est;
     const ets = [0, 1, 2, 3, 4, 5].map(est);
     const dica = this.podeTocar103() ? 15 + this.passo103 : 0;
@@ -22744,7 +22752,7 @@ const CARDS101 = {
     const S = T105.sobe, kT = T < S[0] || T >= T105.desce ? -1 : S.reduce((a, s, k) => T >= s ? k : a, -1);
     const up = this.sel105 !== null && T >= 0 ? this.sel105 : kT;
     /* as etiquetas: as 4 primeiras pelo tempo; as outras pelo toque */
-    const ets = this.etq105.map((E, k) => T < 0 ? 0 : k < 4 ? (T < S[k] + T105.pousa ? 0 : k === kT ? 1 : 2) : E.est);
+    const ets = this.etq105.map((E, k) => T < 0 ? 0 : T >= 99 ? 2 : k < 4 ? (T < S[k] + T105.pousa ? 0 : k === kT ? 1 : 2) : E.est);
     const dica = this.podeTocar105() ? 4 + this.passo105 : -1;
     const chave = [gL, gA, card, pulsa, txt, dig, T >= T105.la, T >= T105.ac, ...lL, ...lA, up, dica, ...ets].join();
     if (chave === this.estado105) return;
@@ -22776,6 +22784,13 @@ const CARDS101 = {
     o.c.style.scale = card ? String(ESC_CARD_105) : '';
     o.c.classList.toggle('grande102', card);
     o.c.classList.toggle('pulsa105', pulsa);
+  },
+  /* os toques de uma narração (103, 104 ou 105), desfeitos */
+  limpaToques(s){
+    this['passo' + s] = 0; this['sel' + s] = null; this['feito' + s] = false; this['festa' + s] = false;
+    clearTimeout(this['fim' + s + 'T']);
+    const E = this['etq' + s]; if (E) E.forEach(e => e.est = 0);
+    this['estado' + s] = '';
   },
   passo105:0, sel105:null, feito105:false,
   podeTocar105(){ return atual === 10 && trilhaAtual === '10.5' && !naMontagem() && !this.feito105 &&
@@ -22865,7 +22880,8 @@ const CARDS101 = {
     const sobeT = (T104.sobe.find(([a, b]) => T >= a && T < b) || [])[2] || null;
     const up = this.sel104 !== null && T >= 0 ? this.sel104 : sobeT;
     /* as etiquetas: a d¹ pelo tempo; as outras pelo toque */
-    const est = k => T < 0 ? 0 : k === 0 ? (T < T104.d1[0] ? 0 : T < T104.d1[1] ? 1 : 2) : this.etq104[k].est;
+    /* (numa narração seguinte — pelo sumário, por exemplo — as dez já no lugar) */
+    const est = k => T < 0 ? 0 : T >= 99 ? 2 : k === 0 ? (T < T104.d1[0] ? 0 : T < T104.d1[1] ? 1 : 2) : this.etq104[k].est;
     const ets = this.etq104.map((E, k) => est(k));
     const dica = this.podeTocar104() ? 4 + this.passo104 : 0;
     const chave = [T >= 0, bloco, card, pulsa, some, up, dica, ...ets].join();
