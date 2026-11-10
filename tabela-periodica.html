@@ -3190,6 +3190,9 @@ body.montagem .veu-pauling .icone91{translate:-320px 0;opacity:.5}
    direita (como a "9.1" acaba); o Mg que cresce e brilha, o círculo do 3s², e
    a distribuição desenhada embaixo da tabela, com as setas no quadro */
 .veu-mg10{background:rgba(12,10,32,.96)}
+/* na montagem, da "10.1" em diante a cena escura da "10" sai: não cobre
+   as peças da mesa (o card f, as etiquetas) */
+body.montagem .slide.mont-blocos10 .veu-mg10{display:none}
 html:is(.palco-largo,.palco-alto) .veu-mg10::before{background:rgba(12,10,32,.96)}
 .veu-mg10 :is(.icone10,.quadro10,.aufbau10,.dist10){position:absolute;transform:translate(-50%,-50%);margin:0;
   opacity:0;transition:opacity 1s ease}
@@ -3246,6 +3249,10 @@ body.montagem .veu-mg10 .sub10{opacity:1!important;fill-opacity:1!important;stro
 .card101 sup{align-self:flex-start;margin:13px 0 0 3px;font-size:22px;font-weight:700;line-height:1;letter-spacing:-.02em}
 .card101.on101, body.montagem .card101{opacity:1;scale:1}
 .card101.pega101{pointer-events:auto;cursor:grab}
+/* (na montagem, o card f¹⁴ é peça: pega o dedo) */
+body.montagem .card101[data-mont]{pointer-events:auto;cursor:grab}
+body.montagem .card101.solto:is(:hover,.pego){
+  background:linear-gradient(145deg,color-mix(in srgb,var(--cor) 84%,#fff),color-mix(in srgb,var(--cor) 86%,#000))}
 .card101.cresce101{scale:1.22}
 .card101.brilha101{scale:1.1;filter:brightness(1.15);
   box-shadow:0 0 0 3px color-mix(in srgb,var(--cor) 45%,#fff), 0 0 30px 10px color-mix(in srgb,var(--cor) 75%,transparent)}
@@ -5125,7 +5132,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v51.6';
+const VERSAO = 'v51.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22269,6 +22276,8 @@ const CARDS101 = {
       const c = document.createElement('div');
       c.className = 'card101';
       c.dataset.b = K.b;
+      /* o card f¹⁴, na frente do La e do Ac: na montagem, peça que anda */
+      if (K.b === 'f') c.dataset.mont = 'card-f14';
       c.style.setProperty('--cor', K.cor);
       c.innerHTML = '<b>' + K.b + '</b><sup>' + K.e + '</sup>';
       m.appendChild(c);
@@ -22295,6 +22304,8 @@ const CARDS101 = {
     const c = o.c;
     c.addEventListener('click', ev => ev.stopPropagation());
     c.addEventListener('pointerdown', ev => {
+      /* (na montagem, o card f é peça: quem o pega é a montagem) */
+      if (naMontagem() && c.dataset.mont) return;
       ev.stopPropagation();
       if (!this.podeArrastar() || this.postos.has(o.K.b)) return;
       ev.preventDefault();
@@ -22419,6 +22430,7 @@ const CARDS101 = {
     /* de volta (pelo sumário) a uma narração com toques — ou a uma anterior
        a ela —, os toques dela se desfazem: o aluno refaz as colunas */
     const idx = ORDEM_10.indexOf(trilhaAtual);
+    slides[10].classList.toggle('mont-blocos10', idx >= 1);
     if (idx >= 0 && !naMontagem()) [['10.3', T103.toque, '103'], ['10.4', T104.toque, '104'], ['10.5', T105.toque, '105']].forEach(([id, toque, s]) => {
       const i = ORDEM_10.indexOf(id);
       if ((idx < i || (idx === i && t < toque)) && (this['passo' + s] || this['feito' + s])) this.limpaToques(s);
