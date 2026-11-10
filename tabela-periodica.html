@@ -3327,6 +3327,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .mesa[data-slide="10"] .pc.mg106 .face{filter:brightness(1.15);
   box-shadow:0 0 0 3px rgba(80,220,120,.95),0 0 18px 6px rgba(60,210,110,.85),0 0 36px 12px rgba(60,210,110,.45)}
 .banda.b106.on{animation:none}
+/* (a faixa da linha, num azul escuro que dá contraste com os cards) */
+.banda.banda-linha.b106{background:rgba(28,74,140,.34);border:2px solid rgba(47,127,209,.9)}
 .banda.b106.on.pisca106{animation:pisca106 .6s ease-in-out 3}
 @keyframes pisca106{50%{opacity:.12}}
 /* (da "10.6" em diante, os números das linhas: as bolinhas cheias azuis do
@@ -5210,7 +5212,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v53.0';
+const VERSAO = 'v53.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23016,7 +23018,9 @@ const CARDS101 = {
         return b;
       };
       const alt = LADO + 14, larg = LADO + 14, topoC = yDaLinha(2) - LADO / 2 - 30;
-      this.faixaL106 = faixa('banda-linha', TAB_ESQ - 32, yDaLinha(3) - alt / 2, TAB_LARG + 64, alt);
+      /* (a da linha passa do número do período, à esquerda, e é mais alta que a linha) */
+      const altL = LADO + 30;
+      this.faixaL106 = faixa('banda-linha', TAB_ESQ - 62, yDaLinha(3) - altL / 2, TAB_LARG + 94, altL);
       this.faixaC106 = faixa('banda-col', xDaColuna(2) - larg / 2, topoC, larg, yDaLinha(7) + LADO / 2 + 8 - topoC);
       this.p3106 = m.querySelector('.eixo[data-periodo="3"]');
       /* (as casas vazias das duas fileiras de baixo: somem com elas) */
