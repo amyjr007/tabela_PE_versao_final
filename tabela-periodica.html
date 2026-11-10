@@ -5132,7 +5132,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v51.7';
+const VERSAO = 'v51.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22588,22 +22588,26 @@ const CARDS101 = {
   },
   podeTocar103(){ return atual === 10 && trilhaAtual === '10.3' && !naMontagem() && !this.feito103 &&
                          ((som.currentTime || 0) >= T103.toque || som.ended); },
-  avanca103(col){
-    const k = col - 13;
-    if (this.sel103 !== null) this.etq103[this.sel103 - 13].est = 2;
-    this.sel103 = col;
-    this.etq103[k].est = 1;
-    this.passo103++;
+  avanca103(col){ this.avancaColuna('103', col, col - 13, col === 18); },
+  /* O TOQUE NUMA COLUNA (p, d ou f): ela sobe, recebe a etiqueta e, 0,9 s
+     depois, desce com ela para o lugar. Um toque seguinte antes disso assenta
+     logo a anterior. A última, ao descer, traz a festa. */
+  avancaColuna(s, col, k, ultima){
+    const E = this['etq' + s], sel = this['sel' + s];
+    if (sel !== null) E[sel.k].est = 2;
+    this['sel' + s] = { col, k };
+    E[k].est = 1;
+    this['passo' + s]++;
     tocaEfeito('flip');
-    if (col === 18){
-      this.feito103 = true;
-      clearTimeout(this.fim103T);
-      this.fim103T = setTimeout(() => {
-        this.etq103[5].est = 2; this.sel103 = null; this.estado103 = '';
-        this.festa(false);
-      }, 900);
-    }
-    this.estado103 = '';
+    if (ultima) this['feito' + s] = true;
+    clearTimeout(this['fim' + s + 'T']);
+    this['fim' + s + 'T'] = setTimeout(() => {
+      E[k].est = 2;
+      if (this['sel' + s] && this['sel' + s].k === k) this['sel' + s] = null;
+      this['estado' + s] = '';
+      if (ultima) this.festa(false);
+    }, 900);
+    this['estado' + s] = '';
     ONDE.guarda();
   },
   /* (a volta guardada: n colunas já tocadas, com as etiquetas no lugar) */
@@ -22621,7 +22625,7 @@ const CARDS101 = {
     const bloco = dentro(T103.bloco), card = dentro(T103.card), pulsa = dentro(T103.pulsa);
     const some = T >= T103.some && !this.feito103 && T < 99, esc18 = dentro(T103.esc18);
     const sobeT = (T103.sobe.find(([a, b]) => T >= a && T < b) || [])[2] || null;
-    const up = this.sel103 !== null && T >= 0 ? this.sel103 : sobeT;
+    const up = this.sel103 !== null && T >= 0 ? this.sel103.col : sobeT;
     /* as etiquetas: a p¹ e a p² pelo tempo; as outras pelo toque */
     /* (numa narração seguinte — pelo sumário, por exemplo — as seis já no lugar) */
     const est = k => T < 0 ? 0 : T >= 99 ? 2 : k === 0 ? (T < T103.p1[0] ? 0 : T < T103.p1[1] ? 1 : 2)
@@ -22764,7 +22768,7 @@ const CARDS101 = {
     const lL = this.lan105.map((p, k) => luz(T105.luzL, k)), lA = this.act105.map((p, k) => luz(T105.luzA, k));
     /* a coluna no ar: a da vez pelo tempo (f¹ a f⁴), ou a tocada pelo aluno */
     const S = T105.sobe, kT = T < S[0] || T >= T105.desce ? -1 : S.reduce((a, s, k) => T >= s ? k : a, -1);
-    const up = this.sel105 !== null && T >= 0 ? this.sel105 : kT;
+    const up = this.sel105 !== null && T >= 0 ? this.sel105.k : kT;
     /* as etiquetas: as 4 primeiras pelo tempo; as outras pelo toque */
     /* (na montagem, as catorze no lugar, para serem arrumadas) */
     const ets = this.etq105.map((E, k) => monta ? 2 : T < 0 ? 0 : T >= 99 ? 2 : k < 4 ? (T < S[k] + T105.pousa ? 0 : k === kT ? 1 : 2) : E.est);
@@ -22810,23 +22814,7 @@ const CARDS101 = {
   passo105:0, sel105:null, feito105:false,
   podeTocar105(){ return atual === 10 && trilhaAtual === '10.5' && !naMontagem() && !this.feito105 &&
                          ((som.currentTime || 0) >= T105.toque || som.ended); },
-  avanca105(k){
-    if (this.sel105 !== null) this.etq105[this.sel105].est = 2;
-    this.sel105 = k;
-    this.etq105[k].est = 1;
-    this.passo105++;
-    tocaEfeito('flip');
-    if (k === 13){
-      this.feito105 = true;
-      clearTimeout(this.fim105T);
-      this.fim105T = setTimeout(() => {
-        this.etq105[13].est = 2; this.sel105 = null; this.estado105 = '';
-        this.festa(false);
-      }, 900);
-    }
-    this.estado105 = '';
-    ONDE.guarda();
-  },
+  avanca105(k){ this.avancaColuna('105', k, k, k === 13); },
   /* (a volta guardada: n colunas já tocadas, com as etiquetas no lugar) */
   poeColunas105(n){
     this.prepara(); if (!this.cards) return;
@@ -22861,23 +22849,7 @@ const CARDS101 = {
   },
   podeTocar104(){ return atual === 10 && trilhaAtual === '10.4' && !naMontagem() && !this.feito104 &&
                          ((som.currentTime || 0) >= T104.toque || som.ended); },
-  avanca104(col){
-    if (this.sel104 !== null) this.etq104[this.sel104 - 3].est = 2;
-    this.sel104 = col;
-    this.etq104[col - 3].est = 1;
-    this.passo104++;
-    tocaEfeito('flip');
-    if (col === 12){
-      this.feito104 = true;
-      clearTimeout(this.fim104T);
-      this.fim104T = setTimeout(() => {
-        this.etq104[9].est = 2; this.sel104 = null; this.estado104 = '';
-        this.festa(false);
-      }, 900);
-    }
-    this.estado104 = '';
-    ONDE.guarda();
-  },
+  avanca104(col){ this.avancaColuna('104', col, col - 3, col === 12); },
   /* (a volta guardada: n colunas já tocadas, com as etiquetas no lugar) */
   poeColunas104(n){
     this.prepara(); if (!this.cards) return;
@@ -22893,7 +22865,7 @@ const CARDS101 = {
     const bloco = dentro(T104.bloco), card = dentro(T104.card), pulsa = dentro(T104.pulsa);
     const some = T >= T104.some && !this.feito104 && T < 99;
     const sobeT = (T104.sobe.find(([a, b]) => T >= a && T < b) || [])[2] || null;
-    const up = this.sel104 !== null && T >= 0 ? this.sel104 : sobeT;
+    const up = this.sel104 !== null && T >= 0 ? this.sel104.col : sobeT;
     /* as etiquetas: a d¹ pelo tempo; as outras pelo toque */
     /* (numa narração seguinte — pelo sumário, por exemplo — as dez já no lugar) */
     const est = k => T < 0 ? 0 : T >= 99 ? 2 : k === 0 ? (T < T104.d1[0] ? 0 : T < T104.d1[1] ? 1 : 2) : this.etq104[k].est;
