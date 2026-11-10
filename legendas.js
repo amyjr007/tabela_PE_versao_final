@@ -123,13 +123,13 @@ var LEGENDAS = {
     [36.34,39.08,"Use as cores como guia de encaixe dos cards. E aí?"]
   ],
   "audio_tabela_10.2": [
-    [0,5.96,"Excelente! Agora repare que a harmonia é perfeita."],
-    [5.96,10.83,"A quantidade de colunas de cada bloco coincide com o número máximo de elétrons que aquele subnível suporta."],
-    [10.83,13.87,"Quer ver? Por exemplo, o bloco s aqui."],
-    [13.87,16.83,"No subnível s cabem até 2 elétrons, certo?"],
-    [16.83,20.85,"Então, aqui no bloco s tem precisamente duas famílias."],
-    [20.85,26.8,"Nessa aqui a distribuição termina em s¹, e nessa outra aqui termina em s²."],
-    [26.8,28.62,"Sacou a lógica?"]
+    [0,3.66,"Excelente! Agora repare na harmonia perfeita."],
+    [4.18,11.19,"A quantidade de colunas de cada bloco coincide exatamente com o número de elétrons que aquele subnível suporta."],
+    [11.54,14.06,"Quer ver? Olha o bloco s aqui na esquerda."],
+    [14.65,17.71,"No subnível s cabem até 2 elétrons, certo?"],
+    [18.33,21.5,"Pois o bloco s tem precisamente duas colunas."],
+    [21.92,29.04,"Nos elementos da primeira coluna, a distribuição termina em s¹, e nos da segunda coluna termina em s²."],
+    [29.4,30.43,"Sacou a lógica?"]
   ],
   "audio_tabela_10.3": [
     [0,2.56,"Agora, vamos para o bloco p, aqui na direita."],

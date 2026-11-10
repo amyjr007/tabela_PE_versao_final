@@ -2150,6 +2150,9 @@ body.montagem .texto6{opacity:1;pointer-events:auto}
    pelo top/left refazia o layout dos 118 cubos a cada quadro, e a subida
    engasgava. (Na montagem, o x/y da tabela deste slide conta a partir daqui) */
 .mesa.series8,.mesa.natureza,.mesa.blocos{top:-108px;bottom:108px;--zoom:.94}
+/* no slide 11 a mesa fica onde o professor a deixou na montagem
+   ({ el:'tabela', x:1, y:37, esc:0.94 }: 37 px abaixo da medida das séries) */
+.mesa[data-slide="10"]{--px:1px;--py:37px}
 .mesa.series8{--dx8:1px;--dy8:92px;will-change:transform;
   transform:translate(calc(var(--px,0px) + var(--dx8)),calc(var(--py,0px) + var(--dy8))) scale(calc(var(--zoom,1) * var(--abre,1)))}
 .mesa.series8.subida{--dx8:0px;--dy8:0px}
@@ -5106,7 +5109,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v50.4';
+const VERSAO = 'v50.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22093,15 +22096,15 @@ window.EV10 = EV10;
    elétrons de cada um), nas cores dos blocos da tabela — que fica sem cor (o
    tabuleiro liso) no começo da "10.1". Dos 15,5 aos 16,5 s os quatro cards
    crescem um pouco. Aos 18,6, 19,6, 20,25 e 20,9 s os blocos ganham a cor,
-   um depois do outro (s, p, d, f), e cada encaixe aparece (piscando) junto
-   com a cor do bloco dele: o s nos alcalinos, o p no bloco p, o d no meio
-   dos de transição, o f na frente das duas séries. Os cards passam a ser
-   arrastados dos 18,6 s em diante (só para os encaixes já à vista); dos 22
+   um depois do outro (s, p, d, f). Aos 32 s ("Sua primeira tarefa…")
+   aparecem os encaixes (piscando): o s nos alcalinos, o p no bloco p, o d
+   no meio dos de transição, o f na frente das duas séries; e os cards
+   passam a ser arrastados dali em diante. Dos 22
    aos 27,5 s cada bloco cresce junto com o card dele, um de cada vez, e
    volta; e o brilho passa de card em card (o anterior apaga quando o
    seguinte acende): o s aos 28, o p aos 28,5, o d aos 29 e o f dos 29,5
    aos 30,5 s. */
-const T101 = { sai:1.0, texto:[7.8, 9.0], aumenta:[15.5, 16.5], arrasta:18.6, cor:[18.6, 19.625, 20.25, 20.875], destaque:[22.0, 27.5] };
+const T101 = { sai:1.0, texto:[7.8, 9.0], aumenta:[15.5, 16.5], arrasta:32.0, cor:[18.6, 19.625, 20.25, 20.875], destaque:[22.0, 27.5] };
 /* (o bloco crescido: o quanto, em torno do meio dele) */
 const ESC_BLOCO_101 = 1.1;
 const TEXTO_101 = 'São 4 subníveis:';
