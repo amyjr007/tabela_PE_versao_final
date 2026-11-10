@@ -3342,7 +3342,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
   box-shadow:0 0 0 3px var(--cor-coluna), 0 0 16px 6px rgba(224,120,43,.7)}
 .mesa.linhas106 .eixo[data-periodo].p106{z-index:15;transform:translate(-50%,-50%) scale(1.5);
   box-shadow:0 0 0 2px rgba(111,174,240,.95), 0 0 16px 6px rgba(47,127,209,.75)}
-.r106{position:absolute;z-index:27;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
+.r106{position:absolute;z-index:30;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:76px;line-height:1;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
 .r106 > *{opacity:0;transition:opacity .6s ease, color .4s ease, text-shadow .4s ease}
 .r106 .r3{color:var(--cor-linha)}
@@ -3350,7 +3350,10 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .r106 .r2{color:var(--cor-coluna);font-size:.5em;vertical-align:.9em;margin-left:2px}
 .r106.tres :is(.r3,.rs), .r106.dois .r2{opacity:1}
 .r106.festa{transform:translate(-50%,-50%) scale(1.3)}
-.r106.festa > *{color:#1FA35A;text-shadow:0 0 12px rgba(60,210,110,.9),0 0 26px rgba(60,210,110,.55);animation:pisca106v .5s ease-in-out 3}
+/* (o verde do brilho do Mg) */
+.r106.festa > *{color:rgb(60,210,110);text-shadow:0 0 0 rgba(80,220,120,.95),0 0 18px rgba(60,210,110,.85),0 0 36px rgba(60,210,110,.45);animation:pisca106v .5s ease-in-out 3}
+.mesa .eixo.pulsa106, .etq102.pulsa106{animation:pulsa106 .35s ease-in-out 2}
+@keyframes pulsa106{50%{scale:1.35}}
 @keyframes pisca106v{50%{opacity:.25}}
 /* (na "10.5.2" as entradas e as saídas são em fade: o Mg já crescido, só aparece) */
 .veu-mg10.modo1052 .mg10{transform:scale(2.3);transition:opacity 1s ease}
@@ -5214,7 +5217,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v53.2';
+const VERSAO = 'v53.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22138,7 +22141,8 @@ const TEXTO_MAIS_1052 = 'subnível mais energético';
    "²" em cima do s; aos 48,5 s o 3s² cresce e pisca em verde, com aplausos,
    funfare e confetes; aos 53 s a narração pára 1,5 s e segue. */
 const T106 = { sai:1.0, brilhoSP:[12.0, 13.0], semB:16.0, regra:[21.7, 30.0], toque:31.6, regraSai:33.0, mg:35.0,
-               linha:38.9, coluna:41.0, piscaL:[42.0, 43.8], piscaC:[44.0, 45.8], tres:46.3, dois:48.0, festa:48.5, pausa:53.0 };
+               linha:38.9, coluna:41.0, piscaL:[42.0, 43.8], piscaC:[44.0, 45.8], tres:46.3, dois:48.0, festa:48.5,
+               pulsa3:[48.7, 49.4], pulsaS2:[49.5, 50.4], pausa:53.0 };
 /* (o "período" na cor das linhas e a "coluna" na dos grupos, as do tópico 3) */
 const PARTES_106 = [{ t:'O subnível mais energético é o ' }, { t:'período', c:'lin106' }, { t:' acompanhado do bloco e da ' },
                     { t:'coluna', c:'col106' }, { t:' onde ele se encontra.' }];
@@ -23032,7 +23036,8 @@ const CARDS101 = {
       r.className = 'r106';
       r.innerHTML = '<span class="r3">3</span><span class="rs">s</span><sup class="r2">2</sup>';
       r.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
-      r.style.top  = ((yDaLinha(2) + yDaLinha(3)) / 2 + 4).toFixed(1) + 'px';
+      /* (na linha do Mg: o subnível fica sempre na direção da linha do elemento) */
+      r.style.top  = (yDaLinha(3) + 4).toFixed(1) + 'px';
       m.appendChild(r);
     }
     /* a festa dos 48,5 s e a pausa dos 53 s (tocando, passando pelo segundo) */
@@ -23055,10 +23060,13 @@ const CARDS101 = {
     const dentro = ([a, b]) => T >= a && T < b;
     const chave = [T >= 0, dentro(T106.brilhoSP), T >= T106.semB, dentro([T106.regra[0], T106.regraSai]), dentro(T106.regra), T >= T106.mg,
                    T >= T106.linha, T >= T106.coluna, dentro(T106.piscaL), dentro(T106.piscaC), T >= T106.tres, T >= T106.dois, T >= T106.festa,
-                   de && !!this.pede106].join();
+                   de && !!this.pede106, dentro(T106.pulsa3), dentro(T106.pulsaS2)].join();
     if (chave === this.estado106) return;
     this.estado106 = chave;
-    const [, sp, semB, veu, dig, mg, lin, col, pL, pC, tres, dois, festa, pede] = chave.split(',').map(v => v === 'true');
+    const [, sp, semB, veu, dig, mg, lin, col, pL, pC, tres, dois, festa, pede, p3, pS2] = chave.split(',').map(v => v === 'true');
+    /* (aos 48,7 s o 3 do período pulsa 2 vezes, rápido; aos 49,5 s a etiqueta s²) */
+    if (this.p3106) this.p3106.classList.toggle('pulsa106', p3);
+    if (this.etq102) this.etq102[1].d.classList.toggle('pulsa106', pS2);
     this.veu106.classList.toggle('pede-toque', pede);
     this.toque106.classList.toggle('on', pede);
     stage.classList.toggle('em-toque', pede);
@@ -23066,7 +23074,8 @@ const CARDS101 = {
     this.m.classList.toggle('semB106', semB);
     this.veu106.classList.toggle('on', veu || pede);
     this.regra106.classList.toggle('digitando106', dig);
-    if (this.mg106){ this.mg106.classList.toggle('mg106', mg); this.mg106.style.scale = mg ? '1.35' : ''; }
+    /* (o Mg só brilha em verde, sem crescer) */
+    if (this.mg106) this.mg106.classList.toggle('mg106', mg);
     this.faixaL106.classList.toggle('on', lin); this.faixaL106.classList.toggle('pisca106', pL);
     this.faixaC106.classList.toggle('on', col); this.faixaC106.classList.toggle('pisca106', pC);
     /* (a etiqueta s² em cima da coluna acende com ela, como o número do grupo no tópico 3) */
