@@ -148,6 +148,16 @@ var LEGENDAS = {
     [19.59,20.02,"É isso."],
     [20.59,22.36,"O próximo bloco é o d."]
   ],
+  "audio_tabela_10.4": [
+    [0,5.16,"Certo, chegamos no bloco d, que abriga os famosos metais de transição externa."],
+    [6.02,11.16,"Observe que no subnível d aqui cabem exatamente 10 elétrons no total."],
+    [11.86,17.54,"Agora, olhe para o bloco central todo aqui. Vamos contar quantas colunas de elementos existem nele."],
+    [17.91,27.92,"Vamos lá. 1, 2, 3, 4, 5, 6, 7, 8, 9, 10."],
+    [28.32,29.98,"10 colunas certinhas."],
+    [30.41,32.07,"Não é uma coincidência perfeita?"],
+    [32.64,37.82,"A cada nova coluna que avançamos para a direita, adicionamos mais um elétron nesse subnível."],
+    [38.33,41.3,"Vou colocar o d¹ aqui, e você põe o resto."]
+  ],
   "audio_tabela_1_jogo_memória": [
     [0,3.42,"Muito bem, você terminou o resumo interativo do tópico aqui."],
     [3.42,9.56,"Agora, que tal fazer um joguinho rapidinho que vai te ajudar a fixar esse tópico mais ainda?"],
