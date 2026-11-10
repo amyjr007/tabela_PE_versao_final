@@ -3301,6 +3301,8 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
    diagrama sem o "Princípio de Aufbau", o brilho da distribuição e o 3s²
    crescido com o "subnível mais energético" embaixo */
 .titulo9.texto1052{font-size:30px}
+body.montagem .titulo9.texto1052:not(.mont1052){opacity:0;pointer-events:none}
+body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none!important}
 .veu-mg10.modo1052 .aufbau10{display:none}
 /* a "10.6": o bloco B em segundo plano; a tela escura da regra; o Mg verde;
    as faixas em fade (sem a corrida da cruz) e piscando; o número do período
@@ -3317,6 +3319,8 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
 .regra106{width:1000px;margin:0;text-align:center;text-wrap:balance;
   font-family:var(--display);font-weight:600;font-size:46px;line-height:1.2;letter-spacing:-.015em;color:#F4F2F8}
 .regra106 .falta{color:transparent}
+.regra106 .lin106{color:#6FAEF0}
+.regra106 .col106{color:#F3A062}
 .regra106 .cursor{display:none;width:4px;height:.9em;margin:0 -4px 0 0;vertical-align:-.1em;background:var(--ouro-luz);border-radius:1px}
 .regra106.digitando106 .cursor{display:inline-block}
 .mesa[data-slide="10"] .pc.mg106{z-index:12}
@@ -5203,7 +5207,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v52.7';
+const VERSAO = 'v52.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22128,7 +22132,10 @@ const TEXTO_MAIS_1052 = 'subnível mais energético';
    funfare e confetes; aos 53 s a narração pára 1,5 s e segue. */
 const T106 = { sai:1.0, brilhoSP:[12.0, 13.0], semB:16.0, regra:[21.7, 30.0], toque:31.6, regraSai:33.0, mg:35.0,
                linha:38.9, coluna:41.0, piscaL:[42.0, 43.8], piscaC:[44.0, 45.8], tres:46.3, dois:48.0, festa:48.5, pausa:53.0 };
-const REGRA_106 = 'O subnível mais energético é o período acompanhado do bloco e da coluna onde ele se encontra.';
+/* (o "período" na cor das linhas e a "coluna" na dos grupos, as do tópico 3) */
+const PARTES_106 = [{ t:'O subnível mais energético é o ' }, { t:'período', c:'lin106' }, { t:' acompanhado do bloco e da ' },
+                    { t:'coluna', c:'col106' }, { t:' onde ele se encontra.' }];
+const REGRA_106 = PARTES_106.map(p => p.t).join('');
 /* os subníveis do Mg, e por onde a seta vai em cada um: o risco do diagrama
    (SETAS_91) e o trecho dele, de 0 a 1 */
 const DIST_10 = [
@@ -22671,10 +22678,13 @@ const CARDS101 = {
     }
     /* (na montagem, o texto da "10.2" aparece inteiro — e editável — na cena
        dela e nas seguintes; nas de antes, fica escondido e não pega o dedo) */
-    const cena102 = trilhaAtual === '10.2' || depoisDe('10.2');
+    /* (da "10.5.2" em diante ele já saiu de cena: na montagem dá lugar ao "O subnível mais energético") */
+    const cena102 = (trilhaAtual === '10.2' || depoisDe('10.2')) && ORDEM_10.indexOf(trilhaAtual) < ORDEM_10.indexOf('10.5.2');
     const n = monta ? (cena102 ? TEXTO_102.length : 0) : EV9.letras(T, T102.texto[0], T102.texto[1], TEXTO_102);
     this.texto102.classList.toggle('mont102', monta && cena102);
     this.texto.classList.toggle('mont102', monta && cena102);
+    const depois1052 = monta && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.5.2');
+    this.texto.classList.toggle('fora1052', depois1052); this.texto102.classList.toggle('fora1052', depois1052);
     /* (editado na montagem: o relógio não o reescreve mais) */
     if (n !== this.nt102 && !this.texto102.classList.contains('texto-livre')){
       if (n > this.nt102 && this.nt102 >= 0 && de) TECLAS.bate();
@@ -23029,7 +23039,10 @@ const CARDS101 = {
     if (n !== this.nt106){
       if (n > this.nt106 && this.nt106 >= 0 && de) TECLAS.bate();
       this.nt106 = n;
-      EV9.escreve(this.regra106, REGRA_106, n);
+      /* o que já se escreveu (as palavras coloridas no seu span), o cursor, e o resto guardando o lugar */
+      let k = n, h = '';
+      PARTES_106.forEach(p => { const a = p.t.slice(0, Math.max(0, Math.min(k, p.t.length))); k -= p.t.length; if (a) h += p.c ? '<span class="' + p.c + '">' + a + '</span>' : a; });
+      this.regra106.innerHTML = h + '<i class="cursor"></i><span class="falta">' + REGRA_106.slice(n) + '</span>';
     }
     const dentro = ([a, b]) => T >= a && T < b;
     const chave = [T >= 0, dentro(T106.brilhoSP), T >= T106.semB, dentro([T106.regra[0], T106.regraSai]), dentro(T106.regra), T >= T106.mg,
@@ -23082,13 +23095,17 @@ const CARDS101 = {
     if (!this.texto1052){
       const q = this.texto1052 = document.createElement('div');
       q.className = 'titulo9 texto1052';
+      q.dataset.mont = 'texto-1052';       /* na montagem, peça que anda */
       q.style.left = ((xDaColuna(2) + xDaColuna(17)) / 2).toFixed(1) + 'px';
       q.style.top  = yDaLinha(1).toFixed(1) + 'px';
       q.innerHTML = '<span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span>';
       this.m.appendChild(q);
     }
     const T2 = de2 ? t : depoisDe('10.5.2') && !naMontagem() ? 99 : -1;
-    const n2 = EV9.letras(T2, T1052.texto[0], T1052.texto[1], TEXTO_1052);
+    /* (na montagem, da "10.5.2" em diante, o texto inteiro, para ser arrumado) */
+    const mont2 = naMontagem() && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.5.2');
+    this.texto1052.classList.toggle('mont1052', mont2);
+    const n2 = mont2 ? TEXTO_1052.length : EV9.letras(T2, T1052.texto[0], T1052.texto[1], TEXTO_1052);
     if (n2 !== this.nt1052){
       if (n2 > this.nt1052 && this.nt1052 >= 0 && de2) TECLAS.bate();
       this.nt1052 = n2;
