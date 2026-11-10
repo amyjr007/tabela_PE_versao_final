@@ -3279,6 +3279,7 @@ body.montagem .titulo9.texto101[data-mont="texto-102"]:not(.mont102){opacity:0;p
 /* a "10.5": o texto do f (na cor dele), o "14" que pulsa 2 vezes, o La e o
    Ac escurecidos, e o brilho que corre pelas fileiras */
 .titulo9.texto105{font-size:30px;color:color-mix(in srgb,var(--cat-lantanideos) 80%,#000)}
+.etq102.f105{background:linear-gradient(145deg,color-mix(in srgb,var(--cat-lantanideos) 84%,#fff),color-mix(in srgb,var(--cat-lantanideos) 86%,#000))}
 .card101.pulsa105 sup{animation:pulsa102 .9s ease-in-out 2;transform-origin:50% 60%}
 .mesa[data-slide="10"] .pc .face{transition:filter .6s ease, box-shadow .3s ease}
 .mesa[data-slide="10"] .pc.escuro105 .face{filter:brightness(.42) saturate(.6)}
@@ -5123,7 +5124,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v51.2';
+const VERSAO = 'v51.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22198,9 +22199,16 @@ const ESC_F_1041 = 1.08;
    aos 19 s o lantânio escurece, aos 20 s o actínio (e ficam); dos 25 aos 28
    s as duas fileiras de 14 crescem; dos 29 aos 30 s o brilho corre do cério
    ao lutécio (os acesos ficam), e apaga quando o tório acende, aos 31,2 s;
-   dali o brilho corre até o laurêncio, aos 32 s (e apaga aos 34 s). */
-const T105 = { lan:[3.4, 4.5], act:[4.5, 5.5], card:[[7.0, 10.4], [12.0, 15.5]], texto:[9.0, 10.2], some:11.0,
-               pulsa:[13.4, 15.2], la:19.0, ac:20.0, ambas:[25.0, 28.0], luzL:[29.0, 30.0, 31.2], luzA:[31.2, 32.0, 34.0] };
+   dali o brilho corre até o laurêncio, aos 32 s, e apaga 1 s depois; aos
+   36,5 s o card f cresce; dos 38 aos 39 s as duas fileiras crescem de novo;
+   dos 40 s cada coluna do f (o par de cima e de baixo) sobe de leve e recebe
+   a etiqueta dela embaixo (f¹ aos 40,6 s, f² aos 43,8, f³ aos 47, f⁴ aos 50)
+   e desce quando a seguinte sobe (a 4ª aos 51 s). Dos 51 s o aluno toca as
+   colunas seguintes, na ordem (f⁵ a f¹⁴); completa, a festa. */
+const T105 = { lan:[3.4, 4.5], act:[4.5, 5.5], card:[[7.0, 10.4], [12.0, 15.5], [36.5, 38.0]], texto:[9.0, 10.2], some:11.0,
+               pulsa:[13.4, 15.2], la:19.0, ac:20.0, ambas:[[25.0, 28.0], [38.0, 39.0]], luzL:[29.0, 30.0, 31.2], luzA:[31.2, 32.0, 33.0],
+               sobe:[40.0, 43.2, 46.4, 49.4], pousa:0.6, desce:51.0, toque:51.0 };
+const SIMB_F_105 = ['Ce', 'Pr', 'Nd', 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu'];
 const TEXTO_105 = 'elementos de transição interna';
 const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
@@ -22406,7 +22414,7 @@ const CARDS101 = {
        sumário, por exemplo —, os cards saem dos encaixes e as colunas do p
        se desfazem: a cena começa limpa */
     const antes = trilhaAtual === '10' || (trilhaAtual === '10.1' && t < T101.arrasta);
-    if (antes && !naMontagem() && (this.postos.size || this.passo103 || this.feito103 || this.passo104 || this.feito104 || this.festaFeita)){ this.zera(); return; }
+    if (antes && !naMontagem() && (this.postos.size || this.passo103 || this.feito103 || this.passo104 || this.feito104 || this.passo105 || this.feito105 || this.festaFeita)){ this.zera(); return; }
     this.tick102(t);
     this.tick103(t);
     this.tick1031(t);
@@ -22695,6 +22703,27 @@ const CARDS101 = {
         F.cx = F.reduce((s, p) => s + p.x, 0) / F.length; F.cy = F.reduce((s, p) => s + p.y, 0) / F.length; return F; };
       this.lan105 = fila(58, 71); this.act105 = fila(90, 103);
       this.la105 = this.m.querySelector('.pc[data-z="57"]'); this.ac105 = this.m.querySelector('.pc[data-z="89"]');
+      /* as etiquetas f¹ a f¹⁴, embaixo de cada coluna (o tório e os de baixo) */
+      this.etq105 = this.act105.map((p, k) => {
+        const d = document.createElement('div');
+        d.className = 'etq102 f105';
+        d.innerHTML = 'f<sup>' + (k + 1) + '</sup>';
+        d.style.left = p.x.toFixed(1) + 'px';
+        this.m.appendChild(d);
+        return { d, park:p.y + LADO / 2 + 20, est:0 };
+      });
+      /* o toque nas colunas (dos 51 s da "10.5"): só a seguinte responde */
+      this.m.addEventListener('click', ev => {
+        if (!this.podeTocar105()) return;
+        const c = ev.target.closest && ev.target.closest('.pc');
+        if (!c || c.dataset.b101 !== 'f') return;
+        const z = +c.dataset.z, k = z >= 90 ? z - 90 : z - 58;
+        if (k < 0 || k > 13) return;
+        ev.stopPropagation();
+        const prox = 4 + this.passo105;
+        if (k === prox){ this.avanca105(k); return; }
+        if (k > prox){ tremeVermelho(); this.avisa('Toque na sequência: agora é a coluna do ' + SIMB_F_105[prox]); }
+      }, true);
     }
     const monta = naMontagem(), de = trilhaAtual === '10.5', T = monta ? -1 : de ? t : depoisDe('10.5') ? 99 : -1;
     const n = EV9.letras(T, T105.texto[0], T105.texto[1], TEXTO_105);
@@ -22704,15 +22733,29 @@ const CARDS101 = {
       EV9.escreve(this.texto105, TEXTO_105, n);
     }
     const dentro = ([a, b]) => T >= a && T < b;
-    const gL = dentro(T105.lan) || dentro(T105.ambas), gA = dentro(T105.act) || dentro(T105.ambas);
+    const ambas = T105.ambas.some(dentro);
+    const gL = dentro(T105.lan) || ambas, gA = dentro(T105.act) || ambas;
     const card = T105.card.some(dentro), pulsa = dentro(T105.pulsa);
     const txt = T >= T105.texto[0] && T < T105.some, dig = dentro(T105.texto);
     /* o brilho que corre: o k-ésimo acende no seu instante e fica até o fim da luz */
     const luz = ([a, b, fim], k) => T >= a + k * (b - a) / 13 && T < fim;
     const lL = this.lan105.map((p, k) => luz(T105.luzL, k)), lA = this.act105.map((p, k) => luz(T105.luzA, k));
-    const chave = [gL, gA, card, pulsa, txt, dig, T >= T105.la, T >= T105.ac, ...lL, ...lA].join();
+    /* a coluna no ar: a da vez pelo tempo (f¹ a f⁴), ou a tocada pelo aluno */
+    const S = T105.sobe, kT = T < S[0] || T >= T105.desce ? -1 : S.reduce((a, s, k) => T >= s ? k : a, -1);
+    const up = this.sel105 !== null && T >= 0 ? this.sel105 : kT;
+    /* as etiquetas: as 4 primeiras pelo tempo; as outras pelo toque */
+    const ets = this.etq105.map((E, k) => T < 0 ? 0 : k < 4 ? (T < S[k] + T105.pousa ? 0 : k === kT ? 1 : 2) : E.est);
+    const dica = this.podeTocar105() ? 4 + this.passo105 : -1;
+    const chave = [gL, gA, card, pulsa, txt, dig, T >= T105.la, T >= T105.ac, ...lL, ...lA, up, dica, ...ets].join();
     if (chave === this.estado105) return;
     this.estado105 = chave;
+    const R = 0.3 * PASSO;
+    this.etq105.forEach((E, k) => {
+      const f = ets[k];
+      E.d.classList.toggle('on', f > 0);
+      E.d.style.top = (f === 2 ? E.park : f === 1 ? E.park - R : E.park + 60).toFixed(1) + 'px';
+    });
+    [this.lan105, this.act105].forEach(F => F.forEach((p, k) => p.c.classList.toggle('dica93', k === dica)));
     this.texto105.classList.toggle('on', txt);
     this.texto105.classList.toggle('digitando9', dig);
     if (this.la105) this.la105.classList.toggle('escuro105', T >= T105.la);
@@ -22722,16 +22765,45 @@ const CARDS101 = {
        ficam com quem os mexe, a "10.4.1") */
     if (!de && !this.mexeu105) return;
     this.mexeu105 = de;
-    [[this.lan105, gL], [this.act105, gA]].forEach(([F, g]) => F.forEach(p => {
-      p.c.style.translate = g ? ((p.x - F.cx) * (ESC_FIL_105 - 1)).toFixed(1) + 'px ' + ((p.y - F.cy) * (ESC_FIL_105 - 1)).toFixed(1) + 'px' : '';
+    [[this.lan105, gL], [this.act105, gA]].forEach(([F, g]) => F.forEach((p, k) => {
+      p.c.style.translate = g ? ((p.x - F.cx) * (ESC_FIL_105 - 1)).toFixed(1) + 'px ' + ((p.y - F.cy) * (ESC_FIL_105 - 1)).toFixed(1) + 'px'
+                          : k === up ? '0 ' + (-R).toFixed(1) + 'px' : '';
       p.c.style.scale = g ? String(ESC_FIL_105) : '';
-      p.c.classList.toggle('grande101', g);
+      p.c.classList.toggle('grande101', g || k === up);
     }));
     const o = this.cards[3];
     o.c.style.translate = '';
     o.c.style.scale = card ? String(ESC_CARD_105) : '';
     o.c.classList.toggle('grande102', card);
     o.c.classList.toggle('pulsa105', pulsa);
+  },
+  passo105:0, sel105:null, feito105:false,
+  podeTocar105(){ return atual === 10 && trilhaAtual === '10.5' && !naMontagem() && !this.feito105 &&
+                         ((som.currentTime || 0) >= T105.toque || som.ended); },
+  avanca105(k){
+    if (this.sel105 !== null) this.etq105[this.sel105].est = 2;
+    this.sel105 = k;
+    this.etq105[k].est = 1;
+    this.passo105++;
+    tocaEfeito('flip');
+    if (k === 13){
+      this.feito105 = true;
+      clearTimeout(this.fim105T);
+      this.fim105T = setTimeout(() => {
+        this.etq105[13].est = 2; this.sel105 = null; this.estado105 = '';
+        this.festa(false);
+      }, 900);
+    }
+    this.estado105 = '';
+    ONDE.guarda();
+  },
+  /* (a volta guardada: n colunas já tocadas, com as etiquetas no lugar) */
+  poeColunas105(n){
+    this.prepara(); if (!this.cards) return;
+    this.tick105(-1);
+    this.passo105 = n; this.sel105 = null; this.feito105 = n >= 10;
+    for (let k = 4; k < 4 + n && k < 14; k++) this.etq105[k].est = 2;
+    this.estado105 = '';
   },
   /* A "10.4": o bloco d, como o p na "10.3" */
   passo104:0, sel104:null, feito104:false,
@@ -22823,6 +22895,8 @@ const CARDS101 = {
   },
   zera(){
     this.estado1031 = ''; this.t1031ant = -1; this.estado105 = ''; this.nt105 = -1;
+    this.passo105 = 0; this.sel105 = null; this.feito105 = false; clearTimeout(this.fim105T);
+    if (this.etq105) this.etq105.forEach(E => E.est = 0);
     this.estado104 = ''; this.passo104 = 0; this.sel104 = null; this.feito104 = false; clearTimeout(this.fim104T);
     if (this.etq104) this.etq104.forEach(E => E.est = 0);
     this.postos.clear(); this.estado = ''; this.nt = -1; this.estado102 = ''; this.nt102 = -1;
@@ -26996,6 +27070,7 @@ const ONDE = {
     if (atual === 10 && CARDS101.postos.size) o.blocos10 = [...CARDS101.postos];
     if (atual === 10 && CARDS101.passo103) o.colunas103 = CARDS101.passo103;
     if (atual === 10 && CARDS101.passo104) o.colunas104 = CARDS101.passo104;
+    if (atual === 10 && CARDS101.passo105) o.colunas105 = CARDS101.passo105;
     /* o resumo interativo volta do começo */
     if (RESUMO.aberto) o.resumo = RESUMO.k;
     if (memAberto) o.jogo = { ordem:memCartas.map(c => c.dataset.z + ':' + c.dataset.tipo),
@@ -27070,6 +27145,7 @@ const ONDE = {
       if (o.blocos10) CARDS101.poeJa(o.blocos10);
       if (o.colunas103) CARDS101.poeColunas(o.colunas103);
       if (o.colunas104) CARDS101.poeColunas104(o.colunas104);
+      if (o.colunas105) CARDS101.poeColunas105(o.colunas105);
       if (o.quiz) QUIZ.retoma(o.quiz);
       else if (o.jogo) this.jogo(o.jogo);
       else if (o.quiz3){ viraQuiz(true); QUIZ3.abre(); }
