@@ -3325,7 +3325,12 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
 .banda.b106.on{animation:none}
 .banda.b106.on.pisca106{animation:pisca106 .6s ease-in-out 3}
 @keyframes pisca106{50%{opacity:.12}}
-.mesa .eixo[data-periodo].p106{opacity:1!important;z-index:15}
+/* (da "10.6" em diante, os números das linhas: as bolinhas cheias verdes do
+   quiz do tópico 9; o do período em destaque cresce e brilha) */
+.mesa.linhas106 .eixo[data-periodo]{opacity:1!important;width:24px;height:24px;font:700 12px var(--display);
+  background:#1F9D55;border-color:#1F9D55;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3);transition:opacity .6s ease, transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease}
+.mesa.linhas106 .eixo[data-periodo].p106{z-index:15;transform:translate(-50%,-50%) scale(1.5);
+  box-shadow:0 0 0 2px #7CF5A8, 0 0 16px 6px rgba(46,214,113,.85)}
 .r106{position:absolute;z-index:27;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:76px;line-height:1;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
 .r106 > *{opacity:0;transition:opacity .6s ease, color .4s ease, text-shadow .4s ease}
@@ -5198,7 +5203,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v52.5';
+const VERSAO = 'v52.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23027,12 +23032,12 @@ const CARDS101 = {
       EV9.escreve(this.regra106, REGRA_106, n);
     }
     const dentro = ([a, b]) => T >= a && T < b;
-    const chave = [dentro(T106.brilhoSP), T >= T106.semB, dentro([T106.regra[0], T106.regraSai]), dentro(T106.regra), T >= T106.mg,
+    const chave = [T >= 0, dentro(T106.brilhoSP), T >= T106.semB, dentro([T106.regra[0], T106.regraSai]), dentro(T106.regra), T >= T106.mg,
                    T >= T106.linha, T >= T106.coluna, dentro(T106.piscaL), dentro(T106.piscaC), T >= T106.tres, T >= T106.dois, T >= T106.festa,
                    de && !!this.pede106].join();
     if (chave === this.estado106) return;
     this.estado106 = chave;
-    const [sp, semB, veu, dig, mg, lin, col, pL, pC, tres, dois, festa, pede] = chave.split(',').map(v => v === 'true');
+    const [, sp, semB, veu, dig, mg, lin, col, pL, pC, tres, dois, festa, pede] = chave.split(',').map(v => v === 'true');
     this.veu106.classList.toggle('pede-toque', pede);
     this.toque106.classList.toggle('on', pede);
     stage.classList.toggle('em-toque', pede);
@@ -23043,7 +23048,8 @@ const CARDS101 = {
     if (this.mg106){ this.mg106.classList.toggle('mg106', mg); this.mg106.style.scale = mg ? '1.35' : ''; }
     this.faixaL106.classList.toggle('on', lin); this.faixaL106.classList.toggle('pisca106', pL);
     this.faixaC106.classList.toggle('on', col); this.faixaC106.classList.toggle('pisca106', pC);
-    if (this.p3106){ this.p3106.classList.toggle('acesa', lin); this.p3106.classList.toggle('p106', lin); }
+    if (this.p3106) this.p3106.classList.toggle('p106', lin);
+    this.m.classList.toggle('linhas106', T >= 0);
     this.r106.classList.toggle('tres', tres);
     this.r106.classList.toggle('dois', dois);
     this.r106.classList.toggle('festa', festa);
