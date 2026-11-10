@@ -3295,7 +3295,18 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
 .mesa[data-slide="10"] .pc.aceso105{z-index:8}
 .mesa[data-slide="10"] .pc.aceso105 .face{filter:brightness(1.3);box-shadow:0 0 14px 4px rgba(255,214,120,.95),0 0 26px 8px rgba(255,170,90,.55)}
 /* a "10.5.1": dos 21 s só a tabela fica (os cards, as etiquetas e o texto saem em fade) */
-.mesa.so1051 :is(.card101,.etq102,.titulo9){opacity:0!important;pointer-events:none!important;transition:opacity .8s ease!important}
+.mesa.so1051 :is(.card101,.titulo9:not(.texto1052)),
+.mesa.etq1051 .etq102{opacity:0!important;pointer-events:none!important;transition:opacity .8s ease!important}
+/* a "10.5.2": o texto do alto (na largura da linha 1), e na cena da "10" o
+   diagrama sem o "Princípio de Aufbau", o brilho da distribuição e o 3s²
+   crescido com o "subnível mais energético" embaixo */
+.titulo9.texto1052{font-size:30px}
+.veu-mg10.modo1052 .aufbau10{display:none}
+.veu-mg10 .dist10{transition:opacity .6s ease, filter .6s ease}
+.veu-mg10.brilho1052 .dist10{filter:drop-shadow(0 0 8px rgba(234,255,0,.95)) drop-shadow(0 0 22px rgba(234,255,0,.6))}
+.dist10 .sub10.ult10{transform-box:fill-box;transform-origin:50% 60%;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+.veu-mg10.mais1052on .sub10.ult10{transform:scale(1.4)}
+.dist10 .mais1052{font-family:'Caveat',cursive;font-weight:600;font-size:44px;fill:#F4FF3A;filter:drop-shadow(0 0 6px rgba(234,255,0,.6))}
 /* a "10.5.1": a instrução do fim (as letras dos blocos nas cores deles; a do
    bloco já tocado certo cresce e brilha) */
 .instr1051{position:absolute;z-index:27;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
@@ -5150,7 +5161,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v52.1';
+const VERSAO = 'v52.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6472,7 +6483,8 @@ const TRILHAS = {
   '10.4': 'Audios/audio_tabela_10.4.mp3',   /* o Saquei no fim da "10.3.1": o bloco d e as colunas (CARDS101) */
   '10.4.1': 'Audios/audio_tabela_10.4.1.mp3', /* sozinha, depois da festa das colunas do d: o bloco f cresce */
   '10.5': 'Audios/audio_tabela_10.5.mp3',   /* o Saquei no fim da "10.4.1": o bloco f (CARDS101) */
-  '10.5.1': 'Audios/audio_tabela_10.5.1.mp3' /* sozinha, depois da festa do f: os toques nos blocos s, p, d, f */
+  '10.5.1': 'Audios/audio_tabela_10.5.1.mp3', /* sozinha, depois da festa do f: os toques nos blocos s, p, d, f */
+  '10.5.2': 'Audios/audio_tabela_10.5.2.mp3' /* sozinha, depois da festa dos blocos: o subnível mais energético (EV10) */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -6651,7 +6663,8 @@ const ROTEIROS = {
   '10.4': [],
   '10.4.1': [],
   '10.5': [],
-  '10.5.1': []
+  '10.5.1': [],
+  '10.5.2': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -7384,6 +7397,10 @@ const SEQ = {
     else if (id === '10.4.1'){ if (atual === 10) CARDS101.saquei(true, '10.5'); }
     /* o fim da "10.5": com as colunas do f completas (e a festa feita), a "10.5.1" */
     else if (id === '10.5'){ if (atual === 10 && CARDS101.festa105) tocaTrilha('10.5.1'); }
+    /* o fim da "10.5.1": com os quatro blocos tocados (e a festa feita), a "10.5.2" */
+    else if (id === '10.5.1'){ if (atual === 10 && CARDS101.festa1051) tocaTrilha('10.5.2'); }
+    /* o fim da "10.5.2": o "Saquei" (a cena já saiu) */
+    else if (id === '10.5.2'){ if (atual === 10) CARDS101.saquei(true, null); }
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
     /* (antes dela, a festa: os confetes, o funfare e os aplausos) */
     else if (id === '9.3.8'){ if (atual === 9) EV9.festa93(); }
@@ -22046,6 +22063,15 @@ window.EV9 = EV9;
    quadro a seta corre junto, em tempo real (o 2p e o 3s na mesma diagonal).
    ============================================================ */
 const T10 = { veu:10.0, tabela:11.0, foto:15.0, mg:22.0, circulo:26.0, circuloSai:32.0, dist:[35.0, 40.0] };
+/* A "10.5.2" (sozinha, depois da festa dos quatro blocos): aos 2 s aplausos e
+   confetes; aos 13 s digita "O subnível mais energético" no alto da mesa; aos
+   23 s a cena da "10" (a tela escura, a tabela e o Mg aceso), aos 30 s o
+   diagrama na direita, dos 34 aos 38 s a distribuição com as setas, aos 40,2 s
+   o brilho dela, aos 52 s o "subnível mais energético" embaixo do 3s²; no fim
+   da fala a cena sai e fica o Saquei. */
+const T1052 = { festa:2.0, texto:[13.0, 14.6], veu:23.0, foto:30.0, dist:[34.0, 38.0], brilho:[40.2, 42.2], mais:[52.0, 53.6] };
+const TEXTO_1052 = 'O subnível mais energético';
+const TEXTO_MAIS_1052 = 'subnível mais energético';
 /* os subníveis do Mg, e por onde a seta vai em cada um: o risco do diagrama
    (SETAS_91) e o trecho dele, de 0 a 1 */
 const DIST_10 = [
@@ -22099,8 +22125,8 @@ const EV10 = {
     this.subs = [...V.querySelectorAll('.sub10')];
   },
   /* quanto de cada subnível já se desenhou (0 a 1), aos t s */
-  fracoes(t){
-    const [de, ate] = T10.dist, vez = (ate - de) / DIST_10.length;
+  fracoes(t, [de, ate] = T10.dist){
+    const vez = (ate - de) / DIST_10.length;
     return DIST_10.map((s, k) => Math.max(0, Math.min(1, (t - de - k * vez) / (vez * 0.85))));
   },
   tick(t){
@@ -22109,37 +22135,83 @@ const EV10 = {
     CARDS101.tick(t);
     /* (na "10.1" a cena é a que a "10" deixou, até ao 1 s dela: aí sai em fade) */
     const monta = naMontagem(), de101 = trilhaAtual === '10.1', t10 = monta ? 99 : trilhaAtual === '10' ? t : de101 ? 99 : -1;
+    /* (na "10.5.2" a mesma cena volta, nos tempos dela: o quadro é o diagrama sem o Pauling) */
+    const m1052 = !monta && trilhaAtual === '10.5.2';
+    if (m1052 !== !!this.m1052){
+      this.m1052 = m1052; this.estado = ''; this.estadoT = '';
+      this.veu.querySelector('.quadro10 img').src = m1052 ? 'Imagens/diagrama.jpeg' : 'Imagens/linus_pauling.jpeg';
+      this.veu.classList.toggle('modo1052', m1052);
+      this.veu.classList.remove('brilho1052', 'mais1052on');
+      if (this.mais1052) this.mais1052.textContent = '';
+    }
+    if (m1052) return this.tick1052(t);
     const sai = de101 && t >= T101.sai;
     /* o desenho: as setas e os subníveis, e o círculo (traçado em 0,7 s) */
     const fr = this.fracoes(t10), fc = Math.max(0, Math.min(1, (t10 - T10.circulo) / 0.7));
     const chave = fr.map(f => f.toFixed(3)).join() + '|' + fc.toFixed(3);
     if (chave !== this.estadoT){
       this.estadoT = chave;
-      /* o quanto cada risco andou: o fim do trecho do subnível mais adiantado nele */
-      const anda = [0, 0, 0];
-      DIST_10.forEach((s, k) => { if (fr[k] > 0) anda[s.risco] = s.de + (s.ate - s.de) * fr[k]; });
-      this.setas.forEach((s, k) => {
-        const f = anda[k];
-        s.g.style.opacity = f > 0 ? 1 : 0;
-        s.linhas.forEach(l => l.style.strokeDashoffset = (1 - f).toFixed(3));
-        /* (a cabeça vai na ponta do traço) */
-        s.cab.setAttribute('transform', 'translate(' + (s.x1 + (s.x2 - s.x1) * f).toFixed(1) + ' ' + (s.y1 + (s.y2 - s.y1) * f).toFixed(1) + ') rotate(' + s.a.toFixed(1) + ')');
-      });
-      /* o subnível desenha-se pelo contorno das letras, e enche-se no fim */
-      this.subs.forEach((el, k) => {
-        const f = fr[k];
-        el.style.opacity = f > 0 ? 1 : 0;
-        el.style.strokeDashoffset = (260 * (1 - f)).toFixed(1);
-        el.style.fillOpacity = Math.max(0, (f - 0.6) / 0.4).toFixed(2);
-      });
-      this.circ.forEach(e => e.style.strokeDashoffset = (1 - fc).toFixed(3));
+      /* (o quanto cada risco andou: o fim do trecho do subnível mais adiantado
+         nele; a cabeça vai na ponta do traço; o subnível desenha-se pelo
+         contorno das letras, e enche-se no fim) */
+      this.desenha(fr, fc);
     }
     const est = [t10 >= T10.veu, t10 >= T10.tabela, t10 >= T10.foto, t10 >= T10.mg, t10 >= T10.circulo && t10 < T10.circuloSai, t10 >= T10.dist[0]].join() + '|' + monta + '|' + sai;
     if (est === this.estado) return;
     this.estado = est;
     const [veu, tabela, foto, mg, circ, dist] = est.split('|')[0].split(',').map(v => v === 'true');
+    this.aplica(veu && !monta && !sai, tabela, foto, mg, circ, dist);
+  },
+  /* desenha as setas e os subníveis (fr: o quanto de cada um, 0 a 1) */
+  desenha(fr, fc){
+    const anda = [0, 0, 0];
+    DIST_10.forEach((s, k) => { if (fr[k] > 0) anda[s.risco] = s.de + (s.ate - s.de) * fr[k]; });
+    this.setas.forEach((s, k) => {
+      const f = anda[k];
+      s.g.style.opacity = f > 0 ? 1 : 0;
+      s.linhas.forEach(l => l.style.strokeDashoffset = (1 - f).toFixed(3));
+      s.cab.setAttribute('transform', 'translate(' + (s.x1 + (s.x2 - s.x1) * f).toFixed(1) + ' ' + (s.y1 + (s.y2 - s.y1) * f).toFixed(1) + ') rotate(' + s.a.toFixed(1) + ')');
+    });
+    this.subs.forEach((el, k) => {
+      const f = fr[k];
+      el.style.opacity = f > 0 ? 1 : 0;
+      el.style.strokeDashoffset = (260 * (1 - f)).toFixed(1);
+      el.style.fillOpacity = Math.max(0, (f - 0.6) / 0.4).toFixed(2);
+    });
+    this.circ.forEach(e => e.style.strokeDashoffset = (1 - fc).toFixed(3));
+  },
+  /* A "10.5.2", na mesma cena: aos 23 s a tela escurece, com a tabela e o Mg
+     crescido e aceso; aos 30 s o diagrama na direita; dos 34 aos 38 s a
+     distribuição do Mg desenha-se com as setas correndo no quadro; aos 40,2 s
+     ela brilha; aos 52 s o "3s²" cresce e embaixo dele escreve-se, no mesmo
+     amarelo, "subnível mais energético"; no fim da fala tudo sai em fade (fica
+     a tabela, e o Saquei) */
+  tick1052(t){
+    const T = T1052, dur = som.duration || 99, fim = som.ended || t >= dur - 0.25;
+    const fr = this.fracoes(t, T.dist);
+    const n = Math.round(Math.max(0, Math.min(1, (t - T.mais[0]) / (T.mais[1] - T.mais[0]))) * TEXTO_MAIS_1052.length);
+    const chave = fr.map(f => f.toFixed(3)).join() + '|' + n;
+    if (chave !== this.estadoT){
+      this.estadoT = chave;
+      this.desenha(fr, 0);
+      if (!this.mais1052){
+        /* "subnível mais energético", embaixo do 3s² (no desenho da distribuição) */
+        this.veu.querySelector('.dist10').insertAdjacentHTML('beforeend', '<text class="mais1052" x="478" y="128" text-anchor="middle"></text>');
+        this.mais1052 = this.veu.querySelector('.mais1052');
+      }
+      this.mais1052.textContent = TEXTO_MAIS_1052.slice(0, n);
+    }
+    const est = [t >= T.veu && !fim, t >= T.veu, t >= T.foto, t >= T.dist[0], t >= T.brilho[0] && t < T.brilho[1], t >= T.mais[0]].join();
+    if (est === this.estado) return;
+    this.estado = est;
+    const [veu, tabela, foto, dist, brilho, mais] = est.split(',').map(v => v === 'true');
+    this.aplica(veu, tabela, foto, tabela, false, dist);
+    this.veu.classList.toggle('brilho1052', brilho);
+    this.veu.classList.toggle('mais1052on', mais);
+  },
+  aplica(veu, tabela, foto, mg, circ, dist){
     const V = this.veu;
-    V.classList.toggle('on', veu && !monta && !sai);
+    V.classList.toggle('on', veu);
     V.classList.toggle('tabela10on', tabela);
     V.classList.toggle('foto10on', foto);
     V.classList.toggle('mg10on', mg);
@@ -22249,7 +22321,7 @@ const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
-const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1'];
+const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.2'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -22411,10 +22483,10 @@ const CARDS101 = {
     /* (a festa das colunas do p ou do d: acabado o funfare, a "10.3.1" ou a
        "10.4.1" — ou, se a narração ainda fala, no fim dela) */
     if (!segue){
-      const de = trilhaAtual, prox = { '10.3':'10.3.1', '10.4':'10.4.1', '10.5':'10.5.1' }[de];
+      const de = trilhaAtual, prox = { '10.3':'10.3.1', '10.4':'10.4.1', '10.5':'10.5.1', '10.5.1':'10.5.2' }[de];
       tocaEfeito('funfare').then(() => {
         if (g !== this.festaG || atual !== 10 || trilhaAtual !== de || !prox) return;
-        this['festa' + de.replace('.', '')] = true;
+        this['festa' + de.replace(/\./g, '')] = true;
         if (som.ended || (som.duration && som.currentTime >= som.duration - 0.15)) tocaTrilha(prox);
       });
       return;
@@ -22858,8 +22930,32 @@ const CARDS101 = {
     if (de && !som.paused && this.t1051ant >= 0 && this.t1051ant < T1051.festa && t >= T1051.festa && t < T1051.festa + 0.6) this.aplauso();
     this.t1051ant = de ? t : -1;
     /* aos 21 s, com a tabela sem cor, os cards, as etiquetas e o texto saem
-       em fade: só a tabela fica, para ser tocada */
-    this.m.classList.toggle('so1051', de && t >= T1051.neutro);
+       em fade: só a tabela fica, para ser tocada. Completa a tabela (passada
+       a festa), as etiquetas voltam; os cards e o texto não (nem na "10.5.2") */
+    const so = (de && t >= T1051.neutro) || (!naMontagem() && depoisDe('10.5.1'));
+    this.m.classList.toggle('so1051', so);
+    this.m.classList.toggle('etq1051', de && t >= T1051.neutro && !this.fora1051);
+    /* a "10.5.2": aos 2 s aplausos e confetes; aos 13 s o texto digitado */
+    const de2 = trilhaAtual === '10.5.2' && !naMontagem();
+    if (de2 && !som.paused && this.t1052ant >= 0 && this.t1052ant < T1052.festa && t >= T1052.festa && t < T1052.festa + 0.6) this.aplauso();
+    this.t1052ant = de2 ? t : -1;
+    if (!this.texto1052){
+      const q = this.texto1052 = document.createElement('div');
+      q.className = 'titulo9 texto1052';
+      q.style.left = ((xDaColuna(2) + xDaColuna(17)) / 2).toFixed(1) + 'px';
+      q.style.top  = yDaLinha(1).toFixed(1) + 'px';
+      q.innerHTML = '<span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span>';
+      this.m.appendChild(q);
+    }
+    const T2 = de2 ? t : depoisDe('10.5.2') && !naMontagem() ? 99 : -1;
+    const n2 = EV9.letras(T2, T1052.texto[0], T1052.texto[1], TEXTO_1052);
+    if (n2 !== this.nt1052){
+      if (n2 > this.nt1052 && this.nt1052 >= 0 && de2) TECLAS.bate();
+      this.nt1052 = n2;
+      EV9.escreve(this.texto1052, TEXTO_1052, n2);
+    }
+    this.texto1052.classList.toggle('on', T2 >= T1052.texto[0]);
+    this.texto1052.classList.toggle('digitando9', T2 >= T1052.texto[0] && T2 < T1052.texto[1]);
     /* acabada a fala, o play sai e a instrução fica no alto (as letras dos
        blocos nas cores deles; a de cada bloco certo cresce e brilha) — até a
        festa do f passar */
@@ -23004,6 +23100,7 @@ const CARDS101 = {
     this.fora();
     this.festaG++; this.festaFeita = false; this.festa103 = false; this.festa104 = false; this.festa105 = false;
     this.passo1051 = 0; this.feito1051 = false; clearTimeout(this.fim1051T); this.t1051ant = -1; this.fora1051 = false;
+    this.festa1051 = false; this.t1052ant = -1; this.nt1052 = -1;
     this.f1041 = false; clearTimeout(this.f1041T); if (this.cards) this.cresceF1041(false);
     if (!this.cards) return;
     this.cards.forEach(o => { o.c.style.transition = 'none'; o.c.classList.remove('posto101', 'pego101'); o.s.classList.remove('cheio101');
@@ -26562,6 +26659,9 @@ const NAV_TOPICOS = [
   /* o começo da "10.5": o bloco f e as colunas */
   { titulo:'O bloco f', sub:'o começo da 10.5', slide:10,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.5', 0, g)); } },
+  /* o começo da "10.5.2": o subnível mais energético pelo diagrama */
+  { titulo:'O subnível mais energético sem tabela', sub:'o começo da 10.5.2', slide:10,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.5.2', 0, g)); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
