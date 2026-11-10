@@ -5115,7 +5115,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v51.0';
+const VERSAO = 'v51.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6434,7 +6434,8 @@ const TRILHAS = {
   '10.2': 'Audios/audio_tabela_10.2.mp3',   /* sozinha, depois da festa dos quatro cards: o bloco s (CARDS101) */
   '10.3': 'Audios/audio_tabela_10.3.mp3',   /* o Saquei no fim da "10.2": o bloco p e as colunas (CARDS101) */
   '10.3.1': 'Audios/audio_tabela_10.3.1.mp3', /* sozinha, depois da festa das colunas: o hélio; no fim, o Saquei */
-  '10.4': 'Audios/audio_tabela_10.4.mp3'    /* o Saquei no fim da "10.3.1": o bloco d e as colunas (CARDS101) */
+  '10.4': 'Audios/audio_tabela_10.4.mp3',   /* o Saquei no fim da "10.3.1": o bloco d e as colunas (CARDS101) */
+  '10.4.1': 'Audios/audio_tabela_10.4.1.mp3' /* sozinha, depois da festa das colunas do d: o bloco f cresce */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -6610,7 +6611,8 @@ const ROTEIROS = {
   '10.2': [],
   '10.3': [],
   '10.3.1': [],
-  '10.4': []
+  '10.4': [],
+  '10.4.1': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -7337,6 +7339,8 @@ const SEQ = {
     else if (id === '10.3'){ if (atual === 10 && CARDS101.festa103) tocaTrilha('10.3.1'); }
     /* o fim da "10.3.1": o "Saquei", que leva à "10.4" (o bloco d) */
     else if (id === '10.3.1'){ if (atual === 10) CARDS101.saquei(true, '10.4'); }
+    /* o fim da "10.4": com as colunas do d completas (e a festa feita), a "10.4.1" */
+    else if (id === '10.4'){ if (atual === 10 && CARDS101.festa104) tocaTrilha('10.4.1'); }
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
     /* (antes dela, a festa: os confetes, o funfare e os aplausos) */
     else if (id === '9.3.8'){ if (atual === 9) EV9.festa93(); }
@@ -22171,10 +22175,13 @@ const ESC_D_104 = 1.1;
    cresce e volta. */
 const T1031 = { he:[4.5, 13.8], brilho:[9.0, 10.6], s2:13.8, pausa:20.0, cardD:[21.8, 22.3] };
 const ESC_HE_1031 = 1.45;
+/* A "10.4.1": aos 6 s o bloco f cresce, e volta 1,2 s depois */
+const T1041 = { f:6.0, volta:1.2 };
+const ESC_F_1041 = 1.08;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
-const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4'];
+const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -22329,13 +22336,14 @@ const CARDS101 = {
     confete();
     tocaEfeito('applause');
     const g = ++this.festaG;
-    /* (a festa das colunas do p: acabado o funfare, a "10.3.1" — ou, se a
-       "10.3" ainda fala, no fim dela) */
+    /* (a festa das colunas do p ou do d: acabado o funfare, a "10.3.1" ou a
+       "10.4.1" — ou, se a narração ainda fala, no fim dela) */
     if (!segue){
+      const de = trilhaAtual, prox = { '10.3':'10.3.1', '10.4':'10.4.1' }[de];
       tocaEfeito('funfare').then(() => {
-        if (g !== this.festaG || atual !== 10 || trilhaAtual !== '10.3') return;
-        this.festa103 = true;
-        if (som.ended || (som.duration && som.currentTime >= som.duration - 0.15)) tocaTrilha('10.3.1');
+        if (g !== this.festaG || atual !== 10 || trilhaAtual !== de || !prox) return;
+        if (de === '10.3') this.festa103 = true; else this.festa104 = true;
+        if (som.ended || (som.duration && som.currentTime >= som.duration - 0.15)) tocaTrilha(prox);
       });
       return;
     }
@@ -22346,7 +22354,7 @@ const CARDS101 = {
       if (som.ended || (som.duration && som.currentTime >= som.duration - 0.15)) tocaTrilha('10.2');
     });
   },
-  festaG:0, festaFeita:false, festa103:false,
+  festaG:0, festaFeita:false, festa103:false, festa104:false,
   /* o fim da "10.1": a festa já feita, a "10.2" toca; os quatro no lugar, mas
      sem festa (a volta ao app), o play fica com ela */
   fim101(){
@@ -22378,6 +22386,7 @@ const CARDS101 = {
     this.tick103(t);
     this.tick1031(t);
     this.tick104(t);
+    this.tick1041(t);
     const monta = naMontagem(), de = trilhaAtual === '10.1', T = monta ? 99 : de ? t : -1;
     const n = EV9.letras(T, T101.texto[0], T101.texto[1], TEXTO_101);
     if (n !== this.nt && !this.texto.classList.contains('texto-livre')){
@@ -22628,6 +22637,25 @@ const CARDS101 = {
       o.c.classList.toggle('grande102', cardD);
     }
   },
+  /* A "10.4.1" (curta, 6,7 s): aos 6 s o bloco f (os lantanídeos e os
+     actinídeos, com o card f na frente) cresce, e volta 1,2 s depois — pelo
+     relógio, já que a fala acaba logo */
+  cresceF1041(sim){
+    this.cresceBloco('f', sim, ESC_F_1041);
+    const o = this.cards[3], B = this.blocos.f, K = ESC_F_1041;
+    o.c.style.translate = sim ? ((o.x - B.cx) * (K - 1)).toFixed(1) + 'px ' + ((o.y - B.cy) * (K - 1)).toFixed(1) + 'px' : '';
+    o.c.style.scale = sim ? String(K) : '';
+    o.c.classList.toggle('grande102', sim);
+  },
+  tick1041(t){
+    const de = trilhaAtual === '10.4.1' && !naMontagem();
+    if (!de || t < T1041.f){ if (de && this.f1041 && t < T1041.f){ this.f1041 = false; clearTimeout(this.f1041T); this.cresceF1041(false); } return; }
+    if (this.f1041) return;
+    this.f1041 = true;
+    this.cresceF1041(true);
+    clearTimeout(this.f1041T);
+    this.f1041T = setTimeout(() => this.cresceF1041(false), T1041.volta * 1000);
+  },
   /* A "10.4": o bloco d, como o p na "10.3" */
   passo104:0, sel104:null, feito104:false,
   /* as etiquetas do d (d¹ a d¹⁰) em cima das colunas 3 a 12, acima da linha 4 */
@@ -22724,7 +22752,8 @@ const CARDS101 = {
     this.estado103 = ''; this.passo103 = 0; this.sel103 = null; this.feito103 = false; clearTimeout(this.fim103T);
     if (this.etq103) this.etq103.forEach(E => E.est = 0);
     this.fora();
-    this.festaG++; this.festaFeita = false; this.festa103 = false;
+    this.festaG++; this.festaFeita = false; this.festa103 = false; this.festa104 = false;
+    this.f1041 = false; clearTimeout(this.f1041T); if (this.cards) this.cresceF1041(false);
     if (!this.cards) return;
     this.cards.forEach(o => { o.c.style.transition = 'none'; o.c.classList.remove('posto101', 'pego101'); o.s.classList.remove('cheio101');
       this.poe(o, ...o.casa); void o.c.offsetWidth; o.c.style.transition = ''; });

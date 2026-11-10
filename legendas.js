@@ -158,6 +158,11 @@ var LEGENDAS = {
     [32.64,37.82,"A cada nova coluna que avançamos para a direita, adicionamos mais um elétron nesse subnível."],
     [38.33,41.3,"Vou colocar o d¹ aqui, e você põe o resto."]
   ],
+  "audio_tabela_10.4.1": [
+    [0,2.51,"Perfeito! Você está pegando o jeito mesmo!"],
+    [3.21,5.5,"Vamos para os elementos do último bloco agora."],
+    [5.77,6.69,"O bloco f."]
+  ],
   "audio_tabela_1_jogo_memória": [
     [0,3.42,"Muito bem, você terminou o resumo interativo do tópico aqui."],
     [3.42,9.56,"Agora, que tal fazer um joguinho rapidinho que vai te ajudar a fixar esse tópico mais ainda?"],
