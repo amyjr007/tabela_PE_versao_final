@@ -3307,6 +3307,9 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
    à vista; o "3s²" que se monta e pisca em verde */
 .mesa[data-slide="10"] :is(.pc[data-b101="d"], .etq102.d104){transition:opacity .8s ease, scale .55s ease, translate .55s ease}
 .mesa.semB106 :is(.pc[data-b101="d"], .etq102.d104, .casa.serie){opacity:.12!important}
+/* (sem as duas fileiras de baixo, a mesa desce para o lugar que o professor
+   deixou na montagem: { el:'tabela', x:6, y:97, esc:0.94 }) */
+.mesa[data-slide="10"].semB106{--px:6px;--py:97px;transition:transform .9s cubic-bezier(.3,.85,.3,1)}
 /* (e os lantanídeos e actinídeos voltam de uma vez para as casas do 3B: as
    duas fileiras de baixo, e as etiquetas delas, somem sem fade) */
 .mesa.semB106 :is(.pc[data-b101="f"], .pc[data-z="57"], .pc[data-z="89"], .etq102.f105, .casaF106){visibility:hidden!important;transition:none!important}
@@ -5195,7 +5198,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v52.4';
+const VERSAO = 'v52.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
