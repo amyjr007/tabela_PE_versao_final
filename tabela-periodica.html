@@ -2503,6 +2503,7 @@ body.montagem .bloco72{pointer-events:auto}
 /* e na fala curta da "8.2.0", que passa sozinha à "8.2" (EV8) */
 #stage.sem-play8 #som, #stage.sem-play8 #som-dica, #stage.sem-play8 #vel,
 #stage.sem-play9 #som, #stage.sem-play9 #som-dica, #stage.sem-play9 #vel{display:none!important}
+#stage.sem-play1051 #som, #stage.sem-play1051 #som-dica, #stage.sem-play1051 #vel{display:none!important}
 
 /* ---- o cartão da nota, no fim do quiz ---- */
 .nota-card{
@@ -3295,6 +3296,15 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
 .mesa[data-slide="10"] .pc.aceso105 .face{filter:brightness(1.3);box-shadow:0 0 14px 4px rgba(255,214,120,.95),0 0 26px 8px rgba(255,170,90,.55)}
 /* a "10.5.1": dos 21 s só a tabela fica (os cards, as etiquetas e o texto saem em fade) */
 .mesa.so1051 :is(.card101,.etq102,.titulo9){opacity:0!important;pointer-events:none!important;transition:opacity .8s ease!important}
+/* a "10.5.1": a instrução do fim (as letras dos blocos nas cores deles; a do
+   bloco já tocado certo cresce e brilha) */
+.instr1051{position:absolute;z-index:27;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
+  font-family:var(--display);font-weight:700;font-size:28px;color:var(--tinta);opacity:0;transition:opacity .6s ease}
+.instr1051.on{opacity:1}
+.instr1051 .l1051{display:inline-block;padding:0 .06em;color:color-mix(in srgb,var(--cor) 82%,#000);
+  transition:transform .4s cubic-bezier(.34,1.56,.64,1), text-shadow .4s ease, margin .4s ease}
+.instr1051 .l1051.ok{transform:scale(1.55);margin:0 .16em;
+  text-shadow:0 0 8px rgba(255,214,120,.95),0 0 18px rgba(255,190,90,.8),0 0 30px rgba(255,170,90,.5)}
 /* a "10.5.1": o bloco tocado certo brilha; completo, a tabela toda brilha forte */
 .mesa.blocos.bl1051-s .pc[data-b101="s"] .face, .mesa.blocos.bl1051-p .pc[data-b101="p"] .face,
 .mesa.blocos.bl1051-d .pc[data-b101="d"] .face, .mesa.blocos.bl1051-f .pc[data-b101="f"] .face{
@@ -5140,7 +5150,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v52.0';
+const VERSAO = 'v52.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22580,7 +22590,7 @@ const CARDS101 = {
     this.comSaquei = sim;
     botaoVerde(sim ? 'Saquei' : null, () => { this.saquei(false); if (atual === 10 && prox) tocaTrilha(prox); });
   },
-  fora(){ if (this.comSaquei) this.saquei(false); },
+  fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051'); },
   passo103:0, sel103:null, feito103:false,
   /* as etiquetas do p (p¹ a p⁶) em cima das colunas 13 a 18, na linha 1 */
   prepara103(){
@@ -22826,6 +22836,7 @@ const CARDS101 = {
   },
   /* os toques de uma narração (103, 104 ou 105), desfeitos */
   limpaToques(s){
+    if (s === '1051') this.fora1051 = false;
     this['passo' + s] = 0; this['sel' + s] = null; this['feito' + s] = false; this['festa' + s] = false;
     clearTimeout(this['fim' + s + 'T']);
     const E = this['etq' + s]; if (E) E.forEach(e => e.est = 0);
@@ -22849,6 +22860,24 @@ const CARDS101 = {
     /* aos 21 s, com a tabela sem cor, os cards, as etiquetas e o texto saem
        em fade: só a tabela fica, para ser tocada */
     this.m.classList.toggle('so1051', de && t >= T1051.neutro);
+    /* acabada a fala, o play sai e a instrução fica no alto (as letras dos
+       blocos nas cores deles; a de cada bloco certo cresce e brilha) — até a
+       festa do f passar */
+    if (!this.instr1051){
+      const q = this.instr1051 = document.createElement('div');
+      q.className = 'instr1051';
+      q.style.left = ((xDaColuna(2) + xDaColuna(17)) / 2).toFixed(1) + 'px';
+      q.style.top  = yDaLinha(1).toFixed(1) + 'px';
+      const L = K => '<span class="l1051" data-b="' + K.b + '" style="--cor:' + K.cor + '">' + K.b + '</span>';
+      const [s, p, d, f] = CARDS_101;
+      q.innerHTML = 'Toque nos blocos na sequência correta ' + L(s) + ', ' + L(p) + ', ' + L(d) + ' e ' + L(f) + '.';
+      this.m.appendChild(q);
+    }
+    const fim = de && (som.ended || (som.duration > 0 && t >= som.duration - 0.15));
+    const mostra = fim && !this.fora1051;
+    this.instr1051.classList.toggle('on', mostra);
+    stage.classList.toggle('sem-play1051', mostra);
+    this.instr1051.querySelectorAll('.l1051').forEach((e, k) => e.classList.toggle('ok', k < this.passo1051));
     if (this.ouve1051) return;
     this.ouve1051 = true;
     /* o toque num bloco (a carta, o card dele ou o bilhete das séries) */
@@ -22872,7 +22901,7 @@ const CARDS101 = {
         this.fim1051T = setTimeout(() => {
           this.festa(false);
           this.m.classList.add('bl1051-tudo');
-          setTimeout(() => this.m.classList.remove('bl1051-tudo'), 2200);
+          setTimeout(() => { this.m.classList.remove('bl1051-tudo'); this.fora1051 = true; }, 2200);
         }, 700);
       }
       ONDE.guarda();
@@ -22974,7 +23003,7 @@ const CARDS101 = {
     if (this.etq103) this.etq103.forEach(E => E.est = 0);
     this.fora();
     this.festaG++; this.festaFeita = false; this.festa103 = false; this.festa104 = false; this.festa105 = false;
-    this.passo1051 = 0; this.feito1051 = false; clearTimeout(this.fim1051T); this.t1051ant = -1;
+    this.passo1051 = 0; this.feito1051 = false; clearTimeout(this.fim1051T); this.t1051ant = -1; this.fora1051 = false;
     this.f1041 = false; clearTimeout(this.f1041T); if (this.cards) this.cresceF1041(false);
     if (!this.cards) return;
     this.cards.forEach(o => { o.c.style.transition = 'none'; o.c.classList.remove('posto101', 'pego101'); o.s.classList.remove('cheio101');
