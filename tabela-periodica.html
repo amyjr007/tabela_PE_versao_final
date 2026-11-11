@@ -3370,6 +3370,19 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .veu-mg10.brilho1052 .dist10{filter:drop-shadow(0 0 8px rgba(234,255,0,.95)) drop-shadow(0 0 22px rgba(234,255,0,.6))}
 .dist10 .sub10.ult10{transform-box:fill-box;transform-origin:50% 60%;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
 .veu-mg10.mais1052on .sub10.ult10{transform:scale(1.4)}
+/* a "10.5.2" aos 44 s: o 1s² pulsa e brilha, com a seta dele no diagrama; aos
+   44,9 s o 3s² pulsa, e o 3s² do diagrama acende (e fica aceso) */
+.dist10 :is(.s1s10,.s3s10){transform-box:fill-box;transform-origin:50% 60%}
+.veu-mg10.p1s1052 .dist10 .s1s10, .veu-mg10.p3s1052 .dist10 .s3s10{animation:pulsa1052 .85s ease-in-out}
+@keyframes pulsa1052{50%{transform:scale(1.35);filter:drop-shadow(0 0 6px #F4FF3A) drop-shadow(0 0 16px rgba(234,255,0,.85))}}
+.veu-mg10.p1s1052 .setas10 .r1s10{animation:seta1052 .85s ease-in-out}
+.veu-mg10.p1s1052 .setas10 .r1s10 .halo10{animation:halo1052 .85s ease-in-out}
+@keyframes seta1052{50%{filter:brightness(1.35) drop-shadow(0 0 10px #F4FF3A)}}
+@keyframes halo1052{50%{opacity:1;stroke-width:30}}
+.setas10 .luz3s1052{fill:#EAFF00;stroke:none;filter:url(#g1052);mix-blend-mode:screen;opacity:0;transition:opacity .5s ease}
+.veu-mg10.luz3s1052on .setas10 .luz3s1052{opacity:.5}
+.veu-mg10.p3s1052 .setas10 .luz3s1052{animation:luz1052 .85s ease-in-out}
+@keyframes luz1052{50%{opacity:.8}}
 .dist10 .mais1052{font-family:'Caveat',cursive;font-weight:600;font-size:44px;fill:#F4FF3A;filter:drop-shadow(0 0 6px rgba(234,255,0,.6))}
 /* a "10.5.1": a instrução do fim (as letras dos blocos nas cores deles; a do
    bloco já tocado certo cresce e brilha) */
@@ -5233,7 +5246,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v54.2';
+const VERSAO = 'v54.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22143,7 +22156,7 @@ const T10 = { veu:10.0, tabela:11.0, foto:15.0, mg:22.0, circulo:26.0, circuloSa
    diagrama na direita, dos 34 aos 38 s a distribuição com as setas, aos 40,2 s
    o brilho dela, aos 52 s o "subnível mais energético" embaixo do 3s²; no fim
    da fala a cena sai e fica o Saquei. */
-const T1052 = { festa:2.0, texto:[13.0, 14.6], veu:23.0, foto:30.0, dist:[34.0, 38.0], brilho:[40.2, 42.2], mais:[52.0, 53.6] };
+const T1052 = { festa:2.0, texto:[13.0, 14.6], veu:23.0, foto:30.0, dist:[34.0, 38.0], brilho:[40.2, 42.2], p1s:44.0, p3s:44.9, mais:[52.0, 53.6] };
 const TEXTO_1052 = 'O subnível mais energético';
 const TEXTO_MAIS_1052 = 'subnível mais energético';
 /* A "10.6" (o Saquei no fim da "10.5.2"): aos 1 s a cena escura sai em fade e
@@ -22187,7 +22200,10 @@ const VEU_10 = (() => {
     '<div class="icone10" data-mont="tabela-10"></div>' +
     '<div class="quadro10" data-mont="diagrama-10"><img src="Imagens/linus_pauling.jpeg" alt="Linus Pauling no quadro do diagrama">' +
     '<svg class="setas10" viewBox="0 0 1024 772" aria-hidden="true"><defs>' +
-    '<filter id="g10" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="7"/></filter></defs>' + circ + riscos + '</svg></div>' +
+    '<filter id="g10" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="7"/></filter>' +
+    '<filter id="g1052" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter></defs>' +
+    /* (o brilho do "3s²" do diagrama, na "10.5.2") */
+    '<ellipse class="luz3s1052" cx="318" cy="294" rx="78" ry="48" transform="rotate(-8 318 294)"/>' + circ + riscos + '</svg></div>' +
     '<p class="aufbau10" data-mont="aufbau-10">“Princípio de Aufbau”</p>' +
     '<svg class="dist10" data-mont="distribuicao-10" viewBox="0 0 520 90" aria-label="₁₂Mg: 1s² 2s² 2p⁶ 3s²">' +
     /* (o número atômico embaixo, no canto esquerdo do símbolo: ₁₂Mg) */
@@ -22214,6 +22230,8 @@ const EV10 = {
     });
     this.circ = [...V.querySelectorAll('.circ10 ellipse')];
     this.subs = [...V.querySelectorAll('.sub10')];
+    /* (os que pulsam na "10.5.2": o 1s² e a seta dele; o 3s²) */
+    this.subs[0].classList.add('s1s10'); this.subs[3].classList.add('s3s10'); this.setas[0].g.classList.add('r1s10');
   },
   /* quanto de cada subnível já se desenhou (0 a 1), aos t s */
   fracoes(t, [de, ate] = T10.dist){
@@ -22234,7 +22252,7 @@ const EV10 = {
       this.modo1052 = modo;
       this.veu.querySelector('.quadro10 img').src = modo ? 'Imagens/diagrama.jpeg' : 'Imagens/linus_pauling.jpeg';
       this.veu.classList.toggle('modo1052', modo);
-      if (!modo){ this.veu.classList.remove('brilho1052', 'mais1052on'); if (this.mais1052) this.mais1052.textContent = ''; }
+      if (!modo){ this.veu.classList.remove('brilho1052', 'mais1052on', 'p1s1052', 'p3s1052', 'luz3s1052on'); if (this.mais1052) this.mais1052.textContent = ''; }
     }
     const m1052 = !monta && (trilhaAtual === '10.5.2' || (trilhaAtual === '10.6' && t < T106.sai));
     if (m1052 !== !!this.m1052){ this.m1052 = m1052; this.estado = ''; this.estadoT = ''; }
@@ -22296,13 +22314,19 @@ const EV10 = {
       }
       this.mais1052.textContent = TEXTO_MAIS_1052.slice(0, n);
     }
-    const est = [t >= T.veu, t >= T.veu, t >= T.foto, t >= T.dist[0], t >= T.brilho[0] && t < T.brilho[1], t >= T.mais[0]].join();
+    const est = [t >= T.veu, t >= T.veu, t >= T.foto, t >= T.dist[0], t >= T.brilho[0] && t < T.brilho[1], t >= T.mais[0],
+                 t >= T.p1s && t < T.p3s, t >= T.p3s && t < T.p3s + 0.9, t >= T.p3s].join();
     if (est === this.estado) return;
     this.estado = est;
-    const [veu, tabela, foto, dist, brilho, mais] = est.split(',').map(v => v === 'true');
+    const [veu, tabela, foto, dist, brilho, mais, p1s, p3s, luz3s] = est.split(',').map(v => v === 'true');
     this.aplica(veu, tabela, foto, tabela, false, dist);
     this.veu.classList.toggle('brilho1052', brilho);
     this.veu.classList.toggle('mais1052on', mais);
+    /* aos 44 s o 1s² pulsa e brilha, com a seta dele no diagrama; aos 44,9 s
+       o 3s² pulsa, e o 3s² do diagrama acende (e fica) */
+    this.veu.classList.toggle('p1s1052', p1s);
+    this.veu.classList.toggle('p3s1052', p3s);
+    this.veu.classList.toggle('luz3s1052on', luz3s);
   },
   aplica(veu, tabela, foto, mg, circ, dist){
     const V = this.veu;
