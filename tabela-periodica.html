@@ -2503,7 +2503,8 @@ body.montagem .bloco72{pointer-events:auto}
 /* e na fala curta da "8.2.0", que passa sozinha à "8.2" (EV8) */
 #stage.sem-play8 #som, #stage.sem-play8 #som-dica, #stage.sem-play8 #vel,
 #stage.sem-play9 #som, #stage.sem-play9 #som-dica, #stage.sem-play9 #vel{display:none!important}
-#stage.sem-play1051 #som, #stage.sem-play1051 #som-dica, #stage.sem-play1051 #vel{display:none!important}
+#stage.sem-play1051 #som, #stage.sem-play1051 #som-dica, #stage.sem-play1051 #vel,
+#stage.sem-play105 #som, #stage.sem-play105 #som-dica, #stage.sem-play105 #vel{display:none!important}
 
 /* ---- o cartão da nota, no fim do quiz ---- */
 .nota-card{
@@ -5220,7 +5221,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v53.7';
+const VERSAO = 'v53.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22750,7 +22751,7 @@ const CARDS101 = {
     this.comSaquei = sim;
     botaoVerde(sim ? 'Saquei' : null, () => { this.saquei(false); if (atual === 10 && prox) tocaTrilha(prox); });
   },
-  fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051');
+  fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051', 'sem-play105');
           if (this.pede106){ this.pede106 = false; this.estado106 = ''; stage.classList.remove('em-toque'); } },
   passo103:0, sel103:null, feito103:false,
   /* as etiquetas do p (p¹ a p⁶) em cima das colunas 13 a 18, na linha 1 */
@@ -22943,6 +22944,8 @@ const CARDS101 = {
       }, true);
     }
     const monta = naMontagem(), de = trilhaAtual === '10.5', T = monta ? -1 : de ? t : depoisDe('10.5') ? 99 : -1;
+    /* no fim da "10.5" o play sai (o aluno toca as colunas do f) */
+    stage.classList.toggle('sem-play105', de && !monta && (som.ended || (som.duration > 0 && t >= som.duration - 0.15)));
     const n = EV9.letras(T, T105.texto[0], T105.texto[1], TEXTO_105);
     if (n !== this.nt105){
       if (n > this.nt105 && this.nt105 >= 0 && de) TECLAS.bate();
