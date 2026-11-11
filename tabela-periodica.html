@@ -5221,7 +5221,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v53.8';
+const VERSAO = 'v53.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -26850,6 +26850,9 @@ const NAV_TOPICOS = [
   /* o começo da "10.5": o bloco f e as colunas */
   { titulo:'O bloco f', sub:'o começo da 10.5', slide:10,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.5', 0, g)); } },
+  /* a "10.5.1" aos 19 s: logo antes de a tabela perder a cor e o aluno tocar os blocos */
+  { titulo:'Identifique os blocos', sub:'a 10.5.1 aos 19 s', slide:10,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.5.1', 19, g)); } },
   /* o começo da "10.5.2": o subnível mais energético pelo diagrama */
   { titulo:'O subnível mais energético sem tabela', sub:'o começo da 10.5.2', slide:10,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.5.2', 0, g)); } },
