@@ -3301,7 +3301,7 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
 .mesa[data-slide="10"] .pc.aceso105{z-index:8}
 .mesa[data-slide="10"] .pc.aceso105 .face{filter:brightness(1.3);box-shadow:0 0 14px 4px rgba(255,214,120,.95),0 0 26px 8px rgba(255,170,90,.55)}
 /* a "10.5.1": dos 21 s só a tabela fica (os cards, as etiquetas e o texto saem em fade) */
-.mesa.so1051 :is(.card101,.titulo9:not(.texto1052)),
+.mesa.so1051 :is(.card101,.titulo9:not(.texto1052,.texto106,.rot106)),
 .mesa.etq1051 .etq102{opacity:0!important;pointer-events:none!important;transition:opacity .8s ease!important}
 /* a "10.5.2": o texto do alto (na largura da linha 1), e na cena da "10" o
    diagrama sem o "Princípio de Aufbau", o brilho da distribuição e o 3s²
@@ -3342,7 +3342,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
    a da coluna num âmbar escuro, que contrasta com o laranja do bloco s) */
 .banda.b106{z-index:29}
 .banda.banda-col.b106{background:rgba(120,52,12,.24);border:2px solid rgba(150,66,14,.9)}
-.banda.b106.on.pisca106{animation:pisca106 .6s ease-in-out 3}
+.banda.b106.on.pisca2106{animation:pisca106 .6s ease-in-out 2}
 @keyframes pisca106{50%{opacity:.12}}
 /* (da "10.6" em diante, os números das linhas: as bolinhas cheias azuis do
    tópico 3 — a cor das linhas; o do período em destaque cresce e brilha) */
@@ -3353,22 +3353,30 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
   box-shadow:0 0 0 3px var(--cor-coluna), 0 0 16px 6px rgba(224,120,43,.7)}
 .mesa.linhas106 .eixo[data-periodo].p106{z-index:15;transform:translate(-50%,-50%) scale(1.5);
   box-shadow:0 0 0 2px rgba(111,174,240,.95), 0 0 16px 6px rgba(47,127,209,.75)}
-.r106{position:absolute;z-index:30;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
-  font-family:var(--display);font-weight:700;font-size:76px;line-height:1;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
+/* o "Elementos representativos primeiro" (da "10.6"), embaixo do texto da "10.5.2" */
+.titulo9.texto106{font-size:24px;color:color-mix(in srgb,var(--tinta) 80%,transparent)}
+/* a linha do Mg (da "10.6.1"): o "Subnível mais energético:" e o 3s², lado a lado */
+.linha106{position:absolute;z-index:30;transform:translate(-50%,-50%);display:flex;align-items:center;gap:16px;
+  white-space:nowrap;pointer-events:none}
+.linha106 .titulo9.rot106{position:static;transform:none;font-size:28px}
+.r106{position:relative;font-family:var(--display);font-weight:700;font-size:76px;line-height:1;
+  transform-origin:30% 55%;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
 .r106 > *{opacity:0;transition:opacity .6s ease, color .4s ease, text-shadow .4s ease}
 /* (o 3 no azul do período; o s² na cor da etiqueta s² — a do bloco s) */
 .r106 .r3{color:var(--cor-linha)}
 .r106 :is(.rs,.r2){color:color-mix(in srgb,var(--cat-alcalinos) 86%,#000)}
 .r106 .r2{font-size:.5em;vertical-align:.9em;margin-left:2px}
-.r106.tres .r3, .r106.dois :is(.rs,.r2){opacity:1}
-.r106.festa{transform:translate(-50%,-50%) scale(1.3)}
+.r106.tres .r3, .r106.esse .rs, .r106.dois .r2{opacity:1}
+.r106.festa{transform:scale(1.3)}
 /* (na festa, cada parte pisca e brilha na sua própria cor) */
 .r106.festa > *{text-shadow:0 0 16px currentColor,0 0 32px currentColor;animation:pisca106v .5s ease-in-out 3}
-/* o número do período pisca com a faixa da linha, e a etiqueta s² com a da
+/* (na "10.6.2", aos 6,5 s, o 3s² pulsa) */
+.r106.pulsa1062{animation:pulsa106 .5s ease-in-out 2}
+.r106.pulsa1062 > *{text-shadow:0 0 14px currentColor}
+/* a bolinha do período pisca com a faixa da linha, e a etiqueta s² com a da
    coluna (pelo filtro: a opacidade do número está presa com !important) */
-.mesa .eixo.piscaF106, .etq102.piscaF106{animation:piscaF106 .6s ease-in-out 3}
+.mesa .eixo.piscaF2106, .etq102.piscaF2106{animation:piscaF106 .6s ease-in-out 2}
 @keyframes piscaF106{50%{filter:opacity(.12)}}
-.mesa .eixo.pulsa106, .etq102.pulsa106{animation:pulsa106 .35s ease-in-out 2}
 @keyframes pulsa106{50%{scale:1.35}}
 @keyframes pisca106v{50%{opacity:.25}}
 /* (na "10.5.2" as entradas e as saídas são em fade: o Mg já crescido, só aparece) */
@@ -5254,7 +5262,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v54.7';
+const VERSAO = 'v54.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6578,7 +6586,9 @@ const TRILHAS = {
   '10.5': 'Audios/audio_tabela_10.5.mp3',   /* o Saquei no fim da "10.4.1": o bloco f (CARDS101) */
   '10.5.1': 'Audios/audio_tabela_10.5.1.mp3', /* sozinha, depois da festa do f: os toques nos blocos s, p, d, f */
   '10.5.2': 'Audios/audio_tabela_10.5.2.mp3', /* sozinha, depois da festa dos blocos: o subnível mais energético (EV10) */
-  '10.6': 'Audios/audio_tabela_10.6.mp3'    /* o Saquei no fim da "10.5.2": a regra pela tabela, com o Mg (CARDS101) */
+  '10.6': 'Audios/audio_tabela_10.6.mp3',   /* o Saquei no fim da "10.5.2": a regra pela tabela (CARDS101) */
+  '10.6.1': 'Audios/audio_tabela_10.6.1.mp3', /* o toque na regra: o exemplo do Mg, até o 3s² */
+  '10.6.2': 'Audios/audio_tabela_10.6.2.mp3'  /* o Saquei no fim da "10.6.1": por que vale saber; no fim, o "Vamos" */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -6759,7 +6769,9 @@ const ROTEIROS = {
   '10.5': [],
   '10.5.1': [],
   '10.5.2': [],
-  '10.6': []
+  '10.6': [],
+  '10.6.1': [],
+  '10.6.2': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -7496,6 +7508,11 @@ const SEQ = {
     else if (id === '10.5.1'){ if (atual === 10 && CARDS101.festa1051) tocaTrilha('10.5.2'); }
     /* o fim da "10.5.2": o "Saquei" (a cena já saiu) */
     else if (id === '10.5.2'){ if (atual === 10) CARDS101.saquei(true, '10.6'); }
+    /* (o fim da "10.6": a regra fica com o "Toque na tela", que leva à "10.6.1" — CARDS101.tick106) */
+    /* o fim da "10.6.1": o "Saquei", que leva à "10.6.2" */
+    else if (id === '10.6.1'){ if (atual === 10) CARDS101.saquei(true, '10.6.2'); }
+    /* o fim da "10.6.2": o "Vamos", que leva à "10.6.3" */
+    else if (id === '10.6.2'){ if (atual === 10) CARDS101.saquei(true, '10.6.3', 'Vamos'); }
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
     /* (antes dela, a festa: os confetes, o funfare e os aplausos) */
     else if (id === '9.3.8'){ if (atual === 9) EV9.festa93(); }
@@ -22172,19 +22189,27 @@ const T1052 = { festa:2.0, texto:[13.0, 14.6], veu:23.0, foto:30.0, dist:[34.0, 
 const TEXTO_1052 = 'O subnível mais energético';
 const TEXTO_MAIS_1052 = 'subnível mais energético';
 /* A "10.6" (o Saquei no fim da "10.5.2"): aos 1 s a cena escura sai em fade e
-   fica a tabela pronta; aos 12 s os blocos s e p brilham por 1 s; aos 16 s o
-   bloco B (o d) fica em segundo plano, quase apagado; aos 21,7 s a tela
-   escurece e digita a regra (até aos 30 s); aos 33 s a regra e a tela escura
-   saem em fade; aos 35 s o Mg cresce e brilha em verde; aos 38,9 s a faixa da
-   linha 3 entra em fade (com o número do período aceso), e aos 41 s a da
-   coluna 2 (sem número: a etiqueta s² fica em cima dela); aos 42 s a linha
-   pisca 3 vezes (com o 3 do período), aos 44 s a coluna (com a etiqueta s²);
-   aos 46,3 s aparece o "3" (no azul do período), aos 46,8 s o "s²" (na cor
-   da etiqueta s²); aos 48,5 s o 3s² cresce e pisca, cada parte na sua cor,
-   com aplausos, funfare e confetes; aos 53 s a narração pára 1,5 s e segue. */
-const T106 = { sai:1.0, brilhoSP:[12.0, 13.0], semB:16.0, regra:[21.7, 30.0], toque:31.6, regraSai:33.0, mg:35.0,
-               linha:38.9, coluna:41.0, piscaL:[42.0, 43.8], piscaC:[44.0, 45.8], tres:46.3, dois:46.8, festa:48.5,
-               pulsa3:[48.7, 49.4], pulsaS2:[49.5, 50.4], pausa:53.0 };
+   fica a tabela pronta (a mesa já no lugar, sem as fileiras de baixo); aos 6 s
+   digita "Elementos representativos primeiro" (em 1 s); aos 9 s os blocos das
+   pontas (s e p) brilham por 1 s; aos 13 s os de transição apagam (quase); aos
+   17 s a tela escurece e digita a regra; no fim da fala fica a regra com o
+   "Toque na tela", e o toque leva à "10.6.1". */
+const T106 = { sai:1.0, texto:[6.0, 7.0], brilhoSP:[9.0, 10.0], semB:13.0, regra:[17.0, 25.3] };
+const TEXTO_106 = 'Elementos representativos primeiro';
+/* A "10.6.1" (o toque na regra): a regra sai em fade; aos 3 s o Mg brilha em
+   verde; aos 7 s a faixa da linha 3 entra e pisca 2 vezes (com a bolinha do
+   3), aos 8,2 s a da coluna 2 (com a etiqueta s² em cima dela); aos 11 s a
+   linha pisca 2 vezes de novo e a bolinha do 3 fica crescida; aos 12,3 s a
+   coluna, e a etiqueta s² fica crescida; aos 14,7 s digita "Subnível mais
+   energético:"; aos 17,7 s o "3", aos 19 s o "s", aos 19,2 s o "²"; aos 20,5 s
+   o 3s² cresce e brilha, com confetes, aplausos e funfare; aos 23 s os
+   crescidos voltam ao normal. No fim, o Saquei leva à "10.6.2". */
+const T1061 = { mg:3.0, linha:7.0, coluna:8.2, piscaL:[[7.0, 8.2], [11.0, 12.2]], piscaC:[[8.2, 9.4], [12.3, 13.5]],
+                bola:11.0, etq:12.3, texto:[14.7, 16.2], tres:17.7, s:19.0, dois:19.2, festa:20.5, volta:23.0 };
+const TEXTO_1061 = 'Subnível mais energético:';
+/* A "10.6.2" (o Saquei no fim da "10.6.1"): aos 6,5 s o 3s² pulsa; no fim, o
+   botão "Vamos", que leva à "10.6.3" */
+const T1062 = { pulsa:[6.5, 7.6] };
 /* (o "período" na cor das linhas e a "coluna" na dos grupos, as do tópico 3) */
 const PARTES_106 = [{ t:'O subnível mais energético é o ' }, { t:'período', c:'lin106' }, { t:' acompanhado do bloco e da ' },
                     { t:'coluna', c:'col106' }, { t:' onde ele se encontra.' }];
@@ -22463,7 +22488,7 @@ const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
-const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.2', '10.6'];
+const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.2', '10.6', '10.6.1', '10.6.2', '10.6.3'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -22804,9 +22829,10 @@ const CARDS101 = {
   },
   /* o "Saquei" do fim da "10.2": estoura (estouraEsegue), e a "10.3" toca;
      o do fim da "10.3.1" só estoura (o play volta) */
-  saquei(sim, prox = '10.3'){
+  saquei(sim, prox = '10.3', txt = 'Saquei'){
     this.comSaquei = sim;
-    botaoVerde(sim ? 'Saquei' : null, () => { this.saquei(false); if (atual === 10 && prox) tocaTrilha(prox); });
+    /* (a narração seguinte só toca se já existir — a "10.6.3" ainda não tem áudio) */
+    botaoVerde(sim ? txt : null, () => { this.saquei(false); if (atual === 10 && prox && TRILHAS[prox]) tocaTrilha(prox); });
   },
   fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051', 'sem-play105');
           if (this.pede106){ this.pede106 = false; this.estado106 = ''; stage.classList.remove('em-toque'); } },
@@ -23063,9 +23089,13 @@ const CARDS101 = {
     const E = this['etq' + s]; if (E) E.forEach(e => e.est = 0);
     this['estado' + s] = '';
   },
-  /* A "10.6": a regra pela tabela, com o Mg */
+  /* A "10.6", a "10.6.1" e a "10.6.2": a regra pela tabela, e o exemplo do Mg */
   tick106(t){
-    const monta = naMontagem(), de = trilhaAtual === '10.6' && !monta, T = de ? t : !monta && depoisDe('10.6') ? 99 : -1;
+    const monta = naMontagem(), em = id => trilhaAtual === id && !monta;
+    const tempo = id => em(id) ? t : !monta && depoisDe(id) ? 99 : -1;
+    const de = em('10.6'), de61 = em('10.6.1'), de62 = em('10.6.2');
+    const T = tempo('10.6'), T1 = tempo('10.6.1'), T2 = tempo('10.6.2');
+    const acabou = som.ended || (som.duration > 0 && t >= som.duration - 0.15);
     if (!this.r106){
       const m = this.m;
       /* a tela escura da regra (no slide, por cima da mesa) */
@@ -23074,11 +23104,11 @@ const CARDS101 = {
       this.veu106 = slides[10].querySelector('.veu106');
       this.regra106 = this.veu106.querySelector('.regra106');
       this.toque106 = this.veu106.querySelector('.toque-continuar');
-      /* aos 31,6 s a narração pára e pede um toque: tocada a tela, segue */
+      /* acabada a "10.6", a regra fica e pede um toque: tocada a tela, a "10.6.1" */
       this.veu106.addEventListener('click', () => {
         if (!this.pede106) return;
         this.pede106 = false; this.estado106 = '';
-        if (atual === 10 && trilhaAtual === '10.6') som.play().catch(avisaSeNaoTocou);
+        if (atual === 10 && trilhaAtual === '10.6') tocaTrilha('10.6.1');
       });
       /* as faixas da linha 3 e da coluna 2 (por baixo dos cubos), no padrão das da cruz */
       const faixa = (cls, l, tp, w, h) => {
@@ -23096,30 +23126,41 @@ const CARDS101 = {
       /* (as casas vazias das duas fileiras de baixo: somem com elas) */
       m.querySelectorAll('.casa:not(.serie)').forEach(c => { if (parseFloat(c.style.top) > yDaLinha(7) + LADO / 2) c.classList.add('casaF106'); });
       this.mg106 = m.querySelector('.pc[data-z="12"]');
-      /* o "3s²": o 3 na cor da linha, o s na do bloco s, o 2 na da coluna */
-      const r = this.r106 = document.createElement('div');
-      r.className = 'r106';
-      r.innerHTML = '<span class="r3">3</span><span class="rs">s</span><sup class="r2">2</sup>';
-      r.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
-      /* (na linha do Mg: o subnível fica sempre na direção da linha do elemento) */
-      r.style.top  = (yDaLinha(3) + 4).toFixed(1) + 'px';
-      m.appendChild(r);
+      /* o "Elementos representativos primeiro", embaixo do "O subnível mais
+         energético" (o texto da "10.5.2", que fica) */
+      const q = this.texto106 = document.createElement('div');
+      q.className = 'titulo9 texto106';
+      q.style.left = '423px';
+      q.style.top  = '293px';
+      q.innerHTML = '<span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span>';
+      m.appendChild(q);
+      /* a linha do Mg, no vão dos de transição (na linha 3 — o subnível fica
+         sempre na direção da linha do elemento): "Subnível mais energético:"
+         e o "3s²" — o 3 na cor da linha, o s² na da etiqueta s² */
+      const w = this.linha106 = document.createElement('div');
+      w.className = 'linha106';
+      w.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
+      w.style.top  = (yDaLinha(3) + 10).toFixed(1) + 'px';
+      w.innerHTML = '<span class="titulo9 rot106"><span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span></span>' +
+        '<div class="r106"><span class="r3">3</span><span class="rs">s</span><sup class="r2">2</sup></div>';
+      m.appendChild(w);
+      this.rot106 = w.querySelector('.rot106');
+      this.r106 = w.querySelector('.r106');
     }
-    /* a festa dos 48,5 s e a pausa dos 53 s (tocando, passando pelo segundo) */
     /* a mesa sem as fileiras de baixo, já no lugar da "10.6": desde 1,5 s
        antes do fim da "10.5.2" (atrás da cena escura) */
     const de1052 = trilhaAtual === '10.5.2' && !monta;
     const semF = T >= 0 || (de1052 && (som.ended || (som.duration > 0 && t >= som.duration - 1.5)));
     if (semF !== this.semF106){ this.semF106 = semF; this.m.classList.toggle('semF106', semF); }
-    /* (só tocando de seguida: um salto — pelo sumário, por exemplo — não os dispara) */
-    const passa = s => de && !som.paused && this.t106ant >= 0 && this.t106ant < s && t >= s && t < s + 0.6 && t - this.t106ant < 1;
-    if (passa(T106.festa)){ this.aplauso(); tocaEfeito('funfare'); }
-    if (passa(T106.pausa)) pausaPor('10.6', 1500);
-    if (passa(T106.toque)){ som.pause(); this.pede106 = true; }
-    /* (fora da "10.6", ou voltando para antes do pedido, ele se desfaz) */
-    if (this.pede106 && (!de || t < T106.toque - 0.1)) this.pede106 = false;
-    this.t106ant = de ? t : -1;
-    const n = EV9.letras(T, T106.regra[0], T106.regra[1], REGRA_106);
+    /* a festa da "10.6.1" (só tocando de seguida: um salto — pelo sumário, por exemplo — não a dispara) */
+    const passa = s => de61 && !som.paused && this.t106ant >= 0 && this.t106ant < s && t >= s && t < s + 0.6 && t - this.t106ant < 1;
+    if (passa(T1061.festa)){ this.aplauso(); tocaEfeito('funfare'); }
+    this.t106ant = de61 ? t : -1;
+    /* o pedido de toque: no fim da "10.6" */
+    this.pede106 = de && acabou;
+    /* os textos digitados: a regra (completa no fim da fala), o "Elementos
+       representativos primeiro" e o "Subnível mais energético:" */
+    const n = de && acabou ? REGRA_106.length : EV9.letras(T, T106.regra[0], T106.regra[1], REGRA_106);
     if (n !== this.nt106){
       if (n > this.nt106 && this.nt106 >= 0 && de) TECLAS.bate();
       this.nt106 = n;
@@ -23128,37 +23169,55 @@ const CARDS101 = {
       PARTES_106.forEach(p => { const a = p.t.slice(0, Math.max(0, Math.min(k, p.t.length))); k -= p.t.length; if (a) h += p.c ? '<span class="' + p.c + '">' + a + '</span>' : a; });
       this.regra106.innerHTML = h + '<i class="cursor"></i><span class="falta">' + REGRA_106.slice(n) + '</span>';
     }
-    const dentro = ([a, b]) => T >= a && T < b;
-    const chave = [T >= 0, dentro(T106.brilhoSP), T >= T106.semB, dentro([T106.regra[0], T106.regraSai]), dentro(T106.regra), T >= T106.mg,
-                   T >= T106.linha, T >= T106.coluna, dentro(T106.piscaL), dentro(T106.piscaC), T >= T106.tres, T >= T106.dois, T >= T106.festa,
-                   de && !!this.pede106, dentro(T106.pulsa3), dentro(T106.pulsaS2)].join();
+    const nT = EV9.letras(T, T106.texto[0], T106.texto[1], TEXTO_106);
+    if (nT !== this.ntT106){
+      if (nT > this.ntT106 && this.ntT106 >= 0 && de) TECLAS.bate();
+      this.ntT106 = nT;
+      EV9.escreve(this.texto106, TEXTO_106, nT);
+    }
+    const nR = EV9.letras(T1, T1061.texto[0], T1061.texto[1], TEXTO_1061);
+    if (nR !== this.ntR106){
+      if (nR > this.ntR106 && this.ntR106 >= 0 && de61) TECLAS.bate();
+      this.ntR106 = nR;
+      EV9.escreve(this.rot106, TEXTO_1061, nR);
+    }
+    const dentro = (X, [a, b]) => X >= a && X < b;
+    const piscaL = T1061.piscaL.some(p => dentro(T1, p)), piscaC = T1061.piscaC.some(p => dentro(T1, p));
+    const cresce = T1 < T1061.volta;
+    const chave = [T >= 0, dentro(T, T106.brilhoSP), T >= T106.semB, T >= T106.texto[0], dentro(T, T106.texto),
+                   de && T >= T106.regra[0], dentro(T, T106.regra) && !acabou, this.pede106,
+                   T1 >= T1061.mg, T1 >= T1061.linha, T1 >= T1061.coluna, piscaL, piscaC,
+                   T1 >= T1061.bola && cresce, T1 >= T1061.etq && cresce, T1 >= T1061.texto[0], dentro(T1, T1061.texto),
+                   T1 >= T1061.tres, T1 >= T1061.s, T1 >= T1061.dois, dentro(T1, [T1061.festa, T1061.volta]),
+                   dentro(T2, T1062.pulsa)].join();
     if (chave === this.estado106) return;
     this.estado106 = chave;
-    const [, sp, semB, veu, dig, mg, lin, col, pL, pC, tres, dois, festa, pede, p3, pS2] = chave.split(',').map(v => v === 'true');
-    /* (aos 48,7 s o 3 do período pulsa 2 vezes, rápido; aos 49,5 s a etiqueta s²) */
-    if (this.p3106) this.p3106.classList.toggle('pulsa106', p3);
-    if (this.etq102) this.etq102[1].d.classList.toggle('pulsa106', pS2);
+    const [linhas, sp, semB, texto, digT, veu, dig, pede, mg, lin, col, pL, pC, bola, etq, rot, digR, tres, s, dois, festa, pulsa] =
+      chave.split(',').map(v => v === 'true');
+    this.m.classList.toggle('linhas106', linhas);
+    this.m.classList.toggle('bl1051-s', sp); this.m.classList.toggle('bl1051-p', sp);
+    this.m.classList.toggle('semB106', semB);
+    this.texto106.classList.toggle('on', texto);
+    this.texto106.classList.toggle('digitando9', digT);
+    this.veu106.classList.toggle('on', veu);
+    this.regra106.classList.toggle('digitando106', dig);
     this.veu106.classList.toggle('pede-toque', pede);
     this.toque106.classList.toggle('on', pede);
     stage.classList.toggle('em-toque', pede);
-    this.m.classList.toggle('bl1051-s', sp); this.m.classList.toggle('bl1051-p', sp);
-    this.m.classList.toggle('semB106', semB);
-    this.veu106.classList.toggle('on', veu || pede);
-    this.regra106.classList.toggle('digitando106', dig);
     /* (o Mg só brilha em verde, sem crescer) */
     if (this.mg106) this.mg106.classList.toggle('mg106', mg);
-    this.faixaL106.classList.toggle('on', lin); this.faixaL106.classList.toggle('pisca106', pL);
-    this.faixaC106.classList.toggle('on', col); this.faixaC106.classList.toggle('pisca106', pC);
-    /* (o 3 do período pisca com a faixa da linha; a etiqueta s² com a da coluna) */
-    if (this.p3106) this.p3106.classList.toggle('piscaF106', pL);
-    if (this.etq102) this.etq102[1].d.classList.toggle('piscaF106', pC);
-    /* (a etiqueta s² em cima da coluna acende com ela, como o número do grupo no tópico 3) */
-    if (this.etq102) this.etq102[1].d.classList.toggle('destaque106', col);
-    if (this.p3106) this.p3106.classList.toggle('p106', lin);
-    this.m.classList.toggle('linhas106', T >= 0);
+    this.faixaL106.classList.toggle('on', lin); this.faixaL106.classList.toggle('pisca2106', pL);
+    this.faixaC106.classList.toggle('on', col); this.faixaC106.classList.toggle('pisca2106', pC);
+    /* (a bolinha do 3 pisca com a faixa da linha; a etiqueta s² — no alto da coluna — com a da coluna) */
+    if (this.p3106){ this.p3106.classList.toggle('piscaF2106', pL); this.p3106.classList.toggle('p106', bola); }
+    if (this.etq102){ this.etq102[1].d.classList.toggle('piscaF2106', pC); this.etq102[1].d.classList.toggle('destaque106', etq); }
+    this.rot106.classList.toggle('on', rot);
+    this.rot106.classList.toggle('digitando9', digR);
     this.r106.classList.toggle('tres', tres);
+    this.r106.classList.toggle('esse', s);
     this.r106.classList.toggle('dois', dois);
     this.r106.classList.toggle('festa', festa);
+    this.r106.classList.toggle('pulsa1062', pulsa);
   },
   /* A "10.5.1": a festa dos 6 s e os toques nos blocos */
   passo1051:0, sel1051:null, feito1051:false, festa1051:false,
@@ -23382,7 +23441,7 @@ const CARDS101 = {
     this.festaG++; this.festaFeita = false; this.festa103 = false; this.festa104 = false; this.festa105 = false;
     this.passo1051 = 0; this.feito1051 = false; clearTimeout(this.fim1051T); this.t1051ant = -1; this.fora1051 = false;
     this.festa1051 = false; this.t1052ant = -1; this.nt1052 = -1; this.nt1051 = ''; this.nn1051 = 0;
-    this.estado106 = ''; this.t106ant = -1; this.nt106 = -1; this.semF106 = undefined;
+    this.estado106 = ''; this.t106ant = -1; this.nt106 = -1; this.ntT106 = -1; this.ntR106 = -1; this.semF106 = undefined;
     if (this.pede106){ this.pede106 = false; stage.classList.remove('em-toque'); }
     this.f1041 = false; clearTimeout(this.f1041T); if (this.cards) this.cresceF1041(false);
     if (!this.cards) return;
@@ -26951,9 +27010,9 @@ const NAV_TOPICOS = [
   /* o começo da "10.6": o subnível mais energético pela tabela */
   { titulo:'Subnível mais energético com tabela', sub:'o começo da 10.6', slide:10,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.6', 0, g)); } },
-  /* a "10.6" aos 32 s: a regra já escrita (e o toque já dado), e o exemplo do Mg */
-  { titulo:'O exemplo do Mg', sub:'a 10.6 aos 32 s', slide:10,
-    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.6', 32, g)); } },
+  /* o começo da "10.6.1": a regra já escrita (e o toque já dado), e o exemplo do Mg */
+  { titulo:'O exemplo do Mg', sub:'o começo da 10.6.1', slide:10,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.6.1', 0, g)); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){

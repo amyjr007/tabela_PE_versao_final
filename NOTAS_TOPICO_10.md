@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v54.7** (2026-11-10). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v54.8** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -20,7 +20,7 @@ Onde paramos: **v54.7** (2026-11-10). Este arquivo serve para retomar o trabalho
 
 ## A cadeia de narrações (`ORDEM_10`)
 
-`10 → 10.1 → 10.2 → 10.3 → 10.3.1 → 10.4 → 10.4.1 → 10.5 → 10.5.1 → 10.5.2 → 10.6`
+`10 → 10.1 → 10.2 → 10.3 → 10.3.1 → 10.4 → 10.4.1 → 10.5 → 10.5.1 → 10.5.2 → 10.6 → 10.6.1 → 10.6.2 → (10.6.3)`
 
 | Narração | O que acontece | Como passa para a próxima |
 |---|---|---|
@@ -34,29 +34,41 @@ Onde paramos: **v54.7** (2026-11-10). Este arquivo serve para retomar o trabalho
 | 10.5 | Fileiras do f; texto "elementos de transição interna"; La/Ac escurecem; brilho corre; f¹–f⁴ embaixo; no fim o play sai; aluno toca f⁵ a f¹⁴ | festa → 10.5.1 |
 | 10.5.1 | Aplausos aos 6 s; aos 21 s a tabela fica sem cor e sem cards; dos 23 aos 31,2 s a instrução se digita linha a linha ("Toque no bloco s." 23–24,8; "Depois no bloco p." 25–26,8; "Depois no d." 27,7–28,7; "Por fim, toque no bloco f." 29,5–31,2) em 2 linhas, centrada entre os grupos 2 e 13, e fica no fim; aluno toca os blocos s, p, d, f (a frase do bloco certo fica verde, com ✓) | festa → 10.5.2 |
 | 10.5.2 | "O subnível mais energético"; aos 23 s a cena escura da 10 volta com o diagrama sem o Pauling e o ₁₂Mg: já embaixo da tabela; distribuição; aos 44 s o 1s² pulsa com a seta dele no diagrama, aos 44,9 s o 3s² pulsa e o 3s² do diagrama acende; 3s² e "subnível mais energético" | Saquei → 10.6 |
-| 10.6 | Ver abaixo | **Saquei ainda não leva a nada** |
+| 10.6 | Ver abaixo | toque na tela → 10.6.1 |
+| 10.6.1 | Ver abaixo | Saquei → 10.6.2 |
+| 10.6.2 | Aos 6,5 s o 3s² pulsa | **Vamos** → 10.6.3 (o áudio ainda não existe: o botão aparece, mas não toca nada) |
 
-### A 10.6 (82,7 s) — feita até os 53 s
+### A 10.6, a 10.6.1 e a 10.6.2 (refeitas na v54.8)
+
+O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 ficaram só até o fim da regra, com os tempos da gravação antiga (precisam ser conferidos); a 10.6.1 e a 10.6.2 ainda não têm transcrição.
+
+**10.6**
 
 | Tempo | Evento |
 |---|---|
-| 0 s | Números das linhas: bolinhas azuis cheias, como no tópico 3 |
+| 0 s | Números das linhas: bolinhas azuis cheias, como no tópico 3 (a mesa já desceu e sem as fileiras de baixo, desde o fim da 10.5.2) |
 | 1 s | A cena escura da 10.5.2 sai em fade |
-| 12 s | Os blocos s e p brilham por 1 s |
-| 16 s | O bloco B fica quase apagado (lantanídeos e actinídeos já sumiram e a mesa já desceu para `{x:6, y:97}`: isso é 1,5 s antes do fim da 10.5.2, atrás da cena escura) |
-| 21,7 → 30 s | Regra digitada na tela escura ("período" em azul, "coluna" em âmbar) |
-| 31,6 s | Pausa: "Toque na tela"; o toque continua a narração |
-| 33 s | A regra sai |
-| 35 s | O Mg brilha em verde (sem crescer) |
-| 38,9 s | Faixa da linha 3, passando do número |
-| 41 s | Faixa da coluna 2, em âmbar escuro; a etiqueta s² em destaque |
-| 42 s / 44 s | Linha e coluna piscam 3 vezes |
-| 46,3 s / 48 s | "3s", depois o "²" — na linha do Mg |
-| 48,5 s | 3s² pisca no verde do Mg, com aplausos, funfare e confetes |
-| 48,7 s / 49,5 s | O 3 do período pulsa 2 vezes; a etiqueta s² pulsa 2 vezes |
-| 53 s | Pausa de 1,5 s |
+| 6 → 7 s | Digita "Elementos representativos primeiro", embaixo do "O subnível mais energético" |
+| 9 s | Os blocos das pontas (s e p) brilham por 1 s |
+| 13 s | Os de transição ficam quase apagados |
+| 17 → 25,3 s | Tela escura; a regra digitada ("período" em azul, "coluna" em âmbar) |
+| fim | A regra fica, com "Toque na tela"; o toque leva à 10.6.1 |
 
-**Falta:** dos 53 s ao fim ("Só um detalhe…", "…vamos para um segundo exemplo").
+**10.6.1**
+
+| Tempo | Evento |
+|---|---|
+| 0 s | A regra e a tela escura saem em fade |
+| 3 s | O Mg brilha em verde |
+| 7 s | Faixa da linha 3 entra e pisca 2 vezes, com a bolinha do 3 |
+| 8,2 s | Faixa da coluna 2 entra e pisca 2 vezes, com a etiqueta s² (no alto da coluna) |
+| 11 s | A linha pisca 2 vezes de novo; a bolinha do 3 fica crescida |
+| 12,3 s | A coluna pisca 2 vezes de novo; a etiqueta s² fica crescida |
+| 14,7 → 16,2 s | Digita "Subnível mais energético:" na linha do Mg, no vão dos de transição |
+| 17,7 / 19 / 19,2 s | O "3", o "s", o "²" (ao lado do texto) |
+| 20,5 s | O 3s² cresce e brilha, com confetes, aplausos e funfare |
+| 23 s | A bolinha do 3, a etiqueta s² e o 3s² voltam ao normal |
+| fim | Saquei → 10.6.2 |
 
 ## Sumário do tópico 10 (`NAV_TOPICOS`)
 
@@ -71,7 +83,7 @@ Onde paramos: **v54.7** (2026-11-10). Este arquivo serve para retomar o trabalho
 | g – Identifique os blocos | 10.5.1, aos 19 s |
 | h – O subnível mais energético sem tabela | 10.5.2 |
 | i – Subnível mais energético com tabela | 10.6 |
-| j – O exemplo do Mg | 10.6, aos 32 s |
+| j – O exemplo do Mg | 10.6.1 |
 
 Pelo sumário, cada narração abre com tudo o que veio antes já completo (as etiquetas no lugar). Voltar para uma narração com toques desfaz os toques dela.
 
