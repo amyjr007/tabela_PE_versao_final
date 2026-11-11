@@ -3897,8 +3897,6 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
 .slide.quiz9 .quiz3.q4.q2.q5{left:269.3px;top:30px}
 /* (e no quiz do tópico 10, no slide 11, o mesmo lugar) */
 .slide.quiz10 .quiz3.q4.q2.q5{left:269.3px;top:30px}
-/* (no quiz do tópico 10 o número grande do capítulo sai: o título já diz "Quiz 10") */
-.slide.quiz10 .tira > .num{opacity:0!important}
 /* (no quiz do tópico 10, as etiquetas s¹, p⁶… somem: dariam a resposta) */
 .slide.quiz10 .mesa .etq102{opacity:0!important;transition:opacity .4s ease}
 /* (no acerto, a coluna sobe e a etiqueta dela cai em cima — e desce com ela na questão seguinte) */
@@ -5286,7 +5284,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v55.7';
+const VERSAO = 'v55.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23413,7 +23411,7 @@ const CARDS101 = {
   podeTocar1051(){ return atual === 10 && trilhaAtual === '10.5.1' && !naMontagem() && !this.feito1051 &&
                           ((som.currentTime || 0) >= T1051.neutro || som.ended); },
   tick1051(t){
-    /* durante a "10.5.1.2" a sala apaga e o cabeçalho vira "Quiz 10" (o quiz abre no fim dela) */
+    /* durante a "10.5.1.2" a sala apaga e o cabeçalho vira "10 Quiz" (o número do capítulo e o "Quiz", como nos outros) (o quiz abre no fim dela) */
     if (atual === 10 && trilhaAtual === '10.5.1.2' && !naMontagem() && !QUIZ10.escuro) QUIZ10.escurece();
     const de = trilhaAtual === '10.5.1' && !naMontagem();
     /* aos 6 s, aplausos e confetes (tocando, passando pelo segundo) */
@@ -23714,7 +23712,7 @@ const QUIZ10 = Object.assign(Object.create(QUIZ5), {
   carta(z){ return this.mesa().querySelector('.pc[data-z="' + z + '"]:not(.ficha5)'); },
   /* os cards da coluna de um subnível */
   coluna10(s){ return [...this.mesa().querySelectorAll('.pc:not(.ficha5)')].filter(c => subnivel10(c) === s); },
-  /* a sala apaga e o cabeçalho vira "Quiz 10" — já durante a "10.5.1.2" */
+  /* a sala apaga e o cabeçalho vira "10 Quiz" (o número do capítulo e o "Quiz", como nos outros) — já durante a "10.5.1.2" */
   escurece(){
     const sl = this.sl();
     this.escuro = true;
@@ -23722,7 +23720,7 @@ const QUIZ10 = Object.assign(Object.create(QUIZ5), {
     if (!v){ v = document.createElement('div'); v.className = 'breu-quiz'; sl.insertBefore(v, sl.firstChild); v.getBoundingClientRect(); }
     v.classList.add('on');
     sl.classList.add('quiz-escuro', 'quiz10');
-    cabecaDoQuiz(sl, true, 'Quiz 10', 'quiz-cabeca');
+    cabecaDoQuiz(sl, true, 'Quiz', 'quiz-cabeca');
   },
   abre(peloSumario){
     if (atual !== 10) return;
@@ -23795,7 +23793,7 @@ const QUIZ10 = Object.assign(Object.create(QUIZ5), {
     const v = sl.querySelector(':scope > .breu-quiz');
     if (v) v.classList.remove('on');
     sl.classList.remove('quiz-escuro', 'quiz10');
-    cabecaDoQuiz(sl, false, 'Quiz 10', 'quiz-cabeca');
+    cabecaDoQuiz(sl, false, 'Quiz', 'quiz-cabeca');
   }
 });
 window.QUIZ10 = QUIZ10;
