@@ -5284,7 +5284,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v55.9';
+const VERSAO = 'v56.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23653,9 +23653,9 @@ window.CARDS101 = CARDS101;
    "10.5.3". É o QUIZ5 com as questões daqui, no mesmo ritual (a sala apaga,
    "Questão N de 6" digitada no alto; acerto: confete, fanfarra, aplausos e a
    voz, "Perfeito" na última; erro: o card balança, a tela treme e vem a dica;
-   no 2º erro, a coluna certa em âmbar; a nota, Refazer e Continuar). Seis
-   comandos "Toque na coluna da tabela correspondente ao subnível x": um do s,
-   dois do p, dois do d e um do f, sorteados de novo a cada Refazer. Vale
+   no 2º erro, a coluna certa em âmbar; a nota, Refazer e Continuar). Oito
+   comandos "toque na coluna do subnível x" (em três jeitos, COMANDOS_10): dois
+   de cada bloco (s, p, d, f), sorteados de novo a cada Refazer. Vale
    qualquer card da coluna (o He conta como s², o La e o Ac como d¹; no f, a
    coluna é o par de cima e de baixo). As etiquetas (s¹, p⁶…) somem durante o
    quiz, para não darem a resposta. O cartão traz a fala "audio_tabela_10.5.2";
@@ -23673,18 +23673,28 @@ function subnivel10(c){
   if (z >= 90 && z <= 103) return 'f' + (z - 89);
   return col <= 2 ? 's' + col : col <= 12 ? 'd' + (col - 2) : 'p' + (col - 12);
 }
-/* as seis questões: um s, dois p, dois d e um f, em ordem sorteada */
+/* as oito questões: duas de cada bloco (s, p, d, f), em ordem sorteada; o
+   comando reveza entre três jeitos de pedir (nunca o mesmo duas vezes
+   seguidas), e o que começa com "Agora" não abre o quiz */
+const COMANDOS_10 = [
+  x => 'Toque na coluna da tabela correspondente ao subnível ' + x + '.',
+  x => 'Toque na coluna do subnível ' + x + '.',
+  x => 'Agora toque na coluna ' + x + '.'
+];
 function questoes10(){
   const MAX = { s:2, p:6, d:10, f:14 }, usados = new Set();
-  const blocos = ['s', 'p', 'p', 'd', 'd', 'f'].sort(() => Math.random() - .5);
-  return blocos.map(b => {
+  const blocos = ['s', 's', 'p', 'p', 'd', 'd', 'f', 'f'].sort(() => Math.random() - .5);
+  let antes = -1;
+  return blocos.map((b, i) => {
     let s;
     do s = b + (1 + Math.floor(Math.random() * MAX[b])); while (usados.has(s));
     usados.add(s);
+    const pode = [0, 1, 2].filter(k => k !== antes && !(i === 0 && k === 2));
+    const cmd = antes = pode[Math.floor(Math.random() * pode.length)];
     const n = +s.slice(1), nome = { s:'s', p:'p', d:'d', f:'f' }[b];
     return {
       sub:s,
-      monta(){ return 'Toque na coluna da tabela correspondente ao subnível ' + rotulo10(s) + '.'; },
+      monta(){ return COMANDOS_10[cmd](rotulo10(s)); },
       toca(Q, c){
         const dele = subnivel10(c);
         if (dele === s){
