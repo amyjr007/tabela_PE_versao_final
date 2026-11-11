@@ -5220,7 +5220,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v53.6';
+const VERSAO = 'v53.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22353,7 +22353,8 @@ const T103 = { bloco:[1.5, 3.2], card:[4.5, 9.2], pulsa:[6.0, 8.7], some:10.9, e
 const ESC_P_103 = 1.15;
 /* A "10.4" (o Saquei no fim da "10.3.1"): aos 1,5 s o bloco d cresce com o
    card dentro (volta aos 5,2 s); aos 7,4 s o card d¹⁰ cresce sozinho, e aos
-   9,7 s o "10" pulsa 3 vezes (o card volta aos 12,4 s); dos 18 s o card d sai
+   9,7 s o "10" pulsa 3 vezes (o card volta aos 12,4 s); aos 13 s só o bloco
+   d cresce (sem o card), e volta aos 14 s; dos 18 s o card d sai
    de cena (para as colunas aparecerem) até a festa; aos 18,8 s sobe a coluna
    3 (3B), aos 19,3 s a 4 (4B), aos 20,7 s a 5, e daí de 0,9 em 0,9 s as
    seguintes, até a 12 (a 10ª do bloco) aos 27 s, que desce aos 27,9 s (a
@@ -22362,7 +22363,7 @@ const ESC_P_103 = 1.15;
    39 s em diante o aluno toca as colunas seguintes, na ordem (4 a 12): a
    tocada sobe e recebe a etiqueta dela (d² a d¹⁰); a anterior desce com a
    sua. Completa a 12, a festa. */
-const T104 = { bloco:[1.5, 5.2], card:[7.4, 12.4], pulsa:[9.7, 12.4], some:18.0,
+const T104 = { bloco:[1.5, 5.2], so:[13.0, 14.0], card:[7.4, 12.4], pulsa:[9.7, 12.4], some:18.0,
                sobe:[[18.8, 19.3, 3], [19.3, 20.7, 4], [20.7, 21.6, 5], [21.6, 22.5, 6], [22.5, 23.4, 7], [23.4, 24.3, 8],
                      [24.3, 25.2, 9], [25.2, 26.1, 10], [26.1, 27.0, 11], [27.0, 27.9, 12], [38.0, 39.0, 3]],
                d1:[38.5, 39.0], toque:39.0 };
@@ -23236,7 +23237,7 @@ const CARDS101 = {
     this.prepara104();
     const monta = naMontagem(), de = trilhaAtual === '10.4', T = monta ? -1 : de ? t : depoisDe('10.4') ? 99 : -1;
     const dentro = ([a, b]) => T >= a && T < b;
-    const bloco = dentro(T104.bloco), card = dentro(T104.card), pulsa = dentro(T104.pulsa);
+    const bloco = dentro(T104.bloco), card = dentro(T104.card), pulsa = dentro(T104.pulsa), so = dentro(T104.so);
     const some = T >= T104.some && !this.feito104 && T < 99;
     const sobeT = (T104.sobe.find(([a, b]) => T >= a && T < b) || [])[2] || null;
     const up = this.sel104 !== null && T >= 0 ? this.sel104.col : sobeT;
@@ -23245,14 +23246,15 @@ const CARDS101 = {
     const est = k => T < 0 ? 0 : T >= 99 ? 2 : k === 0 ? (T < T104.d1[0] ? 0 : T < T104.d1[1] ? 1 : 2) : this.etq104[k].est;
     const ets = this.etq104.map((E, k) => est(k));
     const dica = this.podeTocar104() ? 4 + this.passo104 : 0;
-    const chave = [T >= 0, bloco, card, pulsa, some, up, dica, ...ets].join();
+    const chave = [T >= 0, bloco, so, card, pulsa, some, up, dica, ...ets].join();
     if (chave === this.estado104) return;
     this.estado104 = chave;
     const B = this.blocos.d, K = ESC_D_104, R = 0.6 * PASSO;
     B.forEach(p => {
       const col = +p.c.dataset.col;
       let tr = '', sc = '';
-      if (bloco){ tr = ((p.x - B.cx) * (K - 1)).toFixed(1) + 'px ' + ((p.y - B.cy) * (K - 1)).toFixed(1) + 'px'; sc = String(K); }
+      /* (aos 13 s, "so": só o bloco cresce, o card fica como está) */
+      if (bloco || so){ tr = ((p.x - B.cx) * (K - 1)).toFixed(1) + 'px ' + ((p.y - B.cy) * (K - 1)).toFixed(1) + 'px'; sc = String(K); }
       else if (col === up) tr = '0 ' + (-R).toFixed(1) + 'px';
       p.c.style.translate = tr; p.c.style.scale = sc;
       p.c.classList.toggle('grande101', !!tr || !!sc);

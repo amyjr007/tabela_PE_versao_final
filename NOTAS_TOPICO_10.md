@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v53.6** (2026-11-10). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v53.7** (2026-11-10). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -29,7 +29,7 @@ Onde paramos: **v53.6** (2026-11-10). Este arquivo serve para retomar o trabalho
 | 10.2 | Regra das colunas; bloco s, famílias 1A/2A, etiquetas s¹ s² | Saquei → 10.3 |
 | 10.3 | Bloco p; colunas sobem; p¹ (3A) e p² (4A); aluno toca da 5A à 8A | festa → 10.3.1 |
 | 10.3.1 | Hélio cresce e brilha; etiqueta s² nele; pausa de 1 s aos 20 s; card d | Saquei → 10.4 |
-| 10.4 | Bloco d; colunas 3 a 12; d¹; aluno toca da 4 à 12 | festa → 10.4.1 |
+| 10.4 | Bloco d (e só o bloco aos 13 s, por 1 s); colunas 3 a 12; d¹; aluno toca da 4 à 12 | festa → 10.4.1 |
 | 10.4.1 | Bloco f cresce aos 6 s | Saquei → 10.5 |
 | 10.5 | Fileiras do f; texto "elementos de transição interna"; La/Ac escurecem; brilho corre; f¹–f⁴ embaixo; aluno toca f⁵ a f¹⁴ | festa → 10.5.1 |
 | 10.5.1 | Aplausos aos 6 s; aos 21 s a tabela fica sem cor e sem cards; aluno toca os blocos s, p, d, f; instrução colorida no fim | festa → 10.5.2 |
