@@ -3372,6 +3372,9 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .instr1051{position:absolute;z-index:27;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:28px;color:var(--tinta);opacity:0;transition:opacity .6s ease}
 .instr1051.on{opacity:1}
+.instr1051{display:flex;flex-direction:column;align-items:flex-start;gap:6px;line-height:1.25}
+.instr1051 .falta{color:transparent}
+.instr1051 .cursor{display:inline-block;width:3px;height:.95em;margin:0 -3px 0 0;vertical-align:-.12em;background:currentColor;border-radius:1px}
 .instr1051 .l1051{display:inline-block;padding:0 .06em;color:color-mix(in srgb,var(--cor) 82%,#000);
   transition:transform .4s cubic-bezier(.34,1.56,.64,1), text-shadow .4s ease, margin .4s ease}
 .instr1051 .l1051.ok{transform:scale(1.55);margin:0 .16em;
@@ -5221,7 +5224,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v53.9';
+const VERSAO = 'v54.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22400,6 +22403,13 @@ const T105 = { lan:[3.4, 4.5], act:[4.5, 5.5], card:[[7.0, 10.4], [12.0, 15.5], 
    os blocos na ordem s, p, d, f: o certo brilha e ganha a cor de volta; o
    errado treme. Completo o f, a festa e um brilho forte na tabela toda. */
 const T1051 = { festa:6.0, neutro:21.0 };
+/* a instrução da "10.5.1", digitada linha a linha (de, até, em s); a letra
+   de cada bloco na cor dele, e ela cresce e brilha quando o bloco é tocado */
+const INSTR_1051 = [
+  { de:23.0, ate:24.8, p:[{ t:'Toque no bloco ' }, { t:'s', b:'s' }, { t:'.' }] },
+  { de:25.0, ate:26.8, p:[{ t:'Depois no bloco ' }, { t:'p', b:'p' }, { t:'.' }] },
+  { de:27.7, ate:28.7, p:[{ t:'Depois no ' }, { t:'d', b:'d' }, { t:'.' }] },
+  { de:29.5, ate:31.2, p:[{ t:'Por fim, toque no bloco ' }, { t:'f', b:'f' }, { t:'.' }] }];
 const SIMB_F_105 =['Ce', 'Pr', 'Nd', 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu'];
 const TEXTO_105 = 'elementos de transição interna';
 const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
@@ -23145,21 +23155,41 @@ const CARDS101 = {
     /* acabada a fala, o play sai e a instrução fica no alto (as letras dos
        blocos nas cores deles; a de cada bloco certo cresce e brilha) — até a
        festa do f passar */
+    /* (dos 23 s a instrução digita-se, uma linha de cada vez, no vão dos de
+       transição; acabada a fala, fica) */
     if (!this.instr1051){
       const q = this.instr1051 = document.createElement('div');
       q.className = 'instr1051';
-      q.style.left = ((xDaColuna(2) + xDaColuna(17)) / 2).toFixed(1) + 'px';
-      q.style.top  = yDaLinha(1).toFixed(1) + 'px';
-      const L = K => '<span class="l1051" data-b="' + K.b + '" style="--cor:' + K.cor + '">' + K.b + '</span>';
-      const [s, p, d, f] = CARDS_101;
-      q.innerHTML = 'Toque nos blocos na sequência correta ' + L(s) + ', ' + L(p) + ', ' + L(d) + ' e ' + L(f) + '.';
+      q.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
+      q.style.top  = yDaLinha(2).toFixed(1) + 'px';
+      this.linhas1051 = INSTR_1051.map(() => { const l = document.createElement('div'); l.className = 'linha1051'; q.appendChild(l); return l; });
       this.m.appendChild(q);
     }
     const fim = de && (som.ended || (som.duration > 0 && t >= som.duration - 0.15));
-    const mostra = fim && !this.fora1051;
+    const tI = de ? (fim ? 99 : t) : -1;
+    const ns = INSTR_1051.map(L => EV9.letras(tI, L.de, L.ate, L.p.map(x => x.t).join('')));
+    const chaveI = [...ns, this.passo1051, ...INSTR_1051.map(L => tI >= L.de && tI < L.ate)].join();
+    if (chaveI !== this.nt1051){
+      if (de && this.nt1051 && ns.reduce((a, b) => a + b, 0) > this.nn1051) TECLAS.bate();
+      this.nt1051 = chaveI; this.nn1051 = ns.reduce((a, b) => a + b, 0);
+      INSTR_1051.forEach((L, i) => {
+        /* o que já se escreveu (a letra do bloco no span dela, na cor dele), o cursor, e o resto guardando o lugar */
+        let k = ns[i], h = '', resto = '';
+        L.p.forEach(x => {
+          const a = x.t.slice(0, Math.max(0, Math.min(k, x.t.length)));
+          resto += x.t.slice(a.length); k -= x.t.length;
+          if (!a) return;
+          if (x.b){ const K = CARDS_101.find(c => c.b === x.b), ok = CARDS_101.indexOf(K) < this.passo1051;
+            h += '<span class="l1051' + (ok ? ' ok' : '') + '" style="--cor:' + K.cor + '">' + a + '</span>'; }
+          else h += a;
+        });
+        const dig = tI >= L.de && tI < L.ate;
+        this.linhas1051[i].innerHTML = h + (dig ? '<i class="cursor"></i>' : '') + '<span class="falta">' + resto + '</span>';
+      });
+    }
+    const mostra = de && t >= INSTR_1051[0].de && !this.fora1051;
     this.instr1051.classList.toggle('on', mostra);
-    stage.classList.toggle('sem-play1051', mostra);
-    this.instr1051.querySelectorAll('.l1051').forEach((e, k) => e.classList.toggle('ok', k < this.passo1051));
+    stage.classList.toggle('sem-play1051', fim && !this.fora1051);
     if (this.ouve1051) return;
     this.ouve1051 = true;
     /* o toque num bloco (a carta, o card dele ou o bilhete das séries) */
@@ -23289,7 +23319,7 @@ const CARDS101 = {
     this.fora();
     this.festaG++; this.festaFeita = false; this.festa103 = false; this.festa104 = false; this.festa105 = false;
     this.passo1051 = 0; this.feito1051 = false; clearTimeout(this.fim1051T); this.t1051ant = -1; this.fora1051 = false;
-    this.festa1051 = false; this.t1052ant = -1; this.nt1052 = -1;
+    this.festa1051 = false; this.t1052ant = -1; this.nt1052 = -1; this.nt1051 = ''; this.nn1051 = 0;
     this.estado106 = ''; this.t106ant = -1; this.nt106 = -1;
     if (this.pede106){ this.pede106 = false; stage.classList.remove('em-toque'); }
     this.f1041 = false; clearTimeout(this.f1041T); if (this.cards) this.cresceF1041(false);
