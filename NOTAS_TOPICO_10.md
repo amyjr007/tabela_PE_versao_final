@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v53.5** (2026-11-10). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v53.6** (2026-11-10). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 

@@ -3308,6 +3308,9 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
    as faixas em fade (sem a corrida da cruz) e piscando; o número do período
    à vista; o "3s²" que se monta e pisca em verde */
 .mesa[data-slide="10"] :is(.pc[data-b101="d"], .etq102.d104){transition:opacity .8s ease, scale .55s ease, translate .55s ease}
+/* (as etiquetas do d andam por translate, no mesmo compasso da coluna: descem juntas, sem engasgo) */
+.mesa[data-slide="10"] .etq102.d104{will-change:translate;transition:opacity .3s ease, scale .55s ease, translate .55s ease,
+  transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease}
 .mesa.semB106 :is(.pc[data-b101="d"], .etq102.d104, .casa.serie){opacity:.12!important}
 /* (sem as duas fileiras de baixo, a mesa desce para o lugar que o professor
    deixou na montagem: { el:'tabela', x:6, y:97, esc:0.94 }) */
@@ -5217,7 +5220,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v53.5';
+const VERSAO = 'v53.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23264,7 +23267,9 @@ const CARDS101 = {
     this.etq104.forEach((E, k) => {
       const f = ets[k];
       E.d.classList.toggle('on', f > 0);
-      E.d.style.top = (f === 2 ? E.park : f === 1 ? E.park - R : E.park - R - 60).toFixed(1) + 'px';
+      /* (o top fica parado; o deslocamento vai no translate, que corre na GPU junto com o da coluna) */
+      E.d.style.top = E.park.toFixed(1) + 'px';
+      E.d.style.translate = '0 ' + (f === 2 ? 0 : f === 1 ? -R : -R - 60).toFixed(1) + 'px';
     });
   },
   zera(){
