@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v55.1** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v55.2** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -20,7 +20,7 @@ Onde paramos: **v55.1** (2026-11-11). Este arquivo serve para retomar o trabalho
 
 ## A cadeia de narrações (`ORDEM_10`)
 
-`10 → 10.1 → 10.2 → 10.3 → 10.3.1 → 10.4 → 10.4.1 → 10.5 → 10.5.1 → 10.5.2 → 10.6 → 10.6.1 → 10.6.2 → (10.6.3)`
+`10 → 10.1 → 10.2 → 10.3 → 10.3.1 → 10.4 → 10.4.1 → 10.5 → 10.5.1 → 10.5.2 → 10.6 → 10.6.1 → 10.6.2 → 10.6.3`
 
 | Narração | O que acontece | Como passa para a próxima |
 |---|---|---|
@@ -36,11 +36,12 @@ Onde paramos: **v55.1** (2026-11-11). Este arquivo serve para retomar o trabalho
 | 10.5.2 | "O subnível mais energético"; aos 23 s a cena escura da 10 volta com o diagrama sem o Pauling e o ₁₂Mg: já embaixo da tabela; distribuição; aos 44 s o 1s² pulsa com a seta dele no diagrama, aos 44,9 s o 3s² pulsa e o 3s² do diagrama acende; 3s² e "subnível mais energético" | Saquei → 10.6 |
 | 10.6 | Ver abaixo | toque na tela → 10.6.1 |
 | 10.6.1 | Ver abaixo | Saquei → 10.6.2 |
-| 10.6.2 | Aos 6,5 s o 3s² pulsa | **Vamos** → 10.6.3 (o áudio ainda não existe: o botão aparece, mas não toca nada) |
+| 10.6.2 | Aos 6,5 s o 3s² pulsa | Vamos → 10.6.3 |
+| 10.6.3 | Ver abaixo (o iodo) | — (o fim ainda não leva a nada) |
 
 ### A 10.6, a 10.6.1 e a 10.6.2 (refeitas na v54.8)
 
-O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 ficaram só até o fim da regra, com os tempos da gravação antiga (precisam ser conferidos); a 10.6.1 e a 10.6.2 ainda não têm transcrição.
+O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 ficaram só até o fim da regra, com os tempos da gravação antiga (precisam ser conferidos); a 10.6.1, a 10.6.2 e a 10.6.3 ainda não têm transcrição.
 
 **10.6**
 
@@ -69,6 +70,21 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | 20,5 s | O 3s² cresce e brilha, com confetes, aplausos e funfare |
 | 23 s | A bolinha do 3, a etiqueta s² e o 3s² voltam ao normal |
 | fim | Saquei → 10.6.2 |
+
+**10.6.3** (o "Vamos" no fim da 10.6.2; o segundo exemplo, o iodo — linha 5, coluna 17)
+
+| Tempo | Evento |
+|---|---|
+| 0 s | O exemplo do Mg sai de cena: a linha "Subnível mais energético: 3s²", o brilho do Mg e as faixas da linha 3 e da coluna 2 |
+| 2,2 s | O iodo brilha em verde |
+| 16,5 s | Faixa da linha 5 entra e pisca 2 vezes; a bolinha do 5 pulsa 2 vezes |
+| 18 s | Faixa da coluna 17 entra e pisca 2 vezes; a etiqueta p⁵ (no alto da coluna) pulsa 2 vezes |
+| 20 s / 22 s | O mesmo de novo, com a linha e depois com a coluna |
+| 23,5 → 25 s | Digita "O subnível mais energético:" na linha 5 (sobre os de transição apagados) |
+| 26,3 / 27,5 / 27,8 s | O "5" (azul da linha), o "p", o "⁵" (na cor da etiqueta p⁵) |
+| 28,8 s | O 5p⁵ cresce e brilha, com confetes, aplausos e funfare (volta aos 31,3 s) |
+| 34 s | A distribuição inteira do iodo no vão de cima: ₅₃I: 1s² … 4d¹⁰ 5p⁵, o 5p⁵ nas mesmas cores |
+| 35 s | O 5p⁵ da distribuição pulsa 3 vezes |
 
 ## Sumário do tópico 10 (`NAV_TOPICOS`)
 
