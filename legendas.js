@@ -186,20 +186,20 @@ var LEGENDAS = {
     [27.63,31.16,"em seguida no bloco d e, por último, no bloco f."],
     [31.48,34.19,"Nessa ordem. Vai lá!"]
   ],
-  "audio_tabela_10.5.2": [
-    [0,2.13,"Certo, você conseguiu!"],
-    [2.73,8.44,"Agora podemos usar a tabela periódica para mapear os subníveis de cada átomo de forma direta,"],
-    [8.72,10.32,"ou seja, sem rodeios."],
-    [10.97,14.72,"Vamos começar pelo mais fácil: o subnível mais energético."],
-    [15.38,22.81,"Pelo caminho convencional, para descobrir o subnível mais energético de um elemento, tem todo um processo demorado e bem trabalhoso."],
-    [23.37,24.82,"Pegue o magnésio como exemplo."],
-    [25.37,31.82,"Se quiséssemos encontrar o subnível mais energético dele, primeiro teríamos que desenhar todo o diagrama de Pauling."],
-    [32.32,40.2,"Depois, teríamos que seguir o traçado das setas diagonais para ir distribuindo os elétrons até completar os 12 elétrons do átomo, e pronto!"],
-    [41.59,50.18,"Como o princípio de Aufbau orienta o preenchimento da menor para a maior energia, o último subnível a receber elétrons é sempre o mais energético,"],
-    [50.49,53.15,"que, no magnésio, é o 3s²."],
-    [53.69,54.85,"Viu como dá trabalho?"],
-    [55.39,63.88,"Pois agora, a gente vai descobrir exatamente a mesma informação em 2 segundos, usando apenas a posição do elemento na tabela periódica."],
-    [64.41,66.04,"É isso que vamos ver a seguir."]
+  /* (a antiga 10.5.2 virou a 10.5.3, sem o começo — "Certo, você conseguiu!…"
+     —, 11 s mais cedo: tempos deslocados, a conferir. A nova 10.5.2, a fala do
+     cartão do quiz, e a 10.5.1.2 ainda sem transcrição) */
+  "audio_tabela_10.5.3": [
+    [0,3.72,"Vamos começar pelo mais fácil: o subnível mais energético."],
+    [4.38,11.81,"Pelo caminho convencional, para descobrir o subnível mais energético de um elemento, tem todo um processo demorado e bem trabalhoso."],
+    [12.37,13.82,"Pegue o magnésio como exemplo."],
+    [14.37,20.82,"Se quiséssemos encontrar o subnível mais energético dele, primeiro teríamos que desenhar todo o diagrama de Pauling."],
+    [21.32,29.2,"Depois, teríamos que seguir o traçado das setas diagonais para ir distribuindo os elétrons até completar os 12 elétrons do átomo, e pronto!"],
+    [30.59,39.18,"Como o princípio de Aufbau orienta o preenchimento da menor para a maior energia, o último subnível a receber elétrons é sempre o mais energético,"],
+    [39.49,42.15,"que, no magnésio, é o 3s²."],
+    [42.69,43.85,"Viu como dá trabalho?"],
+    [44.39,52.88,"Pois agora, a gente vai descobrir exatamente a mesma informação em 2 segundos, usando apenas a posição do elemento na tabela periódica."],
+    [53.41,55.04,"É isso que vamos ver a seguir."]
   ],
   "audio_tabela_10.6": [
     [0,6.82,"Certo, agora vamos aprender a descobrir o subnível mais energético dos elementos direto pela tabela periódica."],

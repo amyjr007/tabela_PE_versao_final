@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v55.4** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v55.5** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -20,7 +20,7 @@ Onde paramos: **v55.4** (2026-11-11). Este arquivo serve para retomar o trabalho
 
 ## A cadeia de narrações (`ORDEM_10`)
 
-`10 → 10.1 → 10.2 → 10.3 → 10.3.1 → 10.4 → 10.4.1 → 10.5 → 10.5.1 → 10.5.2 → 10.6 → 10.6.1 → 10.6.2 → 10.6.3`
+`10 → 10.1 → 10.2 → 10.3 → 10.3.1 → 10.4 → 10.4.1 → 10.5 → 10.5.1 → 10.5.1.2 → (quiz) → 10.5.3 → 10.6 → 10.6.1 → 10.6.2 → 10.6.3`
 
 | Narração | O que acontece | Como passa para a próxima |
 |---|---|---|
@@ -32,8 +32,10 @@ Onde paramos: **v55.4** (2026-11-11). Este arquivo serve para retomar o trabalho
 | 10.4 | Bloco d (e só o bloco aos 13 s, por 1 s); colunas 3 a 12; d¹; no fim o play sai; aluno toca da 4 à 12 | festa → 10.4.1 |
 | 10.4.1 | Bloco f cresce aos 6 s | Saquei → 10.5 |
 | 10.5 | Fileiras do f; texto "metais de transição interna"; La/Ac escurecem; brilho corre; f¹–f⁴ em cima das séries (que descem 14 px neste slide, `DESCE_SERIES_10`), caindo de cima; no fim o play sai; aluno toca f⁵ a f¹⁴ | festa → 10.5.1 |
-| 10.5.1 | Dos 1,8 aos 7 s os blocos crescem com o card encaixado, um de cada vez (s 1,8; p 3,2; d 4,6; f 6; o f volta aos 7); aplausos aos 6 s; aos 21 s a tabela fica sem cor e sem cards; dos 23 aos 31,2 s a instrução se digita linha a linha ("Toque no bloco s." 23–24,8; "Depois no bloco p." 25–26,8; "Depois no d." 27,7–28,7; "Por fim, toque no bloco f." 29,5–31,2) em 2 linhas, centrada entre os grupos 2 e 13, e fica no fim; aluno toca os blocos s, p, d, f (a frase do bloco certo fica verde, com ✓) | festa → 10.5.2 |
-| 10.5.2 | Pausa de 1,5 s aos 2,2 s; "O subnível mais energético"; aos 23 s a cena escura da 10 volta com o diagrama sem o Pauling e o ₁₂Mg: já embaixo da tabela; distribuição; aos 44 s o 1s² pulsa com a seta dele no diagrama, aos 44,9 s o 3s² pulsa e o 3s² do diagrama acende; 3s² e "subnível mais energético" (em amarelo, com som de teclas) | Saquei → 10.6 |
+| 10.5.1 | Dos 1,8 aos 7 s os blocos crescem com o card encaixado, um de cada vez (s 1,8; p 3,2; d 4,6; f 6; o f volta aos 7); aplausos aos 6 s; aos 21 s a tabela fica sem cor e sem cards; dos 23 aos 31,2 s a instrução se digita linha a linha ("Toque no bloco s." 23–24,8; "Depois no bloco p." 25–26,8; "Depois no d." 27,7–28,7; "Por fim, toque no bloco f." 29,5–31,2) em 2 linhas, centrada entre os grupos 2 e 13, e fica no fim; aluno toca os blocos s, p, d, f (a frase do bloco certo fica verde, com ✓) | festa (como num quiz) → voz "perfeito" → 10.5.1.2 |
+| 10.5.1.2 | (sem eventos) | no fim, a tela apaga e abre o **quiz do tópico 10** |
+| Quiz (QUIZ10) | 6 questões "Toque na coluna da tabela correspondente ao subnível x" (1 s, 2 p, 2 d, 1 f, sorteadas de novo no Refazer); as etiquetas somem durante o quiz; no fim, o cartão da nota e a fala `audio_tabela_10.5.2` (sem eventos) | Continuar → a tabela volta e toca a 10.5.3 |
+| 10.5.3 | Os eventos da antiga 10.5.2, 11 s mais cedo: aos 2 s "O subnível mais energético"; aos 12 s a cena escura da 10 volta com o diagrama sem o Pauling e o ₁₂Mg: já embaixo da tabela; aos 19 s o diagrama; distribuição dos 23 aos 27 s; brilho aos 29,2 s; aos 33 s o 1s² pulsa com a seta dele no diagrama, aos 33,9 s o 3s² pulsa e o 3s² do diagrama acende; aos 41 s "subnível mais energético" (em amarelo, com som de teclas); no fim a mesa desce e as séries somem, atrás da cena escura | Saquei → 10.6 |
 | 10.6 | Ver abaixo | toque na tela → 10.6.1 |
 | 10.6.1 | Ver abaixo | Saquei → 10.6.2 |
 | 10.6.2 | Aos 6,5 s o 3s² pulsa | Vamos → 10.6.3 |
@@ -47,9 +49,9 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 
 | Tempo | Evento |
 |---|---|
-| 0 s | Números das linhas: bolinhas azuis cheias, como no tópico 3 (a mesa já desceu e sem as fileiras de baixo, desde o fim da 10.5.2) |
-| 1 s | A cena escura da 10.5.2 sai em fade |
-| 6 → 7 s | Digita "Elementos representativos primeiro" (o "O subnível mais energético" da 10.5.2 já saiu: some junto com as fileiras de baixo, no fim da 10.5.2) |
+| 0 s | Números das linhas: bolinhas azuis cheias, como no tópico 3 (a mesa já desceu e sem as fileiras de baixo, desde o fim da 10.5.3) |
+| 1 s | A cena escura da 10.5.3 sai em fade |
+| 6 → 7 s | Digita "Elementos representativos primeiro" (o "O subnível mais energético" da 10.5.3 já saiu: some junto com as fileiras de baixo, no fim da 10.5.3) |
 | 9 s | Os blocos das pontas (s e p) brilham por 1 s |
 | 13 s | Os de transição ficam quase apagados |
 | 17 s → 19,5–28 s | Tela escura aos 17 s (o "Elementos representativos primeiro" sai e não volta); a regra digitada dos 19,5 aos 28 s ("período" em azul, "coluna" em âmbar) |
@@ -97,15 +99,16 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | e – O bloco d | 10.4 |
 | f – O bloco f | 10.5 |
 | g – Identifique os blocos | 10.5.1, aos 19 s |
-| h – O subnível mais energético sem tabela | 10.5.2 |
-| i – Subnível mais energético com tabela | 10.6 |
-| j – O exemplo do Mg | 10.6.1 |
+| h – Quiz | o quiz direto (a mesa como no fim da 10.5.1.2) |
+| i – O subnível mais energético sem tabela | 10.5.3 |
+| j – Subnível mais energético com tabela | 10.6 |
+| k – O exemplo do Mg | 10.6.1 |
 
 Pelo sumário, cada narração abre com tudo o que veio antes já completo (as etiquetas no lugar). Voltar para uma narração com toques desfaz os toques dela.
 
 ## Onde está no código
 
-- **`EV10`** — a cena escura, que serve à 10 e à 10.5.2 (`tick1052`). Na 10.5.2, usa o modo `modo1052` com o `diagrama.jpeg`.
+- **`EV10`** — a cena escura, que serve à 10 e à 10.5.3 (`tick1052`, o nome antigo). Na 10.5.3, usa o modo `modo1052` com o `diagrama.jpeg`.
 - **`CARDS101`** — o resto do tópico:
   - um `tickXXX` por narração: `tick102`, `tick103`, `tick1031`, `tick104`, `tick1041`, `tick105`, `tick1051`, `tick106`;
   - os toques nas colunas passam por `avancaColuna`;

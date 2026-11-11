@@ -3226,7 +3226,7 @@ html:is(.palco-largo,.palco-alto) .veu-mg10::before{background:rgba(12,10,32,.96
    enchem-se no fim; o "Mg:" entra em fade; o 3s², o mais energético, no neon */
 .veu-mg10 .dist10{left:320px;top:600px;width:520px;overflow:visible}
 .veu-mg10.dist10on .dist10, body.montagem .veu-mg10 .dist10{opacity:1}
-/* (na "10.5.2" o "₁₂Mg:" já entra, em fade, logo depois de o Mg acender na
+/* (na "10.5.3" o "₁₂Mg:" já entra, em fade, logo depois de o Mg acender na
    tabela; os subníveis só se desenham no tempo da distribuição) */
 .veu-mg10.modo1052.mg10on .dist10{opacity:1;transition-delay:.5s}
 .veu-mg10.modo1052.mg10on.dist10on .dist10{transition-delay:0s}
@@ -3303,7 +3303,7 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
 /* a "10.5.1": dos 21 s só a tabela fica (os cards, as etiquetas e o texto saem em fade) */
 .mesa.so1051 :is(.card101,.titulo9:not(.texto1052,.texto106,.rot106)),
 .mesa.etq1051 .etq102{opacity:0!important;pointer-events:none!important;transition:opacity .8s ease!important}
-/* a "10.5.2": o texto do alto (na largura da linha 1), e na cena da "10" o
+/* a "10.5.3": o texto do alto (na largura da linha 1), e na cena da "10" o
    diagrama sem o "Princípio de Aufbau", o brilho da distribuição e o 3s²
    crescido com o "subnível mais energético" embaixo */
 .titulo9.texto1052{font-size:30px}
@@ -3320,7 +3320,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .mesa.semB106 :is(.pc[data-b101="d"], .etq102.d104, .casa.serie){opacity:.12!important}
 /* (sem as duas fileiras de baixo, a mesa desce para o lugar que o professor
    deixou na montagem: { el:'tabela', x:6, y:97, esc:0.94 }) */
-/* (isso — a mesa descer e as fileiras de baixo sumirem — é no fim da "10.5.2",
+/* (isso — a mesa descer e as fileiras de baixo sumirem — é no fim da "10.5.3",
    escondido pela cena escura; quando ela clareia, na "10.6", já está no lugar) */
 .mesa[data-slide="10"].semF106{--px:6px;--py:97px;transition:transform .9s cubic-bezier(.3,.85,.3,1)}
 /* (e os lantanídeos e actinídeos voltam de uma vez para as casas do 3B: as
@@ -3353,7 +3353,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
   box-shadow:0 0 0 3px var(--cor-coluna), 0 0 16px 6px rgba(224,120,43,.7)}
 .mesa.linhas106 .eixo[data-periodo].p106{z-index:15;transform:translate(-50%,-50%) scale(1.5);
   box-shadow:0 0 0 2px rgba(111,174,240,.95), 0 0 16px 6px rgba(47,127,209,.75)}
-/* o "Elementos representativos primeiro" (da "10.6"), embaixo do texto da "10.5.2" */
+/* o "Elementos representativos primeiro" (da "10.6"), embaixo do texto da "10.5.3" */
 .titulo9.texto106{font-size:24px;color:color-mix(in srgb,var(--tinta) 80%,transparent)}
 /* a linha do Mg (da "10.6.1"): o "Subnível mais energético:" e o 3s², lado a lado */
 .linha106{position:absolute;z-index:30;transform:translate(-50%,-50%);display:flex;align-items:center;gap:16px;
@@ -3394,14 +3394,14 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 @keyframes pulsaF106{50%{scale:1.35}}
 @keyframes pulsa106{50%{scale:1.35}}
 @keyframes pisca106v{50%{opacity:.25}}
-/* (na "10.5.2" as entradas e as saídas são em fade: o Mg já crescido, só aparece) */
+/* (na "10.5.3" as entradas e as saídas são em fade: o Mg já crescido, só aparece) */
 .veu-mg10.modo1052 .mg10{transform:scale(2.3);transition:opacity 1s ease}
 .veu-mg10.modo1052{transition:opacity 1s ease}
 .veu-mg10 .dist10{transition:opacity .6s ease, filter .6s ease}
 .veu-mg10.brilho1052 .dist10{filter:drop-shadow(0 0 8px rgba(234,255,0,.95)) drop-shadow(0 0 22px rgba(234,255,0,.6))}
 .dist10 .sub10.ult10{transform-box:fill-box;transform-origin:50% 60%;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
 .veu-mg10.mais1052on .sub10.ult10{transform:scale(1.4)}
-/* a "10.5.2" aos 44 s: o 1s² pulsa e brilha, com a seta dele no diagrama; aos
+/* a "10.5.3" aos 44 s: o 1s² pulsa e brilha, com a seta dele no diagrama; aos
    44,9 s o 3s² pulsa, e o 3s² do diagrama acende (e fica aceso) */
 .dist10 :is(.s1s10,.s3s10){transform-box:fill-box;transform-origin:50% 60%}
 .veu-mg10.p1s1052 .dist10 .s1s10, .veu-mg10.p3s1052 .dist10 .s3s10{animation:pulsa1052 .85s ease-in-out}
@@ -3895,6 +3895,10 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
 .slide.quiz7 .quiz3.q4.q2.q5{left:269.3px;top:30px}
 /* (e no quiz do slide 10, o mesmo lugar: acima dos nomes 1A e 8A) */
 .slide.quiz9 .quiz3.q4.q2.q5{left:269.3px;top:30px}
+/* (e no quiz do tópico 10, no slide 11, o mesmo lugar) */
+.slide.quiz10 .quiz3.q4.q2.q5{left:269.3px;top:30px}
+/* (no quiz do tópico 10, as etiquetas s¹, p⁶… somem: dariam a resposta) */
+.slide.quiz10 .mesa .etq102{opacity:0!important;transition:opacity .4s ease}
 /* (e na Q3 do quiz dos tipos — a da tabela de fundo, com o mesmo arranjo da Q2
    dos grupos A e B, LUGAR_ARRASTA —, a caixa no mesmo lugar) */
 .slide.quiz5:has(.mesa.fundo5) .quiz3.q4.q2.q5:not(.sai){left:269.3px;top:30px}
@@ -5277,7 +5281,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v55.4';
+const VERSAO = 'v55.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5842,6 +5846,8 @@ function montaTabela(i){
       if (i === 6 && QUIZ7.aberto){ QUIZ7.toca(c); return; }
       /* no slide 10, no quiz, responde-se tocando na tabela (e no 9 também) */
       if (i === 9 && QUIZ9.aberto){ QUIZ9.toca(c); return; }
+      /* (no slide 11, no quiz do tópico 10, a coluna tocada é a resposta) */
+      if (i === 10 && window.QUIZ10 && QUIZ10.aberto){ QUIZ10.toca(c); return; }
       if (i === 8 && QUIZ8.aberto){ QUIZ8.toca(c); return; }
       if (i === 7 && window.QUIZ7L && QUIZ7L.aberto){ QUIZ7L.toca(c); return; }
       if (i === 6 && EV6.toca(c)) return;
@@ -6600,8 +6606,9 @@ const TRILHAS = {
   '10.4.1': 'Audios/audio_tabela_10.4.1.mp3', /* sozinha, depois da festa das colunas do d: o bloco f cresce */
   '10.5': 'Audios/audio_tabela_10.5.mp3',   /* o Saquei no fim da "10.4.1": o bloco f (CARDS101) */
   '10.5.1': 'Audios/audio_tabela_10.5.1.mp3', /* sozinha, depois da festa do f: os toques nos blocos s, p, d, f */
-  '10.5.2': 'Audios/audio_tabela_10.5.2.mp3', /* sozinha, depois da festa dos blocos: o subnível mais energético (EV10) */
-  '10.6': 'Audios/audio_tabela_10.6.mp3',   /* o Saquei no fim da "10.5.2": a regra pela tabela (CARDS101) */
+  '10.5.1.2': 'Audios/audio_tabela_10.5.1.2.mp3', /* sozinha, depois da festa dos blocos (e do "perfeito"): no fim, o quiz do tópico 10 (QUIZ10) */
+  '10.5.3': 'Audios/audio_tabela_10.5.3.mp3', /* o Continuar do quiz: o subnível mais energético (EV10) — a fala do cartão do quiz é a audio_tabela_10.5.2 */
+  '10.6': 'Audios/audio_tabela_10.6.mp3',   /* o Saquei no fim da "10.5.3": a regra pela tabela (CARDS101) */
   '10.6.1': 'Audios/audio_tabela_10.6.1.mp3', /* o toque na regra: o exemplo do Mg, até o 3s² */
   '10.6.2': 'Audios/audio_tabela_10.6.2.mp3', /* o Saquei no fim da "10.6.1": por que vale saber; no fim, o "Vamos" */
   '10.6.3': 'Audios/audio_tabela_10.6.3.mp3'  /* o "Vamos" no fim da "10.6.2": o segundo exemplo, o iodo (5p⁵) */
@@ -6784,7 +6791,8 @@ const ROTEIROS = {
   '10.4.1': [],
   '10.5': [],
   '10.5.1': [],
-  '10.5.2': [],
+  '10.5.1.2': [],
+  '10.5.3': [],
   '10.6': [],
   '10.6.1': [],
   '10.6.2': [],
@@ -7521,10 +7529,12 @@ const SEQ = {
     else if (id === '10.4.1'){ if (atual === 10) CARDS101.saquei(true, '10.5'); }
     /* o fim da "10.5": com as colunas do f completas (e a festa feita), a "10.5.1" */
     else if (id === '10.5'){ if (atual === 10 && CARDS101.festa105) tocaTrilha('10.5.1'); }
-    /* o fim da "10.5.1": com os quatro blocos tocados (e a festa feita), a "10.5.2" */
-    else if (id === '10.5.1'){ if (atual === 10 && CARDS101.festa1051) tocaTrilha('10.5.2'); }
-    /* o fim da "10.5.2": o "Saquei" (a cena já saiu) */
-    else if (id === '10.5.2'){ if (atual === 10) CARDS101.saquei(true, '10.6'); }
+    /* o fim da "10.5.1": com os quatro blocos tocados (e a festa feita), a "10.5.3" */
+    else if (id === '10.5.1'){ if (atual === 10 && CARDS101.festa1051) CARDS101.vaiPara('10.5.1.2'); }
+    /* o fim da "10.5.1.2": a tela apaga e abre o quiz do tópico 10 */
+    else if (id === '10.5.1.2'){ if (atual === 10) QUIZ10.abre(); }
+    /* o fim da "10.5.3": o "Saquei" (a cena já saiu) */
+    else if (id === '10.5.3'){ if (atual === 10) CARDS101.saquei(true, '10.6'); }
     /* (o fim da "10.6": a regra fica com o "Toque na tela", que leva à "10.6.1" — CARDS101.tick106) */
     /* o fim da "10.6.1": o "Saquei", que leva à "10.6.2" */
     else if (id === '10.6.1'){ if (atual === 10) CARDS101.saquei(true, '10.6.2'); }
@@ -22196,16 +22206,19 @@ window.EV9 = EV9;
    quadro a seta corre junto, em tempo real (o 2p e o 3s na mesma diagonal).
    ============================================================ */
 const T10 = { veu:10.0, tabela:11.0, foto:15.0, mg:22.0, circulo:26.0, circuloSai:32.0, dist:[35.0, 40.0] };
-/* A "10.5.2" (sozinha, depois da festa dos quatro blocos): aos 2 s aplausos e
-   confetes; aos 13 s digita "O subnível mais energético" no alto da mesa; aos
-   23 s a cena da "10" (a tela escura, a tabela e o Mg aceso), aos 30 s o
-   diagrama na direita, dos 34 aos 38 s a distribuição com as setas, aos 40,2 s
-   o brilho dela, aos 52 s o "subnível mais energético" embaixo do 3s²; no fim
-   da fala a cena sai e fica o Saquei. */
-const T1052 = { festa:2.0, pausa:2.2, texto:[13.0, 14.6], veu:23.0, foto:30.0, dist:[34.0, 38.0], brilho:[40.2, 42.2], p1s:44.0, p3s:44.9, mais:[52.0, 53.6] };
+/* A "10.5.3" (o Continuar do quiz do tópico 10): os mesmos eventos da antiga
+   "10.5.2", 11 s mais cedo (lá o "O subnível mais energético" começava aos
+   13 s; aqui, aos 2 s). Aos 2 s digita "O subnível mais energético" no alto da
+   mesa; aos 12 s a cena da "10" (a tela escura, a tabela e o Mg aceso), aos
+   19 s o diagrama na direita, dos 23 aos 27 s a distribuição com as setas,
+   aos 29,2 s o brilho dela, aos 33 s o 1s² pulsa (com a seta), aos 33,9 s o
+   3s², aos 41 s o "subnível mais energético" embaixo do 3s²; no fim da fala a
+   cena fica e vem o Saquei. (Os aplausos dos 2 s e a pausa dos 2,2 s da
+   antiga ficaram na fala do cartão do quiz, que não tem eventos.) */
+const T1052 = { texto:[2.0, 3.6], veu:12.0, foto:19.0, dist:[23.0, 27.0], brilho:[29.2, 31.2], p1s:33.0, p3s:33.9, mais:[41.0, 42.6] };
 const TEXTO_1052 = 'O subnível mais energético';
 const TEXTO_MAIS_1052 = 'subnível mais energético';
-/* A "10.6" (o Saquei no fim da "10.5.2"): aos 1 s a cena escura sai em fade e
+/* A "10.6" (o Saquei no fim da "10.5.3"): aos 1 s a cena escura sai em fade e
    fica a tabela pronta (a mesa já no lugar, sem as fileiras de baixo); aos 6 s
    digita "Elementos representativos primeiro" (em 1 s); aos 9 s os blocos das
    pontas (s e p) brilham por 1 s; aos 13 s os de transição apagam (quase); aos
@@ -22270,7 +22283,7 @@ const VEU_10 = (() => {
     '<svg class="setas10" viewBox="0 0 1024 772" aria-hidden="true"><defs>' +
     '<filter id="g10" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="7"/></filter>' +
     '<filter id="g1052" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter></defs>' +
-    /* (o brilho do "3s²" do diagrama, na "10.5.2") */
+    /* (o brilho do "3s²" do diagrama, na "10.5.3") */
     '<ellipse class="luz3s1052" cx="318" cy="294" rx="78" ry="48" transform="rotate(-8 318 294)"/>' + circ + riscos + '</svg></div>' +
     '<p class="aufbau10" data-mont="aufbau-10">“Princípio de Aufbau”</p>' +
     '<svg class="dist10" data-mont="distribuicao-10" viewBox="0 0 520 90" aria-label="₁₂Mg: 1s² 2s² 2p⁶ 3s²">' +
@@ -22298,7 +22311,7 @@ const EV10 = {
     });
     this.circ = [...V.querySelectorAll('.circ10 ellipse')];
     this.subs = [...V.querySelectorAll('.sub10')];
-    /* (os que pulsam na "10.5.2": o 1s² e a seta dele; o 3s²) */
+    /* (os que pulsam na "10.5.3": o 1s² e a seta dele; o 3s²) */
     this.subs[0].classList.add('s1s10'); this.subs[3].classList.add('s3s10'); this.setas[0].g.classList.add('r1s10');
   },
   /* quanto de cada subnível já se desenhou (0 a 1), aos t s */
@@ -22312,24 +22325,24 @@ const EV10 = {
     CARDS101.tick(t);
     /* (na "10.1" a cena é a que a "10" deixou, até ao 1 s dela: aí sai em fade) */
     const monta = naMontagem(), de101 = trilhaAtual === '10.1', t10 = monta ? 99 : trilhaAtual === '10' ? t : de101 ? 99 : -1;
-    /* (na "10.5.2" a mesma cena volta, nos tempos dela: o quadro é o diagrama
+    /* (na "10.5.3" a mesma cena volta, nos tempos dela: o quadro é o diagrama
        sem o Pauling; acabada, fica inteira, até 1 s da "10.6", quando sai em
        fade. O quadro e os detalhes dela ficam até a cena da "10" voltar) */
-    const modo = !monta && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.5.2');
+    const modo = !monta && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.5.3');
     if (modo !== !!this.modo1052){
       this.modo1052 = modo;
       this.veu.querySelector('.quadro10 img').src = modo ? 'Imagens/diagrama.jpeg' : 'Imagens/linus_pauling.jpeg';
       this.veu.classList.toggle('modo1052', modo);
       if (!modo){ this.veu.classList.remove('brilho1052', 'mais1052on', 'p1s1052', 'p3s1052', 'luz3s1052on'); if (this.mais1052) this.mais1052.textContent = ''; }
     }
-    const m1052 = !monta && (trilhaAtual === '10.5.2' || (trilhaAtual === '10.6' && t < T106.sai));
+    const m1052 = !monta && (trilhaAtual === '10.5.3' || (trilhaAtual === '10.6' && t < T106.sai));
     if (m1052 !== !!this.m1052){ this.m1052 = m1052; this.estado = ''; this.estadoT = ''; }
-    if (m1052) return this.tick1052(trilhaAtual === '10.5.2' ? t : 99);
+    if (m1052) return this.tick1052(trilhaAtual === '10.5.3' ? t : 99);
     const sai = de101 && t >= T101.sai;
     /* o desenho: as setas e os subníveis, e o círculo (traçado em 0,7 s) */
     const fr = this.fracoes(t10), fc = Math.max(0, Math.min(1, (t10 - T10.circulo) / 0.7));
     const chave = fr.map(f => f.toFixed(3)).join() + '|' + fc.toFixed(3);
-    /* (depois da "10.5.2" o desenho fica como ela deixou, enquanto a cena sai em fade) */
+    /* (depois da "10.5.3" o desenho fica como ela deixou, enquanto a cena sai em fade) */
     if (chave !== this.estadoT && !modo){
       this.estadoT = chave;
       /* (o quanto cada risco andou: o fim do trecho do subnível mais adiantado
@@ -22361,7 +22374,7 @@ const EV10 = {
     });
     this.circ.forEach(e => e.style.strokeDashoffset = (1 - fc).toFixed(3));
   },
-  /* A "10.5.2", na mesma cena: aos 23 s a tela escurece, com a tabela e o Mg
+  /* A "10.5.3", na mesma cena: aos 23 s a tela escurece, com a tabela e o Mg
      crescido e aceso; aos 30 s o diagrama na direita; dos 34 aos 38 s a
      distribuição do Mg desenha-se com as setas correndo no quadro; aos 40,2 s
      ela brilha; aos 52 s o "3s²" cresce e embaixo dele escreve-se, no mesmo
@@ -22381,7 +22394,7 @@ const EV10 = {
         this.mais1052 = this.veu.querySelector('.mais1052');
       }
       /* (o som das teclas, a cada letra, tocando) */
-      if (trilhaAtual === '10.5.2' && n > (this.nMais1052 ?? 0) && this.mais1052.textContent.length < n) TECLAS.bate();
+      if (trilhaAtual === '10.5.3' && n > (this.nMais1052 ?? 0) && this.mais1052.textContent.length < n) TECLAS.bate();
       this.nMais1052 = n;
       this.mais1052.textContent = TEXTO_MAIS_1052.slice(0, n);
     }
@@ -22526,7 +22539,7 @@ const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
-const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.2', '10.6', '10.6.1', '10.6.2', '10.6.3'];
+const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.2', '10.6.3'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -22708,11 +22721,11 @@ const CARDS101 = {
     /* (a festa das colunas do p ou do d: acabado o funfare, a "10.3.1" ou a
        "10.4.1" — ou, se a narração ainda fala, no fim dela) */
     if (!segue){
-      const de = trilhaAtual, prox = { '10.3':'10.3.1', '10.4':'10.4.1', '10.5':'10.5.1', '10.5.1':'10.5.2' }[de];
+      const de = trilhaAtual, prox = { '10.3':'10.3.1', '10.4':'10.4.1', '10.5':'10.5.1', '10.5.1':'10.5.1.2' }[de];
       tocaEfeito('funfare').then(() => {
         if (g !== this.festaG || atual !== 10 || trilhaAtual !== de || !prox) return;
         this['festa' + de.replace(/\./g, '')] = true;
-        if (som.ended || (som.duration && som.currentTime >= som.duration - 0.15)) tocaTrilha(prox);
+        if (som.ended || (som.duration && som.currentTime >= som.duration - 0.15)) this.vaiPara(prox);
       });
       return;
     }
@@ -22721,6 +22734,15 @@ const CARDS101 = {
       this.festaFeita = true;
       /* (a "10.1" já no fim: mesmo parada ali, sem o ended) */
       if (som.ended || (som.duration && som.currentTime >= som.duration - 0.15)) tocaTrilha('10.2');
+    });
+  },
+  /* a narração seguinte depois de uma festa; depois da dos quatro blocos (a
+     "10.5.1", comemorada como um quiz), antes vem a voz "perfeito" */
+  vaiPara(prox){
+    if (prox !== '10.5.1.2'){ tocaTrilha(prox); return; }
+    const g = this.festaG;
+    tocaEfeito('perfeito').then(() => {
+      if (g === this.festaG && atual === 10 && trilhaAtual === '10.5.1') tocaTrilha('10.5.1.2');
     });
   },
   festaG:0, festaFeita:false, festa103:false, festa104:false, festa105:false,
@@ -22836,12 +22858,12 @@ const CARDS101 = {
     }
     /* (na montagem, o texto da "10.2" aparece inteiro — e editável — na cena
        dela e nas seguintes; nas de antes, fica escondido e não pega o dedo) */
-    /* (da "10.5.2" em diante ele já saiu de cena: na montagem dá lugar ao "O subnível mais energético") */
-    const cena102 = (trilhaAtual === '10.2' || depoisDe('10.2')) && ORDEM_10.indexOf(trilhaAtual) < ORDEM_10.indexOf('10.5.2');
+    /* (da "10.5.3" em diante ele já saiu de cena: na montagem dá lugar ao "O subnível mais energético") */
+    const cena102 = (trilhaAtual === '10.2' || depoisDe('10.2')) && ORDEM_10.indexOf(trilhaAtual) < ORDEM_10.indexOf('10.5.3');
     const n = monta ? (cena102 ? TEXTO_102.length : 0) : EV9.letras(T, T102.texto[0], T102.texto[1], TEXTO_102);
     this.texto102.classList.toggle('mont102', monta && cena102);
     this.texto.classList.toggle('mont102', monta && cena102);
-    const depois1052 = monta && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.5.2');
+    const depois1052 = monta && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.5.3');
     this.texto.classList.toggle('fora1052', depois1052); this.texto102.classList.toggle('fora1052', depois1052);
     /* (editado na montagem: o relógio não o reescreve mais) */
     if (n !== this.nt102 && !this.texto102.classList.contains('texto-livre')){
@@ -22895,6 +22917,7 @@ const CARDS101 = {
     botaoVerde(sim ? txt : null, () => { this.saquei(false); if (atual === 10 && prox && TRILHAS[prox]) tocaTrilha(prox); });
   },
   fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051', 'sem-play105');
+          if (window.QUIZ10 && QUIZ10.aberto) QUIZ10.fecha();
           if (this.pede106){ this.pede106 = false; this.estado106 = ''; stage.classList.remove('em-toque'); } },
   passo103:0, sel103:null, feito103:false,
   /* as etiquetas do p (p¹ a p⁶) em cima das colunas 13 a 18, na linha 1 */
@@ -23193,7 +23216,7 @@ const CARDS101 = {
       m.querySelectorAll('.casa:not(.serie)').forEach(c => { if (parseFloat(c.style.top) > yDaLinha(7) + LADO / 2) c.classList.add('casaF106'); });
       this.mg106 = m.querySelector('.pc[data-z="12"]');
       /* o "Elementos representativos primeiro", embaixo do "O subnível mais
-         energético" (o texto da "10.5.2", que fica) */
+         energético" (o texto da "10.5.3", que fica) */
       const q = this.texto106 = document.createElement('div');
       q.className = 'titulo9 texto106';
       q.style.left = '423px';
@@ -23214,8 +23237,8 @@ const CARDS101 = {
       this.r106 = w.querySelector('.r106');
     }
     /* a mesa sem as fileiras de baixo, já no lugar da "10.6": desde 1,5 s
-       antes do fim da "10.5.2" (atrás da cena escura) */
-    const de1052 = trilhaAtual === '10.5.2' && !monta;
+       antes do fim da "10.5.3" (atrás da cena escura) */
+    const de1052 = trilhaAtual === '10.5.3' && !monta;
     const semF = T >= 0 || (de1052 && (som.ended || (som.duration > 0 && t >= som.duration - 1.5)));
     if (semF !== this.semF106){ this.semF106 = semF; this.m.classList.toggle('semF106', semF); }
     /* a festa da "10.6.1" (só tocando de seguida: um salto — pelo sumário, por exemplo — não a dispara) */
@@ -23383,15 +23406,12 @@ const CARDS101 = {
     }
     /* aos 21 s, com a tabela sem cor, os cards, as etiquetas e o texto saem
        em fade: só a tabela fica, para ser tocada. Completa a tabela (passada
-       a festa), as etiquetas voltam; os cards e o texto não (nem na "10.5.2") */
+       a festa), as etiquetas voltam; os cards e o texto não (nem na "10.5.3") */
     const so = (de && t >= T1051.neutro) || (!naMontagem() && depoisDe('10.5.1'));
     this.m.classList.toggle('so1051', so);
     this.m.classList.toggle('etq1051', de && t >= T1051.neutro && !this.fora1051);
-    /* a "10.5.2": aos 2 s aplausos e confetes; aos 13 s o texto digitado */
-    const de2 = trilhaAtual === '10.5.2' && !naMontagem();
-    if (de2 && !som.paused && this.t1052ant >= 0 && this.t1052ant < T1052.festa && t >= T1052.festa && t < T1052.festa + 0.6) this.aplauso();
-    /* aos 2,2 s a narração pára 1,5 s e segue (só tocando de seguida) */
-    if (de2 && !som.paused && this.t1052ant >= 0 && this.t1052ant < T1052.pausa && t >= T1052.pausa && t < T1052.pausa + 0.6) pausaPor('10.5.2', 1500);
+    /* a "10.5.3": aos 2 s o texto digitado */
+    const de2 = trilhaAtual === '10.5.3' && !naMontagem();
     this.t1052ant = de2 ? t : -1;
     if (!this.texto1052){
       const q = this.texto1052 = document.createElement('div');
@@ -23404,9 +23424,9 @@ const CARDS101 = {
       q.innerHTML = '<span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span>';
       this.m.appendChild(q);
     }
-    const T2 = de2 ? t : depoisDe('10.5.2') && !naMontagem() ? 99 : -1;
-    /* (na montagem, da "10.5.2" em diante, o texto inteiro, para ser arrumado) */
-    const mont2 = naMontagem() && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.5.2');
+    const T2 = de2 ? t : depoisDe('10.5.3') && !naMontagem() ? 99 : -1;
+    /* (na montagem, da "10.5.3" em diante, o texto inteiro, para ser arrumado) */
+    const mont2 = naMontagem() && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.5.3');
     this.texto1052.classList.toggle('mont1052', mont2);
     const n2 = mont2 ? TEXTO_1052.length : EV9.letras(T2, T1052.texto[0], T1052.texto[1], TEXTO_1052);
     if (n2 !== this.nt1052){
@@ -23414,7 +23434,7 @@ const CARDS101 = {
       this.nt1052 = n2;
       EV9.escreve(this.texto1052, TEXTO_1052, n2);
     }
-    /* (sai junto com as fileiras de baixo — no fim da "10.5.2", atrás da cena escura — e não volta) */
+    /* (sai junto com as fileiras de baixo — no fim da "10.5.3", atrás da cena escura — e não volta) */
     this.texto1052.classList.toggle('on', T2 >= T1052.texto[0] && !this.semF106);
     this.texto1052.classList.toggle('digitando9', T2 >= T1052.texto[0] && T2 < T1052.texto[1]);
     /* acabada a fala, o play sai e a instrução fica no alto (as letras dos
@@ -23606,6 +23626,119 @@ const CARDS101 = {
   }
 };
 window.CARDS101 = CARDS101;
+
+/* ============================================================
+   O QUIZ DO TÓPICO 10 (QUIZ10, no slide 11) — entre a "10.5.1.2" e a
+   "10.5.3". É o QUIZ5 com as questões daqui, no mesmo ritual (a sala apaga,
+   "Questão N de 6" digitada no alto; acerto: confete, fanfarra, aplausos e a
+   voz, "Perfeito" na última; erro: o card balança, a tela treme e vem a dica;
+   no 2º erro, a coluna certa em âmbar; a nota, Refazer e Continuar). Seis
+   comandos "Toque na coluna da tabela correspondente ao subnível x": um do s,
+   dois do p, dois do d e um do f, sorteados de novo a cada Refazer. Vale
+   qualquer card da coluna (o He conta como s², o La e o Ac como d¹; no f, a
+   coluna é o par de cima e de baixo). As etiquetas (s¹, p⁶…) somem durante o
+   quiz, para não darem a resposta. O cartão traz a fala "audio_tabela_10.5.2";
+   o Continuar devolve a tabela e toca a "10.5.3".
+   ============================================================ */
+const SUP_10 = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+/* "p4" → "p⁴" */
+const rotulo10 = s => s[0] + s.slice(1).split('').map(d => SUP_10[+d]).join('');
+/* o subnível da coluna de um card da tabela */
+function subnivel10(c){
+  const z = +c.dataset.z, col = +c.dataset.col;
+  if (z === 2) return 's2';
+  if (z === 57 || z === 89) return 'd1';
+  if (z >= 58 && z <= 71) return 'f' + (z - 57);
+  if (z >= 90 && z <= 103) return 'f' + (z - 89);
+  return col <= 2 ? 's' + col : col <= 12 ? 'd' + (col - 2) : 'p' + (col - 12);
+}
+/* as seis questões: um s, dois p, dois d e um f, em ordem sorteada */
+function questoes10(){
+  const MAX = { s:2, p:6, d:10, f:14 }, usados = new Set();
+  const blocos = ['s', 'p', 'p', 'd', 'd', 'f'].sort(() => Math.random() - .5);
+  return blocos.map(b => {
+    let s;
+    do s = b + (1 + Math.floor(Math.random() * MAX[b])); while (usados.has(s));
+    usados.add(s);
+    const n = +s.slice(1), nome = { s:'s', p:'p', d:'d', f:'f' }[b];
+    return {
+      sub:s,
+      monta(){ return 'Toque na coluna da tabela correspondente ao subnível ' + rotulo10(s) + '.'; },
+      toca(Q, c){
+        const dele = subnivel10(c);
+        if (dele === s){
+          Q.coluna10(s).forEach(x => { x.classList.add('certa3'); Q.marcados.push(x); });
+          Q.acerta('É a ' + n + 'ª coluna do bloco ' + nome + '.');
+          return;
+        }
+        Q.erra('Essa é a coluna do ' + rotulo10(dele) + '. Procure a do ' + rotulo10(s) + '.', [c], () => Q.coluna10(s));
+      },
+      limpa(Q){ limpa10(Q); }
+    };
+  });
+}
+function limpa10(Q){
+  (Q.marcados || []).forEach(c => c.classList.remove('certa3'));
+  Q.marcados = [];
+  const m = Q.mesa();
+  if (m) m.querySelectorAll('.pista5, .errada3').forEach(c => c.classList.remove('pista5', 'errada3'));
+}
+const QUIZ10 = Object.assign(Object.create(QUIZ5), {
+  aberto:false, passo:0, itens:[], erros:0, tropecos:0, travado:false, g:0, q:null, marcados:[],
+  sl(){ return slides[10]; },
+  mesa(){ return slides[10].querySelector('.mesa'); },
+  carta(z){ return this.mesa().querySelector('.pc[data-z="' + z + '"]:not(.ficha5)'); },
+  /* os cards da coluna de um subnível */
+  coluna10(s){ return [...this.mesa().querySelectorAll('.pc:not(.ficha5)')].filter(c => subnivel10(c) === s); },
+  abre(){
+    if (atual !== 10) return;
+    this.fecha(true);
+    som.pause();
+    VIDA.desliga();
+    this.itens = questoes10();
+    this.passo = 0; this.erros = 0; this.aberto = true; this.marcados = [];
+    const g = ++this.g, sl = this.sl();
+    stage.classList.add('em-quiz');
+    let v = sl.querySelector(':scope > .breu-quiz');
+    if (!v){ v = document.createElement('div'); v.className = 'breu-quiz'; sl.insertBefore(v, sl.firstChild); v.getBoundingClientRect(); }
+    v.classList.add('on');
+    sl.classList.add('quiz-escuro', 'quiz10');
+    cabecaDoQuiz(sl, true, 'Quiz', 'quiz-cabeca');
+    if (!sl.querySelector('.confete'))
+      sl.insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
+    this.travado = true;
+    tocaEfeito('Audios/quiz1.mp3').then(() => { if (g === this.g) this.apresenta(g); });
+  },
+  resultado(){
+    this.sl().querySelectorAll('.quiz3.q5').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
+    const n = this.itens.length, e = this.erros, nota = Math.round(Math.max(0, n - e) / n * 100) / 10;
+    QUIZ_FEITOS.marca('q10', nota);      /* feito: verde no sumário */
+    cartaoDoResultado(nota, n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
+      this.sl(), () => this.abre(),
+      /* Continuar: a tabela volta ao normal e começa a "10.5.3" */
+      () => { this.fecha(); if (atual === 10) tocaTrilha('10.5.3'); },
+      /* depois do "statistics", a fala do fim do quiz */
+      'Audios/audio_tabela_10.5.2.mp3');
+  },
+  fecha(reabre){
+    this.g++;
+    clearInterval(this.digT);
+    if (this.q && this.q.limpa) this.q.limpa(this);
+    else if (this.mesa()) limpa10(this);
+    this.q = null;
+    this.aberto = false; this.travado = false;
+    const sl = this.sl();
+    if (!sl) return;
+    sl.querySelectorAll('.quiz3.q5, .quiz-cartao').forEach(e => e.remove());
+    if (reabre) return;
+    stage.classList.remove('em-quiz');
+    const v = sl.querySelector(':scope > .breu-quiz');
+    if (v) v.classList.remove('on');
+    sl.classList.remove('quiz-escuro', 'quiz10');
+    cabecaDoQuiz(sl, false, 'Quiz', 'quiz-cabeca');
+  }
+});
+window.QUIZ10 = QUIZ10;
 
 /* A COR NEUTRA de quem está fora do lugar: um cinza morno que escurece
    devagar com o número atômico (o do professor). A cor da família volta
@@ -27159,9 +27292,20 @@ const NAV_TOPICOS = [
   /* a "10.5.1" aos 19 s: logo antes de a tabela perder a cor e o aluno tocar os blocos */
   { titulo:'Identifique os blocos', sub:'a 10.5.1 aos 19 s', slide:10,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.5.1', 19, g)); } },
-  /* o começo da "10.5.2": o subnível mais energético pelo diagrama */
-  { titulo:'O subnível mais energético sem tabela', sub:'o começo da 10.5.2', slide:10,
-    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.5.2', 0, g)); } },
+  /* o quiz direto: a mesa como no fim da "10.5.1.2" (os blocos com cor, as
+     etiquetas no lugar), e o quiz abre */
+  { titulo:'Quiz', sub:'o quiz direto: o escuro, o quiz1 e a questão 1', slide:10, quiz:'q10',
+    entra(v, g){
+      depoisDaMesa(g, () => {
+        if (g !== NAV.geracao) return;
+        trilhaAtual = -1;
+        carregaTrilha('10.5.1.2');
+        QUIZ10.abre();
+      });
+    } },
+  /* o começo da "10.5.3": o subnível mais energético pelo diagrama */
+  { titulo:'O subnível mais energético sem tabela', sub:'o começo da 10.5.3', slide:10,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.5.3', 0, g)); } },
   /* o começo da "10.6": o subnível mais energético pela tabela */
   { titulo:'Subnível mais energético com tabela', sub:'o começo da 10.6', slide:10,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.6', 0, g)); } },
