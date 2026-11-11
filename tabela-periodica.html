@@ -5262,7 +5262,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v54.8';
+const VERSAO = 'v54.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23265,7 +23265,8 @@ const CARDS101 = {
       this.nt1052 = n2;
       EV9.escreve(this.texto1052, TEXTO_1052, n2);
     }
-    this.texto1052.classList.toggle('on', T2 >= T1052.texto[0]);
+    /* (sai junto com as fileiras de baixo — no fim da "10.5.2", atrás da cena escura — e não volta) */
+    this.texto1052.classList.toggle('on', T2 >= T1052.texto[0] && !this.semF106);
     this.texto1052.classList.toggle('digitando9', T2 >= T1052.texto[0] && T2 < T1052.texto[1]);
     /* acabada a fala, o play sai e a instrução fica no alto (as letras dos
        blocos nas cores deles; a de cada bloco certo cresce e brilha) — até a
