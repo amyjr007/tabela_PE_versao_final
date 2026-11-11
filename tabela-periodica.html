@@ -5254,7 +5254,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v54.6';
+const VERSAO = 'v54.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23111,7 +23111,8 @@ const CARDS101 = {
     const de1052 = trilhaAtual === '10.5.2' && !monta;
     const semF = T >= 0 || (de1052 && (som.ended || (som.duration > 0 && t >= som.duration - 1.5)));
     if (semF !== this.semF106){ this.semF106 = semF; this.m.classList.toggle('semF106', semF); }
-    const passa = s => de && !som.paused && this.t106ant >= 0 && this.t106ant < s && t >= s && t < s + 0.6;
+    /* (só tocando de seguida: um salto — pelo sumário, por exemplo — não os dispara) */
+    const passa = s => de && !som.paused && this.t106ant >= 0 && this.t106ant < s && t >= s && t < s + 0.6 && t - this.t106ant < 1;
     if (passa(T106.festa)){ this.aplauso(); tocaEfeito('funfare'); }
     if (passa(T106.pausa)) pausaPor('10.6', 1500);
     if (passa(T106.toque)){ som.pause(); this.pede106 = true; }
@@ -26950,6 +26951,9 @@ const NAV_TOPICOS = [
   /* o começo da "10.6": o subnível mais energético pela tabela */
   { titulo:'Subnível mais energético com tabela', sub:'o começo da 10.6', slide:10,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.6', 0, g)); } },
+  /* a "10.6" aos 32 s: a regra já escrita (e o toque já dado), e o exemplo do Mg */
+  { titulo:'O exemplo do Mg', sub:'a 10.6 aos 32 s', slide:10,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.6', 32, g)); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){

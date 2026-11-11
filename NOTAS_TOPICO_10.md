@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v54.4** (2026-11-10). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v54.7** (2026-11-10). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -71,6 +71,7 @@ Onde paramos: **v54.4** (2026-11-10). Este arquivo serve para retomar o trabalho
 | g – Identifique os blocos | 10.5.1, aos 19 s |
 | h – O subnível mais energético sem tabela | 10.5.2 |
 | i – Subnível mais energético com tabela | 10.6 |
+| j – O exemplo do Mg | 10.6, aos 32 s |
 
 Pelo sumário, cada narração abre com tudo o que veio antes já completo (as etiquetas no lugar). Voltar para uma narração com toques desfaz os toques dela.
 
