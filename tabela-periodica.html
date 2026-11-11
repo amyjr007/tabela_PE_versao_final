@@ -3373,10 +3373,10 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 /* (na "10.6.2", aos 6,5 s, o 3s² pulsa) */
 .r106.pulsa1062{animation:pulsa106 .5s ease-in-out 2}
 .r106.pulsa1062 > *{text-shadow:0 0 14px currentColor}
-/* a bolinha do período pisca com a faixa da linha, e a etiqueta s² com a da
-   coluna (pelo filtro: a opacidade do número está presa com !important) */
-.mesa .eixo.piscaF2106, .etq102.piscaF2106{animation:piscaF106 .6s ease-in-out 2}
-@keyframes piscaF106{50%{filter:opacity(.12)}}
+/* a bolinha do período pulsa com a faixa da linha, e a etiqueta s² com a da
+   coluna: as duas 2 vezes, pela propriedade scale (soma-se ao transform de cada uma) */
+.mesa .eixo.pulsaF106, .etq102.pulsaF106{animation:pulsaF106 .6s ease-in-out 2}
+@keyframes pulsaF106{50%{scale:1.35}}
 @keyframes pulsa106{50%{scale:1.35}}
 @keyframes pisca106v{50%{opacity:.25}}
 /* (na "10.5.2" as entradas e as saídas são em fade: o Mg já crescido, só aparece) */
@@ -5262,7 +5262,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v55.0';
+const VERSAO = 'v55.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23209,8 +23209,8 @@ const CARDS101 = {
     this.faixaL106.classList.toggle('on', lin); this.faixaL106.classList.toggle('pisca2106', pL);
     this.faixaC106.classList.toggle('on', col); this.faixaC106.classList.toggle('pisca2106', pC);
     /* (a bolinha do 3 pisca com a faixa da linha; a etiqueta s² — no alto da coluna — com a da coluna) */
-    if (this.p3106){ this.p3106.classList.toggle('piscaF2106', pL); this.p3106.classList.toggle('p106', bola); }
-    if (this.etq102){ this.etq102[1].d.classList.toggle('piscaF2106', pC); this.etq102[1].d.classList.toggle('destaque106', etq); }
+    if (this.p3106){ this.p3106.classList.toggle('pulsaF106', pL); this.p3106.classList.toggle('p106', bola); }
+    if (this.etq102){ this.etq102[1].d.classList.toggle('pulsaF106', pC); this.etq102[1].d.classList.toggle('destaque106', etq); }
     this.rot106.classList.toggle('on', rot);
     this.rot106.classList.toggle('digitando9', digR);
     this.r106.classList.toggle('tres', tres);

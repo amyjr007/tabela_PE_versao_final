@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v55.0** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v55.1** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -60,10 +60,10 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 |---|---|
 | 0 s | A regra e a tela escura saem em fade |
 | 3 s | O Mg brilha em verde |
-| 7 s | Faixa da linha 3 entra e pisca 2 vezes, com a bolinha do 3 |
-| 8,2 s | Faixa da coluna 2 entra e pisca 2 vezes, com a etiqueta s² (no alto da coluna) |
-| 11 s | A linha pisca 2 vezes de novo; a bolinha do 3 fica crescida |
-| 12,3 s | A coluna pisca 2 vezes de novo; a etiqueta s² fica crescida |
+| 7 s | Faixa da linha 3 entra e pisca 2 vezes; a bolinha do 3 pulsa 2 vezes |
+| 8,2 s | Faixa da coluna 2 entra e pisca 2 vezes; a etiqueta s² (no alto da coluna) pulsa 2 vezes |
+| 11 s | A linha pisca e a bolinha do 3 pulsa, 2 vezes de novo; a bolinha do 3 fica crescida |
+| 12,3 s | A coluna pisca e a etiqueta s² pulsa, 2 vezes de novo; a etiqueta s² fica crescida |
 | 14,7 → 16,2 s | Digita "Subnível mais energético:" na linha do Mg, no vão dos de transição |
 | 17,7 / 19 / 19,2 s | O "3", o "s", o "²" (ao lado do texto) |
 | 20,5 s | O 3s² cresce e brilha, com confetes, aplausos e funfare |
