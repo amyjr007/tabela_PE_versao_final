@@ -3897,6 +3897,8 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
 .slide.quiz9 .quiz3.q4.q2.q5{left:269.3px;top:30px}
 /* (e no quiz do tópico 10, no slide 11, o mesmo lugar) */
 .slide.quiz10 .quiz3.q4.q2.q5{left:269.3px;top:30px}
+/* (no quiz do tópico 10 o número grande do capítulo sai: o título já diz "Quiz 10") */
+.slide.quiz10 .tira > .num{opacity:0!important}
 /* (no quiz do tópico 10, as etiquetas s¹, p⁶… somem: dariam a resposta) */
 .slide.quiz10 .mesa .etq102{opacity:0!important;transition:opacity .4s ease}
 /* (no acerto, a coluna sobe e a etiqueta dela cai em cima — e desce com ela na questão seguinte) */
@@ -5284,7 +5286,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v55.6';
+const VERSAO = 'v55.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23722,7 +23724,7 @@ const QUIZ10 = Object.assign(Object.create(QUIZ5), {
     sl.classList.add('quiz-escuro', 'quiz10');
     cabecaDoQuiz(sl, true, 'Quiz 10', 'quiz-cabeca');
   },
-  abre(){
+  abre(peloSumario){
     if (atual !== 10) return;
     const jaEscuro = this.escuro;
     this.fecha(true);
@@ -23736,9 +23738,10 @@ const QUIZ10 = Object.assign(Object.create(QUIZ5), {
     if (!sl.querySelector('.confete'))
       sl.insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
     this.travado = true;
-    /* (sem a fala de abertura do quiz: a questão 1 já se digita — com a sala
-       já escura, logo; chegando pelo sumário, depois de ela escurecer) */
-    setTimeout(() => { if (g === this.g) this.apresenta(g); }, jaEscuro ? 300 : 900);
+    /* (na sequência da aula, sem a fala de abertura do quiz: a questão 1 já se digita — com a sala
+       já escura, logo. Pelo sumário, a fala "Vamos para a primeira questão" e depois a questão) */
+    if (peloSumario) tocaEfeito('Audios/quiz1.mp3').then(() => { if (g === this.g) this.apresenta(g); });
+    else setTimeout(() => { if (g === this.g) this.apresenta(g); }, jaEscuro ? 300 : 900);
   },
   /* o acerto: a coluna sobe e a etiqueta dela (s¹, p⁴…) cai em cima; desce na questão seguinte */
   sobe10(s){
@@ -27357,7 +27360,7 @@ const NAV_TOPICOS = [
         if (g !== NAV.geracao) return;
         trilhaAtual = -1;
         carregaTrilha('10.5.1.2');
-        QUIZ10.abre();
+        QUIZ10.abre(true);       /* (pelo sumário, com a fala de abertura do quiz) */
       });
     } },
   /* o começo da "10.5.3": o subnível mais energético pelo diagrama */

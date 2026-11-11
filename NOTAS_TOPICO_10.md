@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v55.6** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v55.7** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -33,7 +33,7 @@ Onde paramos: **v55.6** (2026-11-11). Este arquivo serve para retomar o trabalho
 | 10.4.1 | Bloco f cresce aos 6 s | Saquei → 10.5 |
 | 10.5 | Fileiras do f; texto "metais de transição interna"; La/Ac escurecem; brilho corre; f¹–f⁴ em cima das séries (que descem 14 px neste slide, `DESCE_SERIES_10`), caindo de cima; no fim o play sai; aluno toca f⁵ a f¹⁴ | festa → 10.5.1 |
 | 10.5.1 | Dos 1,8 aos 7 s os blocos crescem com o card encaixado, um de cada vez (s 1,8; p 3,2; d 4,6; f 6; o f volta aos 7); aplausos aos 6 s; aos 21 s a tabela fica sem cor e sem cards; dos 23 aos 31,2 s a instrução se digita linha a linha ("Toque no bloco s." 23–24,8; "Depois no bloco p." 25–26,8; "Depois no d." 27,7–28,7; "Por fim, toque no bloco f." 29,5–31,2) em 2 linhas, centrada entre os grupos 2 e 13, e fica no fim; aluno toca os blocos s, p, d, f (a frase do bloco certo fica verde, com ✓) | festa (como num quiz) → voz "perfeito" → 10.5.1.2 |
-| 10.5.1.2 | Desde o começo a sala apaga e o cabeçalho vira "Quiz 10" | no fim abre o **quiz do tópico 10** (sem a fala de abertura do quiz: a questão 1 já se digita) |
+| 10.5.1.2 | Desde o começo a sala apaga e o cabeçalho vira "Quiz 10" | no fim abre o **quiz do tópico 10** (sem a fala de abertura do quiz: a questão 1 já se digita; pelo sumário, com a fala); o número grande "10" do cabeçalho some no quiz |
 | Quiz (QUIZ10) | 6 questões "Toque na coluna da tabela correspondente ao subnível x" (1 s, 2 p, 2 d, 1 f, sorteadas de novo no Refazer); as etiquetas somem durante o quiz; no acerto a coluna sobe e a etiqueta dela cai em cima (com o flip), e desce na questão seguinte; no fim, o cartão da nota e a fala `audio_tabela_10.5.2` (sem eventos) | Continuar → a tabela volta e toca a 10.5.3 |
 | 10.5.3 | Os eventos da antiga 10.5.2, 11 s mais cedo: aos 2 s "O subnível mais energético"; aos 12 s a cena escura da 10 volta com o diagrama sem o Pauling e o ₁₂Mg: já embaixo da tabela; aos 19 s o diagrama; distribuição dos 23 aos 27 s; brilho aos 29,2 s; aos 33 s o 1s² pulsa com a seta dele no diagrama, aos 33,9 s o 3s² pulsa e o 3s² do diagrama acende; aos 41 s "subnível mais energético" (em amarelo, com som de teclas); no fim a mesa desce e as séries somem, atrás da cena escura | Saquei → 10.6 |
 | 10.6 | Ver abaixo | toque na tela → 10.6.1 |
