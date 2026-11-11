@@ -3225,6 +3225,10 @@ html:is(.palco-largo,.palco-alto) .veu-mg10::before{background:rgba(12,10,32,.96
    enchem-se no fim; o "Mg:" entra em fade; o 3s², o mais energético, no neon */
 .veu-mg10 .dist10{left:320px;top:600px;width:520px;overflow:visible}
 .veu-mg10.dist10on .dist10, body.montagem .veu-mg10 .dist10{opacity:1}
+/* (na "10.5.2" o "₁₂Mg:" já entra, em fade, logo depois de o Mg acender na
+   tabela; os subníveis só se desenham no tempo da distribuição) */
+.veu-mg10.modo1052.mg10on .dist10{opacity:1;transition-delay:.5s}
+.veu-mg10.modo1052.mg10on.dist10on .dist10{transition-delay:0s}
 .dist10 text{font-family:'Caveat',cursive;font-weight:500;font-size:64px}
 .dist10 .mgd10{fill:#F4F2F8}
 .dist10 .z10{font-size:34px}
@@ -5229,7 +5233,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v54.1';
+const VERSAO = 'v54.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o

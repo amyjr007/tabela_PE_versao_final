@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v54.1** (2026-11-10). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v54.2** (2026-11-10). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -33,7 +33,7 @@ Onde paramos: **v54.1** (2026-11-10). Este arquivo serve para retomar o trabalho
 | 10.4.1 | Bloco f cresce aos 6 s | Saquei → 10.5 |
 | 10.5 | Fileiras do f; texto "elementos de transição interna"; La/Ac escurecem; brilho corre; f¹–f⁴ embaixo; no fim o play sai; aluno toca f⁵ a f¹⁴ | festa → 10.5.1 |
 | 10.5.1 | Aplausos aos 6 s; aos 21 s a tabela fica sem cor e sem cards; dos 23 aos 31,2 s a instrução se digita linha a linha ("Toque no bloco s." 23–24,8; "Depois no bloco p." 25–26,8; "Depois no d." 27,7–28,7; "Por fim, toque no bloco f." 29,5–31,2) em 2 linhas, centrada entre os grupos 2 e 13, e fica no fim; aluno toca os blocos s, p, d, f (a frase do bloco certo fica verde, com ✓) | festa → 10.5.2 |
-| 10.5.2 | "O subnível mais energético"; aos 23 s a cena escura da 10 volta com o diagrama sem o Pauling; distribuição; 3s² e "subnível mais energético" | Saquei → 10.6 |
+| 10.5.2 | "O subnível mais energético"; aos 23 s a cena escura da 10 volta com o diagrama sem o Pauling e o ₁₂Mg: já embaixo da tabela; distribuição; 3s² e "subnível mais energético" | Saquei → 10.6 |
 | 10.6 | Ver abaixo | **Saquei ainda não leva a nada** |
 
 ### A 10.6 (82,7 s) — feita até os 53 s
