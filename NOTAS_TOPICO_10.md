@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v56.0** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v56.1** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -34,7 +34,7 @@ Onde paramos: **v56.0** (2026-11-11). Este arquivo serve para retomar o trabalho
 | 10.5 | Fileiras do f; texto "metais de transição interna"; La/Ac escurecem; brilho corre; f¹–f⁴ em cima das séries (que descem 14 px neste slide, `DESCE_SERIES_10`), caindo de cima; no fim o play sai; aluno toca f⁵ a f¹⁴ | festa → 10.5.1 |
 | 10.5.1 | Dos 1,8 aos 7 s os blocos crescem com o card encaixado, um de cada vez (s 1,8; p 3,2; d 4,6; f 6; o f volta aos 7); aplausos aos 6 s; aos 21 s a tabela fica sem cor e sem cards; dos 23 aos 31,2 s a instrução se digita linha a linha ("Toque no bloco s." 23–24,8; "Depois no bloco p." 25–26,8; "Depois no d." 27,7–28,7; "Por fim, toque no bloco f." 29,5–31,2) em 2 linhas, centrada entre os grupos 2 e 13, e fica no fim; aluno toca os blocos s, p, d, f (a frase do bloco certo fica verde, com ✓) | festa (como num quiz) → voz "perfeito" → 10.5.1.2 |
 | 10.5.1.2 | Desde o começo a sala apaga e o cabeçalho vira "10 Quiz", como nos outros quizzes | no fim abre o **quiz do tópico 10** (sem a fala de abertura do quiz: a questão 1 já se digita; pelo sumário, com a fala) |
-| Quiz (QUIZ10) | 8 questões, 2 de cada bloco (s, p, d, f), sorteadas de novo no Refazer; o comando reveza entre "Toque na coluna da tabela correspondente ao subnível x.", "Toque na coluna do subnível x." e "Agora toque na coluna x." (este nunca na questão 1, e nunca o mesmo duas vezes seguidas); as etiquetas somem durante o quiz; no acerto a coluna sobe e a etiqueta dela cai em cima (com o flip), e desce na questão seguinte; no fim, o cartão da nota e a fala `audio_tabela_10.5.2` (sem eventos) | Continuar → a tabela volta e toca a 10.5.3 |
+| Quiz (QUIZ10) | 8 questões, 2 de cada bloco (s, p, d, f), sorteadas de novo no Refazer; o comando reveza entre "Toque na coluna da tabela correspondente ao subnível x.", "Toque na coluna do subnível x." e "Agora toque na coluna x." (este nunca na questão 1, e nunca o mesmo duas vezes seguidas); as etiquetas somem durante o quiz; no erro a coluna tocada inteira balança em vermelho; no acerto a coluna sobe e a etiqueta dela cai em cima (com o flip), e desce na questão seguinte; no fim, o cartão da nota e a fala `audio_tabela_10.5.2` (sem eventos) | Continuar → a tabela volta e toca a 10.5.3 |
 | 10.5.3 | Os eventos da antiga 10.5.2, 9,5 s mais cedo (acertado pelo "₁₂Mg:" aos 14 s): aos 3,5 s "O subnível mais energético"; aos 13,5 s a cena escura da 10 volta com o diagrama sem o Pauling e o ₁₂Mg: já embaixo da tabela; aos 20,5 s o diagrama; distribuição dos 24,5 aos 28,5 s; brilho aos 30,7 s; aos 34,5 s o 1s² pulsa com a seta dele no diagrama, aos 35,4 s o 3s² pulsa e o 3s² do diagrama acende; aos 42,5 s "subnível mais energético" (em amarelo, com som de teclas); no fim a mesa desce e as séries somem, atrás da cena escura | Saquei → 10.6 |
 | 10.6 | Ver abaixo | toque na tela → 10.6.1 |
 | 10.6.1 | Ver abaixo | Saquei → 10.6.2 |
@@ -70,8 +70,10 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | 14,7 → 16,2 s | Digita "Subnível mais energético:" na linha do Mg, no vão dos de transição |
 | 17,7 / 19 / 19,2 s | O "3", o "s", o "²" (ao lado do texto) |
 | 20,5 s | O 3s² cresce e brilha, com confetes, aplausos e funfare |
-| 23 s | A bolinha do 3, a etiqueta s² e o 3s² voltam ao normal |
-| fim | Saquei → 10.6.2 |
+| 18 s | A bolinha do 3 cresce mais (até 18,8 s, quando volta ao normal) |
+| 18,8 s | A etiqueta s² cresce mais, junto com o s² grande (até 20,5 s, quando voltam ao normal) |
+| 23 s | O 3s² volta ao normal depois da festa |
+| fim | Saquei → 10.6.2; até o toque, em revezamento: a bolinha do 3 e o 3 grande pulsam 2 vezes, depois a etiqueta s² e o s² grande, 2 vezes, e de novo |
 
 **10.6.3** (o "Vamos" no fim da 10.6.2; o segundo exemplo, o iodo — linha 5, coluna 17)
 
