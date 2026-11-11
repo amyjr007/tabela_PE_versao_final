@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v55.2** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v55.3** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -31,9 +31,9 @@ Onde paramos: **v55.2** (2026-11-11). Este arquivo serve para retomar o trabalho
 | 10.3.1 | Hélio cresce e brilha; etiqueta s² nele; pausa de 1 s aos 20 s; card d | Saquei → 10.4 |
 | 10.4 | Bloco d (e só o bloco aos 13 s, por 1 s); colunas 3 a 12; d¹; aluno toca da 4 à 12 | festa → 10.4.1 |
 | 10.4.1 | Bloco f cresce aos 6 s | Saquei → 10.5 |
-| 10.5 | Fileiras do f; texto "elementos de transição interna"; La/Ac escurecem; brilho corre; f¹–f⁴ embaixo; no fim o play sai; aluno toca f⁵ a f¹⁴ | festa → 10.5.1 |
-| 10.5.1 | Aplausos aos 6 s; aos 21 s a tabela fica sem cor e sem cards; dos 23 aos 31,2 s a instrução se digita linha a linha ("Toque no bloco s." 23–24,8; "Depois no bloco p." 25–26,8; "Depois no d." 27,7–28,7; "Por fim, toque no bloco f." 29,5–31,2) em 2 linhas, centrada entre os grupos 2 e 13, e fica no fim; aluno toca os blocos s, p, d, f (a frase do bloco certo fica verde, com ✓) | festa → 10.5.2 |
-| 10.5.2 | "O subnível mais energético"; aos 23 s a cena escura da 10 volta com o diagrama sem o Pauling e o ₁₂Mg: já embaixo da tabela; distribuição; aos 44 s o 1s² pulsa com a seta dele no diagrama, aos 44,9 s o 3s² pulsa e o 3s² do diagrama acende; 3s² e "subnível mais energético" | Saquei → 10.6 |
+| 10.5 | Fileiras do f; texto "metais de transição interna"; La/Ac escurecem; brilho corre; f¹–f⁴ em cima das séries (que descem 14 px neste slide, `DESCE_SERIES_10`), caindo de cima; no fim o play sai; aluno toca f⁵ a f¹⁴ | festa → 10.5.1 |
+| 10.5.1 | Dos 1,8 aos 7 s os blocos crescem com o card encaixado, um de cada vez (s 1,8; p 3,2; d 4,6; f 6; o f volta aos 7); aplausos aos 6 s; aos 21 s a tabela fica sem cor e sem cards; dos 23 aos 31,2 s a instrução se digita linha a linha ("Toque no bloco s." 23–24,8; "Depois no bloco p." 25–26,8; "Depois no d." 27,7–28,7; "Por fim, toque no bloco f." 29,5–31,2) em 2 linhas, centrada entre os grupos 2 e 13, e fica no fim; aluno toca os blocos s, p, d, f (a frase do bloco certo fica verde, com ✓) | festa → 10.5.2 |
+| 10.5.2 | Pausa de 1,5 s aos 2,2 s; "O subnível mais energético"; aos 23 s a cena escura da 10 volta com o diagrama sem o Pauling e o ₁₂Mg: já embaixo da tabela; distribuição; aos 44 s o 1s² pulsa com a seta dele no diagrama, aos 44,9 s o 3s² pulsa e o 3s² do diagrama acende; 3s² e "subnível mais energético" (em amarelo, com som de teclas) | Saquei → 10.6 |
 | 10.6 | Ver abaixo | toque na tela → 10.6.1 |
 | 10.6.1 | Ver abaixo | Saquei → 10.6.2 |
 | 10.6.2 | Aos 6,5 s o 3s² pulsa | Vamos → 10.6.3 |
@@ -52,7 +52,7 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | 6 → 7 s | Digita "Elementos representativos primeiro" (o "O subnível mais energético" da 10.5.2 já saiu: some junto com as fileiras de baixo, no fim da 10.5.2) |
 | 9 s | Os blocos das pontas (s e p) brilham por 1 s |
 | 13 s | Os de transição ficam quase apagados |
-| 17 → 25,3 s | Tela escura (o "Elementos representativos primeiro" sai e não volta); a regra digitada ("período" em azul, "coluna" em âmbar) |
+| 17 s → 19,5–28 s | Tela escura aos 17 s (o "Elementos representativos primeiro" sai e não volta); a regra digitada dos 19,5 aos 28 s ("período" em azul, "coluna" em âmbar) |
 | fim | A regra fica, com "Toque na tela"; o toque leva à 10.6.1 |
 
 **10.6.1**
@@ -113,6 +113,7 @@ Pelo sumário, cada narração abre com tudo o que veio antes já completo (as e
   - a festa e a ligação à narração seguinte ficam em `festa(false)`.
 - **Tempos de cada narração** — nas constantes `T101`, `T102`, `T103`, `T104`, `T1031`, `T1041`, `T105`, `T1051`, `T1052`, `T106`.
 - **Fim de cada narração** — em `SEQ.acabou`, nos `else if (id === '10.x')`.
+- **Som "flip".** Toda etiqueta que cai (s¹ s², p¹…p⁶, d¹…d¹⁰, f¹…f¹⁴) faz o `flip`: as que caem pelo toque, em `avancaColuna`; as que caem pelo tempo, em `flipQueda`.
 - **Peças da montagem neste slide** (com o x/y do palco quando foram fixadas):
   - `texto-101`, `texto-102`
   - `texto-1052` — fixado em x 437, y 187

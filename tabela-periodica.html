@@ -5277,7 +5277,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v55.2';
+const VERSAO = 'v55.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22202,7 +22202,7 @@ const T10 = { veu:10.0, tabela:11.0, foto:15.0, mg:22.0, circulo:26.0, circuloSa
    diagrama na direita, dos 34 aos 38 s a distribuição com as setas, aos 40,2 s
    o brilho dela, aos 52 s o "subnível mais energético" embaixo do 3s²; no fim
    da fala a cena sai e fica o Saquei. */
-const T1052 = { festa:2.0, texto:[13.0, 14.6], veu:23.0, foto:30.0, dist:[34.0, 38.0], brilho:[40.2, 42.2], p1s:44.0, p3s:44.9, mais:[52.0, 53.6] };
+const T1052 = { festa:2.0, pausa:2.2, texto:[13.0, 14.6], veu:23.0, foto:30.0, dist:[34.0, 38.0], brilho:[40.2, 42.2], p1s:44.0, p3s:44.9, mais:[52.0, 53.6] };
 const TEXTO_1052 = 'O subnível mais energético';
 const TEXTO_MAIS_1052 = 'subnível mais energético';
 /* A "10.6" (o Saquei no fim da "10.5.2"): aos 1 s a cena escura sai em fade e
@@ -22211,7 +22211,7 @@ const TEXTO_MAIS_1052 = 'subnível mais energético';
    pontas (s e p) brilham por 1 s; aos 13 s os de transição apagam (quase); aos
    17 s a tela escurece e digita a regra; no fim da fala fica a regra com o
    "Toque na tela", e o toque leva à "10.6.1". */
-const T106 = { sai:1.0, texto:[6.0, 7.0], brilhoSP:[9.0, 10.0], semB:13.0, regra:[17.0, 25.3] };
+const T106 = { sai:1.0, texto:[6.0, 7.0], brilhoSP:[9.0, 10.0], semB:13.0, escurece:17.0, regra:[19.5, 28.0] };
 const TEXTO_106 = 'Elementos representativos primeiro';
 /* A "10.6.1" (o toque na regra): a regra sai em fade; aos 3 s o Mg brilha em
    verde; aos 7 s a faixa da linha 3 entra e pisca 2 vezes (com a bolinha do
@@ -22380,6 +22380,9 @@ const EV10 = {
         this.veu.querySelector('.dist10').insertAdjacentHTML('beforeend', '<text class="mais1052" x="478" y="128" text-anchor="middle"></text>');
         this.mais1052 = this.veu.querySelector('.mais1052');
       }
+      /* (o som das teclas, a cada letra, tocando) */
+      if (trilhaAtual === '10.5.2' && n > (this.nMais1052 ?? 0) && this.mais1052.textContent.length < n) TECLAS.bate();
+      this.nMais1052 = n;
       this.mais1052.textContent = TEXTO_MAIS_1052.slice(0, n);
     }
     const est = [t >= T.veu, t >= T.veu, t >= T.foto, t >= T.dist[0], t >= T.brilho[0] && t < T.brilho[1], t >= T.mais[0],
@@ -22503,7 +22506,10 @@ const T105 = { lan:[3.4, 4.5], act:[4.5, 5.5], card:[[7.0, 10.4], [12.0, 15.5], 
    confetes; aos 21 s os blocos perdem a cor (o tabuleiro liso) e o aluno toca
    os blocos na ordem s, p, d, f: o certo brilha e ganha a cor de volta; o
    errado treme. Completo o f, a festa e um brilho forte na tabela toda. */
-const T1051 = { festa:6.0, neutro:21.0 };
+/* (cresce: os blocos com o card encaixado, um de cada vez — s aos 1,8 s, p aos
+   3,2, d aos 4,6, f aos 6 s; o anterior volta quando o seguinte cresce, e o f
+   volta aos 7 s) */
+const T1051 = { festa:6.0, neutro:21.0, cresce:[1.8, 3.2, 4.6, 6.0, 7.0] };
 /* a instrução da "10.5.1", digitada frase a frase (de, até, em s), em 2
    linhas (l); a letra de cada bloco na cor dele; tocado o bloco certo, a
    frase dele fica verde e ganha um ✓ */
@@ -22513,7 +22519,9 @@ const INSTR_1051 = [
   { l:1, b:'d', de:27.7, ate:28.7, p:[{ t:'Depois no ' }, { t:'d', b:'d' }, { t:'.' }] },
   { l:1, b:'f', de:29.5, ate:31.2, p:[{ t:' Por fim, toque no bloco ' }, { t:'f', b:'f' }, { t:'.' }] }];
 const SIMB_F_105 =['Ce', 'Pr', 'Nd', 'Pm', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu'];
-const TEXTO_105 = 'elementos de transição interna';
+const TEXTO_105 = 'metais de transição interna';
+/* (o quanto as duas séries descem no slide 11, em px da mesa) */
+const DESCE_SERIES_10 = 14;
 const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
@@ -22533,6 +22541,10 @@ const CARDS101 = {
     if (this.m || !slides[10]) return;
     const m = this.m = slides[10].querySelector('.mesa');
     if (!m) return;
+    /* (neste slide as duas séries descem um pouco, para as etiquetas f¹ a f¹⁴
+       caberem em cima delas, entre elas e a linha 7) */
+    m.querySelectorAll('.pc, .casa').forEach(c => { const y = parseFloat(c.style.top);
+      if (y > yDaLinha(7) + LADO / 2) c.style.top = (y + DESCE_SERIES_10).toFixed(1) + 'px'; });
     const xv = (xDaColuna(3) + xDaColuna(12)) / 2;
     /* o texto, no vão de cima (na linha 1) */
     const q = this.texto = document.createElement('div');
@@ -22584,6 +22596,22 @@ const CARDS101 = {
     });
   },
   poe(o, x, y){ o.x = x; o.y = y; o.c.style.left = x.toFixed(1) + 'px'; o.c.style.top = y.toFixed(1) + 'px'; },
+  /* o "flip" das etiquetas que caem pelo tempo (s¹ s², p¹ p², d¹, f¹ a f⁴),
+     como o das que caem pelo toque: quando uma passa de escondida a à vista,
+     tocando de seguida (um salto — pelo sumário, por exemplo — não toca) */
+  flipQueda(id, ests, de, t){
+    const a = this['fq' + id], ta = this['fqt' + id];
+    if (de && !som.paused && a && ta >= 0 && t >= ta && t - ta < 1 && ests.some((v, k) => v > 0 && !(a[k] > 0))) tocaEfeito('flip');
+    this['fq' + id] = ests; this['fqt' + id] = de ? t : -1;
+  },
+  /* a "10.5.1": o bloco k crescido junto com o card encaixado nele (ou de volta) */
+  cresce1051(k, sim){
+    const K = CARDS_101[k], o = this.cards[k], B = this.blocos[K.b], E = ESC_BLOCO_101;
+    this.cresceBloco(K.b, sim, E);
+    o.c.style.translate = sim ? ((o.x - B.cx) * (E - 1)).toFixed(1) + 'px ' + ((o.y - B.cy) * (E - 1)).toFixed(1) + 'px' : '';
+    o.c.style.scale = sim ? String(E) : '';
+    o.c.classList.toggle('grande102', sim);
+  },
   /* o bloco b crescido (ou de volta): cada carta afasta-se do meio dele na mesma proporção */
   cresceBloco(b, sim, k = ESC_BLOCO_101){
     const B = this.blocos[b];
@@ -22829,6 +22857,7 @@ const CARDS101 = {
     const est = [T >= T102.texto[0], dentro(T102.texto), dentro(T102.bloco), dentro(T102.card), dentro(T102.pulsa),
                  dentro(T102.brilho), dentro(T102.pulo), dentro(T102.some), T >= T102.sobe[0] && T < T102.etq[0],
                  T >= T102.sobe[1] && T < T102.etq[1], etq(0), etq(1)].join();
+    this.flipQueda('102', [etq(0), etq(1)], de && !monta, t);
     if (est === this.estado102) return;
     this.estado102 = est;
     const [txt, dig, bloco, card, pulsa, brilho, pulo, some, up1, up2, e1, e2] = est.split(',').map(v => v === 'true' ? true : v === 'false' ? false : +v);
@@ -22937,6 +22966,7 @@ const CARDS101 = {
     const est = k => T < 0 ? 0 : T >= 99 ? 2 : k === 0 ? (T < T103.p1[0] ? 0 : T < T103.p1[1] ? 1 : 2)
                    : k === 1 ? (T < T103.p2[0] ? 0 : T < T103.p2[1] ? 1 : 2) : this.etq103[k].est;
     const ets = [0, 1, 2, 3, 4, 5].map(est);
+    this.flipQueda('103', ets.slice(0, 2), de && !monta, t);
     const dica = this.podeTocar103() ? 15 + this.passo103 : 0;
     const chave = [T >= 0, bloco, card, pulsa, some, esc18, up, dica, ...ets].join();
     if (chave === this.estado103) return;
@@ -23034,15 +23064,16 @@ const CARDS101 = {
         F.cx = F.reduce((s, p) => s + p.x, 0) / F.length; F.cy = F.reduce((s, p) => s + p.y, 0) / F.length; return F; };
       this.lan105 = fila(58, 71); this.act105 = fila(90, 103);
       this.la105 = this.m.querySelector('.pc[data-z="57"]'); this.ac105 = this.m.querySelector('.pc[data-z="89"]');
-      /* as etiquetas f¹ a f¹⁴, embaixo de cada coluna (o tório e os de baixo) */
-      this.etq105 = this.act105.map((p, k) => {
+      /* as etiquetas f¹ a f¹⁴, em cima de cada coluna (assentadas na borda de
+         cima do cério e dos seguintes, como as do s e do p) */
+      this.etq105 = this.lan105.map((p, k) => {
         const d = document.createElement('div');
         d.className = 'etq102 f105';
         d.dataset.mont = 'etiqueta-f' + (k + 1);   /* na montagem, peça: anda */
         d.innerHTML = 'f<sup>' + (k + 1) + '</sup>';
         d.style.left = p.x.toFixed(1) + 'px';
         this.m.appendChild(d);
-        return { d, park:p.y + LADO / 2 + 20, est:0 };
+        return { d, park:p.y - LADO / 2 - 6, est:0 };
       });
       /* o toque nas colunas (dos 51 s da "10.5"): só a seguinte responde */
       this.m.addEventListener('click', ev => {
@@ -23081,14 +23112,16 @@ const CARDS101 = {
     /* (na montagem, as catorze no lugar, para serem arrumadas) */
     const ets = this.etq105.map((E, k) => monta ? 2 : T < 0 ? 0 : T >= 99 ? 2 : k < 4 ? (T < S[k] + T105.pousa ? 0 : k === kT ? 1 : 2) : E.est);
     const dica = this.podeTocar105() ? 4 + this.passo105 : -1;
+    this.flipQueda('105', ets.slice(0, 4), de && !monta, t);
     const chave = [gL, gA, card, pulsa, txt, dig, T >= T105.la, T >= T105.ac, ...lL, ...lA, up, dica, ...ets].join();
     if (chave === this.estado105) return;
     this.estado105 = chave;
     const R = 0.3 * PASSO;
+    /* (escondida lá em cima; desce até a coluna subida; e desce com ela — como as do s e do p) */
     this.etq105.forEach((E, k) => {
       const f = ets[k];
       E.d.classList.toggle('on', f > 0);
-      E.d.style.top = (f === 2 ? E.park : f === 1 ? E.park - R : E.park + 60).toFixed(1) + 'px';
+      E.d.style.top = (f === 2 ? E.park : f === 1 ? E.park - R : E.park - R - 60).toFixed(1) + 'px';
     });
     [this.lan105, this.act105].forEach(F => F.forEach((p, k) => p.c.classList.toggle('dica93', k === dica)));
     this.texto105.classList.toggle('on', txt);
@@ -23217,8 +23250,8 @@ const CARDS101 = {
     const dentro = (X, [a, b]) => X >= a && X < b;
     const piscaL = T1061.piscaL.some(p => dentro(T1, p)), piscaC = T1061.piscaC.some(p => dentro(T1, p));
     const cresce = T1 < T1061.volta;
-    const chave = [T >= 0, dentro(T, T106.brilhoSP), T >= T106.semB, dentro(T, [T106.texto[0], T106.regra[0]]), dentro(T, T106.texto),
-                   de && T >= T106.regra[0], dentro(T, T106.regra) && !acabou, this.pede106,
+    const chave = [T >= 0, dentro(T, T106.brilhoSP), T >= T106.semB, dentro(T, [T106.texto[0], T106.escurece]), dentro(T, T106.texto),
+                   de && T >= T106.escurece, dentro(T, T106.regra) && !acabou, this.pede106,
                    T1 >= T1061.mg && !fora1063, T1 >= T1061.linha && !fora1063, T1 >= T1061.coluna && !fora1063, piscaL, piscaC,
                    T1 >= T1061.bola && cresce, T1 >= T1061.etq && cresce, T1 >= T1061.texto[0], dentro(T1, T1061.texto),
                    T1 >= T1061.tres, T1 >= T1061.s, T1 >= T1061.dois, dentro(T1, [T1061.festa, T1061.volta]),
@@ -23341,6 +23374,13 @@ const CARDS101 = {
     /* aos 6 s, aplausos e confetes (tocando, passando pelo segundo) */
     if (de && !som.paused && this.t1051ant >= 0 && this.t1051ant < T1051.festa && t >= T1051.festa && t < T1051.festa + 0.6) this.aplauso();
     this.t1051ant = de ? t : -1;
+    /* dos 1,8 aos 7 s, os blocos crescem com o card encaixado, um de cada vez (s, p, d, f) */
+    const C = T1051.cresce, vez = de ? C.slice(0, 4).findIndex((a, k) => t >= a && t < C[k + 1]) : -1;
+    if (vez !== (this.vez1051 ?? -1) && this.cards){
+      if (this.vez1051 >= 0) this.cresce1051(this.vez1051, false);
+      if (vez >= 0) this.cresce1051(vez, true);
+      this.vez1051 = vez;
+    }
     /* aos 21 s, com a tabela sem cor, os cards, as etiquetas e o texto saem
        em fade: só a tabela fica, para ser tocada. Completa a tabela (passada
        a festa), as etiquetas voltam; os cards e o texto não (nem na "10.5.2") */
@@ -23350,6 +23390,8 @@ const CARDS101 = {
     /* a "10.5.2": aos 2 s aplausos e confetes; aos 13 s o texto digitado */
     const de2 = trilhaAtual === '10.5.2' && !naMontagem();
     if (de2 && !som.paused && this.t1052ant >= 0 && this.t1052ant < T1052.festa && t >= T1052.festa && t < T1052.festa + 0.6) this.aplauso();
+    /* aos 2,2 s a narração pára 1,5 s e segue (só tocando de seguida) */
+    if (de2 && !som.paused && this.t1052ant >= 0 && this.t1052ant < T1052.pausa && t >= T1052.pausa && t < T1052.pausa + 0.6) pausaPor('10.5.2', 1500);
     this.t1052ant = de2 ? t : -1;
     if (!this.texto1052){
       const q = this.texto1052 = document.createElement('div');
@@ -23507,6 +23549,7 @@ const CARDS101 = {
     /* (numa narração seguinte — pelo sumário, por exemplo — as dez já no lugar) */
     const est = k => T < 0 ? 0 : T >= 99 ? 2 : k === 0 ? (T < T104.d1[0] ? 0 : T < T104.d1[1] ? 1 : 2) : this.etq104[k].est;
     const ets = this.etq104.map((E, k) => est(k));
+    this.flipQueda('104', ets.slice(0, 1), de && !monta, t);
     const dica = this.podeTocar104() ? 4 + this.passo104 : 0;
     const chave = [T >= 0, bloco, so, card, pulsa, some, up, dica, ...ets].join();
     if (chave === this.estado104) return;
@@ -23550,7 +23593,10 @@ const CARDS101 = {
     this.passo1051 = 0; this.feito1051 = false; clearTimeout(this.fim1051T); this.t1051ant = -1; this.fora1051 = false;
     this.festa1051 = false; this.t1052ant = -1; this.nt1052 = -1; this.nt1051 = ''; this.nn1051 = 0;
     this.estado106 = ''; this.t106ant = -1; this.nt106 = -1; this.ntT106 = -1; this.ntR106 = -1; this.semF106 = undefined;
-    this.estado1063 = ''; this.t1063ant = -1; this.ntR1063 = -1;
+    this.estado1063 = ''; this.t1063ant = -1; this.ntR1063 = -1; this.nMais1052 = 0;
+    if (this.vez1051 >= 0 && this.cards) this.cresce1051(this.vez1051, false);
+    this.vez1051 = -1;
+    ['102', '103', '104', '105'].forEach(id => { this['fq' + id] = null; this['fqt' + id] = -1; });
     if (this.pede106){ this.pede106 = false; stage.classList.remove('em-toque'); }
     this.f1041 = false; clearTimeout(this.f1041T); if (this.cards) this.cresceF1041(false);
     if (!this.cards) return;
