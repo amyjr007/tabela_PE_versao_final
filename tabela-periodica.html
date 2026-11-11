@@ -3899,6 +3899,9 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
 .slide.quiz10 .quiz3.q4.q2.q5{left:269.3px;top:30px}
 /* (no quiz do tópico 10, as etiquetas s¹, p⁶… somem: dariam a resposta) */
 .slide.quiz10 .mesa .etq102{opacity:0!important;transition:opacity .4s ease}
+/* (no acerto, a coluna sobe e a etiqueta dela cai em cima — e desce com ela na questão seguinte) */
+.slide.quiz10 .mesa .etq102.mostra10{opacity:1!important;animation:cai10 .5s cubic-bezier(.3,.85,.3,1) .25s both}
+@keyframes cai10{from{translate:0 calc(var(--sobe10, 0px) - 70px);filter:opacity(0)}}
 /* (e na Q3 do quiz dos tipos — a da tabela de fundo, com o mesmo arranjo da Q2
    dos grupos A e B, LUGAR_ARRASTA —, a caixa no mesmo lugar) */
 .slide.quiz5:has(.mesa.fundo5) .quiz3.q4.q2.q5:not(.sai){left:269.3px;top:30px}
@@ -5281,7 +5284,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v55.5';
+const VERSAO = 'v55.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6992,19 +6995,34 @@ function montaFrases(){
    pausou), ele cala-se logo. Quem escreve chama TECLAS.bate() a cada
    letra nova. */
 const TECLAS = {
-  a:null, t:0,
+  a:null, t:0, livre:false,
+  novo(){
+    this.a = new Audio(encodeURI('Audios/vfx/typing sound.mp3'));
+    this.a.loop = true;
+  },
   bate(){
     if (document.hidden) return;
-    if (!this.a){
-      this.a = new Audio(encodeURI('Audios/vfx/typing sound.mp3'));
-      this.a.loop = true;
-    }
-    if (this.a.paused) this.a.play().catch(() => {});
+    if (!this.a) this.novo();
+    /* (recusado — o navegador às vezes não deixa o som começar sem um toque
+       antes —, o próximo bate tenta com um elemento novo) */
+    if (this.a.paused) this.a.play().catch(() => { this.a = null; });
     clearTimeout(this.t);
     this.t = setTimeout(() => this.cala(), 220);
   },
-  cala(){ clearTimeout(this.t); if (this.a && !this.a.paused) this.a.pause(); }
+  cala(){ clearTimeout(this.t); if (this.a && !this.a.paused) this.a.pause(); },
+  /* no primeiro toque do aluno, o som das teclas fica liberado (tocado mudo
+     e parado): assim a digitação que começa sozinha — no quiz, numa
+     narração — já tem som */
+  libera(){
+    if (this.livre) return;
+    if (!this.a) this.novo();
+    const a = this.a;
+    a.muted = true;
+    a.play().then(() => { if (a.muted){ a.pause(); a.currentTime = 0; } a.muted = false; this.livre = true; })
+            .catch(() => { a.muted = false; });
+  }
 };
+addEventListener('pointerdown', () => TECLAS.libera(), true);
 
 function criaDigitacao(caixa, lista){
   const frases = lista.map(f => Object.assign({}, f));
@@ -22917,7 +22935,7 @@ const CARDS101 = {
     botaoVerde(sim ? txt : null, () => { this.saquei(false); if (atual === 10 && prox && TRILHAS[prox]) tocaTrilha(prox); });
   },
   fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051', 'sem-play105');
-          if (window.QUIZ10 && QUIZ10.aberto) QUIZ10.fecha();
+          if (window.QUIZ10 && (QUIZ10.aberto || QUIZ10.escuro)) QUIZ10.fecha();
           if (this.pede106){ this.pede106 = false; this.estado106 = ''; stage.classList.remove('em-toque'); } },
   passo103:0, sel103:null, feito103:false,
   /* as etiquetas do p (p¹ a p⁶) em cima das colunas 13 a 18, na linha 1 */
@@ -23393,6 +23411,8 @@ const CARDS101 = {
   podeTocar1051(){ return atual === 10 && trilhaAtual === '10.5.1' && !naMontagem() && !this.feito1051 &&
                           ((som.currentTime || 0) >= T1051.neutro || som.ended); },
   tick1051(t){
+    /* durante a "10.5.1.2" a sala apaga e o cabeçalho vira "Quiz 10" (o quiz abre no fim dela) */
+    if (atual === 10 && trilhaAtual === '10.5.1.2' && !naMontagem() && !QUIZ10.escuro) QUIZ10.escurece();
     const de = trilhaAtual === '10.5.1' && !naMontagem();
     /* aos 6 s, aplausos e confetes (tocando, passando pelo segundo) */
     if (de && !som.paused && this.t1051ant >= 0 && this.t1051ant < T1051.festa && t >= T1051.festa && t < T1051.festa + 0.6) this.aplauso();
@@ -23668,6 +23688,7 @@ function questoes10(){
         const dele = subnivel10(c);
         if (dele === s){
           Q.coluna10(s).forEach(x => { x.classList.add('certa3'); Q.marcados.push(x); });
+          Q.sobe10(s);
           Q.acerta('É a ' + n + 'ª coluna do bloco ' + nome + '.');
           return;
         }
@@ -23678,6 +23699,7 @@ function questoes10(){
   });
 }
 function limpa10(Q){
+  Q.desce10();
   (Q.marcados || []).forEach(c => c.classList.remove('certa3'));
   Q.marcados = [];
   const m = Q.mesa();
@@ -23690,8 +23712,19 @@ const QUIZ10 = Object.assign(Object.create(QUIZ5), {
   carta(z){ return this.mesa().querySelector('.pc[data-z="' + z + '"]:not(.ficha5)'); },
   /* os cards da coluna de um subnível */
   coluna10(s){ return [...this.mesa().querySelectorAll('.pc:not(.ficha5)')].filter(c => subnivel10(c) === s); },
+  /* a sala apaga e o cabeçalho vira "Quiz 10" — já durante a "10.5.1.2" */
+  escurece(){
+    const sl = this.sl();
+    this.escuro = true;
+    let v = sl.querySelector(':scope > .breu-quiz');
+    if (!v){ v = document.createElement('div'); v.className = 'breu-quiz'; sl.insertBefore(v, sl.firstChild); v.getBoundingClientRect(); }
+    v.classList.add('on');
+    sl.classList.add('quiz-escuro', 'quiz10');
+    cabecaDoQuiz(sl, true, 'Quiz 10', 'quiz-cabeca');
+  },
   abre(){
     if (atual !== 10) return;
+    const jaEscuro = this.escuro;
     this.fecha(true);
     som.pause();
     VIDA.desliga();
@@ -23699,15 +23732,38 @@ const QUIZ10 = Object.assign(Object.create(QUIZ5), {
     this.passo = 0; this.erros = 0; this.aberto = true; this.marcados = [];
     const g = ++this.g, sl = this.sl();
     stage.classList.add('em-quiz');
-    let v = sl.querySelector(':scope > .breu-quiz');
-    if (!v){ v = document.createElement('div'); v.className = 'breu-quiz'; sl.insertBefore(v, sl.firstChild); v.getBoundingClientRect(); }
-    v.classList.add('on');
-    sl.classList.add('quiz-escuro', 'quiz10');
-    cabecaDoQuiz(sl, true, 'Quiz', 'quiz-cabeca');
+    this.escurece();
     if (!sl.querySelector('.confete'))
       sl.insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
     this.travado = true;
-    tocaEfeito('Audios/quiz1.mp3').then(() => { if (g === this.g) this.apresenta(g); });
+    /* (sem a fala de abertura do quiz: a questão 1 já se digita — com a sala
+       já escura, logo; chegando pelo sumário, depois de ela escurecer) */
+    setTimeout(() => { if (g === this.g) this.apresenta(g); }, jaEscuro ? 300 : 900);
+  },
+  /* o acerto: a coluna sobe e a etiqueta dela (s¹, p⁴…) cai em cima; desce na questão seguinte */
+  sobe10(s){
+    this.desce10();
+    const b = s[0], n = +s.slice(1), C = CARDS101;
+    const E = ({ s:C.etq102, p:C.etq103, d:C.etq104, f:C.etq105 }[b] || [])[n - 1];
+    const R = (b === 'f' ? 0.3 : 0.6) * PASSO;
+    /* (o He, o La e o Ac contam como resposta, mas não sobem: estão fora da coluna) */
+    const cards = this.coluna10(s).filter(c => ![2, 57, 89].includes(+c.dataset.z));
+    cards.forEach(c => { c.style.translate = '0 ' + (-R).toFixed(1) + 'px'; c.classList.add('grande101'); });
+    if (E){
+      E.d.style.setProperty('--sobe10', (-R).toFixed(1) + 'px');
+      E.d.style.translate = '0 ' + (-R).toFixed(1) + 'px';
+      E.d.classList.remove('mostra10'); void E.d.offsetWidth; E.d.classList.add('mostra10');
+      const g = this.g;
+      setTimeout(() => { if (g === this.g) tocaEfeito('flip'); }, 250);
+    }
+    this.subiu = { cards, E };
+  },
+  desce10(){
+    const S = this.subiu;
+    if (!S) return;
+    this.subiu = null;
+    S.cards.forEach(c => { c.style.translate = ''; c.classList.remove('grande101'); });
+    if (S.E){ S.E.d.classList.remove('mostra10'); S.E.d.style.translate = ''; S.E.d.style.removeProperty('--sobe10'); }
   },
   resultado(){
     this.sl().querySelectorAll('.quiz3.q5').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
@@ -23731,11 +23787,12 @@ const QUIZ10 = Object.assign(Object.create(QUIZ5), {
     if (!sl) return;
     sl.querySelectorAll('.quiz3.q5, .quiz-cartao').forEach(e => e.remove());
     if (reabre) return;
+    this.escuro = false;
     stage.classList.remove('em-quiz');
     const v = sl.querySelector(':scope > .breu-quiz');
     if (v) v.classList.remove('on');
     sl.classList.remove('quiz-escuro', 'quiz10');
-    cabecaDoQuiz(sl, false, 'Quiz', 'quiz-cabeca');
+    cabecaDoQuiz(sl, false, 'Quiz 10', 'quiz-cabeca');
   }
 });
 window.QUIZ10 = QUIZ10;
