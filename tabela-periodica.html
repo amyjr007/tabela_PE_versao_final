@@ -5262,7 +5262,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v54.9';
+const VERSAO = 'v55.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23184,7 +23184,7 @@ const CARDS101 = {
     const dentro = (X, [a, b]) => X >= a && X < b;
     const piscaL = T1061.piscaL.some(p => dentro(T1, p)), piscaC = T1061.piscaC.some(p => dentro(T1, p));
     const cresce = T1 < T1061.volta;
-    const chave = [T >= 0, dentro(T, T106.brilhoSP), T >= T106.semB, T >= T106.texto[0], dentro(T, T106.texto),
+    const chave = [T >= 0, dentro(T, T106.brilhoSP), T >= T106.semB, dentro(T, [T106.texto[0], T106.regra[0]]), dentro(T, T106.texto),
                    de && T >= T106.regra[0], dentro(T, T106.regra) && !acabou, this.pede106,
                    T1 >= T1061.mg, T1 >= T1061.linha, T1 >= T1061.coluna, piscaL, piscaC,
                    T1 >= T1061.bola && cresce, T1 >= T1061.etq && cresce, T1 >= T1061.texto[0], dentro(T1, T1061.texto),

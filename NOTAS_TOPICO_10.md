@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v54.9** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v55.0** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -51,7 +51,7 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | 6 → 7 s | Digita "Elementos representativos primeiro" (o "O subnível mais energético" da 10.5.2 já saiu: some junto com as fileiras de baixo, no fim da 10.5.2) |
 | 9 s | Os blocos das pontas (s e p) brilham por 1 s |
 | 13 s | Os de transição ficam quase apagados |
-| 17 → 25,3 s | Tela escura; a regra digitada ("período" em azul, "coluna" em âmbar) |
+| 17 → 25,3 s | Tela escura (o "Elementos representativos primeiro" sai e não volta); a regra digitada ("período" em azul, "coluna" em âmbar) |
 | fim | A regra fica, com "Toque na tela"; o toque leva à 10.6.1 |
 
 **10.6.1**
