@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v56.1** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v56.2** (2026-11-11). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -73,7 +73,7 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | 18 s | A bolinha do 3 cresce mais (até 18,8 s, quando volta ao normal) |
 | 18,8 s | A etiqueta s² cresce mais, junto com o s² grande (até 20,5 s, quando voltam ao normal) |
 | 23 s | O 3s² volta ao normal depois da festa |
-| fim | Saquei → 10.6.2; até o toque, em revezamento: a bolinha do 3 e o 3 grande pulsam 2 vezes, depois a etiqueta s² e o s² grande, 2 vezes, e de novo |
+| fim | Saquei → 10.6.2; até o toque, em revezamento: a bolinha do 3 e o 3 grande pulsam 2 vezes, depois a etiqueta s² e o s² grande, 2 vezes, e de novo (pulsos discretos, de 15 %, com 1 s cada) |
 
 **10.6.3** (o "Vamos" no fim da 10.6.2; o segundo exemplo, o iodo — linha 5, coluna 17)
 
