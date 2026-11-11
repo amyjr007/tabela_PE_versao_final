@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v54.3** (2026-11-10). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v54.4** (2026-11-10). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -43,7 +43,7 @@ Onde paramos: **v54.3** (2026-11-10). Este arquivo serve para retomar o trabalho
 | 0 s | Números das linhas: bolinhas azuis cheias, como no tópico 3 |
 | 1 s | A cena escura da 10.5.2 sai em fade |
 | 12 s | Os blocos s e p brilham por 1 s |
-| 16 s | O bloco B fica quase apagado; lantanídeos e actinídeos somem na hora (voltam para o 3B); a mesa desce para `{x:6, y:97}` |
+| 16 s | O bloco B fica quase apagado (lantanídeos e actinídeos já sumiram e a mesa já desceu para `{x:6, y:97}`: isso é 1,5 s antes do fim da 10.5.2, atrás da cena escura) |
 | 21,7 → 30 s | Regra digitada na tela escura ("período" em azul, "coluna" em âmbar) |
 | 31,6 s | Pausa: "Toque na tela"; o toque continua a narração |
 | 33 s | A regra sai |

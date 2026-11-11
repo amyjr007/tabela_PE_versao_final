@@ -3319,10 +3319,12 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .mesa.semB106 :is(.pc[data-b101="d"], .etq102.d104, .casa.serie){opacity:.12!important}
 /* (sem as duas fileiras de baixo, a mesa desce para o lugar que o professor
    deixou na montagem: { el:'tabela', x:6, y:97, esc:0.94 }) */
-.mesa[data-slide="10"].semB106{--px:6px;--py:97px;transition:transform .9s cubic-bezier(.3,.85,.3,1)}
+/* (isso — a mesa descer e as fileiras de baixo sumirem — é no fim da "10.5.2",
+   escondido pela cena escura; quando ela clareia, na "10.6", já está no lugar) */
+.mesa[data-slide="10"].semF106{--px:6px;--py:97px;transition:transform .9s cubic-bezier(.3,.85,.3,1)}
 /* (e os lantanídeos e actinídeos voltam de uma vez para as casas do 3B: as
    duas fileiras de baixo, e as etiquetas delas, somem sem fade) */
-.mesa.semB106 :is(.pc[data-b101="f"], .pc[data-z="57"], .pc[data-z="89"], .etq102.f105, .casaF106){visibility:hidden!important;transition:none!important}
+.mesa.semF106 :is(.pc[data-b101="f"], .pc[data-z="57"], .pc[data-z="89"], .etq102.f105, .casaF106){visibility:hidden!important;transition:none!important}
 .veu106{flex-direction:column}
 .regra106{width:1000px;margin:0;text-align:center;text-wrap:balance;
   font-family:var(--display);font-weight:600;font-size:46px;line-height:1.2;letter-spacing:-.015em;color:#F4F2F8}
@@ -5246,7 +5248,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v54.3';
+const VERSAO = 'v54.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23093,6 +23095,11 @@ const CARDS101 = {
       m.appendChild(r);
     }
     /* a festa dos 48,5 s e a pausa dos 53 s (tocando, passando pelo segundo) */
+    /* a mesa sem as fileiras de baixo, já no lugar da "10.6": desde 1,5 s
+       antes do fim da "10.5.2" (atrás da cena escura) */
+    const de1052 = trilhaAtual === '10.5.2' && !monta;
+    const semF = T >= 0 || (de1052 && (som.ended || (som.duration > 0 && t >= som.duration - 1.5)));
+    if (semF !== this.semF106){ this.semF106 = semF; this.m.classList.toggle('semF106', semF); }
     const passa = s => de && !som.paused && this.t106ant >= 0 && this.t106ant < s && t >= s && t < s + 0.6;
     if (passa(T106.festa)){ this.aplauso(); tocaEfeito('funfare'); }
     if (passa(T106.pausa)) pausaPor('10.6', 1500);
@@ -23360,7 +23367,7 @@ const CARDS101 = {
     this.festaG++; this.festaFeita = false; this.festa103 = false; this.festa104 = false; this.festa105 = false;
     this.passo1051 = 0; this.feito1051 = false; clearTimeout(this.fim1051T); this.t1051ant = -1; this.fora1051 = false;
     this.festa1051 = false; this.t1052ant = -1; this.nt1052 = -1; this.nt1051 = ''; this.nn1051 = 0;
-    this.estado106 = ''; this.t106ant = -1; this.nt106 = -1;
+    this.estado106 = ''; this.t106ant = -1; this.nt106 = -1; this.semF106 = undefined;
     if (this.pede106){ this.pede106 = false; stage.classList.remove('em-toque'); }
     this.f1041 = false; clearTimeout(this.f1041T); if (this.cards) this.cresceF1041(false);
     if (!this.cards) return;
