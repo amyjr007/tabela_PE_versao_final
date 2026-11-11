@@ -3356,13 +3356,18 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .r106{position:absolute;z-index:30;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:76px;line-height:1;transition:transform .5s cubic-bezier(.34,1.56,.64,1)}
 .r106 > *{opacity:0;transition:opacity .6s ease, color .4s ease, text-shadow .4s ease}
+/* (o 3 no azul do período; o s² na cor da etiqueta s² — a do bloco s) */
 .r106 .r3{color:var(--cor-linha)}
-.r106 .rs{color:color-mix(in srgb,var(--cat-alcalinos) 82%,#000)}
-.r106 .r2{color:var(--cor-coluna);font-size:.5em;vertical-align:.9em;margin-left:2px}
-.r106.tres :is(.r3,.rs), .r106.dois .r2{opacity:1}
+.r106 :is(.rs,.r2){color:color-mix(in srgb,var(--cat-alcalinos) 86%,#000)}
+.r106 .r2{font-size:.5em;vertical-align:.9em;margin-left:2px}
+.r106.tres .r3, .r106.dois :is(.rs,.r2){opacity:1}
 .r106.festa{transform:translate(-50%,-50%) scale(1.3)}
-/* (o verde do brilho do Mg) */
-.r106.festa > *{color:rgb(60,210,110);text-shadow:0 0 0 rgba(80,220,120,.95),0 0 18px rgba(60,210,110,.85),0 0 36px rgba(60,210,110,.45);animation:pisca106v .5s ease-in-out 3}
+/* (na festa, cada parte pisca e brilha na sua própria cor) */
+.r106.festa > *{text-shadow:0 0 16px currentColor,0 0 32px currentColor;animation:pisca106v .5s ease-in-out 3}
+/* o número do período pisca com a faixa da linha, e a etiqueta s² com a da
+   coluna (pelo filtro: a opacidade do número está presa com !important) */
+.mesa .eixo.piscaF106, .etq102.piscaF106{animation:piscaF106 .6s ease-in-out 3}
+@keyframes piscaF106{50%{filter:opacity(.12)}}
 .mesa .eixo.pulsa106, .etq102.pulsa106{animation:pulsa106 .35s ease-in-out 2}
 @keyframes pulsa106{50%{scale:1.35}}
 @keyframes pisca106v{50%{opacity:.25}}
@@ -5249,7 +5254,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v54.5';
+const VERSAO = 'v54.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22173,11 +22178,12 @@ const TEXTO_MAIS_1052 = 'subnível mais energético';
    saem em fade; aos 35 s o Mg cresce e brilha em verde; aos 38,9 s a faixa da
    linha 3 entra em fade (com o número do período aceso), e aos 41 s a da
    coluna 2 (sem número: a etiqueta s² fica em cima dela); aos 42 s a linha
-   pisca 3 vezes, aos 44 s a coluna; aos 46,3 s aparece o "3s", aos 48 s o
-   "²" em cima do s; aos 48,5 s o 3s² cresce e pisca em verde, com aplausos,
-   funfare e confetes; aos 53 s a narração pára 1,5 s e segue. */
+   pisca 3 vezes (com o 3 do período), aos 44 s a coluna (com a etiqueta s²);
+   aos 46,3 s aparece o "3" (no azul do período), aos 46,8 s o "s²" (na cor
+   da etiqueta s²); aos 48,5 s o 3s² cresce e pisca, cada parte na sua cor,
+   com aplausos, funfare e confetes; aos 53 s a narração pára 1,5 s e segue. */
 const T106 = { sai:1.0, brilhoSP:[12.0, 13.0], semB:16.0, regra:[21.7, 30.0], toque:31.6, regraSai:33.0, mg:35.0,
-               linha:38.9, coluna:41.0, piscaL:[42.0, 43.8], piscaC:[44.0, 45.8], tres:46.3, dois:48.0, festa:48.5,
+               linha:38.9, coluna:41.0, piscaL:[42.0, 43.8], piscaC:[44.0, 45.8], tres:46.3, dois:46.8, festa:48.5,
                pulsa3:[48.7, 49.4], pulsaS2:[49.5, 50.4], pausa:53.0 };
 /* (o "período" na cor das linhas e a "coluna" na dos grupos, as do tópico 3) */
 const PARTES_106 = [{ t:'O subnível mais energético é o ' }, { t:'período', c:'lin106' }, { t:' acompanhado do bloco e da ' },
@@ -23142,6 +23148,9 @@ const CARDS101 = {
     if (this.mg106) this.mg106.classList.toggle('mg106', mg);
     this.faixaL106.classList.toggle('on', lin); this.faixaL106.classList.toggle('pisca106', pL);
     this.faixaC106.classList.toggle('on', col); this.faixaC106.classList.toggle('pisca106', pC);
+    /* (o 3 do período pisca com a faixa da linha; a etiqueta s² com a da coluna) */
+    if (this.p3106) this.p3106.classList.toggle('piscaF106', pL);
+    if (this.etq102) this.etq102[1].d.classList.toggle('piscaF106', pC);
     /* (a etiqueta s² em cima da coluna acende com ela, como o número do grupo no tópico 3) */
     if (this.etq102) this.etq102[1].d.classList.toggle('destaque106', col);
     if (this.p3106) this.p3106.classList.toggle('p106', lin);
