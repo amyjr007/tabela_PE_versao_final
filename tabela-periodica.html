@@ -5277,7 +5277,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v55.3';
+const VERSAO = 'v55.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23089,8 +23089,8 @@ const CARDS101 = {
       }, true);
     }
     const monta = naMontagem(), de = trilhaAtual === '10.5', T = monta ? -1 : de ? t : depoisDe('10.5') ? 99 : -1;
-    /* no fim da "10.5" o play sai (o aluno toca as colunas do f) */
-    stage.classList.toggle('sem-play105', de && !monta && (som.ended || (som.duration > 0 && t >= som.duration - 0.15)));
+    /* no fim da "10.3", da "10.4" e da "10.5" o play sai (é a vez do aluno tocar as colunas) */
+    stage.classList.toggle('sem-play105', !monta && ['10.3', '10.4', '10.5'].includes(trilhaAtual) && (som.ended || (som.duration > 0 && t >= som.duration - 0.15)));
     const n = EV9.letras(T, T105.texto[0], T105.texto[1], TEXTO_105);
     if (n !== this.nt105){
       if (n > this.nt105 && this.nt105 >= 0 && de) TECLAS.bate();
