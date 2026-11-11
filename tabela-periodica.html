@@ -2504,7 +2504,8 @@ body.montagem .bloco72{pointer-events:auto}
 #stage.sem-play8 #som, #stage.sem-play8 #som-dica, #stage.sem-play8 #vel,
 #stage.sem-play9 #som, #stage.sem-play9 #som-dica, #stage.sem-play9 #vel{display:none!important}
 #stage.sem-play1051 #som, #stage.sem-play1051 #som-dica, #stage.sem-play1051 #vel,
-#stage.sem-play105 #som, #stage.sem-play105 #som-dica, #stage.sem-play105 #vel{display:none!important}
+#stage.sem-play105 #som, #stage.sem-play105 #som-dica, #stage.sem-play105 #vel,
+#stage.sem-play62 #som, #stage.sem-play62 #som-dica, #stage.sem-play62 #vel{display:none!important}
 
 /* ---- o cartão da nota, no fim do quiz ---- */
 .nota-card{
@@ -5248,7 +5249,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v54.4';
+const VERSAO = 'v54.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -15994,6 +15995,7 @@ const EV6 = {
   fora(){
     if (this.quizBotao) this.poeQuiz(false);
     if (window.QUIZ7 && QUIZ7.aberto) QUIZ7.fecha();
+    stage.classList.remove('sem-play62');
   },
   /* O NÚMERO QUE SE TRANSFORMA: o arábico desfaz-se (desfoca e some) enquanto o
      romano se forma no mesmo lugar, e a largura do número anda de uma para a
@@ -16177,6 +16179,9 @@ const EV6 = {
     if (t3 >= this.s63.sobe[0] && this.noAr === 1) this.noAr = -1;
     /* a vida solta, só até aos 8 s da narração (também pausada) */
     if (VIDA.ligada && t6 >= this.vidaAte) VIDA.desliga();
+    /* acabada a "6.2", o play sai: é a vez do aluno tocar as famílias (volta
+       quando a "6.3" começa, depois do toque na 2A) */
+    stage.classList.toggle('sem-play62', atual === 6 && trilhaAtual === '6.2' && !naMontagem() && this.acabou('6.2'));
     /* os textos, digitados (na montagem, inteiros: são peças a arrumar) */
     const monta = naMontagem();
     const relogios = { '6':t6, '6.1':t1, '6.2':t2 };
