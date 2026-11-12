@@ -3948,6 +3948,11 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
    pergunta numa linha só) */
 .slide.quiz10b .quiz3.q4.q2.q5{left:280.5px;top:48.7px;width:751px;transform:scale(.96)}
 .slide.quiz10b .quiz3.q4.q2.q5 .q3-q{white-space:nowrap}
+/* (o "Questão N de 8", a pergunta e a dica, centralizados) */
+.slide.quiz10b .quiz3.q4.q2.q5{text-align:center}
+/* (a escolha do aluno: um aro dourado na bolinha e no card escolhidos; o Confirmar por cima de tudo) */
+.slide.quiz10b .mesa :is(.eixo, .etq102).sel10b:not(.certa10b, .errada3){box-shadow:0 0 0 3px #FFD43B, 0 0 16px 5px rgba(255,212,59,.7)}
+.slide.quiz10b .mesa .bt5.confirma10b{z-index:40}
 /* (no quiz do tópico 10, as etiquetas s¹, p⁶… somem: dariam a resposta) */
 .slide.quiz10 .mesa .etq102{opacity:0!important;transition:opacity .4s ease}
 /* (no acerto, a coluna sobe e a etiqueta dela cai em cima — e desce com ela na questão seguinte) */
@@ -5335,7 +5340,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v57.9';
+const VERSAO = 'v58.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24032,10 +24037,13 @@ function questoes10b(){
   const B = embaralha([...S.slice(2, 4), ...P.slice(2, 4)]);
   return [...A.map(qCamadaColuna10b), ...B.map(qElemento10b)];
 }
-/* 1 a 4: tocar a camada e a coluna */
+/* 1 a 4: escolher a camada e a coluna — o aluno escolhe uma bolinha e um card
+   (e troca, se quiser: o novo toque muda a escolha), a linha da resposta
+   mostra o que ele escolheu, e com os dois escolhidos aparece o Confirmar;
+   só aí vem o certo ou o errado */
 function qCamadaColuna10b(E){
   return {
-    E, okP:false, okC:false,
+    E, selP:null, selC:null,
     monta(Q){
       E.c.classList.add('mg106');
       /* (as bolinhas das camadas e os cards do s e do p pulsam: é ali que se toca) */
@@ -24044,24 +24052,45 @@ function qCamadaColuna10b(E){
       return 'Toque na camada e na coluna do subnível de maior energia do ' + E.sym + '.';
     },
     eixo(Q, e){
-      if (this.okP) return;
-      const p = +e.dataset.periodo;
-      if (p === E.per){ this.okP = true; e.classList.add('certa10b'); Q.mostra('per'); Q.chama(false, !this.okC); tocaEfeito('flip'); this.fim(Q); return; }
-      Q.erra('Essa é a camada ' + p + '. Siga a linha do ' + E.sym + ' até o número, à esquerda.', [e], () => [Q.eixoDe(E.per)]);
+      if (this.selP === e) return;
+      if (this.selP) this.selP.classList.remove('sel10b');
+      this.selP = e; e.classList.add('sel10b');
+      tocaEfeito('flip');
+      this.atualiza(Q);
     },
     etiqueta(Q, e){
-      if (this.okC) return;
-      const s = Q.subDaEtq(e);
-      if (s === E.sub){ this.okC = true; e.classList.add('certa10b'); Q.mostra('col'); Q.chama(!this.okP, false); tocaEfeito('flip'); this.fim(Q); return; }
-      Q.erra('Esse é o card do ' + rotulo10(s) + '. Suba pela coluna do ' + E.sym + ' até o card do alto.', [e], () => [Q.etqDe(E.sub)]);
+      if (this.selC === e) return;
+      if (this.selC) this.selC.classList.remove('sel10b');
+      this.selC = e; e.classList.add('sel10b');
+      tocaEfeito('flip');
+      this.atualiza(Q);
+    },
+    atualiza(Q){
+      Q.chama(!this.selP, !this.selC);
+      Q.mostraSel(this.selP ? this.selP.dataset.periodo : '', this.selC ? Q.subDaEtq(this.selC) : '');
+      if (this.selP && this.selC) Q.botaoConfirma(() => this.confirma(Q));
     },
     /* (um toque num elemento, aqui, só lembra onde se responde) */
     toca(Q){ Q.lembra('Toque no número da camada, à esquerda, e no card da coluna, no alto.'); },
-    fim(Q){
-      if (!this.okP || !this.okC) return;
-      Q.acerta('O ' + E.sym + ' está na camada ' + E.per + ', na coluna do ' + rotulo10(E.sub) + ': ' + E.per + rotulo10(E.sub) + '.');
+    confirma(Q){
+      const okP = +this.selP.dataset.periodo === E.per, okC = Q.subDaEtq(this.selC) === E.sub;
+      if (okP && okC){
+        this.selP.classList.add('certa10b'); this.selC.classList.add('certa10b');
+        Q.tiraBotao();
+        Q.acerta('O ' + E.sym + ' está na camada ' + E.per + ', na coluna do ' + rotulo10(E.sub) + ': ' + E.per + rotulo10(E.sub) + '.');
+        return;
+      }
+      const dica = !okP && !okC ? 'A camada e a coluna não são essas. Siga a linha do ' + E.sym + ' até o número, à esquerda, e suba pela coluna dele até o card do alto.'
+                 : !okP ? 'A coluna está certa, mas a camada não: siga a linha do ' + E.sym + ' até o número, à esquerda.'
+                 : 'A camada está certa, mas a coluna não: suba pela coluna do ' + E.sym + ' até o card do alto.';
+      Q.erra(dica, [!okP && this.selP, !okC && this.selC].filter(Boolean),
+             () => [!okP && Q.eixoDe(E.per), !okC && Q.etqDe(E.sub)].filter(Boolean));
     },
-    limpa(Q){ E.c.classList.remove('mg106'); Q.limpaLinha(); Q.chama(false, false); }
+    limpa(Q){
+      E.c.classList.remove('mg106');
+      [this.selP, this.selC].forEach(e => e && e.classList.remove('sel10b', 'certa10b'));
+      Q.tiraBotao(); Q.limpaLinha(); Q.chama(false, false);
+    }
   };
 }
 /* 5 a 8: dado o subnível, tocar o elemento */
@@ -24125,19 +24154,32 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     w.classList.remove('on');
     w.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
     w.style.top  = (yDaLinha(E.per) + 10).toFixed(1) + 'px';
-    r.className = 'r106' + (E.sub[0] === 'p' ? ' rp106' : '');
-    r.querySelector('.r3').textContent = E.per;
-    r.querySelector('.rs').textContent = E.sub[0];
-    r.querySelector('.r2').textContent = E.sub.slice(1);
+    /* (vazia: ela mostra o que o aluno escolher, e não a resposta) */
+    r.className = 'r106';
+    r.querySelectorAll('.r3, .rs, .r2').forEach(e => e.textContent = '');
     void w.offsetWidth;
     todos.forEach(e => e.style.transition = '');
   },
-  mostra(parte){
+  /* a linha da resposta com a escolha do aluno: a camada (p) e o subnível da coluna (sub) */
+  mostraSel(p, sub){
     const w = this.linha, r = w.querySelector('.r106');
-    w.classList.add('on');
-    if (parte === 'per') r.classList.add('tres');
-    else r.classList.add('esse', 'dois');
+    w.classList.toggle('on', !!(p || sub));
+    r.classList.toggle('rp106', sub[0] === 'p');
+    r.querySelector('.r3').textContent = p;
+    r.querySelector('.rs').textContent = sub ? sub[0] : '';
+    r.querySelector('.r2').textContent = sub ? sub.slice(1) : '';
+    r.classList.toggle('tres', !!p);
+    r.classList.toggle('esse', !!sub); r.classList.toggle('dois', !!sub);
   },
+  /* o Confirmar, embaixo da linha da resposta (só com a camada e a coluna escolhidas) */
+  botaoConfirma(faz){
+    this.btFaz = faz;
+    if (this.bt) return;
+    const w = this.linha;
+    this.bt = this.botao('Confirmar', (xDaColuna(3) + xDaColuna(12)) / 2, parseFloat(w.style.top) + 66, () => this.btFaz && this.btFaz());
+    this.bt.classList.add('confirma10b');
+  },
+  tiraBotao(){ if (this.bt){ this.bt.remove(); this.bt = null; } this.btFaz = null; },
   limpaLinha(){
     if (!this.linha) return;
     this.linha.classList.remove('on');
@@ -24232,6 +24274,7 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     clearInterval(this.digT);
     if (this.q && this.q.limpa) this.q.limpa(this);
     this.q = null;
+    this.tiraBotao();
     this.aberto = false; this.travado = false;
     const sl = this.sl();
     if (!sl) return;
