@@ -3953,6 +3953,8 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
 /* (a escolha do aluno: um aro dourado na bolinha e no card escolhidos; o Confirmar por cima de tudo) */
 .slide.quiz10b .mesa :is(.eixo, .etq102).sel10b:not(.certa10b, .errada3){box-shadow:0 0 0 3px #FFD43B, 0 0 16px 5px rgba(255,212,59,.7)}
 .slide.quiz10b .mesa .bt5.confirma10b{z-index:40}
+/* (nas questões 5 a 8, o elemento tocado certo cresce 10 %, além do brilho) */
+.slide.quiz10b .mesa .pc.cresce10b{scale:1.1;z-index:12;transition:scale .3s cubic-bezier(.34,1.56,.64,1)}
 /* (no quiz do tópico 10, as etiquetas s¹, p⁶… somem: dariam a resposta) */
 .slide.quiz10 .mesa .etq102{opacity:0!important;transition:opacity .4s ease}
 /* (no acerto, a coluna sobe e a etiqueta dela cai em cima — e desce com ela na questão seguinte) */
@@ -5340,7 +5342,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v58.0';
+const VERSAO = 'v58.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24101,7 +24103,8 @@ function qElemento10b(E){
     monta(){ return 'Toque no elemento cujo subnível mais energético é o ' + alvo + '.'; },
     toca(Q, c){
       if (+c.dataset.z === E.z){
-        c.classList.add('certa3'); Q.marcados.push(c);
+        /* (o elemento certo brilha e cresce 10 %) */
+        c.classList.add('certa3', 'cresce10b'); Q.marcados.push(c);
         Q.acerta('É o ' + E.nome + ' (' + E.sym + '): camada ' + E.per + ', coluna do ' + rotulo10(E.sub) + '.');
         return;
       }
@@ -24109,7 +24112,7 @@ function qElemento10b(E){
       Q.erra('Esse é o ' + SIMBOLOS[z - 1] + ', de subnível ' + c.dataset.periodo + rotulo10(s) + '. Procure na camada ' + E.per +
              ', na coluna do ' + rotulo10(E.sub) + '.', [c], () => [E.c]);
     },
-    limpa(Q){ (Q.marcados || []).forEach(c => c.classList.remove('certa3')); Q.marcados = []; }
+    limpa(Q){ (Q.marcados || []).forEach(c => c.classList.remove('certa3', 'cresce10b')); Q.marcados = []; }
   };
 }
 const QUIZ10B = Object.assign(Object.create(QUIZ10), {
