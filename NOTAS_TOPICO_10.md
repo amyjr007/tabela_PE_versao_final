@@ -20,7 +20,7 @@ Onde paramos: **v56.2** (2026-11-11). Este arquivo serve para retomar o trabalho
 
 ## A cadeia de narrações (`ORDEM_10`)
 
-`10 → 10.1 → 10.2 → 10.3 → 10.3.1 → 10.4 → 10.4.1 → 10.5 → 10.5.1 → 10.5.1.2 → (quiz) → 10.5.3 → 10.6 → 10.6.1 → 10.6.2 → 10.6.3`
+`10 → 10.1 → 10.2 → 10.3 → 10.3.1 → 10.4 → 10.4.1 → 10.5 → 10.5.1 → 10.5.1.2 → (quiz) → 10.5.3 → 10.6 → 10.6.1 → 10.6.1.1 → 10.6.2`
 
 | Narração | O que acontece | Como passa para a próxima |
 |---|---|---|
@@ -37,13 +37,13 @@ Onde paramos: **v56.2** (2026-11-11). Este arquivo serve para retomar o trabalho
 | Quiz (QUIZ10) | 8 questões, 2 de cada bloco (s, p, d, f), sorteadas de novo no Refazer; o comando reveza entre "Toque na coluna da tabela correspondente ao subnível x.", "Toque na coluna do subnível x." e "Agora toque na coluna x." (este nunca na questão 1, e nunca o mesmo duas vezes seguidas); as etiquetas somem durante o quiz; no erro a coluna tocada inteira balança em vermelho; no acerto a coluna sobe e a etiqueta dela cai em cima (com o flip), e desce na questão seguinte; no fim, o cartão da nota e a fala `audio_tabela_10.5.2` (sem eventos) | Continuar → a tabela volta e toca a 10.5.3 |
 | 10.5.3 | Os eventos da antiga 10.5.2, 9,5 s mais cedo (acertado pelo "₁₂Mg:" aos 14 s): aos 3,5 s "O subnível mais energético"; aos 13,5 s a cena escura da 10 volta com o diagrama sem o Pauling e o ₁₂Mg: já embaixo da tabela; aos 20,5 s o diagrama; distribuição dos 24,5 aos 28,5 s; brilho aos 30,7 s; aos 34,5 s o 1s² pulsa com a seta dele no diagrama, aos 35,4 s o 3s² pulsa e o 3s² do diagrama acende; aos 42,5 s "subnível mais energético" (em amarelo, com som de teclas); no fim a mesa desce e as séries somem, atrás da cena escura | Saquei → 10.6 |
 | 10.6 | Ver abaixo | toque na tela → 10.6.1 |
-| 10.6.1 | Ver abaixo | Saquei → 10.6.2 |
-| 10.6.2 | Aos 6,5 s o 3s² pulsa | Vamos → 10.6.3 |
-| 10.6.3 | Ver abaixo (o iodo) | — (o fim ainda não leva a nada) |
+| 10.6.1 | Ver abaixo | Saquei → 10.6.1.1 |
+| 10.6.1.1 | Aos 6,5 s o 3s² pulsa | Vamos → 10.6.2 |
+| 10.6.2 | Ver abaixo (o iodo) | — (o fim ainda não leva a nada) |
 
-### A 10.6, a 10.6.1 e a 10.6.2 (refeitas na v54.8)
+### A 10.6, a 10.6.1 e a 10.6.1.1 (refeitas na v54.8)
 
-O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 ficaram só até o fim da regra, com os tempos da gravação antiga (precisam ser conferidos); a 10.6.1, a 10.6.2 e a 10.6.3 ainda não têm transcrição.
+O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 ficaram só até o fim da regra, com os tempos da gravação antiga (precisam ser conferidos); a 10.6.1, a 10.6.1.1 e a 10.6.2 ainda não têm transcrição.
 
 **10.6**
 
@@ -73,9 +73,9 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | 18 s | A bolinha do 3 cresce mais (até 18,8 s, quando volta ao normal) |
 | 18,8 s | A etiqueta s² cresce mais, junto com o s² grande (até 20,5 s, quando voltam ao normal) |
 | 23 s | O 3s² volta ao normal depois da festa |
-| fim | Saquei → 10.6.2; até o toque, em revezamento: a bolinha do 3 e o 3 grande pulsam 2 vezes, depois a etiqueta s² e o s² grande, 2 vezes, e de novo (pulsos discretos, de 15 %, com 1 s cada) |
+| fim | Saquei → 10.6.1.1; até o toque, em revezamento: a bolinha do 3 e o 3 grande pulsam 2 vezes, depois a etiqueta s² e o s² grande, 2 vezes, e de novo (pulsos discretos, de 15 %, com 1 s cada) |
 
-**10.6.3** (o "Vamos" no fim da 10.6.2; o segundo exemplo, o iodo — linha 5, coluna 17)
+**10.6.2** (o "Vamos" no fim da 10.6.1.1; o segundo exemplo, o iodo — linha 5, coluna 17)
 
 | Tempo | Evento |
 |---|---|

@@ -209,9 +209,9 @@ var LEGENDAS = {
     [19.7,27.25,"para qualquer elemento representativo, o subnível mais energético é o formado pelo número do seu período, que indica a camada,"],
     [27.52,31.36,"acompanhado do bloco e da coluna onde ele se encontra na tabela."]
   ],
-  /* (o áudio da 10.6 foi dividido em 10.6, 10.6.1 e 10.6.2: as legendas acima
+  /* (o áudio da 10.6 foi dividido em 10.6, 10.6.1 e 10.6.1.1: as legendas acima
      são as da gravação antiga, cortadas no fim da regra — os tempos precisam
-     ser conferidos; a 10.6.1 e a 10.6.2 ainda sem transcrição) */
+     ser conferidos; a 10.6.1 e a 10.6.1.1 ainda sem transcrição) */
   "audio_tabela_1_jogo_memória": [
     [0,3.42,"Muito bem, você terminou o resumo interativo do tópico aqui."],
     [3.42,9.56,"Agora, que tal fazer um joguinho rapidinho que vai te ajudar a fixar esse tópico mais ainda?"],

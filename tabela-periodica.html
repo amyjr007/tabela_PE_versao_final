@@ -3370,7 +3370,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .r106.festa{transform:scale(1.3)}
 /* (na festa, cada parte pisca e brilha na sua própria cor) */
 .r106.festa > *{text-shadow:0 0 16px currentColor,0 0 32px currentColor;animation:pisca106v .5s ease-in-out 3}
-/* (na "10.6.2", aos 6,5 s, o 3s² pulsa) */
+/* (na "10.6.1.1", aos 6,5 s, o 3s² pulsa) */
 .r106.pulsa1062{animation:pulsa106 .5s ease-in-out 2}
 .r106.pulsa1062 > *{text-shadow:0 0 14px currentColor}
 /* (a "10.6.1": aos 18 s a bolinha do 3 cresce mais; aos 18,8 s a etiqueta s²
@@ -3380,7 +3380,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .mesa.linhas106 .eixo[data-periodo].p106.foco106{transform:translate(-50%,-50%) scale(1.9)}
 .etq102.destaque106.foco106{transform:translate(-50%,-50%) scale(1.8)}
 .r106.focoS106 :is(.rs,.r2){scale:1.3}
-/* (acabada a "10.6.1", até a "10.6.2": o 3 — a bolinha e o grande — pulsa 2
+/* (acabada a "10.6.1", até a "10.6.1.1": o 3 — a bolinha e o grande — pulsa 2
    vezes, depois o s² — a etiqueta e o grande —, 2 vezes; e de novo) */
 @keyframes revA106{0%,25%,50%,100%{scale:1} 12.5%,37.5%{scale:1.15}}
 @keyframes revB106{0%,50%,75%,100%{scale:1} 62.5%,87.5%{scale:1.15}}
@@ -3389,7 +3389,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 /* (com o "Vamos", a linha do Mg sai em fade) */
 .linha106{transition:opacity .6s ease}
 .linha106.sai1063{opacity:0}
-/* a "10.6.3": o p⁵ na cor da etiqueta p⁵ (a do bloco p) */
+/* a "10.6.2": o p⁵ na cor da etiqueta p⁵ (a do bloco p) */
 .r106.rp106 :is(.rs,.r2), .dist1063 .ult1063 :is(.rs,.r2){color:color-mix(in srgb,var(--cat-ametais) 86%,#000)}
 .dist1063 .ult1063 .r3{color:var(--cor-linha)}
 /* a distribuição inteira do iodo, no vão de cima; o último subnível pulsa 3 vezes */
@@ -5297,7 +5297,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v56.2';
+const VERSAO = 'v56.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6626,8 +6626,8 @@ const TRILHAS = {
   '10.5.3': 'Audios/audio_tabela_10.5.3.mp3', /* o Continuar do quiz: o subnível mais energético (EV10) — a fala do cartão do quiz é a audio_tabela_10.5.2 */
   '10.6': 'Audios/audio_tabela_10.6.mp3',   /* o Saquei no fim da "10.5.3": a regra pela tabela (CARDS101) */
   '10.6.1': 'Audios/audio_tabela_10.6.1.mp3', /* o toque na regra: o exemplo do Mg, até o 3s² */
-  '10.6.2': 'Audios/audio_tabela_10.6.2.mp3', /* o Saquei no fim da "10.6.1": por que vale saber; no fim, o "Vamos" */
-  '10.6.3': 'Audios/audio_tabela_10.6.3.mp3'  /* o "Vamos" no fim da "10.6.2": o segundo exemplo, o iodo (5p⁵) */
+  '10.6.1.1': 'Audios/audio_tabela_10.6.1.1.mp3', /* o Saquei no fim da "10.6.1": por que vale saber; no fim, o "Vamos" */
+  '10.6.2': 'Audios/audio_tabela_10.6.2.mp3'  /* o "Vamos" no fim da "10.6.1.1": o segundo exemplo, o iodo (5p⁵) */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -6811,8 +6811,8 @@ const ROTEIROS = {
   '10.5.3': [],
   '10.6': [],
   '10.6.1': [],
-  '10.6.2': [],
-  '10.6.3': []
+  '10.6.1.1': [],
+  '10.6.2': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -7567,10 +7567,10 @@ const SEQ = {
     /* o fim da "10.5.3": o "Saquei" (a cena já saiu) */
     else if (id === '10.5.3'){ if (atual === 10) CARDS101.saquei(true, '10.6'); }
     /* (o fim da "10.6": a regra fica com o "Toque na tela", que leva à "10.6.1" — CARDS101.tick106) */
-    /* o fim da "10.6.1": o "Saquei", que leva à "10.6.2" */
-    else if (id === '10.6.1'){ if (atual === 10) CARDS101.saquei(true, '10.6.2'); }
-    /* o fim da "10.6.2": o "Vamos", que leva à "10.6.3" */
-    else if (id === '10.6.2'){ if (atual === 10) CARDS101.saquei(true, '10.6.3', 'Vamos'); }
+    /* o fim da "10.6.1": o "Saquei", que leva à "10.6.1.1" */
+    else if (id === '10.6.1'){ if (atual === 10) CARDS101.saquei(true, '10.6.1.1'); }
+    /* o fim da "10.6.1.1": o "Vamos", que leva à "10.6.2" */
+    else if (id === '10.6.1.1'){ if (atual === 10) CARDS101.saquei(true, '10.6.2', 'Vamos'); }
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
     /* (antes dela, a festa: os confetes, o funfare e os aplausos) */
     else if (id === '9.3.8'){ if (atual === 9) EV9.festa93(); }
@@ -22265,17 +22265,17 @@ const TEXTO_106 = 'Elementos representativos primeiro';
    coluna, e a etiqueta s² fica crescida; aos 14,7 s digita "Subnível mais
    energético:"; aos 17,7 s o "3", aos 19 s o "s", aos 19,2 s o "²"; aos 20,5 s
    o 3s² cresce e brilha, com confetes, aplausos e funfare; aos 23 s os
-   crescidos voltam ao normal. No fim, o Saquei leva à "10.6.2". */
+   crescidos voltam ao normal. No fim, o Saquei leva à "10.6.1.1". */
 const T1061 = { mg:3.0, linha:7.0, coluna:8.2, piscaL:[[7.0, 8.2], [11.0, 12.2]], piscaC:[[8.2, 9.4], [12.3, 13.5]],
                 bola:11.0, etq:12.3, texto:[14.7, 16.2], tres:17.7, s:19.0, dois:19.2, festa:20.5, volta:23.0,
                 /* (aos 18 s a bolinha do 3 cresce mais; aos 18,8 s ela volta ao normal e a
                    etiqueta s² cresce mais, junto com o s² grande; aos 20,5 s tudo normal) */
                 foco3:[18.0, 18.8], focoS:[18.8, 20.5] };
 const TEXTO_1061 = 'Subnível mais energético:';
-/* A "10.6.2" (o Saquei no fim da "10.6.1"): aos 6,5 s o 3s² pulsa; no fim, o
-   botão "Vamos", que leva à "10.6.3" */
+/* A "10.6.1.1" (o Saquei no fim da "10.6.1"): aos 6,5 s o 3s² pulsa; no fim, o
+   botão "Vamos", que leva à "10.6.2" */
 const T1062 = { pulsa:[6.5, 7.6] };
-/* A "10.6.3" (o "Vamos" no fim da "10.6.2"): o exemplo do Mg sai de cena; aos
+/* A "10.6.2" (o "Vamos" no fim da "10.6.1.1"): o exemplo do Mg sai de cena; aos
    2,2 s o iodo brilha em verde; aos 16,5 s a faixa da linha 5 entra e pisca 2
    vezes (a bolinha do 5 pulsa 2 vezes), aos 18 s a da coluna 17 (a etiqueta p⁵
    pulsa); aos 20 s e aos 22 s o mesmo de novo; aos 23,5 s digita "O subnível
@@ -22574,7 +22574,7 @@ const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
-const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.2', '10.6.3'];
+const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.1.1', '10.6.2'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -22948,7 +22948,7 @@ const CARDS101 = {
      o do fim da "10.3.1" só estoura (o play volta) */
   saquei(sim, prox = '10.3', txt = 'Saquei'){
     this.comSaquei = sim;
-    /* (a narração seguinte só toca se já existir — a "10.6.3" ainda não tem áudio) */
+    /* (a narração seguinte só toca se já existir — a "10.6.2" ainda não tem áudio) */
     botaoVerde(sim ? txt : null, () => { this.saquei(false); if (atual === 10 && prox && TRILHAS[prox]) tocaTrilha(prox); });
   },
   fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051', 'sem-play105');
@@ -23211,14 +23211,14 @@ const CARDS101 = {
     const E = this['etq' + s]; if (E) E.forEach(e => e.est = 0);
     this['estado' + s] = '';
   },
-  /* A "10.6", a "10.6.1" e a "10.6.2": a regra pela tabela, e o exemplo do Mg */
+  /* A "10.6", a "10.6.1" e a "10.6.1.1": a regra pela tabela, e o exemplo do Mg */
   tick106(t){
     const monta = naMontagem(), em = id => trilhaAtual === id && !monta;
     const tempo = id => em(id) ? t : !monta && depoisDe(id) ? 99 : -1;
-    const de = em('10.6'), de61 = em('10.6.1'), de62 = em('10.6.2');
-    const T = tempo('10.6'), T1 = tempo('10.6.1'), T2 = tempo('10.6.2');
-    /* (com o "Vamos" — da "10.6.3" em diante — o exemplo do Mg sai de cena: o brilho, as faixas e a linha do 3s²) */
-    const fora1063 = !monta && (trilhaAtual === '10.6.3' || depoisDe('10.6.3'));
+    const de = em('10.6'), de61 = em('10.6.1'), de62 = em('10.6.1.1');
+    const T = tempo('10.6'), T1 = tempo('10.6.1'), T2 = tempo('10.6.1.1');
+    /* (com o "Vamos" — da "10.6.2" em diante — o exemplo do Mg sai de cena: o brilho, as faixas e a linha do 3s²) */
+    const fora1063 = !monta && (trilhaAtual === '10.6.2' || depoisDe('10.6.2'));
     const acabou = som.ended || (som.duration > 0 && t >= som.duration - 0.15);
     if (!this.r106){
       const m = this.m;
@@ -23346,17 +23346,17 @@ const CARDS101 = {
     if (this.p3106) this.p3106.classList.toggle('foco106', foco3);
     if (this.etq102) this.etq102[1].d.classList.toggle('foco106', focoS);
     this.r106.classList.toggle('focoS106', focoS);
-    /* acabada a "10.6.1" (com o Saquei), até a "10.6.2": a bolinha do 3 e o 3
+    /* acabada a "10.6.1" (com o Saquei), até a "10.6.1.1": a bolinha do 3 e o 3
        grande pulsam 2 vezes, depois a etiqueta s² e o s² grande, 2 vezes, e
        assim por diante (as duas animações no mesmo compasso, começadas juntas) */
     if (this.p3106) this.p3106.classList.toggle('revA106', reveza);
     if (this.etq102) this.etq102[1].d.classList.toggle('revB106', reveza);
     this.r106.classList.toggle('reveza106', reveza);
   },
-  /* A "10.6.3" (o "Vamos" no fim da "10.6.2"): o segundo exemplo, o iodo */
+  /* A "10.6.2" (o "Vamos" no fim da "10.6.1.1"): o segundo exemplo, o iodo */
   tick1063(t){
-    const monta = naMontagem(), de = trilhaAtual === '10.6.3' && !monta;
-    const T = de ? t : !monta && depoisDe('10.6.3') ? 99 : -1;
+    const monta = naMontagem(), de = trilhaAtual === '10.6.2' && !monta;
+    const T = de ? t : !monta && depoisDe('10.6.2') ? 99 : -1;
     if (!this.r1063){
       const m = this.m;
       /* as faixas da linha 5 e da coluna 17 (como as do Mg) */
