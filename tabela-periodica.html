@@ -3944,7 +3944,7 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
 /* (e no quiz do slide 10, o mesmo lugar: acima dos nomes 1A e 8A) */
 .slide.quiz9 .quiz3.q4.q2.q5{left:269.3px;top:30px}
 /* (e no quiz do tópico 10, no slide 11, o mesmo lugar) */
-.slide.quiz10 .quiz3.q4.q2.q5{left:269.3px;top:30px}
+.slide.quiz10 .quiz3.q4.q2.q5{left:269.3px;top:30px;text-align:center}
 /* (o quiz 2 do tópico 10: o lugar e o tamanho que o professor deixou na
    montagem — o centro em x 656, y 90; 751 × 86 na escala 0,96 —, e a
    pergunta numa linha só) */
@@ -3955,6 +3955,8 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
 .slide.quiz10b.parte2q10b .quiz3.q4.q2.q5{left:198.5px;top:41.9px;width:847px;transform:scale(1.13)}
 /* (o "Questão N de 8", a pergunta e a dica, centralizados) */
 .slide.quiz10b .quiz3.q4.q2.q5{text-align:center}
+/* (a pergunta numa linha só, centrada pelo meio da caixa mesmo quando passa da largura dela) */
+.slide.quiz10b .quiz3.q4.q2.q5 .q3-q{width:max-content;position:relative;left:50%;translate:-50% 0}
 /* (o subnível da pergunta das questões 5 a 8: o número no azul das camadas, o s e o p nas cores dos blocos, claras no escuro) */
 .slide.quiz10b .quiz3 .q3-q .per10b{color:#6FAEF0}
 .slide.quiz10b .quiz3 .q3-q .s10b{color:color-mix(in srgb,var(--cat-alcalinos) 80%,#fff)}
@@ -5351,7 +5353,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v58.4';
+const VERSAO = 'v58.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
