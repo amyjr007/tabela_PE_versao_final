@@ -5312,7 +5312,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v56.6';
+const VERSAO = 'v56.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23971,14 +23971,14 @@ window.QUIZ10 = QUIZ10;
 
 /* ============================================================
    O QUIZ 2 DO TÓPICO 10 (QUIZ10B) — no fim da "10.6.3", depois da
-   demonstração com o Al. Cinco questões, só de representativos (blocos s e
+   demonstração com o Al. Oito questões, só de representativos (blocos s e
    p; nunca o He, o Mg, o Al, o I e o Cs, que foram os exemplos):
    1 a 4 — o elemento acende e o aluno toca a CAMADA (a bolinha do período, à
    esquerda) e a COLUNA (o card do alto: s¹, p³…), em qualquer ordem; cada
    parte certa vai aparecendo em "Subnível mais energético: 3p¹", na linha
    do elemento;
-   antes da 5 toca a fala "10.6.4", e aos 7 s dela entra a 5 — o contrário:
-   dado o subnível, o aluno toca o elemento.
+   antes da 5 toca a fala "10.6.4", e aos 7 s dela entra a 5; de 5 a 8 — o
+   contrário: dado o subnível, o aluno toca o elemento.
    No fim, a nota (Refazer, Continuar). O cabeçalho diz "Quiz 2".
    ============================================================ */
 /* os representativos que podem cair (o card, o período e o subnível) */
@@ -23990,11 +23990,12 @@ function representativos10b(){
 }
 function questoes10b(){
   const R = embaralha(representativos10b());
-  /* (as quatro de camada e coluna: duas do s e duas do p, em ordem sorteada) */
-  const S = R.filter(e => e.sub[0] === 's').slice(0, 2), P = R.filter(e => e.sub[0] === 'p').slice(0, 2);
-  const A = embaralha([...S, ...P]);
-  const B = R.find(e => !A.includes(e));
-  return [...A.map(qCamadaColuna10b), qElemento10b(B)];
+  /* (cada parte com quatro: duas do s e duas do p, em ordem sorteada; nenhum
+     elemento repete entre as oito) */
+  const S = R.filter(e => e.sub[0] === 's'), P = R.filter(e => e.sub[0] === 'p');
+  const A = embaralha([...S.slice(0, 2), ...P.slice(0, 2)]);
+  const B = embaralha([...S.slice(2, 4), ...P.slice(2, 4)]);
+  return [...A.map(qCamadaColuna10b), ...B.map(qElemento10b)];
 }
 /* 1 a 4: tocar a camada e a coluna */
 function qCamadaColuna10b(E){
@@ -24026,7 +24027,7 @@ function qCamadaColuna10b(E){
     limpa(Q){ E.c.classList.remove('mg106'); Q.limpaLinha(); }
   };
 }
-/* 5: dado o subnível, tocar o elemento */
+/* 5 a 8: dado o subnível, tocar o elemento */
 function qElemento10b(E){
   const alvo = E.per + rotulo10(E.sub);
   return {
