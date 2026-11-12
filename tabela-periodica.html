@@ -3394,8 +3394,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .slide.quiz10b .mesa .etq102.errada3{box-shadow:0 0 0 3px #FF2E4C, 0 0 16px 5px rgba(255,46,76,.7)}
 .slide.quiz10b .mesa :is(.eixo, .etq102).pista5{box-shadow:0 0 0 3px #FFB020, 0 0 18px 6px rgba(255,176,32,.75)}
 .slide.quiz10b .mesa .titulo9:not(.rot106){opacity:0!important}
-/* (da questão 6 em diante, os cards do alto das colunas saem em fade) */
-.slide.quiz10b.sem-etq10b .mesa .etq102{opacity:0!important;pointer-events:none!important;transition:opacity .5s ease!important}
+/* (da questão 6 em diante, os cards do alto das colunas e os números das linhas saem em fade) */
+.slide.quiz10b.sem-etq10b .mesa :is(.etq102, .eixo[data-periodo]){opacity:0!important;pointer-events:none!important;transition:opacity .5s ease!important}
 .slide.quiz-escuro .linha106 .rot106{color:#F4F2F8}
 /* (no escuro, o s e o p da resposta nas cores dos blocos, mais claras) */
 .slide.quiz-escuro .linha106 .r106 :is(.rs,.r2){color:color-mix(in srgb,var(--cat-alcalinos) 80%,#fff)}
@@ -5314,7 +5314,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v56.8';
+const VERSAO = 'v56.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24165,6 +24165,8 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     this.passo++;
     if (this.passo >= this.itens.length){ this.resultado(); return; }
     if (this.passo === 4){
+      /* (com a fala, a tela fica limpa: a questão 4 sai já) */
+      this.sl().querySelectorAll('.quiz3.q5:not(.sai)').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
       tocaEfeito('Audios/audio_tabela_10.6.4.mp3');
       setTimeout(() => { if (g === this.g) this.apresenta(g); }, 7000);
       return;
