@@ -5313,7 +5313,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v57.0';
+const VERSAO = 'v57.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23318,7 +23318,14 @@ const CARDS101 = {
        antes do fim da "10.5.3" (atrás da cena escura) */
     const de1052 = trilhaAtual === '10.5.3' && !monta;
     const semF = T >= 0 || (de1052 && (som.ended || (som.duration > 0 && t >= som.duration - 1.5)));
-    if (semF !== this.semF106){ this.semF106 = semF; this.m.classList.toggle('semF106', semF); }
+    if (semF !== this.semF106){
+      this.semF106 = semF; this.m.classList.toggle('semF106', semF);
+      /* (no celular a mesa tem uma medida aberta e outra fechada: anda com ela) */
+      if (ehCelular()){
+        const P = MESA_NO_CELULAR_POR_SLIDE[10], mc = semF ? P.fechada : P;
+        this.m.style.setProperty('--px', mc.x + 'px'); this.m.style.setProperty('--py', mc.y + 'px'); this.m.style.setProperty('--zoom', mc.e);
+      }
+    }
     /* a festa da "10.6.1" (só tocando de seguida: um salto — pelo sumário, por exemplo — não a dispara) */
     const passa = s => de61 && !som.paused && this.t106ant >= 0 && this.t106ant < s && t >= s && t < s + 0.6 && t - this.t106ant < 1;
     if (passa(T1061.festa)){ this.aplauso(); tocaEfeito('funfare'); }
@@ -28128,8 +28135,11 @@ var AJUSTE_LIGADO = false;
 const MESA_NO_CELULAR = { x:2, y:-22, e:1.156 };
 /* e a de cada slide que tem a sua (no celular): o slide 9, a natureza */
 /* (no slide 9: fechada, ao entrar no tópico, e aberta em 32 colunas — EV8.longa troca uma pela outra) */
-/* (no slide 11, com a tabela toda aberta — as séries embaixo —, a medida que o professor deixou na montagem no celular) */
-const MESA_NO_CELULAR_POR_SLIDE = { 8:{ x:5, y:10, e:1.07, aberta:{ x:-8, y:104, e:1.17 } }, 10:{ x:9, y:28, e:1.02 } };
+/* (no slide 11: com a tabela toda aberta — as séries embaixo — e, com os
+   lantanídeos e actinídeos recolhidos no 3B — semF106, da 10.6 em diante —,
+   a 'fechada'; as duas medidas que o professor deixou na montagem no celular) */
+const MESA_NO_CELULAR_POR_SLIDE = { 8:{ x:5, y:10, e:1.07, aberta:{ x:-8, y:104, e:1.17 } },
+                                    10:{ x:9, y:28, e:1.02, fechada:{ x:23, y:58, e:1.15 } } };
 var AJUSTE = { ligado:false, x:MESA_NO_CELULAR.x, y:MESA_NO_CELULAR.y, e:MESA_NO_CELULAR.e,
                dedos:new Map(), ini:null };
 const limitaEscala = e => Math.max(0.4, Math.min(2.5, e));
@@ -28197,7 +28207,9 @@ function aplicaAjuste(){
   /* a medida vale para a mesa de todos os slides com tabela */
   /* (a do slide 9 tem a medida dela, a que o professor deixou na montagem no celular) */
   document.querySelectorAll('#deck .mesa').forEach(m => {
-    const p = MESA_NO_CELULAR_POR_SLIDE[m.dataset.slide] || AJUSTE;
+    let p = MESA_NO_CELULAR_POR_SLIDE[m.dataset.slide] || AJUSTE;
+    /* (no slide 11, com as séries recolhidas, a medida fechada) */
+    if (p.fechada && m.classList.contains('semF106')) p = p.fechada;
     m.style.setProperty('--px', p.x.toFixed(1) + 'px');
     m.style.setProperty('--py', p.y.toFixed(1) + 'px');
     m.style.setProperty('--zoom', p.e.toFixed(3));
