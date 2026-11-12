@@ -3393,6 +3393,12 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
    mais fáceis de tocar; pela escala solta, que se soma ao transform delas) */
 .slide.quiz10b .mesa .eixo[data-periodo]{scale:1.3}
 .slide.quiz10b .mesa .etq102{scale:1.1}
+/* (nas questões 1 a 4, o convite ao toque: as bolinhas das camadas e os cards
+   do s e do p pulsam num brilho dourado leve — cada grupo até a parte dele ser
+   acertada; o verde do acerto, o vermelho do erro e o âmbar da pista ficam por cima) */
+@keyframes chama10b{0%,100%{box-shadow:0 0 0 0 rgba(255,226,130,0)} 50%{box-shadow:0 0 0 3px rgba(255,226,130,.95), 0 0 16px 5px rgba(255,200,90,.6)}}
+.slide.quiz10b.chamaP10b .mesa .eixo[data-periodo]:not(.certa10b, .errada3, .pista5),
+.slide.quiz10b.chamaC10b .mesa .etq102.on:not(.d104, .f105, .certa10b, .errada3, .pista5){animation:chama10b 1.6s ease-in-out infinite}
 .slide.quiz10b .mesa :is(.eixo, .etq102).certa10b{box-shadow:0 0 0 3px #7CF5A8, 0 0 18px 6px rgba(46,214,113,.85)}
 .slide.quiz10b .mesa .etq102.errada3{box-shadow:0 0 0 3px #FF2E4C, 0 0 16px 5px rgba(255,46,76,.7)}
 .slide.quiz10b .mesa :is(.eixo, .etq102).pista5{box-shadow:0 0 0 3px #FFB020, 0 0 18px 6px rgba(255,176,32,.75)}
@@ -5322,7 +5328,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v57.6';
+const VERSAO = 'v57.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24025,19 +24031,21 @@ function qCamadaColuna10b(E){
     E, okP:false, okC:false,
     monta(Q){
       E.c.classList.add('mg106');
+      /* (as bolinhas das camadas e os cards do s e do p pulsam: é ali que se toca) */
+      Q.chama(true, true);
       Q.linhaDe(E);
       return 'Toque na camada e na coluna do subnível de maior energia do ' + E.sym + '.';
     },
     eixo(Q, e){
       if (this.okP) return;
       const p = +e.dataset.periodo;
-      if (p === E.per){ this.okP = true; e.classList.add('certa10b'); Q.mostra('per'); tocaEfeito('flip'); this.fim(Q); return; }
+      if (p === E.per){ this.okP = true; e.classList.add('certa10b'); Q.mostra('per'); Q.chama(false, !this.okC); tocaEfeito('flip'); this.fim(Q); return; }
       Q.erra('Essa é a camada ' + p + '. Siga a linha do ' + E.sym + ' até o número, à esquerda.', [e], () => [Q.eixoDe(E.per)]);
     },
     etiqueta(Q, e){
       if (this.okC) return;
       const s = Q.subDaEtq(e);
-      if (s === E.sub){ this.okC = true; e.classList.add('certa10b'); Q.mostra('col'); tocaEfeito('flip'); this.fim(Q); return; }
+      if (s === E.sub){ this.okC = true; e.classList.add('certa10b'); Q.mostra('col'); Q.chama(!this.okP, false); tocaEfeito('flip'); this.fim(Q); return; }
       Q.erra('Esse é o card do ' + rotulo10(s) + '. Suba pela coluna do ' + E.sym + ' até o card do alto.', [e], () => [Q.etqDe(E.sub)]);
     },
     /* (um toque num elemento, aqui, só lembra onde se responde) */
@@ -24046,7 +24054,7 @@ function qCamadaColuna10b(E){
       if (!this.okP || !this.okC) return;
       Q.acerta('O ' + E.sym + ' está na camada ' + E.per + ', na coluna do ' + rotulo10(E.sub) + ': ' + E.per + rotulo10(E.sub) + '.');
     },
-    limpa(Q){ E.c.classList.remove('mg106'); Q.limpaLinha(); }
+    limpa(Q){ E.c.classList.remove('mg106'); Q.limpaLinha(); Q.chama(false, false); }
   };
 }
 /* 5 a 8: dado o subnível, tocar o elemento */
@@ -24121,6 +24129,8 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     this.linha.classList.remove('on');
     this.mesa().querySelectorAll('.certa10b').forEach(e => e.classList.remove('certa10b'));
   },
+  /* o convite ao toque: as bolinhas das camadas (p) e os cards das colunas (c) pulsando */
+  chama(p, c){ const sl = this.sl(); sl.classList.toggle('chamaP10b', !!p); sl.classList.toggle('chamaC10b', !!c); },
   lembra(txt){
     const msg = this.caixa() && this.caixa().querySelector('.q3-msg');
     if (msg){ msg.textContent = txt; msg.className = 'q3-msg dica'; }
@@ -24217,7 +24227,7 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     stage.classList.remove('em-quiz');
     const v = sl.querySelector(':scope > .breu-quiz');
     if (v) v.classList.remove('on');
-    sl.classList.remove('quiz-escuro', 'quiz10b', 'sem-etq10b');
+    sl.classList.remove('quiz-escuro', 'quiz10b', 'sem-etq10b', 'chamaP10b', 'chamaC10b');
     cabecaDoQuiz(sl, false, 'Quiz 2', 'quiz-cabeca');
   }
 });
