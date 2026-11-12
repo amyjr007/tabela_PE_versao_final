@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v56.9** (2026-11-12). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v57.0** (2026-11-12). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -141,3 +141,8 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
   - 1 a 4: "Clique na camada e na coluna do subnível mais energético do átomo: Nome (X)." — o aluno toca a bolinha do período e o card do alto da coluna, em qualquer ordem; cada parte certa aparece na linha do elemento. Duas do s e duas do p.
   - Antes da 5 toca a `10.6.4` ("agora vai ser o oposto…"); aos 7 s dela entra a 5; de 5 a 8 (duas do s e duas do p): "Toque no elemento cujo subnível mais energético é o 4p²." Nenhum elemento repete entre as oito. Da questão 6 em diante os cards do alto das colunas (s¹, p³…) e os números das linhas saem em fade; voltam quando o quiz fecha. Com a fala 10.6.4, a questão 4 sai da tela na hora.
   - No fim, a nota (Refazer, Continuar). O Continuar só clareia a sala: **o que vem depois do quiz 2 ainda não foi definido.**
+
+## No celular (v57.0)
+
+- A mesa do slide 11 no celular vem de `MESA_NO_CELULAR_POR_SLIDE[10]` = `{ x:9, y:28, e:1.02 }` (a tabela toda aberta, com as séries). Ela é posta direto no elemento e vale sempre; **a medida com as séries recolhidas (da 10.6 em diante) ainda não foi tirada** no celular — hoje a mesa fica no mesmo lugar.
+- O `texto-102` no celular: palco x 513, y 152 → na mesa 506,7; 234,5 (posto ao criar o texto).
