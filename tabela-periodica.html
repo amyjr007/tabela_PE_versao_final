@@ -5312,7 +5312,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v56.5';
+const VERSAO = 'v56.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -27767,6 +27767,9 @@ const NAV_TOPICOS = [
   /* o começo da "10.6.2": o segundo exemplo, o iodo */
   { titulo:'O exemplo do iodo', sub:'o começo da 10.6.2', slide:10,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.6.2', 0, g)); } },
+  /* o começo da "10.6.3": o terceiro exemplo, o césio (e a demonstração do quiz 2) */
+  { titulo:'O exemplo do Cs', sub:'o começo da 10.6.3', slide:10,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.6.3', 0, g)); } },
   /* o quiz 2 direto: a mesa como no fim da "10.6.3", e o quiz abre (com o "vamos para a primeira questão") */
   { titulo:'Quiz 2', sub:'o quiz 2 direto: camada e coluna, depois o elemento', slide:10, quiz:'q10b',
     entra(v, g){

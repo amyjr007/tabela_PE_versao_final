@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v56.5** (2026-11-12). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v56.6** (2026-11-12). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -106,7 +106,8 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | j – Subnível mais energético com tabela | 10.6 |
 | k – O exemplo do Mg | 10.6.1 |
 | l – O exemplo do iodo | 10.6.2 |
-| m – Quiz 2 | o quiz 2 direto |
+| m – O exemplo do Cs | 10.6.3 |
+| n – Quiz 2 | o quiz 2 direto |
 
 Pelo sumário, cada narração abre com tudo o que veio antes já completo (as etiquetas no lugar). Voltar para uma narração com toques desfaz os toques dela.
 
