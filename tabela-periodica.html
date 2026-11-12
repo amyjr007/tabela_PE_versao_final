@@ -3412,6 +3412,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .slide.quiz10b .mesa .titulo9:not(.rot106){opacity:0!important}
 /* (da questão 6 em diante, os cards do alto das colunas e os números das linhas saem em fade) */
 .slide.quiz10b.sem-etq10b .mesa :is(.etq102, .eixo[data-periodo]){opacity:0!important;pointer-events:none!important;transition:opacity .5s ease!important}
+/* (nas questões 5 a 8, o elemento certo traz, acesas, a bolinha da camada e o card da coluna dele) */
+.slide.quiz10b .mesa.mesa :is(.etq102, .eixo[data-periodo]).mostra10b{opacity:1!important;z-index:28}
 .slide.quiz-escuro .linha106 .rot106{color:#F4F2F8}
 /* (no escuro, o s e o p da resposta nas cores dos blocos, mais claras) */
 .slide.quiz-escuro .linha106 .r106 :is(.rs,.r2){color:color-mix(in srgb,var(--cat-alcalinos) 80%,#fff)}
@@ -5349,7 +5351,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v58.3';
+const VERSAO = 'v58.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24058,7 +24060,7 @@ function qCamadaColuna10b(E){
       /* (as bolinhas das camadas e os cards do s e do p pulsam: é ali que se toca) */
       Q.chama(true, true);
       Q.linhaDe(E);
-      return 'Toque na camada e na coluna do subnível de maior energia do ' + E.sym + '.';
+      return 'Toque no número da camada e no card do subnível mais energético do átomo ' + E.sym + '.';
     },
     eixo(Q, e){
       if (this.selP === e) return;
@@ -24114,6 +24116,10 @@ function qElemento10b(E){
       if (+c.dataset.z === E.z){
         /* (o elemento certo brilha e cresce 10 %) */
         c.classList.add('certa3', 'cresce10b'); Q.marcados.push(c);
+        /* (e aparecem, acesas em verde, a bolinha da camada e o card do alto da
+           coluna dele — mesmo da 6 em diante, quando estão escondidos) */
+        this.mostrados = [Q.eixoDe(E.per), Q.etqDe(E.sub)].filter(Boolean);
+        this.mostrados.forEach(e => e.classList.add('certa10b', 'mostra10b'));
         Q.acerta('É o ' + E.nome + ' (' + E.sym + '): camada ' + E.per + ', coluna do ' + rotulo10(E.sub) + '.');
         return;
       }
@@ -24121,7 +24127,10 @@ function qElemento10b(E){
       Q.erra('Esse é o ' + SIMBOLOS[z - 1] + ', de subnível ' + c.dataset.periodo + rotulo10(s) + '. Procure na camada ' + E.per +
              ', na coluna do ' + rotulo10(E.sub) + '.', [c], () => [E.c]);
     },
-    limpa(Q){ (Q.marcados || []).forEach(c => c.classList.remove('certa3', 'cresce10b')); Q.marcados = []; }
+    limpa(Q){
+      (Q.marcados || []).forEach(c => c.classList.remove('certa3', 'cresce10b')); Q.marcados = [];
+      (this.mostrados || []).forEach(e => e.classList.remove('certa10b', 'mostra10b')); this.mostrados = [];
+    }
   };
 }
 const QUIZ10B = Object.assign(Object.create(QUIZ10), {
