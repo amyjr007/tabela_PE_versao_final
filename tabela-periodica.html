@@ -3394,6 +3394,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .slide.quiz10b .mesa .etq102.errada3{box-shadow:0 0 0 3px #FF2E4C, 0 0 16px 5px rgba(255,46,76,.7)}
 .slide.quiz10b .mesa :is(.eixo, .etq102).pista5{box-shadow:0 0 0 3px #FFB020, 0 0 18px 6px rgba(255,176,32,.75)}
 .slide.quiz10b .mesa .titulo9:not(.rot106){opacity:0!important}
+/* (da questão 6 em diante, os cards do alto das colunas saem em fade) */
+.slide.quiz10b.sem-etq10b .mesa .etq102{opacity:0!important;pointer-events:none!important;transition:opacity .5s ease!important}
 .slide.quiz-escuro .linha106 .rot106{color:#F4F2F8}
 /* (no escuro, o s e o p da resposta nas cores dos blocos, mais claras) */
 .slide.quiz-escuro .linha106 .r106 :is(.rs,.r2){color:color-mix(in srgb,var(--cat-alcalinos) 80%,#fff)}
@@ -5312,7 +5314,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v56.7';
+const VERSAO = 'v56.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24134,6 +24136,12 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     /* "Certo, vamos para a primeira questão." e a 1 */
     tocaEfeito('Audios/quiz1.mp3').then(() => { if (g === this.g) this.apresenta(g); });
   },
+  /* a questão entra como no QUIZ5; da 6 em diante, sem os cards do alto das
+     colunas (s¹, p³…): o aluno acha o elemento sem eles */
+  apresenta(g){
+    this.sl().classList.toggle('sem-etq10b', this.passo >= 5);
+    QUIZ5.apresenta.call(this, g);
+  },
   /* o acerto, como o do QUIZ5; mas da 4 para a 5 toca a fala "10.6.4" ("agora
      vai ser o oposto… Lá vai o primeiro"), e a 5 entra aos 7 s dela */
   async acerta(explica, fala){
@@ -24187,7 +24195,7 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     stage.classList.remove('em-quiz');
     const v = sl.querySelector(':scope > .breu-quiz');
     if (v) v.classList.remove('on');
-    sl.classList.remove('quiz-escuro', 'quiz10b');
+    sl.classList.remove('quiz-escuro', 'quiz10b', 'sem-etq10b');
     cabecaDoQuiz(sl, false, 'Quiz 2', 'quiz-cabeca');
   }
 });
