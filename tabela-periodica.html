@@ -3392,6 +3392,10 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 /* (no quiz 2, as bolinhas das camadas 30 % maiores e os cards dos subníveis 10 %:
    mais fáceis de tocar; pela escala solta, que se soma ao transform delas) */
 .slide.quiz10b .mesa .eixo[data-periodo]{scale:1.3}
+/* (a entrada das bolinhas — o numLinha25, que as encolhe e as traz da
+   esquerda — não volta a tocar no quiz quando o pulso ou o balanço do erro
+   saem: sem isto, a cada toque todas as bolinhas encolhiam e deslizavam) */
+.slide.quiz10b .mesa .eixo[data-periodo]:not(.errada3){animation:none}
 .slide.quiz10b .mesa .etq102{scale:1.1}
 /* (nas questões 1 a 4, o convite ao toque: as bolinhas das camadas e os cards
    do s e do p pulsam num brilho dourado leve — cada grupo até a parte dele ser
@@ -5328,7 +5332,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v57.7';
+const VERSAO = 'v57.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
