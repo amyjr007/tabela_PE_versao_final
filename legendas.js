@@ -201,6 +201,19 @@ var LEGENDAS = {
     [45.89,54.38,"Pois agora, a gente vai descobrir exatamente a mesma informação em 2 segundos, usando apenas a posição do elemento na tabela periódica."],
     [54.91,56.54,"É isso que vamos ver a seguir."]
   ],
+  "audio_tabela_10.6.3": [
+    [0,2.98,"Tá, vamos para o último exemplo: o césio, aqui."],
+    [2.98,8.93,"Veja só: ele está no sexto período, na primeira coluna do bloco s."],
+    [8.93,13.0,"Sexto período, primeira coluna do bloco s."],
+    [13.0,19.99,"O subnível mais energético, então, é o 6s… 1. 6s¹."],
+    [20.85,23.82,"E agora, deu para entender? Vamos fazer o seguinte:"],
+    [23.82,32.08,"eu destaco um elemento na tabela e você clica na camada e no card da coluna do subnível mais energético dele, tá bom?"]
+  ],
+  "audio_tabela_10.6.4": [
+    [0,1.72,"Tá, agora vai ser o oposto."],
+    [1.72,6.8,"Eu te dou o subnível mais energético e você clica no elemento na tabela, tá bom?"],
+    [6.8,8.28,"Lá vai o primeiro."]
+  ],
   "audio_tabela_10.6": [
     [0,6.82,"Certo, agora vamos aprender a descobrir o subnível mais energético dos elementos direto pela tabela periódica."],
     [7.94,12.96,"Vamos começar pelos elementos representativos, que são aqueles das famílias A, aqui."],

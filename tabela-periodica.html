@@ -3386,6 +3386,21 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 @keyframes revB106{0%,50%,75%,100%{scale:1} 62.5%,87.5%{scale:1.15}}
 .mesa .eixo.revA106, .r106.reveza106 .r3{animation:revA106 4s ease-in-out infinite}
 .etq102.revB106, .r106.reveza106 :is(.rs,.r2){animation:revB106 4s ease-in-out infinite}
+/* O QUIZ 2 DO TÓPICO 10: as bolinhas das camadas e os cards do alto das
+   colunas pegam o toque; o certo acende em verde, o errado em vermelho, a
+   pista em âmbar; os outros textos da mesa saem; a linha da resposta clara */
+.slide.quiz10b .mesa :is(.eixo[data-periodo], .etq102.on){pointer-events:auto;cursor:pointer}
+.slide.quiz10b .mesa :is(.eixo, .etq102).certa10b{box-shadow:0 0 0 3px #7CF5A8, 0 0 18px 6px rgba(46,214,113,.85)}
+.slide.quiz10b .mesa .etq102.errada3{box-shadow:0 0 0 3px #FF2E4C, 0 0 16px 5px rgba(255,46,76,.7)}
+.slide.quiz10b .mesa :is(.eixo, .etq102).pista5{box-shadow:0 0 0 3px #FFB020, 0 0 18px 6px rgba(255,176,32,.75)}
+.slide.quiz10b .mesa .titulo9:not(.rot106){opacity:0!important}
+.slide.quiz-escuro .linha106 .rot106{color:#F4F2F8}
+/* (no escuro, o s e o p da resposta nas cores dos blocos, mais claras) */
+.slide.quiz-escuro .linha106 .r106 :is(.rs,.r2){color:color-mix(in srgb,var(--cat-alcalinos) 80%,#fff)}
+.slide.quiz-escuro .linha106 .r106.rp106 :is(.rs,.r2){color:color-mix(in srgb,var(--cat-ametais) 70%,#fff)}
+.slide.quiz-escuro .linha106 .r106 .r3{color:#6FAEF0}
+.linha106.linhaQ10b{opacity:0;transition:opacity .4s ease}
+.linha106.linhaQ10b.on{opacity:1}
 /* (com o "Vamos", a linha do Mg sai em fade) */
 .linha106{transition:opacity .6s ease}
 .linha106.sai1063{opacity:0}
@@ -5297,7 +5312,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v56.4';
+const VERSAO = 'v56.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -5863,6 +5878,7 @@ function montaTabela(i){
       /* no slide 10, no quiz, responde-se tocando na tabela (e no 9 também) */
       if (i === 9 && QUIZ9.aberto){ QUIZ9.toca(c); return; }
       /* (no slide 11, no quiz do tópico 10, a coluna tocada é a resposta) */
+      if (i === 10 && window.QUIZ10B && QUIZ10B.aberto){ QUIZ10B.toca(c); return; }
       if (i === 10 && window.QUIZ10 && QUIZ10.aberto){ QUIZ10.toca(c); return; }
       if (i === 8 && QUIZ8.aberto){ QUIZ8.toca(c); return; }
       if (i === 7 && window.QUIZ7L && QUIZ7L.aberto){ QUIZ7L.toca(c); return; }
@@ -6627,7 +6643,8 @@ const TRILHAS = {
   '10.6': 'Audios/audio_tabela_10.6.mp3',   /* o Saquei no fim da "10.5.3": a regra pela tabela (CARDS101) */
   '10.6.1': 'Audios/audio_tabela_10.6.1.mp3', /* o toque na regra: o exemplo do Mg, até o 3s² */
   '10.6.1.1': 'Audios/audio_tabela_10.6.1.1.mp3', /* o Saquei no fim da "10.6.1": por que vale saber; no fim, o "Vamos" */
-  '10.6.2': 'Audios/audio_tabela_10.6.2.mp3'  /* o "Vamos" no fim da "10.6.1.1": o segundo exemplo, o iodo (5p⁵) */
+  '10.6.2': 'Audios/audio_tabela_10.6.2.mp3', /* o "Vamos" no fim da "10.6.1.1": o segundo exemplo, o iodo (5p⁵) */
+  '10.6.3': 'Audios/audio_tabela_10.6.3.mp3'  /* o play no fim da "10.6.2": o césio (6s¹) e a demonstração do quiz 2 */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -6812,7 +6829,8 @@ const ROTEIROS = {
   '10.6': [],
   '10.6.1': [],
   '10.6.1.1': [],
-  '10.6.2': []
+  '10.6.2': [],
+  '10.6.3': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -7571,6 +7589,10 @@ const SEQ = {
     else if (id === '10.6.1'){ if (atual === 10) CARDS101.saquei(true, '10.6.1.1'); }
     /* o fim da "10.6.1.1": o "Vamos", que leva à "10.6.2" */
     else if (id === '10.6.1.1'){ if (atual === 10) CARDS101.saquei(true, '10.6.2', 'Vamos'); }
+    /* o fim da "10.6.2": o play passa a tocar a "10.6.3" (o césio) */
+    else if (id === '10.6.2'){ if (atual === 10) carregaTrilha('10.6.3'); }
+    /* o fim da "10.6.3": a demonstração acabou, e o quiz 2 abre */
+    else if (id === '10.6.3'){ if (atual === 10 && window.QUIZ10B && !QUIZ10B.aberto) QUIZ10B.abre(); }
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
     /* (antes dela, a festa: os confetes, o funfare e os aplausos) */
     else if (id === '9.3.8'){ if (atual === 9) EV9.festa93(); }
@@ -22286,6 +22308,21 @@ const T1062 = { pulsa:[6.5, 7.6] };
 const T1063 = { iodo:2.2, linha:16.5, coluna:18.0, piscaL:[[16.5, 17.7], [20.0, 21.2]], piscaC:[[18.0, 19.2], [22.0, 23.2]],
                 texto:[23.5, 25.0], cinco:26.3, p:27.5, sup:27.8, festa:28.8, volta:31.3, dist:34.0, pulsa:[35.0, 36.8] };
 const TEXTO_1063 = 'O subnível mais energético:';
+/* A "10.6.3" (o play no fim da "10.6.2"; no código, "1064"): os textos do iodo
+   saem; o terceiro exemplo, o césio (6s¹), nos mesmos passos do iodo — aos 3 s
+   ele brilha; aos 5,5 s a faixa da linha 6 pisca, aos 7 s a da coluna 1; aos
+   9,6 s e 10,7 s de novo; aos 13 s digita "O subnível mais energético:"; aos
+   16 s o "6", aos 17 s o "s", aos 18 s o "¹"; aos 18,7 s o 6s¹ cresce e
+   brilha; aos 20 s a narração pára, com aplausos, funfare e confetes, e segue
+   quando a festa acaba. Aos 23 s a sala apaga e o cabeçalho vira "Quiz 2"; aos
+   24,5 s o Al acende; aos 26,5 s a mãozinha toca a bolinha da camada 3 (e
+   aparece "Subnível mais energético: 3"); aos 28,5 s toca o card p¹, no alto
+   da coluna (e aparece o p¹), com aplausos e confetes. No fim da fala, o quiz 2. */
+const T1064 = { cs:3.0, linha:5.5, coluna:7.0, piscaL:[[5.5, 6.7], [9.6, 10.8]], piscaC:[[7.0, 8.2], [10.7, 11.9]],
+                texto:[13.0, 14.5], seis:16.0, s:17.0, sup:18.0, festa:18.7, pausa:20.0, volta:22.5,
+                quiz:23.0, al:24.5, mao:26.5, demo:[26.5, 27.6], vaiCol:28.0, col:28.5, tiraMao:29.6 };
+const TEXTO_1064 = 'O subnível mais energético:';
+const TEXTO_Q10B = 'Subnível mais energético:';
 /* (a distribuição do iodo até o penúltimo subnível; o 5p⁵ vai à parte, colorido) */
 const DIST_1063 = [['1s', 2], ['2s', 2], ['2p', 6], ['3s', 2], ['3p', 6], ['4s', 2], ['3d', 10], ['4p', 6], ['5s', 2], ['4d', 10]];
 /* (o "período" na cor das linhas e a "coluna" na dos grupos, as do tópico 3) */
@@ -22574,7 +22611,7 @@ const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
-const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.1.1', '10.6.2'];
+const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.1.1', '10.6.2', '10.6.3'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -22825,6 +22862,7 @@ const CARDS101 = {
     this.tick1051(t);
     this.tick106(t);
     this.tick1063(t);
+    this.tick1064(t);
     const monta = naMontagem(), de = trilhaAtual === '10.1', T = monta ? 99 : de ? t : -1;
     const n = EV9.letras(T, T101.texto[0], T101.texto[1], TEXTO_101);
     if (n !== this.nt && !this.texto.classList.contains('texto-livre')){
@@ -22953,6 +22991,7 @@ const CARDS101 = {
   },
   fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051', 'sem-play105');
           if (window.QUIZ10 && (QUIZ10.aberto || QUIZ10.escuro)) QUIZ10.fecha();
+          if (window.QUIZ10B && (QUIZ10B.aberto || QUIZ10B.escuro)){ QUIZ10B.fecha(); QUIZ10B.jaAbriu = false; }
           if (this.pede106){ this.pede106 = false; this.estado106 = ''; stage.classList.remove('em-toque'); } },
   passo103:0, sel103:null, feito103:false,
   /* as etiquetas do p (p¹ a p⁶) em cima das colunas 13 a 18, na linha 1 */
@@ -23356,7 +23395,8 @@ const CARDS101 = {
   /* A "10.6.2" (o "Vamos" no fim da "10.6.1.1"): o segundo exemplo, o iodo */
   tick1063(t){
     const monta = naMontagem(), de = trilhaAtual === '10.6.2' && !monta;
-    const T = de ? t : !monta && depoisDe('10.6.2') ? 99 : -1;
+    /* (da "10.6.3" em diante os textos e os destaques do iodo saem: começa o césio) */
+    const T = de ? t : -1;
     if (!this.r1063){
       const m = this.m;
       /* as faixas da linha 5 e da coluna 17 (como as do Mg) */
@@ -23425,6 +23465,99 @@ const CARDS101 = {
     this.r1063.classList.toggle('festa', festa);
     this.dist1063.classList.toggle('on', dist);
     this.dist1063.classList.toggle('pulsa', pulsa);
+  },
+  /* A "10.6.3" ("1064" no código): o césio, e a demonstração do quiz 2 com o Al */
+  tick1064(t){
+    const monta = naMontagem(), de = trilhaAtual === '10.6.3' && !monta;
+    const T = de ? t : -1;
+    if (!this.r1064){
+      const m = this.m;
+      const faixa = (cls, l, tp, w, h) => {
+        const b = document.createElement('div');
+        b.className = 'banda ' + cls + ' b106';
+        Object.assign(b.style, { left:l + 'px', top:tp + 'px', width:w + 'px', height:h + 'px' });
+        m.insertBefore(b, m.querySelector('.banda') || m.firstChild);
+        return b;
+      };
+      /* (a coluna 1 começa no H: a faixa passa só um pouco da etiqueta s¹, sem subir no cabeçalho) */
+      const alt = LADO + 14, larg = LADO + 14, topoC = yDaLinha(1) - LADO / 2 - 46;
+      this.faixaL1064 = faixa('banda-linha', TAB_ESQ - 64, yDaLinha(6) - alt / 2, TAB_LARG + 96, alt);
+      this.faixaC1064 = faixa('banda-col', xDaColuna(1) - larg / 2, topoC, larg, yDaLinha(7) + LADO / 2 + 30 - topoC);
+      this.p61064 = m.querySelector('.eixo[data-periodo="6"]');
+      this.p31064 = m.querySelector('.eixo[data-periodo="3"]');
+      this.cs1064 = m.querySelector('.pc[data-z="55"]');
+      this.al1064 = m.querySelector('.pc[data-z="13"]');
+      /* a linha do césio (na linha 6) e a da demonstração (o Al, na linha 3) */
+      const linha = (row, a, b, c, p) => {
+        const w = document.createElement('div');
+        w.className = 'linha106 linha1064';
+        w.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
+        w.style.top  = (yDaLinha(row) + 10).toFixed(1) + 'px';
+        w.innerHTML = '<span class="titulo9 rot106"><span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span></span>' +
+          '<div class="r106' + (p ? ' rp106' : '') + '"><span class="r3">' + a + '</span><span class="rs">' + b + '</span><sup class="r2">' + c + '</sup></div>';
+        m.appendChild(w);
+        return { w, rot:w.querySelector('.rot106'), r:w.querySelector('.r106') };
+      };
+      this.r1064 = linha(6, '6', 's', '1', false);
+      this.d1064 = linha(3, '3', 'p', '1', true);
+    }
+    const Q2 = window.QUIZ10B;
+    /* voltando para antes dos 23 s, a sala clareia de novo; dos 23 s, apaga (uma vez) */
+    if (de && t < T1064.quiz && Q2){ Q2.jaAbriu = false; if (Q2.escuro && !Q2.aberto) Q2.fecha(); }
+    if (de && t >= T1064.quiz && Q2 && !Q2.escuro && !Q2.jaAbriu) Q2.escurece();
+    /* (só tocando de seguida: um salto não dispara a festa, a pausa nem a mão) */
+    const passa = s => de && !som.paused && this.t1064ant >= 0 && this.t1064ant < s && t >= s && t < s + 0.6 && t - this.t1064ant < 1;
+    if (passa(T1064.pausa)){
+      som.pause();
+      this.aplauso();
+      const g = this.g1064 = (this.g1064 || 0) + 1;
+      tocaEfeito('funfare').then(() => {
+        if (g === this.g1064 && atual === 10 && trilhaAtual === '10.6.3' && som.paused) som.play().catch(avisaSeNaoTocou);
+      });
+    }
+    if (passa(T1064.mao) && this.p31064){ levaMao(this.p31064); bateMao(); }
+    if (passa(T1064.vaiCol) && this.etq103) levaMao(this.etq103[0].d);
+    if (passa(T1064.col)){ bateMao(); this.aplauso(); }
+    if (passa(T1064.tiraMao)) tiraMao();
+    this.t1064ant = de ? t : -1;
+    const nR = EV9.letras(T, T1064.texto[0], T1064.texto[1], TEXTO_1064);
+    if (nR !== this.ntR1064){
+      if (nR > this.ntR1064 && this.ntR1064 >= 0 && de) TECLAS.bate();
+      this.ntR1064 = nR;
+      EV9.escreve(this.r1064.rot, TEXTO_1064, nR);
+    }
+    const nD = EV9.letras(T, T1064.demo[0], T1064.demo[1], TEXTO_Q10B);
+    if (nD !== this.ntD1064){
+      if (nD > this.ntD1064 && this.ntD1064 >= 0 && de) TECLAS.bate();
+      this.ntD1064 = nD;
+      EV9.escreve(this.d1064.rot, TEXTO_Q10B, nD);
+    }
+    const dentro = ([a, b]) => T >= a && T < b, antes = T < T1064.quiz;
+    /* (a demonstração some quando o quiz abre) */
+    const demo = T >= T1064.mao && !(Q2 && Q2.jaAbriu);
+    const chave = [T >= T1064.cs && antes, T >= T1064.linha && antes, T >= T1064.coluna && antes,
+                   T1064.piscaL.some(dentro), T1064.piscaC.some(dentro), T >= T1064.texto[0] && antes, dentro(T1064.texto),
+                   T >= T1064.seis, T >= T1064.s, T >= T1064.sup, dentro([T1064.festa, T1064.volta]),
+                   T >= T1064.al && !(Q2 && Q2.jaAbriu), demo, dentro(T1064.demo), T >= T1064.col].join();
+    if (chave === this.estado1064) return;
+    this.estado1064 = chave;
+    const [cs, lin, col, pL, pC, rot, dig, seis, s, sup, festa, al, dm, digD, colD] = chave.split(',').map(v => v === 'true');
+    if (this.cs1064) this.cs1064.classList.toggle('mg106', cs);
+    this.faixaL1064.classList.toggle('on', lin); this.faixaL1064.classList.toggle('pisca2106', pL);
+    this.faixaC1064.classList.toggle('on', col); this.faixaC1064.classList.toggle('pisca2106', pC);
+    /* (a bolinha do 6 pulsa com a faixa da linha; a etiqueta s¹ com a da coluna) */
+    if (this.p61064) this.p61064.classList.toggle('pulsaF106', pL);
+    if (this.etq102) this.etq102[0].d.classList.toggle('pulsaF106', pC);
+    const L = this.r1064;
+    L.rot.classList.toggle('on', rot); L.rot.classList.toggle('digitando9', dig);
+    L.r.classList.toggle('tres', seis); L.r.classList.toggle('esse', s); L.r.classList.toggle('dois', sup);
+    L.r.classList.toggle('festa', festa);
+    L.w.classList.toggle('sai1063', !antes);
+    if (this.al1064) this.al1064.classList.toggle('mg106', al);
+    const D = this.d1064;
+    D.w.classList.toggle('sai1063', !dm);
+    D.rot.classList.toggle('on', dm); D.rot.classList.toggle('digitando9', digD);
+    D.r.classList.toggle('tres', dm); D.r.classList.toggle('esse', colD); D.r.classList.toggle('dois', colD);
   },
   /* A "10.5.1": a festa dos 6 s e os toques nos blocos */
   passo1051:0, sel1051:null, feito1051:false, festa1051:false,
@@ -23660,6 +23793,7 @@ const CARDS101 = {
     this.festa1051 = false; this.t1052ant = -1; this.nt1052 = -1; this.nt1051 = ''; this.nn1051 = 0;
     this.estado106 = ''; this.t106ant = -1; this.nt106 = -1; this.ntT106 = -1; this.ntR106 = -1; this.semF106 = undefined;
     this.estado1063 = ''; this.t1063ant = -1; this.ntR1063 = -1; this.nMais1052 = 0;
+    this.estado1064 = ''; this.t1064ant = -1; this.ntR1064 = -1; this.ntD1064 = -1; this.g1064 = (this.g1064 || 0) + 1;
     if (this.vez1051 >= 0 && this.cards) this.cresce1051(this.vez1051, false);
     this.vez1051 = -1;
     ['102', '103', '104', '105'].forEach(id => { this['fq' + id] = null; this['fqt' + id] = -1; });
@@ -23834,6 +23968,229 @@ const QUIZ10 = Object.assign(Object.create(QUIZ5), {
   }
 });
 window.QUIZ10 = QUIZ10;
+
+/* ============================================================
+   O QUIZ 2 DO TÓPICO 10 (QUIZ10B) — no fim da "10.6.3", depois da
+   demonstração com o Al. Cinco questões, só de representativos (blocos s e
+   p; nunca o He, o Mg, o Al, o I e o Cs, que foram os exemplos):
+   1 a 4 — o elemento acende e o aluno toca a CAMADA (a bolinha do período, à
+   esquerda) e a COLUNA (o card do alto: s¹, p³…), em qualquer ordem; cada
+   parte certa vai aparecendo em "Subnível mais energético: 3p¹", na linha
+   do elemento;
+   antes da 5 toca a fala "10.6.4", e aos 7 s dela entra a 5 — o contrário:
+   dado o subnível, o aluno toca o elemento.
+   No fim, a nota (Refazer, Continuar). O cabeçalho diz "Quiz 2".
+   ============================================================ */
+/* os representativos que podem cair (o card, o período e o subnível) */
+function representativos10b(){
+  const m = slides[10].querySelector('.mesa');
+  return [...m.querySelectorAll('.pc:not(.ficha5)')]
+    .filter(c => ['s', 'p'].includes(c.dataset.b101) && ![2, 12, 13, 53, 55].includes(+c.dataset.z) && +c.dataset.z < 113)
+    .map(c => ({ c, z:+c.dataset.z, per:+c.dataset.periodo, sub:subnivel10(c), sym:SIMBOLOS[c.dataset.z - 1], nome:NOMES[c.dataset.z - 1] }));
+}
+function questoes10b(){
+  const R = embaralha(representativos10b());
+  /* (as quatro de camada e coluna: duas do s e duas do p, em ordem sorteada) */
+  const S = R.filter(e => e.sub[0] === 's').slice(0, 2), P = R.filter(e => e.sub[0] === 'p').slice(0, 2);
+  const A = embaralha([...S, ...P]);
+  const B = R.find(e => !A.includes(e));
+  return [...A.map(qCamadaColuna10b), qElemento10b(B)];
+}
+/* 1 a 4: tocar a camada e a coluna */
+function qCamadaColuna10b(E){
+  return {
+    E, okP:false, okC:false,
+    monta(Q){
+      E.c.classList.add('mg106');
+      Q.linhaDe(E);
+      return 'Clique na camada e na coluna do subnível mais energético do átomo: ' + E.nome + ' (' + E.sym + ').';
+    },
+    eixo(Q, e){
+      if (this.okP) return;
+      const p = +e.dataset.periodo;
+      if (p === E.per){ this.okP = true; e.classList.add('certa10b'); Q.mostra('per'); tocaEfeito('flip'); this.fim(Q); return; }
+      Q.erra('Essa é a camada ' + p + '. Siga a linha do ' + E.sym + ' até o número, à esquerda.', [e], () => [Q.eixoDe(E.per)]);
+    },
+    etiqueta(Q, e){
+      if (this.okC) return;
+      const s = Q.subDaEtq(e);
+      if (s === E.sub){ this.okC = true; e.classList.add('certa10b'); Q.mostra('col'); tocaEfeito('flip'); this.fim(Q); return; }
+      Q.erra('Esse é o card do ' + rotulo10(s) + '. Suba pela coluna do ' + E.sym + ' até o card do alto.', [e], () => [Q.etqDe(E.sub)]);
+    },
+    /* (um toque num elemento, aqui, só lembra onde se responde) */
+    toca(Q){ Q.lembra('Toque no número da camada, à esquerda, e no card da coluna, no alto.'); },
+    fim(Q){
+      if (!this.okP || !this.okC) return;
+      Q.acerta('O ' + E.sym + ' está na camada ' + E.per + ', na coluna do ' + rotulo10(E.sub) + ': ' + E.per + rotulo10(E.sub) + '.');
+    },
+    limpa(Q){ E.c.classList.remove('mg106'); Q.limpaLinha(); }
+  };
+}
+/* 5: dado o subnível, tocar o elemento */
+function qElemento10b(E){
+  const alvo = E.per + rotulo10(E.sub);
+  return {
+    E,
+    monta(){ return 'Toque no elemento cujo subnível mais energético é o ' + alvo + '.'; },
+    toca(Q, c){
+      if (+c.dataset.z === E.z){
+        c.classList.add('certa3'); Q.marcados.push(c);
+        Q.acerta('É o ' + E.nome + ' (' + E.sym + '): camada ' + E.per + ', coluna do ' + rotulo10(E.sub) + '.');
+        return;
+      }
+      const z = +c.dataset.z, s = subnivel10(c);
+      Q.erra('Esse é o ' + SIMBOLOS[z - 1] + ', de subnível ' + c.dataset.periodo + rotulo10(s) + '. Procure na camada ' + E.per +
+             ', na coluna do ' + rotulo10(E.sub) + '.', [c], () => [E.c]);
+    },
+    limpa(Q){ (Q.marcados || []).forEach(c => c.classList.remove('certa3')); Q.marcados = []; }
+  };
+}
+const QUIZ10B = Object.assign(Object.create(QUIZ10), {
+  aberto:false, escuro:false, jaAbriu:false, passo:0, itens:[], erros:0, tropecos:0, travado:false, g:0, q:null, marcados:[],
+  /* a sala apaga e o cabeçalho vira "Quiz 2" (aos 23 s da "10.6.3", na demonstração) */
+  escurece(){
+    const sl = this.sl();
+    this.escuro = true;
+    let v = sl.querySelector(':scope > .breu-quiz');
+    if (!v){ v = document.createElement('div'); v.className = 'breu-quiz'; sl.insertBefore(v, sl.firstChild); v.getBoundingClientRect(); }
+    v.classList.add('on');
+    sl.classList.add('quiz-escuro', 'quiz10b');
+    cabecaDoQuiz(sl, true, 'Quiz 2', 'quiz-cabeca');
+  },
+  /* (uma vez: as bolinhas das camadas e os cards das colunas respondem ao toque; e a linha da resposta) */
+  prepara10b(){
+    if (this.linha) return;
+    const m = this.mesa();
+    m.addEventListener('click', ev => {
+      if (!this.aberto || this.travado || !this.q) return;
+      const e = ev.target.closest && ev.target.closest('.eixo[data-periodo], .etq102');
+      if (!e) return;
+      ev.stopPropagation();
+      if (e.classList.contains('eixo')){ if (this.q.eixo) this.q.eixo(this, e); }
+      else if (this.q.etiqueta) this.q.etiqueta(this, e);
+    }, true);
+    const w = this.linha = document.createElement('div');
+    w.className = 'linha106 linhaQ10b';
+    w.innerHTML = '<span class="titulo9 rot106 on"><span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span></span>' +
+      '<div class="r106"><span class="r3"></span><span class="rs"></span><sup class="r2"></sup></div>';
+    m.appendChild(w);
+    EV9.escreve(w.querySelector('.rot106'), TEXTO_Q10B, TEXTO_Q10B.length);
+  },
+  /* a linha da resposta, na linha do elemento (o subnível na direção da linha dele) */
+  linhaDe(E){
+    const w = this.linha, r = w.querySelector('.r106');
+    w.classList.remove('on');
+    w.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
+    w.style.top  = (yDaLinha(E.per) + 10).toFixed(1) + 'px';
+    r.className = 'r106' + (E.sub[0] === 'p' ? ' rp106' : '');
+    r.querySelector('.r3').textContent = E.per;
+    r.querySelector('.rs').textContent = E.sub[0];
+    r.querySelector('.r2').textContent = E.sub.slice(1);
+  },
+  mostra(parte){
+    const w = this.linha, r = w.querySelector('.r106');
+    w.classList.add('on');
+    if (parte === 'per') r.classList.add('tres');
+    else r.classList.add('esse', 'dois');
+  },
+  limpaLinha(){
+    if (!this.linha) return;
+    this.linha.classList.remove('on');
+    this.mesa().querySelectorAll('.certa10b').forEach(e => e.classList.remove('certa10b'));
+  },
+  lembra(txt){
+    const msg = this.caixa() && this.caixa().querySelector('.q3-msg');
+    if (msg){ msg.textContent = txt; msg.className = 'q3-msg dica'; }
+  },
+  eixoDe(p){ return this.mesa().querySelector('.eixo[data-periodo="' + p + '"]'); },
+  /* os cards do alto das colunas: s¹ e s² (e o s² do He), p¹ a p⁶ */
+  etiquetas(){
+    const C = CARDS101, L = [];
+    (C.etq102 || []).forEach((E, k) => L.push([E.d, 's' + (k + 1)]));
+    if (C.etqHe1031) L.push([C.etqHe1031, 's2']);
+    (C.etq103 || []).forEach((E, k) => L.push([E.d, 'p' + (k + 1)]));
+    (C.etq104 || []).forEach((E, k) => L.push([E.d, 'd' + (k + 1)]));
+    (C.etq105 || []).forEach((E, k) => L.push([E.d, 'f' + (k + 1)]));
+    return L;
+  },
+  subDaEtq(e){ const x = this.etiquetas().find(([d]) => d === e); return x ? x[1] : ''; },
+  etqDe(s){ const x = this.etiquetas().find(([d, k]) => k === s); return x ? x[0] : null; },
+  abre(){
+    if (atual !== 10) return;
+    this.fecha(true);
+    som.pause();
+    VIDA.desliga();
+    tiraMao();
+    this.prepara10b();
+    this.itens = questoes10b();
+    this.passo = 0; this.erros = 0; this.aberto = true; this.jaAbriu = true; this.marcados = [];
+    const g = ++this.g, sl = this.sl();
+    stage.classList.add('em-quiz');
+    this.escurece();
+    if (!sl.querySelector('.confete'))
+      sl.insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
+    this.travado = true;
+    /* "Certo, vamos para a primeira questão." e a 1 */
+    tocaEfeito('Audios/quiz1.mp3').then(() => { if (g === this.g) this.apresenta(g); });
+  },
+  /* o acerto, como o do QUIZ5; mas da 4 para a 5 toca a fala "10.6.4" ("agora
+     vai ser o oposto… Lá vai o primeiro"), e a 5 entra aos 7 s dela */
+  async acerta(explica, fala){
+    if (!this.aberto) return;
+    this.travado = true;
+    const g = this.g, ultima = this.passo === this.itens.length - 1;
+    this.sl().querySelectorAll('.pista5').forEach(e => e.classList.remove('pista5'));
+    const voz = fala ? { frase:'Parabéns!', som:fala } : vozDoAcerto(ultima);
+    const msg = this.caixa() && this.caixa().querySelector('.q3-msg');
+    if (msg){ msg.textContent = voz.frase + (explica ? ' ' + explica : ''); msg.className = 'q3-msg ok'; }
+    confete();
+    const f = tocaEfeito('funfare');
+    tocaEfeito('applause');
+    await f;
+    if (g !== this.g) return;
+    await tocaEfeito(voz.som);
+    if (g !== this.g) return;
+    await new Promise(ok => setTimeout(ok, 400));
+    if (g !== this.g) return;
+    if (this.q && this.q.limpa) this.q.limpa(this);
+    this.passo++;
+    if (this.passo >= this.itens.length){ this.resultado(); return; }
+    if (this.passo === 4){
+      tocaEfeito('Audios/audio_tabela_10.6.4.mp3');
+      setTimeout(() => { if (g === this.g) this.apresenta(g); }, 7000);
+      return;
+    }
+    tocaEfeito(somDaEntrada(this.passo, this.itens.length));
+    this.apresenta(g);
+  },
+  resultado(){
+    this.sl().querySelectorAll('.quiz3.q5').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
+    const n = this.itens.length, e = this.erros, nota = Math.round(Math.max(0, n - e) / n * 100) / 10;
+    QUIZ_FEITOS.marca('q10b', nota);      /* feito: verde no sumário */
+    cartaoDoResultado(nota, n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
+      this.sl(), () => this.abre(),
+      /* Continuar: a sala clareia e a tabela fica */
+      () => this.fecha());
+  },
+  fecha(reabre){
+    this.g++;
+    clearInterval(this.digT);
+    if (this.q && this.q.limpa) this.q.limpa(this);
+    this.q = null;
+    this.aberto = false; this.travado = false;
+    const sl = this.sl();
+    if (!sl) return;
+    sl.querySelectorAll('.quiz3.q5, .quiz-cartao').forEach(e => e.remove());
+    if (reabre) return;
+    this.escuro = false;
+    stage.classList.remove('em-quiz');
+    const v = sl.querySelector(':scope > .breu-quiz');
+    if (v) v.classList.remove('on');
+    sl.classList.remove('quiz-escuro', 'quiz10b');
+    cabecaDoQuiz(sl, false, 'Quiz 2', 'quiz-cabeca');
+  }
+});
+window.QUIZ10B = QUIZ10B;
 
 /* A COR NEUTRA de quem está fora do lugar: um cinza morno que escurece
    devagar com o número atômico (o do professor). A cor da família volta
@@ -27410,6 +27767,16 @@ const NAV_TOPICOS = [
   /* o começo da "10.6.2": o segundo exemplo, o iodo */
   { titulo:'O exemplo do iodo', sub:'o começo da 10.6.2', slide:10,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.6.2', 0, g)); } },
+  /* o quiz 2 direto: a mesa como no fim da "10.6.3", e o quiz abre (com o "vamos para a primeira questão") */
+  { titulo:'Quiz 2', sub:'o quiz 2 direto: camada e coluna, depois o elemento', slide:10, quiz:'q10b',
+    entra(v, g){
+      depoisDaMesa(g, () => {
+        if (g !== NAV.geracao) return;
+        trilhaAtual = -1;
+        carregaTrilha('10.6.3');
+        QUIZ10B.abre();
+      });
+    } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){

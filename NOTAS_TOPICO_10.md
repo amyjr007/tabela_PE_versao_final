@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v56.4** (2026-11-12). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v56.5** (2026-11-12). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -106,6 +106,7 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | j – Subnível mais energético com tabela | 10.6 |
 | k – O exemplo do Mg | 10.6.1 |
 | l – O exemplo do iodo | 10.6.2 |
+| m – Quiz 2 | o quiz 2 direto |
 
 Pelo sumário, cada narração abre com tudo o que veio antes já completo (as etiquetas no lugar). Voltar para uma narração com toques desfaz os toques dela.
 
@@ -130,3 +131,12 @@ Pelo sumário, cada narração abre com tudo o que veio antes já completo (as e
 ## Pendências antigas (de antes do tópico 10)
 
 Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz 7.
+
+## A 10.6.3 e o quiz 2 (v56.5)
+
+- **Fim da 10.6.2:** o play passa a tocar a **10.6.3** (o césio; no código, `tick1064` e `T1064`). Ao começar, os textos do iodo saem.
+- **10.6.3:** 3 s o Cs brilha; 5,5/9,6 s a linha 6 pisca (com a bolinha do 6); 7/10,7 s a coluna 1 (com a etiqueta s¹); 13 s "O subnível mais energético:"; 16 s o 6, 17 s o s, 18 s o ¹; 18,7 s o 6s¹ cresce e brilha; 20 s a narração pára com aplausos, funfare e confetes e segue no fim do funfare; 23 s a sala apaga e o cabeçalho vira "Quiz 2"; 24,5 s o Al acende; 26,5 s a mãozinha toca a bolinha do 3 ("Subnível mais energético: 3"); 28,5 s toca o card p¹ (aparece o p¹), com aplausos e confetes. **A demonstração usa o Al com p¹ (o professor tinha escrito s1; o Al é 3p¹).**
+- **Quiz 2 (`QUIZ10B`)**, no fim da 10.6.3, depois do `quiz1.mp3` ("Certo, vamos para a primeira questão"). Cinco questões, só representativos (nunca He, Mg, Al, I, Cs):
+  - 1 a 4: "Clique na camada e na coluna do subnível mais energético do átomo: Nome (X)." — o aluno toca a bolinha do período e o card do alto da coluna, em qualquer ordem; cada parte certa aparece na linha do elemento. Duas do s e duas do p.
+  - Antes da 5 toca a `10.6.4` ("agora vai ser o oposto…"); aos 7 s dela entra a 5: "Toque no elemento cujo subnível mais energético é o 4p²."
+  - No fim, a nota (Refazer, Continuar). O Continuar só clareia a sala: **o que vem depois do quiz 2 ainda não foi definido.**
