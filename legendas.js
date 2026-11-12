@@ -164,17 +164,17 @@ var LEGENDAS = {
     [5.77,6.69,"O bloco f."]
   ],
   "audio_tabela_10.5": [
-    [0,5.58,"Para fechar, vamos lá para baixo da tabela, lá para os lantanídeos e actinídeos."],
-    [6.06,10.81,"É aqui que está o bloco f, o lar dos chamados metais de transição interna."],
-    [11.92,15.53,"O subnível f comporta 14 elétrons no total."],
-    [16.5,18.02,"Agora veja que coisa legal."],
-    [18.51,23.48,"Se excluirmos o lantânio e o actínio, que têm seu elétron mais energético no bloco d,"],
-    [23.94,28.4,"cada uma dessas duas fileiras possui exatamente 14 elementos:"],
-    [29.0,33.43,"do cério ao lutécio na primeira, e do tório ao laurêncio na segunda."],
-    [33.88,37.81,"É uma simetria impressionante, não é? 14 elétrons, 14 elementos."],
-    [38.11,45.93,"À medida que caminhamos da esquerda para a direita, os elétrons vão entrando e completando o subnível."],
-    [46.34,50.43,"Vai desde o f¹ até fechar completamente no último elemento."],
-    [51.0,52.04,"Complete o resto."]
+    [0,5.06,"Certo, vamos falar do bloco f, lar dos lantanídeos e actinídeos,"],
+    [5.57,8.14,"também chamados de metais de transição interna."],
+    [9.21,12.8,"O subnível f comporta 14 elétrons no total, certo?"],
+    [13.63,15.13,"Agora veja que coisa legal."],
+    [15.68,20.68,"Se excluirmos o lantânio e o actínio, que têm seu elétron mais energético no bloco d,"],
+    [21.18,25.6,"cada uma dessas duas fileiras possui exatamente 14 elementos:"],
+    [25.99,30.35,"do cério ao lutécio na primeira, e do tório ao laurêncio na segunda."],
+    [30.84,34.82,"É uma simetria impressionante, não é? 14 elétrons, 14 elementos."],
+    [35.1,42.7,"À medida que caminhamos da esquerda para a direita, os elétrons vão entrando e completando o subnível."],
+    [43.11,47.28,"Vai desde o f¹ até fechar completamente no último elemento."],
+    [47.8,48.85,"Complete o resto."]
   ],
   "audio_tabela_10.5.1": [
     [0,5.84,"Muito bem! Conseguimos mapear toda a tabela periódica com as informações dos subníveis de energia."],

@@ -5313,7 +5313,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v57.1';
+const VERSAO = 'v57.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22571,23 +22571,25 @@ const ESC_HE_1031 = 1.45;
 /* A "10.4.1": aos 6 s o bloco f cresce, e volta 1,2 s depois */
 const T1041 = { f:6.0, volta:1.2 };
 const ESC_F_1041 = 1.08;
-/* A "10.5" (o Saquei no fim da "10.4.1"): aos 3,4 s a fileira do cério ao
-   lutécio cresce; aos 4,5 s volta e a do tório ao laurêncio cresce (volta aos
-   5,5 s); aos 7 s o card f¹⁴ cresce; dos 9 s digita "elementos de transição
-   interna" (o card volta aos 10,4 s; o texto some em fade aos 11 s); aos 12 s
-   o card cresce de novo e aos 13,4 s o "14" pulsa 2 vezes (volta aos 15,5 s);
-   aos 19 s o lantânio escurece, aos 20 s o actínio (e ficam); dos 25 aos 28
-   s as duas fileiras de 14 crescem; dos 29 aos 30 s o brilho corre do cério
-   ao lutécio (os acesos ficam), e apaga quando o tório acende, aos 31,2 s;
-   dali o brilho corre até o laurêncio, aos 32 s, e apaga 1 s depois; aos
-   36,5 s o card f cresce; dos 38 aos 39 s as duas fileiras crescem de novo;
-   dos 40 s cada coluna do f (o par de cima e de baixo) sobe de leve e recebe
-   a etiqueta dela embaixo (f¹ aos 40,6 s, f² aos 43,8, f³ aos 47, f⁴ aos 50)
-   e desce quando a seguinte sobe (a 4ª aos 51 s). Dos 51 s o aluno toca as
-   colunas seguintes, na ordem (f⁵ a f¹⁴); completa, a festa. */
-const T105 = { lan:[3.4, 4.5], act:[4.5, 5.5], card:[[7.0, 10.4], [12.0, 15.5], [36.5, 38.0]], texto:[9.0, 10.2], some:11.0,
-               pulsa:[13.4, 15.2], la:19.0, ac:20.0, ambas:[[25.0, 28.0], [38.0, 39.0]], luzL:[29.0, 30.0, 31.2], luzA:[31.2, 32.0, 33.0],
-               sobe:[40.0, 43.2, 46.4, 49.4], pousa:0.6, desce:51.0, toque:51.0 };
+/* A "10.5" (o Saquei no fim da "10.4.1"; a gravação nova, de 48,8 s — todos os
+   tempos 2,6 s antes dos da antiga, acertados pelo "14" que pulsa aos 10,8 s):
+   aos 0,8 s a fileira do cério ao lutécio cresce; aos 1,9 s volta e a do tório
+   ao laurêncio cresce (volta aos 2,9 s); aos 4,4 s o card f¹⁴ cresce; dos 6,4 s
+   digita "elementos de transição interna" (o card volta aos 7,8 s; o texto some
+   em fade aos 8,4 s); aos 9,4 s o card cresce de novo e aos 10,8 s o "14" pulsa
+   2 vezes (volta aos 12,9 s); aos 16,4 s o lantânio escurece, aos 17,4 s o
+   actínio (e ficam); dos 22,4 aos 25,4 s as duas fileiras de 14 crescem; dos
+   26,4 aos 27,4 s o brilho corre do cério ao lutécio (os acesos ficam), e apaga
+   quando o tório acende, aos 28,6 s; dali o brilho corre até o laurêncio, aos
+   29,4 s, e apaga 1 s depois; aos 33,9 s o card f cresce; dos 35,4 aos 36,4 s
+   as duas fileiras crescem de novo; dos 37,4 s cada coluna do f (o par de cima
+   e de baixo) sobe de leve e recebe a etiqueta dela embaixo (f¹ aos 38 s, f² aos
+   41,2, f³ aos 44,4, f⁴ aos 47,4) e desce quando a seguinte sobe (a 4ª aos 48,4
+   s). Dos 48,4 s o aluno toca as colunas seguintes, na ordem (f⁵ a f¹⁴);
+   completa, a festa. */
+const T105 = { lan:[0.8, 1.9], act:[1.9, 2.9], card:[[4.4, 7.8], [9.4, 12.9], [33.9, 35.4]], texto:[6.4, 7.6], some:8.4,
+               pulsa:[10.8, 12.6], la:16.4, ac:17.4, ambas:[[22.4, 25.4], [35.4, 36.4]], luzL:[26.4, 27.4, 28.6], luzA:[28.6, 29.4, 30.4],
+               sobe:[37.4, 40.6, 43.8, 46.8], pousa:0.6, desce:48.4, toque:48.4 };
 /* A "10.5.1" (sozinha, depois da festa das colunas do f): aos 6 s aplausos e
    confetes; aos 21 s os blocos perdem a cor (o tabuleiro liso) e o aluno toca
    os blocos na ordem s, p, d, f: o certo brilha e ganha a cor de volta; o

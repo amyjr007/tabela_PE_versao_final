@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v57.1** (2026-11-12). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v57.2** (2026-11-12). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -146,3 +146,7 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 
 - A mesa do slide 11 no celular vem de `MESA_NO_CELULAR_POR_SLIDE[10]` = `{ x:9, y:28, e:1.02 }` (a tabela toda aberta, com as séries). Com as séries recolhidas (semF106, da 10.6 em diante), a `fechada`: `{ x:23, y:58, e:1.15 }`. A troca acontece no `tick106` (quando o semF106 muda) e no `aplicaAjuste`.
 - O `texto-102` no celular: palco x 513, y 152 → na mesa 506,7; 234,5 (posto ao criar o texto).
+
+## A 10.5 regravada (v57.2)
+
+- O áudio novo da 10.5 tem 48,8 s (o antigo, 52 s). Todos os tempos de `T105` foram puxados 2,6 s para trás, acertados pelo "14" do card f¹⁴, que pulsa aos 10,8 s. As legendas foram refeitas pelo áudio novo.
