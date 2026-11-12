@@ -5297,7 +5297,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v56.3';
+const VERSAO = 'v56.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -27407,6 +27407,9 @@ const NAV_TOPICOS = [
   /* o começo da "10.6.1": a regra já escrita (e o toque já dado), e o exemplo do Mg */
   { titulo:'O exemplo do Mg', sub:'o começo da 10.6.1', slide:10,
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.6.1', 0, g)); } },
+  /* o começo da "10.6.2": o segundo exemplo, o iodo */
+  { titulo:'O exemplo do iodo', sub:'o começo da 10.6.2', slide:10,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.6.2', 0, g)); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
