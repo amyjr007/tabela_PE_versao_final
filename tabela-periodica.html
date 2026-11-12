@@ -3948,6 +3948,9 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
    pergunta numa linha só) */
 .slide.quiz10b .quiz3.q4.q2.q5{left:280.5px;top:48.7px;width:751px;transform:scale(.96)}
 .slide.quiz10b .quiz3.q4.q2.q5 .q3-q{white-space:nowrap}
+/* (das questões 5 a 8: a medida que o professor deixou na montagem — o centro
+   em x 622, y 99; 847 × 101 na escala 1,13) */
+.slide.quiz10b.parte2q10b .quiz3.q4.q2.q5{left:198.5px;top:41.9px;width:847px;transform:scale(1.13)}
 /* (o "Questão N de 8", a pergunta e a dica, centralizados) */
 .slide.quiz10b .quiz3.q4.q2.q5{text-align:center}
 /* (o subnível da pergunta das questões 5 a 8: o número no azul das camadas, o s e o p nas cores dos blocos, claras no escuro) */
@@ -5346,7 +5349,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v58.2';
+const VERSAO = 'v58.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24235,6 +24238,8 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
      colunas (s¹, p³…): o aluno acha o elemento sem eles */
   apresenta(g){
     this.sl().classList.toggle('sem-etq10b', this.passo >= 5);
+    /* (da 5 em diante, a caixa da pergunta na medida dela) */
+    this.sl().classList.toggle('parte2q10b', this.passo >= 4);
     /* (como a do QUIZ5, mas a pergunta pode vir em pedaços coloridos: [{ t, c }]) */
     if (g !== this.g) return;
     const Q = this.itens[this.passo];
@@ -24322,7 +24327,7 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     stage.classList.remove('em-quiz');
     const v = sl.querySelector(':scope > .breu-quiz');
     if (v) v.classList.remove('on');
-    sl.classList.remove('quiz-escuro', 'quiz10b', 'sem-etq10b', 'chamaP10b', 'chamaC10b');
+    sl.classList.remove('quiz-escuro', 'quiz10b', 'sem-etq10b', 'chamaP10b', 'chamaC10b', 'parte2q10b');
     cabecaDoQuiz(sl, false, 'Quiz 2', 'quiz-cabeca');
   }
 });
