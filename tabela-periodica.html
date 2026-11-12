@@ -3950,6 +3950,10 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
 .slide.quiz10b .quiz3.q4.q2.q5 .q3-q{white-space:nowrap}
 /* (o "Questão N de 8", a pergunta e a dica, centralizados) */
 .slide.quiz10b .quiz3.q4.q2.q5{text-align:center}
+/* (o subnível da pergunta das questões 5 a 8: o número no azul das camadas, o s e o p nas cores dos blocos, claras no escuro) */
+.slide.quiz10b .quiz3 .q3-q .per10b{color:#6FAEF0}
+.slide.quiz10b .quiz3 .q3-q .s10b{color:color-mix(in srgb,var(--cat-alcalinos) 80%,#fff)}
+.slide.quiz10b .quiz3 .q3-q .p10b{color:color-mix(in srgb,var(--cat-ametais) 70%,#fff)}
 /* (a escolha do aluno: um aro dourado na bolinha e no card escolhidos; o Confirmar por cima de tudo) */
 .slide.quiz10b .mesa :is(.eixo, .etq102).sel10b:not(.certa10b, .errada3){box-shadow:0 0 0 3px #FFD43B, 0 0 16px 5px rgba(255,212,59,.7)}
 .slide.quiz10b .mesa .bt5.confirma10b{z-index:40}
@@ -5342,7 +5346,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v58.1';
+const VERSAO = 'v58.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24100,7 +24104,9 @@ function qElemento10b(E){
   const alvo = E.per + rotulo10(E.sub);
   return {
     E,
-    monta(){ return 'Toque no elemento cujo subnível mais energético é o ' + alvo + '.'; },
+    /* (o subnível colorido: o número no azul das camadas, a letra e o expoente na cor do bloco) */
+    monta(){ return [{ t:'Toque no elemento cujo subnível mais energético é o ' }, { t:String(E.per), c:'per10b' },
+                     { t:rotulo10(E.sub), c:E.sub[0] === 'p' ? 'p10b' : 's10b' }, { t:'.' }]; },
     toca(Q, c){
       if (+c.dataset.z === E.z){
         /* (o elemento certo brilha e cresce 10 %) */
@@ -24229,7 +24235,36 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
      colunas (s¹, p³…): o aluno acha o elemento sem eles */
   apresenta(g){
     this.sl().classList.toggle('sem-etq10b', this.passo >= 5);
-    QUIZ5.apresenta.call(this, g);
+    /* (como a do QUIZ5, mas a pergunta pode vir em pedaços coloridos: [{ t, c }]) */
+    if (g !== this.g) return;
+    const Q = this.itens[this.passo];
+    this.q = Q;
+    this.tropecos = 0;
+    this.sl().querySelectorAll('.quiz3.q5:not(.sai)').forEach(e => { e.classList.add('sai'); setTimeout(() => e.remove(), 700); });
+    const m = Q.monta(this), partes = typeof m === 'string' ? [{ t:m }] : m;
+    const total = partes.reduce((a, p) => a + p.t.length, 0);
+    const html = n => partes.map(p => { const t = p.t.slice(0, Math.max(0, n)); n -= p.t.length;
+      return !t ? '' : p.c ? '<span class="' + p.c + '">' + t + '</span>' : t; }).join('');
+    const cx = document.createElement('div');
+    cx.className = 'quiz3 q4 q2 q5';
+    cx.dataset.mont = 'pergunta-quiz-5';
+    cx.setAttribute('aria-live', 'polite');
+    cx.innerHTML = '<div class="q3-marca"></div><div class="q3-q"></div><div class="q3-msg"></div>';
+    cx.querySelector('.q3-marca').textContent = 'Questão ' + (this.passo + 1) + ' de ' + this.itens.length;
+    this.sl().appendChild(cx);
+    cx.getBoundingClientRect();
+    cx.classList.add('on');
+    const q = cx.querySelector('.q3-q'), passo = this.passo;
+    this.travado = true;
+    cx.classList.add('digitando');
+    let n = 0;
+    clearInterval(this.digT);
+    this.digT = setInterval(() => {
+      if (g !== this.g || passo !== this.passo){ clearInterval(this.digT); return; }
+      q.innerHTML = html(++n);
+      TECLAS.bate();
+      if (n >= total){ clearInterval(this.digT); cx.classList.remove('digitando'); this.travado = false; }
+    }, 38);
   },
   /* o acerto, como o do QUIZ5; mas da 4 para a 5 toca a fala "10.6.4" ("agora
      vai ser o oposto… Lá vai o primeiro"), e a 5 entra aos 7 s dela */
