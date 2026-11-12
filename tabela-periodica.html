@@ -3930,6 +3930,11 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
 .slide.quiz9 .quiz3.q4.q2.q5{left:269.3px;top:30px}
 /* (e no quiz do tópico 10, no slide 11, o mesmo lugar) */
 .slide.quiz10 .quiz3.q4.q2.q5{left:269.3px;top:30px}
+/* (o quiz 2 do tópico 10: o lugar e o tamanho que o professor deixou na
+   montagem — o centro em x 656, y 90; 751 × 86 na escala 0,96 —, e a
+   pergunta numa linha só) */
+.slide.quiz10b .quiz3.q4.q2.q5{left:280.5px;top:48.7px;width:751px;transform:scale(.96)}
+.slide.quiz10b .quiz3.q4.q2.q5 .q3-q{white-space:nowrap}
 /* (no quiz do tópico 10, as etiquetas s¹, p⁶… somem: dariam a resposta) */
 .slide.quiz10 .mesa .etq102{opacity:0!important;transition:opacity .4s ease}
 /* (no acerto, a coluna sobe e a etiqueta dela cai em cima — e desce com ela na questão seguinte) */
@@ -5317,7 +5322,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v57.5';
+const VERSAO = 'v57.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
