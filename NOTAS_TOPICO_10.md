@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v57.7** (2026-11-12). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v57.9** (2026-11-12). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -150,3 +150,9 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 ## A 10.5 regravada (v57.2)
 
 - O áudio novo da 10.5 tem 48,8 s (o antigo, 52 s). Todos os tempos de `T105` foram puxados 2,6 s para trás, acertados pelo "14" do card f¹⁴, que pulsa aos 10,8 s. As legendas foram refeitas pelo áudio novo.
+
+## Tamanhos no tópico 10 (v57.9)
+
+- Em todo o slide 11 (narrações e quizzes) as bolinhas dos números das linhas têm `scale:1.3` e os cards das colunas (etiquetas s¹, p³…) `scale:1.1`, guardados em `--esc0`; os pulsos (`pulsaF106`, `pulsa106`, `revA106`, `revB106`) partem do `--esc0`.
+- A entrada das bolinhas (`numLinha25`) fica desligada no slide 11: ela voltava a tocar quando um pulso acabava, e as bolinhas encolhiam e deslizavam.
+- No quiz 2, a linha da resposta muda de questão apagada e sem transição (antes, a resposta da questão nova piscava na tela).

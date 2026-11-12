@@ -3381,22 +3381,25 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .r106.focoS106 :is(.rs,.r2){scale:1.3}
 /* (acabada a "10.6.1", até a "10.6.1.1": o 3 — a bolinha e o grande — pulsa 2
    vezes, depois o s² — a etiqueta e o grande —, 2 vezes; e de novo) */
-@keyframes revA106{0%,25%,50%,100%{scale:1} 12.5%,37.5%{scale:1.15}}
-@keyframes revB106{0%,50%,75%,100%{scale:1} 62.5%,87.5%{scale:1.15}}
+@keyframes revA106{0%,25%,50%,100%{scale:var(--esc0,1)} 12.5%,37.5%{scale:calc(var(--esc0,1) * 1.15)}}
+@keyframes revB106{0%,50%,75%,100%{scale:var(--esc0,1)} 62.5%,87.5%{scale:calc(var(--esc0,1) * 1.15)}}
 .mesa .eixo.revA106, .r106.reveza106 .r3{animation:revA106 4s ease-in-out infinite}
 .etq102.revB106, .r106.reveza106 :is(.rs,.r2){animation:revB106 4s ease-in-out infinite}
 /* O QUIZ 2 DO TÓPICO 10: as bolinhas das camadas e os cards do alto das
    colunas pegam o toque; o certo acende em verde, o errado em vermelho, a
    pista em âmbar; os outros textos da mesa saem; a linha da resposta clara */
 .slide.quiz10b .mesa :is(.eixo[data-periodo], .etq102.on){pointer-events:auto;cursor:pointer}
-/* (no quiz 2, as bolinhas das camadas 30 % maiores e os cards dos subníveis 10 %:
-   mais fáceis de tocar; pela escala solta, que se soma ao transform delas) */
-.slide.quiz10b .mesa .eixo[data-periodo]{scale:1.3}
+/* (no tópico 10 todo — narrações e quizzes —, as bolinhas das camadas 30 %
+   maiores e os cards dos subníveis 10 %, o tamanho que o professor escolheu
+   no quiz 2; pela escala solta, que se soma ao transform delas. O --esc0 é a
+   base de onde os pulsos partem) */
+.mesa[data-slide="10"] .eixo[data-periodo]{--esc0:1.3;scale:1.3}
+.mesa[data-slide="10"] .etq102{--esc0:1.1;scale:1.1}
 /* (a entrada das bolinhas — o numLinha25, que as encolhe e as traz da
    esquerda — não volta a tocar no quiz quando o pulso ou o balanço do erro
-   saem: sem isto, a cada toque todas as bolinhas encolhiam e deslizavam) */
-.slide.quiz10b .mesa .eixo[data-periodo]:not(.errada3){animation:none}
-.slide.quiz10b .mesa .etq102{scale:1.1}
+   saem: sem isto, a cada toque todas as bolinhas encolhiam e deslizavam — e
+   nas narrações, quando um pulso acabava) */
+.mesa[data-slide="10"] .eixo[data-periodo]:not(.errada3, .pulsaF106, .pulsa106, .revA106){animation:none}
 /* (nas questões 1 a 4, o convite ao toque: as bolinhas das camadas e os cards
    do s e do p pulsam num brilho dourado leve — cada grupo até a parte dele ser
    acertada; o verde do acerto, o vermelho do erro e o âmbar da pista ficam por cima) */
@@ -3434,8 +3437,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 /* a bolinha do período pulsa com a faixa da linha, e a etiqueta s² com a da
    coluna: as duas 2 vezes, pela propriedade scale (soma-se ao transform de cada uma) */
 .mesa .eixo.pulsaF106, .etq102.pulsaF106{animation:pulsaF106 .6s ease-in-out 2}
-@keyframes pulsaF106{50%{scale:1.35}}
-@keyframes pulsa106{50%{scale:1.35}}
+@keyframes pulsaF106{50%{scale:calc(var(--esc0,1) * 1.35)}}
+@keyframes pulsa106{50%{scale:calc(var(--esc0,1) * 1.35)}}
 @keyframes pisca106v{50%{opacity:.25}}
 /* (na "10.5.3" as entradas e as saídas são em fade: o Mg já crescido, só aparece) */
 .veu-mg10.modo1052 .mg10{transform:scale(2.3);transition:opacity 1s ease}
@@ -5332,7 +5335,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v57.8';
+const VERSAO = 'v57.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24114,6 +24117,11 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
   /* a linha da resposta, na linha do elemento (o subnível na direção da linha dele) */
   linhaDe(E){
     const w = this.linha, r = w.querySelector('.r106');
+    /* (a troca é feita apagada e sem transição: antes, a linha da questão
+       anterior ainda sumia em fade quando já tinha mudado de lugar e de texto —
+       e a resposta da questão nova piscava na tela) */
+    const todos = [w, ...r.children];
+    todos.forEach(e => e.style.transition = 'none');
     w.classList.remove('on');
     w.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
     w.style.top  = (yDaLinha(E.per) + 10).toFixed(1) + 'px';
@@ -24121,6 +24129,8 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     r.querySelector('.r3').textContent = E.per;
     r.querySelector('.rs').textContent = E.sub[0];
     r.querySelector('.r2').textContent = E.sub.slice(1);
+    void w.offsetWidth;
+    todos.forEach(e => e.style.transition = '');
   },
   mostra(parte){
     const w = this.linha, r = w.querySelector('.r106');
