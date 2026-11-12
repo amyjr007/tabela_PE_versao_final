@@ -3389,6 +3389,10 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
    colunas pegam o toque; o certo acende em verde, o errado em vermelho, a
    pista em âmbar; os outros textos da mesa saem; a linha da resposta clara */
 .slide.quiz10b .mesa :is(.eixo[data-periodo], .etq102.on){pointer-events:auto;cursor:pointer}
+/* (no quiz 2, as bolinhas das camadas 30 % maiores e os cards dos subníveis 10 %:
+   mais fáceis de tocar; pela escala solta, que se soma ao transform delas) */
+.slide.quiz10b .mesa .eixo[data-periodo]{scale:1.3}
+.slide.quiz10b .mesa .etq102{scale:1.1}
 .slide.quiz10b .mesa :is(.eixo, .etq102).certa10b{box-shadow:0 0 0 3px #7CF5A8, 0 0 18px 6px rgba(46,214,113,.85)}
 .slide.quiz10b .mesa .etq102.errada3{box-shadow:0 0 0 3px #FF2E4C, 0 0 16px 5px rgba(255,46,76,.7)}
 .slide.quiz10b .mesa :is(.eixo, .etq102).pista5{box-shadow:0 0 0 3px #FFB020, 0 0 18px 6px rgba(255,176,32,.75)}
@@ -5313,7 +5317,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v57.3';
+const VERSAO = 'v57.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
