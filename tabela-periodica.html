@@ -3329,6 +3329,7 @@ body.montagem .etq102.f105{pointer-events:auto;cursor:grab}
    crescido com o "subnível mais energético" embaixo */
 .titulo9.texto1052{font-size:30px}
 body.montagem .titulo9.texto1052:not(.mont1052){opacity:0;pointer-events:none}
+body.montagem .titulo9.texto106:not(.mont106){opacity:0;pointer-events:none}
 body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none!important}
 .veu-mg10.modo1052 .aufbau10{display:none}
 /* a "10.6": o bloco B em segundo plano; a tela escura da regra; o Mg verde;
@@ -5456,7 +5457,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v61.8';
+const VERSAO = 'v61.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23546,6 +23547,7 @@ const CARDS101 = {
          energético" (o texto da "10.5.3", que fica) */
       const q = this.texto106 = document.createElement('div');
       q.className = 'titulo9 texto106';
+      q.dataset.mont = 'texto-106';        /* na montagem (na 10.6), peça que anda e muda de tamanho */
       q.style.left = '423px';
       q.style.top  = '293px';
       q.innerHTML = '<span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span>';
@@ -23594,7 +23596,10 @@ const CARDS101 = {
       PARTES_106.forEach(p => { const a = p.t.slice(0, Math.max(0, Math.min(k, p.t.length))); k -= p.t.length; if (a) h += p.c ? '<span class="' + p.c + '">' + a + '</span>' : a; });
       this.regra106.innerHTML = h + '<i class="cursor"></i><span class="falta">' + REGRA_106.slice(n) + '</span>';
     }
-    const nT = EV9.letras(T, T106.texto[0], T106.texto[1], TEXTO_106);
+    /* (na montagem, na "10.6", o texto inteiro, para ser arrumado) */
+    const mont106 = naMontagem() && trilhaAtual === '10.6';
+    this.texto106.classList.toggle('mont106', mont106);
+    const nT = mont106 ? TEXTO_106.length : EV9.letras(T, T106.texto[0], T106.texto[1], TEXTO_106);
     if (nT !== this.ntT106){
       if (nT > this.ntT106 && this.ntT106 >= 0 && de) TECLAS.bate();
       this.ntT106 = nT;
