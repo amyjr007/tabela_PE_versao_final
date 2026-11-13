@@ -3362,6 +3362,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .tag1071{position:absolute;z-index:16;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:15px;color:var(--cor-linha);opacity:0;transition:opacity .4s ease}
 .tag1071.on{opacity:1}
+/* (o salto do sumário para a 10.7.1: tudo no lugar de uma vez) */
+#stage.salto1071 *{transition:none!important}
 /* (no fim: pulsações discretas e lentas — 8 % a mais, num ciclo de 2,4 s — no lugar das piscadas) */
 @keyframes pisca1071{0%,100%{scale:var(--esc0,1)} 50%{scale:calc(var(--esc0,1) * 1.08)}}
 /* (no 3d⁶ da resposta: o 3 no vermelho do 3 da fórmula, piscando com ele; o d⁶ com a etiqueta d⁶) */
@@ -5402,7 +5404,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v60.0';
+const VERSAO = 'v60.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23699,7 +23701,7 @@ const CARDS101 = {
     const chave = [T7 >= 0, T7 >= T107.semSP, T7 >= T107.d10, T7 >= T107.f14 || monta107,
                    (de7 && T7 >= T107.escuro) || (de70 && T70 < T1070.claro),
                    ...T107.linhas.map(L => T7 >= L[0]), ...T107.linhas.map(L => dentro(T7, L)), this.pede107,
-                   (de70 && T70 >= T1070.escuro && !this.fechou1070) || (em('10.7.1') && t < T1071.sai), dentro(T70, T1070.regra), this.pede1070].join();
+                   (de70 && T70 >= T1070.escuro && !this.fechou1070) || (em('10.7.1') && t < T1071.sai && !this.pula1071), dentro(T70, T1070.regra), this.pede1070].join();
     if (chave === this.estado107) return;
     this.estado107 = chave;
     const v = chave.split(',').map(x => x === 'true');
@@ -23763,6 +23765,7 @@ const CARDS101 = {
     const passa = s => de && !som.paused && this.t1071ant >= 0 && this.t1071ant < s && t >= s && t < s + 0.6 && t - this.t1071ant < 1;
     if (passa(T1071.festa)){ this.aplauso(); tocaEfeito('funfare'); }
     this.t1071ant = de ? t : -1;
+    if (de && t >= T1071.sai) this.pula1071 = false;
     /* a fórmula, na linha 4 logo depois da bolinha: digitada; o n vira 4; e o 3
        vermelho, que fica ali até o fim (sem o "(n − 1 = 3)" no alto) */
     const F = T1071;
@@ -28229,7 +28232,14 @@ const NAV_TOPICOS = [
     entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.7.0', 0, g)); } },
   /* o começo da "10.7.1": o exemplo do ferro (a regra sai em 1 s) */
   { titulo:'O exemplo do Fe', sub:'o começo da 10.7.1', slide:10,
-    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.7.1', 0, g)); } },
+    /* (direto na tela do começo: sem o véu da regra e sem as transições — a
+       cena não se monta à vista; as transições voltam depois do primeiro segundo) */
+    /* (a trilha já é posta na hora — parada no 0 —, para a mesa chegar com a cena pronta) */
+    entra(v, g){
+      CARDS101.pula1071 = true; stage.classList.add('salto1071');
+      carregaTrilha('10.7.1');
+      depoisDaMesa(g, () => { tocaDesde('10.7.1', 0, g); setTimeout(() => { if (g === NAV.geracao) stage.classList.remove('salto1071'); }, 900); });
+    } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
