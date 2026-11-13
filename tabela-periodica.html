@@ -3336,16 +3336,17 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .mesa .card101.gig107{scale:.3;opacity:0;pointer-events:none;z-index:28}
 .mesa.so1051 .card101.gig107.on107, .mesa .card101.gig107.on107{opacity:1!important;scale:1.35}
 .veu107, .veu1070{flex-direction:column;gap:14px}
-.veu107 .tit107{margin:0 0 18px;font-family:var(--display);font-weight:700;font-size:52px;letter-spacing:-.015em;color:#F4F2F8}
+.veu107 .tit107{margin:0 0 18px;font-family:var(--display);font-weight:700;font-size:52px;letter-spacing:-.015em;color:var(--ouro-luz)}
 .veu107 .lin107, .veu1070 .regra1070{margin:0;font-family:var(--display);font-weight:600;font-size:38px;line-height:1.25;color:#F4F2F8;text-align:center}
 .veu107 .lin107{opacity:0;transition:opacity .3s ease}
 .veu107 .lin107.on{opacity:1}
-.veu107 .lin107.amarela107{color:var(--ouro-luz)}
+.veu107 .lin107.amarela107{color:#F4F2F8}
 .veu1070 .regra1070{width:1040px;font-size:42px;text-wrap:balance}
 :is(.veu107 .lin107, .veu1070 .regra1070) .falta{color:transparent}
 :is(.veu107 .lin107, .veu1070 .regra1070) .cursor{display:none;width:4px;height:.9em;margin:0 -4px 0 0;vertical-align:-.1em;background:var(--ouro-luz);border-radius:1px}
 :is(.veu107 .lin107, .veu1070 .regra1070).digitando107 .cursor{display:inline-block}
-.veu107 .toque-continuar, .veu1070 .toque-continuar{position:static;transform:none;margin-top:26px}
+/* (o Toque na tela embaixo das linhas, no meio: sem o left/top/translate da tela escura do slide 1) */
+.veu.veu107 .toque-continuar, .veu.veu1070 .toque-continuar{position:static;left:auto;top:auto;transform:none;margin-top:26px}
 .veu106{flex-direction:column}
 .regra106{width:1000px;margin:0;text-align:center;text-wrap:balance;
   font-family:var(--display);font-weight:600;font-size:46px;line-height:1.2;letter-spacing:-.015em;color:#F4F2F8}
@@ -5374,7 +5375,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v58.7';
+const VERSAO = 'v58.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24413,7 +24414,8 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     cx.getBoundingClientRect();
     cx.classList.add('on');
     const q = cx.querySelector('.q3-q'), passo = this.passo;
-    this.travado = true;
+    /* (no quiz 2 dá para responder já durante a digitação da pergunta) */
+    this.travado = false;
     cx.classList.add('digitando');
     let n = 0;
     clearInterval(this.digT);
