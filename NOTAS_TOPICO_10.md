@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v60.6** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v60.7** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -95,7 +95,7 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | Item | Narração |
 |---|---|
 | a – Introdução | 10 |
-| b – Os subníveis e os blocos | 10.1 |
+| b – Os subníveis e os blocos | 10.1 (sem a cena da 10 por cima: pula101) |
 | c – O bloco s | 10.2 |
 | d – O bloco p | 10.3 |
 | e – O bloco d | 10.4 |
