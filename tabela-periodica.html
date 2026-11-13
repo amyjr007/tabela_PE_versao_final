@@ -3504,6 +3504,24 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .dist1063{position:absolute;z-index:30;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:26px;line-height:1;color:var(--tinta);opacity:0;transition:opacity .6s ease}
 .dist1063.on{opacity:1}
+/* as setas luminosas do iodo: crescem a partir dele (0,9 s) até a bolinha do 5 (azul) e até a etiqueta p⁵ (âmbar) */
+.seta1063{position:absolute;z-index:29;pointer-events:none;opacity:0;transition:opacity .4s ease;--c:var(--cor-linha);
+  filter:drop-shadow(0 0 6px var(--c)) drop-shadow(0 0 12px color-mix(in srgb,var(--c) 70%,transparent))}
+.seta1063.v{--c:#C8641A}
+.seta1063.on{opacity:1}
+.seta1063 .haste{position:absolute;background:var(--c);border-radius:3px;transition:width .9s cubic-bezier(.3,.7,.3,1), height .9s cubic-bezier(.3,.7,.3,1)}
+.seta1063.h .haste{right:0;top:-3px;height:6px;width:0}
+.seta1063.v .haste{bottom:0;left:-3px;width:6px;height:0}
+.seta1063.h.on .haste{width:100%}
+.seta1063.v.on .haste{height:100%}
+.seta1063 .ponta{position:absolute;width:20px;height:22px;background:var(--c)}
+.seta1063.h .ponta{left:-14px;top:50%;margin-top:-11px;clip-path:polygon(0 50%,100% 0,100% 100%)}
+.seta1063.v .ponta{top:-14px;left:50%;margin-left:-11px;width:22px;height:20px;clip-path:polygon(50% 0,100% 100%,0 100%)}
+/* chegadas, as pontas num vaivém discreto, para a bolinha e para a etiqueta */
+@keyframes vaiH1063{0%,100%{translate:0 0} 50%{translate:-4px 0}}
+@keyframes vaiV1063{0%,100%{translate:0 0} 50%{translate:0 -4px}}
+.seta1063.h.aponta .ponta{animation:vaiH1063 1.3s ease-in-out infinite}
+.seta1063.v.aponta .ponta{animation:vaiV1063 1.3s ease-in-out infinite}
 /* aos 39,7 s o 5p⁵ grande pulsa 3 vezes, com brilho */
 .r106.pulsa1063r > *{animation:pulsa106 .6s ease-in-out 3;text-shadow:0 0 14px currentColor}
 /* (a distribuição se desenha: cada pedaço abre da esquerda para a direita, como uma caneta) */
@@ -5438,7 +5456,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v61.6';
+const VERSAO = 'v61.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22483,7 +22501,11 @@ const T1062 = { pulsa:[6.5, 7.6] };
    28,8 s o 5p⁵ cresce e brilha, com confetes, aplausos e funfare (volta aos
    31,3 s); aos 34 s a distribuição inteira do iodo no vão de cima (o último
    subnível nas cores do 5p⁵), e aos 35 s ele pulsa 3 vezes. */
-const T1063 = { iodo:2.2, linha:16.5, coluna:18.0, piscaL:[[16.5, 17.7], [20.0, 21.2]], piscaC:[[18.0, 19.2], [22.0, 23.2]],
+/* (v61.7: no lugar das faixas piscantes, setas luminosas que crescem a partir do iodo — a azul,
+   aos 16,5 s, até a bolinha do 5 (que pulsa 2 vezes quando ela chega); a âmbar, aos 17,5 s, até a
+   etiqueta p⁵ (que pulsa 2 vezes quando ela chega); aos 20 s pulsa a bolinha, aos 21,5 s a etiqueta,
+   e as pontas das setas ficam num vaivém discreto; as setas somem na festa dos 28,8 s) */
+const T1063 = { iodo:2.2, setaL:16.5, setaC:17.5, cresceSeta:0.9, b5:[[17.4, 18.6], [20.0, 21.2]], bP5:[[18.4, 19.6], [21.5, 22.7]],
                 texto:[23.5, 25.0], cinco:26.0, p:27.5, sup:27.8, festa:28.8, volta:31.3, dist:35.8, pulsa:[37.0, 38.8], pulsaR:[39.7, 41.5],
                 /* (v61.2: aos 3,8 s o número atômico do iodo cresce, aos 5,5 s pisca de âmbar 2 vezes, aos 13 s volta;
                    aos 26 s, com o 5 grande, a bolinha do 5 cresce; com o p, a etiqueta p⁵; aos 28,8 s a bolinha pulsa,
@@ -23633,6 +23655,18 @@ const CARDS101 = {
     this.r106.classList.toggle('reveza106', reveza);
   },
   /* A "10.6.2" (o "Vamos" no fim da "10.6.1.1"): o segundo exemplo, o iodo */
+  /* o lugar das setas do iodo (na medida da mesa): da borda do iodo até a bolinha do 5 e até a etiqueta p⁵ */
+  poeSetas1063(){
+    const xI = xDaColuna(17), yI = yDaLinha(5), b = this.p51063, E = this.etq103 && this.etq103[4];
+    if (b){
+      const xb = parseFloat(b.style.left) + b.offsetWidth / 2 * 1.69 + 8, x0 = xI - LADO / 2 - 4;
+      Object.assign(this.setaL1063.style, { left:xb.toFixed(1) + 'px', top:yI.toFixed(1) + 'px', width:(x0 - xb).toFixed(1) + 'px' });
+    }
+    if (E){
+      const yE = E.park + E.d.offsetHeight / 2 * 1.43 + 6, y0 = yI - LADO / 2 - 4;
+      Object.assign(this.setaC1063.style, { left:xI.toFixed(1) + 'px', top:yE.toFixed(1) + 'px', height:(y0 - yE).toFixed(1) + 'px' });
+    }
+  },
   tick1063(t){
     const monta = naMontagem(), de = trilhaAtual === '10.6.2' && !monta;
     /* (da "10.6.3" em diante os textos e os destaques do iodo saem: começa o césio) */
@@ -23652,13 +23686,17 @@ const CARDS101 = {
       this.faixaC1063 = faixa('banda-col', xDaColuna(17) - larg / 2, topoC, larg, yDaLinha(7) + LADO / 2 + 30 - topoC);
       this.p51063 = m.querySelector('.eixo[data-periodo="5"]');
       this.i1063 = m.querySelector('.pc[data-z="53"]');
+      /* as setas que saem do iodo: a da linha (azul), até a bolinha do 5; a da coluna (âmbar), até a etiqueta p⁵ */
+      const seta = cls => { const e = document.createElement('div'); e.className = 'seta1063 ' + cls; e.innerHTML = '<div class="haste"><i class="ponta"></i></div>'; m.appendChild(e); return e; };
+      this.setaL1063 = seta('h'); this.setaC1063 = seta('v');
       /* a linha do iodo (na linha 5, sobre os de transição apagados):
          "O subnível mais energético:" e o "5p⁵" — o 5 na cor da linha, o p⁵
          na da etiqueta p⁵ */
       const w = this.linha1063 = document.createElement('div');
       w.className = 'linha106 linha1063';
       w.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
-      w.style.top  = (yDaLinha(5) + 10).toFixed(1) + 'px';
+      /* (v61.7: na linha 6 — a linha 5 é a da seta azul) */
+      w.style.top  = (yDaLinha(6) + 6).toFixed(1) + 'px';
       w.innerHTML = '<span class="titulo9 rot106"><span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span></span>' +
         '<div class="r106 rp106"><span class="r3">5</span><span class="rs">p</span><sup class="r2">5</sup></div>';
       m.appendChild(w);
@@ -23697,10 +23735,10 @@ const CARDS101 = {
       this.nD1063 = nD; this.t1063.forEach((e, k) => e.classList.toggle('vis', k < nD));
     }
     const dentro = ([a, b]) => T >= a && T < b;
-    const pL = T1063.piscaL.some(dentro), pC = T1063.piscaC.some(dentro);
-    const chave = [T >= T1063.iodo, T >= T1063.linha, T >= T1063.coluna, pL, pC, T >= T1063.texto[0], dentro(T1063.texto),
+    const pL = T1063.b5.some(dentro), pC = T1063.bP5.some(dentro);
+    const chave = [T >= T1063.iodo, T >= T1063.setaL && T < T1063.festa, T >= T1063.setaC && T < T1063.festa, pL, pC, T >= T1063.texto[0], dentro(T1063.texto),
                    T >= T1063.cinco, T >= T1063.p, T >= T1063.sup, dentro([T1063.festa, T1063.volta]), T >= T1063.dist, dentro(T1063.pulsa),
-                   dentro(T1063.pulsaR), dentro(T1063.num), dentro(T1063.ambar), dentro([T1063.cinco, T1063.volta]), dentro([T1063.p, T1063.volta]), dentro(T1063.pulsa5), dentro(T1063.pulsaP5)].join();
+                   dentro(T1063.pulsaR), dentro(T1063.num), dentro(T1063.ambar), T >= T1063.cinco, T >= T1063.p, dentro(T1063.pulsa5), dentro(T1063.pulsaP5)].join();
     if (chave === this.estado1063) return;
     this.estado1063 = chave;
     const [iodo, lin, col, piscaL, piscaC, rot, dig, cinco, p, sup, festa, dist, pulsa, pulsaR, num, ambar, cresce5, cresceP5, pulsa5, pulsaP5] = chave.split(',').map(v => v === 'true');
@@ -23712,11 +23750,16 @@ const CARDS101 = {
     if (p5){ p5.classList.toggle('cresce1063', cresceP5); p5.classList.toggle('pulsa1063', pulsaP5); }
     /* (o iodo brilha em verde, como o Mg) */
     if (this.i1063) this.i1063.classList.toggle('mg106', iodo);
-    this.faixaL1063.classList.toggle('on', lin); this.faixaL1063.classList.toggle('pisca2106', piscaL);
-    this.faixaC1063.classList.toggle('on', col); this.faixaC1063.classList.toggle('pisca2106', piscaC);
+    /* (as faixas não entram mais: no lugar delas, as setas) */
+    this.faixaL1063.classList.remove('on', 'pisca2106'); this.faixaC1063.classList.remove('on', 'pisca2106');
+    if (lin || col) this.poeSetas1063();
+    this.setaL1063.classList.toggle('on', lin); this.setaC1063.classList.toggle('on', col);
     /* (a bolinha do 5 pulsa com a faixa da linha; a etiqueta p⁵ — no alto da coluna — com a da coluna) */
     if (this.p51063) this.p51063.classList.toggle('pulsaF106', piscaL);
     if (p5) p5.classList.toggle('pulsaF106', piscaC);
+    /* (chegadas, as pontas ficam num vaivém discreto) */
+    this.setaL1063.classList.toggle('aponta', lin && T >= T1063.setaL + T1063.cresceSeta);
+    this.setaC1063.classList.toggle('aponta', col && T >= T1063.setaC + T1063.cresceSeta);
     this.rot1063.classList.toggle('on', rot);
     this.rot1063.classList.toggle('digitando9', dig);
     this.r1063.classList.toggle('tres', cinco);
