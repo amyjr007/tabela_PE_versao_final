@@ -3427,7 +3427,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .mesa.linhas106 .eixo[data-periodo].p106{z-index:15;transform:translate(-50%,-50%) scale(1.5);
   box-shadow:0 0 0 2px rgba(111,174,240,.95), 0 0 16px 6px rgba(47,127,209,.75)}
 /* o "Elementos representativos primeiro" (da "10.6"), embaixo do texto da "10.5.3" */
-.titulo9.texto106{font-size:24px;color:color-mix(in srgb,var(--tinta) 80%,transparent)}
+.titulo9.texto106{font-size:31.4px;color:color-mix(in srgb,var(--tinta) 80%,transparent)}
 /* a linha do Mg (da "10.6.1"): o "Subnível mais energético:" e o 3s², lado a lado */
 .linha106{position:absolute;z-index:30;transform:translate(-50%,-50%);display:flex;align-items:center;gap:16px;
   white-space:nowrap;pointer-events:none}
@@ -5457,7 +5457,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v61.9';
+const VERSAO = 'v62.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23548,8 +23548,9 @@ const CARDS101 = {
       const q = this.texto106 = document.createElement('div');
       q.className = 'titulo9 texto106';
       q.dataset.mont = 'texto-106';        /* na montagem (na 10.6), peça que anda e muda de tamanho */
-      q.style.left = '423px';
-      q.style.top  = '293px';
+      /* (o lugar que o professor deixou na montagem — no palco x 747, y 111, esc 1,31 —, na medida da mesa) */
+      q.style.left = '752.8px';
+      q.style.top  = '170.6px';
       q.innerHTML = '<span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span>';
       m.appendChild(q);
       /* a linha do Mg, no vão dos de transição (na linha 3 — o subnível fica
