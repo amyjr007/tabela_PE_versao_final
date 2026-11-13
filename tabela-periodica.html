@@ -3472,7 +3472,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
    esquerda — não volta a tocar no quiz quando o pulso ou o balanço do erro
    saem: sem isto, a cada toque todas as bolinhas encolhiam e deslizavam — e
    nas narrações, quando um pulso acabava) */
-.mesa[data-slide="10"] .eixo[data-periodo]:not(.errada3, .pulsaF106, .pulsa106, .revA106, .pisca1071){animation:none}
+.mesa[data-slide="10"] .eixo[data-periodo]:not(.errada3, .pulsaF106, .pulsa106, .revA106, .pisca1071, .pulsa1063){animation:none}
 /* (nas questões 1 a 4, o convite ao toque: as bolinhas das camadas e os cards
    do s e do p pulsam num brilho dourado leve — cada grupo até a parte dele ser
    acertada; o verde do acerto, o vermelho do erro e o âmbar da pista ficam por cima) */
@@ -3504,6 +3504,16 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .dist1063{position:absolute;z-index:30;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:26px;line-height:1;color:var(--tinta);opacity:0;transition:opacity .6s ease}
 .dist1063.on{opacity:1}
+/* (a distribuição se desenha: cada pedaço abre da esquerda para a direita, como uma caneta) */
+.dist1063 .t1063{display:inline-block;clip-path:inset(-20% 100% -20% 0);transition:clip-path .24s linear}
+.dist1063 .t1063.vis{clip-path:inset(-20% -10% -20% 0)}
+/* o número atômico do iodo pisca de âmbar 2 vezes (aos 5,5 s), já crescido */
+@keyframes ambar1063{0%,50%,100%{color:#FFF6D2} 25%,75%{color:#FFB020;text-shadow:0 0 8px rgba(255,160,20,1), 0 0 18px rgba(255,140,0,.85), 0 1px 3px rgba(0,0,0,.6)}}
+.pc.foco-num.ambar1063 .face i{animation:ambar1063 1.2s ease-in-out}
+/* a bolinha do 5 e a etiqueta p⁵: crescem (aos 26 s e com o p), e pulsam (aos 28,8 s e 29,2 s) */
+.mesa[data-slide="10"] .eixo[data-periodo].cresce1063, .mesa[data-slide="10"] .etq102.cresce1063{scale:calc(var(--esc0,1) * 1.3);transition:scale .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pulsa1063{0%,100%{scale:calc(var(--esc0,1) * 1.3)} 50%{scale:calc(var(--esc0,1) * 1.6)}}
+.mesa[data-slide="10"] .eixo[data-periodo].pulsa1063, .mesa[data-slide="10"] .etq102.pulsa1063{animation:pulsa1063 .7s ease-in-out 2}
 .dist1063 sup{font-size:.6em;vertical-align:.7em;margin-left:1px}
 .dist1063 sub{font-size:.6em;vertical-align:-.25em;margin-right:1px}
 .dist1063 .ult1063{display:inline-block;transform-origin:50% 60%}
@@ -5426,7 +5436,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v61.1';
+const VERSAO = 'v61.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6948,7 +6958,10 @@ const ROTEIROS = {
   '10.6': [],
   '10.6.1': [],
   '10.6.1.1': [],
-  '10.6.2': [],
+  '10.6.2': [
+    { t:32.0, faz(){ pausaPor('10.6.2', T1063.pausa[1]); } },
+    { t:34.3, faz(){ CARDS101.monta1063 = performance.now(); pausaPor('10.6.2', T1063.monta[1]); } }
+  ],
   '10.6.3': [],
   '10.7': [],
   '10.7.0': [],
@@ -22468,7 +22481,12 @@ const T1062 = { pulsa:[6.5, 7.6] };
    31,3 s); aos 34 s a distribuição inteira do iodo no vão de cima (o último
    subnível nas cores do 5p⁵), e aos 35 s ele pulsa 3 vezes. */
 const T1063 = { iodo:2.2, linha:16.5, coluna:18.0, piscaL:[[16.5, 17.7], [20.0, 21.2]], piscaC:[[18.0, 19.2], [22.0, 23.2]],
-                texto:[23.5, 25.0], cinco:26.3, p:27.5, sup:27.8, festa:28.8, volta:31.3, dist:34.0, pulsa:[35.0, 36.8] };
+                texto:[23.5, 25.0], cinco:26.0, p:27.5, sup:27.8, festa:28.8, volta:31.3, dist:34.3, pulsa:[35.0, 36.8],
+                /* (v61.2: aos 3,8 s o número atômico do iodo cresce, aos 5,5 s pisca de âmbar 2 vezes, aos 13 s volta;
+                   aos 26 s, com o 5 grande, a bolinha do 5 cresce; com o p, a etiqueta p⁵; aos 28,8 s a bolinha pulsa,
+                   aos 29,2 s a etiqueta; as duas voltam aos 31,3 s; aos 32 s uma pausa de 1,5 s; aos 34,3 s outra,
+                   de 3 s, enquanto a distribuição se desenha um subnível por vez) */
+                num:[3.8, 13.0], ambar:[5.5, 6.7], pulsa5:[28.8, 30.2], pulsaP5:[29.2, 30.6], pausa:[32.0, 1500], monta:[34.3, 3000] };
 const TEXTO_1063 = 'O subnível mais energético:';
 /* A "10.6.3" (o play no fim da "10.6.2"; no código, "1064"): os textos do iodo
    saem; o terceiro exemplo, o césio (6s¹), nos mesmos passos do iodo — aos 3 s
@@ -23644,8 +23662,10 @@ const CARDS101 = {
       d.className = 'dist1063';
       d.style.left = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
       d.style.top  = ((yDaLinha(2) + yDaLinha(3)) / 2).toFixed(1) + 'px';
-      d.innerHTML = '<sub>53</sub>I: ' + DIST_1063.map(([n, e]) => n + '<sup>' + e + '</sup>').join(' ') +
-        ' <span class="ult1063"><span class="r3">5</span><span class="rs">p</span><sup class="r2">5</sup></span>';
+      /* (cada pedaço num span: na pausa dos 34,3 s eles se desenham um por vez) */
+      d.innerHTML = '<span class="t1063"><sub>53</sub>I:</span> ' + DIST_1063.map(([n, e]) => '<span class="t1063">' + n + '<sup>' + e + '</sup></span>').join(' ') +
+        ' <span class="t1063 ult1063"><span class="r3">5</span><span class="rs">p</span><sup class="r2">5</sup></span>';
+      this.t1063 = [...d.querySelectorAll('.t1063')];
       m.appendChild(d);
     }
     /* a festa dos 28,8 s (só tocando de seguida: um salto não a dispara) */
@@ -23658,20 +23678,34 @@ const CARDS101 = {
       this.ntR1063 = nR;
       EV9.escreve(this.rot1063, TEXTO_1063, nR);
     }
+    /* a distribuição que se desenha: na pausa dos 34,3 s, um pedaço a cada 3 s / 12; fora dela, inteira (ou nada) */
+    let nD = 0;
+    if (T >= T1063.dist){
+      const dt = this.monta1063 ? performance.now() - this.monta1063 : Infinity;
+      nD = Math.min(this.t1063.length, Math.floor(dt / (T1063.monta[1] / this.t1063.length)) + 1);
+    } else this.monta1063 = 0;
+    if (nD !== this.nD1063){ this.nD1063 = nD; this.t1063.forEach((e, k) => e.classList.toggle('vis', k < nD)); }
     const dentro = ([a, b]) => T >= a && T < b;
     const pL = T1063.piscaL.some(dentro), pC = T1063.piscaC.some(dentro);
     const chave = [T >= T1063.iodo, T >= T1063.linha, T >= T1063.coluna, pL, pC, T >= T1063.texto[0], dentro(T1063.texto),
-                   T >= T1063.cinco, T >= T1063.p, T >= T1063.sup, dentro([T1063.festa, T1063.volta]), T >= T1063.dist, dentro(T1063.pulsa)].join();
+                   T >= T1063.cinco, T >= T1063.p, T >= T1063.sup, dentro([T1063.festa, T1063.volta]), T >= T1063.dist, dentro(T1063.pulsa),
+                   dentro(T1063.num), dentro(T1063.ambar), dentro([T1063.cinco, T1063.volta]), dentro([T1063.p, T1063.volta]), dentro(T1063.pulsa5), dentro(T1063.pulsaP5)].join();
     if (chave === this.estado1063) return;
     this.estado1063 = chave;
-    const [iodo, lin, col, piscaL, piscaC, rot, dig, cinco, p, sup, festa, dist, pulsa] = chave.split(',').map(v => v === 'true');
+    const [iodo, lin, col, piscaL, piscaC, rot, dig, cinco, p, sup, festa, dist, pulsa, num, ambar, cresce5, cresceP5, pulsa5, pulsaP5] = chave.split(',').map(v => v === 'true');
+    /* o número atômico do iodo: cresce (como no foco do número), pisca de âmbar 2 vezes, e volta */
+    if (this.i1063){ this.i1063.classList.toggle('foco-num', num); this.i1063.classList.toggle('ambar1063', ambar); }
+    /* a bolinha do 5 e a etiqueta p⁵: crescem com o 5p⁵, pulsam, e voltam */
+    const p5 = this.etq103 && this.etq103[4] && this.etq103[4].d;
+    if (this.p51063){ this.p51063.classList.toggle('cresce1063', cresce5); this.p51063.classList.toggle('pulsa1063', pulsa5); }
+    if (p5){ p5.classList.toggle('cresce1063', cresceP5); p5.classList.toggle('pulsa1063', pulsaP5); }
     /* (o iodo brilha em verde, como o Mg) */
     if (this.i1063) this.i1063.classList.toggle('mg106', iodo);
     this.faixaL1063.classList.toggle('on', lin); this.faixaL1063.classList.toggle('pisca2106', piscaL);
     this.faixaC1063.classList.toggle('on', col); this.faixaC1063.classList.toggle('pisca2106', piscaC);
     /* (a bolinha do 5 pulsa com a faixa da linha; a etiqueta p⁵ — no alto da coluna — com a da coluna) */
     if (this.p51063) this.p51063.classList.toggle('pulsaF106', piscaL);
-    if (this.etq103) this.etq103[4].d.classList.toggle('pulsaF106', piscaC);
+    if (p5) p5.classList.toggle('pulsaF106', piscaC);
     this.rot1063.classList.toggle('on', rot);
     this.rot1063.classList.toggle('digitando9', dig);
     this.r1063.classList.toggle('tres', cinco);

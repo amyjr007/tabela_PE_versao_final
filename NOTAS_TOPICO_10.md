@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v61.1** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v61.2** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -40,7 +40,7 @@ Onde paramos: **v61.1** (2026-11-13). Este arquivo serve para retomar o trabalho
 | 10.6 | Ver abaixo | toque na tela → 10.6.1 |
 | 10.6.1 | Ver abaixo | Saquei → 10.6.1.1 |
 | 10.6.1.1 | Aos 6,5 s o 3s² pulsa | Vamos → 10.6.2 |
-| 10.6.2 | Ver abaixo (o iodo) | — (o fim ainda não leva a nada) |
+| 10.6.2 | O iodo (ver abaixo). v61.2: 3,8 s o número atômico cresce (foco-num), 5,5 s pisca de âmbar 2×, 13 s volta; 26 s o 5 grande e a bolinha do 5 cresce; com o p (27,5 s) a etiqueta p⁵ cresce; 28,8 s a bolinha pulsa, 29,2 s a etiqueta; voltam aos 31,3 s; 32 s pausa de 1,5 s; 34,3 s pausa de 3 s enquanto a distribuição do iodo se desenha um subnível por vez (12 pedaços, clip-path) | — (o fim ainda não leva a nada) |
 
 ### A 10.6, a 10.6.1 e a 10.6.1.1 (refeitas na v54.8)
 
