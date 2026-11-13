@@ -3504,6 +3504,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .dist1063{position:absolute;z-index:30;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:26px;line-height:1;color:var(--tinta);opacity:0;transition:opacity .6s ease}
 .dist1063.on{opacity:1}
+/* aos 39,7 s o 5p⁵ grande pulsa 3 vezes, com brilho */
+.r106.pulsa1063r > *{animation:pulsa106 .6s ease-in-out 3;text-shadow:0 0 14px currentColor}
 /* (a distribuição se desenha: cada pedaço abre da esquerda para a direita, como uma caneta) */
 .dist1063 .t1063{display:inline-block;clip-path:inset(-20% 100% -20% 0);transition:clip-path .24s linear}
 .dist1063 .t1063.vis{clip-path:inset(-20% -10% -20% 0)}
@@ -5436,7 +5438,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v61.3';
+const VERSAO = 'v61.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6959,9 +6961,8 @@ const ROTEIROS = {
   '10.6.1': [],
   '10.6.1.1': [],
   '10.6.2': [
-    { t:34.3, faz(){ CARDS101.monta1063 = performance.now(); pausaPor('10.6.2', T1063.monta[1]); } },
-    { t:38.5, faz(){ pausaPor('10.6.2', T1063.pausa[1]); } },
-    { t:40.7, faz(){ pausaPor('10.6.2', T1063.pausa2[1]); } }
+    { t:30.8, faz(){ pausaPor('10.6.2', T1063.pausa[1]); } },
+    { t:35.8, faz(){ CARDS101.monta1063 = performance.now(); pausaPor('10.6.2', T1063.monta[1]); } }
   ],
   '10.6.3': [],
   '10.7': [],
@@ -7725,8 +7726,8 @@ const SEQ = {
     else if (id === '10.6.1'){ if (atual === 10) CARDS101.saquei(true, '10.6.1.1'); }
     /* o fim da "10.6.1.1": o "Vamos", que leva à "10.6.2" */
     else if (id === '10.6.1.1'){ if (atual === 10) CARDS101.saquei(true, '10.6.2', 'Vamos'); }
-    /* o fim da "10.6.2": o play passa a tocar a "10.6.3" (o césio) */
-    else if (id === '10.6.2'){ if (atual === 10) carregaTrilha('10.6.3'); }
+    /* o fim da "10.6.2": tudo fica na tela, e o botão verde "Próximo" leva à "10.6.3" (o césio) */
+    else if (id === '10.6.2'){ if (atual === 10) CARDS101.saquei(true, '10.6.3', 'Próximo'); }
     /* o fim da "10.6.3": a demonstração acabou, e o quiz 2 abre */
     else if (id === '10.6.3'){ if (atual === 10 && window.QUIZ10B && !QUIZ10B.aberto) QUIZ10B.abre(); }
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
@@ -22482,14 +22483,16 @@ const T1062 = { pulsa:[6.5, 7.6] };
    31,3 s); aos 34 s a distribuição inteira do iodo no vão de cima (o último
    subnível nas cores do 5p⁵), e aos 35 s ele pulsa 3 vezes. */
 const T1063 = { iodo:2.2, linha:16.5, coluna:18.0, piscaL:[[16.5, 17.7], [20.0, 21.2]], piscaC:[[18.0, 19.2], [22.0, 23.2]],
-                texto:[23.5, 25.0], cinco:26.0, p:27.5, sup:27.8, festa:28.8, volta:31.3, dist:34.3, pulsa:[37.0, 38.8],
+                texto:[23.5, 25.0], cinco:26.0, p:27.5, sup:27.8, festa:28.8, volta:31.3, dist:35.8, pulsa:[37.0, 38.8], pulsaR:[39.7, 41.5],
                 /* (v61.2: aos 3,8 s o número atômico do iodo cresce, aos 5,5 s pisca de âmbar 2 vezes, aos 13 s volta;
                    aos 26 s, com o 5 grande, a bolinha do 5 cresce; com o p, a etiqueta p⁵; aos 28,8 s a bolinha pulsa,
                    aos 29,2 s a etiqueta; as duas voltam aos 31,3 s; aos 32 s uma pausa de 1,5 s; aos 34,3 s outra,
                    de 3 s, enquanto a distribuição se desenha um subnível por vez) */
-                num:[3.8, 13.0], ambar:[5.5, 6.7], pulsa5:[28.8, 30.2], pulsaP5:[29.2, 30.6], monta:[34.3, 3000],
-                /* (v61.3, o áudio regravado com 43,5 s: a pausa de 1,5 s passa para os 38,5 s, e outra aos 40,7 s; o 5p⁵ da distribuição pulsa aos 37 s) */
-                pausa:[38.5, 1500], pausa2:[40.7, 1500] };
+                num:[3.8, 13.0], ambar:[5.5, 6.7], pulsa5:[28.8, 30.2], pulsaP5:[29.2, 30.6], monta:[35.8, 3000],
+                /* (v61.4: depois da festa, aos 30,8 s uma pausa de 1,5 s; aos 35,8 s outra, de 3 s, com a
+                   distribuição se desenhando; aos 37 s o 5p⁵ dela pulsa, aos 39,7 s o 5p⁵ grande; no fim
+                   tudo fica na tela, e o botão verde "Próximo" leva à 10.6.3) */
+                pausa:[30.8, 1500] };
 const TEXTO_1063 = 'O subnível mais energético:';
 /* A "10.6.3" (o play no fim da "10.6.2"; no código, "1064"): os textos do iodo
    saem; o terceiro exemplo, o césio (6s¹), nos mesmos passos do iodo — aos 3 s
@@ -23692,10 +23695,10 @@ const CARDS101 = {
     const pL = T1063.piscaL.some(dentro), pC = T1063.piscaC.some(dentro);
     const chave = [T >= T1063.iodo, T >= T1063.linha, T >= T1063.coluna, pL, pC, T >= T1063.texto[0], dentro(T1063.texto),
                    T >= T1063.cinco, T >= T1063.p, T >= T1063.sup, dentro([T1063.festa, T1063.volta]), T >= T1063.dist, dentro(T1063.pulsa),
-                   dentro(T1063.num), dentro(T1063.ambar), dentro([T1063.cinco, T1063.volta]), dentro([T1063.p, T1063.volta]), dentro(T1063.pulsa5), dentro(T1063.pulsaP5)].join();
+                   dentro(T1063.pulsaR), dentro(T1063.num), dentro(T1063.ambar), dentro([T1063.cinco, T1063.volta]), dentro([T1063.p, T1063.volta]), dentro(T1063.pulsa5), dentro(T1063.pulsaP5)].join();
     if (chave === this.estado1063) return;
     this.estado1063 = chave;
-    const [iodo, lin, col, piscaL, piscaC, rot, dig, cinco, p, sup, festa, dist, pulsa, num, ambar, cresce5, cresceP5, pulsa5, pulsaP5] = chave.split(',').map(v => v === 'true');
+    const [iodo, lin, col, piscaL, piscaC, rot, dig, cinco, p, sup, festa, dist, pulsa, pulsaR, num, ambar, cresce5, cresceP5, pulsa5, pulsaP5] = chave.split(',').map(v => v === 'true');
     /* o número atômico do iodo: cresce (como no foco do número), pisca de âmbar 2 vezes, e volta */
     if (this.i1063){ this.i1063.classList.toggle('foco-num', num); this.i1063.classList.toggle('ambar1063', ambar); }
     /* a bolinha do 5 e a etiqueta p⁵: crescem com o 5p⁵, pulsam, e voltam */
@@ -23715,6 +23718,7 @@ const CARDS101 = {
     this.r1063.classList.toggle('esse', p);
     this.r1063.classList.toggle('dois', sup);
     this.r1063.classList.toggle('festa', festa);
+    this.r1063.classList.toggle('pulsa1063r', pulsaR);
     this.dist1063.classList.toggle('on', dist);
     this.dist1063.classList.toggle('pulsa', pulsa);
   },
