@@ -3332,6 +3332,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
   opacity .8s ease, scale .45s var(--e-salto), translate .45s var(--e-salto)}
 .mesa.semSP107 :is(.pc[data-b101="s"], .pc[data-b101="p"], .etq102:not(.d104, .f105)){opacity:.12!important}
 .mesa .card101.gig107{scale:.3;opacity:0;pointer-events:none;z-index:28}
+/* (o card gigante fica quadrado: a montagem muda a largura das peças, e nele o tamanho é só pela escala) */
+.mesa .card101.gig107{width:92px!important;height:92px!important}
 .mesa.so1051 .card101.gig107.on107, .mesa .card101.gig107.on107{opacity:1!important;scale:1.35}
 .veu107, .veu1070{flex-direction:column;gap:14px}
 .veu107 .tit107{margin:0 0 18px;font-family:var(--display);font-weight:700;font-size:52px;letter-spacing:-.015em;color:var(--ouro-luz)}
@@ -5373,7 +5375,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v58.9';
+const VERSAO = 'v59.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23605,6 +23607,7 @@ const CARDS101 = {
       const gig = (b, e, cor, x, y) => {
         const c = document.createElement('div');
         c.className = 'card101 gig107';
+        c.dataset.mont = 'card-' + b + e + '-gigante';   /* na montagem, peça: anda e cresce */
         c.style.setProperty('--cor', cor);
         c.innerHTML = '<b>' + b + '</b><sup>' + e + '</sup>';
         c.style.left = x.toFixed(1) + 'px';
@@ -23637,7 +23640,9 @@ const CARDS101 = {
       EV9.escreve(this.regra1070, REGRA_1070, nR);
     }
     const dentro = (X, [a, b]) => X >= a && X < b;
-    const chave = [T7 >= 0, T7 >= T107.semSP, T7 >= T107.d10, T7 >= T107.f14,
+    /* (na montagem, da "10.7" em diante, o f¹⁴ gigante à vista, para ser arrumado) */
+    const monta107 = monta && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.7');
+    const chave = [T7 >= 0, T7 >= T107.semSP, T7 >= T107.d10, T7 >= T107.f14 || monta107,
                    (de7 && T7 >= T107.escuro) || (de70 && T70 < T1070.claro),
                    ...T107.linhas.map(L => T7 >= L[0]), ...T107.linhas.map(L => dentro(T7, L)), this.pede107,
                    de70 && T70 >= T1070.escuro && !this.fechou1070, dentro(T70, T1070.regra), this.pede1070].join();
