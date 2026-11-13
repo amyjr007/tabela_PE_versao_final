@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v60.3** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v60.5** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -106,10 +106,12 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | j – Subnível mais energético com tabela | 10.6 |
 | k – O exemplo do Mg | 10.6.1 |
 | l – O exemplo do iodo | 10.6.2 |
-| m – O exemplo do Cs | 10.6.3 (direto na tela do começo — saltaPara10) |
+| m – O exemplo do Cs | 10.6.3 |
 | n – Quiz 2 | o quiz 2 direto |
-| o – A regra pros elementos de transição externa | 10.7.0 (direto na tela do começo, sem o escuro da 10.7 — saltaPara10 e pula1070) |
-| p – O exemplo do Fe | 10.7.1 (direto na tela do começo: sem o véu da regra e sem transições — saltaPara10: a trilha é posta na hora do toque e a classe salto1071 no #stage desliga as transições por 2,4 s; pula1071) |
+| o – A regra pros elementos de transição externa | 10.7.0 (sem o escuro da 10.7: pula1070) |
+| p – O exemplo do Fe | 10.7.1 (sem o véu da regra: pula1071) |
+
+**Todos os itens do sumário do tópico 10 saltam direto para a tela do começo** (v60.5), sem a cena se montar à vista. Cada item tem `salto:[trilha, segundo, quiz?]`; o `irPara` chama `preparaSalto10` logo depois do `go()` (a trilha já é posta parada naquele segundo, e a classe `salto1071` no `#stage` desliga as transições), e o `entra` chama `saltaPara10`, que toca a narração (ou abre o quiz) quando a mesa chega; as transições voltam 0,3 s depois (e, de todo jeito, em 4 s). Item novo no sumário do tópico 10: usar `salto:[...]` + `entra(v, g){ saltaPara10(...) }`.
 
 Pelo sumário, cada narração abre com tudo o que veio antes já completo (as etiquetas no lugar). Voltar para uma narração com toques desfaz os toques dela.
 
