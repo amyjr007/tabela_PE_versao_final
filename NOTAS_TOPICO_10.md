@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v61.0** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v61.1** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -27,7 +27,7 @@ Onde paramos: **v61.0** (2026-11-13). Este arquivo serve para retomar o trabalho
 | 10 | Cena escura: tabelinha, foto do Pauling, Mg, distribuição com setas | play → 10.1 |
 | 10.1 | Cards s², p⁶, d¹⁰, f¹⁴; blocos ganham cor; encaixes aos 32 s; aluno arrasta | festa → 10.2 |
 | 10.2 | Regra das colunas; bloco s, famílias 1A/2A, etiquetas s¹ s² | (sem botão) → 10.2.1 |
-| 10.2.1 | "Então, clica no card do subnível p ali…" (5,3 s); no fim o play some e uma mão amarela bate no card p⁶ (toque10, CHAMA_10) | toque no p⁶ → 10.3 |
+| 10.2.1 | "Então, clica no card do subnível p ali…" (5,3 s); no fim o play some e uma mão amarela bate no card p⁶ (toque10, CHAMA_10): espera 2 s, entra em fade, bate uma vez, sai em fade, e volta uns 3 s depois (ciclo de 5,4 s); o toque amassa o card como um botão (aperta10, 0,38 s) e a narração seguinte vem em seguida — o mesmo no d¹⁰ e no f¹⁴ | toque no p⁶ → 10.3 |
 | 10.3 | Bloco p (áudio regravado na v61.0: contagem aos 10,9–15,5 s, p¹ 21,55 s, p² 22,3 s); colunas sobem; p¹ (3A) e p² (4A); no fim o play sai; aluno toca da 5A à 8A | festa → 10.3.1 |
 | 10.3.1 | Hélio cresce e brilha; etiqueta s² nele; pausa de 1 s aos 20 s; card d | mão no card d¹⁰ → 10.4 |
 | 10.4 | Bloco d (e só o bloco aos 13 s, por 1 s); colunas 3 a 12; d¹; no fim o play sai; aluno toca da 4 à 12 | festa → 10.4.1 |
