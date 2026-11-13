@@ -5404,7 +5404,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v60.7';
+const VERSAO = 'v60.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -28278,14 +28278,18 @@ function irPara(i, variante){
     item.entra(variante, g);
   };
   /* de outro slide, o go() já recomeça este; no mesmo, recomeça-se à mão */
-  if (atual !== item.slide){
-    go(item.slide);
-    /* (o salto direto do tópico 10: a cena já se põe enquanto a mesa chega) */
-    if (item.salto){ if (item.salto[0] === '10.7.0') CARDS101.pula1070 = true; if (item.salto[0] === '10.7.1') CARDS101.pula1071 = true; if (item.salto[0] === '10.6') CARDS101.pula106 = true; if (item.salto[0] === '10.1') CARDS101.pula101 = true;
-                     preparaSalto10(item.salto[0], g, item.salto[1], !!item.salto[2]); }
-    setTimeout(segue, 900);
-  }
-  else { recomecaSlide(item.slide); segue(); }
+  /* (o salto direto do tópico 10: a cena já se põe enquanto a mesa chega; e,
+     no mesmo slide, já antes do primeiro quadro — senão o recomeço do slide
+     punha a cena da "10" (o quadro da tabela e do Pauling) num quadro à vista) */
+  const salta = () => {
+    if (!item.salto) return;
+    const pula = { '10.1':'pula101', '10.6':'pula106', '10.7.0':'pula1070', '10.7.1':'pula1071' }[item.salto[0]];
+    if (pula) CARDS101[pula] = true;
+    preparaSalto10(item.salto[0], g, item.salto[1], !!item.salto[2]);
+    try { efeitosDoTempo(); } catch (e){ console.error(e); }
+  };
+  if (atual !== item.slide){ go(item.slide); salta(); setTimeout(segue, 900); }
+  else { recomecaSlide(item.slide); salta(); segue(); }
   ABERTURA_SUSPENSA = false;
 }
 
