@@ -131,6 +131,9 @@ var LEGENDAS = {
     [21.92,29.04,"Nos elementos da primeira coluna, a distribuição termina em s¹, e nos da segunda coluna termina em s²."],
     [29.4,30.43,"Sacou a lógica?"]
   ],
+  "audio_tabela_10.2.1": [
+    [0,5.3,"Então, clica no card do subnível p ali para ver como ficam os subníveis nesse bloco."]
+  ],
   "audio_tabela_10.3": [
     [0,2.56,"Agora, vamos para o bloco p, aqui na direita."],
     [2.98,7.92,"Você lembra que o subnível p comporta até 6 elétrons no total?"],

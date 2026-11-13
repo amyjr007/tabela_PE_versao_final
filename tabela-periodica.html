@@ -3271,6 +3271,10 @@ body.montagem .card101.solto:is(:hover,.pego){
 .card101{transition:opacity .3s ease, scale .55s cubic-bezier(.34,1.56,.64,1), translate .55s cubic-bezier(.34,1.56,.64,1),
   box-shadow .3s ease, filter .3s ease, left .4s cubic-bezier(.3,.85,.3,1), top .4s cubic-bezier(.3,.85,.3,1)}
 .card101.grande102{z-index:30}
+/* o fim da "10.2.1": o card p⁶ pulsa com brilho — é para ser tocado (leva à "10.3") */
+@keyframes chama1021{0%,100%{scale:1;filter:drop-shadow(0 0 4px color-mix(in srgb,var(--cat-ametais) 60%,transparent))}
+  50%{scale:1.14;filter:drop-shadow(0 0 18px color-mix(in srgb,var(--cat-ametais) 95%,#fff)) brightness(1.12)}}
+.mesa .card101.chama1021{animation:chama1021 1.6s ease-in-out infinite;cursor:pointer;z-index:31;pointer-events:auto}
 .card101.pulsa102 sup{animation:pulsa102 .9s ease-in-out infinite;transform-origin:50% 60%}
 @keyframes pulsa102{50%{transform:scale(1.55);color:#FFF6A8;text-shadow:0 0 10px rgba(255,240,140,.9)}}
 .card101.some102{opacity:0!important;pointer-events:none}
@@ -5404,7 +5408,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v60.8';
+const VERSAO = 'v60.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6724,6 +6728,7 @@ const TRILHAS = {
   '10':   'Audios/audio_tabela_10.mp3',    /* o slide 11: o Mg e o diagrama de Pauling (EV10) */
   '10.1': 'Audios/audio_tabela_10.1.mp3',   /* o play no fim da "10": os cards dos subníveis (CARDS101) */
   '10.2': 'Audios/audio_tabela_10.2.mp3',   /* sozinha, depois da festa dos quatro cards: o bloco s (CARDS101) */
+  '10.2.1': 'Audios/audio_tabela_10.2.1.mp3',   /* logo depois da 10.2, sem botão; no fim o card p⁶ pulsa e o toque nele leva à 10.3 */
   '10.3': 'Audios/audio_tabela_10.3.mp3',   /* o Saquei no fim da "10.2": o bloco p e as colunas (CARDS101) */
   '10.3.1': 'Audios/audio_tabela_10.3.1.mp3', /* sozinha, depois da festa das colunas: o hélio; no fim, o Saquei */
   '10.4': 'Audios/audio_tabela_10.4.mp3',   /* o Saquei no fim da "10.3.1": o bloco d e as colunas (CARDS101) */
@@ -6913,6 +6918,7 @@ const ROTEIROS = {
   '10':   [],
   '10.1': [],
   '10.2': [],
+  '10.2.1': [],
   '10.3': [],
   '10.3.1': [],
   '10.4': [],
@@ -7664,8 +7670,8 @@ const SEQ = {
     else if (id === '10') carregaTrilha('10.1');
     /* o fim da "10.1": com os quatro cards já encaixados (e a festa feita), a "10.2" */
     else if (id === '10.1'){ if (atual === 10) CARDS101.fim101(); }
-    /* o fim da "10.2": o play vira o "Saquei", que leva à "10.3" */
-    else if (id === '10.2'){ if (atual === 10) CARDS101.saquei(true); }
+    /* o fim da "10.2": a "10.2.1" logo, sem botão; no fim dela o card p⁶ pulsa, e o toque nele leva à "10.3" (CARDS101.tick102) */
+    else if (id === '10.2'){ if (atual === 10) tocaTrilha('10.2.1'); }
     /* o fim da "10.3": com as colunas completas (e a festa feita), a "10.3.1" */
     else if (id === '10.3'){ if (atual === 10 && CARDS101.festa103) tocaTrilha('10.3.1'); }
     /* o fim da "10.3.1": o "Saquei", que leva à "10.4" (o bloco d) */
@@ -22755,7 +22761,7 @@ const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
-const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.1.1', '10.6.2', '10.6.3', '10.7', '10.7.0', '10.7.1'];
+const ORDEM_10 = ['10', '10.1', '10.2', '10.2.1', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.1.1', '10.6.2', '10.6.3', '10.7', '10.7.0', '10.7.1'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -23093,6 +23099,21 @@ const CARDS101 = {
       this.nt102 = n;
       EV9.escreve(this.texto102, TEXTO_102, n);
     }
+    /* o fim da "10.2.1" ("clica no card do subnível p"): o card p⁶ (no lugar dele na tabela) pulsa com brilho; o toque nele leva à "10.3" */
+    const chama = !monta && atual === 10 && trilhaAtual === '10.2.1' && (som.ended || (som.duration > 0 && som.currentTime >= som.duration - 0.15));
+    const cd = this.cards[1] && this.cards[1].c;
+    if (cd){
+      if (!cd._toque1021){
+        cd._toque1021 = true;
+        cd.addEventListener('click', ev => {
+          if (!cd.classList.contains('chama1021')) return;
+          ev.stopPropagation();
+          cd.classList.remove('chama1021');
+          tocaTrilha('10.3');
+        }, true);
+      }
+      if (cd.classList.contains('chama1021') !== chama) cd.classList.toggle('chama1021', chama);
+    }
     const dentro = ([a, b]) => T >= a && T < b;
     const R = 0.6 * PASSO;
     /* a etiqueta: escondida lá em cima; desce até à família subida; e desce com ela */
@@ -23337,7 +23358,7 @@ const CARDS101 = {
     }
     const monta = naMontagem(), de = trilhaAtual === '10.5', T = monta ? -1 : de ? t : depoisDe('10.5') ? 99 : -1;
     /* no fim da "10.3", da "10.4" e da "10.5" o play sai (é a vez do aluno tocar as colunas) */
-    stage.classList.toggle('sem-play105', !monta && ['10.3', '10.4', '10.5'].includes(trilhaAtual) && (som.ended || (som.duration > 0 && t >= som.duration - 0.15)));
+    stage.classList.toggle('sem-play105', !monta && ['10.2.1', '10.3', '10.4', '10.5'].includes(trilhaAtual) && (som.ended || (som.duration > 0 && t >= som.duration - 0.15)));
     const n = EV9.letras(T, T105.texto[0], T105.texto[1], TEXTO_105);
     if (n !== this.nt105){
       if (n > this.nt105 && this.nt105 >= 0 && de) TECLAS.bate();
