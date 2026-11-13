@@ -5404,7 +5404,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v60.1';
+const VERSAO = 'v60.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23627,6 +23627,7 @@ const CARDS101 = {
     const monta = naMontagem(), em = id => trilhaAtual === id && !monta;
     const tempo = id => em(id) ? t : !monta && depoisDe(id) ? 99 : -1;
     const de7 = em('10.7'), de70 = em('10.7.0'), T7 = tempo('10.7'), T70 = tempo('10.7.0');
+    if (de70 && T70 >= T1070.claro) this.pula1070 = false;
     const acabou = som.ended || (som.duration > 0 && t >= som.duration - 0.15);
     if (!this.veu107){
       const m = this.m, sl = slides[10];
@@ -23699,7 +23700,7 @@ const CARDS101 = {
     /* (na montagem, da "10.7" em diante, o f¹⁴ gigante à vista, para ser arrumado) */
     const monta107 = monta && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.7');
     const chave = [T7 >= 0, T7 >= T107.semSP, T7 >= T107.d10, T7 >= T107.f14 || monta107,
-                   (de7 && T7 >= T107.escuro) || (de70 && T70 < T1070.claro),
+                   (de7 && T7 >= T107.escuro) || (de70 && T70 < T1070.claro && !this.pula1070),
                    ...T107.linhas.map(L => T7 >= L[0]), ...T107.linhas.map(L => dentro(T7, L)), this.pede107,
                    (de70 && T70 >= T1070.escuro && !this.fechou1070) || (em('10.7.1') && t < T1071.sai && !this.pula1071), dentro(T70, T1070.regra), this.pede1070].join();
     if (chave === this.estado107) return;
@@ -28228,18 +28229,13 @@ const NAV_TOPICOS = [
       });
     } },
   /* o começo da "10.7.0": a regra do bloco d (a tabela como no fim da "10.7") */
+  /* (direto na tela do começo, sem o escuro da "10.7") */
   { titulo:'A regra pros elementos de transição externa', sub:'o começo da 10.7.0', slide:10,
-    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.7.0', 0, g)); } },
+    entra(v, g){ CARDS101.pula1070 = true; saltaPara10('10.7.0', g); } },
   /* o começo da "10.7.1": o exemplo do ferro (a regra sai em 1 s) */
   { titulo:'O exemplo do Fe', sub:'o começo da 10.7.1', slide:10,
-    /* (direto na tela do começo: sem o véu da regra e sem as transições — a
-       cena não se monta à vista; as transições voltam depois do primeiro segundo) */
-    /* (a trilha já é posta na hora — parada no 0 —, para a mesa chegar com a cena pronta) */
-    entra(v, g){
-      CARDS101.pula1071 = true; stage.classList.add('salto1071');
-      carregaTrilha('10.7.1');
-      depoisDaMesa(g, () => { tocaDesde('10.7.1', 0, g); setTimeout(() => { if (g === NAV.geracao) stage.classList.remove('salto1071'); }, 900); });
-    } },
+    /* (direto na tela do começo, sem o véu da regra) */
+    entra(v, g){ CARDS101.pula1071 = true; saltaPara10('10.7.1', g); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
@@ -28336,6 +28332,18 @@ function poeNoLugarJa(c){
 
 /* a narração só volta depois de a mesa pousar; e a mesa não se põe a
    respirar à espera do play, porque a aula já vai adiantada */
+/* O salto do sumário que não deixa a cena se montar à vista: a trilha já é
+   posta na hora (parada no 0), para a mesa chegar com a cena pronta, e as
+   transições ficam desligadas (#stage.salto1071) até 0,9 s depois do play */
+function saltaPara10(id, g){
+  const k = ++saltaPara10.n;
+  stage.classList.add('salto1071');
+  carregaTrilha(id);
+  depoisDaMesa(g, () => { tocaDesde(id, 0, g); });
+  /* (as transições voltam em 2,4 s — mesmo que se saia dali antes) */
+  setTimeout(() => { if (k === saltaPara10.n) stage.classList.remove('salto1071'); }, 2400);
+}
+saltaPara10.n = 0;
 function depoisDaMesa(g, fn){
   SEQ.comecou = true;
   VIDA.desliga();

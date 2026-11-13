@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v60.1** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v60.2** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -108,8 +108,8 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | l – O exemplo do iodo | 10.6.2 |
 | m – O exemplo do Cs | 10.6.3 |
 | n – Quiz 2 | o quiz 2 direto |
-| o – A regra pros elementos de transição externa | 10.7.0 |
-| p – O exemplo do Fe | 10.7.1 (direto na tela do começo: sem o véu da regra e sem transições — a trilha é posta na hora do toque e a classe salto1071 no #stage desliga as transições até 0,9 s depois do play) |
+| o – A regra pros elementos de transição externa | 10.7.0 (direto na tela do começo, sem o escuro da 10.7 — saltaPara10 e pula1070) |
+| p – O exemplo do Fe | 10.7.1 (direto na tela do começo: sem o véu da regra e sem transições — saltaPara10: a trilha é posta na hora do toque e a classe salto1071 no #stage desliga as transições por 2,4 s; pula1071) |
 
 Pelo sumário, cada narração abre com tudo o que veio antes já completo (as etiquetas no lugar). Voltar para uma narração com toques desfaz os toques dela.
 
