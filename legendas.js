@@ -135,12 +135,13 @@ var LEGENDAS = {
     [0,5.3,"Então, clica no card do subnível p ali para ver como ficam os subníveis nesse bloco."]
   ],
   "audio_tabela_10.3": [
-    [0,2.56,"Agora, vamos para o bloco p, aqui na direita."],
-    [2.98,7.92,"Você lembra que o subnível p comporta até 6 elétrons no total?"],
-    [7.92,10.75,"Agora, veja: quantas colunas temos nesse bloco?"],
-    [10.75,16.91,"Uma, duas, três, quatro, cinco, seis colunas."],
-    [16.91,23.82,"Ou seja, a distribuição eletrônica desses elementos vai avançando em p¹, p², e por aí vai."],
-    [23.82,29.3,"Continue a sequência tocando nas próximas colunas na tela, até completar o restante."]
+    [0,2.37,"Tá, o bloco p aqui na direita agora."],
+    [3.44,7.26,"Você lembra que o subnível p comporta até 6 elétrons no total?"],
+    [8.02,10.41,"Agora, veja: quantas colunas temos nesse bloco?"],
+    [10.93,16.67,"Uma, duas, três, quatro, cinco, seis colunas."],
+    [17.28,23.9,"Ou seja, a distribuição eletrônica desses elementos vai avançando em p¹, p², e…"],
+    [24.25,24.56,"Olha aí!"],
+    [25.12,29.3,"E, peraí, toca aí nas colunas seguintes para colocar os subníveis até a última coluna."]
   ],
   "audio_tabela_10.3.1": [
     [0,1.5,"Pronto. Viu que legal?"],

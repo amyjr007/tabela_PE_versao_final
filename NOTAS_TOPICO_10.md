@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v60.9** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v61.0** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -27,11 +27,11 @@ Onde paramos: **v60.9** (2026-11-13). Este arquivo serve para retomar o trabalho
 | 10 | Cena escura: tabelinha, foto do Pauling, Mg, distribuição com setas | play → 10.1 |
 | 10.1 | Cards s², p⁶, d¹⁰, f¹⁴; blocos ganham cor; encaixes aos 32 s; aluno arrasta | festa → 10.2 |
 | 10.2 | Regra das colunas; bloco s, famílias 1A/2A, etiquetas s¹ s² | (sem botão) → 10.2.1 |
-| 10.2.1 | "Então, clica no card do subnível p ali…" (5,3 s); no fim o play some e o card p⁶ (no lugar dele na tabela) pulsa com brilho (chama1021) | toque no p⁶ → 10.3 |
-| 10.3 | Bloco p; colunas sobem; p¹ (3A) e p² (4A); no fim o play sai; aluno toca da 5A à 8A | festa → 10.3.1 |
-| 10.3.1 | Hélio cresce e brilha; etiqueta s² nele; pausa de 1 s aos 20 s; card d | Saquei → 10.4 |
+| 10.2.1 | "Então, clica no card do subnível p ali…" (5,3 s); no fim o play some e uma mão amarela bate no card p⁶ (toque10, CHAMA_10) | toque no p⁶ → 10.3 |
+| 10.3 | Bloco p (áudio regravado na v61.0: contagem aos 10,9–15,5 s, p¹ 21,55 s, p² 22,3 s); colunas sobem; p¹ (3A) e p² (4A); no fim o play sai; aluno toca da 5A à 8A | festa → 10.3.1 |
+| 10.3.1 | Hélio cresce e brilha; etiqueta s² nele; pausa de 1 s aos 20 s; card d | mão no card d¹⁰ → 10.4 |
 | 10.4 | Bloco d (e só o bloco aos 13 s, por 1 s); colunas 3 a 12; d¹; no fim o play sai; aluno toca da 4 à 12 | festa → 10.4.1 |
-| 10.4.1 | Bloco f cresce aos 6 s | Saquei → 10.5 |
+| 10.4.1 | Bloco f cresce aos 6 s | mão no card f¹⁴ → 10.5 |
 | 10.5 | Fileiras do f; texto "metais de transição interna"; La/Ac escurecem; brilho corre; f¹–f⁴ em cima das séries (que descem 14 px neste slide, `DESCE_SERIES_10`), caindo de cima; no fim o play sai; aluno toca f⁵ a f¹⁴ | festa → 10.5.1 |
 | 10.5.1 | Dos 1,8 aos 7 s os blocos crescem com o card encaixado, um de cada vez (s 1,8; p 3,2; d 4,6; f 6; o f volta aos 7); aplausos aos 6 s; aos 21 s a tabela fica sem cor e sem cards; dos 23 aos 31,2 s a instrução se digita linha a linha ("Toque no bloco s." 23–24,8; "Depois no bloco p." 25–26,8; "Depois no d." 27,7–28,7; "Por fim, toque no bloco f." 29,5–31,2) em 2 linhas, centrada entre os grupos 2 e 13, e fica no fim; aluno toca os blocos s, p, d, f (a frase do bloco certo fica verde, com ✓) | festa (como num quiz) → voz "perfeito" → 10.5.1.2 |
 | 10.5.1.2 | Desde o começo a sala apaga e o cabeçalho vira "10 Quiz", como nos outros quizzes | no fim abre o **quiz do tópico 10** (sem a fala de abertura do quiz: a questão 1 já se digita; pelo sumário, com a fala) |

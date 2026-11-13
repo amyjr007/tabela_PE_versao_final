@@ -3271,10 +3271,23 @@ body.montagem .card101.solto:is(:hover,.pego){
 .card101{transition:opacity .3s ease, scale .55s cubic-bezier(.34,1.56,.64,1), translate .55s cubic-bezier(.34,1.56,.64,1),
   box-shadow .3s ease, filter .3s ease, left .4s cubic-bezier(.3,.85,.3,1), top .4s cubic-bezier(.3,.85,.3,1)}
 .card101.grande102{z-index:30}
-/* o fim da "10.2.1": o card p⁶ pulsa com brilho — é para ser tocado (leva à "10.3") */
-@keyframes chama1021{0%,100%{scale:1;filter:drop-shadow(0 0 4px color-mix(in srgb,var(--cat-ametais) 60%,transparent))}
-  50%{scale:1.14;filter:drop-shadow(0 0 18px color-mix(in srgb,var(--cat-ametais) 95%,#fff)) brightness(1.12)}}
-.mesa .card101.chama1021{animation:chama1021 1.6s ease-in-out infinite;cursor:pointer;z-index:31;pointer-events:auto}
+/* o fim da "10.2.1", da "10.3.1" e da "10.4.1": o card que deve ser tocado — uma mão amarela
+   (a mesma do toque do quiz) bate nele a cada 1,4 s, com a onda na ponta do dedo e um anel
+   que se abre da borda do card */
+.card101 .aqui10{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .35s ease}
+.mesa .card101.toque10{cursor:pointer;z-index:31;pointer-events:auto;overflow:visible}
+.card101.toque10 .aqui10{opacity:1}
+.aqui10 .anel10{position:absolute;inset:-3px;border-radius:21px;border:3px solid #FFD43B;opacity:0;
+  animation:anel10 1.4s ease-out infinite}
+.aqui10 .dedo10{position:absolute;left:52%;top:50%;width:56px;height:56px;transform-origin:25px 7px;
+  filter:drop-shadow(0 3px 6px rgba(0,0,0,.5));animation:dedo10 1.4s ease-in-out infinite}
+.aqui10 .dedo10 svg{display:block;width:100%;height:100%;fill:#FFD43B;stroke:#3A2E00;stroke-width:1.1;stroke-linejoin:round}
+.aqui10 .onda10{position:absolute;left:25px;top:7px;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;
+  border:2.5px solid #FFD43B;opacity:0;animation:onda10 1.4s ease-out infinite}
+@keyframes dedo10{0%{translate:14px 18px;scale:1} 38%{translate:0 0;scale:1} 48%{translate:0 0;scale:.82}
+  60%{translate:0 0;scale:1} 100%{translate:14px 18px;scale:1}}
+@keyframes onda10{0%,44%{opacity:0;transform:scale(.35)} 48%{opacity:.95;transform:scale(.35)} 85%,100%{opacity:0;transform:scale(4.2)}}
+@keyframes anel10{0%,46%{opacity:0;transform:scale(1)} 50%{opacity:.9;transform:scale(1)} 95%,100%{opacity:0;transform:scale(1.28)}}
 .card101.pulsa102 sup{animation:pulsa102 .9s ease-in-out infinite;transform-origin:50% 60%}
 @keyframes pulsa102{50%{transform:scale(1.55);color:#FFF6A8;text-shadow:0 0 10px rgba(255,240,140,.9)}}
 .card101.some102{opacity:0!important;pointer-events:none}
@@ -5408,7 +5421,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v60.9';
+const VERSAO = 'v61.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7675,11 +7688,11 @@ const SEQ = {
     /* o fim da "10.3": com as colunas completas (e a festa feita), a "10.3.1" */
     else if (id === '10.3'){ if (atual === 10 && CARDS101.festa103) tocaTrilha('10.3.1'); }
     /* o fim da "10.3.1": o "Saquei", que leva à "10.4" (o bloco d) */
-    else if (id === '10.3.1'){ if (atual === 10) CARDS101.saquei(true, '10.4'); }
+    else if (id === '10.3.1'){ /* o card d¹⁰ chama o toque, que leva à 10.4 (CHAMA_10) */ }
     /* o fim da "10.4": com as colunas do d completas (e a festa feita), a "10.4.1" */
     else if (id === '10.4'){ if (atual === 10 && CARDS101.festa104) tocaTrilha('10.4.1'); }
     /* o fim da "10.4.1": o "Saquei", que leva à "10.5" (o bloco f) */
-    else if (id === '10.4.1'){ if (atual === 10) CARDS101.saquei(true, '10.5'); }
+    else if (id === '10.4.1'){ /* o card f¹⁴ chama o toque, que leva à 10.5 (CHAMA_10) */ }
     /* o fim da "10.5": com as colunas do f completas (e a festa feita), a "10.5.1" */
     else if (id === '10.5'){ if (atual === 10 && CARDS101.festa105) tocaTrilha('10.5.1'); }
     /* o fim da "10.5.1": com os quatro blocos tocados (e a festa feita), a "10.5.3" */
@@ -22687,10 +22700,12 @@ const TEXTO_102 = 'O nº de colunas no bloco = nº de e⁻ do subnível';
    ordem (5A, 6A, 7A, 8A): a tocada sobe e recebe a etiqueta dela; a
    anterior desce com a sua. Completa a 8A, a festa. O texto da "10.2" vai
    para o vão dos de transição (as etiquetas do p ficam na linha 1). */
-const T103 = { bloco:[1.5, 3.2], card:[4.5, 9.2], pulsa:[6.0, 8.7], some:10.9, esc18:[15.9, 16.9],
-               sobe:[[11, 12, 13], [12, 13, 14], [13, 14, 15], [14, 15, 16], [15, 15.9, 17], [21, 22, 13], [22, 23, 14]],
-               /* (a 4A sobe aos 22 s, recebe o p² aos 22,5 s e desce com ele aos 23 s) */
-               p1:[21.5, 22.0], p2:[22.5, 23.0], toque:23.0 };
+/* (o áudio regravado, v61.0: a contagem "uma… seis colunas" aos 10,9 / 11,7 / 12,8 / 13,7 / 14,8 / 15,5 s;
+   o "p¹" aos 21,55 s e o "p²" aos 22,3 s — os eventos um pouco antes de cada palavra) */
+const T103 = { bloco:[1.5, 3.2], card:[4.5, 9.2], pulsa:[6.0, 8.7], some:10.6, esc18:[15.3, 16.3],
+               sobe:[[10.7, 11.5, 13], [11.5, 12.55, 14], [12.55, 13.5, 15], [13.5, 14.6, 16], [14.6, 15.3, 17], [20.9, 21.9, 13], [21.9, 22.75, 14]],
+               /* (a 4A sobe aos 21,9 s, recebe o p² aos 22,25 s e desce com ele aos 22,75 s) */
+               p1:[21.4, 21.9], p2:[22.25, 22.75], toque:22.75 };
 const ESC_P_103 = 1.15;
 /* A "10.4" (o Saquei no fim da "10.3.1"): aos 1,5 s o bloco d cresce com o
    card dentro (volta aos 5,2 s); aos 7,4 s o card d¹⁰ cresce sozinho, e aos
@@ -22761,6 +22776,8 @@ const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
+/* o card que chama o toque no fim destas narrações, e a narração que ele leva (CARDS101.tick102) */
+const CHAMA_10 = { '10.2.1':[1, '10.3'], '10.3.1':[2, '10.4'], '10.4.1':[3, '10.5'] };
 const ORDEM_10 = ['10', '10.1', '10.2', '10.2.1', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.1.1', '10.6.2', '10.6.3', '10.7', '10.7.0', '10.7.1'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
@@ -23099,21 +23116,30 @@ const CARDS101 = {
       this.nt102 = n;
       EV9.escreve(this.texto102, TEXTO_102, n);
     }
-    /* o fim da "10.2.1" ("clica no card do subnível p"): o card p⁶ (no lugar dele na tabela) pulsa com brilho; o toque nele leva à "10.3" */
-    const chama = !monta && atual === 10 && trilhaAtual === '10.2.1' && (som.ended || (som.duration > 0 && som.currentTime >= som.duration - 0.15));
-    const cd = this.cards[1] && this.cards[1].c;
-    if (cd){
-      if (!cd._toque1021){
-        cd._toque1021 = true;
+    /* o fim da "10.2.1", da "10.3.1" e da "10.4.1": no lugar do "Saquei", o card do bloco
+       seguinte (p⁶, d¹⁰, f¹⁴, no lugar dele na tabela) chama o toque — uma mão que bate
+       nele, com a onda; o toque leva à narração seguinte (CHAMA_10) */
+    const acabou = som.ended || (som.duration > 0 && som.currentTime >= som.duration - 0.15);
+    const vez = !monta && atual === 10 && acabou ? CHAMA_10[trilhaAtual] : null;
+    CARDS_101.forEach((K, k) => {
+      const cd = this.cards[k] && this.cards[k].c;
+      if (!cd) return;
+      if (!cd._aqui10){
+        const a = cd._aqui10 = document.createElement('span');
+        a.className = 'aqui10';
+        a.innerHTML = '<i class="anel10"></i><span class="dedo10">' + document.querySelector('#mao svg').outerHTML + '<i class="onda10"></i></span>';
+        cd.appendChild(a);
         cd.addEventListener('click', ev => {
-          if (!cd.classList.contains('chama1021')) return;
+          if (!cd.classList.contains('toque10')) return;
           ev.stopPropagation();
-          cd.classList.remove('chama1021');
-          tocaTrilha('10.3');
+          cd.classList.remove('toque10');
+          const v = CHAMA_10[trilhaAtual];
+          if (v && TRILHAS[v[1]]) tocaTrilha(v[1]);
         }, true);
       }
-      if (cd.classList.contains('chama1021') !== chama) cd.classList.toggle('chama1021', chama);
-    }
+      const on = !!vez && vez[0] === k;
+      if (cd.classList.contains('toque10') !== on) cd.classList.toggle('toque10', on);
+    });
     const dentro = ([a, b]) => T >= a && T < b;
     const R = 0.6 * PASSO;
     /* a etiqueta: escondida lá em cima; desce até à família subida; e desce com ela */
@@ -23358,7 +23384,7 @@ const CARDS101 = {
     }
     const monta = naMontagem(), de = trilhaAtual === '10.5', T = monta ? -1 : de ? t : depoisDe('10.5') ? 99 : -1;
     /* no fim da "10.3", da "10.4" e da "10.5" o play sai (é a vez do aluno tocar as colunas) */
-    stage.classList.toggle('sem-play105', !monta && ['10.2.1', '10.3', '10.4', '10.5'].includes(trilhaAtual) && (som.ended || (som.duration > 0 && t >= som.duration - 0.15)));
+    stage.classList.toggle('sem-play105', !monta && ['10.2.1', '10.3', '10.3.1', '10.4', '10.4.1', '10.5'].includes(trilhaAtual) && (som.ended || (som.duration > 0 && t >= som.duration - 0.15)));
     const n = EV9.letras(T, T105.texto[0], T105.texto[1], TEXTO_105);
     if (n !== this.nt105){
       if (n > this.nt105 && this.nt105 >= 0 && de) TECLAS.bate();
