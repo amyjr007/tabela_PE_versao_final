@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v59.1** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v59.3** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -163,5 +163,8 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 
 - **Continuar do quiz 2** → o cartão sai (a sala ainda escura) e toca a **10.7** (`tick107`, `T107`).
 - **10.7:** 1 s a sala clareia e a tabela volta ao lugar aberto, inteira e colorida, com o bloco f escondido (classe `fOculto107`; os quadrinhos 57–71/89–103 ficam); 3 s os representativos escurecem (`semSP107`); 7,5 s o card f¹⁴ (peça `card-f14-gigante`, no palco 186, 481, escala 1,01) por cima dos quadrinhos 57–71 e 89–103 do 3B (que ficam atrás dele; `gig107`; o d¹⁰ gigante foi tirado); 12 s a tela escura com o título "Elementos de transição"; linhas digitadas 16–18, 20–22,5, 26–28 ("Vamos aplicar a regra geral.", em amarelo), 30–34; no fim, "Toque na tela" sem o play → **10.7.0**.
-- **10.7.0:** 2 s a tela clareia; 6–17 s a tela escurece e digita a regra do bloco d (n − 1); no fim, "Toque na tela" sem o play; o toque clareia a tela (e tocaria a 10.7.1, se ela estivesse ligada — ainda não está).
-- O áudio **10.7.1** já está na pasta, mas não foi ligado.
+- **10.7.0:** 2 s a tela clareia; 6–17 s a tela escurece e digita a regra do bloco d (n − 1); no fim, "Toque na tela" sem o play; o toque leva à **10.7.1**.
+
+## A 10.7.1 (v59.3) — o exemplo do ferro, 3d⁶ (`tick1071`, `T1071`)
+
+1 s a regra sai; 3 s o Fe cresce 15 % e brilha; 6 s a faixa da linha 4 pisca 2× (com a bolinha do 4), 7,5 s a da coluna 8 (com a etiqueta d⁶); 13 s digita "(n − 1)" no alto (linha 1); 15 s o n vira 4; 18,7 s fica um 3 vermelho; 20 s sai; 20,8 s "Subnível mais energético:" (entre as linhas 2 e 3); 24 s "(n − 1 = 3)" em cima; 25 s o bloco d pulsa; 25,9 s a coluna pisca 2× de novo; 28/28,9/29,5 s o 3, o d e o ⁶; 30,5 s o 3d⁶ cresce e brilha, com confetes, aplausos e funfare; dali a bolinha do 4, o "(n − 1)" embaixo dela e a etiqueta d⁶ ficam piscando. O "O subnível mais energético" do alto sai na 10.7.1. O fim da 10.7.1 ainda não leva a nada.

@@ -3347,6 +3347,22 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 :is(.veu107 .lin107, .veu1070 .regra1070) .cursor{display:none;width:4px;height:.9em;margin:0 -4px 0 0;vertical-align:-.1em;background:var(--ouro-luz);border-radius:1px}
 :is(.veu107 .lin107, .veu1070 .regra1070).digitando107 .cursor{display:inline-block}
 /* (o Toque na tela embaixo das linhas, no meio: sem o left/top/translate da tela escura do slide 1) */
+/* A "10.7.1": a fórmula (o 4 no azul das camadas, o 3 em vermelho), o d⁶ da
+   resposta na cor do bloco d, o "(n − 1)" embaixo da bolinha do 4, o bloco d
+   que pulsa, e a bolinha, o "(n − 1)" e a etiqueta d⁶ piscando no fim */
+.form1071{position:absolute;z-index:30;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
+  font-family:var(--display);font-weight:700;font-size:46px;color:var(--tinta)}
+.form1071 .n4{color:var(--cor-linha)}
+.form1071 .verm{color:#E5394F;font-size:70px}
+.r106.rd107 :is(.rs,.r2){color:color-mix(in srgb,var(--cat-transicao) 86%,#000)}
+.mesa.sem1052 .titulo9.texto1052{opacity:0!important}
+.tag1071{position:absolute;z-index:16;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
+  font-family:var(--display);font-weight:700;font-size:15px;color:var(--cor-linha);opacity:0;transition:opacity .4s ease}
+.tag1071.on{opacity:1}
+@keyframes pisca1071{50%{filter:opacity(.2)}}
+.mesa .eixo.pisca1071, .etq102.pisca1071, .tag1071.pisca1071{animation:pisca1071 1.2s ease-in-out infinite}
+@keyframes pulsaD107{50%{scale:1.08}}
+.mesa.pulsaD107 .pc[data-b101="d"]:not([data-z="57"], [data-z="89"]){animation:pulsaD107 .9s ease-in-out}
 .veu.veu107 .toque-continuar, .veu.veu1070 .toque-continuar{position:static;left:auto;top:auto;transform:none;margin-top:26px}
 .veu106{flex-direction:column}
 .regra106{width:1000px;margin:0;text-align:center;text-wrap:balance;
@@ -3423,7 +3439,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
    esquerda — não volta a tocar no quiz quando o pulso ou o balanço do erro
    saem: sem isto, a cada toque todas as bolinhas encolhiam e deslizavam — e
    nas narrações, quando um pulso acabava) */
-.mesa[data-slide="10"] .eixo[data-periodo]:not(.errada3, .pulsaF106, .pulsa106, .revA106){animation:none}
+.mesa[data-slide="10"] .eixo[data-periodo]:not(.errada3, .pulsaF106, .pulsa106, .revA106, .pisca1071){animation:none}
 /* (nas questões 1 a 4, o convite ao toque: as bolinhas das camadas e os cards
    do s e do p pulsam num brilho dourado leve — cada grupo até a parte dele ser
    acertada; o verde do acerto, o vermelho do erro e o âmbar da pista ficam por cima) */
@@ -5377,7 +5393,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v59.2';
+const VERSAO = 'v59.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6711,7 +6727,8 @@ const TRILHAS = {
   '10.6.2': 'Audios/audio_tabela_10.6.2.mp3', /* o "Vamos" no fim da "10.6.1.1": o segundo exemplo, o iodo (5p⁵) */
   '10.6.3': 'Audios/audio_tabela_10.6.3.mp3', /* o play no fim da "10.6.2": o césio (6s¹) e a demonstração do quiz 2 */
   '10.7': 'Audios/audio_tabela_10.7.mp3',     /* o Continuar do quiz 2: os de transição, e o adendo das exceções */
-  '10.7.0': 'Audios/audio_tabela_10.7.0.mp3'  /* o toque na tela no fim da "10.7": a regra do bloco d */
+  '10.7.0': 'Audios/audio_tabela_10.7.0.mp3', /* o toque na tela no fim da "10.7": a regra do bloco d */
+  '10.7.1': 'Audios/audio_tabela_10.7.1.mp3'  /* o toque na tela no fim da "10.7.0": o exemplo do ferro (3d⁶) */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -6899,7 +6916,8 @@ const ROTEIROS = {
   '10.6.2': [],
   '10.6.3': [],
   '10.7': [],
-  '10.7.0': []
+  '10.7.0': [],
+  '10.7.1': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -22369,6 +22387,21 @@ const LINHAS_107 = ['Tem eletrosfera mais complexa.', 'Tem algumas exceções na
    nova, de 17,2 s); aí "Toque na
    tela" (sem o play), e o toque clareia a tela. */
 const T1070 = { claro:2.0, escuro:6.0, regra:[6.0, 16.0] };
+/* A "10.7.1" (o toque na tela no fim da "10.7.0"; o exemplo do ferro, 3d⁶): aos
+   1 s a regra sai e a tela clareia (a fórmula fica no alto, na linha 1, e a
+   resposta entre as linhas 2 e 3); aos 3 s o Fe cresce 15 % e brilha; aos 6 s
+   a faixa da linha 4 pisca 2 vezes (com a bolinha do 4), aos 7,5 s a da coluna
+   8 (com a etiqueta d⁶); aos 13 s digita a fórmula "(n − 1)"; aos 15 s o n sai
+   e entra o 4; aos 18,7 s tudo sai e fica um "3" em vermelho; aos 20 s ele
+   sai; aos 20,8 s digita "Subnível mais energético:"; aos 24 s, em cima,
+   "(n − 1 = 3)"; aos 25 s o bloco d inteiro pulsa; aos 25,9 s a faixa da
+   coluna pisca 2 vezes de novo; aos 28 s o 3, aos 28,9 s o d, aos 29,5 s o ⁶;
+   aos 30,5 s o 3d⁶ cresce e brilha, com funfare e confetes. Dali a bolinha do 4
+   (com um "(n − 1)" embaixo dela) e a etiqueta d⁶ ficam piscando. */
+const T1071 = { sai:1.0, fe:3.0, linha:6.0, coluna:7.5, piscaL:[[6.0, 7.2]], piscaC:[[7.5, 8.7], [25.9, 27.1]],
+                formula:[13.0, 13.8], quatro:[15.0, 15.4], vermelho:18.7, some:20.0, texto:[20.8, 22.3],
+                igual:[24.0, 25.0], pulsaD:[25.0, 25.9], tres:28.0, d:28.9, seis:29.5, festa:30.5 };
+const FORMULA_1071 = '(n − 1)', IGUAL_1071 = '(n − 1 = 3)', TEXTO_1071 = 'Subnível mais energético:';
 /* (o "d" e o "desse bloco" na cor do bloco d; a "coluna" no âmbar das colunas) */
 const PARTES_1070 = [{ t:'O subnível mais energético é formado pelo número do seu período menos um (n − 1), acompanhado da letra ' },
                      { t:'“d”', c:'d1070' }, { t:' e do número da ' }, { t:'coluna', c:'col106' }, { t:' onde ele se encontra dentro ' },
@@ -22707,7 +22740,7 @@ const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
-const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.1.1', '10.6.2', '10.6.3', '10.7', '10.7.0'];
+const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.1.1', '10.6.2', '10.6.3', '10.7', '10.7.0', '10.7.1'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -22960,6 +22993,7 @@ const CARDS101 = {
     this.tick1063(t);
     this.tick1064(t);
     this.tick107(t);
+    this.tick1071(t);
     const monta = naMontagem(), de = trilhaAtual === '10.1', T = monta ? 99 : de ? t : -1;
     const n = EV9.letras(T, T101.texto[0], T101.texto[1], TEXTO_101);
     if (n !== this.nt && !this.texto.classList.contains('texto-livre')){
@@ -23604,11 +23638,11 @@ const CARDS101 = {
         this.pede107 = false; this.estado107 = '';
         if (atual === 10 && trilhaAtual === '10.7') tocaTrilha('10.7.0');
       });
+      /* (tocada a tela no fim da "10.7.0", a "10.7.1": a regra sai em 1 s dela) */
       this.veu1070.addEventListener('click', () => {
         if (!this.pede1070) return;
-        this.pede1070 = false; this.fechou1070 = true; this.estado107 = '';
-        som.pause();
-        if (atual === 10 && TRILHAS['10.7.1']) tocaTrilha('10.7.1');
+        this.pede1070 = false; this.estado107 = '';
+        if (atual === 10) tocaTrilha('10.7.1');
       });
       /* os cards gigantes, no vão dos lantanídeos e actinídeos */
       const gig = (b, e, cor, x, y) => {
@@ -23656,7 +23690,7 @@ const CARDS101 = {
     const chave = [T7 >= 0, T7 >= T107.semSP, T7 >= T107.d10, T7 >= T107.f14 || monta107,
                    (de7 && T7 >= T107.escuro) || (de70 && T70 < T1070.claro),
                    ...T107.linhas.map(L => T7 >= L[0]), ...T107.linhas.map(L => dentro(T7, L)), this.pede107,
-                   de70 && T70 >= T1070.escuro && !this.fechou1070, dentro(T70, T1070.regra), this.pede1070].join();
+                   (de70 && T70 >= T1070.escuro && !this.fechou1070) || (em('10.7.1') && t < T1071.sai), dentro(T70, T1070.regra), this.pede1070].join();
     if (chave === this.estado107) return;
     this.estado107 = chave;
     const v = chave.split(',').map(x => x === 'true');
@@ -23674,6 +23708,92 @@ const CARDS101 = {
     this.veu1070.classList.toggle('pede-toque', pede70);
     this.toque1070.classList.toggle('on', pede70);
     stage.classList.toggle('em-toque', pede7 || pede70);
+  },
+  /* A "10.7.1": o exemplo do ferro (3d⁶) — a camada é o período menos um */
+  tick1071(t){
+    const monta = naMontagem(), de = trilhaAtual === '10.7.1' && !monta;
+    const T = de ? t : !monta && depoisDe('10.7.1') ? 99 : -1;
+    if (!this.form1071){
+      const m = this.m;
+      const faixa = (cls, l, tp, w, h) => {
+        const b = document.createElement('div');
+        b.className = 'banda ' + cls + ' b106';
+        Object.assign(b.style, { left:l + 'px', top:tp + 'px', width:w + 'px', height:h + 'px' });
+        m.insertBefore(b, m.querySelector('.banda') || m.firstChild);
+        return b;
+      };
+      /* as faixas da linha 4 e da coluna 8 (a do d⁶, que sobe além da etiqueta dele) */
+      const alt = LADO + 14, larg = LADO + 14, topoC = yDaLinha(4) - LADO / 2 - 50;
+      this.faixaL1071 = faixa('banda-linha', TAB_ESQ - 64, yDaLinha(4) - alt / 2, TAB_LARG + 96, alt);
+      this.faixaC1071 = faixa('banda-col', xDaColuna(8) - larg / 2, topoC, larg, yDaLinha(7) + LADO / 2 + 30 - topoC);
+      this.p41071 = m.querySelector('.eixo[data-periodo="4"]');
+      this.fe1071 = m.querySelector('.pc[data-z="26"]');
+      const meio = ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
+      /* a fórmula, no vão de cima (linha 2), e a linha da resposta, embaixo dela (linha 3) */
+      const f = this.form1071 = document.createElement('div');
+      f.className = 'form1071';
+      /* (a fórmula na altura da linha 1; a resposta entre as linhas 2 e 3 — longe das etiquetas do d) */
+      f.style.left = meio; f.style.top = (yDaLinha(1) + 4).toFixed(1) + 'px';
+      m.appendChild(f);
+      const w = this.linha1071 = document.createElement('div');
+      w.className = 'linha106 linha1071';
+      w.style.left = meio; w.style.top = ((yDaLinha(2) + yDaLinha(3)) / 2 + 4).toFixed(1) + 'px';
+      w.innerHTML = '<span class="titulo9 rot106"><span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span></span>' +
+        '<div class="r106 rd107"><span class="r3">3</span><span class="rs">d</span><sup class="r2">6</sup></div>';
+      m.appendChild(w);
+      this.rot1071 = w.querySelector('.rot106');
+      this.r1071 = w.querySelector('.r106');
+      /* o "(n − 1)" embaixo da bolinha do 4 */
+      const tg = this.tag1071 = document.createElement('div');
+      tg.className = 'tag1071';
+      tg.textContent = '(n − 1)';
+      if (this.p41071){ tg.style.left = this.p41071.style.left; tg.style.top = (parseFloat(this.p41071.style.top) + 30).toFixed(1) + 'px'; }
+      m.appendChild(tg);
+    }
+    /* a festa dos 30,5 s (só tocando de seguida: um salto não a dispara) */
+    const passa = s => de && !som.paused && this.t1071ant >= 0 && this.t1071ant < s && t >= s && t < s + 0.6 && t - this.t1071ant < 1;
+    if (passa(T1071.festa)){ this.aplauso(); tocaEfeito('funfare'); }
+    this.t1071ant = de ? t : -1;
+    /* a fórmula: digitada; o n vira 4; o 3 vermelho; some; e o "(n − 1 = 3)" */
+    const F = T1071;
+    let modo, html = '';
+    if (T < F.formula[0] || (T >= F.some && T < F.igual[0])) modo = 'nada';
+    else if (T < F.quatro[0]){ const n = EV9.letras(T, F.formula[0], F.formula[1], FORMULA_1071); modo = 'f' + n; html = FORMULA_1071.slice(0, n); }
+    else if (T < F.quatro[1]){ modo = 'semN'; html = '( − 1)'; }
+    else if (T < F.vermelho){ modo = 'quatro'; html = '(<span class="n4">4</span> − 1)'; }
+    else if (T < F.some){ modo = 'tres'; html = '<span class="verm">3</span>'; }
+    else { const n = EV9.letras(T, F.igual[0], F.igual[1], IGUAL_1071); modo = 'i' + n; html = IGUAL_1071.slice(0, n); }
+    if (modo !== this.modo1071){
+      if (de && /^[fi]\d+$/.test(modo) && /^[fi]\d+$/.test(this.modo1071 || '') && modo !== this.modo1071) TECLAS.bate();
+      this.modo1071 = modo;
+      this.form1071.innerHTML = html;
+    }
+    const nR = EV9.letras(T, F.texto[0], F.texto[1], TEXTO_1071);
+    if (nR !== this.ntR1071){
+      if (nR > this.ntR1071 && this.ntR1071 >= 0 && de) TECLAS.bate();
+      this.ntR1071 = nR;
+      EV9.escreve(this.rot1071, TEXTO_1071, nR);
+    }
+    const dentro = ([a, b]) => T >= a && T < b;
+    const fim = T >= F.festa + 0.6;
+    const chave = [T >= 0, T >= F.fe, T >= F.linha, T >= F.coluna, F.piscaL.some(dentro), F.piscaC.some(dentro),
+                   T >= F.texto[0], dentro(F.texto), dentro(F.pulsaD), T >= F.tres, T >= F.d, T >= F.seis, T >= F.festa, fim].join();
+    if (chave === this.estado1071) return;
+    this.estado1071 = chave;
+    const [ativo, fe, lin, col, pL, pC, rot, dig, pD, tres, d, seis, festa, pisca] = chave.split(',').map(v => v === 'true');
+    /* (o "O subnível mais energético" do alto sai: a fórmula fica no lugar dele) */
+    this.m.classList.toggle('sem1052', ativo);
+    if (this.fe1071){ this.fe1071.classList.toggle('mg106', fe); this.fe1071.style.scale = fe ? '1.15' : ''; this.fe1071.classList.toggle('grande101', fe); }
+    this.faixaL1071.classList.toggle('on', lin); this.faixaL1071.classList.toggle('pisca2106', pL);
+    this.faixaC1071.classList.toggle('on', col); this.faixaC1071.classList.toggle('pisca2106', pC);
+    if (this.p41071){ this.p41071.classList.toggle('pulsaF106', pL); this.p41071.classList.toggle('pisca1071', pisca); }
+    const d6 = this.etq104 && this.etq104[5] && this.etq104[5].d;
+    if (d6){ d6.classList.toggle('pulsaF106', pC); d6.classList.toggle('pisca1071', pisca); }
+    this.tag1071.classList.toggle('on', pisca); this.tag1071.classList.toggle('pisca1071', pisca);
+    this.m.classList.toggle('pulsaD107', pD);
+    this.rot1071.classList.toggle('on', rot); this.rot1071.classList.toggle('digitando9', dig);
+    this.r1071.classList.toggle('tres', tres); this.r1071.classList.toggle('esse', d); this.r1071.classList.toggle('dois', seis);
+    this.r1071.classList.toggle('festa', festa);
   },
   /* A "10.6.3" ("1064" no código): o césio, e a demonstração do quiz 2 com o Al */
   tick1064(t){
@@ -24002,6 +24122,7 @@ const CARDS101 = {
     this.festa1051 = false; this.t1052ant = -1; this.nt1052 = -1; this.nt1051 = ''; this.nn1051 = 0;
     this.estado106 = ''; this.t106ant = -1; this.nt106 = -1; this.ntT106 = -1; this.ntR106 = -1; this.semF106 = undefined;
     this.estado1063 = ''; this.t1063ant = -1; this.ntR1063 = -1; this.nMais1052 = 0;
+    this.estado1071 = ''; this.t1071ant = -1; this.ntR1071 = -1; this.modo1071 = '';
     this.estado107 = ''; this.ntR1070 = -1; this.fechou1070 = false; if (this.lin107) this.lin107.forEach(e => e._n = -1);
     this.estado1064 = ''; this.t1064ant = -1; this.ntR1064 = -1; this.ntD1064 = -1; this.g1064 = (this.g1064 || 0) + 1;
     if (this.vez1051 >= 0 && this.cards) this.cresce1051(this.vez1051, false);

@@ -231,6 +231,17 @@ var LEGENDAS = {
     [11.12,16.09,"acompanhado da letra d e do número da coluna onde ele se encontra dentro desse bloco."],
     [16.54,17.16,"É isso."]
   ],
+  "audio_tabela_10.7.1": [
+    [0,0.98,"Pareceu difícil?"],
+    [1.45,2.19,"Que nada!"],
+    [2.6,4.49,"Vamos pegar o ferro aqui como exemplo."],
+    [4.95,9.03,"Ele está no quarto período, na sexta coluna do bloco d."],
+    [9.52,14.49,"Mas, como ele é um elemento de transição, o subnível preenchido fica em uma camada a menos:"],
+    [14.79,19.32,"em vez da camada 4, o subnível mais energético fica na camada 3."],
+    [19.74,23.34,"Juntando tudo, o subnível mais energético do ferro é:"],
+    [23.74,28.61,"camada 3, bloco d, sexta coluna. Então fica 3d⁶."],
+    [29.68,31.79,"3d⁶."]
+  ],
   "audio_tabela_10.6": [
     [0,6.82,"Certo, agora vamos aprender a descobrir o subnível mais energético dos elementos direto pela tabela periódica."],
     [7.94,12.96,"Vamos começar pelos elementos representativos, que são aqueles das famílias A, aqui."],
