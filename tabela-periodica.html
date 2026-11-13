@@ -5457,7 +5457,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v62.0';
+const VERSAO = 'v62.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22485,7 +22485,8 @@ const REGRA_1070 = PARTES_1070.map(p => p.t).join('');
    energético:"; aos 17,7 s o "3", aos 19 s o "s", aos 19,2 s o "²"; aos 20,5 s
    o 3s² cresce e brilha, com confetes, aplausos e funfare; aos 23 s os
    crescidos voltam ao normal. No fim, o Saquei leva à "10.6.1.1". */
-const T1061 = { mg:3.0, linha:7.0, coluna:8.2, piscaL:[[7.0, 8.2], [11.0, 12.2]], piscaC:[[8.2, 9.4], [12.3, 13.5]],
+/* (v62.1: as faixas viraram setas; a bolinha e a etiqueta pulsam quando a seta chega, 0,9 s depois) */
+const T1061 = { mg:3.0, linha:7.0, coluna:8.2, piscaL:[[7.9, 9.1], [11.0, 12.2]], piscaC:[[9.1, 10.3], [12.3, 13.5]],
                 bola:11.0, etq:12.3, texto:[14.7, 16.2], tres:17.7, s:19.0, dois:19.2, festa:20.5, volta:23.0,
                 /* (aos 18 s a bolinha do 3 cresce mais; aos 18,8 s ela volta ao normal e a
                    etiqueta s² cresce mais, junto com o s² grande; aos 20,5 s tudo normal) */
@@ -22528,7 +22529,8 @@ const TEXTO_1063 = 'O subnível mais energético:';
    24,5 s o Al acende; aos 26,5 s a mãozinha toca a bolinha da camada 3 (e
    aparece "Subnível mais energético: 3"); aos 28,5 s toca o card p¹, no alto
    da coluna (e aparece o p¹), com aplausos e confetes. No fim da fala, o quiz 2. */
-const T1064 = { cs:3.0, linha:5.5, coluna:7.0, piscaL:[[5.5, 6.7], [9.6, 10.8]], piscaC:[[7.0, 8.2], [10.7, 11.9]],
+/* (v62.1: as faixas viraram setas; a bolinha e a etiqueta pulsam quando a seta chega, 0,9 s depois) */
+const T1064 = { cs:3.0, linha:5.5, coluna:7.0, piscaL:[[6.4, 7.6], [9.6, 10.8]], piscaC:[[7.9, 9.1], [10.7, 11.9]],
                 texto:[13.0, 14.5], seis:16.0, s:17.0, sup:18.0, festa:18.7, pausa:20.0, volta:22.5,
                 quiz:23.0, al:24.5, mao:26.5, demo:[26.5, 27.6], vaiCol:28.0, col:28.5, tiraMao:29.6 };
 const TEXTO_1064 = 'O subnível mais energético:';
@@ -23636,8 +23638,10 @@ const CARDS101 = {
     stage.classList.toggle('em-toque', pede);
     /* (o Mg só brilha em verde, sem crescer) */
     if (this.mg106) this.mg106.classList.toggle('mg106', mg);
-    this.faixaL106.classList.toggle('on', lin); this.faixaL106.classList.toggle('pisca2106', pL);
-    this.faixaC106.classList.toggle('on', col); this.faixaC106.classList.toggle('pisca2106', pC);
+    /* (v62.1: no lugar das faixas piscantes, as setas — do Mg até a bolinha do 3 e até a etiqueta s²) */
+    this.faixaL106.classList.remove('on', 'pisca2106'); this.faixaC106.classList.remove('on', 'pisca2106');
+    if (!this.setas106) this.setas106 = this.fazSetas(12, 3, 2, () => this.p3106, () => this.etq102 && this.etq102[1], 1.95, 1.1);
+    this.setas106.liga(lin, col, T1, T1061.linha, T1061.coluna);
     /* (a bolinha do 3 pisca com a faixa da linha; a etiqueta s² — no alto da coluna — com a da coluna) */
     if (this.p3106){ this.p3106.classList.toggle('pulsaF106', pL); this.p3106.classList.toggle('p106', bola); }
     if (this.etq102){ this.etq102[1].d.classList.toggle('pulsaF106', pC); this.etq102[1].d.classList.toggle('destaque106', etq); }
@@ -23661,6 +23665,32 @@ const CARDS101 = {
     this.r106.classList.toggle('reveza106', reveza);
   },
   /* A "10.6.2" (o "Vamos" no fim da "10.6.1.1"): o segundo exemplo, o iodo */
+  /* AS SETAS DO MG E DO CS (v62.1, como as do iodo): crescem do elemento até a bolinha
+     da linha (azul) e até a etiqueta da coluna (âmbar); fb e fe: o quanto a bolinha e a
+     etiqueta chegam a crescer ali (a ponta para antes delas) */
+  fazSetas(z, linha, col, bola, etq, fb, fe){
+    const m = this.m, mk = cls => { const e = document.createElement('div'); e.className = 'seta1063 ' + cls; e.innerHTML = '<div class="haste"><i class="ponta"></i></div>'; m.appendChild(e); return e; };
+    const S = { L:mk('h'), C:mk('v') };
+    S.poe = () => {
+      const xI = xDaColuna(col), yI = yDaLinha(linha), b = bola(), E = etq();
+      if (b){
+        /* (a ponta, de 14 px, termina antes da bolinha; perto dela — o Cs —, a haste fica curtinha) */
+        const x0 = xI - LADO / 2 - 2, xb = parseFloat(b.style.left) + b.offsetWidth / 2 * fb + 16;
+        Object.assign(S.L.style, { left:Math.min(xb, x0 - 6).toFixed(1) + 'px', top:yI.toFixed(1) + 'px', width:Math.max(6, x0 - xb).toFixed(1) + 'px' });
+      }
+      if (E){
+        const y0 = yI - LADO / 2 - 2, yE = E.park + E.d.offsetHeight / 2 * fe + 16;
+        Object.assign(S.C.style, { left:xI.toFixed(1) + 'px', top:Math.min(yE, y0 - 6).toFixed(1) + 'px', height:Math.max(6, y0 - yE).toFixed(1) + 'px' });
+      }
+    };
+    /* liga: a da linha e a da coluna; as pontas no vaivém depois de chegarem (0,9 s) */
+    S.liga = (lin, col, T, tL, tC) => {
+      if (lin || col) S.poe();
+      S.L.classList.toggle('on', lin); S.C.classList.toggle('on', col);
+      S.L.classList.toggle('aponta', lin && T >= tL + 0.9); S.C.classList.toggle('aponta', col && T >= tC + 0.9);
+    };
+    return S;
+  },
   /* o lugar das setas do iodo (na medida da mesa): da borda do iodo até a bolinha do 5 e até a etiqueta p⁵ */
   poeSetas1063(){
     const xI = xDaColuna(17), yI = yDaLinha(5), b = this.p51063, E = this.etq103 && this.etq103[4];
@@ -24043,8 +24073,10 @@ const CARDS101 = {
     this.estado1064 = chave;
     const [cs, lin, col, pL, pC, rot, dig, seis, s, sup, festa, al, dm, digD, colD] = chave.split(',').map(v => v === 'true');
     if (this.cs1064) this.cs1064.classList.toggle('mg106', cs);
-    this.faixaL1064.classList.toggle('on', lin); this.faixaL1064.classList.toggle('pisca2106', pL);
-    this.faixaC1064.classList.toggle('on', col); this.faixaC1064.classList.toggle('pisca2106', pC);
+    /* (v62.1: no lugar das faixas piscantes, as setas — do Cs até a bolinha do 6 e até a etiqueta s¹) */
+    this.faixaL1064.classList.remove('on', 'pisca2106'); this.faixaC1064.classList.remove('on', 'pisca2106');
+    if (!this.setas1064) this.setas1064 = this.fazSetas(55, 6, 1, () => this.p61064, () => this.etq102 && this.etq102[0], 1.3, 1.1);
+    this.setas1064.liga(lin, col, T, T1064.linha, T1064.coluna);
     /* (a bolinha do 6 pulsa com a faixa da linha; a etiqueta s¹ com a da coluna) */
     if (this.p61064) this.p61064.classList.toggle('pulsaF106', pL);
     if (this.etq102) this.etq102[0].d.classList.toggle('pulsaF106', pC);
