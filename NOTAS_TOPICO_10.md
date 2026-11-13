@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v62.1** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v62.2** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -40,7 +40,7 @@ Onde paramos: **v62.1** (2026-11-13). Este arquivo serve para retomar o trabalho
 | 10.6 | Ver abaixo | toque na tela → 10.6.1 (v61.9: na montagem, na 10.6, o "Elementos representativos primeiro" é peça — texto-106: anda e muda de tamanho; v62.0: no lugar do professor, palco x 747, y 111, esc 1,31 → mesa 752.8, 170.6, 31,4 px) |
 | 10.6.1 | Ver abaixo. v62.1: no lugar das faixas, as setas (fazSetas): do Mg até a bolinha do 3 (7 s) e até a etiqueta s² (8,2 s); as pulsações da 1ª vez passam para a chegada (7,9 s e 9,1 s) | Saquei → 10.6.1.1 |
 | 10.6.1.1 | Aos 6,5 s o 3s² pulsa | Vamos → 10.6.2 |
-| 10.6.2 | O iodo (ver abaixo). v61.2: 3,8 s o número atômico cresce (foco-num), 5,5 s pisca de âmbar 2×, 13 s volta; 26 s o 5 grande e a bolinha do 5 cresce; com o p (27,5 s) a etiqueta p⁵ cresce; 28,8 s a bolinha pulsa, 29,2 s a etiqueta; voltam aos 31,3 s. v61.4 (áudio de 43,5 s): 31,2 s pausa de 1,5 s; 35,8 s pausa de 3 s enquanto a distribuição do iodo se desenha um subnível por vez (12 pedaços, clip-path), com som de digitação; 37 s o 5p⁵ da distribuição pulsa 3×; 39,7 s o 5p⁵ grande pulsa 3×; 41 s pausa de 1,5 s; no fim tudo fica na tela . v61.7: no lugar das faixas piscantes, setas luminosas que crescem do iodo (seta1063): a azul aos 16,5 s até a bolinha do 5 (que pulsa 2× ao chegar, 17,4 s), a âmbar aos 17,5 s até a etiqueta p⁵ (pulsa 2× ao chegar, 18,4 s); 20 s pulsa a bolinha, 21,5 s a etiqueta; as pontas num vaivém discreto; as setas ficam até a 10.6.3 (v61.8); a bolinha do 5 e a etiqueta p⁵ ficam crescidas até o fim; "O subnível mais energético: 5p⁵" desceu para a linha 6 | botão verde "Próximo" → 10.6.3 |
+| 10.6.2 | O iodo (ver abaixo). v61.2: 3,8 s o número atômico cresce (foco-num), 5,5 s pisca de âmbar 2×, 13 s volta; 26 s o 5 grande e a bolinha do 5 cresce; com o p (27,5 s) a etiqueta p⁵ cresce; 28,8 s a bolinha pulsa, 29,2 s a etiqueta; voltam aos 31,3 s. v61.4 (áudio de 43,5 s): 31,2 s pausa de 1,5 s; 35,8 s pausa de 3 s enquanto a distribuição do iodo se desenha um subnível por vez (12 pedaços, clip-path), com som de digitação; 37 s o 5p⁵ da distribuição pulsa 3×; 39,7 s o 5p⁵ grande pulsa 3×; 41 s pausa de 1,5 s; no fim tudo fica na tela . v61.7: no lugar das faixas piscantes, setas luminosas que crescem do iodo (seta1063): a da linha aos 16,5 s até a bolinha do 5 (que pulsa 2× ao chegar, 17,4 s), a da coluna aos 17,5 s até a etiqueta p⁵ (pulsa 2× ao chegar, 18,4 s); 20 s pulsa a bolinha, 21,5 s a etiqueta; as pontas num vaivém discreto; v62.2: as setas (do iodo, do Mg e do Cs) numa cor só, amarelo vivo #FFE14D com contorno escuro; as setas ficam até a 10.6.3 (v61.8); a bolinha do 5 e a etiqueta p⁵ ficam crescidas até o fim; "O subnível mais energético: 5p⁵" desceu para a linha 6 | botão verde "Próximo" → 10.6.3 |
 
 ### A 10.6, a 10.6.1 e a 10.6.1.1 (refeitas na v54.8)
 

@@ -3506,13 +3506,13 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
   font-family:var(--display);font-weight:700;font-size:26px;line-height:1;color:var(--tinta);opacity:0;transition:opacity .6s ease}
 .dist1063.on{opacity:1}
 /* as setas luminosas do iodo: crescem a partir dele (0,9 s) até a bolinha do 5 (azul) e até a etiqueta p⁵ (âmbar) */
-.seta1063{position:absolute;z-index:29;pointer-events:none;opacity:0;transition:opacity .4s ease;--c:var(--cor-linha);
-  filter:drop-shadow(0 0 6px var(--c)) drop-shadow(0 0 12px color-mix(in srgb,var(--c) 70%,transparent))}
-.seta1063.v{--c:#C8641A}
+/* (v62.2: as duas na mesma cor, um amarelo vivo com contorno escuro — contrasta com o laranja do s, o verde do p e o azul do d) */
+.seta1063{position:absolute;z-index:29;pointer-events:none;opacity:0;transition:opacity .4s ease;--c:#FFE14D;
+  filter:drop-shadow(0 0 1.2px #1C1838) drop-shadow(0 0 1.2px #1C1838) drop-shadow(0 0 1px #1C1838) drop-shadow(0 0 9px rgba(255,214,50,.9))}
 .seta1063.on{opacity:1}
 .seta1063 .haste{position:absolute;background:var(--c);border-radius:3px;transition:width .9s cubic-bezier(.3,.7,.3,1), height .9s cubic-bezier(.3,.7,.3,1)}
-.seta1063.h .haste{right:0;top:-3px;height:6px;width:0}
-.seta1063.v .haste{bottom:0;left:-3px;width:6px;height:0}
+.seta1063.h .haste{right:0;top:-3.5px;height:7px;width:0}
+.seta1063.v .haste{bottom:0;left:-3.5px;width:7px;height:0}
 .seta1063.h.on .haste{width:100%}
 .seta1063.v.on .haste{height:100%}
 .seta1063 .ponta{position:absolute;width:20px;height:22px;background:var(--c)}
@@ -5457,7 +5457,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v62.1';
+const VERSAO = 'v62.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
