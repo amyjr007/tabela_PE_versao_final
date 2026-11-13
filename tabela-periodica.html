@@ -3366,6 +3366,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 /* (no 3d⁶ da resposta: o 3 no vermelho do 3 da fórmula, piscando com ele; o d⁶ com a etiqueta d⁶) */
 .r106.rd107 .r3{color:#E5394F}
 .r106.rd107.pisca1071 > *{animation:pisca1071 1.2s ease-in-out infinite}
+/* (alternados: primeiro os 3 — o vermelho, o da resposta e o (n − 1) —, depois os d⁶, meio ciclo atrás) */
+.r106.rd107.pisca1071 > :is(.rs,.r2), .mesa .etq102.pisca1071{animation-delay:-.6s}
 .mesa .eixo.pisca1071, .etq102.pisca1071, .tag1071.pisca1071, .form1071.pisca1071{animation:pisca1071 1.2s ease-in-out infinite}
 @keyframes pulsaD107{50%{scale:1.08}}
 .mesa.pulsaD107 .pc[data-b101="d"]:not([data-z="57"], [data-z="89"]){animation:pulsaD107 .9s ease-in-out}
@@ -5399,7 +5401,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v59.8';
+const VERSAO = 'v59.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
