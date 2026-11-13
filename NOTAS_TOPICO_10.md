@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v58.5** (2026-11-12). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v58.6** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -157,3 +157,10 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - Em todo o slide 11 (narrações e quizzes) as bolinhas dos números das linhas têm `scale:1.3` e os cards das colunas (etiquetas s¹, p³…) `scale:1.1`, guardados em `--esc0`; os pulsos (`pulsaF106`, `pulsa106`, `revA106`, `revB106`) partem do `--esc0`.
 - A entrada das bolinhas (`numLinha25`) fica desligada no slide 11: ela voltava a tocar quando um pulso acabava, e as bolinhas encolhiam e deslizavam.
 - No quiz 2, a linha da resposta muda de questão apagada e sem transição (antes, a resposta da questão nova piscava na tela).
+
+## A 10.7 e a 10.7.0 (v58.6) — os de transição
+
+- **Continuar do quiz 2** → o cartão sai (a sala ainda escura) e toca a **10.7** (`tick107`, `T107`).
+- **10.7:** 1 s a sala clareia e a tabela volta ao lugar aberto, inteira e colorida, com o bloco f escondido (classe `fOculto107`, também os quadrinhos 57–71/89–103); 3 s os representativos escurecem (`semSP107`); 6,9 s o card gigante d¹⁰ e 7,5 s o f¹⁴, no vão dos lantanídeos e actinídeos (`gig107`); 12 s a tela escura com o título "Elementos de transição"; linhas digitadas 16–18, 20–22,5, 26–28 ("Vamos aplicar a regra geral.", em amarelo), 30–34; no fim, "Toque na tela" sem o play → **10.7.0**.
+- **10.7.0:** 2 s a tela clareia; 6–17 s a tela escurece e digita a regra do bloco d (n − 1); no fim, "Toque na tela" sem o play; o toque clareia a tela (e tocaria a 10.7.1, se ela estivesse ligada — ainda não está).
+- O áudio **10.7.1** já está na pasta, mas não foi ligado.

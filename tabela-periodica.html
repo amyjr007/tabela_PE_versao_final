@@ -3324,7 +3324,28 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .mesa[data-slide="10"].semF106{--px:6px;--py:97px;transition:transform .9s cubic-bezier(.3,.85,.3,1)}
 /* (e os lantanídeos e actinídeos voltam de uma vez para as casas do 3B: as
    duas fileiras de baixo, e as etiquetas delas, somem sem fade) */
-.mesa.semF106 :is(.pc[data-b101="f"], .pc[data-z="57"], .pc[data-z="89"], .etq102.f105, .casaF106){visibility:hidden!important;transition:none!important}
+.mesa:is(.semF106, .fOculto107) :is(.pc[data-b101="f"], .pc[data-z="57"], .pc[data-z="89"], .etq102.f105, .casaF106){visibility:hidden!important;transition:none!important}
+/* A "10.7": os representativos escurecidos (os de transição ficam); os cards
+   gigantes d¹⁰ e f¹⁴ no vão dos lantanídeos e actinídeos; a tela escura do
+   adendo (o título, as linhas digitadas, a do meio em amarelo) e a da regra */
+.mesa[data-slide="10"] :is(.pc[data-b101="s"], .pc[data-b101="p"]){transition:transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease,
+  opacity .8s ease, scale .45s var(--e-salto), translate .45s var(--e-salto)}
+.mesa.semSP107 :is(.pc[data-b101="s"], .pc[data-b101="p"], .etq102:not(.d104, .f105)){opacity:.12!important}
+/* (na "10.7" o bloco f some de todo: também os quadrinhos 57–71 e 89–103 do 3B) */
+.mesa.fOculto107 .casa.serie{visibility:hidden!important}
+.mesa .card101.gig107{scale:.3;opacity:0;pointer-events:none;z-index:28}
+.mesa.so1051 .card101.gig107.on107, .mesa .card101.gig107.on107{opacity:1!important;scale:1.35}
+.veu107, .veu1070{flex-direction:column;gap:14px}
+.veu107 .tit107{margin:0 0 18px;font-family:var(--display);font-weight:700;font-size:52px;letter-spacing:-.015em;color:#F4F2F8}
+.veu107 .lin107, .veu1070 .regra1070{margin:0;font-family:var(--display);font-weight:600;font-size:38px;line-height:1.25;color:#F4F2F8;text-align:center}
+.veu107 .lin107{opacity:0;transition:opacity .3s ease}
+.veu107 .lin107.on{opacity:1}
+.veu107 .lin107.amarela107{color:var(--ouro-luz)}
+.veu1070 .regra1070{width:1040px;font-size:42px;text-wrap:balance}
+:is(.veu107 .lin107, .veu1070 .regra1070) .falta{color:transparent}
+:is(.veu107 .lin107, .veu1070 .regra1070) .cursor{display:none;width:4px;height:.9em;margin:0 -4px 0 0;vertical-align:-.1em;background:var(--ouro-luz);border-radius:1px}
+:is(.veu107 .lin107, .veu1070 .regra1070).digitando107 .cursor{display:inline-block}
+.veu107 .toque-continuar, .veu1070 .toque-continuar{position:static;transform:none;margin-top:26px}
 .veu106{flex-direction:column}
 .regra106{width:1000px;margin:0;text-align:center;text-wrap:balance;
   font-family:var(--display);font-weight:600;font-size:46px;line-height:1.2;letter-spacing:-.015em;color:#F4F2F8}
@@ -5353,7 +5374,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v58.5';
+const VERSAO = 'v58.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6685,7 +6706,9 @@ const TRILHAS = {
   '10.6.1': 'Audios/audio_tabela_10.6.1.mp3', /* o toque na regra: o exemplo do Mg, até o 3s² */
   '10.6.1.1': 'Audios/audio_tabela_10.6.1.1.mp3', /* o Saquei no fim da "10.6.1": por que vale saber; no fim, o "Vamos" */
   '10.6.2': 'Audios/audio_tabela_10.6.2.mp3', /* o "Vamos" no fim da "10.6.1.1": o segundo exemplo, o iodo (5p⁵) */
-  '10.6.3': 'Audios/audio_tabela_10.6.3.mp3'  /* o play no fim da "10.6.2": o césio (6s¹) e a demonstração do quiz 2 */
+  '10.6.3': 'Audios/audio_tabela_10.6.3.mp3', /* o play no fim da "10.6.2": o césio (6s¹) e a demonstração do quiz 2 */
+  '10.7': 'Audios/audio_tabela_10.7.mp3',     /* o Continuar do quiz 2: os de transição, e o adendo das exceções */
+  '10.7.0': 'Audios/audio_tabela_10.7.0.mp3'  /* o toque na tela no fim da "10.7": a regra do bloco d */
 };
 /* a trilha com que cada slide começa */
 const TRILHA_DO_SLIDE = ['capa', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
@@ -6871,7 +6894,9 @@ const ROTEIROS = {
   '10.6.1': [],
   '10.6.1.1': [],
   '10.6.2': [],
-  '10.6.3': []
+  '10.6.3': [],
+  '10.7': [],
+  '10.7.0': []
 };
 
 /* ---- AS FRASES DIGITADAS DA CAPA ----
@@ -22321,6 +22346,26 @@ const TEXTO_MAIS_1052 = 'subnível mais energético';
    "Toque na tela", e o toque leva à "10.6.1". */
 const T106 = { sai:1.0, texto:[6.0, 7.0], brilhoSP:[9.0, 10.0], semB:13.0, escurece:17.0, regra:[19.5, 28.0] };
 const TEXTO_106 = 'Elementos representativos primeiro';
+/* A "10.7" (o Continuar no fim do quiz 2): aos 1 s a sala clareia e a tabela
+   volta inteira, nas cores dos blocos, com o bloco f escondido (e no lugar
+   aberto, com o vão dos lantanídeos e actinídeos vazio); aos 3 s os
+   representativos escurecem e ficam os de transição; aos 6,9 s o card gigante
+   d¹⁰ aparece no lugar dos lantanídeos e actinídeos, e aos 7,5 s o f¹⁴; aos
+   12 s a tela escurece com o título "Elementos de transição", e digitam-se:
+   16–18 s "Tem eletrosfera mais complexa.", 20–22,5 s "Tem algumas exceções
+   na distribuição eletrônica.", 26–28 s "Vamos aplicar a regra geral." (em
+   amarelo), 30–34 s "Não usaremos exceções aqui."; no fim da fala, "Toque na
+   tela" (sem o play), e o toque leva à "10.7.0". */
+const T107 = { claro:1.0, semSP:3.0, d10:6.9, f14:7.5, escuro:12.0,
+               linhas:[[16.0, 18.0], [20.0, 22.5], [26.0, 28.0], [30.0, 34.0]] };
+const TITULO_107 = 'Elementos de transição';
+const LINHAS_107 = ['Tem eletrosfera mais complexa.', 'Tem algumas exceções na distribuição eletrônica.',
+                    'Vamos aplicar a regra geral.', 'Não usaremos exceções aqui.'];
+/* A "10.7.0" (o toque na tela no fim da "10.7"): aos 2 s a tela clareia; aos 6 s
+   escurece de novo e digita a regra do bloco d (até os 17 s); aí "Toque na
+   tela" (sem o play), e o toque clareia a tela. */
+const T1070 = { claro:2.0, escuro:6.0, regra:[6.0, 17.0] };
+const REGRA_1070 = 'O subnível mais energético é formado pelo número do seu período menos um (n − 1), acompanhado da letra d e do número da coluna onde ele se encontra dentro desse bloco.';
 /* A "10.6.1" (o toque na regra): a regra sai em fade; aos 3 s o Mg brilha em
    verde; aos 7 s a faixa da linha 3 entra e pisca 2 vezes (com a bolinha do
    3), aos 8,2 s a da coluna 2 (com a etiqueta s² em cima dela); aos 11 s a
@@ -22654,7 +22699,7 @@ const ESC_FIL_105 = 1.08, ESC_CARD_105 = 1.8;
 /* (o elemento do alto de cada coluna do d: o aviso do toque fora da vez) */
 const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'Ni', 11:'Cu', 12:'Zn' };
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
-const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.1.1', '10.6.2', '10.6.3'];
+const ORDEM_10 = ['10', '10.1', '10.2', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.1.1', '10.6.2', '10.6.3', '10.7', '10.7.0'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -22906,6 +22951,7 @@ const CARDS101 = {
     this.tick106(t);
     this.tick1063(t);
     this.tick1064(t);
+    this.tick107(t);
     const monta = naMontagem(), de = trilhaAtual === '10.1', T = monta ? 99 : de ? t : -1;
     const n = EV9.letras(T, T101.texto[0], T101.texto[1], TEXTO_101);
     if (n !== this.nt && !this.texto.classList.contains('texto-livre')){
@@ -23038,7 +23084,8 @@ const CARDS101 = {
   fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051', 'sem-play105');
           if (window.QUIZ10 && (QUIZ10.aberto || QUIZ10.escuro)) QUIZ10.fecha();
           if (window.QUIZ10B && (QUIZ10B.aberto || QUIZ10B.escuro)){ QUIZ10B.fecha(); QUIZ10B.jaAbriu = false; }
-          if (this.pede106){ this.pede106 = false; this.estado106 = ''; stage.classList.remove('em-toque'); } },
+          if (this.pede106){ this.pede106 = false; this.estado106 = ''; stage.classList.remove('em-toque'); }
+          if (this.pede107 || this.pede1070){ this.pede107 = this.pede1070 = false; this.estado107 = ''; stage.classList.remove('em-toque'); } },
   passo103:0, sel103:null, feito103:false,
   /* as etiquetas do p (p¹ a p⁶) em cima das colunas 13 a 18, na linha 1 */
   prepara103(){
@@ -23359,7 +23406,9 @@ const CARDS101 = {
     /* a mesa sem as fileiras de baixo, já no lugar da "10.6": desde 1,5 s
        antes do fim da "10.5.3" (atrás da cena escura) */
     const de1052 = trilhaAtual === '10.5.3' && !monta;
-    const semF = T >= 0 || (de1052 && (som.ended || (som.duration > 0 && t >= som.duration - 1.5)));
+    /* (da "10.7" em diante a mesa volta para o lugar aberto: o f fica escondido por outra classe) */
+    const depois107 = !monta && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.7');
+    const semF = (T >= 0 && !depois107) || (de1052 && (som.ended || (som.duration > 0 && t >= som.duration - 1.5)));
     if (semF !== this.semF106){
       this.semF106 = semF; this.m.classList.toggle('semF106', semF);
       /* (no celular a mesa tem uma medida aberta e outra fechada: anda com ela) */
@@ -23399,7 +23448,7 @@ const CARDS101 = {
     }
     const dentro = (X, [a, b]) => X >= a && X < b;
     const piscaL = T1061.piscaL.some(p => dentro(T1, p)), piscaC = T1061.piscaC.some(p => dentro(T1, p));
-    const chave = [T >= 0, dentro(T, T106.brilhoSP), T >= T106.semB, dentro(T, [T106.texto[0], T106.escurece]), dentro(T, T106.texto),
+    const chave = [T >= 0, dentro(T, T106.brilhoSP), T >= T106.semB && !depois107, dentro(T, [T106.texto[0], T106.escurece]), dentro(T, T106.texto),
                    de && T >= T106.escurece, dentro(T, T106.regra) && !acabou, this.pede106,
                    T1 >= T1061.mg && !fora1063, T1 >= T1061.linha && !fora1063, T1 >= T1061.coluna && !fora1063, piscaL, piscaC,
                    dentro(T1, [T1061.bola, T1061.focoS[0]]), dentro(T1, [T1061.etq, T1061.focoS[1]]), T1 >= T1061.texto[0], dentro(T1, T1061.texto),
@@ -23518,6 +23567,98 @@ const CARDS101 = {
     this.r1063.classList.toggle('festa', festa);
     this.dist1063.classList.toggle('on', dist);
     this.dist1063.classList.toggle('pulsa', pulsa);
+  },
+  /* A "10.7" e a "10.7.0": os de transição (a tabela aberta, sem o f; os cards
+     gigantes d¹⁰ e f¹⁴; a tela escura com o adendo; a regra do bloco d) */
+  tick107(t){
+    const monta = naMontagem(), em = id => trilhaAtual === id && !monta;
+    const tempo = id => em(id) ? t : !monta && depoisDe(id) ? 99 : -1;
+    const de7 = em('10.7'), de70 = em('10.7.0'), T7 = tempo('10.7'), T70 = tempo('10.7.0');
+    const acabou = som.ended || (som.duration > 0 && t >= som.duration - 0.15);
+    if (!this.veu107){
+      const m = this.m, sl = slides[10];
+      /* a tela escura do adendo: o título e as quatro linhas (a terceira em amarelo) */
+      sl.insertAdjacentHTML('beforeend', '<div class="veu veu107" aria-live="polite"><h2 class="tit107">' + TITULO_107 + '</h2>' +
+        LINHAS_107.map((x, k) => '<p class="lin107' + (k === 2 ? ' amarela107' : '') + '"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p>').join('') +
+        '<div class="toque-continuar">Toque na tela</div></div>');
+      /* a tela escura da regra do bloco d */
+      sl.insertAdjacentHTML('beforeend', '<div class="veu veu1070" aria-live="polite"><p class="regra1070"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p>' +
+        '<div class="toque-continuar">Toque na tela</div></div>');
+      this.veu107 = sl.querySelector('.veu107');
+      this.lin107 = [...this.veu107.querySelectorAll('.lin107')];
+      this.toque107 = this.veu107.querySelector('.toque-continuar');
+      this.veu1070 = sl.querySelector('.veu1070');
+      this.regra1070 = this.veu1070.querySelector('.regra1070');
+      this.toque1070 = this.veu1070.querySelector('.toque-continuar');
+      /* tocada a tela no fim da "10.7", a "10.7.0"; no fim da regra, a tela clareia */
+      this.veu107.addEventListener('click', () => {
+        if (!this.pede107) return;
+        this.pede107 = false; this.estado107 = '';
+        if (atual === 10 && trilhaAtual === '10.7') tocaTrilha('10.7.0');
+      });
+      this.veu1070.addEventListener('click', () => {
+        if (!this.pede1070) return;
+        this.pede1070 = false; this.fechou1070 = true; this.estado107 = '';
+        som.pause();
+        if (atual === 10 && TRILHAS['10.7.1']) tocaTrilha('10.7.1');
+      });
+      /* os cards gigantes, no vão dos lantanídeos e actinídeos */
+      const gig = (b, e, cor, x) => {
+        const c = document.createElement('div');
+        c.className = 'card101 gig107';
+        c.style.setProperty('--cor', cor);
+        c.innerHTML = '<b>' + b + '</b><sup>' + e + '</sup>';
+        c.style.left = x.toFixed(1) + 'px';
+        c.style.top  = (yDaLinha(7) + LADO / 2 + 70).toFixed(1) + 'px';
+        m.appendChild(c);
+        return c;
+      };
+      this.d107 = gig('d', 10, 'var(--cat-transicao)', (xDaColuna(7) + xDaColuna(8)) / 2);
+      this.f107 = gig('f', 14, 'var(--cat-lantanideos)', (xDaColuna(11) + xDaColuna(12)) / 2);
+    }
+    /* aos 1 s da "10.7" a sala do quiz 2 clareia */
+    if (de7 && t >= T107.claro && window.QUIZ10B && QUIZ10B.escuro && !QUIZ10B.aberto) QUIZ10B.fecha();
+    if (!de70 || t < T1070.regra[1]) this.fechou1070 = false;
+    this.pede107 = de7 && acabou;
+    this.pede1070 = de70 && t >= T1070.regra[1] && !this.fechou1070;
+    /* os textos digitados */
+    LINHAS_107.forEach((x, k) => {
+      const n = EV9.letras(T7, T107.linhas[k][0], T107.linhas[k][1], x);
+      if (n !== this.lin107[k]._n){
+        if (n > (this.lin107[k]._n ?? -1) && this.lin107[k]._n >= 0 && de7) TECLAS.bate();
+        this.lin107[k]._n = n;
+        EV9.escreve(this.lin107[k], x, n);
+      }
+    });
+    const nR = EV9.letras(T70, T1070.regra[0], T1070.regra[1], REGRA_1070);
+    if (nR !== this.ntR1070){
+      if (nR > this.ntR1070 && this.ntR1070 >= 0 && de70) TECLAS.bate();
+      this.ntR1070 = nR;
+      EV9.escreve(this.regra1070, REGRA_1070, nR);
+    }
+    const dentro = (X, [a, b]) => X >= a && X < b;
+    const chave = [T7 >= 0, T7 >= T107.semSP, T7 >= T107.d10, T7 >= T107.f14,
+                   (de7 && T7 >= T107.escuro) || (de70 && T70 < T1070.claro),
+                   ...T107.linhas.map(L => T7 >= L[0]), ...T107.linhas.map(L => dentro(T7, L)), this.pede107,
+                   de70 && T70 >= T1070.escuro && !this.fechou1070, dentro(T70, T1070.regra), this.pede1070].join();
+    if (chave === this.estado107) return;
+    this.estado107 = chave;
+    const v = chave.split(',').map(x => x === 'true');
+    const [aberta, semSP, d10, f14, veu] = v, linOn = v.slice(5, 9), linDig = v.slice(9, 13);
+    const [pede7, veu70, dig70, pede70] = v.slice(13);
+    this.m.classList.toggle('fOculto107', aberta);
+    this.m.classList.toggle('semSP107', semSP);
+    this.d107.classList.toggle('on107', d10);
+    this.f107.classList.toggle('on107', f14);
+    this.veu107.classList.toggle('on', veu || pede7);
+    this.lin107.forEach((e, k) => { e.classList.toggle('on', linOn[k]); e.classList.toggle('digitando107', linDig[k]); });
+    this.veu107.classList.toggle('pede-toque', pede7);
+    this.toque107.classList.toggle('on', pede7);
+    this.veu1070.classList.toggle('on', veu70);
+    this.regra1070.classList.toggle('digitando107', dig70);
+    this.veu1070.classList.toggle('pede-toque', pede70);
+    this.toque1070.classList.toggle('on', pede70);
+    stage.classList.toggle('em-toque', pede7 || pede70);
   },
   /* A "10.6.3" ("1064" no código): o césio, e a demonstração do quiz 2 com o Al */
   tick1064(t){
@@ -23846,6 +23987,7 @@ const CARDS101 = {
     this.festa1051 = false; this.t1052ant = -1; this.nt1052 = -1; this.nt1051 = ''; this.nn1051 = 0;
     this.estado106 = ''; this.t106ant = -1; this.nt106 = -1; this.ntT106 = -1; this.ntR106 = -1; this.semF106 = undefined;
     this.estado1063 = ''; this.t1063ant = -1; this.ntR1063 = -1; this.nMais1052 = 0;
+    this.estado107 = ''; this.ntR1070 = -1; this.fechou1070 = false; if (this.lin107) this.lin107.forEach(e => e._n = -1);
     this.estado1064 = ''; this.t1064ant = -1; this.ntR1064 = -1; this.ntD1064 = -1; this.g1064 = (this.g1064 || 0) + 1;
     if (this.vez1051 >= 0 && this.cards) this.cresce1051(this.vez1051, false);
     this.vez1051 = -1;
@@ -24320,8 +24462,8 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     QUIZ_FEITOS.marca('q10b', nota);      /* feito: verde no sumário */
     cartaoDoResultado(nota, n + ' questões · <em class="erro">' + e + '</em> ' + (e === 1 ? 'erro' : 'erros'),
       this.sl(), () => this.abre(),
-      /* Continuar: a sala clareia e a tabela fica */
-      () => this.fecha());
+      /* Continuar: o cartão sai (a sala ainda escura: ela clareia aos 1 s) e toca a "10.7" */
+      () => { this.fecha(true); if (atual === 10) tocaTrilha('10.7'); });
   },
   fecha(reabre){
     this.g++;

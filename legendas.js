@@ -214,6 +214,22 @@ var LEGENDAS = {
     [1.72,6.8,"Eu te dou o subnível mais energético e você clica no elemento na tabela, tá bom?"],
     [6.8,8.28,"Lá vai o primeiro."]
   ],
+  "audio_tabela_10.7": [
+    [0,8.34,"Certo, amigos, vamos agora ver como faz com os elementos de transição, ou seja, aqueles que ocupam os blocos d e f da tabela."],
+    [8.85,11.27,"Mas antes, deixa eu fazer um pequeno adendo."],
+    [12.34,18.62,"Os elementos de transição, como já comentamos no app, têm uma eletrosfera mais complexa que a dos representativos,"],
+    [18.93,23.03,"apresentando algumas exceções pontuais na distribuição dos seus elétrons."],
+    [23.49,27.9,"Por isso, tenha em mente que a gente vai aplicar aqui a regra geral desse bloco."],
+    [28.64,34.79,"E fique tranquilo, porque todos os exemplos que usaremos seguem essa regra direitinho, sem pegadinhas, tá bom?"],
+    [35.59,42.58,"Mas, em uma prova oficial, não se pode cobrar exceções, justamente porque o aluno não precisa decorar esse tipo de coisa, tá?"],
+    [43.12,45.09,"Certo. Vamos à regra geral?"]
+  ],
+  "audio_tabela_10.7.0": [
+    [0.62,3.53,"Tá, vamos começar pelos elementos de transição externa."],
+    [4.59,11.34,"Para os elementos do bloco d, o subnível mais energético é formado pelo número do seu período menos um, n − 1,"],
+    [11.7,18.01,"acompanhado da letra d e do número da coluna onde ele se encontra dentro desse bloco."],
+    [18.46,19.07,"É isso."]
+  ],
   "audio_tabela_10.6": [
     [0,6.82,"Certo, agora vamos aprender a descobrir o subnível mais energético dos elementos direto pela tabela periódica."],
     [7.94,12.96,"Vamos começar pelos elementos representativos, que são aqueles das famílias A, aqui."],
