@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v62.2** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v62.3** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -171,5 +171,5 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 
 ## A 10.7.1 (v59.3) — o exemplo do ferro, 3d⁶ (`tick1071`, `T1071`)
 
-1 s a regra sai; 3 s o Fe cresce 15 % e brilha; 6 s a faixa da linha 4 pisca 2× (com a bolinha do 4), 7,5 s a da coluna 8 (com a etiqueta d⁶); 13 s digita "(n − 1)" na linha 4, logo depois da bolinha, por cima do K e do Ca (36 px); 15 s o n vira 4; 18,7 s fica um 3 vermelho, ali mesmo, até o fim (sem o "(n − 1 = 3)"); 20,8 s "Subnível mais energético:" (entre as linhas 2 e 3, um pouco acima do meio); 25 s o bloco d pulsa; 25,9 s a coluna pisca 2× de novo; 28/28,9/29,5 s o 3, o d e o ⁶; 30,5 s o 3d⁶ cresce e brilha, com confetes, aplausos e funfare; dali o 3 vermelho (não a bolinha do 4), o "(n − 1)" embaixo da bolinha e a etiqueta d⁶ ficam pulsando (discreto: 8 % a mais, ciclo de 2,4 s); na resposta, o 3 é vermelho e pulsa com o 3 da fórmula, e o d⁶ pulsa com a etiqueta d⁶ — alternados: primeiro os 3 (com o (n − 1)), depois os d⁶ (meio ciclo, 1,2 s). O "O subnível mais energético" do alto sai na 10.7.1. O fim da 10.7.1 ainda não leva a nada.
+1 s a regra sai; 3 s o Fe cresce 15 % e brilha; (v62.3: no lugar das faixas, as setas amarelas — 6 s a da linha, até a bolinha do 4, que pulsa na chegada, 6,9 s; 7,5 s a da coluna, até a etiqueta d⁶, que pulsa aos 8,4 s; a da linha sai aos 13 s, quando a fórmula entra no lugar dela; as setas ficam abaixo das etiquetas, z-index 26); 13 s digita "(n − 1)" na linha 4, logo depois da bolinha, por cima do K e do Ca (36 px); 15 s o n vira 4; 18,7 s fica um 3 vermelho, ali mesmo, até o fim (sem o "(n − 1 = 3)"); 20,8 s "Subnível mais energético:" (entre as linhas 2 e 3, um pouco acima do meio); 25 s o bloco d pulsa; 25,9 s a coluna pisca 2× de novo; 28/28,9/29,5 s o 3, o d e o ⁶; 30,5 s o 3d⁶ cresce e brilha, com confetes, aplausos e funfare; dali o 3 vermelho (não a bolinha do 4), o "(n − 1)" embaixo da bolinha e a etiqueta d⁶ ficam pulsando (discreto: 8 % a mais, ciclo de 2,4 s); na resposta, o 3 é vermelho e pulsa com o 3 da fórmula, e o d⁶ pulsa com a etiqueta d⁶ — alternados: primeiro os 3 (com o (n − 1)), depois os d⁶ (meio ciclo, 1,2 s). O "O subnível mais energético" do alto sai na 10.7.1. O fim da 10.7.1 ainda não leva a nada.
 - As etiquetas d¹ a d¹⁰ ficam 20 px acima da linha 4 (antes encostavam nos cards), em todo o tópico.
