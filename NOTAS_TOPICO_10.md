@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v58.6** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v58.7** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -108,6 +108,7 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | l – O exemplo do iodo | 10.6.2 |
 | m – O exemplo do Cs | 10.6.3 |
 | n – Quiz 2 | o quiz 2 direto |
+| o – A regra pros elementos de transição externa | 10.7.0 |
 
 Pelo sumário, cada narração abre com tudo o que veio antes já completo (as etiquetas no lugar). Voltar para uma narração com toques desfaz os toques dela.
 

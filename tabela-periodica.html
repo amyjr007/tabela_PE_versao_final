@@ -5374,7 +5374,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v58.6';
+const VERSAO = 'v58.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -28074,6 +28074,9 @@ const NAV_TOPICOS = [
         QUIZ10B.abre();
       });
     } },
+  /* o começo da "10.7.0": a regra do bloco d (a tabela como no fim da "10.7") */
+  { titulo:'A regra pros elementos de transição externa', sub:'o começo da 10.7.0', slide:10,
+    entra(v, g){ depoisDaMesa(g, () => tocaDesde('10.7.0', 0, g)); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
