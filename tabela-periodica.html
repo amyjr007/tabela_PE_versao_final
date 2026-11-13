@@ -5438,7 +5438,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v61.4';
+const VERSAO = 'v61.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6961,7 +6961,7 @@ const ROTEIROS = {
   '10.6.1': [],
   '10.6.1.1': [],
   '10.6.2': [
-    { t:30.8, faz(){ pausaPor('10.6.2', T1063.pausa[1]); } },
+    { t:31.2, faz(){ pausaPor('10.6.2', T1063.pausa[1]); } },
     { t:35.8, faz(){ CARDS101.monta1063 = performance.now(); pausaPor('10.6.2', T1063.monta[1]); } }
   ],
   '10.6.3': [],
@@ -22492,7 +22492,7 @@ const T1063 = { iodo:2.2, linha:16.5, coluna:18.0, piscaL:[[16.5, 17.7], [20.0, 
                 /* (v61.4: depois da festa, aos 30,8 s uma pausa de 1,5 s; aos 35,8 s outra, de 3 s, com a
                    distribuição se desenhando; aos 37 s o 5p⁵ dela pulsa, aos 39,7 s o 5p⁵ grande; no fim
                    tudo fica na tela, e o botão verde "Próximo" leva à 10.6.3) */
-                pausa:[30.8, 1500] };
+                pausa:[31.2, 1500] };   /* (v61.5: a pausa dos 30,8 s passou para os 31,2 s) */
 const TEXTO_1063 = 'O subnível mais energético:';
 /* A "10.6.3" (o play no fim da "10.6.2"; no código, "1064"): os textos do iodo
    saem; o terceiro exemplo, o césio (6s¹), nos mesmos passos do iodo — aos 3 s
