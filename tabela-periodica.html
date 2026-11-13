@@ -3363,7 +3363,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
   font-family:var(--display);font-weight:700;font-size:15px;color:var(--cor-linha);opacity:0;transition:opacity .4s ease}
 .tag1071.on{opacity:1}
 @keyframes pisca1071{50%{filter:opacity(.2)}}
-.mesa .eixo.pisca1071, .etq102.pisca1071, .tag1071.pisca1071{animation:pisca1071 1.2s ease-in-out infinite}
+.mesa .eixo.pisca1071, .etq102.pisca1071, .tag1071.pisca1071, .form1071.pisca1071{animation:pisca1071 1.2s ease-in-out infinite}
 @keyframes pulsaD107{50%{scale:1.08}}
 .mesa.pulsaD107 .pc[data-b101="d"]:not([data-z="57"], [data-z="89"]){animation:pulsaD107 .9s ease-in-out}
 .veu.veu107 .toque-continuar, .veu.veu1070 .toque-continuar{position:static;left:auto;top:auto;transform:none;margin-top:26px}
@@ -5396,7 +5396,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v59.6';
+const VERSAO = 'v59.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23789,7 +23789,9 @@ const CARDS101 = {
     if (this.fe1071){ this.fe1071.classList.toggle('mg106', fe); this.fe1071.style.scale = fe ? '1.15' : ''; this.fe1071.classList.toggle('grande101', fe); }
     this.faixaL1071.classList.toggle('on', lin); this.faixaL1071.classList.toggle('pisca2106', pL);
     this.faixaC1071.classList.toggle('on', col); this.faixaC1071.classList.toggle('pisca2106', pC);
-    if (this.p41071){ this.p41071.classList.toggle('pulsaF106', pL); this.p41071.classList.toggle('pisca1071', pisca); }
+    /* (no fim pisca o 3 vermelho, não a bolinha do 4) */
+    if (this.p41071){ this.p41071.classList.toggle('pulsaF106', pL); this.p41071.classList.remove('pisca1071'); }
+    this.form1071.classList.toggle('pisca1071', pisca);
     const d6 = this.etq104 && this.etq104[5] && this.etq104[5].d;
     if (d6){ d6.classList.toggle('pulsaF106', pC); d6.classList.toggle('pisca1071', pisca); }
     this.tag1071.classList.toggle('on', pisca); this.tag1071.classList.toggle('pisca1071', pisca);
