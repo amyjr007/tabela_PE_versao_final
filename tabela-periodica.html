@@ -3331,8 +3331,6 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .mesa[data-slide="10"] :is(.pc[data-b101="s"], .pc[data-b101="p"]){transition:transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease,
   opacity .8s ease, scale .45s var(--e-salto), translate .45s var(--e-salto)}
 .mesa.semSP107 :is(.pc[data-b101="s"], .pc[data-b101="p"], .etq102:not(.d104, .f105)){opacity:.12!important}
-/* (na "10.7" o bloco f some de todo: também os quadrinhos 57–71 e 89–103 do 3B) */
-.mesa.fOculto107 .casa.serie{visibility:hidden!important}
 .mesa .card101.gig107{scale:.3;opacity:0;pointer-events:none;z-index:28}
 .mesa.so1051 .card101.gig107.on107, .mesa .card101.gig107.on107{opacity:1!important;scale:1.35}
 .veu107, .veu1070{flex-direction:column;gap:14px}
@@ -5375,7 +5373,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v58.8';
+const VERSAO = 'v58.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23604,18 +23602,19 @@ const CARDS101 = {
         if (atual === 10 && TRILHAS['10.7.1']) tocaTrilha('10.7.1');
       });
       /* os cards gigantes, no vão dos lantanídeos e actinídeos */
-      const gig = (b, e, cor, x) => {
+      const gig = (b, e, cor, x, y) => {
         const c = document.createElement('div');
         c.className = 'card101 gig107';
         c.style.setProperty('--cor', cor);
         c.innerHTML = '<b>' + b + '</b><sup>' + e + '</sup>';
         c.style.left = x.toFixed(1) + 'px';
-        c.style.top  = (yDaLinha(7) + LADO / 2 + 70).toFixed(1) + 'px';
+        c.style.top  = y.toFixed(1) + 'px';
         m.appendChild(c);
         return c;
       };
-      this.d107 = gig('d', 10, 'var(--cat-transicao)', (xDaColuna(7) + xDaColuna(8)) / 2);
-      this.f107 = gig('f', 14, 'var(--cat-lantanideos)', (xDaColuna(11) + xDaColuna(12)) / 2);
+      /* (só o f¹⁴, meio por cima dos quadrinhos 57–71 e 89–103 do 3B — os
+         lantanídeos e actinídeos, guardados ali, atrás do cartão dele) */
+      this.f107 = gig('f', 14, 'var(--cat-lantanideos)', xDaColuna(3) + 24, (yDaLinha(6) + yDaLinha(7)) / 2 + 14);
     }
     /* aos 1 s da "10.7" a sala do quiz 2 clareia */
     if (de7 && t >= T107.claro && window.QUIZ10B && QUIZ10B.escuro && !QUIZ10B.aberto) QUIZ10B.fecha();
@@ -23649,7 +23648,6 @@ const CARDS101 = {
     const [pede7, veu70, dig70, pede70] = v.slice(13);
     this.m.classList.toggle('fOculto107', aberta);
     this.m.classList.toggle('semSP107', semSP);
-    this.d107.classList.toggle('on107', d10);
     this.f107.classList.toggle('on107', f14);
     this.veu107.classList.toggle('on', veu || pede7);
     this.lin107.forEach((e, k) => { e.classList.toggle('on', linOn[k]); e.classList.toggle('digitando107', linDig[k]); });
