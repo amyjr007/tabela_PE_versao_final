@@ -5404,7 +5404,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v60.5';
+const VERSAO = 'v60.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22545,7 +22545,9 @@ const EV10 = {
       this.veu.classList.toggle('modo1052', modo);
       if (!modo){ this.veu.classList.remove('brilho1052', 'mais1052on', 'p1s1052', 'p3s1052', 'luz3s1052on'); if (this.mais1052) this.mais1052.textContent = ''; }
     }
-    const m1052 = !monta && (trilhaAtual === '10.5.3' || (trilhaAtual === '10.6' && t < T106.sai));
+    /* (pelo sumário, a 10.6 abre já sem a figura da 10.5.3: CARDS101.pula106) */
+    if (trilhaAtual === '10.6' && t >= T106.sai) CARDS101.pula106 = false;
+    const m1052 = !monta && (trilhaAtual === '10.5.3' || (trilhaAtual === '10.6' && t < T106.sai && !CARDS101.pula106));
     if (m1052 !== !!this.m1052){ this.m1052 = m1052; this.estado = ''; this.estadoT = ''; }
     if (m1052) return this.tick1052(trilhaAtual === '10.5.3' ? t : 99);
     const sai = de101 && t >= T101.sai;
@@ -28212,7 +28214,7 @@ const NAV_TOPICOS = [
   /* o começo da "10.6": o subnível mais energético pela tabela */
   { titulo:'Subnível mais energético com tabela', sub:'o começo da 10.6', slide:10,
     salto:['10.6', 0],
-    entra(v, g){ saltaPara10('10.6', g); } },
+    entra(v, g){ CARDS101.pula106 = true; saltaPara10('10.6', g); } },
   /* o começo da "10.6.1": a regra já escrita (e o toque já dado), e o exemplo do Mg */
   { titulo:'O exemplo do Mg', sub:'o começo da 10.6.1', slide:10,
     salto:['10.6.1', 0],
@@ -28277,7 +28279,7 @@ function irPara(i, variante){
   if (atual !== item.slide){
     go(item.slide);
     /* (o salto direto do tópico 10: a cena já se põe enquanto a mesa chega) */
-    if (item.salto){ if (item.salto[0] === '10.7.0') CARDS101.pula1070 = true; if (item.salto[0] === '10.7.1') CARDS101.pula1071 = true;
+    if (item.salto){ if (item.salto[0] === '10.7.0') CARDS101.pula1070 = true; if (item.salto[0] === '10.7.1') CARDS101.pula1071 = true; if (item.salto[0] === '10.6') CARDS101.pula106 = true;
                      preparaSalto10(item.salto[0], g, item.salto[1], !!item.salto[2]); }
     setTimeout(segue, 900);
   }
