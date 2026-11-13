@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v59.4** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v59.5** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -168,4 +168,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 
 ## A 10.7.1 (v59.3) — o exemplo do ferro, 3d⁶ (`tick1071`, `T1071`)
 
-1 s a regra sai; 3 s o Fe cresce 15 % e brilha; 6 s a faixa da linha 4 pisca 2× (com a bolinha do 4), 7,5 s a da coluna 8 (com a etiqueta d⁶); 13 s digita "(n − 1)" no alto (linha 1); 15 s o n vira 4; 18,7 s fica um 3 vermelho; 20 s sai; 20,8 s "Subnível mais energético:" (entre as linhas 2 e 3); 24 s "(n − 1 = 3)" em cima; 25 s o bloco d pulsa; 25,9 s a coluna pisca 2× de novo; 28/28,9/29,5 s o 3, o d e o ⁶; 30,5 s o 3d⁶ cresce e brilha, com confetes, aplausos e funfare; dali a bolinha do 4, o "(n − 1)" embaixo dela e a etiqueta d⁶ ficam piscando. O "O subnível mais energético" do alto sai na 10.7.1. O fim da 10.7.1 ainda não leva a nada.
+1 s a regra sai; 3 s o Fe cresce 15 % e brilha; 6 s a faixa da linha 4 pisca 2× (com a bolinha do 4), 7,5 s a da coluna 8 (com a etiqueta d⁶); 13 s digita "(n − 1)" na linha 4, logo depois da bolinha, por cima do K e do Ca (36 px); 15 s o n vira 4; 18,7 s fica um 3 vermelho, ali mesmo; 20 s sai; 20,8 s "Subnível mais energético:" (entre as linhas 2 e 3); 24 s "(n − 1 = 3)" no alto (linha 1); 25 s o bloco d pulsa; 25,9 s a coluna pisca 2× de novo; 28/28,9/29,5 s o 3, o d e o ⁶; 30,5 s o 3d⁶ cresce e brilha, com confetes, aplausos e funfare; dali a bolinha do 4, o "(n − 1)" embaixo dela e a etiqueta d⁶ ficam piscando. O "O subnível mais energético" do alto sai na 10.7.1. O fim da 10.7.1 ainda não leva a nada.

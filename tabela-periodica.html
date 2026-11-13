@@ -3354,6 +3354,9 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
   font-family:var(--display);font-weight:700;font-size:46px;color:var(--tinta)}
 .form1071 .n4{color:var(--cor-linha)}
 .form1071 .verm{color:#E5394F;font-size:70px}
+/* (o "(n − 1)" é digitado na linha 4, logo depois da bolinha, por cima do K e do Ca) */
+.form1071.na4{transform:translate(0,-50%);font-size:36px}
+.form1071.na4 .verm{font-size:52px}
 .r106.rd107 :is(.rs,.r2){color:color-mix(in srgb,var(--cat-transicao) 86%,#000)}
 .mesa.sem1052 .titulo9.texto1052{opacity:0!important}
 .tag1071{position:absolute;z-index:16;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
@@ -5393,7 +5396,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v59.4';
+const VERSAO = 'v59.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23767,6 +23770,11 @@ const CARDS101 = {
       if (de && /^[fi]\d+$/.test(modo) && /^[fi]\d+$/.test(this.modo1071 || '') && modo !== this.modo1071) TECLAS.bate();
       this.modo1071 = modo;
       this.form1071.innerHTML = html;
+      /* o (n − 1), o (4 − 1) e o 3 na linha 4; o "(n − 1 = 3)" no alto, como antes */
+      const na4 = !/^i/.test(modo), f = this.form1071;
+      f.classList.toggle('na4', na4);
+      f.style.left = na4 ? (xDaColuna(1) - LADO / 2 + 6).toFixed(1) + 'px' : ((xDaColuna(3) + xDaColuna(12)) / 2).toFixed(1) + 'px';
+      f.style.top = na4 ? (yDaLinha(4) + 2).toFixed(1) + 'px' : (yDaLinha(1) + 4).toFixed(1) + 'px';
     }
     const nR = EV9.letras(T, F.texto[0], F.texto[1], TEXTO_1071);
     if (nR !== this.ntR1071){
