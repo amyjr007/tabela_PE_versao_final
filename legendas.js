@@ -225,10 +225,11 @@ var LEGENDAS = {
     [43.12,45.09,"Certo. Vamos à regra geral?"]
   ],
   "audio_tabela_10.7.0": [
-    [0.62,3.53,"Tá, vamos começar pelos elementos de transição externa."],
-    [4.59,11.34,"Para os elementos do bloco d, o subnível mais energético é formado pelo número do seu período menos um, n − 1,"],
-    [11.7,18.01,"acompanhado da letra d e do número da coluna onde ele se encontra dentro desse bloco."],
-    [18.46,19.07,"É isso."]
+    [0.71,3.51,"Tá, vamos começar pelos elementos de transição externa."],
+    [4.36,5.86,"Para os elementos do bloco d,"],
+    [6.18,10.82,"o subnível mais energético é formado pelo número do seu período menos um,"],
+    [11.12,16.09,"acompanhado da letra d e do número da coluna onde ele se encontra dentro desse bloco."],
+    [16.54,17.16,"É isso."]
   ],
   "audio_tabela_10.6": [
     [0,6.82,"Certo, agora vamos aprender a descobrir o subnível mais energético dos elementos direto pela tabela periódica."],

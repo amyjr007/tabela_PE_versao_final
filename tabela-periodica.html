@@ -3353,7 +3353,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
   font-family:var(--display);font-weight:600;font-size:46px;line-height:1.2;letter-spacing:-.015em;color:#F4F2F8}
 .regra106 .falta{color:transparent}
 .regra106 .lin106{color:#6FAEF0}
-.regra106 .col106{color:#F3A062}
+.regra106 .col106, .regra1070 .col106{color:#F3A062}
+.regra1070 .d1070{color:color-mix(in srgb,var(--cat-transicao) 62%,#fff)}
 .regra106 .cursor{display:none;width:4px;height:.9em;margin:0 -4px 0 0;vertical-align:-.1em;background:var(--ouro-luz);border-radius:1px}
 .regra106.digitando106 .cursor{display:inline-block}
 .mesa[data-slide="10"] .pc.mg106{z-index:12}
@@ -5376,7 +5377,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v59.1';
+const VERSAO = 'v59.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22364,10 +22365,15 @@ const TITULO_107 = 'Elementos de transição';
 const LINHAS_107 = ['Tem eletrosfera mais complexa.', 'Tem algumas exceções na distribuição eletrônica.',
                     'Vamos aplicar a regra geral.', 'Não usaremos exceções aqui.'];
 /* A "10.7.0" (o toque na tela no fim da "10.7"): aos 2 s a tela clareia; aos 6 s
-   escurece de novo e digita a regra do bloco d (até os 17 s); aí "Toque na
+   escurece de novo e digita a regra do bloco d (até os 16 s — a gravação
+   nova, de 17,2 s); aí "Toque na
    tela" (sem o play), e o toque clareia a tela. */
-const T1070 = { claro:2.0, escuro:6.0, regra:[6.0, 17.0] };
-const REGRA_1070 = 'O subnível mais energético é formado pelo número do seu período menos um (n − 1), acompanhado da letra d e do número da coluna onde ele se encontra dentro desse bloco.';
+const T1070 = { claro:2.0, escuro:6.0, regra:[6.0, 16.0] };
+/* (o "d" e o "desse bloco" na cor do bloco d; a "coluna" no âmbar das colunas) */
+const PARTES_1070 = [{ t:'O subnível mais energético é formado pelo número do seu período menos um (n − 1), acompanhado da letra ' },
+                     { t:'“d”', c:'d1070' }, { t:' e do número da ' }, { t:'coluna', c:'col106' }, { t:' onde ele se encontra dentro ' },
+                     { t:'desse bloco', c:'d1070' }, { t:'.' }];
+const REGRA_1070 = PARTES_1070.map(p => p.t).join('');
 /* A "10.6.1" (o toque na regra): a regra sai em fade; aos 3 s o Mg brilha em
    verde; aos 7 s a faixa da linha 3 entra e pisca 2 vezes (com a bolinha do
    3), aos 8,2 s a da coluna 2 (com a etiqueta s² em cima dela); aos 11 s a
@@ -23639,7 +23645,10 @@ const CARDS101 = {
     if (nR !== this.ntR1070){
       if (nR > this.ntR1070 && this.ntR1070 >= 0 && de70) TECLAS.bate();
       this.ntR1070 = nR;
-      EV9.escreve(this.regra1070, REGRA_1070, nR);
+      /* o que já se escreveu (as partes coloridas no seu span), o cursor, e o resto guardando o lugar */
+      let k = nR, h = '';
+      PARTES_1070.forEach(p => { const a = p.t.slice(0, Math.max(0, Math.min(k, p.t.length))); k -= p.t.length; if (a) h += p.c ? '<span class="' + p.c + '">' + a + '</span>' : a; });
+      this.regra1070.innerHTML = h + '<i class="cursor"></i><span class="falta">' + REGRA_1070.slice(nR) + '</span>';
     }
     const dentro = (X, [a, b]) => X >= a && X < b;
     /* (na montagem, da "10.7" em diante, o f¹⁴ gigante à vista, para ser arrumado) */
