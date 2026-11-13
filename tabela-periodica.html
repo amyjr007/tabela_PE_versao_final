@@ -5436,7 +5436,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v61.2';
+const VERSAO = 'v61.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6959,8 +6959,9 @@ const ROTEIROS = {
   '10.6.1': [],
   '10.6.1.1': [],
   '10.6.2': [
-    { t:32.0, faz(){ pausaPor('10.6.2', T1063.pausa[1]); } },
-    { t:34.3, faz(){ CARDS101.monta1063 = performance.now(); pausaPor('10.6.2', T1063.monta[1]); } }
+    { t:34.3, faz(){ CARDS101.monta1063 = performance.now(); pausaPor('10.6.2', T1063.monta[1]); } },
+    { t:38.5, faz(){ pausaPor('10.6.2', T1063.pausa[1]); } },
+    { t:40.7, faz(){ pausaPor('10.6.2', T1063.pausa2[1]); } }
   ],
   '10.6.3': [],
   '10.7': [],
@@ -22481,12 +22482,14 @@ const T1062 = { pulsa:[6.5, 7.6] };
    31,3 s); aos 34 s a distribuição inteira do iodo no vão de cima (o último
    subnível nas cores do 5p⁵), e aos 35 s ele pulsa 3 vezes. */
 const T1063 = { iodo:2.2, linha:16.5, coluna:18.0, piscaL:[[16.5, 17.7], [20.0, 21.2]], piscaC:[[18.0, 19.2], [22.0, 23.2]],
-                texto:[23.5, 25.0], cinco:26.0, p:27.5, sup:27.8, festa:28.8, volta:31.3, dist:34.3, pulsa:[35.0, 36.8],
+                texto:[23.5, 25.0], cinco:26.0, p:27.5, sup:27.8, festa:28.8, volta:31.3, dist:34.3, pulsa:[37.0, 38.8],
                 /* (v61.2: aos 3,8 s o número atômico do iodo cresce, aos 5,5 s pisca de âmbar 2 vezes, aos 13 s volta;
                    aos 26 s, com o 5 grande, a bolinha do 5 cresce; com o p, a etiqueta p⁵; aos 28,8 s a bolinha pulsa,
                    aos 29,2 s a etiqueta; as duas voltam aos 31,3 s; aos 32 s uma pausa de 1,5 s; aos 34,3 s outra,
                    de 3 s, enquanto a distribuição se desenha um subnível por vez) */
-                num:[3.8, 13.0], ambar:[5.5, 6.7], pulsa5:[28.8, 30.2], pulsaP5:[29.2, 30.6], pausa:[32.0, 1500], monta:[34.3, 3000] };
+                num:[3.8, 13.0], ambar:[5.5, 6.7], pulsa5:[28.8, 30.2], pulsaP5:[29.2, 30.6], monta:[34.3, 3000],
+                /* (v61.3, o áudio regravado com 43,5 s: a pausa de 1,5 s passa para os 38,5 s, e outra aos 40,7 s; o 5p⁵ da distribuição pulsa aos 37 s) */
+                pausa:[38.5, 1500], pausa2:[40.7, 1500] };
 const TEXTO_1063 = 'O subnível mais energético:';
 /* A "10.6.3" (o play no fim da "10.6.2"; no código, "1064"): os textos do iodo
    saem; o terceiro exemplo, o césio (6s¹), nos mesmos passos do iodo — aos 3 s

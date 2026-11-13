@@ -205,6 +205,21 @@ var LEGENDAS = {
     [45.89,54.38,"Pois agora, a gente vai descobrir exatamente a mesma informação em 2 segundos, usando apenas a posição do elemento na tabela periódica."],
     [54.91,56.54,"É isso que vamos ver a seguir."]
   ],
+  "audio_tabela_10.6.2": [
+    [0,2.95,"Pronto, vamos para outro exemplo: o iodo aqui."],
+    [3.78,6.82,"Olha o número atômico dele: 53."],
+    [7.23,12.51,"Já pensou ter que fazer a distribuição dele pelo diagrama só para ver qual o último subnível dele?"],
+    [13.22,14.93,"Então, vamos à tabela."],
+    [15.64,21.07,"O iodo está no quinto período, nessa coluna do bloco p bem aqui."],
+    [21.45,23.1,"Quinto período, nessa coluna bem aqui."],
+    [23.77,28.37,"O subnível mais energético dele, então, é 5p⁵."],
+    [28.68,29.92,"5p⁵."],
+    [30.39,31.97,"Pegou agora? É isso."],
+    [32.53,35.73,"Se fôssemos fazer pelo diagrama, a distribuição ficaria assim."],
+    [36.39,38.46,"Agora, olha o último subnível dele."],
+    [39.04,40.84,"Veja, bate certinho, né?"],
+    [41.37,43.55,"Tá. Vamos fazer só mais um exemplo."]
+  ],
   "audio_tabela_10.6.3": [
     [0,2.98,"Tá, vamos para o último exemplo: o césio, aqui."],
     [2.98,8.93,"Veja só: ele está no sexto período, na primeira coluna do bloco s."],
