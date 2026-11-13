@@ -3334,7 +3334,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .mesa .card101.gig107{scale:.3;opacity:0;pointer-events:none;z-index:28}
 /* (o card gigante fica quadrado: a montagem muda a largura das peças, e nele o tamanho é só pela escala) */
 .mesa .card101.gig107{width:92px!important;height:92px!important}
-.mesa.so1051 .card101.gig107.on107, .mesa .card101.gig107.on107{opacity:1!important;scale:1.35}
+/* (a escala que o professor deixou na montagem: 1,35 × 0,75) */
+.mesa.so1051 .card101.gig107.on107, .mesa .card101.gig107.on107{opacity:1!important;scale:1.0125}
 .veu107, .veu1070{flex-direction:column;gap:14px}
 .veu107 .tit107{margin:0 0 18px;font-family:var(--display);font-weight:700;font-size:52px;letter-spacing:-.015em;color:var(--ouro-luz)}
 .veu107 .lin107, .veu1070 .regra1070{margin:0;font-family:var(--display);font-weight:600;font-size:38px;line-height:1.25;color:#F4F2F8;text-align:center}
@@ -5375,7 +5376,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v59.0';
+const VERSAO = 'v59.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23617,7 +23618,8 @@ const CARDS101 = {
       };
       /* (só o f¹⁴, meio por cima dos quadrinhos 57–71 e 89–103 do 3B — os
          lantanídeos e actinídeos, guardados ali, atrás do cartão dele) */
-      this.f107 = gig('f', 14, 'var(--cat-lantanideos)', xDaColuna(3) + 24, (yDaLinha(6) + yDaLinha(7)) / 2 + 14);
+      /* (o lugar que o professor deixou na montagem: no palco x 186, y 481; aqui, na medida da mesa) */
+      this.f107 = gig('f', 14, 'var(--cat-lantanideos)', 156, 564.3);
     }
     /* aos 1 s da "10.7" a sala do quiz 2 clareia */
     if (de7 && t >= T107.claro && window.QUIZ10B && QUIZ10B.escuro && !QUIZ10B.aberto) QUIZ10B.fecha();
