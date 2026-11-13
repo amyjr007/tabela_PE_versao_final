@@ -5456,7 +5456,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v61.7';
+const VERSAO = 'v61.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22504,7 +22504,7 @@ const T1062 = { pulsa:[6.5, 7.6] };
 /* (v61.7: no lugar das faixas piscantes, setas luminosas que crescem a partir do iodo — a azul,
    aos 16,5 s, até a bolinha do 5 (que pulsa 2 vezes quando ela chega); a âmbar, aos 17,5 s, até a
    etiqueta p⁵ (que pulsa 2 vezes quando ela chega); aos 20 s pulsa a bolinha, aos 21,5 s a etiqueta,
-   e as pontas das setas ficam num vaivém discreto; as setas somem na festa dos 28,8 s) */
+   e as pontas das setas ficam num vaivém discreto; v61.8: as setas ficam até o exemplo seguinte, a 10.6.3) */
 const T1063 = { iodo:2.2, setaL:16.5, setaC:17.5, cresceSeta:0.9, b5:[[17.4, 18.6], [20.0, 21.2]], bP5:[[18.4, 19.6], [21.5, 22.7]],
                 texto:[23.5, 25.0], cinco:26.0, p:27.5, sup:27.8, festa:28.8, volta:31.3, dist:35.8, pulsa:[37.0, 38.8], pulsaR:[39.7, 41.5],
                 /* (v61.2: aos 3,8 s o número atômico do iodo cresce, aos 5,5 s pisca de âmbar 2 vezes, aos 13 s volta;
@@ -23736,7 +23736,7 @@ const CARDS101 = {
     }
     const dentro = ([a, b]) => T >= a && T < b;
     const pL = T1063.b5.some(dentro), pC = T1063.bP5.some(dentro);
-    const chave = [T >= T1063.iodo, T >= T1063.setaL && T < T1063.festa, T >= T1063.setaC && T < T1063.festa, pL, pC, T >= T1063.texto[0], dentro(T1063.texto),
+    const chave = [T >= T1063.iodo, T >= T1063.setaL, T >= T1063.setaC, pL, pC, T >= T1063.texto[0], dentro(T1063.texto),
                    T >= T1063.cinco, T >= T1063.p, T >= T1063.sup, dentro([T1063.festa, T1063.volta]), T >= T1063.dist, dentro(T1063.pulsa),
                    dentro(T1063.pulsaR), dentro(T1063.num), dentro(T1063.ambar), T >= T1063.cinco, T >= T1063.p, dentro(T1063.pulsa5), dentro(T1063.pulsaP5)].join();
     if (chave === this.estado1063) return;
