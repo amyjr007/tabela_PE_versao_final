@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v62.5** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v62.6** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -173,3 +173,14 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 
 1 s a regra sai; 3 s o Fe cresce 15 % e brilha; (v62.3: no lugar das faixas, as setas amarelas — 6 s a da linha, até a bolinha do 4, que pulsa na chegada, 6,9 s; 7,5 s a da coluna, até a etiqueta d⁶, que pulsa aos 8,4 s; a da linha sai aos 13 s, quando a fórmula entra no lugar dela; as setas ficam abaixo das etiquetas, z-index 26; v62.4: na 10.7.1 as etiquetas do d sobem mais 30 px — classe dSobe1071, SOBE_D_1071 — para a seta da coluna aparecer, e a linha "Subnível mais energético: 3d⁶" sobe junto; v62.5: as setas em trechos — a da linha até a bolinha do 4 (6–13 s), depois até o 3 vermelho (24–27 s, com o 3 pulsando na chegada, 24,9 s; e 28 s até a festa); a da coluna até a d⁶ (7,5–13 s, 26–27 s com a d⁶ pulsando na chegada, 26,9 s, e 28,9 s até a festa); o ⁶ aos 29,7 s; na festa (30,5 s) as setas se recolhem para o Fe — em todos os exemplos a seta agora sai recolhendo); 13 s digita "(n − 1)" na linha 4, logo depois da bolinha, por cima do K e do Ca (36 px); 15 s o n vira 4; 18,7 s fica um 3 vermelho, ali mesmo, até o fim (sem o "(n − 1 = 3)"); 20,8 s "Subnível mais energético:" (entre as linhas 2 e 3, um pouco acima do meio); 25 s o bloco d pulsa; 25,9 s a coluna pisca 2× de novo; 28/28,9/29,5 s o 3, o d e o ⁶; 30,5 s o 3d⁶ cresce e brilha, com confetes, aplausos e funfare; dali o 3 vermelho (não a bolinha do 4), o "(n − 1)" embaixo da bolinha e a etiqueta d⁶ ficam pulsando (discreto: 8 % a mais, ciclo de 2,4 s); na resposta, o 3 é vermelho e pulsa com o 3 da fórmula, e o d⁶ pulsa com a etiqueta d⁶ — alternados: primeiro os 3 (com o (n − 1)), depois os d⁶ (meio ciclo, 1,2 s). O "O subnível mais energético" do alto sai na 10.7.1. O fim da 10.7.1 ainda não leva a nada.
 - As etiquetas d¹ a d¹⁰ ficam 20 px acima da linha 4 (antes encostavam nos cards), em todo o tópico.
+
+## A 10.7.1A e a 10.7.2 (v62.6) — o zircônio, 4d² (`tick1072`, `T1072`)
+
+- **Fim da 10.7.1** → toca sozinha a **10.7.1A** ("Facinho, não é? Vamos fazer mais um exemplo?", 3,2 s); no fim dela, o botão verde **"Bora"** → **10.7.2**.
+- **10.7.2** (36,1 s): os textos do Fe saem em fade (classe `sai1072`) e o Fe deixa de brilhar e piscar; as etiquetas do d continuam erguidas (dSobe1071).
+  - 1,5 s o Zr cresce 15 % e brilha; 6,5 s seta até a bolinha do 5 (pulsa ao chegar, 7,4 s); 7,9 s seta até a etiqueta d² (pulsa aos 8,8 s).
+  - 15 s as setas recolhem e digita "(n − 1)" na linha 5 (até 15,6 s); 17,3 s o n sai e entra o 5 (azul); 20,7 s fica o 4 vermelho.
+  - 23 s digita "Subnível mais energético:" (até 24,5 s), no lugar da linha do Fe.
+  - 26 s seta até o 4 vermelho (pulsa aos 26,9 s), recolhe aos 27,2 s; 27 s seta até a d² (pulsa aos 27,9 s), recolhe aos 28,2 s.
+  - 30,2 s seta até o 4 e o 4 (vermelho) do 4d²; 31,2 s seta até a d² e o d; 32 s o ²; 33,2 s festa (confetes, aplausos, funfare) e as setas recolhem.
+  - O fim da 10.7.2 ainda não leva a nada.

@@ -261,6 +261,23 @@ var LEGENDAS = {
     [23.74,28.61,"camada 3, bloco d, sexta coluna. Então fica 3d⁶."],
     [29.68,31.79,"3d⁶."]
   ],
+  "audio_tabela_10.7.1A": [
+    [0,0.86,"Facinho, não é?"],
+    [1.83,3.16,"Vamos fazer mais um exemplo?"]
+  ],
+  "audio_tabela_10.7.2": [
+    [0,4.36,"Certo, vamos pegar o zircônio aqui, um metal muito comum no dia a dia."],
+    [5.14,5.53,"Muito bem."],
+    [5.99,9.42,"Ele está no quinto período, na segunda coluna do bloco d."],
+    [10.01,12.91,"Mas, como ele é um elemento de transição,"],
+    [13.19,17.86,"já sabe: o subnível preenchido fica uma camada a menos. Em vez da camada 5,"],
+    [18.13,21.2,"o subnível mais energético fica na camada 4."],
+    [21.74,22.5,"Juntando tudo:"],
+    [22.92,29.07,"o subnível mais energético do zircônio é: camada 4, bloco d, segunda coluna."],
+    [29.51,32.76,"Então fica 4d²."],
+    [33.14,34.26,"4d²."],
+    [34.79,36.1,"E agora? Foi?"]
+  ],
   "audio_tabela_10.6": [
     [0,6.82,"Certo, agora vamos aprender a descobrir o subnível mais energético dos elementos direto pela tabela periódica."],
     [7.94,12.96,"Vamos começar pelos elementos representativos, que são aqueles das famílias A, aqui."],
