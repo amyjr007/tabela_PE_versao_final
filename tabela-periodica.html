@@ -5491,7 +5491,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v63.5';
+const VERSAO = 'v63.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22841,7 +22841,7 @@ const TEXTO_102 = 'O nº de colunas no bloco = nº de e⁻ do subnível';
 const T103 = { bloco:[1.5, 3.2], card:[4.5, 9.2], pulsa:[6.0, 8.7], some:10.6, esc18:[15.3, 16.3],
                sobe:[[10.7, 11.5, 13], [11.5, 12.55, 14], [12.55, 13.5, 15], [13.5, 14.6, 16], [14.6, 15.3, 17], [20.9, 21.9, 13], [21.9, 22.75, 14]],
                /* (a 4A sobe aos 21,9 s, recebe o p² aos 22,25 s e desce com ele aos 22,75 s) */
-               p1:[21.4, 21.9], p2:[22.25, 22.75], toque:22.75 };
+               p1:[21.4, 21.9], p2:[22.25, 22.75], toque:25.0 };   /* (v63.6: os toques valem dos 25 s) */
 const ESC_P_103 = 1.15;
 /* A "10.4" (o Saquei no fim da "10.3.1"): aos 1,5 s o bloco d cresce com o
    card dentro (volta aos 5,2 s); aos 7,4 s o card d¹⁰ cresce sozinho, e aos
@@ -23100,7 +23100,7 @@ const CARDS101 = {
       tocaEfeito('funfare').then(() => {
         if (g !== this.festaG || atual !== 10 || trilhaAtual !== de || !prox) return;
         this['festa' + de.replace(/\./g, '')] = true;
-        if (som.ended || (som.duration && som.currentTime >= som.duration - 0.15)) this.vaiPara(prox);
+        if (som.ended || (som.duration && som.currentTime >= som.duration - 0.15) || (de === '10.3' && this.parou103 && som.paused)) this.vaiPara(prox);
       });
       return;
     }
@@ -23355,6 +23355,8 @@ const CARDS101 = {
       const c = ev.target.closest && ev.target.closest('.pc');
       if (!c || c.dataset.b101 !== 'p') return;
       ev.stopPropagation();
+      /* (v63.6: tocou, a narração para na hora — e a festa, no fim, leva à 10.3.1 mesmo com ela parada) */
+      if (!som.paused && !som.ended){ som.pause(); this.parou103 = true; }
       const col = +c.dataset.col, prox = 15 + this.passo103;
       if (col === prox){ this.avanca103(col); return; }
       if (col > prox){ tremeVermelho(); this.avisa('Toque na sequência: agora é a ' + (prox - 10) + 'A'); }
@@ -23395,6 +23397,7 @@ const CARDS101 = {
   tick103(t){
     this.prepara103();
     const monta = naMontagem(), de = trilhaAtual === '10.3', T = monta ? -1 : de ? t : depoisDe('10.3') ? 99 : -1;
+    if (!de || t < T103.toque) this.parou103 = false;
     const dentro = ([a, b]) => T >= a && T < b;
     const bloco = dentro(T103.bloco), card = dentro(T103.card), pulsa = dentro(T103.pulsa);
     /* (v63.2: o card p⁶ sai e não volta mais — até a 10.5.1, que mostra os cards de propósito) */
