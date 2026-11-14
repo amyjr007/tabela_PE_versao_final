@@ -5491,7 +5491,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v63.6';
+const VERSAO = 'v63.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23275,6 +23275,7 @@ const CARDS101 = {
           /* (o brilho para no toque) */
           /* (v63.5: ele afunda e fica verde, como um botão ativado, e volta ao normal 2 s depois; a narração seguinte vem logo) */
           cd.classList.remove('toque10', 'brilha10'); cd.classList.add('aperta10', 'ativo10');
+          tocaEfeito('right');   /* (v63.7: o som do acerto, junto com o afundar) */
           clearTimeout(cd._ativoT); cd._ativoT = setTimeout(() => { cd.classList.remove('ativo10'); cd._ativoT = setTimeout(() => cd.classList.remove('aperta10'), 450); }, 2000);
           setTimeout(() => { if (atual === 10 && trilhaAtual === de && v && TRILHAS[v[1]]) tocaTrilha(v[1]); }, 380);
         }, true);

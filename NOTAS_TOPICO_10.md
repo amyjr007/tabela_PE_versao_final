@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v63.6** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v63.7** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -204,3 +204,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v63.4:** o brilho dos cards clicáveis virou um halo branco que pulsa (2 s), visível até em cima do bloco da mesma cor; o p⁶ já brilha desde o começo da 10.2.1 (`brilha10`); o brilho para no toque. Entre a 10.2 e a 10.2.1, 1 s.
 - **v63.5:** tocado, o card gigante afunda (86 %) e fica verde vivo com contorno verde (`ativo10`), como um botão ativado; 2 s depois volta ao normal (em 0,35 s). A narração seguinte começa 0,38 s depois do toque.
 - **v63.6:** na 10.3, os toques nas colunas do p valem a partir dos 25 s (`T103.toque`); o primeiro toque para a narração na hora (`parou103`), e depois da festa a 10.3.1 entra mesmo com ela parada.
+- **v63.7:** no toque do card gigante (quando ele afunda verde), o som "right".
