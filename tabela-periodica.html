@@ -3506,6 +3506,11 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
   font-family:var(--display);font-weight:700;font-size:26px;line-height:1;color:var(--tinta);opacity:0;transition:opacity .6s ease}
 .dist1063.on{opacity:1}
 /* as setas luminosas do iodo: crescem a partir dele (0,9 s) até a bolinha do 5 (azul) e até a etiqueta p⁵ (âmbar) */
+/* (v62.5: ao sair, a seta se recolhe para a origem — a haste encolhe — e só então some) */
+.seta1063{transition:opacity .25s ease .85s!important}
+.seta1063.on{transition-delay:0s!important}
+/* o 3 vermelho do Fe pulsa quando a seta chega nele (24,9 s) */
+.form1071.pulsaV1071{animation:pulsa106 .6s ease-in-out 2}
 /* (v62.2: as duas na mesma cor, um amarelo vivo com contorno escuro — contrasta com o laranja do s, o verde do p e o azul do d) */
 .mesa.dSobe1071 .etq102.d104{margin-top:-30px}
 .seta1063{position:absolute;z-index:26;pointer-events:none;opacity:0;transition:opacity .4s ease;--c:#FFE14D;
@@ -5458,7 +5463,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v62.4';
+const VERSAO = 'v62.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22472,9 +22477,14 @@ const T1070 = { claro:2.0, escuro:6.0, regra:[6.0, 16.0] };
 /* (v62.3: as faixas viraram setas, como no Mg, no iodo e no Cs; a 1ª pulsação na chegada, 0,9 s depois;
    a seta da linha sai aos 13 s, quando a fórmula (n − 1) é digitada no lugar dela) */
 const SOBE_D_1071 = 30;   /* px que as etiquetas do d sobem na 10.7.1 */
-const T1071 = { sai:1.0, fe:3.0, linha:6.0, coluna:7.5, piscaL:[[6.9, 8.1]], piscaC:[[8.4, 9.6], [25.9, 27.1]],
+const T1071 = { sai:1.0, fe:3.0, linha:6.0, coluna:7.5, piscaL:[[6.9, 8.1]], piscaC:[[8.4, 9.6], [26.9, 28.1]],
+                /* (v62.5: as setas em trechos — a da linha até a bolinha do 4 (6–13 s) e depois até o 3 vermelho
+                   (24–27 s e 28 s até a festa); a da coluna até a etiqueta d⁶ (7,5–13 s, 26–27 s e 28,9 s até a
+                   festa); o 3 vermelho pulsa quando a seta chega (24,9 s), a d⁶ também (26,9 s); na festa as
+                   setas se recolhem para o Fe) */
+                segL:[[6.0, 13.0], [24.0, 27.0], [28.0, 30.5]], segC:[[7.5, 13.0], [26.0, 27.0], [28.9, 30.5]], pulsa3:[24.9, 26.1],
                 formula:[13.0, 13.8], quatro:[15.0, 15.4], vermelho:18.7, some:20.0, texto:[20.8, 22.3],
-                igual:[24.0, 25.0], pulsaD:[25.0, 25.9], tres:28.0, d:28.9, seis:29.5, festa:30.5 };
+                igual:[24.0, 25.0], pulsaD:[25.0, 25.9], tres:28.0, d:28.9, seis:29.7, festa:30.5 };
 const FORMULA_1071 = '(n − 1)', IGUAL_1071 = '(n − 1 = 3)', TEXTO_1071 = 'Subnível mais energético:';
 /* (o "d" e o "desse bloco" na cor do bloco d; a "coluna" no âmbar das colunas) */
 const PARTES_1070 = [{ t:'O subnível mais energético é formado pelo número do seu período menos um (n − 1), acompanhado da letra ' },
@@ -23679,7 +23689,8 @@ const CARDS101 = {
       const xI = xDaColuna(col), yI = yDaLinha(linha), b = bola(), E = etq();
       if (b){
         /* (a ponta, de 14 px, termina antes da bolinha; perto dela — o Cs —, a haste fica curtinha) */
-        const x0 = xI - LADO / 2 * ez - 2, xb = parseFloat(b.style.left) + b.offsetWidth / 2 * fb + 16;
+        /* (b pode ser um alvo pronto: { xFim } — a borda direita dele, como o 3 vermelho do Fe) */
+        const x0 = xI - LADO / 2 * ez - 2, xb = b.xFim !== undefined ? b.xFim + 16 : parseFloat(b.style.left) + b.offsetWidth / 2 * fb + 16;
         Object.assign(S.L.style, { left:Math.min(xb, x0 - 6).toFixed(1) + 'px', top:yI.toFixed(1) + 'px', width:Math.max(6, x0 - xb).toFixed(1) + 'px' });
       }
       if (E){
@@ -23979,11 +23990,14 @@ const CARDS101 = {
     }
     const dentro = ([a, b]) => T >= a && T < b;
     const fim = T >= F.festa + 0.6;
-    const chave = [T >= F.formula[0], T >= 0, T >= F.fe, T >= F.linha, T >= F.coluna, F.piscaL.some(dentro), F.piscaC.some(dentro),
+    const segL = F.segL.find(dentro), segC = F.segC.find(dentro);
+    const chave = [segL ? segL[0] : 0, segC ? segC[0] : 0, !!segL && T >= segL[0] + 0.9, !!segC && T >= segC[0] + 0.9, dentro(F.pulsa3),
+                   T >= 0, T >= F.fe, !!segL, !!segC, F.piscaL.some(dentro), F.piscaC.some(dentro),
                    T >= F.texto[0], dentro(F.texto), dentro(F.pulsaD), T >= F.tres, T >= F.d, T >= F.seis, T >= F.festa, fim].join();
     if (chave === this.estado1071) return;
     this.estado1071 = chave;
-    const [semL, ativo, fe, lin, col, pL, pC, rot, dig, pD, tres, d, seis, festa, pisca] = chave.split(',').map(v => v === 'true');
+    const ch = chave.split(','), iniL = +ch[0], iniC = +ch[1];
+    const [, , , , p3, ativo, fe, lin, col, pL, pC, rot, dig, pD, tres, d, seis, festa, pisca] = ch.map(v => v === 'true');
     /* (o "O subnível mais energético" do alto sai: a fórmula fica no lugar dele) */
     this.m.classList.toggle('sem1052', ativo);
     /* (na 10.7.1 as etiquetas do d sobem mais, para a seta da coluna do Fe aparecer entre elas e o Fe) */
@@ -23991,8 +24005,12 @@ const CARDS101 = {
     if (this.fe1071){ this.fe1071.classList.toggle('mg106', fe); this.fe1071.style.scale = fe ? '1.15' : ''; this.fe1071.classList.toggle('grande101', fe); }
     /* (no lugar das faixas, as setas: do Fe até a bolinha do 4 e até a etiqueta d⁶) */
     this.faixaL1071.classList.remove('on', 'pisca2106'); this.faixaC1071.classList.remove('on', 'pisca2106');
-    if (!this.setas1071) this.setas1071 = this.fazSetas(26, 4, 8, () => this.p41071, () => this.etq104 && this.etq104[5] && { d:this.etq104[5].d, park:this.etq104[5].park - SOBE_D_1071 }, 1.69, 1.1, 1.15);
-    this.setas1071.liga(lin && !semL, col, T, F.linha, F.coluna);
+    /* (a da linha aponta para a bolinha do 4 até os 13 s; depois, para o 3 vermelho, ao lado dela) */
+    if (!this.setas1071) this.setas1071 = this.fazSetas(26, 4, 8,
+      () => this.t1071alvo < F.formula[0] ? this.p41071 : { xFim:parseFloat(this.form1071.style.left) + this.form1071.offsetWidth }, () => this.etq104 && this.etq104[5] && { d:this.etq104[5].d, park:this.etq104[5].park - SOBE_D_1071 }, 1.69, 1.1, 1.15);
+    this.t1071alvo = T;
+    this.setas1071.liga(lin, col, T, iniL, iniC);
+    this.form1071.classList.toggle('pulsaV1071', p3);
     /* (no fim pisca o 3 vermelho, não a bolinha do 4) */
     if (this.p41071){ this.p41071.classList.toggle('pulsaF106', pL); this.p41071.classList.remove('pisca1071'); }
     this.form1071.classList.toggle('pisca1071', pisca);
