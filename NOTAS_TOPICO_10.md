@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v62.8** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v62.9** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -196,3 +196,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
   - Antes da 5 toca a `10.7.4` ("agora vai ser o contrário…", 7,2 s); a 5 entra aos 7,4 s. De 5 a 8: dado o subnível (ex.: 3d⁵), o aluno toca o elemento; da 6 em diante sem as etiquetas e as bolinhas (como no quiz 2).
   - No fim, o cartão com a nota (Refazer, Continuar). O Continuar só fecha o quiz: o que vem depois ainda não foi definido.
 - **Sumário:** "q – O exemplo do Zr" (10.7.2) e "r – Quiz 3" (10.7.3 aos 10,2 s).
+- **Posição da tabela nos quizzes 2 e 3** (v62.9): com a classe `quiz10b` no slide, a mesa vai para `--px:20px; --py:126px` (montagem: `{ el:'tabela', x:20, y:126, esc:0.94 }`), deslizando em 0,9 s; volta ao fechar o quiz.

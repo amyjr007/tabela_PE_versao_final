@@ -3345,6 +3345,9 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 /* (isso — a mesa descer e as fileiras de baixo sumirem — é no fim da "10.5.3",
    escondido pela cena escura; quando ela clareia, na "10.6", já está no lugar) */
 .mesa[data-slide="10"].semF106{--px:6px;--py:97px;transition:transform .9s cubic-bezier(.3,.85,.3,1)}
+/* (nos quizzes 2 e 3 — sem os lantanídeos e actinídeos embaixo — a mesa desce para o lugar que o
+   professor deixou na montagem: { el:'tabela', x:20, y:126, esc:0.94 }) */
+.slide.quiz10b .mesa[data-slide="10"]{--px:20px;--py:126px;transition:transform .9s cubic-bezier(.3,.85,.3,1)}
 /* (e os lantanídeos e actinídeos voltam de uma vez para as casas do 3B: as
    duas fileiras de baixo, e as etiquetas delas, somem sem fade) */
 .mesa:is(.semF106, .fOculto107) :is(.pc[data-b101="f"], .pc[data-z="57"], .pc[data-z="89"], .etq102.f105, .casaF106){visibility:hidden!important;transition:none!important}
@@ -5475,7 +5478,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v62.8';
+const VERSAO = 'v62.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25114,7 +25117,7 @@ const QUIZ10C = Object.assign(Object.create(QUIZ10B), {
   botaoConfirma(faz){
     this.btFaz = faz;
     if (this.bt) return;
-    this.bt = this.botao('Confirmar', (xDaColuna(3) + xDaColuna(12)) / 2, yDaLinha(7) + LADO / 2 + 46, () => this.btFaz && this.btFaz());
+    this.bt = this.botao('Confirmar', (xDaColuna(3) + xDaColuna(12)) / 2, yDaLinha(7) + LADO / 2 + 34, () => this.btFaz && this.btFaz());
     this.bt.classList.add('confirma10b');
   },
   /* Continuar: o cartão sai e a sala clareia (o que vem depois do quiz 3 ainda não foi definido) */
