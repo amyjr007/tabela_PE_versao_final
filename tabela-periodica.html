@@ -3277,6 +3277,7 @@ body.montagem .card101.solto:is(:hover,.pego){
 .card101 .aqui10{position:absolute;inset:0;pointer-events:none;display:none}
 .mesa .card101.toque10{cursor:pointer;z-index:31;pointer-events:auto;overflow:visible}
 .mesa .card101:is(.toque10, .brilha10){animation:brilho10 2s ease-in-out infinite}
+.mesa .card101.brilha10{cursor:pointer;z-index:31;pointer-events:auto}
 /* (v63.3: o card clicável brilha discreto desde o fim da narração, na cor dele — a mãozinha vem 2 s depois) */
 /* (v63.4: mais visível — um halo claro em volta, que contrasta até com o bloco da mesma cor) */
 @keyframes brilho10{0%,100%{filter:drop-shadow(0 0 2px rgba(255,255,255,.45)) drop-shadow(0 0 5px rgba(255,255,255,.2)) brightness(1)}
@@ -5491,7 +5492,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v63.7';
+const VERSAO = 'v63.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23268,7 +23269,8 @@ const CARDS101 = {
         a.innerHTML = '<i class="anel10"></i><span class="dedo10">' + document.querySelector('#mao svg').outerHTML + '<i class="onda10"></i></span>';
         cd.appendChild(a);
         cd.addEventListener('click', ev => {
-          if (!cd.classList.contains('toque10')) return;
+          /* (o p⁶ já responde desde o começo da 10.2.1: tocado, a narração é cortada e vem a 10.3) */
+          if (!cd.classList.contains('toque10') && !cd.classList.contains('brilha10')) return;
           ev.stopPropagation();
           /* o card amassa como um botão apertado, e a narração seguinte vem logo depois */
           const de = trilhaAtual, v = CHAMA_10[de];
@@ -23534,7 +23536,9 @@ const CARDS101 = {
     }
     const monta = naMontagem(), de = trilhaAtual === '10.5', T = monta ? -1 : de ? t : depoisDe('10.5') ? 99 : -1;
     /* no fim da "10.3", da "10.4" e da "10.5" o play sai (é a vez do aluno tocar as colunas) */
-    stage.classList.toggle('sem-play105', !monta && ['10.2.1', '10.3', '10.3.1', '10.4', '10.4.1', '10.5'].includes(trilhaAtual) && (som.ended || (som.duration > 0 && t >= som.duration - 0.15)));
+    stage.classList.toggle('sem-play105', !monta && ((['10.2.1', '10.3', '10.3.1', '10.4', '10.4.1', '10.5'].includes(trilhaAtual) && (som.ended || (som.duration > 0 && t >= som.duration - 0.15)))
+      /* (v63.8: na 10.2.1 inteira o play fica fora — o aluno toca o card p⁶) */
+      || (trilhaAtual === '10.2.1' && atual === 10)));
     const n = EV9.letras(T, T105.texto[0], T105.texto[1], TEXTO_105);
     if (n !== this.nt105){
       if (n > this.nt105 && this.nt105 >= 0 && de) TECLAS.bate();
