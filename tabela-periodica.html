@@ -3275,7 +3275,10 @@ body.montagem .card101.solto:is(:hover,.pego){
    (a mesma do toque do quiz) espera 2 s, entra em fade, bate uma vez no card (a onda na ponta
    do dedo e um anel que se abre da borda), sai em fade e, uns 3 s depois, volta e repete (ciclo de 5,4 s) */
 .card101 .aqui10{position:absolute;inset:0;pointer-events:none;display:none}
-.mesa .card101.toque10{cursor:pointer;z-index:31;pointer-events:auto;overflow:visible}
+.mesa .card101.toque10{cursor:pointer;z-index:31;pointer-events:auto;overflow:visible;animation:brilho10 2.4s ease-in-out infinite}
+/* (v63.3: o card clicável brilha discreto desde o fim da narração, na cor dele — a mãozinha vem 2 s depois) */
+@keyframes brilho10{0%,100%{filter:drop-shadow(0 0 4px color-mix(in srgb,var(--cor) 55%,transparent))}
+  50%{filter:drop-shadow(0 0 13px color-mix(in srgb,var(--cor) 85%,#fff)) brightness(1.08)}}
 .card101.toque10 .aqui10{display:block}
 .aqui10 .anel10{position:absolute;inset:-3px;border-radius:21px;border:3px solid #FFD43B;opacity:0;
   animation:anel10 5.4s ease-out 2s infinite both}
@@ -5482,7 +5485,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v63.2';
+const VERSAO = 'v63.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
