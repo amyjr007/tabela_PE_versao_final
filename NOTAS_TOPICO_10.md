@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v63.3** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v63.4** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -26,7 +26,7 @@ Onde paramos: **v63.3** (2026-11-13). Este arquivo serve para retomar o trabalho
 |---|---|---|
 | 10 | Cena escura: tabelinha, foto do Pauling, Mg, distribuição com setas | play → 10.1 |
 | 10.1 | Cards s², p⁶, d¹⁰, f¹⁴; blocos ganham cor; encaixes aos 32 s; aluno arrasta | festa → 10.2 |
-| 10.2 | Regra das colunas; bloco s, famílias 1A/2A, etiquetas s¹ s² | (sem botão, 1,5 s depois) → 10.2.1 |
+| 10.2 | Regra das colunas; bloco s, famílias 1A/2A, etiquetas s¹ s² | (sem botão, 1 s depois) → 10.2.1 |
 | 10.2.1 | "Então, clica no card do subnível p ali…" (5,3 s); no fim o play some e uma mão amarela bate no card p⁶ (toque10, CHAMA_10): espera 2 s, entra em fade, bate uma vez, sai em fade, e volta uns 3 s depois (ciclo de 5,4 s); o toque amassa o card como um botão (aperta10, 0,38 s) e a narração seguinte vem em seguida — o mesmo no d¹⁰ e no f¹⁴ | toque no p⁶ → 10.3 |
 | 10.3 | Bloco p (áudio regravado na v61.0: contagem aos 10,9–15,5 s, p¹ 21,55 s, p² 22,3 s); colunas sobem; p¹ (3A) e p² (4A); no fim o play sai; aluno toca da 5A à 8A | festa → 10.3.1 |
 | 10.3.1 | Hélio cresce e brilha; etiqueta s² nele; pausa de 1 s aos 20 s; card d | mão no card d¹⁰ → 10.4 |
@@ -201,3 +201,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v63.1:** nos tutoriais dos quizzes 2 (10.6.3) e 3 (10.7.3) a mãozinha é amarela e 15 % maior (classe `mao10` no `#mao`, tirada quando ela some). Na 10.6.3 ela aparece aos 24 s, no meio; aos 26,5 s vai até a bolinha do 3 e a toca (27 s), que fica escolhida (`sel10b`); o card p¹ também, aos 28,5 s; quando a mão sai (29,6 s), os dois ficam verdes.
 - **v63.2:** os cards gigantes s², p⁶ e d¹⁰, que saem de dentro dos blocos para as colunas receberem as etiquetas (10.2 aos 20,4 s, 10.3 aos 10,6 s, 10.4 aos 18 s), não voltam mais (`antes1051()`), até a 10.5.1, que os mostra de propósito; o f¹⁴ fica. Entre o fim da 10.2 e a 10.2.1, 1,5 s.
 - **v63.3:** o card clicável (p⁶ no fim da 10.2.1, d¹⁰ no fim da 10.3.1, f¹⁴ no fim da 10.4.1) brilha discreto na cor dele desde o fim da narração (`brilho10`, 2,4 s), antes da mãozinha.
+- **v63.4:** o brilho dos cards clicáveis virou um halo branco que pulsa (2 s), visível até em cima do bloco da mesma cor; o p⁶ já brilha desde o começo da 10.2.1 (`brilha10`); o brilho para no toque. Entre a 10.2 e a 10.2.1, 1 s.

@@ -3275,10 +3275,12 @@ body.montagem .card101.solto:is(:hover,.pego){
    (a mesma do toque do quiz) espera 2 s, entra em fade, bate uma vez no card (a onda na ponta
    do dedo e um anel que se abre da borda), sai em fade e, uns 3 s depois, volta e repete (ciclo de 5,4 s) */
 .card101 .aqui10{position:absolute;inset:0;pointer-events:none;display:none}
-.mesa .card101.toque10{cursor:pointer;z-index:31;pointer-events:auto;overflow:visible;animation:brilho10 2.4s ease-in-out infinite}
+.mesa .card101.toque10{cursor:pointer;z-index:31;pointer-events:auto;overflow:visible}
+.mesa .card101:is(.toque10, .brilha10){animation:brilho10 2s ease-in-out infinite}
 /* (v63.3: o card clicável brilha discreto desde o fim da narração, na cor dele — a mãozinha vem 2 s depois) */
-@keyframes brilho10{0%,100%{filter:drop-shadow(0 0 4px color-mix(in srgb,var(--cor) 55%,transparent))}
-  50%{filter:drop-shadow(0 0 13px color-mix(in srgb,var(--cor) 85%,#fff)) brightness(1.08)}}
+/* (v63.4: mais visível — um halo claro em volta, que contrasta até com o bloco da mesma cor) */
+@keyframes brilho10{0%,100%{filter:drop-shadow(0 0 2px rgba(255,255,255,.45)) drop-shadow(0 0 5px rgba(255,255,255,.2)) brightness(1)}
+  50%{filter:drop-shadow(0 0 3px rgba(255,255,255,.95)) drop-shadow(0 0 16px rgba(255,255,255,.75)) brightness(1.18)}}
 .card101.toque10 .aqui10{display:block}
 .aqui10 .anel10{position:absolute;inset:-3px;border-radius:21px;border:3px solid #FFD43B;opacity:0;
   animation:anel10 5.4s ease-out 2s infinite both}
@@ -5485,7 +5487,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v63.3';
+const VERSAO = 'v63.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7759,7 +7761,7 @@ const SEQ = {
     /* o fim da "10.1": com os quatro cards já encaixados (e a festa feita), a "10.2" */
     else if (id === '10.1'){ if (atual === 10) CARDS101.fim101(); }
     /* o fim da "10.2": a "10.2.1" logo, sem botão; no fim dela o card p⁶ pulsa, e o toque nele leva à "10.3" (CARDS101.tick102) */
-    else if (id === '10.2'){ if (atual === 10) setTimeout(() => { if (atual === 10 && trilhaAtual === '10.2' && som.ended) tocaTrilha('10.2.1'); }, 1500); }
+    else if (id === '10.2'){ if (atual === 10) setTimeout(() => { if (atual === 10 && trilhaAtual === '10.2' && som.ended) tocaTrilha('10.2.1'); }, 1000); }
     /* o fim da "10.7.1" (o Fe): a "10.7.1A" logo; no fim dela, o botão "Bora", que leva à "10.7.2" (o Zr) */
     else if (id === '10.7.1'){ if (atual === 10) tocaTrilha('10.7.1A'); }
     else if (id === '10.7.1A'){ if (atual === 10) CARDS101.saquei(true, '10.7.2', 'Bora'); }
@@ -23266,7 +23268,8 @@ const CARDS101 = {
           ev.stopPropagation();
           /* o card amassa como um botão apertado, e a narração seguinte vem logo depois */
           const de = trilhaAtual, v = CHAMA_10[de];
-          cd.classList.remove('toque10', 'aperta10'); void cd.offsetWidth; cd.classList.add('aperta10');
+          /* (o brilho para no toque) */
+          cd.classList.remove('toque10', 'brilha10', 'aperta10'); void cd.offsetWidth; cd.classList.add('aperta10');
           setTimeout(() => {
             cd.classList.remove('aperta10');
             if (atual === 10 && trilhaAtual === de && v && TRILHAS[v[1]]) tocaTrilha(v[1]);
@@ -23274,6 +23277,9 @@ const CARDS101 = {
         }, true);
       }
       const on = !!vez && vez[0] === k && !cd.classList.contains('aperta10');
+      /* (o p⁶ já brilha desde o começo da 10.2.1, antes de ficar clicável) */
+      const brilha = k === 1 && !monta && atual === 10 && trilhaAtual === '10.2.1' && !cd.classList.contains('aperta10');
+      if (cd.classList.contains('brilha10') !== brilha) cd.classList.toggle('brilha10', brilha);
       if (cd.classList.contains('toque10') !== on) cd.classList.toggle('toque10', on);
     });
     const dentro = ([a, b]) => T >= a && T < b;
