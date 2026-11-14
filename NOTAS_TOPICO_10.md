@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v63.1** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v63.2** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -26,7 +26,7 @@ Onde paramos: **v63.1** (2026-11-13). Este arquivo serve para retomar o trabalho
 |---|---|---|
 | 10 | Cena escura: tabelinha, foto do Pauling, Mg, distribuição com setas | play → 10.1 |
 | 10.1 | Cards s², p⁶, d¹⁰, f¹⁴; blocos ganham cor; encaixes aos 32 s; aluno arrasta | festa → 10.2 |
-| 10.2 | Regra das colunas; bloco s, famílias 1A/2A, etiquetas s¹ s² | (sem botão) → 10.2.1 |
+| 10.2 | Regra das colunas; bloco s, famílias 1A/2A, etiquetas s¹ s² | (sem botão, 1,5 s depois) → 10.2.1 |
 | 10.2.1 | "Então, clica no card do subnível p ali…" (5,3 s); no fim o play some e uma mão amarela bate no card p⁶ (toque10, CHAMA_10): espera 2 s, entra em fade, bate uma vez, sai em fade, e volta uns 3 s depois (ciclo de 5,4 s); o toque amassa o card como um botão (aperta10, 0,38 s) e a narração seguinte vem em seguida — o mesmo no d¹⁰ e no f¹⁴ | toque no p⁶ → 10.3 |
 | 10.3 | Bloco p (áudio regravado na v61.0: contagem aos 10,9–15,5 s, p¹ 21,55 s, p² 22,3 s); colunas sobem; p¹ (3A) e p² (4A); no fim o play sai; aluno toca da 5A à 8A | festa → 10.3.1 |
 | 10.3.1 | Hélio cresce e brilha; etiqueta s² nele; pausa de 1 s aos 20 s; card d | mão no card d¹⁰ → 10.4 |
@@ -199,3 +199,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **Posição da tabela nos quizzes 2 e 3** (v62.9): com a classe `quiz10b` no slide, a mesa vai para `--px:20px; --py:126px` (montagem: `{ el:'tabela', x:20, y:126, esc:0.94 }`), deslizando em 0,9 s; volta ao fechar o quiz.
 - **v63.0:** na 10.7.3 a sala já apaga aos 12 s e o cabeçalho vira "Quiz 3" (voltando para antes, clareia); na demonstração, o toque da mãozinha escolhe como no quiz (contorno amarelo, `sel10b`) e no fim a bolinha e o card ficam verdes (`certa10b`). No acerto das questões 5 a 8 do quiz 3, um "(n − 1)" vermelho em cima da bolinha da camada (`tag10c`).
 - **v63.1:** nos tutoriais dos quizzes 2 (10.6.3) e 3 (10.7.3) a mãozinha é amarela e 15 % maior (classe `mao10` no `#mao`, tirada quando ela some). Na 10.6.3 ela aparece aos 24 s, no meio; aos 26,5 s vai até a bolinha do 3 e a toca (27 s), que fica escolhida (`sel10b`); o card p¹ também, aos 28,5 s; quando a mão sai (29,6 s), os dois ficam verdes.
+- **v63.2:** os cards gigantes s², p⁶ e d¹⁰, que saem de dentro dos blocos para as colunas receberem as etiquetas (10.2 aos 20,4 s, 10.3 aos 10,6 s, 10.4 aos 18 s), não voltam mais (`antes1051()`), até a 10.5.1, que os mostra de propósito; o f¹⁴ fica. Entre o fim da 10.2 e a 10.2.1, 1,5 s.
