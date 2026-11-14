@@ -3297,7 +3297,11 @@ body.montagem .card101.solto:is(:hover,.pego){
 /* o toque: o card amassa como um botão apertado */
 @keyframes aperta10{0%{transform:translate(-50%,-50%) scale(1)} 35%{transform:translate(-50%,-50%) scale(.84);filter:brightness(.88)}
   70%{transform:translate(-50%,-50%) scale(1.04)} 100%{transform:translate(-50%,-50%) scale(1)}}
-.mesa .card101.aperta10{animation:aperta10 .38s ease-out}
+/* (v63.5: o card tocado afunda e fica verde, como um botão ativado, por 2 s) */
+.mesa .card101.ativo10{background:linear-gradient(145deg,#6FF0A6,#1E9E55)!important;transform:translate(-50%,-50%) scale(.86);
+  box-shadow:0 0 0 3px #7CF5A8, 0 0 22px 8px rgba(46,214,113,.75), inset 0 4px 10px rgba(0,0,0,.35);
+  transition:transform .14s ease-out, box-shadow .2s ease, filter .2s ease}
+.mesa .card101.aperta10:not(.ativo10){transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
 .card101.pulsa102 sup{animation:pulsa102 .9s ease-in-out infinite;transform-origin:50% 60%}
 @keyframes pulsa102{50%{transform:scale(1.55);color:#FFF6A8;text-shadow:0 0 10px rgba(255,240,140,.9)}}
 .card101.some102{opacity:0!important;pointer-events:none}
@@ -5487,7 +5491,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v63.4';
+const VERSAO = 'v63.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23269,11 +23273,10 @@ const CARDS101 = {
           /* o card amassa como um botão apertado, e a narração seguinte vem logo depois */
           const de = trilhaAtual, v = CHAMA_10[de];
           /* (o brilho para no toque) */
-          cd.classList.remove('toque10', 'brilha10', 'aperta10'); void cd.offsetWidth; cd.classList.add('aperta10');
-          setTimeout(() => {
-            cd.classList.remove('aperta10');
-            if (atual === 10 && trilhaAtual === de && v && TRILHAS[v[1]]) tocaTrilha(v[1]);
-          }, 380);
+          /* (v63.5: ele afunda e fica verde, como um botão ativado, e volta ao normal 2 s depois; a narração seguinte vem logo) */
+          cd.classList.remove('toque10', 'brilha10'); cd.classList.add('aperta10', 'ativo10');
+          clearTimeout(cd._ativoT); cd._ativoT = setTimeout(() => { cd.classList.remove('ativo10'); cd._ativoT = setTimeout(() => cd.classList.remove('aperta10'), 450); }, 2000);
+          setTimeout(() => { if (atual === 10 && trilhaAtual === de && v && TRILHAS[v[1]]) tocaTrilha(v[1]); }, 380);
         }, true);
       }
       const on = !!vez && vez[0] === k && !cd.classList.contains('aperta10');
