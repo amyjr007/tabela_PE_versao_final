@@ -3338,7 +3338,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .mesa[data-slide="10"] :is(.pc[data-b101="d"], .etq102.d104){transition:opacity .8s ease, scale .55s ease, translate .55s ease}
 /* (as etiquetas do d andam por translate, no mesmo compasso da coluna: descem juntas, sem engasgo) */
 .mesa[data-slide="10"] .etq102.d104{will-change:translate;transition:opacity .3s ease, scale .55s ease, translate .55s ease,
-  transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease}
+  transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .4s ease, margin-top .5s cubic-bezier(.3,.85,.3,1)}
 .mesa.semB106 :is(.pc[data-b101="d"], .etq102.d104, .casa.serie){opacity:.12!important}
 /* (sem as duas fileiras de baixo, a mesa desce para o lugar que o professor
    deixou na montagem: { el:'tabela', x:6, y:97, esc:0.94 }) */
@@ -3507,6 +3507,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .dist1063.on{opacity:1}
 /* as setas luminosas do iodo: crescem a partir dele (0,9 s) até a bolinha do 5 (azul) e até a etiqueta p⁵ (âmbar) */
 /* (v62.2: as duas na mesma cor, um amarelo vivo com contorno escuro — contrasta com o laranja do s, o verde do p e o azul do d) */
+.mesa.dSobe1071 .etq102.d104{margin-top:-30px}
 .seta1063{position:absolute;z-index:26;pointer-events:none;opacity:0;transition:opacity .4s ease;--c:#FFE14D;
   filter:drop-shadow(0 0 1.2px #1C1838) drop-shadow(0 0 1.2px #1C1838) drop-shadow(0 0 1px #1C1838) drop-shadow(0 0 9px rgba(255,214,50,.9))}
 .seta1063.on{opacity:1}
@@ -5457,7 +5458,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v62.3';
+const VERSAO = 'v62.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22470,6 +22471,7 @@ const T1070 = { claro:2.0, escuro:6.0, regra:[6.0, 16.0] };
    (com um "(n − 1)" embaixo dela) e a etiqueta d⁶ ficam piscando. */
 /* (v62.3: as faixas viraram setas, como no Mg, no iodo e no Cs; a 1ª pulsação na chegada, 0,9 s depois;
    a seta da linha sai aos 13 s, quando a fórmula (n − 1) é digitada no lugar dela) */
+const SOBE_D_1071 = 30;   /* px que as etiquetas do d sobem na 10.7.1 */
 const T1071 = { sai:1.0, fe:3.0, linha:6.0, coluna:7.5, piscaL:[[6.9, 8.1]], piscaC:[[8.4, 9.6], [25.9, 27.1]],
                 formula:[13.0, 13.8], quatro:[15.0, 15.4], vermelho:18.7, some:20.0, texto:[20.8, 22.3],
                 igual:[24.0, 25.0], pulsaD:[25.0, 25.9], tres:28.0, d:28.9, seis:29.5, festa:30.5 };
@@ -23936,7 +23938,8 @@ const CARDS101 = {
       m.appendChild(f);
       const w = this.linha1071 = document.createElement('div');
       w.className = 'linha106 linha1071';
-      w.style.left = meio; w.style.top = ((yDaLinha(2) + yDaLinha(3)) / 2 - 20).toFixed(1) + 'px';
+      /* (v62.4: mais acima, porque as etiquetas do d sobem na 10.7.1) */
+      w.style.left = meio; w.style.top = ((yDaLinha(2) + yDaLinha(3)) / 2 - 52).toFixed(1) + 'px';
       w.innerHTML = '<span class="titulo9 rot106"><span><span class="ja"></span><i class="cursor"></i><span class="falta"></span></span></span>' +
         '<div class="r106 rd107"><span class="r3">3</span><span class="rs">d</span><sup class="r2">6</sup></div>';
       m.appendChild(w);
@@ -23983,10 +23986,12 @@ const CARDS101 = {
     const [semL, ativo, fe, lin, col, pL, pC, rot, dig, pD, tres, d, seis, festa, pisca] = chave.split(',').map(v => v === 'true');
     /* (o "O subnível mais energético" do alto sai: a fórmula fica no lugar dele) */
     this.m.classList.toggle('sem1052', ativo);
+    /* (na 10.7.1 as etiquetas do d sobem mais, para a seta da coluna do Fe aparecer entre elas e o Fe) */
+    this.m.classList.toggle('dSobe1071', ativo);
     if (this.fe1071){ this.fe1071.classList.toggle('mg106', fe); this.fe1071.style.scale = fe ? '1.15' : ''; this.fe1071.classList.toggle('grande101', fe); }
     /* (no lugar das faixas, as setas: do Fe até a bolinha do 4 e até a etiqueta d⁶) */
     this.faixaL1071.classList.remove('on', 'pisca2106'); this.faixaC1071.classList.remove('on', 'pisca2106');
-    if (!this.setas1071) this.setas1071 = this.fazSetas(26, 4, 8, () => this.p41071, () => this.etq104 && this.etq104[5], 1.69, 1.1, 1.15);
+    if (!this.setas1071) this.setas1071 = this.fazSetas(26, 4, 8, () => this.p41071, () => this.etq104 && this.etq104[5] && { d:this.etq104[5].d, park:this.etq104[5].park - SOBE_D_1071 }, 1.69, 1.1, 1.15);
     this.setas1071.liga(lin && !semL, col, T, F.linha, F.coluna);
     /* (no fim pisca o 3 vermelho, não a bolinha do 4) */
     if (this.p41071){ this.p41071.classList.toggle('pulsaF106', pL); this.p41071.classList.remove('pisca1071'); }
