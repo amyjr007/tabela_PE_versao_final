@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v63.0** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v63.1** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -198,3 +198,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **Sumário:** "q – O exemplo do Zr" (10.7.2) e "r – Quiz 3" (10.7.3 aos 10,2 s).
 - **Posição da tabela nos quizzes 2 e 3** (v62.9): com a classe `quiz10b` no slide, a mesa vai para `--px:20px; --py:126px` (montagem: `{ el:'tabela', x:20, y:126, esc:0.94 }`), deslizando em 0,9 s; volta ao fechar o quiz.
 - **v63.0:** na 10.7.3 a sala já apaga aos 12 s e o cabeçalho vira "Quiz 3" (voltando para antes, clareia); na demonstração, o toque da mãozinha escolhe como no quiz (contorno amarelo, `sel10b`) e no fim a bolinha e o card ficam verdes (`certa10b`). No acerto das questões 5 a 8 do quiz 3, um "(n − 1)" vermelho em cima da bolinha da camada (`tag10c`).
+- **v63.1:** nos tutoriais dos quizzes 2 (10.6.3) e 3 (10.7.3) a mãozinha é amarela e 15 % maior (classe `mao10` no `#mao`, tirada quando ela some). Na 10.6.3 ela aparece aos 24 s, no meio; aos 26,5 s vai até a bolinha do 3 e a toca (27 s), que fica escolhida (`sel10b`); o card p¹ também, aos 28,5 s; quando a mão sai (29,6 s), os dois ficam verdes.

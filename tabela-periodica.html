@@ -5254,6 +5254,9 @@ body.montagem .solto.pego{outline:1.5px solid var(--ouro);background:rgba(226,16
   border-radius:50%;border:2.5px solid var(--ouro);opacity:0;
 }
 #mao.clica svg {animation:maoBate .5s ease}
+/* (nos tutoriais dos quizzes 2 e 3, a mãozinha é amarela e 15 % maior, com a ponta do dedo no mesmo lugar) */
+#mao.mao10 svg{fill:#FFD43B;stroke:#3A2E00;scale:1.15;transform-origin:22px 7px}
+#mao.mao10 .onda{border-color:#FFD43B}
 #mao.clica .onda{animation:maoOnda .62s ease-out}
 @keyframes maoBate{0%,100%{transform:scale(1)} 42%{transform:scale(.8)}}
 @keyframes maoOnda{0%{opacity:.95;transform:scale(.35)} 100%{opacity:0;transform:scale(4.4)}}
@@ -5479,7 +5482,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v63.0';
+const VERSAO = 'v63.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22595,7 +22598,10 @@ const TEXTO_1063 = 'O subnível mais energético:';
 /* (v62.1: as faixas viraram setas; a bolinha e a etiqueta pulsam quando a seta chega, 0,9 s depois) */
 const T1064 = { cs:3.0, linha:5.5, coluna:7.0, piscaL:[[6.4, 7.6], [9.6, 10.8]], piscaC:[[7.9, 9.1], [10.7, 11.9]],
                 texto:[13.0, 14.5], seis:16.0, s:17.0, sup:18.0, festa:18.7, pausa:20.0, volta:22.5,
-                quiz:23.0, al:24.5, mao:26.5, demo:[26.5, 27.6], vaiCol:28.0, col:28.5, tiraMao:29.6 };
+                quiz:23.0, al:24.5, mao:26.5, demo:[26.5, 27.6], vaiCol:28.0, col:28.5, tiraMao:29.6,
+                /* (v63.1: a mãozinha — amarela e 15 % maior — aparece aos 24 s, no meio; aos 26,5 s vai até a
+                   bolinha do 3 e a toca, e ela fica escolhida como no quiz; o card p¹ também, aos 28,5 s) */
+                maoAparece:24.0, tocaP:27.05 };
 const TEXTO_1064 = 'O subnível mais energético:';
 const TEXTO_Q10B = 'Subnível mais energético:';
 /* (a distribuição do iodo até o penúltimo subnível; o 5p⁵ vai à parte, colorido) */
@@ -24176,7 +24182,7 @@ const CARDS101 = {
     }
     const passa = s => de && !som.paused && this.t1073ant >= 0 && this.t1073ant < s && t >= s && t < s + 0.6 && t - this.t1073ant < 1;
     const p3 = this.m.querySelector('.eixo[data-periodo="3"]'), d6 = this.etq104 && this.etq104[5] && this.etq104[5].d;
-    if (passa(T1073.mao)) levaMao(this.m, { fx:.5, fy:.5 });
+    if (passa(T1073.mao)){ mao.classList.add('mao10'); levaMao(this.m, { fx:.5, fy:.5 }); }
     if (passa(T1073.vaiP) && p3) levaMao(p3);
     if (passa(T1073.tocaP)) bateMao();
     if (passa(T1073.vaiC) && d6) levaMao(d6);
@@ -24257,7 +24263,9 @@ const CARDS101 = {
         if (g === this.g1064 && atual === 10 && trilhaAtual === '10.6.3' && som.paused) som.play().catch(avisaSeNaoTocou);
       });
     }
-    if (passa(T1064.mao) && this.p31064){ levaMao(this.p31064); bateMao(); }
+    if (passa(T1064.maoAparece)){ mao.classList.add('mao10'); levaMao(this.m, { fx:.5, fy:.5 }); }
+    if (passa(T1064.mao) && this.p31064){ mao.classList.add('mao10'); levaMao(this.p31064); }
+    if (passa(T1064.tocaP)) bateMao();
     if (passa(T1064.vaiCol) && this.etq103) levaMao(this.etq103[0].d);
     if (passa(T1064.col)){ bateMao(); this.aplauso(); }
     if (passa(T1064.tiraMao)) tiraMao();
@@ -24280,10 +24288,14 @@ const CARDS101 = {
     const chave = [T >= T1064.cs && antes, T >= T1064.linha && antes, T >= T1064.coluna && antes,
                    T1064.piscaL.some(dentro), T1064.piscaC.some(dentro), T >= T1064.texto[0] && antes, dentro(T1064.texto),
                    T >= T1064.seis, T >= T1064.s, T >= T1064.sup, dentro([T1064.festa, T1064.volta]),
-                   T >= T1064.al && !(Q2 && Q2.jaAbriu), demo, dentro(T1064.demo), T >= T1064.col].join();
+                   T >= T1064.al && !(Q2 && Q2.jaAbriu), demo, dentro(T1064.demo), T >= T1064.col, demo && T >= T1064.tocaP, demo && T >= T1064.tiraMao].join();
     if (chave === this.estado1064) return;
     this.estado1064 = chave;
-    const [cs, lin, col, pL, pC, rot, dig, seis, s, sup, festa, al, dm, digD, colD] = chave.split(',').map(v => v === 'true');
+    const [cs, lin, col, pL, pC, rot, dig, seis, s, sup, festa, al, dm, digD, colD, selP, certo] = chave.split(',').map(v => v === 'true');
+    /* (o toque da mãozinha escolhe como no quiz: o contorno amarelo; quando ela sai, os dois ficam verdes) */
+    const p1 = this.etq103 && this.etq103[0] && this.etq103[0].d;
+    if (this.p31064){ this.p31064.classList.toggle('sel10b', selP); this.p31064.classList.toggle('certa10b', certo); }
+    if (p1){ p1.classList.toggle('sel10b', dm && colD); p1.classList.toggle('certa10b', certo); }
     if (this.cs1064) this.cs1064.classList.toggle('mg106', cs);
     /* (v62.1: no lugar das faixas piscantes, as setas — do Cs até a bolinha do 6 e até a etiqueta s¹) */
     this.faixaL1064.classList.remove('on', 'pisca2106'); this.faixaC1064.classList.remove('on', 'pisca2106');
@@ -26889,7 +26901,7 @@ function bateMao(){
 }
 function tiraMao(){
   mao.classList.remove('on');
-  maoT.push(setTimeout(() => { mao.hidden = true; mao.classList.remove('clica'); }, 400));
+  maoT.push(setTimeout(() => { mao.hidden = true; mao.classList.remove('clica', 'mao10'); }, 400));
 }
 
 /* ---- as demonstrações ----
