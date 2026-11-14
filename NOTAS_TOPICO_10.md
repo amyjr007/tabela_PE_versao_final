@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v63.9** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v64.0** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -196,7 +196,6 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
   - Antes da 5 toca a `10.7.4` ("agora vai ser o contrário…", 7,2 s); a 5 entra aos 7,4 s. De 5 a 8: dado o subnível (ex.: 3d⁵), o aluno toca o elemento; da 6 em diante sem as etiquetas e as bolinhas (como no quiz 2).
   - No fim, o cartão com a nota (Refazer, Continuar). O Continuar só fecha o quiz: o que vem depois ainda não foi definido.
 - **Sumário:** "q – O exemplo do Zr" (10.7.2) e "r – Quiz 3" (10.7.3 aos 10,2 s).
-- **Posição da tabela nos quizzes 2 e 3** (v62.9): com a classe `quiz10b` no slide, a mesa vai para `--px:20px; --py:126px` (montagem: `{ el:'tabela', x:20, y:126, esc:0.94 }`), deslizando em 0,9 s; volta ao fechar o quiz.
 - **v63.0:** na 10.7.3 a sala já apaga aos 12 s e o cabeçalho vira "Quiz 3" (voltando para antes, clareia); na demonstração, o toque da mãozinha escolhe como no quiz (contorno amarelo, `sel10b`) e no fim a bolinha e o card ficam verdes (`certa10b`). No acerto das questões 5 a 8 do quiz 3, um "(n − 1)" vermelho em cima da bolinha da camada (`tag10c`).
 - **v63.1:** nos tutoriais dos quizzes 2 (10.6.3) e 3 (10.7.3) a mãozinha é amarela e 15 % maior (classe `mao10` no `#mao`, tirada quando ela some). Na 10.6.3 ela aparece aos 24 s, no meio; aos 26,5 s vai até a bolinha do 3 e a toca (27 s), que fica escolhida (`sel10b`); o card p¹ também, aos 28,5 s; quando a mão sai (29,6 s), os dois ficam verdes.
 - **v63.2:** os cards gigantes s², p⁶ e d¹⁰, que saem de dentro dos blocos para as colunas receberem as etiquetas (10.2 aos 20,4 s, 10.3 aos 10,6 s, 10.4 aos 18 s), não voltam mais (`antes1051()`), até a 10.5.1, que os mostra de propósito; o f¹⁴ fica. Entre o fim da 10.2 e a 10.2.1, 1,5 s.
@@ -207,3 +206,5 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v63.7:** no toque do card gigante (quando ele afunda verde), o som "right".
 - **v63.8:** na 10.2.1 inteira o play fica fora; o p⁶ responde desde o começo dela (brilhando) — tocado no meio, a narração é cortada e vem a 10.3 (com o afundar verde e o "right").
 - **v63.9:** na 10.3, tocada uma coluna (narração cortada), o play também sai.
+- **v64.0 — a posição da tabela:** da 10.6 até o fim do tópico (10.6.x, Cs, quiz 2, 10.7, Fe, Zr, 10.7.3, quiz 3) a mesa fica sempre no lugar da 10.6 (`--px:6px; --py:97px`, classe `pos106`, separada da `semF106`, que só esconde as fileiras de baixo até a 10.6.3); no celular, a medida `fechada`. A posição própria dos quizzes (x 20, y 126) saiu.
+- **v64.0 — a 10.5.1 mais leve:** o bloco tocado certo brilha com um halo só por bloco (`halo1051`, um retângulo medido pela caixa das cartas; o s em dois, o f em duas fileiras; La e Ac fora do d), que só muda de opacidade — antes eram filtro e sombras desfocadas em cada carta. O erro treme só a carta tocada, não a tela inteira.

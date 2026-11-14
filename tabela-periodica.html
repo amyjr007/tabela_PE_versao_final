@@ -3354,10 +3354,9 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
    deixou na montagem: { el:'tabela', x:6, y:97, esc:0.94 }) */
 /* (isso — a mesa descer e as fileiras de baixo sumirem — é no fim da "10.5.3",
    escondido pela cena escura; quando ela clareia, na "10.6", já está no lugar) */
-.mesa[data-slide="10"].semF106{--px:6px;--py:97px;transition:transform .9s cubic-bezier(.3,.85,.3,1)}
-/* (nos quizzes 2 e 3 — sem os lantanídeos e actinídeos embaixo — a mesa desce para o lugar que o
-   professor deixou na montagem: { el:'tabela', x:20, y:126, esc:0.94 }) */
-.slide.quiz10b .mesa[data-slide="10"]{--px:20px;--py:126px;transition:transform .9s cubic-bezier(.3,.85,.3,1)}
+/* (v64.0: da 10.6 até o fim do tópico — quizzes 2 e 3 inclusive — a mesa fica sempre nesse lugar: classe pos106) */
+.mesa[data-slide="10"].pos106{--px:6px;--py:97px;transition:transform .9s cubic-bezier(.3,.85,.3,1)}
+
 /* (e os lantanídeos e actinídeos voltam de uma vez para as casas do 3B: as
    duas fileiras de baixo, e as etiquetas delas, somem sem fade) */
 .mesa:is(.semF106, .fOculto107) :is(.pc[data-b101="f"], .pc[data-z="57"], .pc[data-z="89"], .etq102.f105, .casaF106){visibility:hidden!important;transition:none!important}
@@ -3617,11 +3616,12 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .instr1051 .fr1051.ok .chk1051{opacity:1;animation:chk1051 .45s cubic-bezier(.34,1.56,.64,1)}
 @keyframes chk1051{from{opacity:0;transform:scale(.3)}}
 /* a "10.5.1": o bloco tocado certo brilha; completo, a tabela toda brilha forte */
-.mesa.blocos.bl1051-s .pc[data-b101="s"] .face, .mesa.blocos.bl1051-p .pc[data-b101="p"] .face,
-.mesa.blocos.bl1051-d .pc[data-b101="d"] .face, .mesa.blocos.bl1051-f .pc[data-b101="f"] .face{
-  filter:brightness(1.25);box-shadow:0 0 14px 4px rgba(255,214,120,.9),0 0 26px 8px rgba(255,170,90,.5)}
-.mesa.blocos.bl1051-tudo .pc .face{filter:brightness(1.45) saturate(1.15);
-  box-shadow:0 0 20px 7px rgba(255,224,140,1),0 0 44px 14px rgba(255,170,90,.65)}
+/* (v64.0: mais leve — no lugar do brilho em cada uma das cartas, um halo só por bloco, que só muda de opacidade) */
+.halo1051{position:absolute;z-index:20;pointer-events:none;border-radius:12px;opacity:0;
+  background:rgba(255,236,170,.2);box-shadow:0 0 0 3px rgba(255,224,140,.95), 0 0 26px 10px rgba(255,190,90,.7);
+  transition:opacity .22s ease;will-change:opacity}
+.halo1051.on{opacity:1}
+.halo1051.forte{background:rgba(255,236,170,.32);box-shadow:0 0 0 4px rgba(255,232,150,1), 0 0 40px 14px rgba(255,190,90,.8)}
 /* a "10.3.1": o hélio crescido (por cima das etiquetas do p) e o brilho dele, duas vezes */
 .mesa[data-slide="10"] .pc.grande1031{z-index:28}
 .pc.brilha1031 .face{animation:brilha1031 .8s ease-in-out 2}
@@ -5492,7 +5492,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v63.9';
+const VERSAO = 'v64.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23671,11 +23671,14 @@ const CARDS101 = {
     /* (da "10.7" em diante a mesa volta para o lugar aberto: o f fica escondido por outra classe) */
     const depois107 = !monta && ORDEM_10.indexOf(trilhaAtual) >= ORDEM_10.indexOf('10.7');
     const semF = (T >= 0 && !depois107) || (de1052 && (som.ended || (som.duration > 0 && t >= som.duration - 1.5)));
-    if (semF !== this.semF106){
-      this.semF106 = semF; this.m.classList.toggle('semF106', semF);
+    /* (o lugar da mesa: o da 10.6, dali até o fim do tópico — inclusive da 10.7 em diante, com o f escondido por outra classe) */
+    const pos = semF || T >= 0;
+    if (semF !== this.semF106) { this.semF106 = semF; this.m.classList.toggle('semF106', semF); }
+    if (pos !== this.pos106){
+      this.pos106 = pos; this.m.classList.toggle('pos106', pos);
       /* (no celular a mesa tem uma medida aberta e outra fechada: anda com ela) */
       if (ehCelular()){
-        const P = MESA_NO_CELULAR_POR_SLIDE[10], mc = semF ? P.fechada : P;
+        const P = MESA_NO_CELULAR_POR_SLIDE[10], mc = pos ? P.fechada : P;
         this.m.style.setProperty('--px', mc.x + 'px'); this.m.style.setProperty('--py', mc.y + 'px'); this.m.style.setProperty('--zoom', mc.e);
       }
     }
@@ -24343,6 +24346,33 @@ const CARDS101 = {
   },
   /* A "10.5.1": a festa dos 6 s e os toques nos blocos */
   passo1051:0, sel1051:null, feito1051:false, festa1051:false,
+  /* os halos da "10.5.1": um retângulo por bloco (o s em dois: as colunas 1–2 e o He), na medida das cartas */
+  fazHalos1051(){
+    const m = this.m, H = {};
+    const caixa = (cs, b) => {
+      if (!cs.length) return;
+      let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      /* (pela caixa na tela, convertida para a medida da mesa) */
+      const rm = m.getBoundingClientRect(), z = (rm.width / m.offsetWidth) || 1;
+      cs.forEach(c => { const q = c.getBoundingClientRect();
+        x0 = Math.min(x0, (q.left - rm.left) / z); y0 = Math.min(y0, (q.top - rm.top) / z);
+        x1 = Math.max(x1, (q.right - rm.left) / z); y1 = Math.max(y1, (q.bottom - rm.top) / z); });
+      const h = document.createElement('div');
+      h.className = 'halo1051';
+      Object.assign(h.style, { left:(x0 - 3) + 'px', top:(y0 - 3) + 'px', width:(x1 - x0 + 6) + 'px', height:(y1 - y0 + 6) + 'px' });
+      m.appendChild(h);
+      (H[b] ||= []).push(h);
+    };
+    const de = b => [...m.querySelectorAll('.pc[data-b101="' + b + '"]')].filter(c => c.offsetWidth);
+    caixa(de('s').filter(c => +c.dataset.z !== 2), 's');
+    caixa(de('s').filter(c => +c.dataset.z === 2), 's');
+    caixa(de('p'), 'p');
+    caixa(de('d').filter(c => ![57, 89].includes(+c.dataset.z)), 'd');   /* (o La e o Ac ficam nas fileiras do f: fora do retângulo do d) */
+    /* (o f: as duas fileiras de baixo, cada uma no seu retângulo) */
+    const f = de('f'), lin = [...new Set(f.map(c => Math.round(c.getBoundingClientRect().top)))];
+    lin.forEach(y => caixa(f.filter(c => Math.round(c.getBoundingClientRect().top) === y), 'f'));
+    return H;
+  },
   aplauso(){
     if (!slides[10].querySelector('.confete'))
       slides[10].insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
@@ -24451,21 +24481,23 @@ const CARDS101 = {
       const b = c && (c.classList.contains('card101') ? c.dataset.b : c.dataset.b101);
       if (!b) return;
       ev.stopPropagation();
-      if (b !== CARDS_101[this.passo1051].b){ tremeVermelho(); tocaEfeito('error'); return; }
+      /* (o erro treme só a peça tocada — tremer a tela inteira pesava) */
+      if (b !== CARDS_101[this.passo1051].b){ tocaEfeito('error'); tremeVermelho([c.classList.contains('pc') ? c : null]); return; }
       this.passo1051++;
       tocaEfeito('right');
-      /* o bloco certo brilha (e a cor dele volta, pelo tick da "10.1") */
-      const cl = 'bl1051-' + b;
-      this.m.classList.add(cl);
-      setTimeout(() => this.m.classList.remove(cl), 1200);
+      /* o bloco certo brilha — um halo só por bloco — (e a cor dele volta, pelo tick da "10.1") */
+      const H = this.halos1051 || (this.halos1051 = this.fazHalos1051());
+      (H[b] || []).forEach(h => h.classList.add('on'));
+      setTimeout(() => (H[b] || []).forEach(h => h.classList.remove('on')), 1200);
       this.estado = '';
       if (this.passo1051 === CARDS_101.length){
         this.feito1051 = true;
         clearTimeout(this.fim1051T);
         this.fim1051T = setTimeout(() => {
           this.festa(false);
-          this.m.classList.add('bl1051-tudo');
-          setTimeout(() => { this.m.classList.remove('bl1051-tudo'); this.fora1051 = true; }, 2200);
+          const H = this.halos1051 || (this.halos1051 = this.fazHalos1051()), todos = Object.values(H).flat();
+          todos.forEach(h => h.classList.add('on', 'forte'));
+          setTimeout(() => { todos.forEach(h => h.classList.remove('on', 'forte')); this.fora1051 = true; }, 2200);
         }, 700);
       }
       ONDE.guarda();
@@ -24575,7 +24607,7 @@ const CARDS101 = {
     this.festaG++; this.festaFeita = false; this.festa103 = false; this.festa104 = false; this.festa105 = false;
     this.passo1051 = 0; this.feito1051 = false; clearTimeout(this.fim1051T); this.t1051ant = -1; this.fora1051 = false;
     this.festa1051 = false; this.t1052ant = -1; this.nt1052 = -1; this.nt1051 = ''; this.nn1051 = 0;
-    this.estado106 = ''; this.t106ant = -1; this.nt106 = -1; this.ntT106 = -1; this.ntR106 = -1; this.semF106 = undefined;
+    this.estado106 = ''; this.t106ant = -1; this.nt106 = -1; this.ntT106 = -1; this.ntR106 = -1; this.semF106 = undefined; this.pos106 = undefined;
     this.estado1063 = ''; this.t1063ant = -1; this.ntR1063 = -1; this.nMais1052 = 0;
     this.estado1071 = ''; this.t1071ant = -1; this.ntR1071 = -1; this.modo1071 = '';
     this.estado107 = ''; this.ntR1070 = -1; this.fechou1070 = false; if (this.lin107) this.lin107.forEach(e => e._n = -1);
@@ -29241,7 +29273,7 @@ function aplicaAjuste(){
   document.querySelectorAll('#deck .mesa').forEach(m => {
     let p = MESA_NO_CELULAR_POR_SLIDE[m.dataset.slide] || AJUSTE;
     /* (no slide 11, com as séries recolhidas, a medida fechada) */
-    if (p.fechada && m.classList.contains('semF106')) p = p.fechada;
+    if (p.fechada && m.classList.contains('pos106')) p = p.fechada;
     m.style.setProperty('--px', p.x.toFixed(1) + 'px');
     m.style.setProperty('--py', p.y.toFixed(1) + 'px');
     m.style.setProperty('--zoom', p.e.toFixed(3));
