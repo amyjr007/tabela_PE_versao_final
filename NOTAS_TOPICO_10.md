@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v62.6** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v62.8** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -111,6 +111,8 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | n – Quiz 2 | o quiz 2 direto |
 | o – A regra pros elementos de transição externa | 10.7.0 (sem o escuro da 10.7: pula1070) |
 | p – O exemplo do Fe | 10.7.1 (sem o véu da regra: pula1071) |
+| q – O exemplo do Zr | 10.7.2 |
+| r – Quiz 3 | 10.7.3 aos 10,2 s (a demonstração e o quiz 3) |
 
 **Todos os itens do sumário do tópico 10 saltam direto para a tela do começo** (v60.5), sem a cena se montar à vista. Cada item tem `salto:[trilha, segundo, quiz?]`; o `irPara` chama `preparaSalto10` (e um `efeitosDoTempo()` na hora) logo depois do `go()` — ou, no mesmo slide, logo depois do `recomecaSlide()`, para a cena da 10 não aparecer num quadro — (a trilha já é posta parada naquele segundo, e a classe `salto1071` no `#stage` desliga as transições), e o `entra` chama `saltaPara10`, que toca a narração (ou abre o quiz) quando a mesa chega; as transições voltam 0,3 s depois (e, de todo jeito, em 4 s). Item novo no sumário do tópico 10: usar `salto:[...]` + `entra(v, g){ saltaPara10(...) }`.
 
@@ -183,4 +185,14 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
   - 23 s digita "Subnível mais energético:" (até 24,5 s), no lugar da linha do Fe.
   - 26 s seta até o 4 vermelho (pulsa aos 26,9 s), recolhe aos 27,2 s; 27 s seta até a d² (pulsa aos 27,9 s), recolhe aos 28,2 s.
   - 30,2 s seta até o 4 e o 4 (vermelho) do 4d²; 31,2 s seta até a d² e o d; 32 s o ²; 33,2 s festa (confetes, aplausos, funfare) e as setas recolhem.
-  - O fim da 10.7.2 ainda não leva a nada.
+  - No fim da 10.7.2, 1 s depois, toca a **10.7.3**.
+
+## A 10.7.3 e o quiz 3 (v62.7–v62.8) — `tick1073`, `T1073`, `QUIZ10C`
+
+- **10.7.3** (25 s): aos 12 s a mesa fica limpa (`limpo1073`: os textos do Zr saem, o f¹⁴ gigante sai, s e p voltam acesos; o 57–71 e o 89–103 no 3B); 14 s o Fe brilha; 17 s a mãozinha aparece no meio e digita "Subnível mais energético:"; 18,2 s ela toca a bolinha do 3 (entra o 3, em vermelho); 20 s toca o card d⁶ (entra o d⁶); 21 s ela sai, com confetes e aplausos (sem funfare).
+- **Fim da 10.7.3** → "Certo, vamos para a primeira questão" (`quiz1.mp3` — não existe áudio "Lá vai a primeira") e o **quiz 3** (`QUIZ10C`, herda do QUIZ10B; cabeçalho "Quiz 3"; marca `q10c`).
+  - Só elementos do bloco d que seguem o diagrama de Pauling: `Z_QUIZ10C` = Sc, Ti, V, Mn, Co, Ni, Zn, Y, Tc, Cd, Hf, Ta, W, Re, Os, Ir, Hg (sem Cr, Cu, Nb, Mo, Ru, Rh, Pd, Ag, Pt, Au; sem o 7º período; sem o Fe e o Zr).
+  - 1 a 4: o elemento brilha; o aluno toca a bolinha da camada (o período menos um) e o card do d; Confirmar embaixo da tabela; a linha da resposta no alto (no lugar da do Fe), a camada em vermelho.
+  - Antes da 5 toca a `10.7.4` ("agora vai ser o contrário…", 7,2 s); a 5 entra aos 7,4 s. De 5 a 8: dado o subnível (ex.: 3d⁵), o aluno toca o elemento; da 6 em diante sem as etiquetas e as bolinhas (como no quiz 2).
+  - No fim, o cartão com a nota (Refazer, Continuar). O Continuar só fecha o quiz: o que vem depois ainda não foi definido.
+- **Sumário:** "q – O exemplo do Zr" (10.7.2) e "r – Quiz 3" (10.7.3 aos 10,2 s).

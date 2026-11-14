@@ -261,6 +261,13 @@ var LEGENDAS = {
     [23.74,28.61,"camada 3, bloco d, sexta coluna. Então fica 3d⁶."],
     [29.68,31.79,"3d⁶."]
   ],
+  "audio_tabela_10.7.3": [
+    [0,5.9,"A rigor, é praticamente a mesma lógica dos representativos."],
+    [5.9,10.5,"A única diferença é que a camada mais energética é uma a menos em relação ao período. Só isso."],
+    [10.5,17.9,"Vamos fazer o seguinte para treinar: eu te dou o elemento e você compõe o subnível mais energético dele,"],
+    [17.9,22.0,"tocando na bolinha da camada e no card da coluna correspondente, tá bom?"],
+    [22.0,25.0,"Igual a gente fez com os representativos."]
+  ],
   "audio_tabela_10.7.1A": [
     [0,0.86,"Facinho, não é?"],
     [1.83,3.16,"Vamos fazer mais um exemplo?"]
