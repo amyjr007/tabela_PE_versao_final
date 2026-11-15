@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v65.9** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v66.0** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -112,9 +112,11 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | o – A regra pros elementos de transição externa | 10.7.0 (sem o escuro da 10.7: pula1070) |
 | p – O exemplo do Fe | 10.7.1 (sem o véu da regra: pula1071) |
 | q – O exemplo do Zr | 10.7.2 |
-| r – Quiz 3 | 10.7.3 aos 10,2 s (a demonstração e o quiz 3; v65.5: já escura e limpa, sem se montar — pula1073) |
-| s – Quiz musical | o jogo musical direto (a mesa como no fim da 10.7.3, a sala escura) |
-| t – Quiz geral | o quiz final direto (20 questões, duas de cada tópico; a sala escura) |
+| r – A regra pros elementos de transição interna | 10.7.5 |
+| s – O exemplo do Pu | 10.7.6 |
+| t – Quiz 3 | 10.7.3 aos 10,2 s (a demonstração e o quiz 3; v65.5: já escura e limpa, sem se montar — pula1073) |
+| u – Quiz musical | o jogo musical direto (a mesa como no fim da 10.7.3, a sala escura) |
+| v – Quiz geral | o quiz final direto (20 questões, duas de cada tópico; a sala escura) |
 
 **Todos os itens do sumário do tópico 10 saltam direto para a tela do começo** (v60.5), sem a cena se montar à vista. Cada item tem `salto:[trilha, segundo, quiz?]`; o `irPara` chama `preparaSalto10` (e um `efeitosDoTempo()` na hora) logo depois do `go()` — ou, no mesmo slide, logo depois do `recomecaSlide()`, para a cena da 10 não aparecer num quadro — (a trilha já é posta parada naquele segundo, e a classe `salto1071` no `#stage` desliga as transições), e o `entra` chama `saltaPara10`, que toca a narração (ou abre o quiz) quando a mesa chega; as transições voltam 0,3 s depois (e, de todo jeito, em 4 s). Item novo no sumário do tópico 10: usar `salto:[...]` + `entra(v, g){ saltaPara10(...) }`.
 
@@ -246,3 +248,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **10.7.7** (12,1 s): no fim, o botão verde **"Quiz ♪"** → a sala apaga, cabeçalho "Quiz ♪", e toca a **10.7.8** (40,4 s, a explicação do quiz musical); no fim dela, a música 1.
 - O quiz musical segue como antes; o cartão dele leva ao quiz geral (com a fala 10.7final).
 - **v65.9:** na 10.7.8, dos 8,5 aos 18 s, um elemento ao acaso pisca a cada 0,55–0,95 s, cada um com uma nota bem baixinha (18 % do volume das notas do jogo) — `MUSICA10.tickFala`, só tocando de seguida.
+- **Atenção (achado na v66.0):** pelo sumário dentro do slide (recomeço no mesmo slide), as séries de baixo ficam 14 px mais altas do que vindo de outro slide — a montagem das séries depende do caminho (`pousaTabela`/`SERIES_VISIVEIS`). Com a tabela aberta de novo (10.7.5 em diante), as etiquetas do f podem encostar nas cartas de cima das séries nesse caso.
