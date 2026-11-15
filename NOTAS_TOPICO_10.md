@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v65.2** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v65.3** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -234,3 +234,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - No fim, o cartão com a nota (acertos/20 × 10) e uma mensagem final de incentivo em quatro faixas (≥ 9, ≥ 7, ≥ 5, < 5); botões Refazer e "Capa" (v65.2: fecha tudo e volta à capa).
 - (A 10.7.3 não apaga mais a sala sozinha depois que o quiz 3 abriu — antes, fechados os jogos, ela voltava a escurecer.)
 - **v65.2:** no cartão do quiz musical, depois do statistics, toca a fala `audio_tabela_10.7final.mp3` (36,4 s); o "Quiz final →" fica apagado até os 19 s dela; tocado com ela ainda falando, ela é cortada e o quiz geral abre.
+- **v65.3:** na 10.7.1 (o Fe), o "(n − 1)" do fim fica em cima do 3 vermelho, também em vermelho (antes ficava embaixo da bolinha do 4, em azul).

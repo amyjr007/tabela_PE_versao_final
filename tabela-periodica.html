@@ -3398,6 +3398,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .tag1071{position:absolute;z-index:16;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;
   font-family:var(--display);font-weight:700;font-size:15px;color:var(--cor-linha);opacity:0;transition:opacity .4s ease}
 .tag1071.on{opacity:1}
+.tag1071.sobre3{color:#E5394F;font-size:17px;z-index:31}
 /* (o salto do sumário para a 10.7.1: tudo no lugar de uma vez) */
 #stage.salto1071 *{transition:none!important}
 /* (no fim: pulsações discretas e lentas — 8 % a mais, num ciclo de 2,4 s — no lugar das piscadas) */
@@ -5557,7 +5558,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v65.2';
+const VERSAO = 'v65.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24117,7 +24118,9 @@ const CARDS101 = {
       const tg = this.tag1071 = document.createElement('div');
       tg.className = 'tag1071';
       tg.textContent = '(n − 1)';
-      if (this.p41071){ tg.style.left = this.p41071.style.left; tg.style.top = (parseFloat(this.p41071.style.top) + 30).toFixed(1) + 'px'; }
+      /* (v65.3: em cima do 3 vermelho, em vermelho) */
+      tg.classList.add('sobre3');
+      tg.style.left = (xDaColuna(1) - LADO / 2 + 6 + 15).toFixed(1) + 'px'; tg.style.top = (yDaLinha(4) - 36).toFixed(1) + 'px';
       m.appendChild(tg);
     }
     /* a festa dos 30,5 s (só tocando de seguida: um salto não a dispara) */
