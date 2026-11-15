@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v65.4** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v65.5** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -112,7 +112,7 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | o – A regra pros elementos de transição externa | 10.7.0 (sem o escuro da 10.7: pula1070) |
 | p – O exemplo do Fe | 10.7.1 (sem o véu da regra: pula1071) |
 | q – O exemplo do Zr | 10.7.2 |
-| r – Quiz 3 | 10.7.3 aos 10,2 s (a demonstração e o quiz 3) |
+| r – Quiz 3 | 10.7.3 aos 10,2 s (a demonstração e o quiz 3; v65.5: já escura e limpa, sem se montar — pula1073) |
 | s – Quiz musical | o jogo musical direto (a mesa como no fim da 10.7.3, a sala escura) |
 | t – Quiz geral | o quiz final direto (20 questões, duas de cada tópico; a sala escura) |
 

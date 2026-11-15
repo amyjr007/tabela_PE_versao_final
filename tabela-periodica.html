@@ -5558,7 +5558,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v65.4';
+const VERSAO = 'v65.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22615,7 +22615,8 @@ const T1072 = { zr:1.5, segL:[[6.5, 15.0], [26.0, 27.2], [30.2, 33.2]], segC:[[7
 const T1073 = { limpa:12.0, fe:14.0, mao:17.0, texto:[17.0, 18.1], vaiP:17.5, tocaP:18.2, vaiC:19.4, tocaC:20.0, sai:21.0 };
 function limpo1073(t){
   if (naMontagem()) return false;
-  return (trilhaAtual === '10.7.3' && t >= T1073.limpa) || ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf('10.7.3');
+  /* (pelo sumário — o "Quiz 3", aos 10,2 s —, já limpa: CARDS101.pula1073) */
+  return (trilhaAtual === '10.7.3' && (t >= T1073.limpa || CARDS101.pula1073)) || ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf('10.7.3');
 }
 const FORMULA_1071 = '(n − 1)', IGUAL_1071 = '(n − 1 = 3)', TEXTO_1071 = 'Subnível mais energético:';
 /* (o "d" e o "desse bloco" na cor do bloco d; a "coluna" no âmbar das colunas) */
@@ -24291,9 +24292,11 @@ const CARDS101 = {
     if (de && t < T1073.sai && Q3) Q3.jaAbriu = false;
     /* (dos 12 s — a mesa limpa — a sala já apaga e o cabeçalho vira "Quiz 3"; voltando para antes, clareia) */
     /* (só no tutorial: depois que o quiz 3 abriu — e nos jogos depois dele —, a sala não volta a apagar sozinha) */
+    if (de && t >= T1073.limpa) this.pula1073 = false;
     if (de && Q3 && !Q3.aberto && !Q3.jaAbriu){
-      if (t < T1073.limpa && Q3.escuro) Q3.fecha();
-      else if (t >= T1073.limpa && !Q3.escuro) Q3.escurece();
+      const ja = t >= T1073.limpa || this.pula1073;
+      if (!ja && Q3.escuro) Q3.fecha();
+      else if (ja && !Q3.escuro) Q3.escurece();
     }
     const passa = s => de && !som.paused && this.t1073ant >= 0 && this.t1073ant < s && t >= s && t < s + 0.6 && t - this.t1073ant < 1;
     const p3 = this.m.querySelector('.eixo[data-periodo="3"]'), d6 = this.etq104 && this.etq104[5] && this.etq104[5].d;
@@ -29317,7 +29320,7 @@ const NAV_TOPICOS = [
   /* o quiz 3 (só o bloco d): a "10.7.3" aos 10,2 s — a mesa fica limpa aos 12 s, a demonstração com o Fe, e o quiz */
   { titulo:'Quiz 3', sub:'a 10.7.3 aos 10,2 s: a demonstração e o quiz 3 (bloco d)', slide:10, quiz:'q10c',
     salto:['10.7.3', 10.2],
-    entra(v, g){ saltaPara10('10.7.3', g, 10.2); } },
+    entra(v, g){ CARDS101.pula1073 = true; saltaPara10('10.7.3', g, 10.2); } },
   /* o quiz musical direto: a mesa como no fim da 10.7.3 (limpa, sem a demonstração), a sala escura e o jogo */
   { titulo:'Quiz musical', sub:'o quiz musical direto: as notas pelos subníveis e a música', slide:10, quiz:'q10m',
     salto:['10.7.3', 24.5, true],
@@ -29366,7 +29369,7 @@ function irPara(i, variante){
      punha a cena da "10" (o quadro da tabela e do Pauling) num quadro à vista) */
   const salta = () => {
     if (!item.salto) return;
-    const pula = { '10.1':'pula101', '10.6':'pula106', '10.7.0':'pula1070', '10.7.1':'pula1071' }[item.salto[0]];
+    const pula = { '10.1':'pula101', '10.6':'pula106', '10.7.0':'pula1070', '10.7.1':'pula1071', '10.7.3':'pula1073' }[item.salto[0]];
     if (pula) CARDS101[pula] = true;
     preparaSalto10(item.salto[0], g, item.salto[1], !!item.salto[2]);
     try { efeitosDoTempo(); } catch (e){ console.error(e); }
