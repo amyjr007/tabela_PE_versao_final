@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v64.9** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v65.0** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -224,3 +224,11 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
   - "Atirei o pau no gato": sol fá mi ré mi fá sol sol(longa) — sol = Ca (4s²), fá = P (3p³), mi = Zn (3d¹⁰), ré = Br (4p⁵).
   - v64.9: "Marcha, soldado" saiu (não ficou bom); no lugar, "Noite feliz" (Gruber, 1818): sol lá sol mi, sol lá sol mi, no ritmo de valsa (tempos 1,5 · 0,5 · 1 · 2,5) — sol = K (4s¹), lá = Mn (3d⁵), mi = Cl (3p⁵). Na melodia inteira, cada nota dura conforme o tempo dela.
   - (As melodias das duas novas foram escritas de memória: conferir no ouvido; para corrigir, mudar `notas` em `MUSICAS_10`.)
+
+## O quiz final (v65.0) — `QUIZFINAL`, `QUESTOES_FINAL`
+
+- No cartão do quiz musical, no lugar do Continuar, o botão **"Quiz final →"** (o Refazer continua).
+- Vinte questões de múltipla escolha, **duas de cada tópico (1 a 10)**, feitas pela taxonomia de Bloom — cada uma mostra o nível num selo colorido (Lembrar, Compreender, Aplicar, Analisar, Avaliar, Criar), com a dupla de cada tópico subindo de nível. Um cartão claro no meio da sala escura (a tabela escurecida atrás), com "Questão n de 20", o tópico, uma barra de progresso e quatro alternativas embaralhadas.
+- Respondida: a certa fica verde (a errada escolhida, vermelha) e vem a explicação; o botão "Próxima →" (na última, "Ver minha nota →").
+- No fim, o cartão com a nota (acertos/20 × 10) e uma mensagem final de incentivo em quatro faixas (≥ 9, ≥ 7, ≥ 5, < 5); botões Refazer e "Concluir ✓" (fecha tudo e a sala clareia).
+- (A 10.7.3 não apaga mais a sala sozinha depois que o quiz 3 abriu — antes, fechados os jogos, ela voltava a escurecer.)
