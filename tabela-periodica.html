@@ -5558,7 +5558,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v65.5';
+const VERSAO = 'v65.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25294,7 +25294,8 @@ const QUIZ10C = Object.assign(Object.create(QUIZ10B), {
   botaoConfirma(faz){
     this.btFaz = faz;
     if (this.bt) return;
-    this.bt = this.botao('Confirmar', (xDaColuna(3) + xDaColuna(12)) / 2, yDaLinha(7) + LADO / 2 + 34, () => this.btFaz && this.btFaz());
+    /* (v65.6: embaixo do Fl — coluna 14) */
+    this.bt = this.botao('Confirmar', xDaColuna(14), yDaLinha(7) + LADO / 2 + 34, () => this.btFaz && this.btFaz());
     this.bt.classList.add('confirma10b');
   },
   /* (no cartão do quiz 3, no lugar do Continuar, o "Quiz ♪": o jogo musical) */
