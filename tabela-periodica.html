@@ -3552,6 +3552,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .qf-msg.erro{color:#C0283F}
 .qf-pe{display:flex;justify-content:flex-end;margin-top:8px;min-height:44px}
 .qf-prox{font:700 16px var(--display);padding:10px 20px;border-radius:999px;border:0;background:#4C3FBF;color:#fff;cursor:pointer}
+.quiz-cartao .segue.espera-fala{opacity:.45;cursor:default;filter:grayscale(.4)}
 .quiz-cartao .recado.recado-final{font-size:15px;line-height:1.4;max-width:300px;margin-left:auto;margin-right:auto}
 .slide.final10 .mesa{filter:brightness(.55)}
 /* (o elemento achado: verde, com o número da ordem da nota num selo no canto) */
@@ -5556,7 +5557,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v65.1';
+const VERSAO = 'v65.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25476,10 +25477,26 @@ const MUSICA10 = {
     if (this.cx){ this.cx.classList.remove('on'); const cx = this.cx; setTimeout(() => cx.remove(), 500); this.cx = null; }
     QUIZ_FEITOS.marca('q10m', nota);
     cartaoDoResultado(nota, MUSICAS_10.length + ' músicas · <em class="erro">' + this.erros + '</em> ' + (this.erros === 1 ? 'erro' : 'erros'),
-      this.sl(), () => this.abre(), () => { this.fecha(true); if (window.QUIZFINAL) QUIZFINAL.abre(); });
-    /* (no cartão do quiz musical, no lugar do Continuar, o "Quiz final") */
+      this.sl(), () => this.abre(), () => { this.fecha(true); if (window.QUIZFINAL) QUIZFINAL.abre(); },
+      /* (v65.2: depois do statistics, a fala do fim do tópico) */
+      'Audios/audio_tabela_10.7final.mp3');
+    /* (no cartão do quiz musical, no lugar do Continuar, o "Quiz final" — que só pode ser tocado dos 19 s
+       da fala em diante; tocado com ela ainda falando, ela é cortada e o quiz geral abre) */
     const b = this.sl().querySelector('.quiz-cartao .segue');
-    if (b) b.textContent = 'Quiz final →';
+    if (b){
+      b.textContent = 'Quiz final →';
+      b.disabled = true; b.classList.add('espera-fala');
+      let ouviu = false;
+      const libera = () => { b.disabled = false; b.classList.remove('espera-fala'); clearInterval(iv); clearTimeout(rede); };
+      const iv = setInterval(() => {
+        if (!b.isConnected){ clearInterval(iv); return; }
+        const a = FALA_FIM;
+        if (a) ouviu = true;
+        if ((a && a.currentTime >= 19) || (ouviu && !a)) libera();
+      }, 150);
+      /* (se a fala não tocar, o botão se solta mesmo assim) */
+      const rede = setTimeout(libera, 40000);
+    }
   },
   fecha(reabre){
     this.g++;
@@ -25650,7 +25667,7 @@ const QUIZFINAL = {
     QUIZ_FEITOS.marca('q10f', nota);
     confete();
     cartaoDoResultado(nota, n + ' questões · <em class="erro">' + (n - this.acertos) + '</em> ' + (n - this.acertos === 1 ? 'erro' : 'erros'),
-      this.sl(), () => this.abre(), () => this.fecha());
+      this.sl(), () => this.abre(), () => { this.fecha(); go(0); });
     /* (a mensagem final de incentivo, no lugar do recado de sempre) */
     const c = this.sl().querySelector('.quiz-cartao'), rec = c && c.querySelector('.recado');
     if (rec){
@@ -25661,7 +25678,7 @@ const QUIZFINAL = {
         : 'Todo especialista já foi iniciante. Revise os tópicos com calma pelo sumário, ouça de novo as explicações e refaça o quiz: cada tentativa ensina!';
     }
     const b = c && c.querySelector('.segue');
-    if (b) b.textContent = 'Concluir ✓';
+    if (b) b.textContent = 'Capa';   /* (v65.2: os botões do fim são Refazer e Capa — que fecha tudo e volta à capa) */
   },
   fecha(reabre){
     this.g++;

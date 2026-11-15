@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v65.1** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v65.2** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -231,5 +231,6 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - No cartão do quiz musical, no lugar do Continuar, o botão **"Quiz final →"** (o Refazer continua).
 - Vinte questões de múltipla escolha, **duas de cada tópico (1 a 10)**, feitas pela taxonomia de Bloom — cada uma mostra o nível num selo colorido (Lembrar, Compreender, Aplicar, Analisar, Avaliar, Criar), com a dupla de cada tópico subindo de nível. Um cartão claro no meio da sala escura (a tabela escurecida atrás), com "Questão n de 20", o tópico, uma barra de progresso e quatro alternativas embaralhadas.
 - Respondida: a certa fica verde (a errada escolhida, vermelha) e vem a explicação; o botão "Próxima →" (na última, "Ver minha nota →").
-- No fim, o cartão com a nota (acertos/20 × 10) e uma mensagem final de incentivo em quatro faixas (≥ 9, ≥ 7, ≥ 5, < 5); botões Refazer e "Concluir ✓" (fecha tudo e a sala clareia).
+- No fim, o cartão com a nota (acertos/20 × 10) e uma mensagem final de incentivo em quatro faixas (≥ 9, ≥ 7, ≥ 5, < 5); botões Refazer e "Capa" (v65.2: fecha tudo e volta à capa).
 - (A 10.7.3 não apaga mais a sala sozinha depois que o quiz 3 abriu — antes, fechados os jogos, ela voltava a escurecer.)
+- **v65.2:** no cartão do quiz musical, depois do statistics, toca a fala `audio_tabela_10.7final.mp3` (36,4 s); o "Quiz final →" fica apagado até os 19 s dela; tocado com ela ainda falando, ela é cortada e o quiz geral abre.
