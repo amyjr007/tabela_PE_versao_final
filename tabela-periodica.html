@@ -3498,9 +3498,10 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .slide.quiz10c.chamaC10b .mesa .etq102.d104.on:not(.certa10b, .errada3, .pista5){animation:chama10b 1.6s ease-in-out infinite}
 .q3-q .verm10c{color:#FF6B7F}
 /* o quiz musical (MUSICA10): a caixa no alto, com as oito notas */
-.musica10-caixa{position:absolute;left:50%;top:62px;z-index:40;transform:translateX(-50%);width:min(900px,92%);
+.musica10-caixa{position:absolute;left:50%;top:48px;z-index:40;transform:translateX(-50%);width:min(900px,92%);
   text-align:center;color:#fff;font-family:var(--display);opacity:0;transition:opacity .4s ease;pointer-events:auto}
 .musica10-caixa.on{opacity:1}
+.m10-marca{font:600 12px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:#E0A23B;margin-bottom:4px}
 .m10-titulo{font-size:22px;font-weight:700;margin-bottom:10px}
 .m10-notas{display:flex;justify-content:center;gap:10px}
 .m10-nota{position:relative;min-width:76px;padding:8px 6px 6px;border-radius:12px;background:rgba(255,255,255,.08);
@@ -5523,7 +5524,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v64.7';
+const VERSAO = 'v64.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25268,7 +25269,17 @@ const MUSICAS_10 = [
   { nome:'Brilha, brilha, estrelinha', notas:['dó', 'dó', 'sol', 'sol', 'lá', 'lá', 'sol', 'sol'], tempos:[1, 1, 1, 1, 1, 1, 1, 2],
     /* (cada nota, um elemento: o dó no Na — 3s¹ —, o sol no Fe — 3d⁶ —, o lá no I — 5p⁵) */
     elementos:{ 'dó':11, 'sol':26, 'lá':53 },
-    outras:['Ciranda, cirandinha', 'Atirei o pau no gato'] }
+    outras:['Ciranda, cirandinha', 'Atirei o pau no gato'] },
+  /* "Atirei o pau no gato": a-ti-rei o pau no ga-to — sol fá mi ré mi fá sol (sol) */
+  { nome:'Atirei o pau no gato', notas:['sol', 'fá', 'mi', 'ré', 'mi', 'fá', 'sol', 'sol'], tempos:[1, 1, 1, 1, 1, 1, 1, 2],
+    /* (o sol no Ca — 4s² —, o fá no P — 3p³ —, o mi no Zn — 3d¹⁰ —, o ré no Br — 4p⁵) */
+    elementos:{ 'sol':20, 'fá':15, 'mi':30, 'ré':35 },
+    outras:['Marcha, soldado', 'Ciranda, cirandinha'] },
+  /* "Marcha, soldado": mar-cha sol-da-do, ca-be-ça — sol mi sol mi sol lá sol (fá) */
+  { nome:'Marcha, soldado', notas:['sol', 'mi', 'sol', 'mi', 'sol', 'lá', 'sol', 'fá'], tempos:[1, 1, 1, 1, 1, 1, 1, 2],
+    /* (o sol no K — 4s¹ —, o mi no Cl — 3p⁵ —, o lá no Mn — 3d⁵ —, o fá no Sr — 5s²) */
+    elementos:{ 'sol':19, 'mi':17, 'lá':25, 'fá':38 },
+    outras:['Atirei o pau no gato', 'Brilha, brilha, estrelinha'] }
 ];
 const MUSICA10 = {
   aberto:false, g:0, k:0, erros:0, m:null, ctx:null,
@@ -25294,13 +25305,22 @@ const MUSICA10 = {
   abre(){
     if (atual !== 10) return;
     this.fecha(true);
-    const g = ++this.g;
-    this.m = MUSICAS_10[0];
-    this.k = 0; this.erros = 0; this.aberto = true; this.travado = false;
+    this.erros = 0; this.total = 0; this.aberto = true;
     /* (no jogo, a narração fica parada e sem o play) */
     som.pause(); stage.classList.add('sem-play-m10');
+    this.monta(0);
+  },
+  /* a música i (de três): as oito notas no alto, a vez na primeira */
+  monta(i){
+    const g = ++this.g;
+    this.i = i;
+    this.m = MUSICAS_10[i];
+    this.k = 0; this.travado = false;
+    this.limpaElementos();
+    this.sl().querySelectorAll('.musica10-caixa').forEach(e => e.remove());
     const M = this.m, mesa = this.mesa();
     this.alvos = M.notas.map(n => mesa.querySelector('.pc[data-z="' + M.elementos[n] + '"]'));
+    this.total += this.alvos.length;
     const sl = this.sl();
     sl.classList.add('musica10');
     /* (o cabeçalho vira "Quiz ♪" — já com a cabeça do quiz 3, só o nome muda) */
@@ -25309,7 +25329,8 @@ const MUSICA10 = {
     else cabecaDoQuiz(sl, true, 'Quiz ♪', 'quiz-cabeca');
     const cx = this.cx = document.createElement('div');
     cx.className = 'musica10-caixa';
-    cx.innerHTML = '<div class="m10-titulo">Toque os elementos na ordem e descubra a música</div>' +
+    cx.innerHTML = '<div class="m10-marca">Música ' + (i + 1) + ' de ' + MUSICAS_10.length + '</div>' +
+      '<div class="m10-titulo">Toque os elementos na ordem e descubra a música</div>' +
       '<div class="m10-notas">' + this.alvos.map((c, k) =>
         '<div class="m10-nota" data-k="' + k + '"><span class="m10-sub">' + subnivelDe10c(c) + '</span><i>♪</i></div>').join('') + '</div>' +
       '<div class="m10-msg"></div><div class="m10-opcoes"></div>';
@@ -25411,13 +25432,17 @@ const MUSICA10 = {
     this.msg('Isso! É "' + this.m.nome + '"!', 'ok');
     confete(); tocaEfeito('funfare'); tocaEfeito('applause');
     const g = this.g;
-    setTimeout(() => { if (g === this.g) this.resultado(); }, 2600);
+    setTimeout(() => {
+      if (g !== this.g) return;
+      if (this.i < MUSICAS_10.length - 1) this.monta(this.i + 1);
+      else this.resultado();
+    }, 2600);
   },
   resultado(){
-    const n = this.alvos.length, e = Math.min(this.erros, n), nota = Math.round((n - e) / n * 100) / 10;
+    const n = this.total, e = Math.min(this.erros, n), nota = Math.round((n - e) / n * 100) / 10;
     if (this.cx){ this.cx.classList.remove('on'); const cx = this.cx; setTimeout(() => cx.remove(), 500); this.cx = null; }
     QUIZ_FEITOS.marca('q10m', nota);
-    cartaoDoResultado(nota, n + ' notas · <em class="erro">' + this.erros + '</em> ' + (this.erros === 1 ? 'erro' : 'erros'),
+    cartaoDoResultado(nota, MUSICAS_10.length + ' músicas · <em class="erro">' + this.erros + '</em> ' + (this.erros === 1 ? 'erro' : 'erros'),
       this.sl(), () => this.abre(), () => this.fecha());
   },
   fecha(reabre){
