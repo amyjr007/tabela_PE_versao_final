@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v65.6** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v65.7** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -237,3 +237,11 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v65.3:** na 10.7.1 (o Fe), o "(n − 1)" do fim fica em cima do 3 vermelho, também em vermelho (antes ficava embaixo da bolinha do 4, em azul).
 - **v65.4:** `CARDS101.fechaJogos()` fecha o quiz 3, o musical e o geral (e zera o `jaAbriu` do quiz 3) ao sair do slide e em todo salto pelo sumário (`preparaSalto10`). Antes, tocar "Quiz 3" no sumário com o quiz 3 aberto deixava-o aberto por baixo do tutorial que recomeçava (Fe aceso, a mão, o 3d⁶ e a questão 1 juntos). O musical e o geral, direto, já marcam o quiz 3 como aberto (a demonstração não aparece).
 - **v65.6:** o Confirmar do quiz 3 (questões 1 a 4) fica embaixo do Fl (coluna 14), abaixo da tabela.
+
+## O bloco f, o plutônio e o caminho até o quiz musical (v65.7) — `tick1075`, `tick1076`
+
+- **Cartão do quiz 3:** Refazer e **"Pra fechar"** (no lugar do "Quiz ♪"): a sala clareia e toca a **10.7.5**.
+- **10.7.5** (34,5 s): 2 s a tabela abre de novo — os lantanídeos e actinídeos embaixo, com as etiquetas f¹…f¹⁴, no lugar aberto do fim da 10.5 (`abreF107`: sem `pos106` e sem `fOculto107`; classe `f1075` para deslizar); 9 s digita "n − 1" no alto; 10 s apaga o 1; 11 s o 2 (vermelho); 20 s as exceções ao diagrama de Pauling apagam em fade (`EXCECOES_10`: Cr, Cu, Nb, Mo, Ru, Rh, Pd, Ag, Pt, Au, La, Ce, Gd, Ac, Th, Pa, U, Np, Cm, Lr; ficam apagadas até a 10.7.7). No fim, "Bora" → 10.7.6.
+- **10.7.6** (36,8 s): 1 s o Pu brilha; 4,5 s o lugar dos actinídeos (o 89–103 do 3B) em vermelho; 6,7 s uma bolinha azul "7" ao lado da série de baixo; 8,7 s seta do Pu até ela; 10 s seta até o f⁵; 13,8 s "n − 2" ao lado da bolinha (as setas recolhem); 19 s o 5 vermelho; 23 s seta até o 5 (e "Subnível mais energético: 5" no alto); 25 s seta até o f⁵ (e o f⁵); 26 s o 5f⁵ cresce, com festa, e as setas recolhem. (O áudio diz 5f⁶; vale o 5f⁵, pela coluna da série.) 29,7 s pausa de 1 s; a sala apaga, cabeçalho "Quiz", e a pergunta digitada até 34 s: "Toque no elemento cujo subnível mais energético é o 4f³" — o **Nd** (z 60, a coluna do f³). Erro: som, a carta treme e a mensagem com o subnível do tocado. Acerto: festa e, 3 s depois, a sala clareia e toca a **10.7.7**.
+- **10.7.7** (12,1 s): no fim, o botão verde **"Quiz ♪"** → a sala apaga, cabeçalho "Quiz ♪", e toca a **10.7.8** (40,4 s, a explicação do quiz musical); no fim dela, a música 1.
+- O quiz musical segue como antes; o cartão dele leva ao quiz geral (com a fala 10.7final).

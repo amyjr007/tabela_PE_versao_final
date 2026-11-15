@@ -271,6 +271,37 @@ var LEGENDAS = {
     [17.9,22.0,"tocando na bolinha da camada e no card da coluna correspondente, tá bom?"],
     [22.0,25.0,"Igual a gente fez com os representativos."]
   ],
+  "audio_tabela_10.7.5": [
+    [0,2.9,"Muito bem, amigos. Ainda falta o bloco f, né?"],
+    [2.9,8.9,"Então: a regra geral é parecida com a dos elementos do bloco d, mas, em vez de n − 1,"],
+    [8.9,11.9,"a gente usa n − 2."],
+    [11.9,17.8,"Ou seja, a camada do subnível mais energético é duas a menos em relação ao período."],
+    [17.8,23.8,"Entretanto, como esse bloco tem muitas exceções à regra, não focaremos nele, tá bom?"],
+    [23.8,26.8,"Nem no Enem eles são cobrados em termos de distribuição eletrônica."],
+    [26.8,34.5,"Mas vamos fazer só um exemplo, para você ver que a regra geral, se ajustada, se aplica a eles também, tá bom?"]
+  ],
+  "audio_tabela_10.7.6": [
+    [0,2.9,"Ok, vamos pegar o plutônio como exemplo."],
+    [2.9,8.9,"Veja: ele é um actinídeo, ou seja, ele está no sétimo período da tabela,"],
+    [8.9,11.9,"na sexta coluna do bloco f."],
+    [11.9,20.8,"Aplicando o ajuste n − 2 para esse bloco, então, a camada mais energética é a quinta camada."],
+    [20.8,27.3,"E o subnível mais energético dele, então, é o 5f."],
+    [27.6,29.8,"Sacou? Bora ver se você entendeu."],
+    [29.8,34.6,"Toca aí no elemento cujo subnível de maior energia é o 4f³."],
+    [34.6,36.7,"Pensa bem antes de responder."]
+  ],
+  "audio_tabela_10.7.7": [
+    [0,5.9,"Perfeito! Você entendeu. Isso fecha nosso tópico. Mas, antes, para encerrar,"],
+    [5.9,11.9,"bora fazer um quiz diferente? É um quiz musical bem legal. Quer tentar? Clica ali para começar."]
+  ],
+  "audio_tabela_10.7.8": [
+    [0,5.8,"Muito bem, agora é hora de um desafio diferente: este é um quiz musical."],
+    [5.8,11.9,"A lógica aqui funciona assim: cada elemento secreto na tabela esconde uma nota musical."],
+    [11.9,17.9,"Para descobrir qual música está oculta na tabela, você vai precisar decifrar uma sequência."],
+    [17.9,26.8,"E, para te ajudar nessa missão, eu vou te dar exatamente os subníveis mais energéticos de cada um deles, combinado?"],
+    [26.8,35.7,"Conforme você encontrar os elementos na ordem certa, as notas vão tocar, e no final é só marcar qual melodia corresponde à sequência descoberta."],
+    [35.7,40.4,"Preparado para afinar os ouvidos e a química? Então, vamos lá!"]
+  ],
   "audio_tabela_10.7.1A": [
     [0,0.86,"Facinho, não é?"],
     [1.83,3.16,"Vamos fazer mais um exemplo?"]
