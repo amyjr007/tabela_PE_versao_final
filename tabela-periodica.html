@@ -3521,6 +3521,12 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .m10-op.errada{background:rgba(255,46,76,.35);border-color:#FF6B7F;opacity:.7}
 .m10-op.m10-ouvir{border-style:dashed}
 .slide.musica10 .mesa :is(.etq102, .eixo[data-periodo]){opacity:0!important;pointer-events:none!important}
+/* (o elemento achado: verde, com o número da ordem da nota num selo no canto) */
+.slide.musica10 .mesa .pc.m10-ok .face{background:linear-gradient(145deg,#4FD98A,#1E9E55)!important;box-shadow:0 0 0 2px #7CF5A8, 0 0 14px 4px rgba(46,214,113,.6)}
+.mesa .m10-num{position:absolute;z-index:32;transform:translate(-50%,-50%);min-width:24px;height:24px;padding:0 6px;border-radius:12px;
+  background:#FFD43B;color:#2A2100;font:800 14px/24px var(--display);text-align:center;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.45);pointer-events:none}
+.mesa .m10-num.novo{animation:num10 .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes num10{from{transform:translate(-50%,-50%) scale(.3)}}
 /* (o "(n − 1)" em vermelho em cima da bolinha da camada, no acerto das questões 5 a 8 do quiz 3) */
 .mesa .tag1071.tag10c{color:#FF6B7F;font-size:17px;z-index:29;opacity:1;text-shadow:0 0 8px rgba(255,80,100,.6)}
 /* (a linha da resposta do quiz 3, na sala escura: a camada em vermelho, o d e o expoente na cor do bloco d) */
@@ -5517,7 +5523,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v64.6';
+const VERSAO = 'v64.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25318,13 +25324,35 @@ const MUSICA10 = {
       e.classList.toggle('ok', k < this.k);
     });
   },
+  marcaElemento(c, n){
+    c.classList.add('m10-ok');
+    const z = c.dataset.z, mesa = this.mesa();
+    let b = mesa.querySelector('.m10-num[data-z="' + z + '"]');
+    if (!b){
+      b = document.createElement('div');
+      b.className = 'm10-num'; b.dataset.z = z;
+      const rm = mesa.getBoundingClientRect(), q = c.getBoundingClientRect(), k = (rm.width / mesa.offsetWidth) || 1;
+      b.style.left = ((q.right - rm.left) / k - 4).toFixed(1) + 'px';
+      b.style.top  = ((q.top - rm.top) / k + 4).toFixed(1) + 'px';
+      mesa.appendChild(b);
+    }
+    b.textContent = b.textContent ? b.textContent + ' · ' + n : String(n);
+    b.classList.remove('novo'); void b.offsetWidth; b.classList.add('novo');
+  },
+  limpaElementos(){
+    const mesa = this.mesa();
+    if (!mesa) return;
+    mesa.querySelectorAll('.m10-num').forEach(e => e.remove());
+    mesa.querySelectorAll('.pc.m10-ok').forEach(e => e.classList.remove('m10-ok'));
+  },
   msg(t, cls = ''){ const e = this.cx && this.cx.querySelector('.m10-msg'); if (e){ e.textContent = t; e.className = 'm10-msg ' + cls; } },
   toca(c){
     if (!this.aberto || this.travado || this.k >= this.alvos.length) return;
     const alvo = this.alvos[this.k], M = this.m;
     if (c === alvo){
       this.nota(M.notas[this.k], .5);
-      c.classList.add('certa3'); setTimeout(() => c.classList.remove('certa3'), 450);
+      /* (v64.7: o elemento achado fica verde, com o número da ordem das notas — o mesmo elemento junta os números) */
+      this.marcaElemento(c, this.k + 1);
       this.k++;
       this.msg('');
       this.marca();
@@ -25399,6 +25427,7 @@ const MUSICA10 = {
     if (!sl) return;
     sl.querySelectorAll('.musica10-caixa, .quiz-cartao').forEach(e => e.remove());
     this.cx = null;
+    this.limpaElementos();
     if (reabre) return;
     stage.classList.remove('sem-play-m10');
     sl.classList.remove('musica10');

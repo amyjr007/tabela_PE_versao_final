@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v64.6** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v64.7** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -219,3 +219,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - Completas as oito, a melodia toca inteira (as notas acendem), e a pergunta "Que música é essa?" com três opções e "Ouvir de novo". Acertando, confetes, funfare e aplausos; depois o cartão com a nota (8 notas, os erros contam: os toques errados e as opções erradas). Refazer recomeça o jogo; Continuar fecha e a sala clareia.
 - Por enquanto uma música (`MUSICAS_10`): "Brilha, brilha, estrelinha" — dó dó sol sol lá lá sol sol(longa); dó = Na (3s¹), sol = Fe (3d⁶), lá = I (5p⁵). As outras opções: "Ciranda, cirandinha" e "Atirei o pau no gato". Para outra música: mais uma entrada em `MUSICAS_10` (notas, tempos, um elemento por nota, outras opções).
 - **v64.6:** no sumário, "s – Quiz musical" abre o jogo direto (a mesa como no fim da 10.7.3, sem a demonstração; a sala escura). Durante o jogo a narração fica parada e sem o play (`sem-play-m10`).
+- **v64.7:** no quiz musical, o elemento achado fica verde (`m10-ok`) com um selo amarelo no canto com o número da ordem da nota (`m10-num`; o mesmo elemento junta os números: Na 1·2, Fe 3·4·7·8, I 5·6). Limpa ao refazer e ao fechar.
