@@ -3496,6 +3496,30 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .slide.quiz10c.chamaC10b .mesa .etq102.on:not(.d104){animation:none!important}
 .slide.quiz10c.chamaC10b .mesa .etq102.d104.on:not(.certa10b, .errada3, .pista5){animation:chama10b 1.6s ease-in-out infinite}
 .q3-q .verm10c{color:#FF6B7F}
+/* o quiz musical (MUSICA10): a caixa no alto, com as oito notas */
+.musica10-caixa{position:absolute;left:50%;top:62px;z-index:40;transform:translateX(-50%);width:min(900px,92%);
+  text-align:center;color:#fff;font-family:var(--display);opacity:0;transition:opacity .4s ease;pointer-events:auto}
+.musica10-caixa.on{opacity:1}
+.m10-titulo{font-size:22px;font-weight:700;margin-bottom:10px}
+.m10-notas{display:flex;justify-content:center;gap:10px}
+.m10-nota{position:relative;min-width:76px;padding:8px 6px 6px;border-radius:12px;background:rgba(255,255,255,.08);
+  border:2px solid rgba(255,255,255,.25);font-size:22px;font-weight:700;transition:background .25s, border-color .25s, transform .2s}
+.m10-nota i{display:block;font-style:normal;font-size:15px;opacity:.35}
+.m10-nota.vez{border-color:#FFD43B;box-shadow:0 0 0 3px rgba(255,212,59,.35), 0 0 18px rgba(255,212,59,.5)}
+.m10-nota.ok{background:rgba(46,214,113,.28);border-color:#7CF5A8}
+.m10-nota.ok i{opacity:1;color:#7CF5A8}
+.m10-nota.soa{animation:soa10 .45s ease-out}
+@keyframes soa10{40%{transform:translateY(-8px) scale(1.12);background:rgba(255,212,59,.45)}}
+.m10-msg{min-height:26px;margin-top:8px;font-size:17px;color:#E8E4FF}
+.m10-msg.erro{color:#FF8A9A}
+.m10-msg.ok{color:#7CF5A8}
+.m10-opcoes{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:6px auto 0;max-width:560px;position:relative;left:-110px}   /* (no vão entre o s e o p) */
+.m10-op{font:700 17px var(--display);padding:9px 16px;border-radius:999px;border:2px solid rgba(255,255,255,.4);
+  background:rgba(255,255,255,.1);color:#fff;cursor:pointer}
+.m10-op.certa{background:#2EAA5E;border-color:#7CF5A8}
+.m10-op.errada{background:rgba(255,46,76,.35);border-color:#FF6B7F;opacity:.7}
+.m10-op.m10-ouvir{border-style:dashed}
+.slide.musica10 .mesa :is(.etq102, .eixo[data-periodo]){opacity:0!important;pointer-events:none!important}
 /* (o "(n − 1)" em vermelho em cima da bolinha da camada, no acerto das questões 5 a 8 do quiz 3) */
 .mesa .tag1071.tag10c{color:#FF6B7F;font-size:17px;z-index:29;opacity:1;text-shadow:0 0 8px rgba(255,80,100,.6)}
 /* (a linha da resposta do quiz 3, na sala escura: a camada em vermelho, o d e o expoente na cor do bloco d) */
@@ -5492,7 +5516,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v64.4';
+const VERSAO = 'v64.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6058,6 +6082,7 @@ function montaTabela(i){
       /* no slide 10, no quiz, responde-se tocando na tabela (e no 9 também) */
       if (i === 9 && QUIZ9.aberto){ QUIZ9.toca(c); return; }
       /* (no slide 11, no quiz do tópico 10, a coluna tocada é a resposta) */
+      if (i === 10 && window.MUSICA10 && MUSICA10.aberto){ MUSICA10.toca(c); return; }
       if (i === 10 && window.QUIZ10C && QUIZ10C.aberto){ QUIZ10C.toca(c); return; }
       if (i === 10 && window.QUIZ10B && QUIZ10B.aberto){ QUIZ10B.toca(c); return; }
       if (i === 10 && window.QUIZ10 && QUIZ10.aberto){ QUIZ10.toca(c); return; }
@@ -25211,10 +25236,174 @@ const QUIZ10C = Object.assign(Object.create(QUIZ10B), {
     this.bt = this.botao('Confirmar', (xDaColuna(3) + xDaColuna(12)) / 2, yDaLinha(7) + LADO / 2 + 34, () => this.btFaz && this.btFaz());
     this.bt.classList.add('confirma10b');
   },
-  /* Continuar: o cartão sai e a sala clareia (o que vem depois do quiz 3 ainda não foi definido) */
-  continua(){ this.fecha(); }
+  /* (no cartão do quiz 3, no lugar do Continuar, o "Quiz ♪": o jogo musical) */
+  resultado(){
+    QUIZ10B.resultado.call(this);
+    const b = this.sl().querySelector('.quiz-cartao .segue');
+    if (b) b.textContent = 'Quiz ♪';
+  },
+  continua(){ this.fecha(true); if (window.MUSICA10) MUSICA10.abre(); }
 });
 window.QUIZ10C = QUIZ10C;
+
+/* ============================================================
+   O QUIZ MUSICAL DO TÓPICO 10 (MUSICA10) — o "Quiz ♪" do cartão do quiz 3.
+   Oito notas de uma música de domínio público ("Brilha, brilha,
+   estrelinha"); cada nota é um elemento da tabela, dado pelo subnível mais
+   energético dele. O aluno toca os elementos na ordem — cada acerto toca a
+   nota (sintetizada, sem arquivo de som) —, ouve a melodia inteira e
+   descobre qual é a música, entre três. No fim, o cartão com a nota.
+   (Só elementos que seguem o diagrama de Pauling.)
+   ============================================================ */
+const NOTAS_10 = { 'dó':261.63, 'ré':293.66, 'mi':329.63, 'fá':349.23, 'sol':392.00, 'lá':440.00, 'si':493.88, 'dó2':523.25 };
+const MUSICAS_10 = [
+  /* "Brilha, brilha, estrelinha": bri-lha bri-lha es-tre-li-nha — dó dó sol sol lá lá sol (sol) */
+  { nome:'Brilha, brilha, estrelinha', notas:['dó', 'dó', 'sol', 'sol', 'lá', 'lá', 'sol', 'sol'], tempos:[1, 1, 1, 1, 1, 1, 1, 2],
+    /* (cada nota, um elemento: o dó no Na — 3s¹ —, o sol no Fe — 3d⁶ —, o lá no I — 5p⁵) */
+    elementos:{ 'dó':11, 'sol':26, 'lá':53 },
+    outras:['Ciranda, cirandinha', 'Atirei o pau no gato'] }
+];
+const MUSICA10 = {
+  aberto:false, g:0, k:0, erros:0, m:null, ctx:null,
+  sl(){ return slides[10]; },
+  mesa(){ return this.sl().querySelector('.mesa'); },
+  /* a nota, sintetizada: um som de caixinha de música (triângulo e uma oitava acima, bem baixinha) */
+  nota(nome, dur = .55){
+    try {
+      const A = this.ctx || (this.ctx = new (window.AudioContext || window.webkitAudioContext)());
+      if (A.state === 'suspended') A.resume();
+      const f = NOTAS_10[nome], t0 = A.currentTime + .01, g = A.createGain();
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(.32, t0 + .015);
+      g.gain.exponentialRampToValueAtTime(.0001, t0 + dur + .5);
+      g.connect(A.destination);
+      [[f, 'triangle', 1], [f * 2, 'sine', .25]].forEach(([fr, tipo, v]) => {
+        const o = A.createOscillator(), gv = A.createGain();
+        o.type = tipo; o.frequency.value = fr; gv.gain.value = v;
+        o.connect(gv); gv.connect(g); o.start(t0); o.stop(t0 + dur + .6);
+      });
+    } catch (_) {}
+  },
+  abre(){
+    if (atual !== 10) return;
+    this.fecha(true);
+    const g = ++this.g;
+    this.m = MUSICAS_10[0];
+    this.k = 0; this.erros = 0; this.aberto = true; this.travado = false;
+    const M = this.m, mesa = this.mesa();
+    this.alvos = M.notas.map(n => mesa.querySelector('.pc[data-z="' + M.elementos[n] + '"]'));
+    const sl = this.sl();
+    sl.classList.add('musica10');
+    /* (o cabeçalho vira "Quiz ♪" — já com a cabeça do quiz 3, só o nome muda) */
+    const tt = sl.querySelector('.tira .title');
+    if (sl.classList.contains('quiz-cabeca') && tt){ tt.dataset.parte = 'Quiz ♪'; transformaLetras(tt, 'Quiz ♪'); }
+    else cabecaDoQuiz(sl, true, 'Quiz ♪', 'quiz-cabeca');
+    const cx = this.cx = document.createElement('div');
+    cx.className = 'musica10-caixa';
+    cx.innerHTML = '<div class="m10-titulo">Toque os elementos na ordem e descubra a música</div>' +
+      '<div class="m10-notas">' + this.alvos.map((c, k) =>
+        '<div class="m10-nota" data-k="' + k + '"><span class="m10-sub">' + subnivelDe10c(c) + '</span><i>♪</i></div>').join('') + '</div>' +
+      '<div class="m10-msg"></div><div class="m10-opcoes"></div>';
+    sl.appendChild(cx);
+    cx.getBoundingClientRect(); cx.classList.add('on');
+    this.marca();
+  },
+  /* a nota da vez acesa; as já tocadas, verdes */
+  marca(){
+    this.cx.querySelectorAll('.m10-nota').forEach((e, k) => {
+      e.classList.toggle('vez', k === this.k && !this.travado);
+      e.classList.toggle('ok', k < this.k);
+    });
+  },
+  msg(t, cls = ''){ const e = this.cx && this.cx.querySelector('.m10-msg'); if (e){ e.textContent = t; e.className = 'm10-msg ' + cls; } },
+  toca(c){
+    if (!this.aberto || this.travado || this.k >= this.alvos.length) return;
+    const alvo = this.alvos[this.k], M = this.m;
+    if (c === alvo){
+      this.nota(M.notas[this.k], .5);
+      c.classList.add('certa3'); setTimeout(() => c.classList.remove('certa3'), 450);
+      this.k++;
+      this.msg('');
+      this.marca();
+      if (this.k === this.alvos.length){ this.travado = true; this.marca(); setTimeout(() => this.melodia(true), 800); }
+      return;
+    }
+    this.erros++;
+    tocaEfeito('error');
+    tremeVermelho([c]);
+    const e = this.cx.querySelector('.m10-nota[data-k="' + this.k + '"]');
+    if (e){ e.classList.remove('treme-peca'); void e.offsetWidth; e.classList.add('treme-peca'); }
+    this.msg('Esse é o ' + SIMBOLOS[+c.dataset.z - 1] + ', de subnível ' + subnivelDe10c(c) + '. Procure o do ' + subnivelDe10c(alvo) + '.', 'erro');
+  },
+  /* a melodia inteira, com as notas acendendo; depois, a pergunta */
+  melodia(pergunta){
+    const g = this.g, M = this.m, passo = 480;
+    let t = 0;
+    this.msg('Ouça a música inteira…');
+    M.notas.forEach((n, k) => {
+      setTimeout(() => {
+        if (g !== this.g) return;
+        this.nota(n, M.tempos[k] > 1 ? .9 : .42);
+        const e = this.cx.querySelector('.m10-nota[data-k="' + k + '"]');
+        if (e){ e.classList.remove('soa'); void e.offsetWidth; e.classList.add('soa'); }
+        const c = this.alvos[k]; c.classList.add('certa3'); setTimeout(() => c.classList.remove('certa3'), 380);
+      }, t);
+      t += passo * M.tempos[k];
+    });
+    setTimeout(() => { if (g === this.g && pergunta) this.pergunta(); }, t + 500);
+  },
+  pergunta(){
+    const M = this.m, ops = embaralha([M.nome, ...M.outras]);
+    this.msg('Que música é essa?');
+    const o = this.cx.querySelector('.m10-opcoes');
+    o.innerHTML = '';
+    ops.forEach(nome => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'm10-op'; b.textContent = nome;
+      b.addEventListener('click', () => this.responde(b, nome));
+      o.appendChild(b);
+    });
+    o.insertAdjacentHTML('beforeend', '<button type="button" class="m10-op m10-ouvir">♪ Ouvir de novo</button>');
+    o.querySelector('.m10-ouvir').addEventListener('click', () => this.melodia(false));
+  },
+  responde(b, nome){
+    if (!this.aberto) return;
+    if (nome !== this.m.nome){
+      this.erros++;
+      tocaEfeito('error');
+      b.classList.add('errada'); b.disabled = true;
+      this.msg('Não é essa. Ouça de novo e tente outra.', 'erro');
+      return;
+    }
+    b.classList.add('certa');
+    this.cx.querySelectorAll('.m10-op').forEach(x => x.disabled = true);
+    this.msg('Isso! É "' + this.m.nome + '"!', 'ok');
+    confete(); tocaEfeito('funfare'); tocaEfeito('applause');
+    const g = this.g;
+    setTimeout(() => { if (g === this.g) this.resultado(); }, 2600);
+  },
+  resultado(){
+    const n = this.alvos.length, e = Math.min(this.erros, n), nota = Math.round((n - e) / n * 100) / 10;
+    if (this.cx){ this.cx.classList.remove('on'); const cx = this.cx; setTimeout(() => cx.remove(), 500); this.cx = null; }
+    QUIZ_FEITOS.marca('q10m', nota);
+    cartaoDoResultado(nota, n + ' notas · <em class="erro">' + this.erros + '</em> ' + (this.erros === 1 ? 'erro' : 'erros'),
+      this.sl(), () => this.abre(), () => this.fecha());
+  },
+  fecha(reabre){
+    this.g++;
+    this.aberto = false; this.travado = false;
+    const sl = this.sl();
+    if (!sl) return;
+    sl.querySelectorAll('.musica10-caixa, .quiz-cartao').forEach(e => e.remove());
+    this.cx = null;
+    if (reabre) return;
+    sl.classList.remove('musica10');
+    cabecaDoQuiz(sl, false, 'Quiz ♪', 'quiz-cabeca');
+    /* (e a sala do quiz 3 clareia) */
+    if (window.QUIZ10C) QUIZ10C.fecha();
+  }
+};
+window.MUSICA10 = MUSICA10;
 
 /* A COR NEUTRA de quem está fora do lugar: um cinza morno que escurece
    devagar com o número atômico (o do professor). A cor da família volta

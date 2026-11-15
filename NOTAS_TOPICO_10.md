@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v64.4** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v64.5** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -210,3 +210,10 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v64.0 — a 10.5.1 mais leve:** o bloco tocado certo brilha com um halo só por bloco (`halo1051`, um retângulo medido pela caixa das cartas; o s em dois, o f em duas fileiras; La e Ac fora do d), que só muda de opacidade — antes eram filtro e sombras desfocadas em cada carta. O erro treme só a carta tocada, não a tela inteira.
 - **v64.3 — a 10.5.3 regravada (63,3 s):** o texto "O subnível mais energético" aos 4,8–6,7 s; pela referência do professor (o Mg aceso aos 20 s, antes 13,5 s), todo o resto +6,5 s: cena escura 20 s, diagrama 27 s, distribuição 31–35 s, brilho 37,2 s, 1s² 41 s, 3s² 41,9 s, "subnível mais energético" 49–50,6 s. Legendas refeitas.
 - **v64.4:** o quiz 2 abre 1,5 s depois do fim da 10.6.3.
+
+## O quiz musical (v64.5) — `MUSICA10`
+
+- No cartão do quiz 3, no lugar do Continuar, o botão **"Quiz ♪"** (o Refazer continua). Ele abre o jogo, com a sala ainda escura e o cabeçalho "Quiz ♪".
+- No alto, oito notas, cada uma dada pelo subnível mais energético de um elemento; o aluno toca os elementos na ordem e cada acerto toca a nota (sintetizada com WebAudio: triângulo + oitava, som de caixinha de música; sem arquivo). O erro: som de erro, a carta treme e a mensagem diz o subnível do que foi tocado.
+- Completas as oito, a melodia toca inteira (as notas acendem), e a pergunta "Que música é essa?" com três opções e "Ouvir de novo". Acertando, confetes, funfare e aplausos; depois o cartão com a nota (8 notas, os erros contam: os toques errados e as opções erradas). Refazer recomeça o jogo; Continuar fecha e a sala clareia.
+- Por enquanto uma música (`MUSICAS_10`): "Brilha, brilha, estrelinha" — dó dó sol sol lá lá sol sol(longa); dó = Na (3s¹), sol = Fe (3d⁶), lá = I (5p⁵). As outras opções: "Ciranda, cirandinha" e "Atirei o pau no gato". Para outra música: mais uma entrada em `MUSICAS_10` (notas, tempos, um elemento por nota, outras opções).
