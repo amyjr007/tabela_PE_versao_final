@@ -5492,7 +5492,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v64.3';
+const VERSAO = 'v64.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -7798,7 +7798,8 @@ const SEQ = {
     /* o fim da "10.6.2": tudo fica na tela, e o botão verde "Próximo" leva à "10.6.3" (o césio) */
     else if (id === '10.6.2'){ if (atual === 10) CARDS101.saquei(true, '10.6.3', 'Próximo'); }
     /* o fim da "10.6.3": a demonstração acabou, e o quiz 2 abre */
-    else if (id === '10.6.3'){ if (atual === 10 && window.QUIZ10B && !QUIZ10B.aberto) QUIZ10B.abre(); }
+    /* (v64.4: 1,5 s depois do fim) */
+    else if (id === '10.6.3'){ if (atual === 10) setTimeout(() => { if (atual === 10 && trilhaAtual === '10.6.3' && som.ended && window.QUIZ10B && !QUIZ10B.aberto) QUIZ10B.abre(); }, 1500); }
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
     /* (antes dela, a festa: os confetes, o funfare e os aplausos) */
     else if (id === '9.3.8'){ if (atual === 9) EV9.festa93(); }
