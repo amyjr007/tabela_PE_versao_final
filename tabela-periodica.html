@@ -3545,6 +3545,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .m10-op.certa{background:#2EAA5E;border-color:#7CF5A8}
 .m10-op.errada{background:rgba(255,46,76,.35);border-color:#FF6B7F;opacity:.7}
 .m10-op.m10-ouvir{border-style:dashed}
+.mesa .pc.pisca108 .face{animation:pisca108 .7s ease-out}
+@keyframes pisca108{30%{filter:brightness(1.7) drop-shadow(0 0 10px rgba(255,236,150,.95))}}
 .slide.musica10 .mesa :is(.etq102, .eixo[data-periodo]){opacity:0!important;pointer-events:none!important}
 /* o quiz final: um cartão claro no meio da sala escura, com a questão e as quatro alternativas */
 .qf-caixa{position:absolute;left:50%;top:50%;z-index:45;transform:translate(-50%,-48%);width:min(820px,92%);
@@ -5581,7 +5583,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v65.8';
+const VERSAO = 'v65.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23310,6 +23312,7 @@ const CARDS101 = {
     this.tick1073(t);
     this.tick1075(t);
     this.tick1076(t);
+    if (window.MUSICA10) MUSICA10.tickFala(t);
     const monta = naMontagem(), de = trilhaAtual === '10.1', T = monta ? 99 : de ? t : -1;
     const n = EV9.letras(T, T101.texto[0], T101.texto[1], TEXTO_101);
     if (n !== this.nt && !this.texto.classList.contains('texto-livre')){
@@ -25574,13 +25577,13 @@ const MUSICA10 = {
   sl(){ return slides[10]; },
   mesa(){ return this.sl().querySelector('.mesa'); },
   /* a nota, sintetizada: um som de caixinha de música (triângulo e uma oitava acima, bem baixinha) */
-  nota(nome, dur = .55){
+  nota(nome, dur = .55, vol = 1){
     try {
       const A = this.ctx || (this.ctx = new (window.AudioContext || window.webkitAudioContext)());
       if (A.state === 'suspended') A.resume();
       const f = NOTAS_10[nome], t0 = A.currentTime + .01, g = A.createGain();
       g.gain.setValueAtTime(0.0001, t0);
-      g.gain.exponentialRampToValueAtTime(.32, t0 + .015);
+      g.gain.exponentialRampToValueAtTime(Math.max(.0002, .32 * vol), t0 + .015);
       g.gain.exponentialRampToValueAtTime(.0001, t0 + dur + .5);
       g.connect(A.destination);
       [[f, 'triangle', 1], [f * 2, 'sine', .25]].forEach(([fr, tipo, v]) => {
@@ -25638,6 +25641,23 @@ const MUSICA10 = {
     this.marca();
   },
   /* a nota da vez acesa; as já tocadas, verdes */
+  /* (v65.9: durante a "10.7.8", dos 8,5 aos 18 s, elementos ao acaso piscam, cada um com uma nota bem baixinha —
+     só tocando de seguida; um salto para trás recomeça a conta) */
+  tickFala(t){
+    const de = atual === 10 && trilhaAtual === '10.7.8' && !som.paused && !naMontagem();
+    if (!de || t < 8.5 || t >= 18){ if (!de || t < 8.5) this.prox108 = 8.5; return; }
+    if (this.ult108 !== undefined && t < this.ult108 - .5) this.prox108 = t;
+    this.ult108 = t;
+    if (t < (this.prox108 ?? 8.5)) return;
+    this.prox108 = t + .55 + Math.random() * .4;
+    const cs = [...this.mesa().querySelectorAll('.pc')].filter(c => +c.dataset.z <= 118 && c.offsetWidth);
+    const c = cs[Math.floor(Math.random() * cs.length)];
+    if (!c) return;
+    c.classList.remove('pisca108'); void c.offsetWidth; c.classList.add('pisca108');
+    setTimeout(() => c.classList.remove('pisca108'), 700);
+    const ns = ['dó', 'ré', 'mi', 'sol', 'lá', 'dó2'];
+    this.nota(ns[Math.floor(Math.random() * ns.length)], .4, .18);
+  },
   marca(){
     this.cx.querySelectorAll('.m10-nota').forEach((e, k) => {
       e.classList.toggle('vez', k === this.k && !this.travado);
