@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v65.0** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v65.1** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -114,6 +114,7 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | q – O exemplo do Zr | 10.7.2 |
 | r – Quiz 3 | 10.7.3 aos 10,2 s (a demonstração e o quiz 3) |
 | s – Quiz musical | o jogo musical direto (a mesa como no fim da 10.7.3, a sala escura) |
+| t – Quiz geral | o quiz final direto (20 questões, duas de cada tópico; a sala escura) |
 
 **Todos os itens do sumário do tópico 10 saltam direto para a tela do começo** (v60.5), sem a cena se montar à vista. Cada item tem `salto:[trilha, segundo, quiz?]`; o `irPara` chama `preparaSalto10` (e um `efeitosDoTempo()` na hora) logo depois do `go()` — ou, no mesmo slide, logo depois do `recomecaSlide()`, para a cena da 10 não aparecer num quadro — (a trilha já é posta parada naquele segundo, e a classe `salto1071` no `#stage` desliga as transições), e o `entra` chama `saltaPara10`, que toca a narração (ou abre o quiz) quando a mesa chega; as transições voltam 0,3 s depois (e, de todo jeito, em 4 s). Item novo no sumário do tópico 10: usar `salto:[...]` + `entra(v, g){ saltaPara10(...) }`.
 

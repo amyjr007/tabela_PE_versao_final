@@ -5556,7 +5556,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v65.0';
+const VERSAO = 'v65.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -29289,6 +29289,10 @@ const NAV_TOPICOS = [
   { titulo:'Quiz musical', sub:'o quiz musical direto: as notas pelos subníveis e a música', slide:10, quiz:'q10m',
     salto:['10.7.3', 24.5, true],
     entra(v, g){ QUIZ10C.jaAbriu = true; saltaPara10('10.7.3', g, 24.5, () => { QUIZ10C.jaAbriu = true; QUIZ10C.escurece(); MUSICA10.abre(); }); } },
+  /* o quiz geral direto (o quiz final: 20 questões, duas de cada tópico): a mesa como no fim da 10.7.3, a sala escura */
+  { titulo:'Quiz geral', sub:'o quiz final: 20 questões, duas de cada tópico', slide:10, quiz:'q10f',
+    salto:['10.7.3', 24.5, true],
+    entra(v, g){ QUIZ10C.jaAbriu = true; saltaPara10('10.7.3', g, 24.5, () => { QUIZ10C.jaAbriu = true; QUIZ10C.escurece(); QUIZFINAL.abre(); }); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
