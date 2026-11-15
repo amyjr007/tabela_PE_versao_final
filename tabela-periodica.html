@@ -5558,7 +5558,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v65.3';
+const VERSAO = 'v65.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23402,9 +23402,22 @@ const CARDS101 = {
     /* (a narração seguinte só toca se já existir — a "10.6.2" ainda não tem áudio) */
     botaoVerde(sim ? txt : null, () => { this.saquei(false); if (atual === 10 && prox && TRILHAS[prox]) tocaTrilha(prox); });
   },
+  /* (v65.4: o quiz 3, o musical e o geral também fecham — ao sair do slide e em todo salto pelo sumário;
+     antes, pelo sumário, o quiz 3 ficava aberto por baixo do tutorial que recomeçava) */
+  fechaJogos(){
+    if (window.QUIZFINAL && QUIZFINAL.aberto) QUIZFINAL.fecha(true);
+    if (window.MUSICA10 && (MUSICA10.aberto || slides[10].classList.contains('musica10'))) MUSICA10.fecha(true);
+    if (window.QUIZ10C && (QUIZ10C.aberto || QUIZ10C.escuro)) QUIZ10C.fecha();
+    if (window.QUIZ10C) QUIZ10C.jaAbriu = false;
+    const sl = slides[10];
+    if (sl && sl.classList.contains('musica10')) sl.classList.remove('musica10');
+    if (sl && sl.classList.contains('final10')) sl.classList.remove('final10');
+    if (stage.classList.contains('sem-play-m10')) stage.classList.remove('sem-play-m10');
+  },
   fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051', 'sem-play105');
           if (window.QUIZ10 && (QUIZ10.aberto || QUIZ10.escuro)) QUIZ10.fecha();
           if (window.QUIZ10B && (QUIZ10B.aberto || QUIZ10B.escuro)){ QUIZ10B.fecha(); QUIZ10B.jaAbriu = false; }
+          this.fechaJogos();
           if (this.pede106){ this.pede106 = false; this.estado106 = ''; stage.classList.remove('em-toque'); }
           if (this.pede107 || this.pede1070){ this.pede107 = this.pede1070 = false; this.estado107 = ''; stage.classList.remove('em-toque'); } },
   passo103:0, sel103:null, feito103:false,
@@ -29429,6 +29442,9 @@ function poeNoLugarJa(c){
 function preparaSalto10(id, g, t = 0, quiz = false){
   if (preparaSalto10.g === g && trilhaAtual === id) return;
   preparaSalto10.g = g;
+  CARDS101.fechaJogos();
+  /* (o quiz musical e o geral, direto: a demonstração do quiz 3 não aparece) */
+  if (quiz && id === '10.7.3' && window.QUIZ10C) QUIZ10C.jaAbriu = true;
   stage.classList.add('salto1071');
   /* (as transições voltam de todo jeito em 4 s, mesmo que se saia dali antes) */
   setTimeout(() => { if (preparaSalto10.g === g) stage.classList.remove('salto1071'); }, 4000);
