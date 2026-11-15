@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v64.2** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v64.3** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -208,3 +208,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v63.9:** na 10.3, tocada uma coluna (narração cortada), o play também sai.
 - **v64.0 — a posição da tabela:** da 10.6 até o fim do tópico (10.6.x, Cs, quiz 2, 10.7, Fe, Zr, 10.7.3, quiz 3) a mesa fica sempre no lugar da 10.6 (`--px:6px; --py:97px`, classe `pos106`, separada da `semF106`, que só esconde as fileiras de baixo até a 10.6.3); no celular, a medida `fechada`. A posição própria dos quizzes (x 20, y 126) saiu.
 - **v64.0 — a 10.5.1 mais leve:** o bloco tocado certo brilha com um halo só por bloco (`halo1051`, um retângulo medido pela caixa das cartas; o s em dois, o f em duas fileiras; La e Ac fora do d), que só muda de opacidade — antes eram filtro e sombras desfocadas em cada carta. O erro treme só a carta tocada, não a tela inteira.
+- **v64.3 — a 10.5.3 regravada (63,3 s):** o texto "O subnível mais energético" aos 4,8–6,7 s; pela referência do professor (o Mg aceso aos 20 s, antes 13,5 s), todo o resto +6,5 s: cena escura 20 s, diagrama 27 s, distribuição 31–35 s, brilho 37,2 s, 1s² 41 s, 3s² 41,9 s, "subnível mais energético" 49–50,6 s. Legendas refeitas.
