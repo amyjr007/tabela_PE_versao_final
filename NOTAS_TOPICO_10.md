@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v64.8** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v64.9** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -222,5 +222,5 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v64.7:** no quiz musical, o elemento achado fica verde (`m10-ok`) com um selo amarelo no canto com o número da ordem da nota (`m10-num`; o mesmo elemento junta os números: Na 1·2, Fe 3·4·7·8, I 5·6). Limpa ao refazer e ao fechar.
 - **v64.8:** o quiz musical tem três músicas em sequência ("Música 1 de 3"…), cada uma com oito notas; acertada a música, vem a próxima; no fim um cartão só (24 notas; os erros das três contam).
   - "Atirei o pau no gato": sol fá mi ré mi fá sol sol(longa) — sol = Ca (4s²), fá = P (3p³), mi = Zn (3d¹⁰), ré = Br (4p⁵).
-  - "Marcha, soldado": sol mi sol mi sol lá sol fá(longa) — sol = K (4s¹), mi = Cl (3p⁵), lá = Mn (3d⁵), fá = Sr (5s²).
+  - v64.9: "Marcha, soldado" saiu (não ficou bom); no lugar, "Noite feliz" (Gruber, 1818): sol lá sol mi, sol lá sol mi, no ritmo de valsa (tempos 1,5 · 0,5 · 1 · 2,5) — sol = K (4s¹), lá = Mn (3d⁵), mi = Cl (3p⁵). Na melodia inteira, cada nota dura conforme o tempo dela.
   - (As melodias das duas novas foram escritas de memória: conferir no ouvido; para corrigir, mudar `notas` em `MUSICAS_10`.)

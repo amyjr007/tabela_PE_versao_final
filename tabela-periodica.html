@@ -5524,7 +5524,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v64.8';
+const VERSAO = 'v64.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25274,11 +25274,11 @@ const MUSICAS_10 = [
   { nome:'Atirei o pau no gato', notas:['sol', 'fá', 'mi', 'ré', 'mi', 'fá', 'sol', 'sol'], tempos:[1, 1, 1, 1, 1, 1, 1, 2],
     /* (o sol no Ca — 4s² —, o fá no P — 3p³ —, o mi no Zn — 3d¹⁰ —, o ré no Br — 4p⁵) */
     elementos:{ 'sol':20, 'fá':15, 'mi':30, 'ré':35 },
-    outras:['Marcha, soldado', 'Ciranda, cirandinha'] },
-  /* "Marcha, soldado": mar-cha sol-da-do, ca-be-ça — sol mi sol mi sol lá sol (fá) */
-  { nome:'Marcha, soldado', notas:['sol', 'mi', 'sol', 'mi', 'sol', 'lá', 'sol', 'fá'], tempos:[1, 1, 1, 1, 1, 1, 1, 2],
-    /* (o sol no K — 4s¹ —, o mi no Cl — 3p⁵ —, o lá no Mn — 3d⁵ —, o fá no Sr — 5s²) */
-    elementos:{ 'sol':19, 'mi':17, 'lá':25, 'fá':38 },
+    outras:['Noite feliz', 'Ciranda, cirandinha'] },
+  /* "Noite feliz" (Gruber, 1818): noi-te fe-liz, noi-te fe-liz — sol lá sol mi, sol lá sol mi (no ritmo de valsa) */
+  { nome:'Noite feliz', notas:['sol', 'lá', 'sol', 'mi', 'sol', 'lá', 'sol', 'mi'], tempos:[1.5, .5, 1, 2.5, 1.5, .5, 1, 2.5],
+    /* (o sol no K — 4s¹ —, o lá no Mn — 3d⁵ —, o mi no Cl — 3p⁵) */
+    elementos:{ 'sol':19, 'lá':25, 'mi':17 },
     outras:['Atirei o pau no gato', 'Brilha, brilha, estrelinha'] }
 ];
 const MUSICA10 = {
@@ -25395,7 +25395,7 @@ const MUSICA10 = {
     M.notas.forEach((n, k) => {
       setTimeout(() => {
         if (g !== this.g) return;
-        this.nota(n, M.tempos[k] > 1 ? .9 : .42);
+        this.nota(n, Math.max(.35, Math.min(1.2, .42 * M.tempos[k])));
         const e = this.cx.querySelector('.m10-nota[data-k="' + k + '"]');
         if (e){ e.classList.remove('soa'); void e.offsetWidth; e.classList.add('soa'); }
         const c = this.alvos[k]; c.classList.add('certa3'); setTimeout(() => c.classList.remove('certa3'), 380);
