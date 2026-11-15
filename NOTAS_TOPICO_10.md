@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v64.5** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v64.6** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -113,6 +113,7 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | p – O exemplo do Fe | 10.7.1 (sem o véu da regra: pula1071) |
 | q – O exemplo do Zr | 10.7.2 |
 | r – Quiz 3 | 10.7.3 aos 10,2 s (a demonstração e o quiz 3) |
+| s – Quiz musical | o jogo musical direto (a mesa como no fim da 10.7.3, a sala escura) |
 
 **Todos os itens do sumário do tópico 10 saltam direto para a tela do começo** (v60.5), sem a cena se montar à vista. Cada item tem `salto:[trilha, segundo, quiz?]`; o `irPara` chama `preparaSalto10` (e um `efeitosDoTempo()` na hora) logo depois do `go()` — ou, no mesmo slide, logo depois do `recomecaSlide()`, para a cena da 10 não aparecer num quadro — (a trilha já é posta parada naquele segundo, e a classe `salto1071` no `#stage` desliga as transições), e o `entra` chama `saltaPara10`, que toca a narração (ou abre o quiz) quando a mesa chega; as transições voltam 0,3 s depois (e, de todo jeito, em 4 s). Item novo no sumário do tópico 10: usar `salto:[...]` + `entra(v, g){ saltaPara10(...) }`.
 
@@ -217,3 +218,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - No alto, oito notas, cada uma dada pelo subnível mais energético de um elemento; o aluno toca os elementos na ordem e cada acerto toca a nota (sintetizada com WebAudio: triângulo + oitava, som de caixinha de música; sem arquivo). O erro: som de erro, a carta treme e a mensagem diz o subnível do que foi tocado.
 - Completas as oito, a melodia toca inteira (as notas acendem), e a pergunta "Que música é essa?" com três opções e "Ouvir de novo". Acertando, confetes, funfare e aplausos; depois o cartão com a nota (8 notas, os erros contam: os toques errados e as opções erradas). Refazer recomeça o jogo; Continuar fecha e a sala clareia.
 - Por enquanto uma música (`MUSICAS_10`): "Brilha, brilha, estrelinha" — dó dó sol sol lá lá sol sol(longa); dó = Na (3s¹), sol = Fe (3d⁶), lá = I (5p⁵). As outras opções: "Ciranda, cirandinha" e "Atirei o pau no gato". Para outra música: mais uma entrada em `MUSICAS_10` (notas, tempos, um elemento por nota, outras opções).
+- **v64.6:** no sumário, "s – Quiz musical" abre o jogo direto (a mesa como no fim da 10.7.3, sem a demonstração; a sala escura). Durante o jogo a narração fica parada e sem o play (`sem-play-m10`).

@@ -2504,7 +2504,8 @@ body.montagem .bloco72{pointer-events:auto}
 #stage.sem-play9 #som, #stage.sem-play9 #som-dica, #stage.sem-play9 #vel{display:none!important}
 #stage.sem-play1051 #som, #stage.sem-play1051 #som-dica, #stage.sem-play1051 #vel,
 #stage.sem-play105 #som, #stage.sem-play105 #som-dica, #stage.sem-play105 #vel,
-#stage.sem-play62 #som, #stage.sem-play62 #som-dica, #stage.sem-play62 #vel{display:none!important}
+#stage.sem-play62 #som, #stage.sem-play62 #som-dica, #stage.sem-play62 #vel,
+#stage.sem-play-m10 #som, #stage.sem-play-m10 #som-dica, #stage.sem-play-m10 #vel{display:none!important}
 
 /* ---- o cartão da nota, no fim do quiz ---- */
 .nota-card{
@@ -5516,7 +5517,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v64.5';
+const VERSAO = 'v64.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25290,6 +25291,8 @@ const MUSICA10 = {
     const g = ++this.g;
     this.m = MUSICAS_10[0];
     this.k = 0; this.erros = 0; this.aberto = true; this.travado = false;
+    /* (no jogo, a narração fica parada e sem o play) */
+    som.pause(); stage.classList.add('sem-play-m10');
     const M = this.m, mesa = this.mesa();
     this.alvos = M.notas.map(n => mesa.querySelector('.pc[data-z="' + M.elementos[n] + '"]'));
     const sl = this.sl();
@@ -25397,6 +25400,7 @@ const MUSICA10 = {
     sl.querySelectorAll('.musica10-caixa, .quiz-cartao').forEach(e => e.remove());
     this.cx = null;
     if (reabre) return;
+    stage.classList.remove('sem-play-m10');
     sl.classList.remove('musica10');
     cabecaDoQuiz(sl, false, 'Quiz ♪', 'quiz-cabeca');
     /* (e a sala do quiz 3 clareia) */
@@ -29012,6 +29016,10 @@ const NAV_TOPICOS = [
   { titulo:'Quiz 3', sub:'a 10.7.3 aos 10,2 s: a demonstração e o quiz 3 (bloco d)', slide:10, quiz:'q10c',
     salto:['10.7.3', 10.2],
     entra(v, g){ saltaPara10('10.7.3', g, 10.2); } },
+  /* o quiz musical direto: a mesa como no fim da 10.7.3 (limpa, sem a demonstração), a sala escura e o jogo */
+  { titulo:'Quiz musical', sub:'o quiz musical direto: as notas pelos subníveis e a música', slide:10, quiz:'q10m',
+    salto:['10.7.3', 24.5, true],
+    entra(v, g){ QUIZ10C.jaAbriu = true; saltaPara10('10.7.3', g, 24.5, () => { QUIZ10C.jaAbriu = true; QUIZ10C.escurece(); MUSICA10.abre(); }); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
