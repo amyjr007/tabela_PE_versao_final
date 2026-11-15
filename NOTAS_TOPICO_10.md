@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v64.1** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v64.2** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -198,7 +198,7 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **Sumário:** "q – O exemplo do Zr" (10.7.2) e "r – Quiz 3" (10.7.3 aos 10,2 s).
 - **v63.0:** na 10.7.3 a sala já apaga aos 12 s e o cabeçalho vira "Quiz 3" (voltando para antes, clareia); na demonstração, o toque da mãozinha escolhe como no quiz (contorno amarelo, `sel10b`) e no fim a bolinha e o card ficam verdes (`certa10b`). No acerto das questões 5 a 8 do quiz 3, um "(n − 1)" vermelho em cima da bolinha da camada (`tag10c`).
 - **v63.1:** nos tutoriais dos quizzes 2 (10.6.3) e 3 (10.7.3) a mãozinha é amarela e 15 % maior (classe `mao10` no `#mao`, tirada quando ela some). Na 10.6.3 ela aparece aos 24 s, no meio; aos 26,5 s vai até a bolinha do 3 e a toca (27 s), que fica escolhida (`sel10b`); o card p¹ também, aos 28,5 s; quando a mão sai (29,6 s), os dois ficam verdes.
-- **v63.2:** os cards gigantes s², p⁶ e d¹⁰, que saem de dentro dos blocos para as colunas receberem as etiquetas (10.2 aos 20,4 s, 10.3 aos 10,6 s, 10.4 aos 18 s), não voltam mais (`antes1051()`), até a 10.5.1, que os mostra de propósito; o f¹⁴ fica. Entre o fim da 10.2 e a 10.2.1, 1,5 s.
+- **v63.2:** os cards gigantes s², p⁶ e d¹⁰, que saem de dentro dos blocos para as colunas receberem as etiquetas (10.2 aos 20,4 s, 10.3 aos 10,6 s, 10.4 aos 18 s), não voltam mais em nenhuma narração seguinte (v64.2: nem na 10.5.1 — lá os blocos crescem sem eles); o f¹⁴ fica. Entre o fim da 10.2 e a 10.2.1, 1,5 s.
 - **v63.3:** o card clicável (p⁶ no fim da 10.2.1, d¹⁰ no fim da 10.3.1, f¹⁴ no fim da 10.4.1) brilha discreto na cor dele desde o fim da narração (`brilho10`, 2,4 s), antes da mãozinha.
 - **v63.4:** o brilho dos cards clicáveis virou um halo branco que pulsa (2 s), visível até em cima do bloco da mesma cor; o p⁶ já brilha desde o começo da 10.2.1 (`brilha10`); o brilho para no toque. Entre a 10.2 e a 10.2.1, 1 s.
 - **v63.5:** tocado, o card gigante afunda (86 %) e fica verde vivo com contorno verde (`ativo10`), como um botão ativado; 2 s depois volta ao normal (em 0,35 s). A narração seguinte começa 0,38 s depois do toque.

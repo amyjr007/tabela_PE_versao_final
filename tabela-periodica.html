@@ -5492,7 +5492,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v64.1';
+const VERSAO = 'v64.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22822,9 +22822,8 @@ const TEXTO_101 = 'São 4 subníveis:';
    aos 28 s a "s²" cai em cima da 2A, e as duas descem aos 28,4 s. As etiquetas ficam em cima das famílias. */
 const T102 = { texto:[5.0, 10.0], bloco:[12.7, 14.3], card:[14.3, 18.0], pulsa:[15.5, 18.0], brilho:[18.0, 20.5],
                pulo:[20.5, 21.1], some:[20.4, 28.8], sobe:[22.0, 26.2], etq:[26.2, 28.4] };
-/* (v63.2: os cards gigantes s², p⁶ e d¹⁰, que saem de dentro dos blocos para as colunas receberem as
-   etiquetas, não voltam mais nas narrações seguintes — até a 10.5.1, que os mostra de propósito) */
-function antes1051(){ return ORDEM_10.indexOf(trilhaAtual) < ORDEM_10.indexOf('10.5.1'); }
+/* (v63.2/v64.2: os cards gigantes s², p⁶ e d¹⁰, que saem de dentro dos blocos para as colunas receberem
+   as etiquetas, não voltam mais em nenhuma narração seguinte — nem na 10.5.1) */
 const TEXTO_102 = 'O nº de colunas no bloco = nº de e⁻ do subnível';
 /* A "10.3" (o Saquei no fim da "10.2"): aos 1,5 s o bloco p cresce com o card
    dentro e volta aos 3,2 s; aos 4,5 s o card p⁶ cresce sozinho, e aos 6 s o
@@ -23294,7 +23293,7 @@ const CARDS101 = {
     /* (a etiqueta chega à família subida 0,45 s antes, e as duas descem no segundo dela) */
     const etq = k => T < T102.etq[k] - 0.45 ? 0 : T < T102.etq[k] ? 1 : 2;
     const est = [T >= T102.texto[0], dentro(T102.texto), dentro(T102.bloco), dentro(T102.card), dentro(T102.pulsa),
-                 dentro(T102.brilho), dentro(T102.pulo), (T >= T102.some[0] && antes1051()), T >= T102.sobe[0] && T < T102.etq[0],
+                 dentro(T102.brilho), dentro(T102.pulo), T >= T102.some[0], T >= T102.sobe[0] && T < T102.etq[0],
                  T >= T102.sobe[1] && T < T102.etq[1], etq(0), etq(1)].join();
     this.flipQueda('102', [etq(0), etq(1)], de && !monta, t);
     if (est === this.estado102) return;
@@ -23403,8 +23402,8 @@ const CARDS101 = {
     if (!de || t < T103.toque) this.parou103 = false;
     const dentro = ([a, b]) => T >= a && T < b;
     const bloco = dentro(T103.bloco), card = dentro(T103.card), pulsa = dentro(T103.pulsa);
-    /* (v63.2: o card p⁶ sai e não volta mais — até a 10.5.1, que mostra os cards de propósito) */
-    const some = T >= T103.some && antes1051(), esc18 = dentro(T103.esc18);
+    /* (v63.2: o card p⁶ sai e não volta mais) */
+    const some = T >= T103.some, esc18 = dentro(T103.esc18);
     const sobeT = (T103.sobe.find(([a, b]) => T >= a && T < b) || [])[2] || null;
     const up = this.sel103 !== null && T >= 0 ? this.sel103.col : sobeT;
     /* as etiquetas: a p¹ e a p² pelo tempo; as outras pelo toque */
@@ -24557,8 +24556,8 @@ const CARDS101 = {
     const monta = naMontagem(), de = trilhaAtual === '10.4', T = monta ? -1 : de ? t : depoisDe('10.4') ? 99 : -1;
     const dentro = ([a, b]) => T >= a && T < b;
     const bloco = dentro(T104.bloco), card = dentro(T104.card), pulsa = dentro(T104.pulsa), so = dentro(T104.so);
-    /* (v63.2: o card d¹⁰ sai e não volta mais — até a 10.5.1) */
-    const some = T >= T104.some && antes1051();
+    /* (v63.2: o card d¹⁰ sai e não volta mais) */
+    const some = T >= T104.some;
     const sobeT = (T104.sobe.find(([a, b]) => T >= a && T < b) || [])[2] || null;
     const up = this.sel104 !== null && T >= 0 ? this.sel104.col : sobeT;
     /* as etiquetas: a d¹ pelo tempo; as outras pelo toque */
