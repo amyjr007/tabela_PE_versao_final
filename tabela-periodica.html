@@ -3361,6 +3361,10 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 /* as exceções ao diagrama de Pauling, apagadas em fade (10.7.5 aos 20 s, até a 10.7.7) */
 .mesa .pc.exc107p .face{transition:filter 1s ease}
 .mesa.exc107 .pc.exc107p .face{filter:brightness(.3) saturate(.25)}
+/* (v65.8: com a tabela aberta de novo, as etiquetas do f sobem um pouco e as séries descem um pouco) */
+.mesa .etq102.f105, .mesa .pc:is([data-b101="f"], [data-z="57"], [data-z="89"]), .mesa .casa.casaF106{transition:margin-top .6s cubic-bezier(.3,.85,.3,1)}
+.mesa.f1075 .etq102.f105{margin-top:-12px}
+.mesa.f1075 :is(.pc[data-b101="f"], .pc[data-z="57"], .pc[data-z="89"], .casa.casaF106){margin-top:12px}
 /* a 10.7.6: a bolinha "7" da série de baixo, o lugar dos actinídeos em vermelho e o 5f⁵ */
 .bola1076{position:absolute;z-index:16;width:30px;height:30px;border-radius:50%;background:var(--cor-linha);color:#fff;
   display:grid;place-items:center;font:700 15px var(--mono);transform:translate(-50%,-50%);scale:.3;opacity:0;
@@ -5577,7 +5581,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v65.7';
+const VERSAO = 'v65.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22661,8 +22665,8 @@ const T1076 = { pu:1.0, act:4.5, bola:6.7, segL:[[8.7, 13.8], [23.0, 26.0]], seg
                 formula:[13.8, 14.4], cinco:19.0, linha:23.0, f:25.0, festa:26.0, pergunta:29.7, texto:[29.8, 34.0] };
 const ALVO_1076 = 60;   /* o 4f³: o Nd, na coluna do f³ da série dos lantanídeos */
 const TEXTO_1076 = 'Toque no elemento cujo subnível mais energético é o 4f³.';
-/* as exceções ao diagrama de Pauling (o d e o f): Cr, Cu, Nb, Mo, Ru, Rh, Pd, Ag, Pt, Au; La, Ce, Gd; Ac, Th, Pa, U, Np, Cm, Lr */
-const EXCECOES_10 = [24, 29, 41, 42, 44, 45, 46, 47, 78, 79, 57, 58, 64, 89, 90, 91, 92, 93, 96, 103];
+/* as exceções ao diagrama de Pauling entre os lantanídeos e os actinídeos (v65.8: só elas): La, Ce, Gd; Ac, Th, Pa, U, Np, Cm, Lr */
+const EXCECOES_10 = [57, 58, 64, 89, 90, 91, 92, 93, 96, 103];
 /* da 10.7.5 (aos 2 s) em diante, a tabela aberta de novo, com o f */
 function abreF107(t){
   if (naMontagem()) return false;
