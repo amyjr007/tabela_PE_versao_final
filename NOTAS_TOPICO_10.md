@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v67.2** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
+Onde paramos: **v67.3** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
 
 ## Para retomar (o que está em aberto em 2026-11-16)
 
@@ -263,6 +263,7 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v66.3:** na 10.7.6, aos 16 s o n do "n − 2" vira 7 (azul): "7 − 2"; aos 19 s, o 5 vermelho. A bolinha 7 da série e a fórmula são medidas quando a bolinha aparece (antes, pelo sumário, eram medidas com a mesa ainda chegando e ficavam fora da tela).
 - **v66.5:** no quiz musical (a 10.7.8 e o jogo) e no quiz geral, a tabela volta a ficar sem os lantanídeos e actinídeos, no lugar da 10.6 (`abreF107` dá falso); os elementos que piscam na 10.7.8 não são das séries.
 - **v66.6–v66.7:** na 10.6, aos 9 s (por 2 s), os blocos s e p crescem 7 % e brilham, com o halo de cada bloco (`cresceSP106`; os halos são refeitos na hora, e a 10.5.1 refaz os seus se foram medidos noutra narração); a tela escura da regra tem o título "Elementos Representativos (s ou p)". Na 10.6.1, sem as pulsações na chegada das setas: ficam as dos 11 s (bolinha do 3) e 12,3 s (etiqueta s²) e o revezamento do fim.
+- **v67.3:** durante a 10.6.3.1 o play sai da tela (classe `sem-play10631` no `#stage`, posta no `tick1064` e tirada no `fora`).
 - **v67.2:** na 10.7.6, aos 7,2 s (logo depois que a bolinha 7 da série aparece), as duas bolinhas 7 — a da linha 7 e a da série — pulsam juntas, 2 vezes (`T1076.pulsa7`; `pulsa1063` na da linha, `pulsa1076` na da série).
 - **v67.0:** na 10.7.0, a tela escura da regra do bloco d tem o título "Elementos de transição externa (bloco d)" (`tit107` dentro do `veu1070`), que entra junto com ela.
 - **v66.9 — a 10.6.3 dividida:** o áudio da 10.6.3 foi cortado aos 22,5 s (termina em "E agora, deu para entender?"; a festa do 6s¹ acaba aos 22 s). 1,5 s depois toca sozinha a **10.6.3.1** (12,1 s: "Bora testar pra ver, fazendo um quiz expresso? Eu destaco um elemento…"). Na 10.6.3.1: 1 s a sala apaga e o cabeçalho vira "Quiz 2"; 4,3 s o Al acende; 5 s a mãozinha aparece no meio; 6,2 s ela toca a bolinha do 3 (e digita "Subnível mais energético: 3"); 8 s toca o card p¹ (aplausos e confetes); 9,1 s ela sai e os dois ficam verdes; no fim, 1,5 s depois, o quiz 2. No código, o `tick1064` cuida das duas: na 10.6.3.1 o tempo é `P2_1064` (24) + t, e os tempos da demonstração em `T1064` são `P2_1064 + x`.

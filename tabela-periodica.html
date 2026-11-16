@@ -3382,7 +3382,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .form1071.f1075{transform:translate(-100%,-50%);font-size:40px}
 .mesa .casa.serie.act{transition:scale .45s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease}
 .mesa .casa.serie.act.verm1076{scale:1.25;z-index:26;box-shadow:0 0 0 3px #FF4D5E, 0 0 22px 8px rgba(255,60,80,.75)}
-#stage.sem-play1076 #som, #stage.sem-play1076 #som-dica, #stage.sem-play1076 #vel{display:none!important}
+#stage.sem-play1076 #som, #stage.sem-play1076 #som-dica, #stage.sem-play1076 #vel,
+#stage.sem-play10631 #som, #stage.sem-play10631 #som-dica, #stage.sem-play10631 #vel{display:none!important}
 .q1076 .m10-titulo .falta{opacity:0}
 .mesa[data-slide="10"].pos106{--px:6px;--py:97px;transition:transform .9s cubic-bezier(.3,.85,.3,1)}
 
@@ -5591,7 +5592,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v67.2';
+const VERSAO = 'v67.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23511,7 +23512,7 @@ const CARDS101 = {
     if (sl && sl.classList.contains('final10')) sl.classList.remove('final10');
     if (stage.classList.contains('sem-play-m10')) stage.classList.remove('sem-play-m10');
   },
-  fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051', 'sem-play105');
+  fora(){ if (this.comSaquei) this.saquei(false); stage.classList.remove('sem-play1051', 'sem-play105', 'sem-play10631');
           if (window.QUIZ10 && (QUIZ10.aberto || QUIZ10.escuro)) QUIZ10.fecha();
           if (window.QUIZ10B && (QUIZ10B.aberto || QUIZ10B.escuro)){ QUIZ10B.fecha(); QUIZ10B.jaAbriu = false; }
           this.fechaJogos();
@@ -24649,6 +24650,8 @@ const CARDS101 = {
       this.d1064 = linha(3, '3', 'p', '1', true);
     }
     const Q2 = window.QUIZ10B;
+    /* (v67.3: durante a 10.6.3.1 o play sai da tela — até o quiz 2 abrir) */
+    stage.classList.toggle('sem-play10631', de && p2 && !(Q2 && Q2.aberto));
     /* voltando para antes dos 23 s, a sala clareia de novo; dos 23 s, apaga (uma vez) */
     if (de && t < T1064.quiz && Q2){ Q2.jaAbriu = false; if (Q2.escuro && !Q2.aberto) Q2.fecha(); }
     if (de && t >= T1064.quiz && Q2 && !Q2.escuro && !Q2.jaAbriu) Q2.escurece();
