@@ -5585,7 +5585,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v66.4';
+const VERSAO = 'v66.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22675,6 +22675,8 @@ const EXCECOES_10 = [57, 58, 64, 89, 90, 91, 92, 93, 96, 103];
 function abreF107(t){
   if (naMontagem()) return false;
   const i = ORDEM_10.indexOf(trilhaAtual), i5 = ORDEM_10.indexOf('10.7.5');
+  /* (v66.5: no quiz musical — a 10.7.8 e o jogo — a tabela volta a ficar sem o f, no lugar da 10.6) */
+  if (trilhaAtual === '10.7.8' || (window.MUSICA10 && MUSICA10.aberto) || (window.QUIZFINAL && QUIZFINAL.aberto)) return false;
   return (i === i5 && t >= T1075.abre) || i > i5;
 }
 /* a caixa de um elemento na medida da mesa */
@@ -25666,7 +25668,7 @@ const MUSICA10 = {
     this.ult108 = t;
     if (t < (this.prox108 ?? 8.5)) return;
     this.prox108 = t + .55 + Math.random() * .4;
-    const cs = [...this.mesa().querySelectorAll('.pc')].filter(c => +c.dataset.z <= 118 && c.offsetWidth);
+    const cs = [...this.mesa().querySelectorAll('.pc')].filter(c => +c.dataset.z <= 118 && !ehDaSerie(+c.dataset.z) && c.offsetWidth);
     const c = cs[Math.floor(Math.random() * cs.length)];
     if (!c) return;
     c.classList.remove('pisca108'); void c.offsetWidth; c.classList.add('pisca108');
