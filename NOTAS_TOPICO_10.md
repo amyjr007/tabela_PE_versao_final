@@ -122,9 +122,9 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | o – A regra para os de transição externa (bloco d) | 10.7.0 (sem o escuro da 10.7: pula1070) |
 | p – O exemplo do Fe | 10.7.1 (sem o véu da regra: pula1071) |
 | q – O exemplo do Zr | 10.7.2 |
-| r – A regra para os de transição interna (bloco f) | 10.7.5 |
-| s – O exemplo do Pu | 10.7.6 |
-| t – Quiz 3 | 10.7.3 aos 10,2 s (a demonstração e o quiz 3; v65.5: já escura e limpa, sem se montar — pula1073) |
+| r – Quiz 3 | 10.7.3 aos 10,2 s (a demonstração e o quiz 3; v65.5: já escura e limpa, sem se montar — pula1073; v69.4: logo depois do Zr) |
+| s – A regra para os de transição interna (bloco f) | 10.7.5 |
+| t – O exemplo do Pu | 10.7.6 |
 | u – Quiz musical | o jogo musical direto (a mesa como no fim da 10.7.3, a sala escura) |
 | **11. Quiz geral** (capítulo próprio, v67.5) | o quiz final direto (20 questões, duas de cada tópico; a sala escura; v67.7: a mesa do começo do tópico 10 — trilha "10" parada no 0) |
 

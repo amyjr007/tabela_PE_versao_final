@@ -5703,7 +5703,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v69.3';
+const VERSAO = 'v69.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -30262,6 +30262,11 @@ const NAV_TOPICOS = [
   { titulo:'O exemplo do Zr', sub:'o começo da 10.7.2', slide:10,
     salto:['10.7.2', 0],
     entra(v, g){ saltaPara10('10.7.2', g); } },
+  /* o quiz 3 (só o bloco d): a "10.7.3" aos 10,2 s — a mesa fica limpa aos 12 s, a demonstração com o Fe, e o quiz */
+  /* (v69.4: logo depois do exemplo do Zr, na ordem da aula — antes vinha depois do Pu) */
+  { titulo:'Quiz 3', sub:'a 10.7.3 aos 10,2 s: a demonstração e o quiz 3 (bloco d)', slide:10, quiz:'q10c',
+    salto:['10.7.3', 10.2],
+    entra(v, g){ CARDS101.pula1073 = true; saltaPara10('10.7.3', g, 10.2); } },
   /* o começo da "10.7.5": a regra do bloco f (n − 2) */
   { titulo:'A regra para os de transição interna (bloco f)', sub:'o começo da 10.7.5', slide:10,
     salto:['10.7.5', 0],
@@ -30270,10 +30275,6 @@ const NAV_TOPICOS = [
   { titulo:'O exemplo do Pu', sub:'o começo da 10.7.6', slide:10,
     salto:['10.7.6', 0],
     entra(v, g){ saltaPara10('10.7.6', g); } },
-  /* o quiz 3 (só o bloco d): a "10.7.3" aos 10,2 s — a mesa fica limpa aos 12 s, a demonstração com o Fe, e o quiz */
-  { titulo:'Quiz 3', sub:'a 10.7.3 aos 10,2 s: a demonstração e o quiz 3 (bloco d)', slide:10, quiz:'q10c',
-    salto:['10.7.3', 10.2],
-    entra(v, g){ CARDS101.pula1073 = true; saltaPara10('10.7.3', g, 10.2); } },
   /* o quiz musical direto: a mesa como no fim da 10.7.3 (limpa, sem a demonstração), a sala escura e o jogo */
   { titulo:'Quiz musical', sub:'o quiz musical direto: as notas pelos subníveis e a música', slide:10, quiz:'q10m',
     salto:['10.7.3', 24.5, true],
