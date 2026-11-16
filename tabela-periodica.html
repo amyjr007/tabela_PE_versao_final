@@ -4690,7 +4690,7 @@ html.celular .mesa.cel-compacta:not(.com-massa) .pc:not(.eleito) .face b{padding
    ============================================================ */
 #som{
   position:absolute;right:26px;bottom:22px;z-index:12;
-  /* 70 px: 20 % maior do que os 58 de antes, a pedido do professor */
+  /* 70 px: 20 % maior do que os 58 de antes, a pedido do professor (no celular, 77 px: ver v69.9) */
   width:70px;height:70px;padding:0;cursor:pointer;
   display:grid;place-items:center;
   background:rgba(255,255,255,.92);border:1px solid var(--ouro-dim);
@@ -4734,6 +4734,15 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
   width:26px;height:26px}
 #som .icone svg{display:block;width:26px;height:26px}
 #som .icone #ic-jogo{width:31px;height:31px}
+/* (v69.9) SÓ NO CELULAR: o play 10 % maior (77 px), com o ícone; a legenda anda junto
+   (7 px para a esquerda, 3,5 px para cima); e o solto da capa na mesma medida */
+html.celular #som{width:77px;height:77px}
+html.celular #som .icone, html.celular #som .icone svg{width:28.6px;height:28.6px}
+html.celular #som .icone #ic-jogo{width:34px;height:34px}
+html.celular #som-dica{right:115px;bottom:47.5px}
+html.celular #stage .solto#som:not(.iniciar){width:77px!important;height:77px!important}
+html.celular #stage .solto#som.iniciar{transform:translate(calc(-100% + 38.5px),-50%) scale(var(--esc,1))}
+html.celular #stage .solto#som.iniciar:hover{transform:translate(calc(-100% + 38.5px),-50%) scale(var(--esc,1)) translateY(-3px)}
 #som .icone svg[hidden]{display:none}
 /* slide sem narração: o botão sai de cena inteiro */
 #som[hidden],#som-dica[hidden]{display:none}
@@ -4905,6 +4914,9 @@ html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
   opacity:0;transition:opacity .45s ease, transform .5s cubic-bezier(.2,1.3,.4,1);
 }
 .quiz-cartao.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+/* (v69.9) SÓ NO CELULAR: o cartão da nota 15 % maior (abre a 1,15; entra de 0,99 — o 0,86 vezes 1,15) */
+html.celular .quiz-cartao{transform:translate(-50%,-50%) scale(.99)}
+html.celular .quiz-cartao.on{transform:translate(-50%,-50%) scale(1.15)}
 /* as cores da conta, as do jogo da memória, onde o cartão nasceu: fora
    dele (no quiz do slide 3) o cartão traz as suas */
 .quiz-cartao{--neon:#FF2E4C;--natural:#1F9D55}
@@ -5735,7 +5747,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v69.8';
+const VERSAO = 'v69.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
