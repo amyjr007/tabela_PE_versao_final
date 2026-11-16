@@ -285,8 +285,9 @@ var LEGENDAS = {
     [2.9,8.9,"Veja: ele é um actinídeo, ou seja, ele está no sétimo período da tabela,"],
     [8.9,11.9,"na sexta coluna do bloco f."],
     [11.9,20.8,"Aplicando o ajuste n − 2 para esse bloco, então, a camada mais energética é a quinta camada."],
-    [20.8,27.3,"E o subnível mais energético dele, então, é o 5f."],
-    [27.6,29.8,"Sacou? Bora ver se você entendeu."],
+    [20.8,25.44,"O subnível mais energético dele, então, é o 5f⁵."],
+    [25.75,27.38,"5f⁵, sacou?"],
+    [27.98,29.11,"Bora ver se você entendeu."],
     [29.8,34.6,"Toca aí no elemento cujo subnível de maior energia é o 4f³."],
     [34.6,36.7,"Pensa bem antes de responder."]
   ],
