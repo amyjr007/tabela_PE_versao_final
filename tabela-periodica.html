@@ -3547,6 +3547,11 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 /* (v69.7) com as opções da música na tela, a tabela de fundo escurece (em fade), e as opções ficam em evidência */
 .slide.musica10 .mesa{transition:filter .5s ease}
 .slide.musica10.m10-pergunta .mesa{filter:brightness(.3) saturate(.6)}
+/* (v70.1) a troca dos subníveis entre as músicas: os velhos sobem um fio e somem; os novos descem de cima */
+.m10-nota.m10-sai{animation:m10Sai .38s ease-in forwards}
+@keyframes m10Sai{to{transform:translateY(-14px);opacity:0}}
+.m10-nota.m10-entra{animation:m10Entra .55s cubic-bezier(.2,.9,.3,1.15) backwards}
+@keyframes m10Entra{from{transform:translateY(-22px);opacity:0}}
 /* (v69.5) a caixinha de música, à direita dos subníveis */
 .m10-caixinha{position:relative;flex:none;width:62px;align-self:stretch;margin-left:6px;padding:4px;border-radius:12px;
   border:2px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#8D86B0;cursor:default;
@@ -5747,7 +5752,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v70.0';
+const VERSAO = 'v70.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25779,7 +25784,8 @@ const MUSICAS_10 = [
     elementos:{ 'dó':11, 'sol':26, 'lá':53 },
     outras:['Ciranda, cirandinha', 'Atirei o pau no gato'] },
   /* "Atirei o pau no gato": a-ti-rei o pau no ga-to — sol fá mi ré mi fá sol (sol) */
-  { nome:'Atirei o pau no gato', notas:['sol', 'fá', 'mi', 'ré', 'mi', 'fá', 'sol', 'sol'], tempos:[1, 1, 1, 1, 1, 1, 1, 2],
+  /* (v70.1: o "A" mais longo — o intervalo entre a 1ª e a 2ª nota é maior) */
+  { nome:'Atirei o pau no gato', notas:['sol', 'fá', 'mi', 'ré', 'mi', 'fá', 'sol', 'sol'], tempos:[2, 1, 1, 1, 1, 1, 1, 2],
     /* (o sol no Ca — 4s² —, o fá no P — 3p³ —, o mi no Zn — 3d¹⁰ —, o ré no Br — 4p⁵) */
     elementos:{ 'sol':20, 'fá':15, 'mi':30, 'ré':35 },
     outras:['Noite feliz', 'Ciranda, cirandinha'] },
@@ -25788,11 +25794,11 @@ const MUSICAS_10 = [
     /* (o sol no K — 4s¹ —, o lá no Mn — 3d⁵ —, o mi no Cl — 3p⁵) */
     elementos:{ 'sol':19, 'lá':25, 'mi':17 },
     outras:['Atirei o pau no gato', 'Brilha, brilha, estrelinha'] },
-  /* (v70.0) "A canoa virou": a ca-no-a vi-rou, pois dei- — sol sol sol sol fá mi, sol sol
-     (a primeira frase das cifras melódicas, em dó; o "pois dei-" é a anacruse da segunda) */
-  { nome:'A canoa virou', notas:['sol', 'sol', 'sol', 'sol', 'fá', 'mi', 'sol', 'sol'], tempos:[1, 1, 1, 1, 1, 2, 1, 1],
-    /* (o sol no Ga — 4p¹ —, o fá no Mg — 3s² —, o mi no Ni — 3d⁸) */
-    elementos:{ 'sol':31, 'fá':12, 'mi':28 },
+  /* (v70.1) "A canoa virou": a ca-no-a vi-rou — sol sol lá sol fá mi (as notas que o professor
+     trouxe: Sol 3, Sol 3, Lá 3, Sol 3, Fá 3, Mi 3) */
+  { nome:'A canoa virou', notas:['sol', 'sol', 'lá', 'sol', 'fá', 'mi'], tempos:[1, 1, 1, 1, 1, 2],
+    /* (o sol no Ga — 4p¹ —, o lá no Co — 3d⁷ —, o fá no Mg — 3s² —, o mi no Ni — 3d⁸) */
+    elementos:{ 'sol':31, 'lá':27, 'fá':12, 'mi':28 },
     outras:['Ciranda, cirandinha', 'Noite feliz'] }
 ];
 /* (v69.5) a caixinha de música: a caixa com a tampa aberta, a manivela do lado e uma nota na frente */
@@ -25852,7 +25858,6 @@ const MUSICA10 = {
     this.k = 0; this.travado = false; this.tocando = false;
     this.sl().classList.remove('m10-pergunta');
     this.limpaElementos();
-    this.sl().querySelectorAll('.musica10-caixa').forEach(e => e.remove());
     const M = this.m, mesa = this.mesa();
     this.alvos = M.notas.map(n => mesa.querySelector('.pc[data-z="' + M.elementos[n] + '"]'));
     this.total += this.alvos.length;
@@ -25860,14 +25865,32 @@ const MUSICA10 = {
     sl.classList.add('musica10');
     /* (o cabeçalho vira "Quiz ♪" — já com a cabeça do quiz 3, só o nome muda) */
     const tt = sl.querySelector('.tira .title');
-    if (sl.classList.contains('quiz-cabeca') && tt){ tt.dataset.parte = 'Quiz ♪'; transformaLetras(tt, 'Quiz ♪'); }
+    /* (v70.1: já "Quiz ♪" — da música 2 em diante —, o título fica quieto) */
+    if (sl.classList.contains('quiz-cabeca') && tt){ if (tt.dataset.parte !== 'Quiz ♪'){ tt.dataset.parte = 'Quiz ♪'; transformaLetras(tt, 'Quiz ♪'); } }
     else cabecaDoQuiz(sl, true, 'Quiz ♪', 'quiz-cabeca');
+    /* (v70.1) DE UMA MÚSICA PARA A OUTRA, a caixa fica: os subníveis da anterior sobem um fio e
+       somem, um depois do outro, e os novos chegam de cima e descem para o lugar */
+    const velha = this.cx && this.cx.isConnected ? this.cx : null;
+    if (velha){
+      this.travado = true;
+      const msg = velha.querySelector('.m10-msg'); if (msg){ msg.textContent = ''; msg.className = 'm10-msg'; }
+      const op = velha.querySelector('.m10-opcoes'); if (op) op.innerHTML = '';
+      const cxa = velha.querySelector('.m10-caixinha'); if (cxa){ cxa.disabled = true; cxa.classList.remove('toca'); }
+      velha.querySelectorAll('.m10-nota').forEach((e, k) => { e.style.animationDelay = (k * 35) + 'ms'; e.classList.add('m10-sai'); });
+      setTimeout(() => {
+        if (g !== this.g) return;
+        this.poeNotas(velha, i, true);
+        this.travado = false;
+        this.marca();
+      }, 420 + velha.querySelectorAll('.m10-nota').length * 35);
+      return;
+    }
+    this.sl().querySelectorAll('.musica10-caixa').forEach(e => e.remove());
     const cx = this.cx = document.createElement('div');
     cx.className = 'musica10-caixa';
-    cx.innerHTML = '<div class="m10-marca">Música ' + (i + 1) + ' de ' + MUSICAS_10.length + '</div>' +
+    cx.innerHTML = '<div class="m10-marca"></div>' +
       '<div class="m10-titulo">Toque os elementos na ordem e descubra a música</div>' +
-      '<div class="m10-notas">' + this.alvos.map((c, k) =>
-        '<div class="m10-nota" data-k="' + k + '"><span class="m10-sub">' + subnivelDe10c(c) + '</span><i>♪</i></div>').join('') +
+      '<div class="m10-notas">' +
         /* (v69.5) a caixinha de música, à direita dos subníveis: escura durante o quiz; acesa
            enquanto a música toca (soltando colcheias); depois, tocada, toca a música de novo */
         '<button type="button" class="m10-caixinha" disabled aria-label="Ouvir a música de novo" title="Ouvir a música de novo">' +
@@ -25879,8 +25902,20 @@ const MUSICA10 = {
       if (!this.aberto || this.k < this.alvos.length || this.tocando) return;
       this.melodia(false);
     });
+    this.poeNotas(cx, i, false);
     cx.getBoundingClientRect(); cx.classList.add('on');
     this.marca();
+  },
+  /* os subníveis da música i, antes da caixinha (entra: chegando de cima, um depois do outro) */
+  poeNotas(cx, i, entra){
+    cx.querySelector('.m10-marca').textContent = 'Música ' + (i + 1) + ' de ' + MUSICAS_10.length;
+    cx.querySelectorAll('.m10-nota').forEach(e => e.remove());
+    const cxa = cx.querySelector('.m10-caixinha');
+    cxa.insertAdjacentHTML('beforebegin', this.alvos.map((c, k) =>
+      '<div class="m10-nota' + (entra ? ' m10-entra' : '') + '" data-k="' + k + '"' +
+        (entra ? ' style="animation-delay:' + (k * 45) + 'ms"' : '') + '><span class="m10-sub">' + subnivelDe10c(c) + '</span><i>♪</i></div>').join(''));
+    if (entra) cx.querySelectorAll('.m10-nota.m10-entra').forEach(e => e.addEventListener('animationend', () => {
+      e.classList.remove('m10-entra'); e.style.removeProperty('animation-delay'); }, { once:true }));
   },
   /* a nota da vez acesa; as já tocadas, verdes */
   /* (v65.9: durante a "10.7.8", dos 8,5 aos 18 s, elementos ao acaso piscam, cada um com uma nota bem baixinha —
@@ -28418,6 +28453,10 @@ function cartaoDoResultado(nota, contaHTML, onde, refazer, seguir, fala){
    isso pode andar ao ritmo dos quadros. */
 function confete(){
   /* no slide em que se está (o 1 e o 3 têm a folha deles) */
+  /* (v70.1: o slide sem folha ganha uma na hora — antes os confetes caíam na do slide 1, fora de
+     vista: no quiz musical e no quiz geral, abertos pelo sumário, não apareciam) */
+  if (atual >= 1 && slides[atual] && !slides[atual].querySelector('.confete'))
+    slides[atual].insertAdjacentHTML('beforeend', '<canvas class="confete" width="1280" height="720" aria-hidden="true"></canvas>');
   const cv = (slides[atual] && slides[atual].querySelector('.confete')) || slides[1].querySelector('.confete');
   if (!cv) return;
   const g = cv.getContext('2d');
