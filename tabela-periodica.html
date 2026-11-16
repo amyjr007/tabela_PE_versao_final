@@ -5636,7 +5636,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v67.8';
+const VERSAO = 'v67.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -26115,30 +26115,14 @@ const QUIZFINAL = {
   responde(b){
     if (!this.aberto || this.respondida) return;
     this.respondida = true;
+    /* (v67.9: no Confirmar, só o som do acerto ou do erro — a caixa não mostra a correção
+       e a próxima questão vem na hora; os acertos contam para a nota do fim) */
     const Q = QUESTOES_FINAL[this.i], certa = b.textContent === Q.ops[0];
-    this.cx.querySelectorAll('.qf-op').forEach(x => { x.disabled = true; x.classList.remove('escolhida'); if (x.textContent === Q.ops[0]) x.classList.add('certa'); });
-    const m = this.cx.querySelector('.qf-msg');
-    if (certa){
-      this.acertos++;
-      tocaEfeito('right');
-      m.className = 'qf-msg ok'; m.textContent = 'Isso! ' + Q.exp;
-    } else {
-      b.classList.add('errada');
-      tocaEfeito('error');
-      m.className = 'qf-msg erro'; m.textContent = 'A certa está em verde. ' + Q.exp;
-    }
-    const ult = this.i === QUESTOES_FINAL.length - 1;
-    const p = this.cx.querySelector('.qf-pe');
-    /* (v67.8: o "Próxima" nasce no lugar do Confirmar — chega apagado e só aceita o toque
-       0,9 s depois: um duplo clique, ou o toque contado duas vezes, pulava a correção) */
-    p.innerHTML = '<button type="button" class="qf-prox" disabled>' + (ult ? 'Ver minha nota →' : 'Próxima →') + '</button>';
-    const nb = p.querySelector('.qf-prox'), t0 = performance.now();
-    setTimeout(() => { nb.disabled = false; }, 900);
-    nb.addEventListener('click', () => {
-      if (!this.aberto || nb.disabled || performance.now() - t0 < 900) return;
-      if (ult) { this.resultado(); return; }
-      this.proxima();
-    });
+    this.cx.querySelectorAll('.qf-op, .qf-confirma').forEach(x => { x.disabled = true; });
+    if (certa) this.acertos++;
+    tocaEfeito(certa ? 'right' : 'error');
+    if (this.i === QUESTOES_FINAL.length - 1) this.resultado();
+    else this.proxima();
   },
   resultado(){
     const n = QUESTOES_FINAL.length, nota = Math.round(this.acertos / n * 100) / 10;
