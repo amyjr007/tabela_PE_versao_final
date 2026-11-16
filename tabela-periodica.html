@@ -3683,6 +3683,10 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .slide.final10 .mesa{filter:brightness(.55);transition:filter .5s ease}
 /* (v68.2: tocada a caixa do quiz geral, ela some e a tabela acende; um toque na tela a traz de volta) */
 .slide.final10.qf-clara .mesa{filter:none}
+/* (v68.6: com a tabela acesa, os elementos citados na questão crescem e ganham um halo dourado que pulsa) */
+.slide.qf-clara .mesa .pc.qf-cita{z-index:20;scale:1.16}
+.slide.qf-clara .mesa .pc.qf-cita .face{box-shadow:0 0 0 3px #FFD43B, 0 0 22px 8px rgba(255,212,59,.8);animation:qfCita 1.6s ease-in-out infinite}
+@keyframes qfCita{50%{box-shadow:0 0 0 4px #FFE58A, 0 0 34px 13px rgba(255,212,59,.95)}}
 .qf-caixa.escondida{opacity:0;transform:translate(-50%,-50%) scale(.92);pointer-events:none}
 /* (o elemento achado: verde, com o número da ordem da nota num selo no canto) */
 .slide.musica10 .mesa .pc.m10-ok .face{background:linear-gradient(145deg,#4FD98A,#1E9E55)!important;box-shadow:0 0 0 2px #7CF5A8, 0 0 14px 4px rgba(46,214,113,.6)}
@@ -5696,7 +5700,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v68.5';
+const VERSAO = 'v68.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -26176,6 +26180,20 @@ const QF_VARIANTES = [
 ];
 /* as versões de cada questão (A, B, C), com o tópico e o nível da questão A */
 const QF_SLOTS = QUESTOES_A.map((A, k) => [A, ...(QF_VARIANTES[k] || []).map(v => Object.assign({ t:A.t, nivel:A.nivel }, v))]);
+/* (v68.6) OS ELEMENTOS CITADOS, que ficam em destaque na tabela quando o aluno esconde a caixa
+   (a tabela acesa): por questão (o número da questão), as listas das versões A, B e C (Z) */
+const QF_CITADOS = {
+  4:  [[52, 53], [18, 19], [27, 28]],                          /* Te e I · Ar e K · Co e Ni */
+  9:  [[9, 17, 53], [11, 19], [2, 10]],                         /* F, Cl, I · Na, K · He, Ne */
+  10: [[11, 19], [17, 35], [12, 20]],                           /* Na e K · Cl e Br · Mg e Ca */
+  12: [[20, 26, 29, 30], [26, 11, 17, 8], [8, 28, 47, 25]],     /* as alternativas */
+  16: [[92], [8], [118]],                                       /* U · O · Og */
+  17: [[16], [13], [17]],                                       /* S · Al · Cl */
+  18: [[12], [19], [8]],                                        /* Mg · K · O */
+  19: [[20], [15], [19]],                                       /* Ca · P · K */
+  20: [[28, 30, 26, 21], [25, 23, 26, 27], [40]]                /* as alternativas · o Zr */
+};
+Object.entries(QF_CITADOS).forEach(([n, vs]) => vs.forEach((el, v) => { const Q = QF_SLOTS[n - 1] && QF_SLOTS[n - 1][v]; if (Q) Q.el = el; }));
 /* as 20 questões da rodada (rodada 0 = A, 1 = B, 2 = C, 3 = A…) */
 const questoesDaRodada = r => QF_SLOTS.map(s => s[((r % s.length) + s.length) % s.length]);
 let QUESTOES_FINAL = QUESTOES_A;
@@ -26312,6 +26330,14 @@ const QUIZFINAL = {
     if (this.demo){ this.demo = false; if (this.aberto && this.cx) this.mostra(); }
     if (this.cx) this.cx.classList.remove('trava', 'escura');
   },
+  /* (v68.6) os elementos citados na questão: marcados na mesa a cada questão, mas o destaque
+     só aparece com a caixa escondida e a tabela acesa (o CSS de .qf-clara .qf-cita) */
+  marcaCitados(el){
+    const m = this.sl().querySelector('.mesa');
+    if (!m) return;
+    m.querySelectorAll('.pc.qf-cita').forEach(c => c.classList.remove('qf-cita'));
+    (el || []).forEach(z => { const c = m.querySelector('.pc[data-z="' + z + '"]'); if (c) c.classList.add('qf-cita'); });
+  },
   /* (v68.2) a caixa some e a tabela acende; um toque em qualquer lugar do slide a traz de volta */
   esconde(pelaMao){
     if (!this.cx || this.oculta || (this.trava && !pelaMao)) return;
@@ -26439,6 +26465,7 @@ const QUIZFINAL = {
   mostra(anda){
     const d = this.demo, Q = d ? QF_DEMO : QUESTOES_FINAL[this.i], ops = embaralha(Q.ops.slice()), n = QUESTOES_FINAL.length;
     this.respondida = false; this.escolhida = null;
+    this.marcaCitados(d ? null : Q.el);
     const pc = k => (Math.max(0, k) / n * 100).toFixed(1) + '%';
     this.cx.innerHTML =
       (d ? '<div class="qf-topo"><span class="qf-marca">Questão 0</span><span class="qf-topico">Só para mostrar como funciona</span>' +
@@ -26472,8 +26499,9 @@ const QUIZFINAL = {
     if (certa) this.acertos++;
     /* (v68.4: cada resposta fica guardada — o relatório do fim mostra todas) */
     this.respostas[this.i] = b.textContent;
-    /* (v68.3: o mesmo som para qualquer resposta — sem o do erro: o som não diz se acertou) */
-    tocaEfeito('right');
+    /* (v68.3: o mesmo som para qualquer resposta — sem o do erro: o som não diz se acertou;
+       v68.6: 40 % mais baixo) */
+    tocaEfeito('right', 0.6);
     if (this.i === QUESTOES_FINAL.length - 1) this.resultado();
     else this.proxima();
   },
@@ -26583,6 +26611,7 @@ const QUIZFINAL = {
     const sl = this.sl();
     if (!sl) return;
     this.oculta = false; sl.classList.remove('qf-clara');
+    this.marcaCitados(null);
     sl.querySelectorAll('.qf-caixa, .qf-rastro, .qf-relatorio, .quiz-cartao').forEach(e => e.remove());
     this.cx = null;
     /* (o número do cabeçalho volta a ser o 10 — o abre põe o 11 de novo) */
@@ -27138,11 +27167,13 @@ addEventListener('pointerdown', ev => {
   const alvo = ev.target.closest && ev.target.closest('button, .pc, .mem-carta, .quiz-op, .eixo, .rd-v, [role="button"]');
   if (alvo) vibra([6]);
 }, true);
-function tocaEfeito(nome){
+/* (volume: de 0 a 1, opcional — sem ele, o volume cheio) */
+function tocaEfeito(nome, volume){
   if (VIBRA[nome]) vibra(VIBRA[nome]);
   return new Promise(pronto => {
     /* um nome é um efeito da pasta vfx; com barra, é o caminho do arquivo */
     const a = new Audio(encodeURI(nome.includes('/') ? nome : 'Audios/vfx/' + nome + '.mp3'));
+    if (volume !== undefined) a.volume = Math.max(0, Math.min(1, volume));
     if (nome.includes('/')) Velocidade.aplicar(a);   /* as falas, e não os efeitos */
     EFEITOS.add(a);
     let feito = false;
