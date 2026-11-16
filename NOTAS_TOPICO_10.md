@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v67.4** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
+Onde paramos: **v67.5** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
 
 ## Para retomar (o que está em aberto em 2026-11-16)
 
@@ -126,7 +126,7 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | s – O exemplo do Pu | 10.7.6 |
 | t – Quiz 3 | 10.7.3 aos 10,2 s (a demonstração e o quiz 3; v65.5: já escura e limpa, sem se montar — pula1073) |
 | u – Quiz musical | o jogo musical direto (a mesa como no fim da 10.7.3, a sala escura) |
-| v – Quiz geral | o quiz final direto (20 questões, duas de cada tópico; a sala escura) |
+| **11. Quiz geral** (capítulo próprio, v67.5) | o quiz final direto (20 questões, duas de cada tópico; a sala escura) |
 
 **Todos os itens do sumário do tópico 10 saltam direto para a tela do começo** (v60.5), sem a cena se montar à vista. Cada item tem `salto:[trilha, segundo, quiz?]`; o `irPara` chama `preparaSalto10` (e um `efeitosDoTempo()` na hora) logo depois do `go()` — ou, no mesmo slide, logo depois do `recomecaSlide()`, para a cena da 10 não aparecer num quadro — (a trilha já é posta parada naquele segundo, e a classe `salto1071` no `#stage` desliga as transições), e o `entra` chama `saltaPara10`, que toca a narração (ou abre o quiz) quando a mesa chega; as transições voltam 0,3 s depois (e, de todo jeito, em 4 s). Item novo no sumário do tópico 10: usar `salto:[...]` + `entra(v, g){ saltaPara10(...) }`.
 
@@ -263,6 +263,7 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v66.3:** na 10.7.6, aos 16 s o n do "n − 2" vira 7 (azul): "7 − 2"; aos 19 s, o 5 vermelho. A bolinha 7 da série e a fórmula são medidas quando a bolinha aparece (antes, pelo sumário, eram medidas com a mesa ainda chegando e ficavam fora da tela).
 - **v66.5:** no quiz musical (a 10.7.8 e o jogo) e no quiz geral, a tabela volta a ficar sem os lantanídeos e actinídeos, no lugar da 10.6 (`abreF107` dá falso); os elementos que piscam na 10.7.8 não são das séries.
 - **v66.6–v66.7:** na 10.6, aos 9 s (por 2 s), os blocos s e p crescem 7 % e brilham, com o halo de cada bloco (`cresceSP106`; os halos são refeitos na hora, e a 10.5.1 refaz os seus se foram medidos noutra narração); a tela escura da regra tem o título "Elementos Representativos (s ou p)". Na 10.6.1, sem as pulsações na chegada das setas: ficam as dos 11 s (bolinha do 3) e 12,3 s (etiqueta s²) e o revezamento do fim.
+- **v67.5 — o tópico 11:** o quiz geral deixou de ser o "v" do tópico 10 e virou o **tópico 11** (`TOPICO_11`), só com ele. Não é um slide novo: mora no slide 11, sobre a mesa do 10. No sumário é o capítulo "11. Quiz geral" (o item do NAV_TOPICOS tem `cap11:true` e fica fora da lista do 10); no carrossel é o cartão depois do último slide (`CAR.N11`, "11 / 11"; a foto é `Imagens/slides/pc-11.webp` e `cel-11.webp` — `node ferramentas/gera-miniaturas.mjs 11`); com o quiz aberto o cabeçalho mostra 11 (`no11()`). Do cartão 11 para o 10 no carrossel, o tópico 10 recomeça. A régua de quadradinhos do alto continua com os 10 slides.
 - **v67.4:** na 10.7.1 (o Fe), sem as pulsações na chegada das setas (6,9 s e 8,4 s): a bolinha do 4 pulsa aos 24 s e aos 28 s, a etiqueta d⁶ aos 25,9 s e aos 29 s (`T1071.piscaL`, `piscaC`). O 3 vermelho continua pulsando aos 24,9 s.
 - **v67.3:** durante a 10.6.3.1 o play sai da tela (classe `sem-play10631` no `#stage`, posta no `tick1064` e tirada no `fora`).
 - **v67.2:** na 10.7.6, aos 7,2 s (logo depois que a bolinha 7 da série aparece), as duas bolinhas 7 — a da linha 7 e a da série — pulsam juntas, 2 vezes (`T1076.pulsa7`; `pulsa1063` na da linha, `pulsa1076` na da série).

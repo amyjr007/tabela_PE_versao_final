@@ -7,6 +7,9 @@
 
    Refazer sempre que o desenho de um slide mudar:
      node ferramentas/gera-miniaturas.mjs
+   Só alguns (pelos números do carrossel):
+     node ferramentas/gera-miniaturas.mjs 10 11
+   O 11 é o tópico 11 (o quiz geral, aberto pelo sumário no slide 11).
    Precisa do Node 22 ou mais novo e do Google Chrome instalado. */
 import http from 'node:http';
 import fs from 'node:fs';
@@ -71,11 +74,14 @@ for (const [nome, metr] of Object.entries(JOGOS)){
   await cmd('Page.navigate', { url: 'http://127.0.0.1:' + PORTA + '/?miniaturas' });
   await espera(3000);
   const total = await js('SLIDES.length');
-  for (let i = 1; i < total; i++){
+  /* (o último, total, é o cartão do tópico 11: o quiz geral) */
+  const pedidos = process.argv.slice(2).map(Number).filter(n => n >= 1 && n <= total);
+  for (let i = 1; i <= total; i++){
+    if (pedidos.length && !pedidos.includes(i)) continue;
     /* a tabela viva não pode girar ninguém durante a foto */
     await js('VIDA.desliga(); VIDA.liga = () => {}; 1');
-    await js('go(' + i + ')');
-    await espera(3200);
+    if (i < total){ await js('go(' + i + ')'); await espera(3200); }
+    else { await js('irPara(indiceDo11()); 1'); await espera(5500); }
     /* só o slide: os botões do palco não entram na foto */
     await js(`['som','som-dica','vel','versao','ver-slides','progress','puxador','nav-alca','aviso','coord']
       .forEach(id => { const e = document.getElementById(id); if (e) e.style.visibility = 'hidden'; });

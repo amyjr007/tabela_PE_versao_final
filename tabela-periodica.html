@@ -5586,13 +5586,19 @@ const SLIDES = [
   { title:'A tabela e o diagrama de Pauling',
     subtitle:'' }
 ];
+/* O TÓPICO 11 (v67.5): só o quiz geral. Não é um slide à parte — ele mora
+   no slide 11, sobre a mesa do tópico 10 (QUIZFINAL) —, mas no sumário e no
+   carrossel é um capítulo com número próprio, o 11, e no cabeçalho, com o
+   quiz aberto, o número é 11. No carrossel ele é o cartão depois do último
+   slide (CAR.N11); a foto dele é a Imagens/slides/pc-11 (e cel-11). */
+const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, duas de cada tópico' };
 
 /* A VERSÃO DO APP — sobe a cada mudança publicada. É daqui, e só daqui,
    que ela sai: o selo no canto de baixo à esquerda mostra-a, e o service
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v67.4';
+const VERSAO = 'v67.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25954,6 +25960,8 @@ const QUIZFINAL = {
     const tt = sl.querySelector('.tira .title');
     if (sl.classList.contains('quiz-cabeca') && tt){ tt.dataset.parte = 'Quiz final'; transformaLetras(tt, 'Quiz final'); }
     else cabecaDoQuiz(sl, true, 'Quiz final', 'quiz-cabeca');
+    /* (v67.5: é o tópico 11 — o número do cabeçalho vira 11) */
+    const nn = sl.querySelector('.tira .num'); if (nn) nn.textContent = TOPICO_11.n;
     const cx = this.cx = document.createElement('div');
     cx.className = 'qf-caixa';
     sl.appendChild(cx);
@@ -26023,6 +26031,8 @@ const QUIZFINAL = {
     if (!sl) return;
     sl.querySelectorAll('.qf-caixa, .quiz-cartao').forEach(e => e.remove());
     this.cx = null;
+    /* (o número do cabeçalho volta a ser o 10 — o abre põe o 11 de novo) */
+    const nn = sl.querySelector('.tira .num'); if (nn) nn.textContent = TOPICO_11.slide;
     if (reabre) return;
     stage.classList.remove('sem-play-m10');
     sl.classList.remove('final10');
@@ -28052,12 +28062,14 @@ const CAR = {
     return 'Imagens/slides/' + (cel ? 'cel' : 'pc') + '-' + String(i).padStart(2, '0') + '.webp?v=' + VERSAO;
   },
   copia(i, cartao){
-    if (i === 0 || i === atual) return this.copiaViva(i, cartao);
+    /* (o cartão 11 é vivo só com o quiz geral aberto — aí a cópia viva é a do slide 11; e o 10, nesse caso, vai em foto) */
+    const e11 = i === this.N11;
+    if (e11 ? no11() : (i === 0 || (i === atual && !no11()))) return this.copiaViva(e11 ? TOPICO_11.slide : i, cartao);
     cartao.classList.remove('capa');
     cartao.innerHTML = '<div class="car-palco"><img class="car-foto' + (ehCelular() ? ' cel' : '') +
                        '" alt="" decoding="async" draggable="false"></div>';
     const img = cartao.querySelector('img');
-    img.onerror = () => this.copiaViva(i, cartao);   /* sem a foto, a cópia viva */
+    img.onerror = () => this.copiaViva(e11 ? TOPICO_11.slide : i, cartao);   /* sem a foto, a cópia viva */
     img.src = this.foto(i);
   },
   /* a cópia de um slide como ele está agora, aplainada: cada cubo só
@@ -28099,9 +28111,12 @@ const CAR = {
     palco.appendChild(deckC);
   },
 
+  /* (v67.5: depois do último slide, o cartão do tópico 11 — o quiz geral, que mora no slide 11) */
+  get N11(){ return SLIDES.length; },
+  get ULT(){ return SLIDES.length; },
   monta(){
     this.trilho.innerHTML = '';
-    this.itens = SLIDES.map((sl, i) => {
+    this.itens = [...SLIDES, { title:TOPICO_11.title }].map((sl, i) => {
       const it = document.createElement('div');
       it.className = 'car-item';
       /* o número do slide ao lado do título, "01. A Tabela Periódica" (a
@@ -28150,8 +28165,8 @@ const CAR = {
       it.style.visibility = longe ? 'hidden' : '';
     });
     this.el.querySelector('.car-seta.ant').disabled  = this.sel === 0;
-    this.el.querySelector('.car-seta.prox').disabled = this.sel === SLIDES.length - 1;
-    this.el.querySelector('.car-conta').textContent = this.sel === 0 ? 'Capa' : this.sel + ' / ' + (SLIDES.length - 1);
+    this.el.querySelector('.car-seta.prox').disabled = this.sel === this.ULT;
+    this.el.querySelector('.car-conta').textContent = this.sel === 0 ? 'Capa' : this.sel + ' / ' + this.ULT;
   },
 
   abre(){
@@ -28160,7 +28175,7 @@ const CAR = {
     if (!DEMO.guia){ som.pause(); mostraPausa(false); }
     VIDA.desliga();
     this.aberto = true;
-    this.sel = atual;
+    this.sel = no11() ? this.N11 : atual;
     this.monta();
     /* o primeiro quadro é o palco tal como estava: o cartão do slide em
        escala 1, por cima do original; só depois a fila se afasta */
@@ -28180,7 +28195,7 @@ const CAR = {
   },
   vai(k){
     if (!this.aberto || this.ocupado) return;
-    this.sel = Math.max(0, Math.min(SLIDES.length - 1, k));
+    this.sel = Math.max(0, Math.min(this.ULT, k));
     this.aplica(false);
   },
   /* entra no slide k: o cartão dele cresce até ser o palco */
@@ -28188,9 +28203,14 @@ const CAR = {
     if (!this.aberto || this.ocupado) return;
     this.ocupado = true;
     this.sel = k;
-    if (k !== atual){
-      const viva = k === 0;
-      vaiDireto(k);
+    /* (o cartão 11 é o quiz geral, no slide 11: chegando, o quiz abre pelo sumário — a não ser que já esteja aberto) */
+    const e11 = k === this.N11, abre11 = e11 && !no11();
+    const s = e11 ? TOPICO_11.slide : k;
+    /* (e do 11 para o cartão 10, o tópico 10 recomeça, como pelo sumário) */
+    const volta10 = !e11 && no11() && s === atual;
+    if (s !== atual){
+      const viva = s === 0;
+      vaiDireto(s);
       /* a cópia viva é refeita do slide já posto como ele vai aparecer;
          a foto já é ele assim */
       if (viva) this.copiaViva(k, this.itens[k].querySelector('.car-cartao'));
@@ -28209,6 +28229,8 @@ const CAR = {
       stage.classList.remove('em-carrossel');
       document.body.classList.remove('em-carrossel');
       this.aberto = this.ocupado = false;
+      if (abre11){ irPara(indiceDo11()); return; }
+      if (volta10){ irPara(NAV_TOPICOS.findIndex(t => t.slide === TOPICO_11.slide)); return; }
       if (temMesa(atual)) VIDA.liga();
     };
     setTimeout(() => {
@@ -28219,7 +28241,7 @@ const CAR = {
       }));
     }, 600);
   },
-  fecha(){ this.entra(atual); }
+  fecha(){ this.entra(no11() ? this.N11 : atual); }
 };
 
 /* ir direto para um slide, sem o giro do cubo: é o carrossel que faz a
@@ -28249,7 +28271,7 @@ function vaiDireto(i){
 /* as fotos chegam antes de serem pedidas: com a página sossegada, uma de
    cada vez, para não disputar a rede com a narração */
 setTimeout(() => {
-  const fila = SLIDES.map((_, i) => i).filter(i => i > 0);
+  const fila = [...SLIDES.map((_, i) => i).filter(i => i > 0), CAR.N11];
   const proxima = () => {
     const i = fila.shift();
     if (i === undefined) return;
@@ -29651,7 +29673,8 @@ const NAV_TOPICOS = [
     salto:['10.7.3', 24.5, true],
     entra(v, g){ QUIZ10C.jaAbriu = true; saltaPara10('10.7.3', g, 24.5, () => { QUIZ10C.jaAbriu = true; QUIZ10C.escurece(); MUSICA10.abre(); }); } },
   /* o quiz geral direto (o quiz final: 20 questões, duas de cada tópico): a mesa como no fim da 10.7.3, a sala escura */
-  { titulo:'Quiz geral', sub:'o quiz final: 20 questões, duas de cada tópico', slide:10, quiz:'q10f',
+  /* (v67.5: é o capítulo 11 do sumário — cap11 —, e não um subtópico do 10) */
+  { titulo:'Quiz geral', sub:'o quiz final: 20 questões, duas de cada tópico', slide:10, quiz:'q10f', cap11:true,
     salto:['10.7.3', 24.5, true],
     entra(v, g){ QUIZ10C.jaAbriu = true; saltaPara10('10.7.3', g, 24.5, () => { QUIZ10C.jaAbriu = true; QUIZ10C.escurece(); QUIZFINAL.abre(); }); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
@@ -29827,6 +29850,9 @@ function tocaDesde(id, t, g){
   }, { once:true });
 }
 
+/* o tópico 11 (o quiz geral): o índice dele no sumário, e se a aula está nele agora */
+function indiceDo11(){ return NAV_TOPICOS.findIndex(t => t.cap11); }
+function no11(){ return atual === TOPICO_11.slide && !!window.QUIZFINAL && QUIZFINAL.aberto; }
 /* em que tópico a aula está agora — é o que a gaveta acende */
 function topicoAtual(){
   if (atual === 4){
@@ -29851,7 +29877,7 @@ function topicoAtual(){
   if (atual === 7) return NAV_TOPICOS.findIndex(t => t.slide === 7);
   if (atual === 8) return NAV_TOPICOS.findIndex(t => t.slide === 8);
   if (atual === 9) return NAV_TOPICOS.findIndex(t => t.slide === 9);
-  if (atual === 10) return NAV_TOPICOS.findIndex(t => t.slide === 10);
+  if (atual === 10) return no11() ? indiceDo11() : NAV_TOPICOS.findIndex(t => t.slide === 10);
   if (atual === 3){
     const base = NAV_TOPICOS.findIndex(t => t.slide === 3);
     if (!QUIZ4.ativo && !QUIZ4.trilhas.includes(trilhaAtual)) return base;
@@ -29922,7 +29948,8 @@ function montaNav(){
      próprio capítulo: tocar no título leva ao começo do slide. */
   const letra = k => String.fromCharCode(97 + k);
   for (let s = 1; s < SLIDES.length; s++){
-    const doSlide = NAV_TOPICOS.map((t, i) => ({ t, i })).filter(o => o.t.slide === s);
+    /* (o quiz geral fica fora do capítulo 10: é o capítulo 11, logo abaixo) */
+    const doSlide = NAV_TOPICOS.map((t, i) => ({ t, i })).filter(o => o.t.slide === s && !o.t.cap11);
     if (!doSlide.length) continue;
     const cap = document.createElement('li');
     cap.className = 'sum-cap';
@@ -29971,6 +29998,25 @@ function montaNav(){
     }
     lista.appendChild(cap);
   }
+  /* o capítulo 11: só o quiz geral (o título é o próprio quiz, sem subtópicos) */
+  const i11 = indiceDo11();
+  if (i11 >= 0){
+    const cap = document.createElement('li');
+    cap.className = 'sum-cap';
+    cap.dataset.slide = TOPICO_11.n;
+    const cb = document.createElement('button');
+    cb.type = 'button';
+    cb.className = 'nav-item sum-cap-bt';
+    cb.dataset.topico = i11;
+    cb.dataset.quiz = NAV_TOPICOS[i11].quiz;
+    cb.innerHTML = '<span class="sum-num">' + TOPICO_11.n + '.</span><span class="nav-txt"><b></b><small></small><span class="nav-quiz"></span></span>';
+    cb.querySelector('b').textContent = TOPICO_11.title;
+    cb.querySelector('b').insertAdjacentHTML('beforeend', '<span class="nav-aqui">aqui</span>');
+    cb.querySelector('small').textContent = TOPICO_11.subtitle;
+    cb.addEventListener('click', () => irPara(i11));
+    cap.appendChild(cb);
+    lista.appendChild(cap);
+  }
   document.body.append(navAlca, navFundo, navGaveta);
   pintaQuizzesDoSumario();
   navNoSlide();
@@ -29980,7 +30026,9 @@ function abreNav(){
   if (!navGaveta || atual < 1) return;
   const aqui = topicoAtual();
   /* acende o capítulo em que se está e, dentro dele, o tópico */
-  navGaveta.querySelectorAll('.sum-cap').forEach(li => li.classList.toggle('aqui', +li.dataset.slide === atual));
+  /* (com o quiz geral aberto, o capítulo é o 11) */
+  const capAqui = no11() ? TOPICO_11.n : atual;
+  navGaveta.querySelectorAll('.sum-cap').forEach(li => li.classList.toggle('aqui', +li.dataset.slide === capAqui));
   navGaveta.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('atual', +b.dataset.topico === aqui));
   const cap = navGaveta.querySelector('.sum-cap.aqui');
   /* o capítulo de agora à vista, no alto da lista (sem rolar a página) */
