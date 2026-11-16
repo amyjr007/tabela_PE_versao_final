@@ -5752,7 +5752,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v70.1';
+const VERSAO = 'v70.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -23676,6 +23676,10 @@ const CARDS101 = {
      antes, pelo sumário, o quiz 3 ficava aberto por baixo do tutorial que recomeçava) */
   fechaJogos(){
     if (slides[10] && slides[10].classList.contains('quiz1076')) this.fecha1076();
+    /* (v70.2: o quiz "h" e o quiz 2 também — aberto o "h", um salto pelo sumário para o quiz 2
+       deixava-o por baixo: os cards dos subníveis escondidos e o título preso em "Quiz") */
+    if (window.QUIZ10 && (QUIZ10.aberto || QUIZ10.escuro)) QUIZ10.fecha();
+    if (window.QUIZ10B && (QUIZ10B.aberto || QUIZ10B.escuro)){ QUIZ10B.fecha(); QUIZ10B.jaAbriu = false; }
     if (window.QUIZFINAL && QUIZFINAL.aberto) QUIZFINAL.fecha(true);
     if (window.MUSICA10 && (MUSICA10.aberto || slides[10].classList.contains('musica10'))) MUSICA10.fecha(true);
     if (window.QUIZ10C && (QUIZ10C.aberto || QUIZ10C.escuro)) QUIZ10C.fecha();
@@ -25200,10 +25204,11 @@ function subnivel10(c){
 /* as oito questões: duas de cada bloco (s, p, d, f), em ordem sorteada; o
    comando reveza entre três jeitos de pedir (nunca o mesmo duas vezes
    seguidas), e o que começa com "Agora" não abre o quiz */
+/* (v70.2: o comando curto, um só, a pedido do professor) */
 const COMANDOS_10 = [
-  x => 'Toque na coluna da tabela correspondente ao subnível ' + x + '.',
-  x => 'Toque na coluna do subnível ' + x + '.',
-  x => 'Agora toque na coluna ' + x + '.'
+  x => 'Qual a coluna do subnível ' + x + '?',
+  x => 'Qual a coluna do subnível ' + x + '?',
+  x => 'Qual a coluna do subnível ' + x + '?'
 ];
 function questoes10(){
   const MAX = { s:2, p:6, d:10, f:14 }, usados = new Set();
@@ -25374,7 +25379,7 @@ function qCamadaColuna10b(E){
       /* (as bolinhas das camadas e os cards do s e do p pulsam: é ali que se toca) */
       Q.chama(true, true);
       Q.linhaDe(E);
-      return 'Toque no número da camada e no card do subnível mais energético do átomo ' + E.sym + '.';
+      return 'Qual o subnível mais energético do átomo ' + E.sym + '?';   /* (v70.2: o comando curto) */
     },
     eixo(Q, e){
       if (this.selP === e) return;
@@ -25424,8 +25429,8 @@ function qElemento10b(E){
   return {
     E,
     /* (o subnível colorido: o número no azul das camadas, a letra e o expoente na cor do bloco) */
-    monta(){ return [{ t:'Toque no elemento cujo subnível mais energético é o ' }, { t:String(E.per), c:'per10b' },
-                     { t:rotulo10(E.sub), c:E.sub[0] === 'p' ? 'p10b' : 's10b' }, { t:'.' }]; },
+    monta(){ return [{ t:'Qual elemento tem subnível mais energético ' }, { t:String(E.per), c:'per10b' },
+                     { t:rotulo10(E.sub), c:E.sub[0] === 'p' ? 'p10b' : 's10b' }, { t:'?' }]; },
     toca(Q, c){
       if (+c.dataset.z === E.z){
         /* (o elemento certo brilha e cresce 10 %) */
@@ -25686,7 +25691,7 @@ function subnivelDe10c(c){
 }
 function qCamadaColuna10c(E){
   const q = qCamadaColuna10b(E), monta = q.monta;
-  q.monta = Q => { monta.call(q, Q); return 'Toque no número da camada e no card do subnível mais energético do átomo ' + E.sym + '.'; };
+  q.monta = Q => { monta.call(q, Q); return 'Qual o subnível mais energético do átomo ' + E.sym + '?'; };
   q.toca = Q => Q.lembra('Toque no número da camada, à esquerda, e no card da coluna, no alto do bloco d.');
   q.confirma = function(Q){
     const okP = +this.selP.dataset.periodo === E.cam, okC = Q.subDaEtq(this.selC) === E.sub;
@@ -25707,8 +25712,8 @@ function qCamadaColuna10c(E){
 function qElemento10c(E){
   return {
     E,
-    monta(){ return [{ t:'Toque no elemento cujo subnível mais energético é o ' }, { t:String(E.cam), c:'verm10c' },
-                     { t:rotulo10(E.sub), c:'d10c' }, { t:'.' }]; },
+    monta(){ return [{ t:'Qual elemento tem subnível mais energético ' }, { t:String(E.cam), c:'verm10c' },
+                     { t:rotulo10(E.sub), c:'d10c' }, { t:'?' }]; },
     toca(Q, c){
       if (+c.dataset.z === E.z){
         c.classList.add('certa3', 'cresce10b'); Q.marcados.push(c);
@@ -30391,10 +30396,10 @@ const NAV_TOPICOS = [
   { titulo:'O exemplo do Cs', sub:'o começo da 10.6.3', slide:10,
     salto:['10.6.3', 0],
     entra(v, g){ saltaPara10('10.6.3', g); } },   /* (direto na tela do começo) */
-  /* o quiz 2 direto: a mesa como no fim da "10.6.3", e o quiz abre (com o "vamos para a primeira questão") */
-  { titulo:'Quiz 2', sub:'o quiz 2 direto: camada e coluna, depois o elemento', slide:10, quiz:'q10b',
-    salto:['10.6.3', 0, true],
-    entra(v, g){ saltaPara10('10.6.3', g, 0, () => QUIZ10B.abre()); } },
+  /* o quiz 2: (v70.2) a "10.6.3.1" do começo — a demonstração com a mão; no fim dela, o quiz abre */
+  { titulo:'Quiz 2', sub:'a 10.6.3.1: a demonstração e o quiz 2', slide:10, quiz:'q10b',
+    salto:['10.6.3.1', 0],
+    entra(v, g){ saltaPara10('10.6.3.1', g); } },
   /* o começo da "10.7.0": a regra do bloco d (a tabela como no fim da "10.7") */
   /* (direto na tela do começo, sem o escuro da "10.7") */
   { titulo:'A regra para os de transição externa (bloco d)', sub:'o começo da 10.7.0', slide:10,
