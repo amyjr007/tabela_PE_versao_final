@@ -5585,7 +5585,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v66.2';
+const VERSAO = 'v66.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22666,7 +22666,7 @@ const T1072 = { zr:1.5, segL:[[6.5, 15.0], [26.0, 27.2], [30.2, 33.2]], segC:[[7
    coluna da série (a do f³). Acertando, festa e a "10.7.7". */
 const T1075 = { abre:2.0, formula:[9.0, 9.6], tiraUm:10.0, dois:11.0, exc:20.0 };
 const T1076 = { pu:1.0, act:4.5, bola:6.7, segL:[[8.7, 13.8], [23.0, 26.0]], segC:[[10.0, 13.8], [25.0, 26.0]],
-                formula:[13.8, 14.4], cinco:19.0, linha:23.0, f:25.0, festa:26.0, pergunta:29.7, texto:[29.8, 34.0] };
+                formula:[13.8, 14.4], sete:16.0, cinco:19.0, linha:23.0, f:25.0, festa:26.0, pergunta:29.7, texto:[29.8, 34.0] };
 const ALVO_1076 = 60;   /* o 4f³: o Nd, na coluna do f³ da série dos lantanídeos */
 const TEXTO_1076 = 'Toque no elemento cujo subnível mais energético é o 4f³.';
 /* as exceções ao diagrama de Pauling entre os lantanídeos e os actinídeos (v65.8: só elas): La, Ce, Gd; Ac, Th, Pa, U, Np, Cm, Lr */
@@ -24482,7 +24482,8 @@ const CARDS101 = {
     const pu = m.querySelector('.pc[data-z="94"]'), ac = m.querySelector('.pc[data-z="89"]');
     const f5 = this.etq105 && this.etq105[4] && this.etq105[4].d;
     /* (a bolinha "7" ao lado da série de baixo, na direção do Pu; o "n − 2" logo à direita dela) */
-    if (pu && ac && T >= 0 && !this.posto1076){
+    /* (medida quando a bolinha aparece — não antes: pelo sumário, a mesa ainda está chegando) */
+    if (pu && ac && T >= F.bola - .3 && !this.posto1076 && !stage.classList.contains('salto1071')){
       this.posto1076 = true;
       const P = caixaNaMesa(pu, m), eixo7 = m.querySelector('.eixo[data-periodo="7"]');
       const x7 = eixo7 ? parseFloat(eixo7.style.left) : caixaNaMesa(ac, m).l - 60;
@@ -24494,10 +24495,13 @@ const CARDS101 = {
     if (passa(F.festa)){ this.aplauso(); tocaEfeito('funfare'); }
     this.t1076ant = de ? t : -1;
     if (!de || t < F.pergunta) this.feito1076 = false;
+    if (!de || t < F.bola - .3) this.posto1076 = false;
     this.pede1076 = de && t >= F.pergunta && !this.feito1076;
     /* a fórmula ao lado da bolinha: "n − 2", depois o 5 vermelho */
     let html = '';
-    if (T >= F.formula[0] && T < F.cinco) html = 'n − 2'.slice(0, EV9.letras(T, F.formula[0], F.formula[1], 'n − 2'));
+    if (T >= F.formula[0] && T < F.sete) html = 'n − 2'.slice(0, EV9.letras(T, F.formula[0], F.formula[1], 'n − 2'));
+    /* (v66.3: aos 16 s o n vira 7, no azul das camadas) */
+    else if (T >= F.sete && T < F.cinco) html = '<span class="n4">7</span> − 2';
     else if (T >= F.cinco && T < F.pergunta) html = '<span class="verm">5</span>';
     if (html !== this.html1076){ if (de && T < F.cinco && html.length > (this.html1076 || '').length) TECLAS.bate(); this.html1076 = html; this.form1076.innerHTML = html; }
     /* a pergunta, digitada */
