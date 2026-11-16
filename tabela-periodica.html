@@ -4347,6 +4347,15 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
 .slide.quiz10b .quiz3.q4.q2.q5{text-align:center}
 /* (a pergunta numa linha só, centrada pelo meio da caixa mesmo quando passa da largura dela) */
 .slide.quiz10b .quiz3.q4.q2.q5 .q3-q{width:max-content;position:relative;left:50%;translate:-50% 0}
+/* (v70.6) OS QUIZZES DO TÓPICO 10 (o "h", o 2 e o 3, as 8 questões): o lugar que o professor deixou
+   na montagem — { el:'pergunta-quiz-5', x:475, y:98, larg:721, alt:86, esc:0.96 }: o centro em
+   475 × 98, 721 de largura a 0,96 — e o texto alinhado à esquerda */
+.slide:is(.quiz10, .quiz10b) .quiz3.q4.q2.q5,
+.slide.quiz10b.parte2q10b .quiz3.q4.q2.q5{left:114.5px;top:56.7px;width:721px;transform:scale(.96);text-align:left}
+.slide:is(.quiz10, .quiz10b) .quiz3.q4.q2.q5 .q3-q{left:0;translate:none}
+/* (no celular, a letra da pergunta e da mensagem 2 px maior) */
+html.celular .slide:is(.quiz10, .quiz10b) .quiz3.q4.q2.q5 .q3-q{font-size:25px}
+html.celular .slide:is(.quiz10, .quiz10b) .quiz3.q4.q2.q5 .q3-msg{font-size:20px}
 /* (o subnível da pergunta das questões 5 a 8: o número no azul das camadas, o s e o p nas cores dos blocos, claras no escuro) */
 .slide.quiz10b .quiz3 .q3-q .per10b{color:#6FAEF0}
 .slide.quiz10b .quiz3 .q3-q .s10b{color:color-mix(in srgb,var(--cat-alcalinos) 80%,#fff)}
@@ -5766,7 +5775,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v70.5';
+const VERSAO = 'v70.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25536,7 +25545,10 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     this.btFaz = faz;
     if (this.bt) return;
     const w = this.linha;
-    this.bt = this.botao('Confirmar', (xDaColuna(3) + xDaColuna(12)) / 2, parseFloat(w.style.top) + 66, () => this.btFaz && this.btFaz());
+    /* (v70.6: no celular, embaixo do bloco p — sob o Lv e o Ts) */
+    this.bt = ehCelular()
+      ? this.botao('Confirmar', (xDaColuna(16) + xDaColuna(17)) / 2, yDaLinha(7) + LADO / 2 + 34, () => this.btFaz && this.btFaz())
+      : this.botao('Confirmar', (xDaColuna(3) + xDaColuna(12)) / 2, parseFloat(w.style.top) + 66, () => this.btFaz && this.btFaz());
     this.bt.classList.add('confirma10b');
   },
   tiraBotao(){ if (this.bt){ this.bt.remove(); this.bt = null; } this.btFaz = null; },
@@ -25776,8 +25788,8 @@ const QUIZ10C = Object.assign(Object.create(QUIZ10B), {
   botaoConfirma(faz){
     this.btFaz = faz;
     if (this.bt) return;
-    /* (v65.6: embaixo do Fl — coluna 14) */
-    this.bt = this.botao('Confirmar', xDaColuna(14), yDaLinha(7) + LADO / 2 + 34, () => this.btFaz && this.btFaz());
+    /* (v65.6: embaixo do Fl — coluna 14; v70.6: no celular, sob o Lv e o Ts) */
+    this.bt = this.botao('Confirmar', ehCelular() ? (xDaColuna(16) + xDaColuna(17)) / 2 : xDaColuna(14), yDaLinha(7) + LADO / 2 + 34, () => this.btFaz && this.btFaz());
     this.bt.classList.add('confirma10b');
   },
   /* (no cartão do quiz 3, no lugar do Continuar, o "Quiz ♪": o jogo musical) */
