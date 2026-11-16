@@ -5696,7 +5696,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v68.4';
+const VERSAO = 'v68.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -26037,9 +26037,10 @@ const QUESTOES_A = [
   { t:10, nivel:'Aplicar', q:'O cálcio está no 4º período, no bloco s, na 2ª coluna. Qual é o subnível mais energético dele?',
     ops:['4s²', '3d²', '4p²', '3s²'],
     exp:'Bloco s, camada 4, segunda coluna: 4s².' },
-  { t:10, nivel:'Criar', q:'Você vai criar um exemplo para a regra (n − 1) do bloco d, sem exceção. Qual destas escolhas serve — o elemento e o subnível certo dele?',
-    ops:['Níquel (Ni) — 3d⁸', 'Cobre (Cu) — 3d⁹', 'Ferro (Fe) — 4d⁶', 'Zinco (Zn) — 4d¹⁰'],
-    exp:'O Ni está no 4º período: camada 4 − 1 = 3, oitava coluna do d → 3d⁸. O Cu é uma exceção, e o Fe e o Zn têm a camada errada.' }
+  /* (v68.5: no tópico 10 não entram exceções — nem como alternativa errada) */
+  { t:10, nivel:'Criar', q:'Você vai criar um exemplo para a regra (n − 1) do bloco d. Qual destas escolhas serve — o elemento e o subnível certo dele?',
+    ops:['Níquel (Ni) — 3d⁸', 'Zinco (Zn) — 3d⁸', 'Ferro (Fe) — 4d⁶', 'Escândio (Sc) — 4d¹'],
+    exp:'O Ni está no 4º período: camada 4 − 1 = 3, oitava coluna do d → 3d⁸. O Zn está na décima coluna (3d¹⁰), e o Fe e o Sc estão com a camada errada.' }
 ];
 /* (v68.4) OUTRAS DUAS VERSÕES DE CADA QUESTÃO, para o Refazer: a mesma estrutura — a questão k
    de cada versão é do mesmo tópico e do mesmo nível de Bloom da questão k acima (o t e o nível
@@ -26166,9 +26167,9 @@ const QF_VARIANTES = [
       ops:['4s¹', '3s¹', '4p¹', '3d¹'],
       exp:'Bloco s, camada 4, primeira coluna: 4s¹.' } ],
   /* 10 · A tabela e o diagrama de Pauling — Criar */
-  [ { q:'Você vai criar um exemplo para a regra (n − 1) do bloco d, sem exceção. Qual destas escolhas serve — o elemento e o subnível certo dele?',
-      ops:['Manganês (Mn) — 3d⁵', 'Cromo (Cr) — 3d⁴', 'Ferro (Fe) — 4d⁶', 'Cobalto (Co) — 4d⁷'],
-      exp:'O Mn está no 4º período: camada 4 − 1 = 3, quinta coluna do d → 3d⁵. O Cr é uma exceção, e o Fe e o Co estão com a camada errada.' },
+  [ { q:'Você vai criar um exemplo para a regra (n − 1) do bloco d. Qual destas escolhas serve — o elemento e o subnível certo dele?',
+      ops:['Manganês (Mn) — 3d⁵', 'Vanádio (V) — 3d⁵', 'Ferro (Fe) — 4d⁶', 'Cobalto (Co) — 4d⁷'],
+      exp:'O Mn está no 4º período: camada 4 − 1 = 3, quinta coluna do d → 3d⁵. O V está na terceira coluna (3d³), e o Fe e o Co estão com a camada errada.' },
     { q:'Você vai montar um exemplo da regra (n − 1) com o zircônio (Zr), do 5º período, na 2ª coluna do bloco d. Qual é o subnível certo?',
       ops:['Zircônio (Zr) — 4d²', 'Zircônio (Zr) — 5d²', 'Zircônio (Zr) — 3d²', 'Zircônio (Zr) — 4d⁴'],
       exp:'O Zr está no 5º período: camada 5 − 1 = 4, segunda coluna do d → 4d².' } ]
