@@ -1,6 +1,16 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v66.8** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v66.8** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
+
+## Para retomar (o que está em aberto em 2026-11-16)
+
+- **Áudio novo ainda sem uso:**  está na pasta, fora do Git e sem lugar no código — esperar o professor dizer onde ele entra.
+- **Altura das séries pelo sumário:** dentro do slide (recomeço no mesmo slide), as séries de baixo ficam 14 px mais altas do que vindo de outro slide (ver o aviso na seção do sumário). Não corrigido; o professor ainda não pediu.
+- **Química do bloco f:** a tela segue a contagem pela coluna da série (Pu = 5f⁵, Nd = 4f³); pelo diagrama seriam 5f⁶ e 4f⁴. O professor escolheu a da coluna.
+- **Quiz musical:** as notas de "Atirei o pau no gato" foram escritas de memória — conferir no ouvido se o professor reclamar.
+- **O que vem depois do quiz geral:** o cartão final tem Refazer e Capa; não há narração depois.
+- Antes de mexer: , ver se há cópias "(1)" do OneDrive e áudios novos ou regravados ().
+
 
 ## Como o trabalho anda (combinados com o professor)
 
