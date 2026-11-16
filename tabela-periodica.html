@@ -3521,6 +3521,13 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
    base de onde os pulsos partem) */
 .mesa[data-slide="10"] .eixo[data-periodo]{--esc0:1.3;scale:1.3}
 .mesa[data-slide="10"] .etq102{--esc0:1.1;scale:1.1}
+/* (v70.5) SÓ NO CELULAR, nos quizzes 2 e 3, enquanto se tocam (questões 1 a 4): as bolinhas das
+   linhas mais 15 % (1,3 × 1,15) e os cards dos subníveis que se tocam mais 10 % (1,1 × 1,1) —
+   no quiz 2 os do s e do p, no 3 os do d */
+/* (fora do quiz geral e do musical, que usam a sala escura do quiz 3 e ficam com as classes dele) */
+html.celular .slide.quiz10b:not(.parte2q10b, .final10, .musica10) .mesa[data-slide="10"] .eixo[data-periodo]{--esc0:1.495;scale:1.495}
+html.celular .slide.quiz10b:not(.quiz10c, .parte2q10b, .final10, .musica10) .mesa[data-slide="10"] .etq102:not(.d104, .f105),
+html.celular .slide.quiz10c:not(.parte2q10b, .final10, .musica10) .mesa[data-slide="10"] .etq102.d104{--esc0:1.21;scale:1.21}
 /* (a entrada das bolinhas — o numLinha25, que as encolhe e as traz da
    esquerda — não volta a tocar no quiz quando o pulso ou o balanço do erro
    saem: sem isto, a cada toque todas as bolinhas encolhiam e deslizavam — e
@@ -5759,7 +5766,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v70.4';
+const VERSAO = 'v70.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24801,6 +24808,10 @@ const CARDS101 = {
     const monta = naMontagem(), p2 = trilhaAtual === '10.6.3.1', de = (trilhaAtual === '10.6.3' || p2) && !monta;
     /* (na 10.6.3.1 o tempo continua o da 10.6.3: P2_1064 + t) */
     if (p2) t += P2_1064;
+    /* (v70.5: pelo sumário — o "Quiz 2" —, a mesa já chega na forma de quiz: a sala apagada e
+       limpa, sem o fim do césio; a cena fica no ponto do escuro até a narração chegar lá) */
+    if (!p2) this.pula10631 = false;
+    else if (this.pula10631){ if (t >= T1064.quiz) this.pula10631 = false; else t = T1064.quiz; }
     const T = de ? t : -1;
     if (!this.r1064){
       const m = this.m;
@@ -30436,7 +30447,7 @@ const NAV_TOPICOS = [
   /* o quiz 2: (v70.2) a "10.6.3.1" do começo — a demonstração com a mão; no fim dela, o quiz abre */
   { titulo:'Quiz 2', sub:'a 10.6.3.1: a demonstração e o quiz 2', slide:10, quiz:'q10b',
     salto:['10.6.3.1', 0],
-    entra(v, g){ saltaPara10('10.6.3.1', g); } },
+    entra(v, g){ CARDS101.pula10631 = true; saltaPara10('10.6.3.1', g); } },
   /* o começo da "10.7.0": a regra do bloco d (a tabela como no fim da "10.7") */
   /* (direto na tela do começo, sem o escuro da "10.7") */
   { titulo:'A regra para os de transição externa (bloco d)', sub:'o começo da 10.7.0', slide:10,
@@ -30514,7 +30525,7 @@ function irPara(i, variante){
      punha a cena da "10" (o quadro da tabela e do Pauling) num quadro à vista) */
   const salta = () => {
     if (!item.salto) return;
-    const pula = { '10.1':'pula101', '10.6':'pula106', '10.7.0':'pula1070', '10.7.1':'pula1071', '10.7.3':'pula1073' }[item.salto[0]];
+    const pula = { '10.1':'pula101', '10.6':'pula106', '10.7.0':'pula1070', '10.7.1':'pula1071', '10.7.3':'pula1073', '10.6.3.1':'pula10631' }[item.salto[0]];
     if (pula) CARDS101[pula] = true;
     preparaSalto10(item.salto[0], g, item.salto[1], !!item.salto[2]);
     try { efeitosDoTempo(); } catch (e){ console.error(e); }
