@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v67.0** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
+Onde paramos: **v67.1** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
 
 ## Para retomar (o que está em aberto em 2026-11-16)
 
@@ -114,15 +114,15 @@ O áudio antigo da 10.6 (82,7 s) foi dividido em três. As legendas da 10.6 fica
 | g – Identifique os blocos | 10.5.1, aos 19 s |
 | h – Quiz | o quiz direto (a mesa como no fim da 10.5.1.2) |
 | i – O subnível mais energético sem tabela | 10.5.3 |
-| j – Subnível mais energético com tabela | 10.6 (sem a figura da 10.5.3 por cima: pula106) |
+| j – A regra para os representativos (s ou p) | 10.6 (sem a figura da 10.5.3 por cima: pula106) |
 | k – O exemplo do Mg | 10.6.1 |
 | l – O exemplo do iodo | 10.6.2 |
 | m – O exemplo do Cs | 10.6.3 |
 | n – Quiz 2 | o quiz 2 direto |
-| o – A regra pros elementos de transição externa | 10.7.0 (sem o escuro da 10.7: pula1070) |
+| o – A regra para os de transição externa (bloco d) | 10.7.0 (sem o escuro da 10.7: pula1070) |
 | p – O exemplo do Fe | 10.7.1 (sem o véu da regra: pula1071) |
 | q – O exemplo do Zr | 10.7.2 |
-| r – A regra pros elementos de transição interna | 10.7.5 |
+| r – A regra para os de transição interna (bloco f) | 10.7.5 |
 | s – O exemplo do Pu | 10.7.6 |
 | t – Quiz 3 | 10.7.3 aos 10,2 s (a demonstração e o quiz 3; v65.5: já escura e limpa, sem se montar — pula1073) |
 | u – Quiz musical | o jogo musical direto (a mesa como no fim da 10.7.3, a sala escura) |
