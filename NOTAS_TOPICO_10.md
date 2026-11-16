@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v66.7** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v66.8** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -253,3 +253,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v66.3:** na 10.7.6, aos 16 s o n do "n − 2" vira 7 (azul): "7 − 2"; aos 19 s, o 5 vermelho. A bolinha 7 da série e a fórmula são medidas quando a bolinha aparece (antes, pelo sumário, eram medidas com a mesa ainda chegando e ficavam fora da tela).
 - **v66.5:** no quiz musical (a 10.7.8 e o jogo) e no quiz geral, a tabela volta a ficar sem os lantanídeos e actinídeos, no lugar da 10.6 (`abreF107` dá falso); os elementos que piscam na 10.7.8 não são das séries.
 - **v66.6–v66.7:** na 10.6, aos 9 s (por 2 s), os blocos s e p crescem 7 % e brilham, com o halo de cada bloco (`cresceSP106`; os halos são refeitos na hora, e a 10.5.1 refaz os seus se foram medidos noutra narração); a tela escura da regra tem o título "Elementos Representativos (s ou p)". Na 10.6.1, sem as pulsações na chegada das setas: ficam as dos 11 s (bolinha do 3) e 12,3 s (etiqueta s²) e o revezamento do fim.
+- **v66.8:** no iodo e no Cs, como no Mg, sem as pulsações na chegada das setas. Iodo: a bolinha do 5 pulsa aos 20 s e a etiqueta p⁵ aos 21,5 s. Cs: o Cs brilha aos 2 s; a bolinha do 6 pulsa aos 9,4 s e aos 16 s, a etiqueta s¹ aos 11 s e aos 17,6 s.

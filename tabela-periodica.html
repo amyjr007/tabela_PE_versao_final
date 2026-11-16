@@ -5588,7 +5588,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v66.7';
+const VERSAO = 'v66.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22731,7 +22731,7 @@ const T1062 = { pulsa:[6.5, 7.6] };
    aos 16,5 s, até a bolinha do 5 (que pulsa 2 vezes quando ela chega); a âmbar, aos 17,5 s, até a
    etiqueta p⁵ (que pulsa 2 vezes quando ela chega); aos 20 s pulsa a bolinha, aos 21,5 s a etiqueta,
    e as pontas das setas ficam num vaivém discreto; v61.8: as setas ficam até o exemplo seguinte, a 10.6.3) */
-const T1063 = { iodo:2.2, setaL:16.5, setaC:17.5, cresceSeta:0.9, b5:[[17.4, 18.6], [20.0, 21.2]], bP5:[[18.4, 19.6], [21.5, 22.7]],
+const T1063 = { iodo:2.2, setaL:16.5, setaC:17.5, cresceSeta:0.9, b5:[[20.0, 21.2]], bP5:[[21.5, 22.7]],   /* (v66.8: sem as pulsações na chegada das setas, como no Mg) */
                 texto:[23.5, 25.0], cinco:26.0, p:27.5, sup:27.8, festa:28.8, volta:31.3, dist:35.8, pulsa:[37.0, 38.8], pulsaR:[39.7, 41.5],
                 /* (v61.2: aos 3,8 s o número atômico do iodo cresce, aos 5,5 s pisca de âmbar 2 vezes, aos 13 s volta;
                    aos 26 s, com o 5 grande, a bolinha do 5 cresce; com o p, a etiqueta p⁵; aos 28,8 s a bolinha pulsa,
@@ -22754,7 +22754,9 @@ const TEXTO_1063 = 'O subnível mais energético:';
    aparece "Subnível mais energético: 3"); aos 28,5 s toca o card p¹, no alto
    da coluna (e aparece o p¹), com aplausos e confetes. No fim da fala, o quiz 2. */
 /* (v62.1: as faixas viraram setas; a bolinha e a etiqueta pulsam quando a seta chega, 0,9 s depois) */
-const T1064 = { cs:3.0, linha:5.5, coluna:7.0, piscaL:[[6.4, 7.6], [9.6, 10.8]], piscaC:[[7.9, 9.1], [10.7, 11.9]],
+/* (v66.8: o Cs brilha aos 2 s; sem as pulsações na chegada das setas; a bolinha do 6 pulsa aos 9,4 s e aos 16 s,
+   a etiqueta s¹ aos 11 s e aos 17,6 s) */
+const T1064 = { cs:2.0, linha:5.5, coluna:7.0, piscaL:[[9.4, 10.6], [16.0, 17.2]], piscaC:[[11.0, 12.2], [17.6, 18.8]],
                 texto:[13.0, 14.5], seis:16.0, s:17.0, sup:18.0, festa:18.7, pausa:20.0, volta:22.5,
                 quiz:23.0, al:24.5, mao:26.5, demo:[26.5, 27.6], vaiCol:28.0, col:28.5, tiraMao:29.6,
                 /* (v63.1: a mãozinha — amarela e 15 % maior — aparece aos 24 s, no meio; aos 26,5 s vai até a
