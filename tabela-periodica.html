@@ -3544,6 +3544,33 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .m10-nota.ok i{opacity:1;color:#7CF5A8}
 .m10-nota.soa{animation:soa10 .45s ease-out}
 @keyframes soa10{40%{transform:translateY(-8px) scale(1.12);background:rgba(255,212,59,.45)}}
+/* (v69.5) a caixinha de música, à direita dos subníveis */
+.m10-caixinha{position:relative;flex:none;width:62px;align-self:stretch;margin-left:6px;padding:4px;border-radius:12px;
+  border:2px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#8D86B0;cursor:default;
+  filter:grayscale(.6) brightness(.6);transition:filter .35s ease, color .35s ease, border-color .35s ease, box-shadow .35s ease, background .35s ease}
+.m10-caixinha svg{display:block;width:100%;height:100%;overflow:visible}
+.m10-caixinha .cxa-tampa{fill:currentColor;opacity:.35;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round}
+.m10-caixinha .cxa-corpo{fill:currentColor;opacity:.5;stroke:currentColor;stroke-width:1.8}
+.m10-caixinha .cxa-friso, .m10-caixinha .cxa-manivela{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.m10-caixinha circle.cxa-manivela{fill:currentColor}
+.m10-caixinha .cxa-nota{fill:none;stroke:#1C1640;stroke-width:1.8;stroke-linejoin:round}
+.m10-caixinha .cxa-nota-c{fill:#1C1640}
+/* (depois da música: escura de novo, mas o toque a toca outra vez) */
+.m10-caixinha:not(:disabled){cursor:pointer;filter:grayscale(.3) brightness(.8)}
+.m10-caixinha:not(:disabled):hover{filter:none;color:#FFD43B}
+/* tocando: acesa em âmbar, a balançar no compasso */
+.m10-caixinha.toca{filter:none;color:#FFC34D;border-color:#FFC34D;background:rgba(255,195,77,.16);
+  box-shadow:0 0 0 3px rgba(255,195,77,.35), 0 0 26px 6px rgba(255,170,30,.55);animation:caixinhaToca .48s ease-in-out infinite}
+@keyframes caixinhaToca{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg) scale(1.05)}}
+.m10-colcheia{position:absolute;bottom:58%;font-size:22px;line-height:1;color:#FFD43B;pointer-events:none;
+  text-shadow:0 0 8px rgba(255,170,30,.9);animation:colcheia10 1.35s ease-out forwards}
+@keyframes colcheia10{0%{opacity:0;transform:translate(-50%,8px) scale(.5)}
+  20%{opacity:1}
+  100%{opacity:0;transform:translate(calc(-50% + var(--dx)),-70px) rotate(var(--gira)) scale(1.15)}}
+/* (v69.5) a nota da música no elemento: brilho âmbar e um pulso rápido de tamanho */
+.mesa .pc.soa10c{z-index:20;animation:soa10c .42s ease-out}
+.mesa .pc.soa10c .face{box-shadow:0 0 0 3px #FFC34D, 0 0 26px 8px rgba(255,170,30,.9)}
+@keyframes soa10c{0%{scale:1}35%{scale:1.22}100%{scale:1}}
 .m10-msg{min-height:26px;margin-top:8px;font-size:17px;color:#E8E4FF}
 .m10-msg.erro{color:#FF8A9A}
 .m10-msg.ok{color:#7CF5A8}
@@ -5703,7 +5730,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v69.4';
+const VERSAO = 'v69.5';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -19137,7 +19164,11 @@ function cabecaDoQuiz(sl, sim, nome, cls){
   deslizaEntre(pecas, () => sl.classList.toggle(cls, sim));
   if (t){
     if (sim){
-      if (t.dataset.orig === undefined) t.dataset.orig = t.textContent;
+      /* (v69.5: o título de volta vem do cadastro do slide, e não do texto da tela — fechado
+         um quiz e aberto outro logo depois, o texto ainda estava a voltar letra a letra, e o
+         "original" guardado era o nome do quiz anterior: no fim do quiz 3 ficava "Quiz 2") */
+      const i = [...slides].indexOf(sl);
+      if (t.dataset.orig === undefined) t.dataset.orig = (SLIDES[i] && SLIDES[i].title) || t.textContent;
       t.dataset.parte = nome;
       transformaLetras(t, t.dataset.parte);
     } else if (t.dataset.orig !== undefined){
@@ -25741,8 +25772,17 @@ const MUSICAS_10 = [
     elementos:{ 'sol':19, 'lá':25, 'mi':17 },
     outras:['Atirei o pau no gato', 'Brilha, brilha, estrelinha'] }
 ];
+/* (v69.5) a caixinha de música: a caixa com a tampa aberta, a manivela do lado e uma nota na frente */
+const CAIXINHA_SVG =
+  '<svg viewBox="0 0 48 48" aria-hidden="true">' +
+    '<path class="cxa-tampa" d="M9 21 L37 21 L34 9 L12 6 Z"/>' +
+    '<rect class="cxa-corpo" x="7" y="21" width="32" height="19" rx="3"/>' +
+    '<path class="cxa-friso" d="M7 27 H39"/>' +
+    '<path class="cxa-manivela" d="M39 31 H44 V37"/><circle class="cxa-manivela" cx="44" cy="38.5" r="2"/>' +
+    '<path class="cxa-nota" d="M21 37 V30.5 L27 29 V35.5"/><circle class="cxa-nota-c" cx="19.6" cy="37" r="1.9"/><circle class="cxa-nota-c" cx="25.6" cy="35.5" r="1.9"/>' +
+  '</svg>';
 const MUSICA10 = {
-  aberto:false, g:0, k:0, erros:0, m:null, ctx:null,
+  aberto:false, g:0, k:0, erros:0, m:null, ctx:null, tocando:false,
   sl(){ return slides[10]; },
   mesa(){ return this.sl().querySelector('.mesa'); },
   /* a nota, sintetizada: um som de caixinha de música (triângulo e uma oitava acima, bem baixinha) */
@@ -25786,7 +25826,7 @@ const MUSICA10 = {
     const g = ++this.g;
     this.i = i;
     this.m = MUSICAS_10[i];
-    this.k = 0; this.travado = false;
+    this.k = 0; this.travado = false; this.tocando = false;
     this.limpaElementos();
     this.sl().querySelectorAll('.musica10-caixa').forEach(e => e.remove());
     const M = this.m, mesa = this.mesa();
@@ -25803,9 +25843,17 @@ const MUSICA10 = {
     cx.innerHTML = '<div class="m10-marca">Música ' + (i + 1) + ' de ' + MUSICAS_10.length + '</div>' +
       '<div class="m10-titulo">Toque os elementos na ordem e descubra a música</div>' +
       '<div class="m10-notas">' + this.alvos.map((c, k) =>
-        '<div class="m10-nota" data-k="' + k + '"><span class="m10-sub">' + subnivelDe10c(c) + '</span><i>♪</i></div>').join('') + '</div>' +
+        '<div class="m10-nota" data-k="' + k + '"><span class="m10-sub">' + subnivelDe10c(c) + '</span><i>♪</i></div>').join('') +
+        /* (v69.5) a caixinha de música, à direita dos subníveis: escura durante o quiz; acesa
+           enquanto a música toca (soltando colcheias); depois, tocada, toca a música de novo */
+        '<button type="button" class="m10-caixinha" disabled aria-label="Ouvir a música de novo" title="Ouvir a música de novo">' +
+          CAIXINHA_SVG + '</button></div>' +
       '<div class="m10-msg"></div><div class="m10-opcoes"></div>';
     sl.appendChild(cx);
+    cx.querySelector('.m10-caixinha').addEventListener('click', () => {
+      if (!this.aberto || this.k < this.alvos.length || this.tocando) return;
+      this.melodia(false);
+    });
     cx.getBoundingClientRect(); cx.classList.add('on');
     this.marca();
   },
@@ -25880,17 +25928,40 @@ const MUSICA10 = {
     const g = this.g, M = this.m, passo = 480;
     let t = 0;
     this.msg('Ouça a música inteira…');
+    /* (v69.5: a caixinha acende enquanto a música toca, e solta uma colcheia a cada nota) */
+    const cxa = this.cx && this.cx.querySelector('.m10-caixinha');
+    this.tocando = true;
+    if (cxa){ cxa.disabled = true; cxa.classList.add('toca'); }
     M.notas.forEach((n, k) => {
       setTimeout(() => {
         if (g !== this.g) return;
         this.nota(n, Math.max(.35, Math.min(1.2, .42 * M.tempos[k])));
         const e = this.cx.querySelector('.m10-nota[data-k="' + k + '"]');
         if (e){ e.classList.remove('soa'); void e.offsetWidth; e.classList.add('soa'); }
-        const c = this.alvos[k]; c.classList.add('certa3'); setTimeout(() => c.classList.remove('certa3'), 380);
+        /* (v69.5: o elemento brilha em âmbar e cresce num pulso rápido) */
+        const c = this.alvos[k]; c.classList.remove('soa10c'); void c.offsetWidth; c.classList.add('soa10c');
+        setTimeout(() => c.classList.remove('soa10c'), 420);
+        if (cxa) this.colcheia(cxa);
       }, t);
       t += passo * M.tempos[k];
     });
-    setTimeout(() => { if (g === this.g && pergunta) this.pergunta(); }, t + 500);
+    setTimeout(() => {
+      if (g !== this.g) return;
+      this.tocando = false;
+      if (cxa){ cxa.classList.remove('toca'); cxa.disabled = false; }
+      if (pergunta) this.pergunta();
+    }, t + 500);
+  },
+  /* uma colcheia sai da caixinha, sobe torta e some */
+  colcheia(cxa){
+    const s = document.createElement('span');
+    s.className = 'm10-colcheia';
+    s.textContent = Math.random() < .5 ? '♪' : '♫';
+    s.style.setProperty('--dx', ((Math.random() - .3) * 46).toFixed(0) + 'px');
+    s.style.setProperty('--gira', ((Math.random() - .5) * 50).toFixed(0) + 'deg');
+    s.style.left = (30 + Math.random() * 40).toFixed(0) + '%';
+    cxa.appendChild(s);
+    setTimeout(() => s.remove(), 1400);
   },
   pergunta(){
     const M = this.m, ops = embaralha([M.nome, ...M.outras]);
@@ -25903,8 +25974,7 @@ const MUSICA10 = {
       b.addEventListener('click', () => this.responde(b, nome));
       o.appendChild(b);
     });
-    o.insertAdjacentHTML('beforeend', '<button type="button" class="m10-op m10-ouvir">♪ Ouvir de novo</button>');
-    o.querySelector('.m10-ouvir').addEventListener('click', () => this.melodia(false));
+    /* (v69.5: o "Ouvir de novo" saiu daqui — é a caixinha de música, à direita dos subníveis) */
   },
   responde(b, nome){
     if (!this.aberto) return;
