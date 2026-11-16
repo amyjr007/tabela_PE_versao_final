@@ -5730,7 +5730,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v69.5';
+const VERSAO = 'v69.6';   /* (as opções do quiz musical: peça da montagem) */
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25848,7 +25848,8 @@ const MUSICA10 = {
            enquanto a música toca (soltando colcheias); depois, tocada, toca a música de novo */
         '<button type="button" class="m10-caixinha" disabled aria-label="Ouvir a música de novo" title="Ouvir a música de novo">' +
           CAIXINHA_SVG + '</button></div>' +
-      '<div class="m10-msg"></div><div class="m10-opcoes"></div>';
+      /* (v69.6: as opções são peça da montagem — só no modo edição elas se movem) */
+      '<div class="m10-msg"></div><div class="m10-opcoes" data-mont="opcoes-quiz-musical"></div>';
     sl.appendChild(cx);
     cx.querySelector('.m10-caixinha').addEventListener('click', () => {
       if (!this.aberto || this.k < this.alvos.length || this.tocando) return;
