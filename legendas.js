@@ -1136,12 +1136,15 @@ var LEGENDAS = {
     [5.96,7.16,"essa de primeira."]
   ],
   "quiz_final": [
-    [0,2.28,"Bem-vindo ao quiz final."],
-    [2.28,7.07,"Para ver melhor a tabela de fundo, você pode mover a caixa de perguntas."],
-    [7.07,8.93,"Escolha sua resposta com calma"],
-    [8.93,12.14,"e clique em Confirmar para ver a próxima questão."],
-    [12.14,14.22,"E você não pode voltar."],
-    [14.22,14.97,"É isso."],
-    [14.97,15.8,"Boa sorte!"]
+    [0,4.45,"Bem-vindo ao quiz final sobre tabela periódica."],
+    [4.45,6.45,"Para consultar melhor a tabela de fundo,"],
+    [6.45,8.99,"basta clicar na caixa de perguntas."],
+    [8.99,13.31,"Se clicar na tela de novo, a caixa com a pergunta volta."],
+    [13.31,15.0,"Escolha sua resposta e clique em Confirmar"],
+    [15.0,17.65,"para ver a próxima questão."],
+    [17.65,21.83,"Escolha com calma, pois você não poderá mudar depois de confirmar."],
+    [21.83,22.58,"É isso!"],
+    [22.58,27.13,"No final, tem um card com sua nota e um relatório sobre sua performance."],
+    [27.13,28.03,"Boa sorte!"]
   ]
 };

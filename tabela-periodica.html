@@ -3633,7 +3633,10 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 @keyframes qfFaisca{0%{transform:translate(0,0) scale(1.3);opacity:1}100%{transform:translate(var(--fx),var(--fy)) scale(0);opacity:0}}
 .quiz-cartao .segue.espera-fala{opacity:.45;cursor:default;filter:grayscale(.4)}
 .quiz-cartao .recado.recado-final{font-size:15px;line-height:1.4;max-width:300px;margin-left:auto;margin-right:auto}
-.slide.final10 .mesa{filter:brightness(.55)}
+.slide.final10 .mesa{filter:brightness(.55);transition:filter .5s ease}
+/* (v68.2: tocada a caixa do quiz geral, ela some e a tabela acende; um toque na tela a traz de volta) */
+.slide.final10.qf-clara .mesa{filter:none}
+.qf-caixa.escondida{opacity:0;transform:translate(-50%,-50%) scale(.92);pointer-events:none}
 /* (o elemento achado: verde, com o número da ordem da nota num selo no canto) */
 .slide.musica10 .mesa .pc.m10-ok .face{background:linear-gradient(145deg,#4FD98A,#1E9E55)!important;box-shadow:0 0 0 2px #7CF5A8, 0 0 14px 4px rgba(46,214,113,.6)}
 .mesa .m10-num{position:absolute;z-index:32;transform:translate(-50%,-50%);min-width:24px;height:24px;padding:0 6px;border-radius:12px;
@@ -5646,7 +5649,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v68.1';
+const VERSAO = 'v68.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25994,11 +25997,12 @@ const QUESTOES_FINAL = [
 const TOPICOS_FINAL = ['', 'O layout geral', 'Os critérios de organização', 'Os grupos e os períodos', 'Metais, ametais e gases nobres',
   'As principais famílias', 'Os grupos A e B', 'Os lantanídeos e actinídeos', 'Naturais, artificiais e radioativos',
   'A tabela e os elétrons de valência', 'A tabela e o diagrama de Pauling'];
-/* (v68.0) a mãozinha da fala de abertura, em segundos do quiz_final.mp3: pousa na alça, aperta,
-   leva a caixa (dx, dy px do palco) e a traz de volta; (v68.1) vai à alternativa certa da
-   questão 0 e a escolhe aos 7 s, vai ao Confirmar e o toca aos 9,8 s, e some */
-const QF_TUTORIAL = { mao:3.0, pega:3.5, vai:[4.0, 4.8], volta:[5.1, 5.9], paraOp:[6.2, 6.85], tocaOp:7.0,
-                      paraConf:[8.7, 9.55], tocaConf:9.8, some:10.5, dx:240, dy:60 };
+/* (v68.2) a mãozinha da fala de abertura, em segundos do quiz_final.mp3. Cada vez que ela
+   aparece: [aparece, toca, some]. Na caixa (a caixa some e a tabela acende); na tela (a caixa
+   volta e a tabela escurece); e na questão 0: chega à alternativa certa (resp: aparece, chega,
+   toca), vai ao Confirmar (conf: sai, chega, toca) e some */
+const QF_TUTORIAL = { caixa:[6.0, 7.0, 7.6], tela:[8.8, 9.2, 9.8],
+                      resp:[13.0, 13.35, 13.5], conf:[14.2, 14.85, 15.0], some:15.5 };
 /* (v68.1) A QUESTÃO 0: de brincadeira, só para a mãozinha mostrar como o quiz funciona — não conta */
 const QF_DEMO = { q:'Este aplicativo trata sobre...',
   ops:['a tabela periódica', 'os planetas do Sistema Solar', 'o corpo humano', 'a história do Brasil'] };
@@ -26036,70 +26040,64 @@ const QUIZFINAL = {
     this.mostra();
     if (this.demo) this.apresenta();
   },
-  /* (v68.0) A FALA DE ABERTURA (quiz_final.mp3), com o quiz travado. No relógio dela: aos 3 s
-     a mãozinha pousa na alça da caixa (e aperta), aos 4 s arrasta a caixa e a traz de volta;
-     (v68.1) depois escolhe a alternativa certa da questão 0 (7 s) e toca o Confirmar (9,8 s):
-     a questão 1 entra, valendo, mas com a caixa escura até a fala acabar; a mão some aos
-     10,5 s. Acabada a fala, o quiz se solta. Pausada a fala (o app fora da tela), a mão e a
-     caixa param com ela. */
+  /* (v68.0) A FALA DE ABERTURA (quiz_final.mp3), com o quiz travado. No relógio dela (v68.2,
+     QF_TUTORIAL): aos 6 s a mãozinha aparece na caixa e aos 7 s a toca — a caixa some e a
+     tabela acende; aos 8,8 s aparece na tela e aos 9,2 s a toca — a caixa volta e a tabela
+     escurece; aos 13 s aparece de novo, aos 13,5 s escolhe a alternativa certa da questão 0
+     e aos 15 s toca o Confirmar: a questão 1 entra, valendo, mas com a caixa escura até a
+     fala acabar. Acabada a fala, o quiz se solta. Pausada a fala (o app fora da tela), a mão
+     para com ela. */
   apresenta(){
-    const cx = this.cx, g = this.g, T = QF_TUTORIAL;
+    const cx = this.cx, g = this.g, T = QF_TUTORIAL, sl = this.sl();
     this.trava = true; cx.classList.add('trava');
     const a = this.fala = new Audio(encodeURI('Audios/quiz_final.mp3'));
     Velocidade.aplicar(a);
     EFEITOS.add(a);
-    const k = fitScale || 1, sl = this.sl();
-    const mx = Math.max(0, (sl.offsetWidth - cx.offsetWidth) / 2 - 8), my = Math.max(0, (sl.offsetHeight - cx.offsetHeight) / 2 - 8);
-    const base = { x:this.dx, y:this.dy };
-    const alvo = { x:Math.max(-mx, Math.min(mx, base.x + T.dx)), y:Math.max(-my, Math.min(my, base.y + T.dy)) };
     const suave = u => u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2;
     const feito = new Set(), uma = nome => !feito.has(nome) && feito.add(nome);
-    /* onde a ponta do dedo encosta (em pixels da tela): a alça (o tracinho no alto da caixa,
-       a 10 px da borda), a alternativa certa e o Confirmar — da caixa da questão 0 */
+    /* onde a ponta do dedo encosta (em pixels da tela), na caixa da questão 0: a pergunta
+       (um toque na caixa, fora dos botões), a alternativa certa e o Confirmar; e a tela,
+       em cima da tabela (à esquerda, no bloco s) */
     const certa = [...cx.querySelectorAll('.qf-op')].find(b => b.textContent === QF_DEMO.ops[0]);
-    const conf = cx.querySelector('.qf-confirma');
-    const alca = () => { const r = cx.getBoundingClientRect(); return { x:r.left + r.width / 2, y:r.top + 11 * k }; };
-    const meio = el => { const r = el.getBoundingClientRect(); return { x:r.left + r.width * .55, y:r.top + r.height * .6 }; };
-    let fixo = null;   /* (depois do Confirmar a caixa sai: a mão fica onde tocou) */
+    const conf = cx.querySelector('.qf-confirma'), perg = cx.querySelector('.qf-q');
+    const meio = (el, fx = .55, fy = .6) => { const r = el.getBoundingClientRect(); return { x:r.left + r.width * fx, y:r.top + r.height * fy }; };
+    const entre = (t, p, q, t0, t1) => { const u = suave(Math.max(0, Math.min(1, (t - t0) / (t1 - t0))));
+      return { x:p.x + (q.x - p.x) * u, y:p.y + (q.y - p.y) * u }; };
+    const fixos = {};   /* (cada ponto medido uma vez, quando a mão aparece: depois a caixa some ou sai) */
+    const fixa = (nome, f) => fixos[nome] || (fixos[nome] = f());
     const ponto = t => {
-      if (fixo) return fixo;
-      const entre = (p, q, [t0, t1]) => { const u = suave(Math.max(0, Math.min(1, (t - t0) / (t1 - t0))));
-        return { x:p.x + (q.x - p.x) * u, y:p.y + (q.y - p.y) * u }; };
-      if (t < T.paraOp[0]) return alca();
-      if (t < T.paraConf[0]) return entre(alca(), meio(certa), T.paraOp);
-      return entre(meio(certa), meio(conf), T.paraConf);
+      if (t >= T.caixa[0] && t < T.caixa[2]) return fixa('caixa', () => meio(perg, .5, .5));
+      if (t >= T.tela[0] && t < T.tela[2]) return fixa('tela', () => meio(sl, .2, .62));
+      if (t >= T.resp[0] && t < T.some){
+        if (t >= T.conf[2]) return fixa('fim', () => meio(conf));
+        const op = meio(certa), de = { x:op.x + 70, y:op.y + 60 };
+        if (t < T.conf[0]) return entre(t, de, op, T.resp[0], T.resp[1]);
+        return entre(t, op, meio(conf), T.conf[0], T.conf[1]);
+      }
+      return null;
     };
     const poeMao = p => { mao.style.left = (p.x - 22) + 'px'; mao.style.top = (p.y - 7) + 'px'; };
     const passo = () => {
       if (g !== this.g || this.fala !== a) return;
-      const t = a.currentTime;
-      let u = 0;
-      if (t >= T.vai[0] && t < T.vai[1]) u = suave((t - T.vai[0]) / (T.vai[1] - T.vai[0]));
-      else if (t >= T.vai[1] && t < T.volta[0]) u = 1;
-      else if (t >= T.volta[0] && t < T.volta[1]) u = 1 - suave((t - T.volta[0]) / (T.volta[1] - T.volta[0]));
-      this.dx = base.x + (alvo.x - base.x) * u; this.dy = base.y + (alvo.y - base.y) * u;
-      if (this.cx) this.cx.style.translate = this.dx.toFixed(1) + 'px ' + this.dy.toFixed(1) + 'px';
-      if (t >= T.mao && t < T.some){
-        if (!this.maoNossa){
-          this.maoNossa = true;
-          limpaMao(); mao.classList.add('mao10');
-          /* (a mão anda pelo relógio da fala: sem a transição do left/top) */
-          mao.style.transition = 'none'; mao.hidden = false; poeMao(ponto(t));
-          void mao.offsetWidth; mao.style.transition = 'opacity .3s ease';
-          mao.classList.add('on');
-        } else poeMao(ponto(t));
-        if (t >= T.pega && uma('pega')) bateMao();
-        if (t >= T.tocaOp && uma('op')){ bateMao(); this.escolhe(certa, true); }
-        if (t >= T.tocaConf && uma('conf')){ bateMao(); fixo = ponto(t); this.demoConfirma(); }
-      }
-      if (t >= T.some && uma('some')) this.tiraMaoNossa();
+      const t = a.currentTime, p = ponto(t);
+      if (p && !this.maoNossa){
+        this.maoNossa = true;
+        limpaMao(); mao.classList.add('mao10');
+        /* (a mão anda pelo relógio da fala: sem a transição do left/top) */
+        mao.style.transition = 'none'; mao.hidden = false; poeMao(p);
+        void mao.offsetWidth; mao.style.transition = 'opacity .3s ease';
+        mao.classList.add('on');
+      } else if (p) poeMao(p);
+      else if (this.maoNossa) this.tiraMaoNossa();
+      if (t >= T.caixa[1] && uma('caixa')){ bateMao(); this.esconde(true); }
+      if (t >= T.tela[1] && uma('tela')){ bateMao(); this.reaparece(); }
+      if (t >= T.resp[2] && uma('resp')){ bateMao(); this.escolhe(certa, true); }
+      if (t >= T.conf[2] && uma('conf')){ bateMao(); this.demoConfirma(); }
       this.quadro = requestAnimationFrame(passo);
     };
     const libera = () => {
       if (this.fala !== a) return;
-      if (g === this.g){ this.dx = base.x; this.dy = base.y; }
       this.paraFala();
-      if (g === this.g && this.cx) this.cx.style.translate = this.dx.toFixed(1) + 'px ' + this.dy.toFixed(1) + 'px';
     };
     a.addEventListener('ended', libera);
     a.addEventListener('error', libera);
@@ -26120,9 +26118,41 @@ const QUIZFINAL = {
     if (a){ a.pause(); EFEITOS.delete(a); }
     this.tiraMaoNossa();
     this.trava = false;
+    this.reaparece();
     /* (a fala acabou antes de a mão confirmar — falhou ou foi cortada: a questão 0 vira a 1) */
     if (this.demo){ this.demo = false; if (this.aberto && this.cx) this.mostra(); }
     if (this.cx) this.cx.classList.remove('trava', 'escura');
+  },
+  /* (v68.2) a caixa some e a tabela acende; um toque em qualquer lugar do slide a traz de volta */
+  esconde(pelaMao){
+    if (!this.cx || this.oculta || (this.trava && !pelaMao)) return;
+    this.oculta = true;
+    this.cx.classList.add('escondida');
+    this.sl().classList.add('qf-clara');
+  },
+  reaparece(){
+    if (!this.oculta) return;
+    this.oculta = false;
+    if (this.cx) this.cx.classList.remove('escondida');
+    this.sl().classList.remove('qf-clara');
+  },
+  /* (o toque que traz a caixa de volta é só dela: não chega à tabela nem ao que estiver por baixo) */
+  ouveVolta(){
+    if (this.ouvindo) return;
+    this.ouvindo = true;
+    const sl = this.sl();
+    let engole = false;
+    sl.addEventListener('pointerdown', ev => {
+      if (!this.aberto || !this.oculta || this.trava) return;
+      ev.stopPropagation(); ev.preventDefault();
+      engole = true;
+      this.reaparece();
+    }, true);
+    sl.addEventListener('click', ev => {
+      if (!engole) return;
+      engole = false;
+      ev.stopPropagation(); ev.preventDefault();
+    }, true);
   },
   /* (v68.1) o Confirmar da questão 0, tocado pela mão: não conta nem toca som; a questão 1
      entra já valendo, mas escura e travada até o fim da fala */
@@ -26186,16 +26216,20 @@ const QUIZFINAL = {
   arrastavel(cx){
     const poe = () => { cx.style.translate = this.dx.toFixed(1) + 'px ' + this.dy.toFixed(1) + 'px'; };
     poe();
-    let x0 = null, y0 = 0, a0 = 0, b0 = 0;
+    let x0 = null, y0 = 0, a0 = 0, b0 = 0, andou = false;
+    this.ouveVolta();
     cx.addEventListener('pointerdown', ev => {
       if (ev.target.closest('button') || this.trava) return;
       ev.stopPropagation();
-      x0 = ev.clientX; y0 = ev.clientY; a0 = this.dx; b0 = this.dy;
+      x0 = ev.clientX; y0 = ev.clientY; a0 = this.dx; b0 = this.dy; andou = false;
       cx.classList.add('arrasta');
       try { cx.setPointerCapture(ev.pointerId); } catch (_) {}
     });
     cx.addEventListener('pointermove', ev => {
       if (x0 === null) return;
+      /* (v68.2: até 8 px é um toque — some a caixa; mais que isso, arrasto) */
+      if (!andou && Math.hypot(ev.clientX - x0, ev.clientY - y0) < 8) return;
+      andou = true;
       const k = fitScale || 1;
       /* (a caixa inteira fica dentro do slide, a 8 px da borda) */
       const mx = Math.max(0, (cx.parentNode.offsetWidth - cx.offsetWidth) / 2 - 8);
@@ -26204,7 +26238,11 @@ const QUIZFINAL = {
       this.dy = Math.max(-my, Math.min(my, b0 + (ev.clientY - y0) / k));
       poe();
     });
-    const solta = () => { x0 = null; cx.classList.remove('arrasta'); };
+    const solta = ev => {
+      const toque = x0 !== null && !andou && ev.type === 'pointerup';
+      x0 = null; cx.classList.remove('arrasta');
+      if (toque && cx === this.cx && this.aberto) this.esconde();
+    };
     cx.addEventListener('pointerup', solta);
     cx.addEventListener('pointercancel', solta);
   },
@@ -26273,6 +26311,7 @@ const QUIZFINAL = {
     this.paraFala();   /* (a fala de abertura é cortada, e a mão sai) */
     const sl = this.sl();
     if (!sl) return;
+    this.oculta = false; sl.classList.remove('qf-clara');
     sl.querySelectorAll('.qf-caixa, .qf-rastro, .quiz-cartao').forEach(e => e.remove());
     this.cx = null;
     /* (o número do cabeçalho volta a ser o 10 — o abre põe o 11 de novo) */
