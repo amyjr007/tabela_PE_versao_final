@@ -4606,15 +4606,8 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
   animation:jogoChama 1.6s ease-in-out infinite}
 #som.saquei.saquei-tocado{background:#27C46B;animation:none;transform:scale(1.08)}
 #stage .solto#som.saquei.saquei-tocado{transform:translate(-50%,-50%) scale(calc(var(--esc,1) * 1.08))}
-/* no meio da tabela, grande: o lugar que o professor deixou na montagem
-   (o centro em 549 × 264, a 2,03). Só o botão do jogo: o play não sai do
-   canto. A legenda "Jogo da memória" sai: no meio da tabela ela caía por
-   cima dos cards, e o botão grande já se explica. */
-#stage #som.jogo{left:549px!important;top:264px!important;right:auto!important;bottom:auto!important;
-  width:70px!important;height:70px!important;translate:none!important;
-  transform:translate(-50%,-50%) scale(2.03)!important}
-#stage #som.jogo:hover{transform:translate(-50%,-50%) scale(2.03) translateY(-2px)!important}
-#stage.jogo-meio #som-dica{display:none!important}
+/* (v68.7: o botão do jogo da memória voltou ao padrão — no canto e no tamanho do play, com a
+   legenda "Jogo da memória"; da v15.6 à v68.6 ele ficava grande, no meio da tabela) */
 @keyframes jogoChama{
   0%,100%{box-shadow:0 12px 30px rgba(32,28,66,.22), 0 0 18px rgba(31,157,85,.5), 0 0 0 0 rgba(31,157,85,.55)}
   55%    {box-shadow:0 12px 30px rgba(32,28,66,.22), 0 0 34px rgba(31,157,85,.8), 0 0 0 16px rgba(31,157,85,0)}
@@ -5700,7 +5693,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v68.6';
+const VERSAO = 'v68.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
