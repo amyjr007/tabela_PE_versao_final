@@ -5636,7 +5636,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v67.7';
+const VERSAO = 'v67.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -26129,9 +26129,13 @@ const QUIZFINAL = {
     }
     const ult = this.i === QUESTOES_FINAL.length - 1;
     const p = this.cx.querySelector('.qf-pe');
-    p.innerHTML = '<button type="button" class="qf-prox">' + (ult ? 'Ver minha nota →' : 'Próxima →') + '</button>';
-    p.querySelector('.qf-prox').addEventListener('click', () => {
-      if (!this.aberto) return;
+    /* (v67.8: o "Próxima" nasce no lugar do Confirmar — chega apagado e só aceita o toque
+       0,9 s depois: um duplo clique, ou o toque contado duas vezes, pulava a correção) */
+    p.innerHTML = '<button type="button" class="qf-prox" disabled>' + (ult ? 'Ver minha nota →' : 'Próxima →') + '</button>';
+    const nb = p.querySelector('.qf-prox'), t0 = performance.now();
+    setTimeout(() => { nb.disabled = false; }, 900);
+    nb.addEventListener('click', () => {
+      if (!this.aberto || nb.disabled || performance.now() - t0 < 900) return;
       if (ult) { this.resultado(); return; }
       this.proxima();
     });
