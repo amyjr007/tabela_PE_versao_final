@@ -5747,7 +5747,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v69.9';
+const VERSAO = 'v70.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25787,7 +25787,13 @@ const MUSICAS_10 = [
   { nome:'Noite feliz', notas:['sol', 'lá', 'sol', 'mi', 'sol', 'lá', 'sol', 'mi'], tempos:[1.5, .5, 1, 2.5, 1.5, .5, 1, 2.5],
     /* (o sol no K — 4s¹ —, o lá no Mn — 3d⁵ —, o mi no Cl — 3p⁵) */
     elementos:{ 'sol':19, 'lá':25, 'mi':17 },
-    outras:['Atirei o pau no gato', 'Brilha, brilha, estrelinha'] }
+    outras:['Atirei o pau no gato', 'Brilha, brilha, estrelinha'] },
+  /* (v70.0) "A canoa virou": a ca-no-a vi-rou, pois dei- — sol sol sol sol fá mi, sol sol
+     (a primeira frase das cifras melódicas, em dó; o "pois dei-" é a anacruse da segunda) */
+  { nome:'A canoa virou', notas:['sol', 'sol', 'sol', 'sol', 'fá', 'mi', 'sol', 'sol'], tempos:[1, 1, 1, 1, 1, 2, 1, 1],
+    /* (o sol no Ga — 4p¹ —, o fá no Mg — 3s² —, o mi no Ni — 3d⁸) */
+    elementos:{ 'sol':31, 'fá':12, 'mi':28 },
+    outras:['Ciranda, cirandinha', 'Noite feliz'] }
 ];
 /* (v69.5) a caixinha de música: a caixa com a tampa aberta, a manivela do lado e uma nota na frente */
 const CAIXINHA_SVG =
@@ -26003,19 +26009,28 @@ const MUSICA10 = {
       this.erros++;
       tocaEfeito('error');
       b.classList.add('errada'); b.disabled = true;
-      this.msg('Não é essa. Ouça de novo e tente outra.', 'erro');
+      this.msg('Não é essa. Toque na caixinha para ouvir de novo e tente outra.', 'erro');
       return;
     }
     b.classList.add('certa');
     this.cx.querySelectorAll('.m10-op').forEach(x => x.disabled = true);
     this.msg('Isso! É "' + this.m.nome + '"!', 'ok');
-    confete(); tocaEfeito('funfare'); tocaEfeito('applause');
-    const g = this.g;
+    /* (v70.0: no acerto, a festa mais baixa e, por cima, a voz: "Perfeito!", "Excelente!" ou
+       "Muito bem!", ao acaso; e entre uma música e a outra, "Próxima!") */
+    confete(); tocaEfeito('funfare', .45); tocaEfeito('applause', .35);
+    const g = this.g, ult = this.i >= MUSICAS_10.length - 1;
+    const elogio = ['perfeito', 'excelente', 'muitobem'][Math.floor(Math.random() * 3)];
     setTimeout(() => {
       if (g !== this.g) return;
-      if (this.i < MUSICAS_10.length - 1) this.monta(this.i + 1);
-      else this.resultado();
-    }, 2600);
+      tocaEfeito(elogio).then(() => {
+        if (g !== this.g) return;
+        if (ult){ setTimeout(() => { if (g === this.g) this.resultado(); }, 700); return; }
+        setTimeout(() => {
+          if (g !== this.g) return;
+          tocaEfeito('proxima').then(() => { if (g === this.g) this.monta(this.i + 1); });
+        }, 500);
+      });
+    }, 350);
   },
   resultado(){
     const n = this.total, e = Math.min(this.erros, n), nota = Math.round((n - e) / n * 100) / 10;
