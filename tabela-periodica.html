@@ -5244,6 +5244,9 @@ html.celular.palco-largo #stage.no-slide9 #ver-slides{translate:146px -2px}
 /* no slide 11 (a mesa mais acima, com as séries embaixo), o lugar da montagem:
    o centro em 1200, 47, a 0,81 */
 #stage.no-slide11 #ver-slides{translate:-5px -33px;scale:.81}
+/* (v70.9) e no celular, o lugar da montagem — o centro em 1345, 40, na faixa da direita — e 10 %
+   maior (0,81 × 1,1). O lugar de sempre tem o centro em 1205, 80 */
+html.celular.palco-largo #stage.no-slide11 #ver-slides{translate:140px -40px;scale:.891}
 /* com o carrossel aberto, os botões do palco saem de cena */
 #stage.em-carrossel #som, #stage.em-carrossel #som-dica, #stage.em-carrossel #vel,
 #stage.em-carrossel #ver-slides{opacity:0;pointer-events:none;transition:opacity .2s}
@@ -5776,7 +5779,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v70.8';
+const VERSAO = 'v70.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
