@@ -3559,7 +3559,8 @@ html.celular .slide.quiz10c:not(.parte2q10b, .final10, .musica10) .mesa[data-sli
 .m10-nota.soa{animation:soa10 .45s ease-out}
 @keyframes soa10{40%{transform:translateY(-8px) scale(1.12);background:rgba(255,212,59,.45)}}
 /* (v69.7) com as opções da música na tela, a tabela de fundo escurece (em fade), e as opções ficam em evidência */
-.slide.musica10 .mesa{transition:filter .5s ease}
+/* (v71.0: no quiz musical — a 10.7.8 e o jogo —, a tabela desce 75 % de um cartão: 0,75 × 62 px) */
+.slide.musica10 .mesa{transition:filter .5s ease, translate .6s ease;translate:0 46.5px}
 .slide.musica10.m10-pergunta .mesa{filter:brightness(.3) saturate(.6)}
 /* (v70.1) a troca dos subníveis entre as músicas: os velhos sobem um fio e somem; os novos descem de cima */
 .m10-nota.m10-sai{animation:m10Sai .38s ease-in forwards}
@@ -4733,6 +4734,16 @@ html.celular .mesa.cel-compacta:not(.com-massa) .pc:not(.eleito) .face b{padding
 /* fora da capa, no Chromebook (e em toda a tela que não é de celular), o
    lugar que o professor deixou na montagem: o centro em 1213 × 675 */
 html:not(.celular) #stage:not(.na-capa) #som{right:32px;bottom:10px}
+/* (v71.0) o "Pular tutorial" da "10.7.8": no lugar do play, uma pílula verde da altura dele */
+#pula-tutorial{position:absolute;right:26px;bottom:22px;z-index:12;height:70px;padding:0 26px;border-radius:36px;
+  border:2px solid #7CF5A8;background:#1F9D55;color:#fff;font:700 18px var(--display);cursor:pointer;
+  display:none;align-items:center;box-shadow:0 12px 30px rgba(0,0,0,.35);transition:filter .2s, transform .2s}
+#pula-tutorial:hover{filter:brightness(1.08);transform:translateY(-2px)}
+html:not(.celular) #pula-tutorial{right:32px;bottom:10px}
+html.celular #pula-tutorial{height:77px;font-size:20px}
+html.palco-largo #pula-tutorial{translate:var(--folga) 0}
+html.palco-alto #pula-tutorial{translate:0 var(--folgav)}
+#stage.com-pula108 #pula-tutorial{display:flex}
 /* PARADO, ELE CHAMA. Um brilho que respira e um anel que se abre e se
    desfaz: é ali que a aula começa, e quem nunca viu esta tela precisa
    de o descobrir. A tocar, cala-se — já foi encontrado. */
@@ -5779,7 +5790,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v70.9';
+const VERSAO = 'v71.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25960,7 +25971,26 @@ const MUSICA10 = {
   /* a nota da vez acesa; as já tocadas, verdes */
   /* (v65.9: durante a "10.7.8", dos 8,5 aos 18 s, elementos ao acaso piscam, cada um com uma nota bem baixinha —
      só tocando de seguida; um salto para trás recomeça a conta) */
+  /* (v71.0) O "PULAR TUTORIAL": durante a "10.7.8" (a explicação do quiz musical), no lugar do
+     play; tocado, a fala pára e a música 1 entra na hora */
+  pulaBt(){
+    if (this.btPula) return this.btPula;
+    const b = this.btPula = document.createElement('button');
+    b.type = 'button'; b.id = 'pula-tutorial'; b.textContent = 'Pular tutorial ⏭';
+    b.addEventListener('click', () => {
+      if (naMontagem() || atual !== 10 || trilhaAtual !== '10.7.8' || !this.aberto || this.cx) return;
+      som.pause();
+      stage.classList.remove('com-pula108');
+      this.monta(0);
+    });
+    stage.appendChild(b);
+    return b;
+  },
   tickFala(t){
+    /* (o "Pular tutorial" à vista enquanto a "10.7.8" é a trilha e a música 1 ainda não entrou) */
+    const pula = atual === 10 && trilhaAtual === '10.7.8' && this.aberto && !this.cx && !naMontagem();
+    if (pula) this.pulaBt();
+    if (pula !== stage.classList.contains('com-pula108')) stage.classList.toggle('com-pula108', pula);
     const de = atual === 10 && trilhaAtual === '10.7.8' && !som.paused && !naMontagem();
     if (!de || t < 8.5 || t >= 18){ if (!de || t < 8.5) this.prox108 = 8.5; return; }
     if (this.ult108 !== undefined && t < this.ult108 - .5) this.prox108 = t;
@@ -26143,6 +26173,7 @@ const MUSICA10 = {
     sl.classList.remove('m10-pergunta');
     this.cx = null;
     this.limpaElementos();
+    stage.classList.remove('com-pula108');
     if (reabre) return;
     stage.classList.remove('sem-play-m10');
     sl.classList.remove('musica10');
@@ -30492,9 +30523,10 @@ const NAV_TOPICOS = [
     salto:['10.7.6', 0],
     entra(v, g){ saltaPara10('10.7.6', g); } },
   /* o quiz musical direto: a mesa como no fim da 10.7.3 (limpa, sem a demonstração), a sala escura e o jogo */
-  { titulo:'Quiz musical', sub:'o quiz musical direto: as notas pelos subníveis e a música', slide:10, quiz:'q10m',
-    salto:['10.7.3', 24.5, true],
-    entra(v, g){ QUIZ10C.jaAbriu = true; saltaPara10('10.7.3', g, 24.5, () => { QUIZ10C.jaAbriu = true; QUIZ10C.escurece(); MUSICA10.abre(); }); } },
+  /* (v71.0: o quiz musical pelo sumário vai à "10.7.8" — a explicação, com o "Pular tutorial" no lugar do play) */
+  { titulo:'Quiz musical', sub:'a 10.7.8: a explicação e o quiz musical', slide:10, quiz:'q10m',
+    salto:['10.7.8', 0, true],
+    entra(v, g){ QUIZ10C.jaAbriu = true; saltaPara10('10.7.8', g, 0, () => { QUIZ10C.jaAbriu = true; MUSICA10.abre({ fala:'10.7.8' }); }); } },
   /* o quiz geral direto (o quiz final: 20 questões, duas de cada tópico): a sala escura */
   /* (v67.5: é o capítulo 11 do sumário — cap11 —, e não um subtópico do 10) */
   /* (v67.7: a mesa é a do começo do tópico 10 — a trilha "10" parada no 0; o QUIZFINAL.abre escurece a sala) */
