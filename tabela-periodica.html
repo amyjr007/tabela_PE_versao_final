@@ -4546,14 +4546,15 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 .mesa.plana .pc .face.f1{transform:scale(var(--plano,1.05))}
 .pc.desordem{transition:left 90ms linear, top 90ms linear,
   transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease}
-/* (v68.9, v69.1) SÓ NO CELULAR, NO TÓPICO 2: da desordem até o fim do tópico (.cel-compacta),
-   todos os cartões perdem a massa, e o espaço dela vai para o resto: o número atômico cresce
-   --num-cel (2 px) e desce um fio, o símbolo fica no meio do que sobrou e o nome encosta
-   embaixo. Em teste: quando o tamanho estiver bom, vale para os outros tópicos também. */
-html.celular .mesa[data-slide="2"]{--num-cel:3.5px}   /* (v69.2: 2 px + 1,5 px) */
-html.celular .mesa[data-slide="2"].cel-compacta .pc .face u{display:none}
-html.celular .mesa[data-slide="2"].cel-compacta .pc .face i{font-size:calc((9.5px + var(--num-cel)) * var(--k,1));margin-top:calc(1px * var(--k,1))}
-html.celular .mesa[data-slide="2"].cel-compacta .pc .face b{padding-bottom:calc(2px * var(--k,1))}
+/* (v68.9 → v69.3) OS CARTÕES COMPACTOS DO CELULAR: com a mesa em .cel-compacta, os cartões
+   perdem a massa, e o espaço dela vai para o resto: o número atômico cresce --num-cel e desce
+   um fio, o símbolo fica no meio do que sobrou e o nome encosta embaixo. Em todos os tópicos
+   (no 2, da desordem em diante). Ficam com a massa: o elemento escolhido da "1.2" (.eleito, que
+   a narração explica, massa inclusive) e a mesa com .com-massa (a questão 4 do quiz geral). */
+html.celular .mesa{--num-cel:3.5px}   /* (v69.2: 2 px + 1,5 px) */
+html.celular .mesa.cel-compacta:not(.com-massa) .pc:not(.eleito) .face u{display:none}
+html.celular .mesa.cel-compacta:not(.com-massa) .pc:not(.eleito) .face i{font-size:calc((9.5px + var(--num-cel)) * var(--k,1));margin-top:calc(1px * var(--k,1))}
+html.celular .mesa.cel-compacta:not(.com-massa) .pc:not(.eleito) .face b{padding-bottom:calc(2px * var(--k,1))}
 /* o clarão da desordem, o do professor */
 .clarao2{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;
   background:radial-gradient(ellipse 70% 60% at 50% 55%,rgba(255,255,255,.9),rgba(255,255,255,0) 72%)}
@@ -5702,7 +5703,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v69.2';
+const VERSAO = 'v69.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6162,7 +6163,10 @@ function montaTabela(i){
   mesa.className = 'mesa' + (i === 3 || i === 5 || i === 8 ? ' lisa' : '') + (i === 4 ? ' tipos' : '')
                  + (i === 6 || i === 7 || i === 9 ? ' grupos' : '') + (i === 7 ? ' series8' : '')
                  + (comSeries ? ' natureza' : '') + (i === 9 ? ' valencia' : '')
-                 + (i === 10 ? ' blocos' : '');   /* o slide 11: os blocos s, p, d e f */
+                 + (i === 10 ? ' blocos' : '')    /* o slide 11: os blocos s, p, d e f */
+                 /* (v69.3: os cartões compactos do celular em todos os tópicos; no 2 só da desordem
+                    em diante — o tique dele põe e tira a classe) */
+                 + (i !== 2 ? ' cel-compacta' : '');
   mesa.dataset.slide = i;      /* o CSS de um slide só pega na mesa por aqui */
   mesa.style.setProperty('--L', LADO + 'px');
   mesa.style.setProperty('--H', (LADO/2) + 'px');
@@ -26338,6 +26342,10 @@ const QUIZFINAL = {
   },
   /* (v68.6) os elementos citados na questão: marcados na mesa a cada questão, mas o destaque
      só aparece com a caixa escondida e a tabela acesa (o CSS de .qf-clara .qf-cita) */
+  comMassa(sim){
+    const m = this.sl().querySelector('.mesa');
+    if (m) m.classList.toggle('com-massa', sim);
+  },
   marcaCitados(el){
     const m = this.sl().querySelector('.mesa');
     if (!m) return;
@@ -26472,6 +26480,8 @@ const QUIZFINAL = {
     const d = this.demo, Q = d ? QF_DEMO : QUESTOES_FINAL[this.i], ops = embaralha(Q.ops.slice()), n = QUESTOES_FINAL.length;
     this.respondida = false; this.escolhida = null;
     this.marcaCitados(d ? null : Q.el);
+    /* (v69.3: no celular os cartões ficam sem a massa — menos na questão 4, que fala das massas) */
+    this.comMassa(!d && this.i === 3);
     const pc = k => (Math.max(0, k) / n * 100).toFixed(1) + '%';
     this.cx.innerHTML =
       (d ? '<div class="qf-topo"><span class="qf-marca">Questão 0</span><span class="qf-topico">Só para mostrar como funciona</span>' +
@@ -26618,6 +26628,7 @@ const QUIZFINAL = {
     if (!sl) return;
     this.oculta = false; sl.classList.remove('qf-clara');
     this.marcaCitados(null);
+    this.comMassa(false);
     sl.querySelectorAll('.qf-caixa, .qf-rastro, .qf-relatorio, .quiz-cartao').forEach(e => e.remove());
     this.cx = null;
     /* (o número do cabeçalho volta a ser o 10 — o abre põe o 11 de novo) */
