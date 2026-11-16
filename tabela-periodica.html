@@ -5693,7 +5693,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v68.7';
+const VERSAO = 'v68.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6767,8 +6767,9 @@ const VIDA = {
     this.ligada = true;
     this.marcaCubo(700);
     this.marcaFamilia(1300);
-    /* nos slides 6, 7 e 9, sem a cruz das coordenadas (a linha e a coluna destacadas) */
-    if (atual !== 5 && atual !== 6 && atual !== 8) this.marcaCruz(5200);
+    /* nos slides 6, 7 e 9, sem a cruz das coordenadas (a linha e a coluna destacadas);
+       (v68.8) nem nos tópicos 1 e 2 */
+    if (![1, 2, 5, 6, 8].includes(atual)) this.marcaCruz(5200);
   },
   desliga(){
     /* a cruz só é apagada se era dela (a vida estava ligada): a da
