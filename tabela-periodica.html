@@ -3560,6 +3560,11 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
   background:#F6F3FF;color:var(--tinta);border-radius:22px;padding:22px 28px 20px;box-shadow:0 24px 60px rgba(0,0,0,.55);
   font-family:var(--display);opacity:0;transition:opacity .35s ease, transform .35s ease;pointer-events:auto}
 .qf-caixa.on{opacity:1;transform:translate(-50%,-50%)}
+/* (v67.6: a caixa se arrasta — pelo fundo, não pelos botões; o tracinho no alto é a alça) */
+.qf-caixa{cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.qf-caixa.arrasta{cursor:grabbing;transition:opacity .35s ease}
+.qf-caixa::before{content:'';position:absolute;left:50%;top:8px;width:46px;height:5px;margin-left:-23px;border-radius:3px;background:rgba(60,50,110,.22)}
+.qf-caixa button{cursor:pointer}
 .qf-topo{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px}
 .qf-marca{font:600 12px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:#C47A12}
 .qf-topico{color:rgba(32,28,66,.65);font-weight:600}
@@ -4118,6 +4123,8 @@ body.montagem .foto5{opacity:1;pointer-events:auto}
 .slide:is(.quiz4-aberto, .quiz-cabeca) .tira > .regua{left:1069px;top:42px}      /* x 1149, y 52 */
 .slide:is(.quiz4-aberto, .quiz-cabeca) .tira > .num  {left:-13px;top:33px}       /* x   67, y 43 */
 .slide:is(.quiz4-aberto, .quiz-cabeca) .tira > .title{left:61px;top:34px}        /* x  141, y 44: "Quiz" */
+/* (v67.6: no quiz geral — o tópico 11 — o título começa logo depois do "11", sem cobrir o número) */
+.slide.final10.quiz-cabeca .tira > .title{left:20px;transform:translate(0,-50%)}
 .slide:is(.quiz4-aberto, .quiz-cabeca) .tira > .subtitle{opacity:0;visibility:hidden}
 /* as letras do título a transformarem-se (transformaLetras) */
 .tira .letra{display:inline-block;white-space:pre;transition:opacity .24s ease, transform .24s cubic-bezier(.3,1.4,.5,1)}
@@ -5598,7 +5605,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v67.5';
+const VERSAO = 'v67.6';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25965,8 +25972,37 @@ const QUIZFINAL = {
     const cx = this.cx = document.createElement('div');
     cx.className = 'qf-caixa';
     sl.appendChild(cx);
+    this.arrastavel(cx);
     cx.getBoundingClientRect(); cx.classList.add('on');
     this.mostra();
+  },
+  /* (v67.6: o aluno arrasta a caixa para ver a tabela atrás; ela fica onde foi posta
+     nas questões seguintes e no Refazer, e volta ao meio quando o quiz fecha) */
+  dx:0, dy:0,
+  arrastavel(cx){
+    const poe = () => { cx.style.translate = this.dx.toFixed(1) + 'px ' + this.dy.toFixed(1) + 'px'; };
+    poe();
+    let x0 = null, y0 = 0, a0 = 0, b0 = 0;
+    cx.addEventListener('pointerdown', ev => {
+      if (ev.target.closest('button')) return;
+      ev.stopPropagation();
+      x0 = ev.clientX; y0 = ev.clientY; a0 = this.dx; b0 = this.dy;
+      cx.classList.add('arrasta');
+      try { cx.setPointerCapture(ev.pointerId); } catch (_) {}
+    });
+    cx.addEventListener('pointermove', ev => {
+      if (x0 === null) return;
+      const k = fitScale || 1;
+      /* (a caixa inteira fica dentro do slide, a 8 px da borda) */
+      const mx = Math.max(0, (cx.parentNode.offsetWidth - cx.offsetWidth) / 2 - 8);
+      const my = Math.max(0, (cx.parentNode.offsetHeight - cx.offsetHeight) / 2 - 8);
+      this.dx = Math.max(-mx, Math.min(mx, a0 + (ev.clientX - x0) / k));
+      this.dy = Math.max(-my, Math.min(my, b0 + (ev.clientY - y0) / k));
+      poe();
+    });
+    const solta = () => { x0 = null; cx.classList.remove('arrasta'); };
+    cx.addEventListener('pointerup', solta);
+    cx.addEventListener('pointercancel', solta);
   },
   mostra(){
     const Q = QUESTOES_FINAL[this.i], ops = embaralha(Q.ops.slice());
@@ -26034,6 +26070,7 @@ const QUIZFINAL = {
     /* (o número do cabeçalho volta a ser o 10 — o abre põe o 11 de novo) */
     const nn = sl.querySelector('.tira .num'); if (nn) nn.textContent = TOPICO_11.slide;
     if (reabre) return;
+    this.dx = this.dy = 0;   /* (a caixa volta ao meio da próxima vez) */
     stage.classList.remove('sem-play-m10');
     sl.classList.remove('final10');
     if (window.MUSICA10) MUSICA10.fecha();

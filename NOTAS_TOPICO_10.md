@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v67.5** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
+Onde paramos: **v67.6** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
 
 ## Para retomar (o que está em aberto em 2026-11-16)
 
@@ -263,6 +263,7 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v66.3:** na 10.7.6, aos 16 s o n do "n − 2" vira 7 (azul): "7 − 2"; aos 19 s, o 5 vermelho. A bolinha 7 da série e a fórmula são medidas quando a bolinha aparece (antes, pelo sumário, eram medidas com a mesa ainda chegando e ficavam fora da tela).
 - **v66.5:** no quiz musical (a 10.7.8 e o jogo) e no quiz geral, a tabela volta a ficar sem os lantanídeos e actinídeos, no lugar da 10.6 (`abreF107` dá falso); os elementos que piscam na 10.7.8 não são das séries.
 - **v66.6–v66.7:** na 10.6, aos 9 s (por 2 s), os blocos s e p crescem 7 % e brilham, com o halo de cada bloco (`cresceSP106`; os halos são refeitos na hora, e a 10.5.1 refaz os seus se foram medidos noutra narração); a tela escura da regra tem o título "Elementos Representativos (s ou p)". Na 10.6.1, sem as pulsações na chegada das setas: ficam as dos 11 s (bolinha do 3) e 12,3 s (etiqueta s²) e o revezamento do fim.
+- **v67.6:** no quiz geral a caixa das questões se arrasta (pelo fundo, não pelos botões; o tracinho no alto é a alça), sempre inteira dentro do slide; fica onde foi posta nas questões seguintes e no Refazer, e volta ao meio quando o quiz fecha (`QUIZFINAL.arrastavel`, `dx`/`dy`). No cabeçalho do quiz geral o título começa logo depois do "11" (antes o cobria).
 - **v67.5 — o tópico 11:** o quiz geral deixou de ser o "v" do tópico 10 e virou o **tópico 11** (`TOPICO_11`), só com ele. Não é um slide novo: mora no slide 11, sobre a mesa do 10. No sumário é o capítulo "11. Quiz geral" (o item do NAV_TOPICOS tem `cap11:true` e fica fora da lista do 10); no carrossel é o cartão depois do último slide (`CAR.N11`, "11 / 11"; a foto é `Imagens/slides/pc-11.webp` e `cel-11.webp` — `node ferramentas/gera-miniaturas.mjs 11`); com o quiz aberto o cabeçalho mostra 11 (`no11()`). Do cartão 11 para o 10 no carrossel, o tópico 10 recomeça. A régua de quadradinhos do alto continua com os 10 slides.
 - **v67.4:** na 10.7.1 (o Fe), sem as pulsações na chegada das setas (6,9 s e 8,4 s): a bolinha do 4 pulsa aos 24 s e aos 28 s, a etiqueta d⁶ aos 25,9 s e aos 29 s (`T1071.piscaL`, `piscaC`). O 3 vermelho continua pulsando aos 24,9 s.
 - **v67.3:** durante a 10.6.3.1 o play sai da tela (classe `sem-play10631` no `#stage`, posta no `tick1064` e tirada no `fora`).
