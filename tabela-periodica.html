@@ -3399,7 +3399,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .mesa.so1051 .card101.gig107.on107, .mesa .card101.gig107.on107{opacity:1!important;scale:1.0125}
 .veu107, .veu1070{flex-direction:column;gap:14px}
 .veu106 .tit106{margin:0 0 18px;font-family:var(--display);font-weight:700;font-size:48px;letter-spacing:-.015em;color:var(--ouro-luz)}
-.veu107 .tit107{margin:0 0 18px;font-family:var(--display);font-weight:700;font-size:52px;letter-spacing:-.015em;color:var(--ouro-luz)}
+:is(.veu107, .veu1070) .tit107{margin:0 0 18px;font-family:var(--display);font-weight:700;font-size:52px;letter-spacing:-.015em;color:var(--ouro-luz)}
 .veu107 .lin107, .veu1070 .regra1070{margin:0;font-family:var(--display);font-weight:600;font-size:38px;line-height:1.25;color:#F4F2F8;text-align:center}
 .veu107 .lin107{opacity:0;transition:opacity .3s ease}
 .veu107 .lin107.on{opacity:1}
@@ -5588,7 +5588,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v66.9';
+const VERSAO = 'v67.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24103,7 +24103,7 @@ const CARDS101 = {
         LINHAS_107.map((x, k) => '<p class="lin107' + (k === 2 ? ' amarela107' : '') + '"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p>').join('') +
         '<div class="toque-continuar">Toque na tela</div></div>');
       /* a tela escura da regra do bloco d */
-      sl.insertAdjacentHTML('beforeend', '<div class="veu veu1070" aria-live="polite"><p class="regra1070"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p>' +
+      sl.insertAdjacentHTML('beforeend', '<div class="veu veu1070" aria-live="polite"><h2 class="tit107">Elementos de transição externa (bloco d)</h2><p class="regra1070"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p>' +
         '<div class="toque-continuar">Toque na tela</div></div>');
       this.veu107 = sl.querySelector('.veu107');
       this.lin107 = [...this.veu107.querySelectorAll('.lin107')];
