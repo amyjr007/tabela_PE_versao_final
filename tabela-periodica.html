@@ -4545,6 +4545,12 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
 .mesa.plana .pc .face.f1{transform:scale(var(--plano,1.05))}
 .pc.desordem{transition:left 90ms linear, top 90ms linear,
   transform var(--tsobe,.42s) var(--e-salto), filter var(--tsobe,.42s) ease}
+/* (v68.9) SÓ NO CELULAR, NO TÓPICO 2: os cartões desorganizados perdem a massa e o número
+   atômico cresce --num-cel (2 px), para ler na tela pequena. Em teste: quando o tamanho
+   estiver bom, vale para os outros tópicos também. */
+html.celular .mesa[data-slide="2"]{--num-cel:2px}
+html.celular .mesa[data-slide="2"] .pc.desordem .face u{display:none}
+html.celular .mesa[data-slide="2"] .pc.desordem .face i{font-size:calc((9.5px + var(--num-cel)) * var(--k,1))}
 /* o clarão da desordem, o do professor */
 .clarao2{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;
   background:radial-gradient(ellipse 70% 60% at 50% 55%,rgba(255,255,255,.9),rgba(255,255,255,0) 72%)}
@@ -5693,7 +5699,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v68.8';
+const VERSAO = 'v68.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
