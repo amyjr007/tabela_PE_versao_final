@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v66.3** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v66.4** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -244,7 +244,7 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 
 - **Cartão do quiz 3:** Refazer e **"Pra fechar"** (no lugar do "Quiz ♪"): a sala clareia e toca a **10.7.5**.
 - **10.7.5** (34,5 s): 2 s a tabela abre de novo — os lantanídeos e actinídeos embaixo, com as etiquetas f¹…f¹⁴, no lugar aberto do fim da 10.5 (`abreF107`: sem `pos106` e sem `fOculto107`; classe `f1075` para deslizar); 9 s digita "n − 1" no alto; 10 s apaga o 1; 11 s o 2 (vermelho); 20 s as exceções ao diagrama de Pauling entre os lantanídeos e actinídeos apagam em fade (`EXCECOES_10`, v65.8 só elas: La, Ce, Gd, Ac, Th, Pa, U, Np, Cm, Lr; ficam apagadas até a 10.7.7); com a tabela aberta de novo (`f1075`), as etiquetas do f sobem 12 px e as séries descem 12 px. No fim, "Bora" → 10.7.6.
-- **10.7.6** (36,8 s): 1 s o Pu brilha; 4,5 s o lugar dos actinídeos (o 89–103 do 3B) em vermelho; 6,7 s uma bolinha azul "7" ao lado da série de baixo; 8,7 s seta do Pu até ela; 10 s seta até o f⁵; 13,8 s "n − 2" ao lado da bolinha (as setas recolhem); 19 s o 5 vermelho; 23 s seta até o 5 (e "Subnível mais energético: 5" no alto); 25 s seta até o f⁵ (e o f⁵); 26 s o 5f⁵ cresce, com festa, e as setas recolhem. (v66.2: o áudio regravado já diz 5f⁵; a estrutura é a mesma, ±0,3 s.) 29,7 s pausa de 1 s; a sala apaga, cabeçalho "Quiz", e a pergunta digitada até 34 s: "Toque no elemento cujo subnível mais energético é o 4f³" — o **Nd** (z 60, a coluna do f³). Erro: som, a carta treme e a mensagem com o subnível do tocado. Acerto: festa e, 3 s depois, a sala clareia e toca a **10.7.7**.
+- **10.7.6** (36,8 s): 1 s o Pu brilha; 4,5 s o lugar dos actinídeos (o 89–103 do 3B) em vermelho; 6,7 s uma bolinha azul "7" ao lado da série de baixo; 8,7 s seta do Pu até ela; 10 s seta até o f⁵; 13,8 s "n − 2" ao lado da bolinha (as setas recolhem); 19 s o 5 vermelho; 23 s seta até o 5 (e "Subnível mais energético: 5" no alto); 25 s seta até o f⁵ (e o f⁵); 26 s o 5f⁵ cresce, com festa, e as setas recolhem. (v66.2: o áudio regravado já diz 5f⁵; a estrutura é a mesma, ±0,3 s.) 29,7 s a sala apaga (v66.4: a pausa é aos 27,6 s, de 1,5 s), cabeçalho "Quiz", e a pergunta digitada até 34 s: "Toque no elemento cujo subnível mais energético é o 4f³" — o **Nd** (z 60, a coluna do f³). Erro: som, a carta treme e a mensagem com o subnível do tocado. Acerto: festa e, 3 s depois, a sala clareia e toca a **10.7.7**.
 - **10.7.7** (12,1 s): no fim, o botão verde **"Quiz ♪"** → a sala apaga, cabeçalho "Quiz ♪", e toca a **10.7.8** (40,4 s, a explicação do quiz musical); no fim dela, a música 1.
 - O quiz musical segue como antes; o cartão dele leva ao quiz geral (com a fala 10.7final).
 - **v65.9:** na 10.7.8, dos 8,5 aos 18 s, um elemento ao acaso pisca a cada 0,55–0,95 s, cada um com uma nota bem baixinha (18 % do volume das notas do jogo) — `MUSICA10.tickFala`, só tocando de seguida.
