@@ -1,10 +1,10 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v66.8** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
+Onde paramos: **v66.9** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
 
 ## Para retomar (o que está em aberto em 2026-11-16)
 
-- **Áudio novo ainda sem uso:** `Audios/audio_tabela_10.6.3.1.mp3` está na pasta, fora do Git e sem lugar no código — esperar o professor dizer onde ele entra.
+- **Demonstração do quiz 2 (10.6.3.1):** o professor pediu "aos 4,3 s destaca o Fe", mas ficou o **Al** (3p¹), porque o quiz 2 é só dos representativos e a regra do d (n − 1) ainda não foi dada. Se ele confirmar o Fe, trocar em `tick1064` (`al1064`, a linha da demonstração `d1064` e o card).
 - **Altura das séries pelo sumário:** dentro do slide (recomeço no mesmo slide), as séries de baixo ficam 14 px mais altas do que vindo de outro slide (ver o aviso na seção do sumário). Não corrigido; o professor ainda não pediu.
 - **Química do bloco f:** a tela segue a contagem pela coluna da série (Pu = 5f⁵, Nd = 4f³); pelo diagrama seriam 5f⁶ e 4f⁴. O professor escolheu a da coluna.
 - **Quiz musical:** as notas de "Atirei o pau no gato" foram escritas de memória — conferir no ouvido se o professor reclamar.
@@ -30,7 +30,7 @@ Onde paramos: **v66.8** (2026-11-16). Este arquivo serve para retomar o trabalho
 
 ## A cadeia de narrações (`ORDEM_10`)
 
-`10 → 10.1 → 10.2 → 10.2.1 → 10.3 → 10.3.1 → 10.4 → 10.4.1 → 10.5 → 10.5.1 → 10.5.1.2 → (quiz) → 10.5.3 → 10.6 → 10.6.1 → 10.6.1.1 → 10.6.2`
+`10 → 10.1 → 10.2 → 10.2.1 → 10.3 → 10.3.1 → 10.4 → 10.4.1 → 10.5 → 10.5.1 → 10.5.1.2 → (quiz) → 10.5.3 → 10.6 → 10.6.1 → 10.6.1.1 → 10.6.2 → 10.6.3 → 10.6.3.1 → (quiz 2) → 10.7 …`
 
 | Narração | O que acontece | Como passa para a próxima |
 |---|---|---|
@@ -263,4 +263,5 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v66.3:** na 10.7.6, aos 16 s o n do "n − 2" vira 7 (azul): "7 − 2"; aos 19 s, o 5 vermelho. A bolinha 7 da série e a fórmula são medidas quando a bolinha aparece (antes, pelo sumário, eram medidas com a mesa ainda chegando e ficavam fora da tela).
 - **v66.5:** no quiz musical (a 10.7.8 e o jogo) e no quiz geral, a tabela volta a ficar sem os lantanídeos e actinídeos, no lugar da 10.6 (`abreF107` dá falso); os elementos que piscam na 10.7.8 não são das séries.
 - **v66.6–v66.7:** na 10.6, aos 9 s (por 2 s), os blocos s e p crescem 7 % e brilham, com o halo de cada bloco (`cresceSP106`; os halos são refeitos na hora, e a 10.5.1 refaz os seus se foram medidos noutra narração); a tela escura da regra tem o título "Elementos Representativos (s ou p)". Na 10.6.1, sem as pulsações na chegada das setas: ficam as dos 11 s (bolinha do 3) e 12,3 s (etiqueta s²) e o revezamento do fim.
+- **v66.9 — a 10.6.3 dividida:** o áudio da 10.6.3 foi cortado aos 22,5 s (termina em "E agora, deu para entender?"; a festa do 6s¹ acaba aos 22 s). 1,5 s depois toca sozinha a **10.6.3.1** (12,1 s: "Bora testar pra ver, fazendo um quiz expresso? Eu destaco um elemento…"). Na 10.6.3.1: 1 s a sala apaga e o cabeçalho vira "Quiz 2"; 4,3 s o Al acende; 5 s a mãozinha aparece no meio; 6,2 s ela toca a bolinha do 3 (e digita "Subnível mais energético: 3"); 8 s toca o card p¹ (aplausos e confetes); 9,1 s ela sai e os dois ficam verdes; no fim, 1,5 s depois, o quiz 2. No código, o `tick1064` cuida das duas: na 10.6.3.1 o tempo é `P2_1064` (24) + t, e os tempos da demonstração em `T1064` são `P2_1064 + x`.
 - **v66.8:** no iodo e no Cs, como no Mg, sem as pulsações na chegada das setas. Iodo: a bolinha do 5 pulsa aos 20 s e a etiqueta p⁵ aos 21,5 s. Cs: o Cs brilha aos 2 s; a bolinha do 6 pulsa aos 9,4 s e aos 16 s, a etiqueta s¹ aos 11 s e aos 17,6 s.

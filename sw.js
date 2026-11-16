@@ -202,6 +202,7 @@ const CASCA = [
   './Audios/audio_tabela_10.6.1.1.mp3',
   './Audios/audio_tabela_10.6.2.mp3',
   './Audios/audio_tabela_10.6.3.mp3',
+  './Audios/audio_tabela_10.6.3.1.mp3',
   './Audios/audio_tabela_10.6.4.mp3',
   './Audios/audio_tabela_10.7.mp3',
   './Audios/audio_tabela_10.7.0.mp3',

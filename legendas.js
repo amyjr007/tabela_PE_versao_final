@@ -228,8 +228,12 @@ var LEGENDAS = {
     [2.98,8.93,"Veja só: ele está no sexto período, na primeira coluna do bloco s."],
     [8.93,13.0,"Sexto período, primeira coluna do bloco s."],
     [13.0,19.99,"O subnível mais energético, então, é o 6s… 1. 6s¹."],
-    [20.85,23.82,"E agora, deu para entender? Vamos fazer o seguinte:"],
-    [23.82,32.08,"eu destaco um elemento na tabela e você clica na camada e no card da coluna do subnível mais energético dele, tá bom?"]
+    [20.85,22.3,"E agora, deu para entender?"]
+  ],
+  "audio_tabela_10.6.3.1": [
+    [0,3.38,"Bora testar pra ver, fazendo um quiz expresso?"],
+    [4.35,8.0,"Eu destaco um elemento na tabela e você clica no botão da camada"],
+    [8.0,11.9,"e no card da coluna do subnível mais energético dele, tá bom?"]
   ],
   "audio_tabela_10.6.4": [
     [0,1.72,"Tá, agora vai ser o oposto."],

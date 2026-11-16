@@ -5588,7 +5588,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v66.8';
+const VERSAO = 'v66.9';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -6931,7 +6931,8 @@ const TRILHAS = {
   '10.6.1': 'Audios/audio_tabela_10.6.1.mp3', /* o toque na regra: o exemplo do Mg, até o 3s² */
   '10.6.1.1': 'Audios/audio_tabela_10.6.1.1.mp3', /* o Saquei no fim da "10.6.1": por que vale saber; no fim, o "Vamos" */
   '10.6.2': 'Audios/audio_tabela_10.6.2.mp3', /* o "Vamos" no fim da "10.6.1.1": o segundo exemplo, o iodo (5p⁵) */
-  '10.6.3': 'Audios/audio_tabela_10.6.3.mp3', /* o play no fim da "10.6.2": o césio (6s¹) e a demonstração do quiz 2 */
+  '10.6.3': 'Audios/audio_tabela_10.6.3.mp3', /* o play no fim da "10.6.2": o césio (6s¹) */
+  '10.6.3.1': 'Audios/audio_tabela_10.6.3.1.mp3', /* 1,5 s depois do fim da "10.6.3": a demonstração do quiz 2 (o Al); no fim, o quiz 2 */
   '10.7': 'Audios/audio_tabela_10.7.mp3',     /* o Continuar do quiz 2: os de transição, e o adendo das exceções */
   '10.7.0': 'Audios/audio_tabela_10.7.0.mp3', /* o toque na tela no fim da "10.7": a regra do bloco d */
   '10.7.1': 'Audios/audio_tabela_10.7.1.mp3'  /* o toque na tela no fim da "10.7.0": o exemplo do ferro (3d⁶) */
@@ -7133,6 +7134,7 @@ const ROTEIROS = {
     { t:41.0, faz(){ pausaPor('10.6.2', T1063.pausa2[1]); } }
   ],
   '10.6.3': [],
+  '10.6.3.1': [],
   '10.7': [],
   '10.7.0': [],
   '10.7.1': []
@@ -7909,9 +7911,10 @@ const SEQ = {
     else if (id === '10.6.1.1'){ if (atual === 10) CARDS101.saquei(true, '10.6.2', 'Vamos'); }
     /* o fim da "10.6.2": tudo fica na tela, e o botão verde "Próximo" leva à "10.6.3" (o césio) */
     else if (id === '10.6.2'){ if (atual === 10) CARDS101.saquei(true, '10.6.3', 'Próximo'); }
-    /* o fim da "10.6.3": a demonstração acabou, e o quiz 2 abre */
-    /* (v64.4: 1,5 s depois do fim) */
-    else if (id === '10.6.3'){ if (atual === 10) setTimeout(() => { if (atual === 10 && trilhaAtual === '10.6.3' && som.ended && window.QUIZ10B && !QUIZ10B.aberto) QUIZ10B.abre(); }, 1500); }
+    /* o fim da "10.6.3" (o césio, cortada aos 22,5 s — v66.9): 1,5 s depois, a "10.6.3.1" (a demonstração) */
+    else if (id === '10.6.3'){ if (atual === 10) setTimeout(() => { if (atual === 10 && trilhaAtual === '10.6.3' && som.ended && window.QUIZ10B && !QUIZ10B.aberto) tocaTrilha('10.6.3.1'); }, 1500); }
+    /* o fim da "10.6.3.1": a demonstração acabou, e o quiz 2 abre (v64.4: 1,5 s depois do fim) */
+    else if (id === '10.6.3.1'){ if (atual === 10) setTimeout(() => { if (atual === 10 && trilhaAtual === '10.6.3.1' && som.ended && window.QUIZ10B && !QUIZ10B.aberto) QUIZ10B.abre(); }, 1500); }
     /* o fim da fala da 8A: a "9.3.9", sozinha (EV9) */
     /* (antes dela, a festa: os confetes, o funfare e os aplausos) */
     else if (id === '9.3.8'){ if (atual === 9) EV9.festa93(); }
@@ -22756,12 +22759,17 @@ const TEXTO_1063 = 'O subnível mais energético:';
 /* (v62.1: as faixas viraram setas; a bolinha e a etiqueta pulsam quando a seta chega, 0,9 s depois) */
 /* (v66.8: o Cs brilha aos 2 s; sem as pulsações na chegada das setas; a bolinha do 6 pulsa aos 9,4 s e aos 16 s,
    a etiqueta s¹ aos 11 s e aos 17,6 s) */
+/* (v66.9: a 10.6.3 foi cortada aos 22,5 s; 1,5 s depois toca a 10.6.3.1, a demonstração do quiz 2.
+   Na 10.6.3.1 o tick1064 conta o tempo a partir de P2 (24 s = 22,5 + 1,5): a 10.6.3.1 aos x s é o
+   P2 + x daqui. Nela: 1 s a sala apaga ("Quiz 2"); 4,3 s o Al acende; 5 s a mãozinha aparece no meio;
+   6,2 s ela toca a bolinha do 3 (e digita "Subnível mais energético: 3"); 8 s toca o card p¹; 9,1 s sai,
+   e os dois ficam verdes. No fim da 10.6.3.1, 1,5 s depois, o quiz 2.) */
+const P2_1064 = 24.0;
 const T1064 = { cs:2.0, linha:5.5, coluna:7.0, piscaL:[[9.4, 10.6], [16.0, 17.2]], piscaC:[[11.0, 12.2], [17.6, 18.8]],
-                texto:[13.0, 14.5], seis:16.0, s:17.0, sup:18.0, festa:18.7, pausa:20.0, volta:22.5,
-                quiz:23.0, al:24.5, mao:26.5, demo:[26.5, 27.6], vaiCol:28.0, col:28.5, tiraMao:29.6,
-                /* (v63.1: a mãozinha — amarela e 15 % maior — aparece aos 24 s, no meio; aos 26,5 s vai até a
-                   bolinha do 3 e a toca, e ela fica escolhida como no quiz; o card p¹ também, aos 28,5 s) */
-                maoAparece:24.0, tocaP:27.05 };
+                texto:[13.0, 14.5], seis:16.0, s:17.0, sup:18.0, festa:18.7, pausa:20.0, volta:22.0,
+                quiz:P2_1064 + 1.0, al:P2_1064 + 4.3, maoAparece:P2_1064 + 5.0,
+                mao:P2_1064 + 5.65, tocaP:P2_1064 + 6.2, demo:[P2_1064 + 6.2, P2_1064 + 7.3],
+                vaiCol:P2_1064 + 7.5, col:P2_1064 + 8.0, tiraMao:P2_1064 + 9.1 };
 const TEXTO_1064 = 'O subnível mais energético:';
 const TEXTO_Q10B = 'Subnível mais energético:';
 /* (a distribuição do iodo até o penúltimo subnível; o 5p⁵ vai à parte, colorido) */
@@ -23064,7 +23072,7 @@ const TOPO_D_104 = { 3:'Sc', 4:'Ti', 5:'V', 6:'Cr', 7:'Mn', 8:'Fe', 9:'Co', 10:'
 /* a ordem das narrações do slide 11: o que vem depois de uma fica como ela acabou */
 /* o card que chama o toque no fim destas narrações, e a narração que ele leva (CARDS101.tick102) */
 const CHAMA_10 = { '10.2.1':[1, '10.3'], '10.3.1':[2, '10.4'], '10.4.1':[3, '10.5'] };
-const ORDEM_10 = ['10', '10.1', '10.2', '10.2.1', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.1.1', '10.6.2', '10.6.3', '10.7', '10.7.0', '10.7.1', '10.7.1A', '10.7.2', '10.7.3', '10.7.5', '10.7.6', '10.7.7', '10.7.8'];
+const ORDEM_10 = ['10', '10.1', '10.2', '10.2.1', '10.3', '10.3.1', '10.4', '10.4.1', '10.5', '10.5.1', '10.5.1.2', '10.5.3', '10.6', '10.6.1', '10.6.1.1', '10.6.2', '10.6.3', '10.6.3.1', '10.7', '10.7.0', '10.7.1', '10.7.1A', '10.7.2', '10.7.3', '10.7.5', '10.7.6', '10.7.7', '10.7.8'];
 const depoisDe = id => ORDEM_10.indexOf(trilhaAtual) > ORDEM_10.indexOf(id);
 /* (o bloco s crescido com o card dentro, e o card s sozinho) */
 const ESC_S_102 = 1.2, ESC_CARD_102 = 2.0;
@@ -24598,7 +24606,9 @@ const CARDS101 = {
   },
   /* A "10.6.3" ("1064" no código): o césio, e a demonstração do quiz 2 com o Al */
   tick1064(t){
-    const monta = naMontagem(), de = trilhaAtual === '10.6.3' && !monta;
+    const monta = naMontagem(), p2 = trilhaAtual === '10.6.3.1', de = (trilhaAtual === '10.6.3' || p2) && !monta;
+    /* (na 10.6.3.1 o tempo continua o da 10.6.3: P2_1064 + t) */
+    if (p2) t += P2_1064;
     const T = de ? t : -1;
     if (!this.r1064){
       const m = this.m;
@@ -24665,8 +24675,8 @@ const CARDS101 = {
       EV9.escreve(this.d1064.rot, TEXTO_Q10B, nD);
     }
     const dentro = ([a, b]) => T >= a && T < b, antes = T < T1064.quiz;
-    /* (a demonstração some quando o quiz abre) */
-    const demo = T >= T1064.mao && !(Q2 && Q2.jaAbriu);
+    /* (a demonstração some quando o quiz abre; v66.9: a linha e o 3 entram no toque da bolinha) */
+    const demo = T >= T1064.tocaP && !(Q2 && Q2.jaAbriu);
     const chave = [T >= T1064.cs && antes, T >= T1064.linha && antes, T >= T1064.coluna && antes,
                    T1064.piscaL.some(dentro), T1064.piscaC.some(dentro), T >= T1064.texto[0] && antes, dentro(T1064.texto),
                    T >= T1064.seis, T >= T1064.s, T >= T1064.sup, dentro([T1064.festa, T1064.volta]),
