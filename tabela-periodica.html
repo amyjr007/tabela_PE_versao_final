@@ -4550,7 +4550,7 @@ body.montagem .quiz3.q4.solto{background:rgba(255,255,255,.96)!important}
    todos os cartões perdem a massa, e o espaço dela vai para o resto: o número atômico cresce
    --num-cel (2 px) e desce um fio, o símbolo fica no meio do que sobrou e o nome encosta
    embaixo. Em teste: quando o tamanho estiver bom, vale para os outros tópicos também. */
-html.celular .mesa[data-slide="2"]{--num-cel:2px}
+html.celular .mesa[data-slide="2"]{--num-cel:3.5px}   /* (v69.2: 2 px + 1,5 px) */
 html.celular .mesa[data-slide="2"].cel-compacta .pc .face u{display:none}
 html.celular .mesa[data-slide="2"].cel-compacta .pc .face i{font-size:calc((9.5px + var(--num-cel)) * var(--k,1));margin-top:calc(1px * var(--k,1))}
 html.celular .mesa[data-slide="2"].cel-compacta .pc .face b{padding-bottom:calc(2px * var(--k,1))}
@@ -5702,7 +5702,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v69.1';
+const VERSAO = 'v69.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
