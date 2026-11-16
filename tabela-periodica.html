@@ -3398,6 +3398,7 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 /* (a escala que o professor deixou na montagem: 1,35 × 0,75) */
 .mesa.so1051 .card101.gig107.on107, .mesa .card101.gig107.on107{opacity:1!important;scale:1.0125}
 .veu107, .veu1070{flex-direction:column;gap:14px}
+.veu106 .tit106{margin:0 0 18px;font-family:var(--display);font-weight:700;font-size:48px;letter-spacing:-.015em;color:var(--ouro-luz)}
 .veu107 .tit107{margin:0 0 18px;font-family:var(--display);font-weight:700;font-size:52px;letter-spacing:-.015em;color:var(--ouro-luz)}
 .veu107 .lin107, .veu1070 .regra1070{margin:0;font-family:var(--display);font-weight:600;font-size:38px;line-height:1.25;color:#F4F2F8;text-align:center}
 .veu107 .lin107{opacity:0;transition:opacity .3s ease}
@@ -3714,6 +3715,8 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
   background:rgba(255,236,170,.2);box-shadow:0 0 0 3px rgba(255,224,140,.95), 0 0 26px 10px rgba(255,190,90,.7);
   transition:opacity .22s ease;will-change:opacity}
 .halo1051.on{opacity:1}
+.mesa.cresceSP106 :is(.pc[data-b101="s"], .pc[data-b101="p"]){scale:1.07}
+.mesa.cresceSP106 :is(.pc[data-b101="s"], .pc[data-b101="p"]) .face{filter:brightness(1.15)}
 .halo1051.forte{background:rgba(255,236,170,.32);box-shadow:0 0 0 4px rgba(255,232,150,1), 0 0 40px 14px rgba(255,190,90,.8)}
 /* a "10.3.1": o hélio crescido (por cima das etiquetas do p) e o brilho dele, duas vezes */
 .mesa[data-slide="10"] .pc.grande1031{z-index:28}
@@ -5585,7 +5588,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v66.5';
+const VERSAO = 'v66.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22596,7 +22599,7 @@ const TEXTO_MAIS_1052 = 'subnível mais energético';
    pontas (s e p) brilham por 1 s; aos 13 s os de transição apagam (quase); aos
    17 s a tela escurece e digita a regra; no fim da fala fica a regra com o
    "Toque na tela", e o toque leva à "10.6.1". */
-const T106 = { sai:1.0, texto:[6.0, 7.0], brilhoSP:[9.0, 10.0], semB:13.0, escurece:17.0, regra:[19.5, 28.0] };
+const T106 = { sai:1.0, texto:[6.0, 7.0], brilhoSP:[9.0, 11.0], semB:13.0, escurece:17.0, regra:[19.5, 28.0] };
 const TEXTO_106 = 'Elementos representativos primeiro';
 /* A "10.7" (o Continuar no fim do quiz 2): aos 1 s a sala clareia e a tabela
    volta inteira, nas cores dos blocos, com o bloco f escondido (e no lugar
@@ -22706,7 +22709,8 @@ const REGRA_1070 = PARTES_1070.map(p => p.t).join('');
    o 3s² cresce e brilha, com confetes, aplausos e funfare; aos 23 s os
    crescidos voltam ao normal. No fim, o Saquei leva à "10.6.1.1". */
 /* (v62.1: as faixas viraram setas; a bolinha e a etiqueta pulsam quando a seta chega, 0,9 s depois) */
-const T1061 = { mg:3.0, linha:7.0, coluna:8.2, piscaL:[[7.9, 9.1], [11.0, 12.2]], piscaC:[[9.1, 10.3], [12.3, 13.5]],
+/* (v66.6: sem as pulsações na chegada das setas; ficam as dos 11 e 12,3 s, e o revezamento do fim) */
+const T1061 = { mg:3.0, linha:7.0, coluna:8.2, piscaL:[[11.0, 12.2]], piscaC:[[12.3, 13.5]],
                 bola:11.0, etq:12.3, texto:[14.7, 16.2], tres:17.7, s:19.0, dois:19.2, festa:20.5, volta:23.0,
                 /* (aos 18 s a bolinha do 3 cresce mais; aos 18,8 s ela volta ao normal e a
                    etiqueta s² cresce mais, junto com o s² grande; aos 20,5 s tudo normal) */
@@ -23777,7 +23781,7 @@ const CARDS101 = {
     if (!this.r106){
       const m = this.m;
       /* a tela escura da regra (no slide, por cima da mesa) */
-      slides[10].insertAdjacentHTML('beforeend', '<div class="veu veu106" aria-live="polite"><p class="regra106"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p>' +
+      slides[10].insertAdjacentHTML('beforeend', '<div class="veu veu106" aria-live="polite"><h2 class="tit107 tit106">Elementos Representativos (s ou p)</h2><p class="regra106"><span class="ja"></span><i class="cursor"></i><span class="falta"></span></p>' +
         '<div class="toque-continuar">Toque na tela</div></div>');
       this.veu106 = slides[10].querySelector('.veu106');
       this.regra106 = this.veu106.querySelector('.regra106');
@@ -23890,7 +23894,11 @@ const CARDS101 = {
     const [linhas, sp, semB, texto, digT, veu, dig, pede, mg, lin, col, pL, pC, bola, etq, rot, digR, tres, s, dois, festa, pulsa, sai,
            foco3, focoS, reveza] = chave.split(',').map(v => v === 'true');
     this.m.classList.toggle('linhas106', linhas);
-    this.m.classList.toggle('bl1051-s', sp); this.m.classList.toggle('bl1051-p', sp);
+    /* (v66.6: aos 9 s, por 2 s, os blocos dos representativos — s e p — crescem um pouco, com o halo de cada bloco) */
+    this.m.classList.toggle('cresceSP106', sp);
+    /* (os halos medidos de novo na hora — pelo sumário, a mesa podia estar chegando quando foram feitos) */
+    if (sp){ this.m.querySelectorAll('.halo1051').forEach(h => h.remove()); this.halos1051 = this.fazHalos1051(); }
+    if (this.halos1051) [...(this.halos1051.s || []), ...(this.halos1051.p || [])].forEach(h => h.classList.toggle('on', sp));
     this.m.classList.toggle('semB106', semB);
     this.texto106.classList.toggle('on', texto);
     this.texto106.classList.toggle('digitando9', digT);
@@ -24714,6 +24722,7 @@ const CARDS101 = {
     /* (o f: as duas fileiras de baixo, cada uma no seu retângulo) */
     const f = de('f'), lin = [...new Set(f.map(c => Math.round(c.getBoundingClientRect().top)))];
     lin.forEach(y => caixa(f.filter(c => Math.round(c.getBoundingClientRect().top) === y), 'f'));
+    Object.defineProperty(H, '_de', { value:trilhaAtual });   /* (medidos em qual narração) */
     return H;
   },
   aplauso(){
@@ -24829,7 +24838,7 @@ const CARDS101 = {
       this.passo1051++;
       tocaEfeito('right');
       /* o bloco certo brilha — um halo só por bloco — (e a cor dele volta, pelo tick da "10.1") */
-      const H = this.halos1051 || (this.halos1051 = this.fazHalos1051());
+      const H = this.halos1051 && this.halos1051._de === trilhaAtual ? this.halos1051 : (this.m.querySelectorAll('.halo1051').forEach(h => h.remove()), this.halos1051 = this.fazHalos1051());
       (H[b] || []).forEach(h => h.classList.add('on'));
       setTimeout(() => (H[b] || []).forEach(h => h.classList.remove('on')), 1200);
       this.estado = '';
@@ -24838,7 +24847,7 @@ const CARDS101 = {
         clearTimeout(this.fim1051T);
         this.fim1051T = setTimeout(() => {
           this.festa(false);
-          const H = this.halos1051 || (this.halos1051 = this.fazHalos1051()), todos = Object.values(H).flat();
+          const H = this.halos1051 && this.halos1051._de === trilhaAtual ? this.halos1051 : (this.m.querySelectorAll('.halo1051').forEach(h => h.remove()), this.halos1051 = this.fazHalos1051()), todos = Object.values(H).flat();
           todos.forEach(h => h.classList.add('on', 'forte'));
           setTimeout(() => { todos.forEach(h => h.classList.remove('on', 'forte')); this.fora1051 = true; }, 2200);
         }, 700);
