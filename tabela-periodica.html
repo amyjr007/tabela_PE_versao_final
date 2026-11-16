@@ -3589,7 +3589,38 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .qf-msg.ok{color:#1E8A4C}
 .qf-msg.erro{color:#C0283F}
 .qf-pe{display:flex;justify-content:flex-end;margin-top:8px;min-height:44px}
-.qf-prox{font:700 16px var(--display);padding:10px 20px;border-radius:999px;border:0;background:#4C3FBF;color:#fff;cursor:pointer}
+.qf-prox{font:700 16px var(--display);padding:10px 20px;border-radius:999px;border:0;background:#4C3FBF;color:#fff;cursor:pointer;transition:opacity .2s, transform .15s}
+/* (v67.7: tocar numa alternativa só a marca; o som e a correção vêm no Confirmar) */
+.qf-op.escolhida{border-color:#4C3FBF;background:#ECE8FF;box-shadow:0 0 0 3px rgba(76,63,191,.18)}
+.qf-caixa .qf-prox:disabled{opacity:.35;cursor:default}
+.qf-prox:not(:disabled):hover{transform:translateY(-1px)}
+/* (v67.7: a troca de questão — a caixa dispara para a direita, borrada e esticada,
+   e a nova chega pela esquerda, passa um pouco do lugar e assenta; um rastro de
+   luz atravessa a sala e um brilho varre a caixa nova) */
+.qf-caixa.sai{animation:qfSai .5s cubic-bezier(.55,0,.85,.35) forwards;pointer-events:none}
+.qf-caixa.entra{animation:qfEntra .78s cubic-bezier(.2,.8,.25,1) .12s backwards}
+@keyframes qfSai{
+  0%{transform:translate(-50%,-50%)}
+  22%{transform:translate(calc(-50% - 26px),-50%) scale(.97);filter:blur(0)}
+  100%{transform:translate(calc(-50% + 1100px),-50%) skewX(-16deg) scaleX(1.3);filter:blur(12px);opacity:0}}
+@keyframes qfEntra{
+  0%{transform:translate(calc(-50% - 1100px),-50%) skewX(-16deg) scaleX(1.3);filter:blur(12px);opacity:0}
+  55%{transform:translate(calc(-50% + 24px),-50%) skewX(5deg) scaleX(.97);filter:blur(0);opacity:1}
+  78%{transform:translate(calc(-50% - 7px),-50%) skewX(-1.5deg)}
+  100%{transform:translate(-50%,-50%)}}
+.qf-caixa.entra::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.95) 48%,rgba(190,180,255,.7) 52%,transparent 62%) no-repeat;
+  background-size:300% 100%;box-shadow:0 0 0 2px rgba(150,135,255,.9), 0 0 38px 8px rgba(120,100,255,.55);
+  animation:qfBrilho .9s ease-out .35s backwards}
+@keyframes qfBrilho{0%{background-position:100% 0;opacity:1}70%{opacity:1}100%{background-position:0 0;opacity:0}}
+.qf-rastro{position:absolute;inset:0;z-index:46;pointer-events:none;overflow:hidden}
+.qf-rastro i{position:absolute;left:0;width:70%;border-radius:999px;
+  background:linear-gradient(90deg,transparent,rgba(130,115,255,0) 10%,rgba(150,135,255,.85) 70%,#fff);
+  box-shadow:0 0 14px 3px rgba(140,125,255,.6);animation:qfRisco .55s cubic-bezier(.3,0,.7,1) backwards}
+@keyframes qfRisco{0%{transform:translateX(-110%);opacity:0}25%{opacity:1}100%{transform:translateX(190%);opacity:0}}
+.qf-rastro b{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff;
+  box-shadow:0 0 10px 3px rgba(170,155,255,.9);animation:qfFaisca .7s ease-out backwards}
+@keyframes qfFaisca{0%{transform:translate(0,0) scale(1.3);opacity:1}100%{transform:translate(var(--fx),var(--fy)) scale(0);opacity:0}}
 .quiz-cartao .segue.espera-fala{opacity:.45;cursor:default;filter:grayscale(.4)}
 .quiz-cartao .recado.recado-final{font-size:15px;line-height:1.4;max-width:300px;margin-left:auto;margin-right:auto}
 .slide.final10 .mesa{filter:brightness(.55)}
@@ -5605,7 +5636,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v67.6';
+const VERSAO = 'v67.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25956,12 +25987,20 @@ const TOPICOS_FINAL = ['', 'O layout geral', 'Os critérios de organização', '
 const QUIZFINAL = {
   aberto:false, g:0, i:0, acertos:0,
   sl(){ return slides[10]; },
-  abre(){
+  /* (volta: { i, acertos } — o ONDE reabre o quiz na questão em que estava) */
+  abre(volta){
     if (atual !== 10) return;
+    /* (v67.7: em todas as questões, a mesa do começo do tópico 10 — lilás, com as séries embaixo) */
+    this.mesaDoComeco();
     this.fecha(true);
     this.g++;
-    this.i = 0; this.acertos = 0; this.aberto = true;
+    const n = QUESTOES_FINAL.length;
+    this.i = volta ? Math.max(0, Math.min(n, volta.i | 0)) : 0;
+    this.acertos = volta ? Math.max(0, Math.min(this.i, volta.acertos | 0)) : 0;
+    this.aberto = true;
     som.pause(); stage.classList.add('sem-play-m10');
+    /* (a sala escura do quiz 3, posta de novo: a troca de trilha a clareia) */
+    if (window.QUIZ10C){ QUIZ10C.jaAbriu = true; QUIZ10C.escurece(); }
     const sl = this.sl();
     sl.classList.add('final10');
     const tt = sl.querySelector('.tira .title');
@@ -25969,12 +26008,57 @@ const QUIZFINAL = {
     else cabecaDoQuiz(sl, true, 'Quiz final', 'quiz-cabeca');
     /* (v67.5: é o tópico 11 — o número do cabeçalho vira 11) */
     const nn = sl.querySelector('.tira .num'); if (nn) nn.textContent = TOPICO_11.n;
-    const cx = this.cx = document.createElement('div');
-    cx.className = 'qf-caixa';
-    sl.appendChild(cx);
-    this.arrastavel(cx);
+    /* (voltando depois da última questão já respondida: direto ao cartão da nota) */
+    if (this.i >= n){ this.i = n - 1; this.respondida = true; this.resultado(); return; }
+    const cx = this.cx = this.novaCaixa();
     cx.getBoundingClientRect(); cx.classList.add('on');
     this.mostra();
+  },
+  /* a mesa como no começo do tópico 10: a trilha "10" parada no 0 (o relógio põe a mesa) */
+  mesaDoComeco(){
+    if (trilhaAtual !== '10'){ trilhaAtual = -1; carregaTrilha('10'); }
+    som.pause();
+    const zera = () => { if (trilhaAtual === '10' && som.currentTime) som.currentTime = 0; };
+    if (som.readyState >= 1) zera(); else som.addEventListener('loadedmetadata', zera, { once:true });
+    try { efeitosDoTempo(); } catch (e){ console.error(e); }
+  },
+  novaCaixa(){
+    const cx = document.createElement('div');
+    cx.className = 'qf-caixa';
+    this.sl().appendChild(cx);
+    this.arrastavel(cx);
+    return cx;
+  },
+  /* (v67.7) a troca de questão: a caixa velha dispara para a direita, a nova vem da esquerda */
+  proxima(){
+    const velha = this.cx, sl = this.sl();
+    this.i++;
+    if (velha){ velha.classList.add('sai'); setTimeout(() => velha.remove(), 560); }
+    this.rastro(sl);
+    const cx = this.cx = this.novaCaixa();
+    cx.classList.add('on', 'entra');
+    cx.addEventListener('animationend', e => { if (e.animationName === 'qfEntra') cx.classList.remove('entra'); });
+    this.mostra(true);
+  },
+  /* os riscos de luz que atravessam a sala na altura da caixa, e as faíscas que ela solta */
+  rastro(sl){
+    const r = document.createElement('div');
+    r.className = 'qf-rastro';
+    const cy = sl.offsetHeight / 2 + this.dy;
+    let h = '';
+    for (let k = 0; k < 9; k++){
+      const y = cy + (Math.random() - .5) * 300, alto = 1.5 + Math.random() * 3.5;
+      h += '<i style="top:' + y.toFixed(0) + 'px;height:' + alto.toFixed(1) + 'px;animation-delay:' + (Math.random() * .22).toFixed(2) + 's"></i>';
+    }
+    const cx = sl.offsetWidth / 2 + this.dx;
+    for (let k = 0; k < 14; k++){
+      const x = cx + (Math.random() - .5) * 700, y = cy + (Math.random() - .5) * 260;
+      h += '<b style="left:' + x.toFixed(0) + 'px;top:' + y.toFixed(0) + 'px;--fx:' + (60 + Math.random() * 160).toFixed(0) + 'px;--fy:' +
+           ((Math.random() - .5) * 120).toFixed(0) + 'px;animation-delay:' + (.05 + Math.random() * .3).toFixed(2) + 's"></b>';
+    }
+    r.innerHTML = h;
+    sl.appendChild(r);
+    setTimeout(() => r.remove(), 1200);
   },
   /* (v67.6: o aluno arrasta a caixa para ver a tabela atrás; ela fica onde foi posta
      nas questões seguintes e no Refazer, e volta ao meio quando o quiz fecha) */
@@ -26004,24 +26088,35 @@ const QUIZFINAL = {
     cx.addEventListener('pointerup', solta);
     cx.addEventListener('pointercancel', solta);
   },
-  mostra(){
-    const Q = QUESTOES_FINAL[this.i], ops = embaralha(Q.ops.slice());
-    this.respondida = false;
+  /* (anda: veio da questão anterior — a barra cresce a partir de onde estava) */
+  mostra(anda){
+    const Q = QUESTOES_FINAL[this.i], ops = embaralha(Q.ops.slice()), n = QUESTOES_FINAL.length;
+    this.respondida = false; this.escolhida = null;
+    const pc = k => (Math.max(0, k) / n * 100).toFixed(1) + '%';
     this.cx.innerHTML =
-      '<div class="qf-topo"><span class="qf-marca">Questão ' + (this.i + 1) + ' de ' + QUESTOES_FINAL.length + '</span>' +
+      '<div class="qf-topo"><span class="qf-marca">Questão ' + (this.i + 1) + ' de ' + n + '</span>' +
       '<span class="qf-topico">Tópico ' + Q.t + ' · ' + TOPICOS_FINAL[Q.t] + '</span>' +
       '<span class="qf-bloom" data-nivel="' + Q.nivel + '">' + Q.nivel + '</span></div>' +
-      '<div class="qf-barra"><i style="width:' + (this.i / QUESTOES_FINAL.length * 100).toFixed(1) + '%"></i></div>' +
+      '<div class="qf-barra"><i style="width:' + pc(anda ? this.i - 1 : this.i) + '"></i></div>' +
       '<div class="qf-q">' + Q.q + '</div>' +
       '<div class="qf-ops">' + ops.map(o => '<button type="button" class="qf-op">' + o + '</button>').join('') + '</div>' +
-      '<div class="qf-msg"></div><div class="qf-pe"></div>';
-    this.cx.querySelectorAll('.qf-op').forEach(b => b.addEventListener('click', () => this.responde(b)));
+      '<div class="qf-msg"></div><div class="qf-pe"><button type="button" class="qf-prox qf-confirma" disabled>Confirmar</button></div>';
+    if (anda){ const bar = this.cx.querySelector('.qf-barra i'); setTimeout(() => { bar.style.width = pc(this.i); }, 650); }
+    this.cx.querySelectorAll('.qf-op').forEach(b => b.addEventListener('click', () => this.escolhe(b)));
+    this.cx.querySelector('.qf-confirma').addEventListener('click', () => { if (this.escolhida) this.responde(this.escolhida); });
+  },
+  /* (v67.7) o toque numa alternativa só a marca — pode-se trocar até confirmar */
+  escolhe(b){
+    if (!this.aberto || this.respondida) return;
+    this.escolhida = b;
+    this.cx.querySelectorAll('.qf-op').forEach(x => x.classList.toggle('escolhida', x === b));
+    this.cx.querySelector('.qf-confirma').disabled = false;
   },
   responde(b){
     if (!this.aberto || this.respondida) return;
     this.respondida = true;
     const Q = QUESTOES_FINAL[this.i], certa = b.textContent === Q.ops[0];
-    this.cx.querySelectorAll('.qf-op').forEach(x => { x.disabled = true; if (x.textContent === Q.ops[0]) x.classList.add('certa'); });
+    this.cx.querySelectorAll('.qf-op').forEach(x => { x.disabled = true; x.classList.remove('escolhida'); if (x.textContent === Q.ops[0]) x.classList.add('certa'); });
     const m = this.cx.querySelector('.qf-msg');
     if (certa){
       this.acertos++;
@@ -26038,12 +26133,13 @@ const QUIZFINAL = {
     p.querySelector('.qf-prox').addEventListener('click', () => {
       if (!this.aberto) return;
       if (ult) { this.resultado(); return; }
-      this.i++; this.mostra();
+      this.proxima();
     });
   },
   resultado(){
     const n = QUESTOES_FINAL.length, nota = Math.round(this.acertos / n * 100) / 10;
-    if (this.cx){ const cx = this.cx; cx.classList.remove('on'); setTimeout(() => cx.remove(), 500); this.cx = null; }
+    /* (a última caixa sai como as outras: disparando para a direita) */
+    if (this.cx){ const cx = this.cx; cx.classList.add('sai'); this.rastro(this.sl()); setTimeout(() => cx.remove(), 560); this.cx = null; }
     QUIZ_FEITOS.marca('q10f', nota);
     confete();
     cartaoDoResultado(nota, n + ' questões · <em class="erro">' + (n - this.acertos) + '</em> ' + (n - this.acertos === 1 ? 'erro' : 'erros'),
@@ -26065,7 +26161,7 @@ const QUIZFINAL = {
     this.aberto = false;
     const sl = this.sl();
     if (!sl) return;
-    sl.querySelectorAll('.qf-caixa, .quiz-cartao').forEach(e => e.remove());
+    sl.querySelectorAll('.qf-caixa, .qf-rastro, .quiz-cartao').forEach(e => e.remove());
     this.cx = null;
     /* (o número do cabeçalho volta a ser o 10 — o abre põe o 11 de novo) */
     const nn = sl.querySelector('.tira .num'); if (nn) nn.textContent = TOPICO_11.slide;
@@ -29709,11 +29805,12 @@ const NAV_TOPICOS = [
   { titulo:'Quiz musical', sub:'o quiz musical direto: as notas pelos subníveis e a música', slide:10, quiz:'q10m',
     salto:['10.7.3', 24.5, true],
     entra(v, g){ QUIZ10C.jaAbriu = true; saltaPara10('10.7.3', g, 24.5, () => { QUIZ10C.jaAbriu = true; QUIZ10C.escurece(); MUSICA10.abre(); }); } },
-  /* o quiz geral direto (o quiz final: 20 questões, duas de cada tópico): a mesa como no fim da 10.7.3, a sala escura */
+  /* o quiz geral direto (o quiz final: 20 questões, duas de cada tópico): a sala escura */
   /* (v67.5: é o capítulo 11 do sumário — cap11 —, e não um subtópico do 10) */
+  /* (v67.7: a mesa é a do começo do tópico 10 — a trilha "10" parada no 0; o QUIZFINAL.abre escurece a sala) */
   { titulo:'Quiz geral', sub:'o quiz final: 20 questões, duas de cada tópico', slide:10, quiz:'q10f', cap11:true,
-    salto:['10.7.3', 24.5, true],
-    entra(v, g){ QUIZ10C.jaAbriu = true; saltaPara10('10.7.3', g, 24.5, () => { QUIZ10C.jaAbriu = true; QUIZ10C.escurece(); QUIZFINAL.abre(); }); } },
+    salto:['10', 0, true],
+    entra(v, g){ saltaPara10('10', g, 0, () => QUIZFINAL.abre()); } },
   { titulo:'Jogo da memória', sub:'a narração do jogo, e o botão dele no canto', slide:1, quiz:'jogo',
     variantes:[ { id:'jogo', rotulo:'abrir o jogo direto' } ],
     entra(v, g){
@@ -30399,6 +30496,8 @@ const ONDE = {
     if (QUIZ.aberto) o.quiz = { origem:QUIZ.origem, itens:QUIZ.itens.map(i => i.z), passo:QUIZ.passo,
                                 acertos:QUIZ.acertos, erros:QUIZ.erros, nota:!!QUIZ.mostrandoNota };
     if (QUIZ3.aberto) o.quiz3 = true;
+    /* (v67.7: o quiz geral — a questão em que está; respondida, já conta a seguinte) */
+    if (atual === 10 && QUIZFINAL.aberto) o.final = { i:QUIZFINAL.i + (QUIZFINAL.respondida ? 1 : 0), acertos:QUIZFINAL.acertos };
     /* no slide 11, os cards dos subníveis já nos encaixes */
     if (atual === 10 && CARDS101.postos.size) o.blocos10 = [...CARDS101.postos];
     if (atual === 10 && CARDS101.passo103) o.colunas103 = CARDS101.passo103;
@@ -30484,6 +30583,7 @@ const ONDE = {
       if (o.quiz) QUIZ.retoma(o.quiz);
       else if (o.jogo) this.jogo(o.jogo);
       else if (o.quiz3){ viraQuiz(true); QUIZ3.abre(); }
+      else if (o.final) QUIZFINAL.abre(o.final);
       else if (o.resumo){
         const k = o.resumo === true ? 1 : o.resumo;
         if (k === 1) SEQ.quizDa = '1.4'; else viraQuiz(true, 'Resumo');
