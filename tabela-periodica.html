@@ -3631,6 +3631,53 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .qf-rastro b{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff;
   box-shadow:0 0 10px 3px rgba(170,155,255,.9);animation:qfFaisca .7s ease-out backwards}
 @keyframes qfFaisca{0%{transform:translate(0,0) scale(1.3);opacity:1}100%{transform:translate(var(--fx),var(--fy)) scale(0);opacity:0}}
+/* (v68.4) o relatório do quiz geral: um painel claro no meio da sala escura, com o corpo que rola */
+.qf-relatorio{position:absolute;left:50%;top:calc(50% + 30px);z-index:62;width:min(880px,94%);height:610px;max-height:calc(100% - 96px);
+  transform:translate(-50%,-48%) scale(.97);opacity:0;transition:opacity .35s ease, transform .35s ease;
+  display:flex;flex-direction:column;background:#F6F3FF;color:var(--tinta);border-radius:22px;
+  box-shadow:0 24px 60px rgba(0,0,0,.6);font-family:var(--display);pointer-events:auto;overflow:hidden}
+.qf-relatorio.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.qr-topo{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 26px 14px;
+  border-bottom:1.5px solid rgba(76,63,191,.14)}
+.qr-chapeu{font:600 12px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:#C47A12}
+.qr-aluno{font-size:20px;font-weight:800;margin-top:2px}
+.qr-nota{display:grid;grid-template-columns:auto auto;align-items:baseline;column-gap:8px;text-align:right}
+.qr-nota span{font-size:12px;font-weight:600;color:rgba(32,28,66,.6)}
+.qr-nota b{font-size:30px;font-weight:800;color:#4C3FBF}
+.qr-nota i{grid-column:1 / -1;font-style:normal;font-size:13px;font-weight:600;color:rgba(32,28,66,.6)}
+.qr-corpo{flex:1;overflow-y:auto;padding:6px 26px 18px;touch-action:pan-y;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.qr-topico h3, .qr-resumo h3, .qr-texto h3{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:800;margin:18px 0 10px}
+.qr-n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#4C3FBF;color:#fff;font-size:14px;flex:none}
+.qr-taxa{margin-left:auto;font-style:normal;font-size:13px;font-weight:700;padding:3px 10px;border-radius:999px;color:#fff;flex:none}
+.qr-taxa.bom, .qr-trilho i.bom{background:#2EAA5E}
+.qr-taxa.meio, .qr-trilho i.meio{background:#E0A23B}
+.qr-taxa.fraco, .qr-trilho i.fraco{background:#E5394F}
+.qr-q{background:#fff;border:2px solid rgba(76,63,191,.14);border-left-width:6px;border-radius:14px;padding:12px 16px;margin-bottom:10px}
+.qr-q.ok{border-left-color:#2EAA5E}
+.qr-q.erro{border-left-color:#E5394F}
+.qr-linha{display:flex;align-items:center;gap:10px;font-size:13px}
+.qr-sinal{font-weight:900;font-size:16px}
+.qr-q.ok .qr-sinal{color:#2EAA5E}
+.qr-q.erro .qr-sinal{color:#E5394F}
+.qr-num{font:600 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(32,28,66,.6)}
+.qr-linha .qf-bloom{margin-left:auto}
+.qr-perg{font-size:16px;font-weight:700;line-height:1.3;margin:6px 0}
+.qr-resp, .qr-certa{font-size:14px;color:rgba(32,28,66,.8)}
+.qr-q.erro .qr-resp b{color:#C0283F}
+.qr-certa b{color:#1E8A4C}
+.qr-exp{margin-top:6px;font-size:14px;line-height:1.4;background:#FFF7E6;border-radius:10px;padding:8px 12px;color:#5A4410}
+.qr-exp::before{content:'Explicação: ';font-weight:800}
+.qr-barras{display:grid;gap:7px}
+.qr-barra{display:grid;grid-template-columns:minmax(0,300px) 1fr 48px;align-items:center;gap:12px;font-size:14px}
+.qr-rot{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.qr-trilho{height:12px;border-radius:6px;background:rgba(76,63,191,.12);overflow:hidden}
+.qr-trilho i{display:block;height:100%;border-radius:6px;min-width:0}
+.qr-barra b{text-align:right}
+.qr-barra b.bom{color:#1E8A4C}.qr-barra b.meio{color:#B07A12}.qr-barra b.fraco{color:#C0283F}
+.qr-texto{background:#ECE8FF;border-radius:14px;padding:4px 18px 10px;margin-top:16px}
+.qr-texto p{font-size:15px;line-height:1.45;margin:6px 0 8px}
+.qr-pe{display:flex;justify-content:flex-end;padding:12px 26px 16px;border-top:1.5px solid rgba(76,63,191,.14)}
+.qr-volta{font:700 16px var(--display);padding:10px 20px;border-radius:999px;border:0;background:#4C3FBF;color:#fff;cursor:pointer}
 .quiz-cartao .segue.espera-fala{opacity:.45;cursor:default;filter:grayscale(.4)}
 .quiz-cartao .recado.recado-final{font-size:15px;line-height:1.4;max-width:300px;margin-left:auto;margin-right:auto}
 .slide.final10 .mesa{filter:brightness(.55);transition:filter .5s ease}
@@ -5649,7 +5696,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v68.3';
+const VERSAO = 'v68.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25918,7 +25965,7 @@ window.MUSICA10 = MUSICA10;
    erro mostra a certa e explica. No fim, o cartão com a nota e uma mensagem
    de incentivo.
    ============================================================ */
-const QUESTOES_FINAL = [
+const QUESTOES_A = [
   /* 1 · O layout geral */
   { t:1, nivel:'Lembrar', q:'Quantos períodos (linhas horizontais) tem a tabela periódica atual?',
     ops:['7', '8', '9', '18'], exp:'São 7 períodos; as 18 são as colunas.' },
@@ -25994,6 +26041,143 @@ const QUESTOES_FINAL = [
     ops:['Níquel (Ni) — 3d⁸', 'Cobre (Cu) — 3d⁹', 'Ferro (Fe) — 4d⁶', 'Zinco (Zn) — 4d¹⁰'],
     exp:'O Ni está no 4º período: camada 4 − 1 = 3, oitava coluna do d → 3d⁸. O Cu é uma exceção, e o Fe e o Zn têm a camada errada.' }
 ];
+/* (v68.4) OUTRAS DUAS VERSÕES DE CADA QUESTÃO, para o Refazer: a mesma estrutura — a questão k
+   de cada versão é do mesmo tópico e do mesmo nível de Bloom da questão k acima (o t e o nível
+   vêm dela). A primeira alternativa é a certa. Abrindo o quiz, a versão A; cada Refazer passa à
+   seguinte (A → B → C → A…). */
+const QF_VARIANTES = [
+  /* 1 · O layout geral — Lembrar */
+  [ { q:'Quantas fileiras ficam separadas, embaixo da tabela principal?', ops:['2', '1', '3', '7'],
+      exp:'São duas: a dos lantanídeos e a dos actinídeos.' },
+    { q:'Quantos grupos (colunas verticais) tem a tabela periódica atual?', ops:['18', '7', '8', '32'],
+      exp:'São 18 grupos; os 7 são os períodos (as linhas).' } ],
+  /* 1 · O layout geral — Compreender */
+  [ { q:'O hidrogênio (H) e o hélio (He) ficam sozinhos na primeira linha da tabela. Por quê?',
+      ops:['O 1º período tem só 2 elementos.', 'São os únicos gases da tabela.', 'São os elementos mais pesados.', 'Foram os primeiros a ser descobertos.'],
+      exp:'O 1º período é o mais curto: só tem 2 elementos, o H e o He.' },
+    { q:'Se os lantanídeos e os actinídeos fossem postos dentro da tabela, no lugar deles, o que aconteceria?',
+      ops:['A tabela ficaria bem mais larga: 32 colunas.', 'A tabela passaria a ter 9 períodos.', 'Os elementos mudariam de número atômico.', 'Nada mudaria no tamanho da tabela.'],
+      exp:'Com as duas fileiras dentro, os períodos 6 e 7 teriam 32 casas: a tabela ficaria larga demais para a página.' } ],
+  /* 2 · Os critérios de organização — Lembrar */
+  [ { q:'O número atômico de um elemento é o número de:', ops:['prótons do núcleo', 'nêutrons do núcleo', 'elétrons de valência', 'camadas eletrônicas'],
+      exp:'Número atômico (Z) = número de prótons do núcleo.' },
+    { q:'Quem mostrou que a ordem certa da tabela é a do número atômico, e não a da massa?',
+      ops:['Henry Moseley', 'Dmitri Mendeleev', 'Linus Pauling', 'Marie Curie'],
+      exp:'Moseley mostrou, em 1913, que a ordem certa é a do número atômico; Mendeleev tinha usado a massa.' } ],
+  /* 2 · Os critérios de organização — Analisar */
+  [ { q:'O argônio (massa 39,9) vem antes do potássio (massa 39,1) na tabela, mesmo tendo massa maior. Por quê?',
+      ops:['O argônio tem número atômico menor (18) que o potássio (19).', 'O argônio é mais leve que o potássio.',
+           'Os gases nobres vêm sempre primeiro.', 'É um erro da tabela.'],
+      exp:'Vale o número atômico: Ar = 18 vem antes de K = 19, não importa a massa.' },
+    { q:'O cobalto (massa 58,9) vem antes do níquel (massa 58,7) na tabela. O que isso mostra?',
+      ops:['Que a ordem é a do número atômico (Co = 27, Ni = 28), não a da massa.', 'Que a ordem é a da massa atômica.',
+           'Que o níquel foi descoberto depois.', 'Que o cobalto é um gás.'],
+      exp:'Co = 27 vem antes de Ni = 28: a tabela segue o número atômico.' } ],
+  /* 3 · Os grupos e os períodos — Lembrar */
+  [ { q:'Elementos que estão na mesma coluna da tabela pertencem ao mesmo:', ops:['grupo (família)', 'período', 'bloco f', 'número atômico'],
+      exp:'Coluna é grupo, também chamado de família.' },
+    { q:'Elementos que estão na mesma linha horizontal da tabela pertencem ao mesmo:', ops:['período', 'grupo', 'família', 'número atômico'],
+      exp:'Linha é período.' } ],
+  /* 3 · Os grupos e os períodos — Aplicar */
+  [ { q:'Um elemento está no 2º período e no grupo 1. Que elemento é esse?', ops:['Lítio (Li)', 'Sódio (Na)', 'Hidrogênio (H)', 'Berílio (Be)'],
+      exp:'No cruzamento da linha 2 com a coluna 1 está o lítio.' },
+    { q:'Um elemento está no 4º período e no grupo 2. Que elemento é esse?', ops:['Cálcio (Ca)', 'Magnésio (Mg)', 'Potássio (K)', 'Estrôncio (Sr)'],
+      exp:'No cruzamento da linha 4 com a coluna 2 está o cálcio.' } ],
+  /* 4 · Metais, ametais e gases nobres — Compreender */
+  [ { q:'Por que as panelas costumam ser feitas de metal?',
+      ops:['Os metais conduzem bem o calor.', 'Os metais são isolantes térmicos.', 'Os metais são quebradiços.', 'Os metais são gases à temperatura ambiente.'],
+      exp:'Os metais são bons condutores de calor: a panela esquenta e passa o calor ao alimento.' },
+    { q:'Por que um pedaço de enxofre, que é um ametal, se quebra quando é martelado?',
+      ops:['Os ametais sólidos são quebradiços, não maleáveis.', 'Porque o enxofre é um metal.', 'Porque o enxofre é um gás nobre.', 'Porque ele conduz bem a eletricidade.'],
+      exp:'Os ametais sólidos não são maleáveis: em vez de virar lâmina, eles quebram.' } ],
+  /* 4 · Metais, ametais e gases nobres — Avaliar */
+  [ { q:'Um elemento sólido é opaco, quebradiço e não conduz eletricidade. A melhor classificação para ele é:',
+      ops:['ametal', 'metal', 'gás nobre', 'não dá para saber'],
+      exp:'Opaco, quebradiço e mau condutor: são as marcas dos ametais.' },
+    { q:'Um gás quase não reage com nenhuma substância e fica na última coluna da tabela. Ele é:',
+      ops:['um gás nobre', 'um metal', 'um halogênio', 'um metal alcalino'],
+      exp:'Pouco reativos e na coluna 18: os gases nobres.' } ],
+  /* 5 · As principais famílias — Lembrar */
+  [ { q:'Os metais alcalinos (como o sódio e o potássio) formam a família do grupo:', ops:['1', '2', '17', '18'],
+      exp:'Alcalinos: grupo 1. Alcalinos-terrosos: 2; halogênios: 17; gases nobres: 18.' },
+    { q:'Os gases nobres (como o hélio e o neônio) formam a família do grupo:', ops:['18', '17', '1', '16'],
+      exp:'Gases nobres: grupo 18. Halogênios: 17; alcalinos: 1; calcogênios: 16.' } ],
+  /* 5 · As principais famílias — Analisar */
+  [ { q:'O cloro e o bromo reagem de um jeito parecido. Qual é a melhor explicação?',
+      ops:['Estão na mesma família: os halogênios.', 'Estão no mesmo período.', 'Têm o mesmo número atômico.', 'Os dois são metais.'],
+      exp:'Elementos da mesma família têm propriedades químicas parecidas.' },
+    { q:'O magnésio e o cálcio se comportam de forma parecida nas reações. Qual é a melhor explicação?',
+      ops:['Estão na mesma família: os metais alcalinos-terrosos.', 'Estão no mesmo período.', 'Têm a mesma massa atômica.', 'Os dois são gases nobres.'],
+      exp:'Elementos da mesma família têm propriedades químicas parecidas.' } ],
+  /* 6 · Os grupos A e B — Compreender */
+  [ { q:'Os elementos do grupo A (colunas 1, 2 e de 13 a 18) são chamados de:',
+      ops:['elementos representativos', 'elementos de transição', 'elementos de transição interna', 'lantanídeos'],
+      exp:'O grupo A são os representativos; o grupo B, no meio da tabela, são os de transição.' },
+    { q:'Onde ficam, na tabela, os elementos de transição (grupo B)?',
+      ops:['No meio da tabela, nas colunas de 3 a 12.', 'Nas colunas 1 e 2.', 'Só na coluna 18.', 'Só nas duas fileiras de baixo.'],
+      exp:'O grupo B ocupa o meio da tabela, das colunas 3 a 12.' } ],
+  /* 6 · Os grupos A e B — Aplicar */
+  [ { q:'Qual destes elementos é de transição (do grupo B)?', ops:['Ferro (Fe)', 'Sódio (Na)', 'Cloro (Cl)', 'Oxigênio (O)'],
+      exp:'O ferro está na coluna 8, no grupo B; sódio, cloro e oxigênio são representativos.' },
+    { q:'Qual destes elementos é representativo (do grupo A)?', ops:['Oxigênio (O)', 'Níquel (Ni)', 'Prata (Ag)', 'Manganês (Mn)'],
+      exp:'O oxigênio está no grupo 16 (6A); níquel, prata e manganês são de transição.' } ],
+  /* 7 · Os lantanídeos e actinídeos — Lembrar */
+  [ { q:'A série dos lantanídeos começa em qual elemento?', ops:['Lantânio (La)', 'Actínio (Ac)', 'Cério (Ce)', 'Lutécio (Lu)'],
+      exp:'Ela começa no lantânio (Z = 57) — é dele que vem o nome — e vai até o lutécio (Z = 71).' },
+    { q:'Das duas fileiras de baixo da tabela, qual é a dos actinídeos?',
+      ops:['A segunda (a de baixo de todas)', 'A primeira (a de cima)', 'As duas', 'Nenhuma: eles ficam no grupo 18'],
+      exp:'Em cima ficam os lantanídeos (57 a 71); embaixo, os actinídeos (89 a 103).' } ],
+  /* 7 · Os lantanídeos e actinídeos — Compreender */
+  [ { q:'No 6º período, a casa marcada "57–71" quer dizer que ali ficam:',
+      ops:['os elementos de número atômico 57 a 71: os lantanídeos', 'só 2 elementos, o 57 e o 71', 'os elementos de massa 57 a 71', 'os gases nobres'],
+      exp:'São os 15 lantanídeos, de Z = 57 a Z = 71, que pertencem ao 6º período.' },
+    { q:'No 7º período, a casa marcada "89–103" representa:', ops:['os actinídeos', 'os lantanídeos', 'os gases nobres', 'os metais alcalinos'],
+      exp:'São os actinídeos, de Z = 89 a Z = 103, que pertencem ao 7º período.' } ],
+  /* 8 · Naturais, artificiais e radioativos — Lembrar */
+  [ { q:'Um elemento natural é aquele que:', ops:['existe na natureza.', 'só é produzido em laboratório.', 'é sempre radioativo.', 'é sempre um metal.'],
+      exp:'Natural é o que existe na natureza; artificial é o que só se obtém em laboratório.' },
+    { q:'Um elemento radioativo é aquele que:',
+      ops:['tem o núcleo instável e emite radiação.', 'brilha no escuro.', 'é sempre artificial.', 'não tem prótons.'],
+      exp:'O núcleo dele é instável: se desintegra e emite radiação.' } ],
+  /* 8 · Naturais, artificiais e radioativos — Avaliar */
+  [ { q:'Qual destas frases sobre o oxigênio (Z = 8) está correta?',
+      ops:['É natural e estável.', 'É artificial e radioativo.', 'É natural e radioativo.', 'É artificial e estável.'],
+      exp:'O oxigênio existe na natureza (está no ar) e não é radioativo: é natural e estável.' },
+    { q:'Qual destas frases sobre o oganessônio (Og, Z = 118) está correta?',
+      ops:['É artificial e radioativo.', 'É natural e estável.', 'É natural e radioativo.', 'É artificial e estável.'],
+      exp:'O oganessônio só foi obtido em laboratório, e os núcleos dele se desintegram muito rápido.' } ],
+  /* 9 · A tabela e os elétrons de valência — Aplicar */
+  [ { q:'Quantos elétrons de valência tem o alumínio, que está no grupo 13 (3A)?', ops:['3', '13', '1', '5'],
+      exp:'Nas famílias A, os elétrons de valência são o número da família: 3A → 3.' },
+    { q:'Quantos elétrons de valência tem o cloro, que está no grupo 17 (7A)?', ops:['7', '17', '1', '8'],
+      exp:'Nas famílias A, os elétrons de valência são o número da família: 7A → 7.' } ],
+  /* 9 · A tabela e os elétrons de valência — Analisar */
+  [ { q:'O potássio está no 4º período e na família 1A. A camada de valência dele é:',
+      ops:['a 4ª camada, com 1 elétron', 'a 1ª camada, com 4 elétrons', 'a 4ª camada, com 4 elétrons', 'a 3ª camada, com 1 elétron'],
+      exp:'O período dá a camada (4ª) e a família A dá os elétrons dela (1).' },
+    { q:'O oxigênio está no 2º período e na família 6A. A camada de valência dele é:',
+      ops:['a 2ª camada, com 6 elétrons', 'a 6ª camada, com 2 elétrons', 'a 2ª camada, com 8 elétrons', 'a 3ª camada, com 6 elétrons'],
+      exp:'O período dá a camada (2ª) e a família A dá os elétrons dela (6).' } ],
+  /* 10 · A tabela e o diagrama de Pauling — Aplicar */
+  [ { q:'O fósforo está no 3º período, no bloco p, na 3ª coluna desse bloco. Qual é o subnível mais energético dele?',
+      ops:['3p³', '3s³', '3d³', '4p³'],
+      exp:'Bloco p, camada 3, terceira coluna do p: 3p³.' },
+    { q:'O potássio está no 4º período, no bloco s, na 1ª coluna. Qual é o subnível mais energético dele?',
+      ops:['4s¹', '3s¹', '4p¹', '3d¹'],
+      exp:'Bloco s, camada 4, primeira coluna: 4s¹.' } ],
+  /* 10 · A tabela e o diagrama de Pauling — Criar */
+  [ { q:'Você vai criar um exemplo para a regra (n − 1) do bloco d, sem exceção. Qual destas escolhas serve — o elemento e o subnível certo dele?',
+      ops:['Manganês (Mn) — 3d⁵', 'Cromo (Cr) — 3d⁴', 'Ferro (Fe) — 4d⁶', 'Cobalto (Co) — 4d⁷'],
+      exp:'O Mn está no 4º período: camada 4 − 1 = 3, quinta coluna do d → 3d⁵. O Cr é uma exceção, e o Fe e o Co estão com a camada errada.' },
+    { q:'Você vai montar um exemplo da regra (n − 1) com o zircônio (Zr), do 5º período, na 2ª coluna do bloco d. Qual é o subnível certo?',
+      ops:['Zircônio (Zr) — 4d²', 'Zircônio (Zr) — 5d²', 'Zircônio (Zr) — 3d²', 'Zircônio (Zr) — 4d⁴'],
+      exp:'O Zr está no 5º período: camada 5 − 1 = 4, segunda coluna do d → 4d².' } ]
+];
+/* as versões de cada questão (A, B, C), com o tópico e o nível da questão A */
+const QF_SLOTS = QUESTOES_A.map((A, k) => [A, ...(QF_VARIANTES[k] || []).map(v => Object.assign({ t:A.t, nivel:A.nivel }, v))]);
+/* as 20 questões da rodada (rodada 0 = A, 1 = B, 2 = C, 3 = A…) */
+const questoesDaRodada = r => QF_SLOTS.map(s => s[((r % s.length) + s.length) % s.length]);
+let QUESTOES_FINAL = QUESTOES_A;
 const TOPICOS_FINAL = ['', 'O layout geral', 'Os critérios de organização', 'Os grupos e os períodos', 'Metais, ametais e gases nobres',
   'As principais famílias', 'Os grupos A e B', 'Os lantanídeos e actinídeos', 'Naturais, artificiais e radioativos',
   'A tabela e os elétrons de valência', 'A tabela e o diagrama de Pauling'];
@@ -26017,9 +26201,13 @@ const QUIZFINAL = {
     this.mesaDoComeco();
     this.fecha(true);
     this.g++;
+    /* (v68.4: a rodada escolhe as questões — abrindo, a A; cada Refazer, a seguinte; o ONDE volta à mesma) */
+    this.rodada = volta ? (volta.rodada | 0) : semFala ? (this.rodada | 0) + 1 : 0;
+    QUESTOES_FINAL = questoesDaRodada(this.rodada);
     const n = QUESTOES_FINAL.length;
     this.i = volta ? Math.max(0, Math.min(n, volta.i | 0)) : 0;
     this.acertos = volta ? Math.max(0, Math.min(this.i, volta.acertos | 0)) : 0;
+    this.respostas = volta && Array.isArray(volta.respostas) ? volta.respostas.slice(0, n) : [];
     this.aberto = true;
     som.pause(); stage.classList.add('sem-play-m10');
     /* (a sala escura do quiz 3, posta de novo: a troca de trilha a clareia) */
@@ -26281,10 +26469,85 @@ const QUIZFINAL = {
     const Q = QUESTOES_FINAL[this.i], certa = b.textContent === Q.ops[0];
     this.cx.querySelectorAll('.qf-op, .qf-confirma').forEach(x => { x.disabled = true; });
     if (certa) this.acertos++;
+    /* (v68.4: cada resposta fica guardada — o relatório do fim mostra todas) */
+    this.respostas[this.i] = b.textContent;
     /* (v68.3: o mesmo som para qualquer resposta — sem o do erro: o som não diz se acertou) */
     tocaEfeito('right');
     if (this.i === QUESTOES_FINAL.length - 1) this.resultado();
     else this.proxima();
+  },
+  /* (v68.4) O RELATÓRIO: as 20 questões divididas por tópico, cada uma com a resposta do aluno,
+     o acerto ou o erro, e no erro a resposta certa e a explicação; no fim, a taxa de acerto
+     de cada tópico e quais tópicos ele precisa revisar. O cartão da nota espera escondido. */
+  relatorio(cartao){
+    const sl = this.sl();
+    sl.querySelectorAll('.qf-relatorio').forEach(e => e.remove());
+    const R = this.respostas || [], n = QUESTOES_FINAL.length, nota = Math.round(this.acertos / n * 100) / 10;
+    const pct = (a, t) => t ? Math.round(a / t * 100) : 0;
+    const topicos = [];
+    QUESTOES_FINAL.forEach((Q, k) => {
+      const T = topicos[Q.t] || (topicos[Q.t] = { t:Q.t, itens:[], acertos:0 });
+      const ok = R[k] === Q.ops[0];
+      if (ok) T.acertos++;
+      T.itens.push({ Q, k, ok, resp:R[k] });
+    });
+    const lista = topicos.filter(Boolean);
+    const cor = p => p >= 100 ? 'bom' : p >= 50 ? 'meio' : 'fraco';
+    let h = '<div class="qr-topo"><div><div class="qr-chapeu">Relatório do quiz final</div>' +
+      (NOME.le() ? '<div class="qr-aluno">' + esc(NOME.le()) + '</div>' : '') + '</div>' +
+      '<div class="qr-nota"><span>Nota</span><b>' + nota.toFixed(1).replace('.', ',') + '</b><i>' + this.acertos + ' de ' + n + ' certas</i></div></div>' +
+      '<div class="qr-corpo">';
+    lista.forEach(T => {
+      const p = pct(T.acertos, T.itens.length);
+      h += '<section class="qr-topico"><h3><span class="qr-n">' + T.t + '</span>' + esc(TOPICOS_FINAL[T.t]) +
+        '<em class="qr-taxa ' + cor(p) + '">' + T.acertos + ' de ' + T.itens.length + ' · ' + p + '%</em></h3>';
+      T.itens.forEach(({ Q, k, ok, resp }) => {
+        h += '<div class="qr-q ' + (ok ? 'ok' : 'erro') + '"><div class="qr-linha"><span class="qr-sinal">' + (ok ? '✓' : '✗') + '</span>' +
+          '<span class="qr-num">Questão ' + (k + 1) + '</span><span class="qf-bloom" data-nivel="' + Q.nivel + '">' + Q.nivel + '</span></div>' +
+          '<div class="qr-perg">' + esc(Q.q) + '</div>' +
+          '<div class="qr-resp">Sua resposta: <b>' + (resp === undefined ? '—' : esc(resp)) + '</b></div>' +
+          (ok ? '' : '<div class="qr-certa">Resposta certa: <b>' + esc(Q.ops[0]) + '</b></div><div class="qr-exp">' + esc(Q.exp) + '</div>') +
+          '</div>';
+      });
+      h += '</section>';
+    });
+    /* a taxa de acerto de cada tópico, e o que revisar (do mais fraco para o mais forte) */
+    h += '<section class="qr-resumo"><h3>Sua taxa de acerto por tópico</h3><div class="qr-barras">';
+    lista.forEach(T => {
+      const p = pct(T.acertos, T.itens.length);
+      h += '<div class="qr-barra"><span class="qr-rot">' + T.t + '. ' + esc(TOPICOS_FINAL[T.t]) + '</span>' +
+        '<span class="qr-trilho"><i class="' + cor(p) + '" style="width:' + p + '%"></i></span><b class="' + cor(p) + '">' + p + '%</b></div>';
+    });
+    h += '</div>';
+    const fracos = lista.map(T => ({ T, p:pct(T.acertos, T.itens.length) })).filter(x => x.p < 100).sort((a, b) => a.p - b.p || a.T.t - b.T.t);
+    const nome = x => '<b>' + x.T.t + '. ' + esc(TOPICOS_FINAL[x.T.t]) + '</b> (' + x.p + '%)';
+    const zero = fracos.filter(x => x.p < 50), meio = fracos.filter(x => x.p >= 50);
+    const junta = a => a.length === 1 ? a[0] : a.slice(0, -1).join(', ') + ' e ' + a[a.length - 1];
+    let txt;
+    if (!fracos.length) txt = 'Parabéns! Você acertou todas as questões de todos os tópicos. Você domina a tabela periódica — continue assim!';
+    else {
+      txt = '';
+      if (zero.length) txt += '<p>Você precisa melhorar principalmente em ' + junta(zero.map(nome)) + '. Volte ' + (zero.length > 1 ? 'a esses tópicos' : 'a esse tópico') +
+        ' pelo sumário, ouça de novo a explicação e refaça os exercícios dele' + (zero.length > 1 ? 's' : '') + '.</p>';
+      if (meio.length) txt += '<p>' + (zero.length ? 'Também vale' : 'Vale') + ' uma revisão rápida em ' + junta(meio.map(nome)) + ': você acertou uma parte, falta pouco.</p>';
+      const bons = lista.length - fracos.length;
+      if (bons) txt += '<p>Nos outros ' + bons + ' tópico' + (bons > 1 ? 's' : '') + ' você acertou tudo. Muito bem!</p>';
+    }
+    h += '<div class="qr-texto"><h3>O que revisar</h3>' + (fracos.length ? txt : '<p>' + txt + '</p>') + '</div></section></div>' +
+      '<div class="qr-pe"><button type="button" class="qr-volta">← Voltar à nota</button></div>';
+    const r = document.createElement('div');
+    r.className = 'qf-relatorio';
+    r.innerHTML = h;
+    /* (os toques e a rolagem são do relatório: não chegam à mesa nem ao palco) */
+    ['pointerdown', 'touchstart', 'wheel'].forEach(t => r.addEventListener(t, ev => ev.stopPropagation(), { passive:true }));
+    sl.appendChild(r);
+    if (cartao) cartao.classList.remove('on');
+    r.getBoundingClientRect(); r.classList.add('on');
+    r.querySelector('.qr-volta').addEventListener('click', () => {
+      r.classList.remove('on');
+      setTimeout(() => r.remove(), 400);
+      if (cartao && cartao.isConnected) cartao.classList.add('on');
+    });
   },
   resultado(){
     const n = QUESTOES_FINAL.length, nota = Math.round(this.acertos / n * 100) / 10;
@@ -26303,8 +26566,14 @@ const QUIZFINAL = {
         : nota >= 5 ? 'Você está no caminho certo! A tabela tem muita coisa, e cada revisão deixa tudo mais claro. Volte aos tópicos pelo sumário e tente de novo — você consegue!'
         : 'Todo especialista já foi iniciante. Revise os tópicos com calma pelo sumário, ouça de novo as explicações e refaça o quiz: cada tentativa ensina!';
     }
+    /* (v68.4: no lugar do "Capa", o "Relatório" — o cartão espera escondido enquanto ele está aberto) */
     const b = c && c.querySelector('.segue');
-    if (b) b.textContent = 'Capa';   /* (v65.2: os botões do fim são Refazer e Capa — que fecha tudo e volta à capa) */
+    if (b){
+      const r = b.cloneNode(false);   /* (sem o clique de seguir que o cartão lhe deu) */
+      r.textContent = 'Relatório';
+      b.replaceWith(r);
+      r.addEventListener('click', () => { calaFalaDoFim(); this.relatorio(c); });
+    }
   },
   fecha(reabre){
     this.g++;
@@ -26313,7 +26582,7 @@ const QUIZFINAL = {
     const sl = this.sl();
     if (!sl) return;
     this.oculta = false; sl.classList.remove('qf-clara');
-    sl.querySelectorAll('.qf-caixa, .qf-rastro, .quiz-cartao').forEach(e => e.remove());
+    sl.querySelectorAll('.qf-caixa, .qf-rastro, .qf-relatorio, .quiz-cartao').forEach(e => e.remove());
     this.cx = null;
     /* (o número do cabeçalho volta a ser o 10 — o abre põe o 11 de novo) */
     const nn = sl.querySelector('.tira .num'); if (nn) nn.textContent = TOPICO_11.slide;
@@ -30649,7 +30918,8 @@ const ONDE = {
                                 acertos:QUIZ.acertos, erros:QUIZ.erros, nota:!!QUIZ.mostrandoNota };
     if (QUIZ3.aberto) o.quiz3 = true;
     /* (v67.7: o quiz geral — a questão em que está; respondida, já conta a seguinte) */
-    if (atual === 10 && QUIZFINAL.aberto) o.final = { i:QUIZFINAL.i + (QUIZFINAL.respondida ? 1 : 0), acertos:QUIZFINAL.acertos };
+    if (atual === 10 && QUIZFINAL.aberto) o.final = { i:QUIZFINAL.i + (QUIZFINAL.respondida ? 1 : 0), acertos:QUIZFINAL.acertos,
+                                                      respostas:QUIZFINAL.respostas || [], rodada:QUIZFINAL.rodada | 0 };
     /* no slide 11, os cards dos subníveis já nos encaixes */
     if (atual === 10 && CARDS101.postos.size) o.blocos10 = [...CARDS101.postos];
     if (atual === 10 && CARDS101.passo103) o.colunas103 = CARDS101.passo103;
