@@ -3370,6 +3370,9 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
   display:grid;place-items:center;font:700 15px var(--mono);transform:translate(-50%,-50%);scale:.3;opacity:0;
   box-shadow:0 2px 6px rgba(32,28,66,.3);transition:opacity .35s ease, scale .45s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
 .bola1076.on{opacity:1;scale:1}
+/* (v67.2: as duas bolinhas 7 — a da linha 7, crescida, e a da série — pulsam juntas, no mesmo compasso do pulsa1063) */
+@keyframes pulsa1076{0%,100%{scale:1} 50%{scale:1.23}}
+.bola1076.on.pulsa1076{animation:pulsa1076 .7s ease-in-out 2}
 .act1076{position:absolute;z-index:22;border-radius:8px;pointer-events:none;opacity:0;transition:opacity .4s ease;
   box-shadow:0 0 0 3px #FF4D5E, 0 0 22px 8px rgba(255,60,80,.75)}
 .act1076.on{opacity:1}
@@ -5588,7 +5591,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v67.1';
+const VERSAO = 'v67.2';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22671,7 +22674,7 @@ const T1072 = { zr:1.5, segL:[[6.5, 15.0], [26.0, 27.2], [30.2, 33.2]], segC:[[7
    pergunta: "Toque no elemento cujo subnível mais energético é o 4f³" (digitada até 34 s) — o Nd, pela
    coluna da série (a do f³). Acertando, festa e a "10.7.7". */
 const T1075 = { abre:2.0, formula:[9.0, 9.6], tiraUm:10.0, dois:11.0, exc:20.0 };
-const T1076 = { pu:1.0, act:4.5, bola:6.7, segL:[[8.7, 13.8], [23.0, 26.0]], segC:[[10.0, 13.8], [25.0, 26.0]],
+const T1076 = { pu:1.0, act:4.5, bola:6.7, pulsa7:[7.2, 8.6], segL:[[8.7, 13.8], [23.0, 26.0]], segC:[[10.0, 13.8], [25.0, 26.0]],
                 formula:[13.8, 14.4], sete:16.0, cinco:19.0, linha:23.0, f:25.0, festa:26.0, pergunta:29.7, texto:[29.8, 34.0] };
 const ALVO_1076 = 60;   /* o 4f³: o Nd, na coluna do f³ da série dos lantanídeos */
 const TEXTO_1076 = 'Toque no elemento cujo subnível mais energético é o 4f³.';
@@ -24535,11 +24538,15 @@ const CARDS101 = {
     const quiz = T >= F.pergunta;
     const chave = [T >= F.pu && !quiz, dentro([F.act, F.festa]), T >= F.bola && !quiz, sL ? sL[0] : 0, sC ? sC[0] : 0,
                    !!sL && T >= sL[0] + 0.9, !!sC && T >= sC[0] + 0.9, T >= F.linha && !quiz, T >= F.f && !quiz, dentro([F.festa, F.festa + 2.5]), quiz,
-                   de && quiz && !this.feito1076].join();
+                   de && quiz && !this.feito1076, dentro(F.pulsa7)].join();
     if (chave === this.estado1076) return;
     this.estado1076 = chave;
     const ch = chave.split(','), iniL = +ch[3], iniC = +ch[4];
-    const [puOn, act, bola, , , apL, apC, linha, fOn, festa, qz, pedir] = ch.map(v => v === 'true');
+    const [puOn, act, bola, , , apL, apC, linha, fOn, festa, qz, pedir, p7] = ch.map(v => v === 'true');
+    /* (v67.2: logo depois que a bolinha da série aparece, as duas bolinhas 7 pulsam juntas, 2 vezes) */
+    const e7p = m.querySelector('.eixo[data-periodo="7"]');
+    if (e7p) e7p.classList.toggle('pulsa1063', p7);
+    this.bola1076.classList.toggle('pulsa1076', p7);
     if (pu){ pu.classList.toggle('mg106', puOn); pu.style.scale = puOn ? '1.15' : ''; pu.classList.toggle('grande101', puOn); }
     /* (v66.1: a casa 89–103 fica vermelha e cresce, e a bolinha do 7 ao lado dela também cresce) */
     const casaAct = m.querySelector('.casa.serie.act'), e7 = m.querySelector('.eixo[data-periodo="7"]');
