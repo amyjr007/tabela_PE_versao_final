@@ -5649,7 +5649,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v68.2';
+const VERSAO = 'v68.3';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -26281,7 +26281,8 @@ const QUIZFINAL = {
     const Q = QUESTOES_FINAL[this.i], certa = b.textContent === Q.ops[0];
     this.cx.querySelectorAll('.qf-op, .qf-confirma').forEach(x => { x.disabled = true; });
     if (certa) this.acertos++;
-    tocaEfeito(certa ? 'right' : 'error');
+    /* (v68.3: o mesmo som para qualquer resposta — sem o do erro: o som não diz se acertou) */
+    tocaEfeito('right');
     if (this.i === QUESTOES_FINAL.length - 1) this.resultado();
     else this.proxima();
   },
