@@ -5563,9 +5563,9 @@ body.montagem .solto.pego{outline:1.5px solid var(--ouro);background:rgba(226,16
   background:var(--ouro-luz);transform:scaleX(0);transform-origin:left;transition:transform .2s ease}
 #versao.segurando::after{transform:scaleX(1);transition:transform 1s linear}
 body.montagem #versao{color:var(--ouro)}
-/* no celular, 20 % maior (14,7 → 17,6 px); (v70.7) mais 2 px (19,6) e um pouco mais para a direita
-   (a 30 px da borda, em vez de 14) */
-html.celular #versao{font-size:19.6px;left:30px}
+/* no celular, 20 % maior (14,7 → 17,6 px); (v70.7) mais 2 px e um pouco mais para a direita;
+   (v70.8) mais 2 px (21,6) e mais afastado da borda (a 52 px do palco, em vez de 14) */
+html.celular #versao{font-size:21.6px;left:52px}
 
 /* o aviso curto, quando alguma coisa precisa ser dita ao aluno */
 #aviso{
@@ -5776,7 +5776,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v70.7';
+const VERSAO = 'v70.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
