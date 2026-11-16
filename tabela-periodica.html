@@ -2674,6 +2674,13 @@ body.montagem .bloco72{pointer-events:auto}
   background:radial-gradient(ellipse at center,rgba(220,38,60,.12),rgba(220,38,60,.55));
 }
 #flash-erro.on{animation:flashErro .75s ease-out}
+/* (v70.3) NO CELULAR, O ERRO MAIS LEVE: o tremor menor e mais curto (e só na caixa da pergunta —
+   ver tremeVermelho), o clarão de uma cor lisa (sem o degradê) e o halo vermelho dos cards menor */
+@keyframes tremeLeve{0%,100%{translate:0 0} 25%{translate:-6px 0} 50%{translate:5px 0} 75%{translate:-3px 0}}
+html.celular .treme-peca{animation:tremeLeve .32s ease-out}
+html.celular #flash-erro{background:rgba(220,38,60,.22)}
+html.celular .pc.errada3 .face{box-shadow:0 0 0 3px #FF2E4C, 0 0 8px 2px rgba(255,46,76,.7)}
+html.celular .pc.errada3{animation:none}   /* (o tremor de cada card errado — uma coluna inteira eram 7 de uma vez) */
 @keyframes flashErro{0%{opacity:0} 15%{opacity:1} 100%{opacity:0}}
 
 .confete{position:absolute;inset:0;width:100%;height:100%;z-index:60;pointer-events:none}
@@ -5752,7 +5759,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v70.2';
+const VERSAO = 'v70.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25611,7 +25618,8 @@ const QUIZ10B = Object.assign(Object.create(QUIZ10), {
     this.sl().querySelectorAll('.pista5').forEach(e => e.classList.remove('pista5'));
     const voz = fala ? { frase:'Parabéns!', som:fala } : vozDoAcerto(ultima);
     const msg = this.caixa() && this.caixa().querySelector('.q3-msg');
-    if (msg){ msg.textContent = voz.frase + (explica ? ' ' + explica : ''); msg.className = 'q3-msg ok'; }
+    /* (v70.4: nos quizzes 2 e 3, o texto do acerto é curto — sem a explicação) */
+    if (msg){ msg.textContent = 'Perfeito. É isso mesmo.'; msg.className = 'q3-msg ok'; }
     confete();
     const f = tocaEfeito('funfare');
     tocaEfeito('applause');
@@ -27335,12 +27343,28 @@ addEventListener('pointerdown', ev => {
   const alvo = ev.target.closest && ev.target.closest('button, .pc, .mem-carta, .quiz-op, .eixo, .rd-v, [role="button"]');
   if (alvo) vibra([6]);
 }, true);
+/* (v70.4) A VOZ DO ERRO ("Calma…", "Pera…") NÃO FICA POR CIMA DE UMA RESPOSTA NOVA: começando
+   o som de uma resposta (o erro, o acerto, a festa), a voz que estiver falando é cortada; e a
+   que viria depois do "error" não entra se, nesse meio-tempo, o aluno já respondeu outra vez —
+   o acerto comemora normalmente, o erro toca de novo. Vale para todos os quizzes. */
+const SONS_DE_RESPOSTA = ['error', 'right', 'funfare', 'applause'];
+const NOMES_VOZ_ERRO = ['Calmanaproximaacerta', 'calmavaidenovo', 'pera'];   /* (as de VOZES_DO_ERRO) */
+let VOZ_ERRO = null, RESPOSTA_N = 0, RESPOSTA_DO_ERRO = -1;
 /* (volume: de 0 a 1, opcional — sem ele, o volume cheio) */
 function tocaEfeito(nome, volume){
+  if (SONS_DE_RESPOSTA.includes(nome)){
+    if (VOZ_ERRO){ VOZ_ERRO.pause(); VOZ_ERRO.dispatchEvent(new Event('ended')); VOZ_ERRO = null; }
+    RESPOSTA_N++;
+    if (nome === 'error') RESPOSTA_DO_ERRO = RESPOSTA_N;
+  }
+  /* (a voz do erro só entra se a última resposta ainda é o erro que a chamou) */
+  const vozErro = NOMES_VOZ_ERRO.includes(nome);
+  if (vozErro && RESPOSTA_DO_ERRO !== RESPOSTA_N) return Promise.resolve(null);
   if (VIBRA[nome]) vibra(VIBRA[nome]);
   return new Promise(pronto => {
     /* um nome é um efeito da pasta vfx; com barra, é o caminho do arquivo */
     const a = new Audio(encodeURI(nome.includes('/') ? nome : 'Audios/vfx/' + nome + '.mp3'));
+    if (vozErro){ VOZ_ERRO = a; a.addEventListener('ended', () => { if (VOZ_ERRO === a) VOZ_ERRO = null; }); }
     if (volume !== undefined) a.volume = Math.max(0, Math.min(1, volume));
     if (nome.includes('/')) Velocidade.aplicar(a);   /* as falas, e não os efeitos */
     EFEITOS.add(a);
@@ -27517,7 +27541,20 @@ function palavraLatina(palavra, sym){
    tabela de 118 cubos, e sacudido inteiro pesava no celular, que perdia
    pedaços da tela */
 function tremeVermelho(pecas){
-  const alvos = pecas ? pecas.filter(Boolean) : [stage];
+  let alvos = pecas ? pecas.filter(Boolean) : [stage];
+  /* (v70.3) NO CELULAR, MAIS LEVE: o palco inteiro tremendo (as 118 cartas 3D dentro dele) estourava
+     a memória de vídeo e sumiam pedaços da tabela. Lá treme só a caixa da pergunta (ou nada), e
+     muitas peças de uma vez (uma coluna) não tremem — ficam só marcadas de vermelho */
+  if (ehCelular() && (!pecas || alvos.length > 2)){
+    /* (a caixa visível, na ordem: uma escondida do 10.7.6 vinha antes no slide e tremia sem se ver) */
+    const sl = slides[atual];
+    let cx = null;
+    if (sl) for (const s of ['.quiz3:not(.sai)', '.qf-caixa:not(.sai)', '.musica10-caixa.on:not(.q1076)', '.quiz .quiz-card']){
+      cx = [...sl.querySelectorAll(s)].find(e => e.offsetWidth && getComputedStyle(e).opacity > .1);
+      if (cx) break;
+    }
+    alvos = cx ? [cx] : [];
+  }
   alvos.forEach(p => {
     const cls = p === stage ? 'treme' : 'treme-peca';
     p.classList.remove(cls); void p.offsetWidth; p.classList.add(cls);
