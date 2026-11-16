@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v66.0** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
+Onde paramos: **v66.1** (2026-11-13). Este arquivo serve para retomar o trabalho em outra máquina.
 
 ## Como o trabalho anda (combinados com o professor)
 
@@ -249,3 +249,4 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - O quiz musical segue como antes; o cartão dele leva ao quiz geral (com a fala 10.7final).
 - **v65.9:** na 10.7.8, dos 8,5 aos 18 s, um elemento ao acaso pisca a cada 0,55–0,95 s, cada um com uma nota bem baixinha (18 % do volume das notas do jogo) — `MUSICA10.tickFala`, só tocando de seguida.
 - **Atenção (achado na v66.0):** pelo sumário dentro do slide (recomeço no mesmo slide), as séries de baixo ficam 14 px mais altas do que vindo de outro slide — a montagem das séries depende do caminho (`pousaTabela`/`SERIES_VISIVEIS`). Com a tabela aberta de novo (10.7.5 em diante), as etiquetas do f podem encostar nas cartas de cima das séries nesse caso.
+- **v66.1:** na 10.7.5 o "n − 1 → n − 2" fica à esquerda das séries de baixo, entre as duas fileiras (40 px). Na 10.7.6, aos 4,5 s, a casa 89–103 fica vermelha e cresce 25 % (`verm1076`), e a bolinha do 7 ao lado dela também cresce (até a festa).

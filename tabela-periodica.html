@@ -3376,7 +3376,9 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .linha1071:not(.on1076) .rf1076{opacity:0}
 .r106.rf1076 :is(.rs,.r2){color:color-mix(in srgb,var(--cat-lantanideos) 86%,#000)}
 .r106.rf1076 .r3{color:#E5394F}
-.form1071.f1075{transform:translate(-50%,-50%)}
+.form1071.f1075{transform:translate(-100%,-50%);font-size:40px}
+.mesa .casa.serie.act{transition:scale .45s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease}
+.mesa .casa.serie.act.verm1076{scale:1.25;z-index:26;box-shadow:0 0 0 3px #FF4D5E, 0 0 22px 8px rgba(255,60,80,.75)}
 #stage.sem-play1076 #som, #stage.sem-play1076 #som-dica, #stage.sem-play1076 #vel{display:none!important}
 .q1076 .m10-titulo .falta{opacity:0}
 .mesa[data-slide="10"].pos106{--px:6px;--py:97px;transition:transform .9s cubic-bezier(.3,.85,.3,1)}
@@ -5583,7 +5585,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v66.0';
+const VERSAO = 'v66.1';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -24424,6 +24426,13 @@ const CARDS101 = {
     if (T >= F.formula[0] && T < F.tiraUm) html = N.slice(0, EV9.letras(T, F.formula[0], F.formula[1], N));
     else if (T >= F.tiraUm && T < F.dois) html = 'n − ';
     else if (T >= F.dois) html = 'n − <span class="verm">2</span>';
+    /* (v66.1: o n − 2 à esquerda das séries de baixo, entre as duas fileiras) */
+    if (html && !this.lugar1075){
+      const la = this.m.querySelector('.pc[data-z="57"]'), ac = this.m.querySelector('.pc[data-z="89"]');
+      if (la && ac && la.offsetWidth){ const L = caixaNaMesa(la, this.m), A = caixaNaMesa(ac, this.m);
+        this.lugar1075 = true; this.form1075.style.left = (L.l - 14).toFixed(1) + 'px'; this.form1075.style.top = ((L.cy + A.cy) / 2).toFixed(1) + 'px'; }
+    }
+    if (!html) this.lugar1075 = false;
     if (html !== this.html1075){
       if (de && this.html1075 !== undefined && html.length > (this.html1075 || '').length && T < F.tiraUm) TECLAS.bate();
       this.html1075 = html; this.form1075.innerHTML = html;
@@ -24508,7 +24517,10 @@ const CARDS101 = {
     const ch = chave.split(','), iniL = +ch[3], iniC = +ch[4];
     const [puOn, act, bola, , , apL, apC, linha, fOn, festa, qz, pedir] = ch.map(v => v === 'true');
     if (pu){ pu.classList.toggle('mg106', puOn); pu.style.scale = puOn ? '1.15' : ''; pu.classList.toggle('grande101', puOn); }
-    this.act1076.classList.toggle('on', act);
+    /* (v66.1: a casa 89–103 fica vermelha e cresce, e a bolinha do 7 ao lado dela também cresce) */
+    const casaAct = m.querySelector('.casa.serie.act'), e7 = m.querySelector('.eixo[data-periodo="7"]');
+    if (casaAct) casaAct.classList.toggle('verm1076', act);
+    if (e7) e7.classList.toggle('cresce1063', act);
     this.bola1076.classList.toggle('on', bola);
     /* as setas: do Pu até a bolinha (depois, até o 5 vermelho) e até o f⁵ */
     const S = this.setas1076;
