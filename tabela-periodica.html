@@ -2506,6 +2506,7 @@ body.montagem .bloco72{pointer-events:auto}
 #stage.sem-play105 #som, #stage.sem-play105 #som-dica, #stage.sem-play105 #vel,
 #stage.sem-play62 #som, #stage.sem-play62 #som-dica, #stage.sem-play62 #vel,
 #stage.sem-play-m10 #som, #stage.sem-play-m10 #som-dica, #stage.sem-play-m10 #vel{display:none!important}
+#stage.sem-play-encaixe #som, #stage.sem-play-encaixe #som-dica, #stage.sem-play-encaixe #vel{display:none!important}
 
 /* ---- o cartão da nota, no fim do quiz ---- */
 .nota-card{
@@ -5699,7 +5700,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v68.9';
+const VERSAO = 'v69.0';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -26657,6 +26658,8 @@ const ENCAIXE = {
   acende(){
     TP.todos().forEach(c => c.classList.toggle('chama',
       this.ativo && !this.auto && +c.dataset.z === this.proximo));
+    /* (v69.0: enquanto o aluno toca os cards — do 1 ao 4 —, sem o play) */
+    stage.classList.toggle('sem-play-encaixe', this.ativo && !this.auto);
   },
   toca(c){
     if (!this.ativo || this.auto) return;
@@ -26693,6 +26696,7 @@ const ENCAIXE = {
   zera(){
     this.ativo = false; this.auto = false; this.casas = false; this.proximo = 1; this.g++;
     TP.todos().forEach(c => c.classList.remove('chama', 'nao'));
+    stage.classList.remove('sem-play-encaixe');
   }
 };
 /* O PONTO DO ARCO: ao lado do meio do caminho, a uma fração da distância —
