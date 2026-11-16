@@ -216,6 +216,7 @@ const CASCA = [
   './Audios/audio_tabela_10.7.7.mp3',
   './Audios/audio_tabela_10.7.8.mp3',
   './Audios/audio_tabela_10.7final.mp3',
+  './Audios/quiz_final.mp3',
   './Imagens/linus_pauling.jpeg',
   './Imagens/henry_moseley.jpg',
   './Imagens/garimpo.jpeg',

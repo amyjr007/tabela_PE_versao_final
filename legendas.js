@@ -1134,5 +1134,14 @@ var LEGENDAS = {
     [0,2.98,"Caramba! Você lembrou que o bromo é o único ametal"],
     [2.98,5.96,"líquido. Parabéns! Pouca gente acerta"],
     [5.96,7.16,"essa de primeira."]
+  ],
+  "quiz_final": [
+    [0,2.28,"Bem-vindo ao quiz final."],
+    [2.28,7.07,"Para ver melhor a tabela de fundo, você pode mover a caixa de perguntas."],
+    [7.07,8.93,"Escolha sua resposta com calma"],
+    [8.93,12.14,"e clique em Confirmar para ver a próxima questão."],
+    [12.14,14.22,"E você não pode voltar."],
+    [14.22,14.97,"É isso."],
+    [14.97,15.8,"Boa sorte!"]
   ]
 };
