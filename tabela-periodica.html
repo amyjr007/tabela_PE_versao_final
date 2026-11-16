@@ -3544,6 +3544,9 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .m10-nota.ok i{opacity:1;color:#7CF5A8}
 .m10-nota.soa{animation:soa10 .45s ease-out}
 @keyframes soa10{40%{transform:translateY(-8px) scale(1.12);background:rgba(255,212,59,.45)}}
+/* (v69.7) com as opções da música na tela, a tabela de fundo escurece (em fade), e as opções ficam em evidência */
+.slide.musica10 .mesa{transition:filter .5s ease}
+.slide.musica10.m10-pergunta .mesa{filter:brightness(.3) saturate(.6)}
 /* (v69.5) a caixinha de música, à direita dos subníveis */
 .m10-caixinha{position:relative;flex:none;width:62px;align-self:stretch;margin-left:6px;padding:4px;border-radius:12px;
   border:2px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#8D86B0;cursor:default;
@@ -5730,7 +5733,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v69.6';   /* (as opções do quiz musical: peça da montagem) */
+const VERSAO = 'v69.7';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -25827,6 +25830,7 @@ const MUSICA10 = {
     this.i = i;
     this.m = MUSICAS_10[i];
     this.k = 0; this.travado = false; this.tocando = false;
+    this.sl().classList.remove('m10-pergunta');
     this.limpaElementos();
     this.sl().querySelectorAll('.musica10-caixa').forEach(e => e.remove());
     const M = this.m, mesa = this.mesa();
@@ -25967,6 +25971,8 @@ const MUSICA10 = {
   pergunta(){
     const M = this.m, ops = embaralha([M.nome, ...M.outras]);
     this.msg('Que música é essa?');
+    /* (v69.7: com as opções na tela, a tabela de fundo escurece — elas ficam em evidência) */
+    this.sl().classList.add('m10-pergunta');
     const o = this.cx.querySelector('.m10-opcoes');
     o.innerHTML = '';
     ops.forEach(nome => {
@@ -25999,6 +26005,7 @@ const MUSICA10 = {
   },
   resultado(){
     const n = this.total, e = Math.min(this.erros, n), nota = Math.round((n - e) / n * 100) / 10;
+    this.sl().classList.remove('m10-pergunta');
     if (this.cx){ this.cx.classList.remove('on'); const cx = this.cx; setTimeout(() => cx.remove(), 500); this.cx = null; }
     QUIZ_FEITOS.marca('q10m', nota);
     cartaoDoResultado(nota, MUSICAS_10.length + ' músicas · <em class="erro">' + this.erros + '</em> ' + (this.erros === 1 ? 'erro' : 'erros'),
@@ -26029,6 +26036,7 @@ const MUSICA10 = {
     const sl = this.sl();
     if (!sl) return;
     sl.querySelectorAll('.musica10-caixa, .quiz-cartao').forEach(e => e.remove());
+    sl.classList.remove('m10-pergunta');
     this.cx = null;
     this.limpaElementos();
     if (reabre) return;
