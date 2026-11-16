@@ -3577,7 +3577,9 @@ body.montagem .titulo9.texto101.fora1052{opacity:0!important;pointer-events:none
 .m10-msg{min-height:26px;margin-top:8px;font-size:17px;color:#E8E4FF}
 .m10-msg.erro{color:#FF8A9A}
 .m10-msg.ok{color:#7CF5A8}
-.m10-opcoes{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:6px auto 0;max-width:560px;position:relative;left:-110px}   /* (no vão entre o s e o p) */
+/* (v69.8: alinhadas às notas de cima — o meio delas, sem a caixinha da direita: 39 px para a
+   esquerda —, numa linha só, e um pouco mais abaixo; antes ficavam no vão entre o s e o p) */
+.m10-opcoes{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin:22px auto 0;max-width:none;position:relative;left:-39px}
 .m10-op{font:700 17px var(--display);padding:9px 16px;border-radius:999px;border:2px solid rgba(255,255,255,.4);
   background:rgba(255,255,255,.1);color:#fff;cursor:pointer}
 .m10-op.certa{background:#2EAA5E;border-color:#7CF5A8}
@@ -5733,7 +5735,7 @@ const TOPICO_11 = { n:11, slide:10, title:'Quiz geral', subtitle:'20 questões, 
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v69.7';
+const VERSAO = 'v69.8';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
