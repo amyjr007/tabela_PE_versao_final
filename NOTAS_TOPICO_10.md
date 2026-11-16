@@ -1,6 +1,6 @@
 # Notas do tópico 10 — "A tabela e o diagrama de Pauling" (slide 11)
 
-Onde paramos: **v67.3** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
+Onde paramos: **v67.4** (2026-11-16). Este arquivo serve para retomar o trabalho em outra máquina (ou numa conversa nova).
 
 ## Para retomar (o que está em aberto em 2026-11-16)
 
@@ -263,6 +263,7 @@ Retiming da 8.4; card tocado todo verde ou só contorno; armadilha da Q8 do quiz
 - **v66.3:** na 10.7.6, aos 16 s o n do "n − 2" vira 7 (azul): "7 − 2"; aos 19 s, o 5 vermelho. A bolinha 7 da série e a fórmula são medidas quando a bolinha aparece (antes, pelo sumário, eram medidas com a mesa ainda chegando e ficavam fora da tela).
 - **v66.5:** no quiz musical (a 10.7.8 e o jogo) e no quiz geral, a tabela volta a ficar sem os lantanídeos e actinídeos, no lugar da 10.6 (`abreF107` dá falso); os elementos que piscam na 10.7.8 não são das séries.
 - **v66.6–v66.7:** na 10.6, aos 9 s (por 2 s), os blocos s e p crescem 7 % e brilham, com o halo de cada bloco (`cresceSP106`; os halos são refeitos na hora, e a 10.5.1 refaz os seus se foram medidos noutra narração); a tela escura da regra tem o título "Elementos Representativos (s ou p)". Na 10.6.1, sem as pulsações na chegada das setas: ficam as dos 11 s (bolinha do 3) e 12,3 s (etiqueta s²) e o revezamento do fim.
+- **v67.4:** na 10.7.1 (o Fe), sem as pulsações na chegada das setas (6,9 s e 8,4 s): a bolinha do 4 pulsa aos 24 s e aos 28 s, a etiqueta d⁶ aos 25,9 s e aos 29 s (`T1071.piscaL`, `piscaC`). O 3 vermelho continua pulsando aos 24,9 s.
 - **v67.3:** durante a 10.6.3.1 o play sai da tela (classe `sem-play10631` no `#stage`, posta no `tick1064` e tirada no `fora`).
 - **v67.2:** na 10.7.6, aos 7,2 s (logo depois que a bolinha 7 da série aparece), as duas bolinhas 7 — a da linha 7 e a da série — pulsam juntas, 2 vezes (`T1076.pulsa7`; `pulsa1063` na da linha, `pulsa1076` na da série).
 - **v67.0:** na 10.7.0, a tela escura da regra do bloco d tem o título "Elementos de transição externa (bloco d)" (`tit107` dentro do `veu1070`), que entra junto com ela.

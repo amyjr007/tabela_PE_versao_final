@@ -5592,7 +5592,7 @@ const SLIDES = [
    worker recebe-a no endereço com que é registado (sw.js?v=…). Mudando
    este texto, muda o endereço, o aparelho instala o serviço novo e o
    cache velho vai-se embora — não há uma segunda versão para esquecer. */
-const VERSAO = 'v67.3';
+const VERSAO = 'v67.4';
 
 /* A CAPA NOVA — a ideia do Claude Design: fundo escuro, o título grande e
    claro à esquerda, a tabelinha apagada ao fundo à direita e o sódio, o
@@ -22642,7 +22642,9 @@ const T1070 = { claro:2.0, escuro:6.0, regra:[6.0, 16.0] };
 /* (v62.3: as faixas viraram setas, como no Mg, no iodo e no Cs; a 1ª pulsação na chegada, 0,9 s depois;
    a seta da linha sai aos 13 s, quando a fórmula (n − 1) é digitada no lugar dela) */
 const SOBE_D_1071 = 30;   /* px que as etiquetas do d sobem na 10.7.1 */
-const T1071 = { sai:1.0, fe:3.0, linha:6.0, coluna:7.5, piscaL:[[6.9, 8.1]], piscaC:[[8.4, 9.6], [26.9, 28.1]],
+/* (v67.4: as pulsações da bolinha do 4 e da etiqueta d⁶ mudaram — sem as da chegada das setas (6,9 s e 8,4 s):
+   a bolinha pulsa aos 24 s e aos 28 s; a d⁶ aos 25,9 s e aos 29 s) */
+const T1071 = { sai:1.0, fe:3.0, linha:6.0, coluna:7.5, piscaL:[[24.0, 25.2], [28.0, 29.2]], piscaC:[[25.9, 27.1], [29.0, 30.2]],
                 /* (v62.5: as setas em trechos — a da linha até a bolinha do 4 (6–13 s) e depois até o 3 vermelho
                    (24–27 s e 28 s até a festa); a da coluna até a etiqueta d⁶ (7,5–13 s, 26–27 s e 28,9 s até a
                    festa); o 3 vermelho pulsa quando a seta chega (24,9 s), a d⁶ também (26,9 s); na festa as
